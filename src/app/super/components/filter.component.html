@@ -1,0 +1,46 @@
+<nz-dropdown nzTrigger="click" [nzClickHide]="false" [(nzVisible)]="visible">
+    <i class="anticon anticon-filter" [ngClass]="{'active':filtering}" nz-dropdown ></i>
+    <div class="custom-filter-dropdown">
+        <!-- select search type -->
+        <div>
+            <!--  ngModelChange="handlerSelectChange()" -->
+            <nz-select style="width: 160px;" nzSize="default" [(ngModel)]="selectType" [nzAllowClear]="false"
+                nzPlaceHolder="Choose">
+                <nz-option *ngIf="searchType==='string'" nzValue="regExp" nzLabel="模糊（link）"></nz-option>
+                <nz-option *ngIf="searchType!=='string'"nzValue="range" nzLabel="范围（A-B）"></nz-option>
+                <nz-option nzValue="equal" nzLabel="等于（=）"></nz-option>
+                <nz-option nzValue="$ne" nzLabel="不等于（=)"></nz-option>
+                <nz-option nzValue="$in" nzLabel="包含（In）"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue="$gt" nzLabel="大于（>）"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue="$lt" nzLabel="小于（<）"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue="$gte" nzLabel="大于等于（>=）"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue="$lte" nzLabel="小于等于（<=）"></nz-option>
+            </nz-select>
+        </div>
+        <div class="form">
+            <input *ngIf="searchType==='string' && selectType==='regExp'" type="text" nz-input placeholder="模糊（link）"
+                nzSize="default" [(ngModel)]="filter.regExp">
+            <input *ngIf="searchType!=='string' && selectType==='range'" type="number" nz-input placeholder="rangeA"
+                nzSize="default" [(ngModel)]="filter.rangeA">
+            <input *ngIf="searchType!=='string' && selectType==='range'" type="number" nz-input placeholder="rangeB"
+                nzSize="default" [(ngModel)]="filter.rangeB">
+            <input *ngIf="selectType==='equal'" type="text" nz-input placeholder="equal" nzSize="default" [(ngModel)]="filter.equal">
+            <input *ngIf="selectType==='$ne'" type="text" nz-input placeholder="unequal" nzSize="default" [(ngModel)]="filter.unequal">
+            <textarea *ngIf="selectType==='$in'" type="text" nz-input placeholder="in" nzSize="default" [(ngModel)]="filter.in"></textarea>
+            <input *ngIf="searchType!=='string' && selectType==='$gt'" type="number" nz-input placeholder="gt" nzSize="default"
+                [(ngModel)]="filter.gt">
+            <input *ngIf="searchType!=='string' && selectType==='$lt'" type="number" nz-input placeholder="lt" nzSize="default"
+                [(ngModel)]="filter.lt">
+            <input *ngIf="searchType!=='string' && selectType==='$gte'" type="number" nz-input placeholder="egt" nzSize="default"
+                [(ngModel)]="filter.gte">
+            <input *ngIf="searchType!=='string' && selectType==='$lte'" type="number" nz-input placeholder="elt" nzSize="default"
+                [(ngModel)]="filter.lte">
+        </div>
+        <!-- button group -->
+        <div class="btn-group">
+            <button nz-button nzType="primary" nzSize="small" (click)="confirm()">确定</button>
+            <button nz-button nzType="default" nzSize="small" (click)="clear()">清空</button>
+            <button nz-button nzType="default" nzSize="small" (click)="close()">关闭</button>
+        </div>
+    </div>
+</nz-dropdown>

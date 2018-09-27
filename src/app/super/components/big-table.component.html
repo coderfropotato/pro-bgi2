@@ -1,0 +1,73 @@
+<div class="big-table-component" [id]="idFlag">
+    <!-- demo -->
+    <button nz-button nzType="default" (click)="sort('email','descend')">{{sortEmail}}</button>
+    <button nz-button nzType="default" (click)="sort('phone','ascend')">{{sortPhone}}</button>
+    <button nz-button nzType="default" (click)="_filter('tf_mismatch','Mismatch','equal','2',null)">truekey:tf_mismatch name:Mismatch equal 2 </button>
+    <button nz-button nzType="default" (click)="beginFilter()">开始筛选</button>
+    <button nz-button nzType="default" (click)="add1()">add => name age</button>
+    <button nz-button nzType="default" (click)="add2()">add => age name</button>
+    <button nz-button nzType="default" (click)="add3()">add => age</button>
+    <button nz-button nzType="default" (click)="add4()">add => name</button>
+    <button nz-button nzType="default" (click)="refresh()">刷新</button>
+
+    <!-- 表格hover模板 -->
+    <ng-template #popoverTpl>
+        {{popoverText}}
+    </ng-template>
+
+    
+    <!-- table -->
+    <div class="table-content">
+            <hr>选中
+            <h6 *ngFor="let item of checked">{{item}}</h6>
+            <hr>未选中
+            <h6 *ngFor="let item of unChecked">{{item}}</h6>
+            <div class="table-top" *ngIf="filterHtmlString.length>1">
+            <span class="filter-head" [innerHTML]="filterHtmlString[0].html"></span>
+            <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of filterHtmlString.slice(1)" [innerHTML]="item['html']"></span>
+        </div>
+        <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" -->
+        <nz-table *ngIf="dataSet.length && !error" #ajaxTable nzSize="small" [nzScroll]="{ x:head.length*150+'px' }" [nzData]="dataSet" [nzFrontPagination]='false' [nzShowPagination]="false"
+            [nzTotal]="total">
+            <thead>
+                <tr>
+                    <!-- checkbox -->
+                    <th nzWidth="60px" nzLeft="0px" nzShowCheckbox nzShowRowSelection [nzSelections]="selectMenu" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+                        (nzCheckedChange)="checkAll($event)"></th>
+
+                    <th style="text-align: center;" nzWidth="100px" nzLeft="60px" [(nzSort)]="sortMap[head[0]['true_key']]" nzShowSort [nzSortKey]="head[0]['true_key']"
+                        (nzSortChange)="sort(head[0]['true_key'],$event)">
+                        <span [nzTitle]="head[0]['hover']" nzPlacement="topCenter" nz-tooltip>{{head[0]['name']}}</span>
+                        <!-- get app-filter child emit function <recive> <delete> -->
+                        <app-filter #child *ngIf="beginFilterStatus" [pid]="idFlag" [searchType]="head[0]['searchType']" (getData)="recive($event)"
+                            (deleteData)="delete($event)" [filterNamezh]="head[0]['name']" [filterName]="head[0]['true_key']"></app-filter>
+                    </th>
+                    <th style="text-align: center;" nzWidth="160px" *ngFor="let h of head.slice(1);index as i;trackBy:identify" [(nzSort)]="sortMap[head[i+1]['true_key']]"
+                        nzShowSort [nzSortKey]="head[i+1]['true_key']" (nzSortChange)="sort(head[i+1]['true_key'],$event)">
+                        <span [nzTitle]="head[i+1]['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
+                        <app-filter *ngIf="beginFilterStatus" #child [pid]="idFlag" [searchType]="head[i+1]['searchType']" (getData)="recive($event)"
+                            (deleteData)="delete($event)" [filterNamezh]="head[i+1]['name']" [filterName]="head[i+1]['true_key']"></app-filter>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let d of dataSet" style="text-align: center;">
+                    <!-- checkbox -->
+                    <td nzLeft="0px" nzShowCheckbox [(nzChecked)]="d.checked" (nzCheckedChange)="refreshStatus($event,d)"></td>
+
+                    <td nzLeft="60px" (mouseover)="setPopoverText(d[head[0]['true_key']])" [nzContent]="popoverTpl" nzPlacement="right" nz-popover>
+                        {{d[head[0]['true_key']]}}
+                    </td>
+                    <td *ngFor="let h of head.slice(1)" (mouseover)="setPopoverText(d[h['true_key']])" [nzContent]="popoverTpl" nzPlacement="right"
+                        nz-popover>
+                        {{d[h['true_key']]}}
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <div class="table-bottom">
+            <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="total" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" nzShowSizeChanger nzShowQuickJumper></nz-pagination>
+        </div>
+        <app-error *ngIf="error" [error]="error"></app-error>
+    </div>
+</div>

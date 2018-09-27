@@ -1,0 +1,9 @@
+.left-side{
+    background-color: #eee;
+    width: 80px;
+    border-right: 1px solid #ccc;
+}
+
+.left-side a.active{
+    color: red;
+}
