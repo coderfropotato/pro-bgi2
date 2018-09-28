@@ -2,6 +2,12 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.5.
 
+## Run
+`npm i`
+`npm start`
+
+## Angular-cli argv intorduce
+
 ```bash
 ng g component xxx --flag --spec=false --inline-style
 ```
