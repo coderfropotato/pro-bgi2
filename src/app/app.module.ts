@@ -7,12 +7,17 @@ import { NgModule } from '@angular/core';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 // route state keep alive
 import { SimpleReuseStrategy } from './super/service/simpleReuseStrategy';
-
+// import component
 import { AppComponent } from './app.component';
-import { IndexComponent } from './pages/index.component';
-import { cxzk1Component } from './pages/cxzk1.component';
-import { cxzk2Component } from './pages/cxzk2.component';
+import {LoginComponent} from './pages/login/login.component'; 
+import { IndexComponent } from './pages/mrna/index.component';
+import { cxzk1Component } from './pages/mrna/cxzk1.component';
+import { cxzk2Component } from './pages/mrna/cxzk2.component';
 import { NotFoundComponent } from './pages/not-found.component';
+import { DnaIndexComponent } from './pages/dna/index.component';
+import { JyzbdComponent } from './pages/dna/jyzbd.component';
+
+// import pipe
 import { MyNewPipePipe } from './super/filter/my-new-pipe.pipe';
 import { KeysPipe } from './super/filter/keys.pipe';
 import { HtmlFilter } from './super/filter/html.pipe';
@@ -29,7 +34,7 @@ import { LoadingService } from './super/service/loadingService';
 import { TooltipDirective } from './super/directive/tooltip.directive';
 import { BigTableComponent } from './super/components/big-table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FilterComponent } from './super/components/filter.component';
 import { ErrorComponent } from './super/components/error.component';
@@ -38,10 +43,12 @@ import { ErrorComponent } from './super/components/error.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+// config
+import config from '../config';
 
-const ROUTES: Routes = [
+const ROUTES:Routes =[
     {
-        'path': 'report',
+        'path': 'report/mrna',
         'component': IndexComponent,
         'children': [
             {
@@ -55,15 +62,29 @@ const ROUTES: Routes = [
         ],
     },
     {
+        'path': 'report/dna',
+        'component': DnaIndexComponent,
+        'children': [
+            {
+                'path': 'jyzbd',
+                'component': JyzbdComponent,
+            }
+        ],
+    },
+    {
+        'path':'login',
+        'component':LoginComponent
+    },
+    {
         'path': '',
-        'redirectTo': '/report',
+        'redirectTo': 'login',
         'pathMatch': 'full'
     },
     {
         'path': '404',
         'component': NotFoundComponent
     }
-];
+]
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -73,6 +94,7 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
     // 组件，指令，过滤器（管道） 申明在declarations 里
     declarations: [
+        LoginComponent,
         IndexComponent,
         cxzk1Component,
         cxzk2Component,
@@ -86,16 +108,19 @@ export function createTranslateLoader(http: HttpClient) {
         BigTableComponent,
         FilterComponent,
         ErrorComponent,
+        DnaIndexComponent,
+        JyzbdComponent,
         TooltipDirective
     ],
     // 路由模块在imports 导入
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        NgZorroAntdModule,
+        ReactiveFormsModule,
         FormsModule,
         HttpClientModule,
         RouterModule.forRoot(ROUTES),
-        NgZorroAntdModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

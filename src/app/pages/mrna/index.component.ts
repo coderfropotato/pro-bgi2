@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import config from '../../../config';
 
 @Component({
-    selector: 'app-index',
+    selector: 'app-mrna-index',
     templateUrl: './index.component.html'
 })
 export class IndexComponent implements OnInit {
@@ -13,7 +14,7 @@ export class IndexComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.router.navigate(['/report/cxzk1']);
+        this.router.navigate(['/report/mrna/cxzk1']);
     }
 
 }

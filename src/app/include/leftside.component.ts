@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import config from '../../config';
 
 @Component({
     selector: 'app-leftside',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeftsideComponent implements OnInit {
     list: any[];
+    prefix:string;
     constructor() { }
 
     ngOnInit() {
+        this.prefix = config['projectName'];
         this.list = [
             "cxzk1",
             "cxzk2",

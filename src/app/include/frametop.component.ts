@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 declare const $:any;
 
@@ -14,18 +15,35 @@ export class FrametopComponent implements OnInit {
     pageRoutes: string[];
     htmlString: string[] = [];
     exportPdfFlag: any = false;
+    browserLang: string;
 
     constructor(
         private el: ElementRef,
         private route: ActivatedRoute,
+        private translate: TranslateService,
         private router: Router
-    ) { }
+    ) { 
+        this.translate.addLangs(['zh', 'en']);
+        this.translate.setDefaultLang('zh');
+        this.browserLang = this.translate.getBrowserLang();
+        this.translate.use(this.browserLang.match(/zh|en/) ? this.browserLang : 'zh');
+    }
+
+    changeLan() {
+        if (this.browserLang == 'zh') {
+            this.translate.use('en');
+            this.browserLang = 'en';
+        } else {
+            this.translate.use('zh');
+            this.browserLang = 'zh';
+        }
+    }
 
     ngOnInit() {
         // 所有当前需要导出pdf的页面的路由  组合在一起导出
         this.pageRoutes = [
-            '/report/cxzk1',
-            '/report/cxzk2'
+            '/report/mrna/cxzk1',
+            '/report/mrna/cxzk2'
         ];
 
         // 路由导航完成钩子 仅仅针对导出pdf的时候收集dom元素内容使用

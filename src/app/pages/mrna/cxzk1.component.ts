@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { TranslateService } from "@ngx-translate/core";
-import config from "../../config";
+import config from "../../../config";
 
 @Component({
     selector: "app-cxzk1",
