@@ -9,7 +9,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { SimpleReuseStrategy } from './super/service/simpleReuseStrategy';
 // import component
 import { AppComponent } from './app.component';
-import {LoginComponent} from './pages/login/login.component'; 
+import { LoginComponent } from './pages/login/login.component'; 
 import { IndexComponent } from './pages/mrna/index.component';
 import { cxzk1Component } from './pages/mrna/cxzk1.component';
 import { cxzk2Component } from './pages/mrna/cxzk2.component';
@@ -29,6 +29,7 @@ import { LeftsideComponent } from './include/leftside.component';
 import { HttpInterService } from './super/service/httpService';
 import { GlobalService } from './super/service/globalService';
 import { LoadingService } from './super/service/loadingService';
+import { MessageService } from './super/service/messageService'
 
 // directive
 import { TooltipDirective } from './super/directive/tooltip.directive';
@@ -136,6 +137,7 @@ export function createTranslateLoader(http: HttpClient) {
     providers: [
         LoadingService,
         GlobalService,
+        MessageService,
         { provide: HTTP_INTERCEPTORS, useClass: HttpInterService, multi: true },
         // enable route alive
         { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy },
