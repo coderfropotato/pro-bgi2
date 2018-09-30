@@ -97,6 +97,17 @@ export class BigTableComponent implements OnInit {
     checkedMap: object = {};
     unCheckedMap: object = {};
 
+    // 表头宽度
+    totalWidth:string;
+    widthConfig:string[];
+    // 首列表头的left值
+    colLeftConfig:string[];
+    // 二级表头集合
+    twoLevelHead:object[];
+    tbodyOutFirstCol:object[];
+
+
+
     constructor(
         private randomUserService: RandomUserService,
         private translate: TranslateService,
@@ -166,17 +177,25 @@ export class BigTableComponent implements OnInit {
             )
             .subscribe((data: any) => {
                 this.loadingService.close('.table-content');
+                let arr = [];
                 this.head = data.baseThead;
+
+                data.baseThead.slice(1).forEach((val)=>{
+                    arr = val.children.length?arr.concat(val.children):arr.concat(val);
+                })
+                this.tbodyOutFirstCol = arr;
+                let tempObj = this.computedTheadWidth(this.head)
+                this.widthConfig = tempObj['widthConfig'];
+                this.twoLevelHead = tempObj['twoLevelHead'];
+                this.colLeftConfig = tempObj['colLeftConfig'];
+                this.totalWidth= tempObj['totalWidth'];
                 // 根据表头生成sortmap
                 this.generatorSortMap();
                 this.total = data.total;
                 this.dataSet = data.rows;
                 // 标志key
-                this.key = this.head[0]["true_key"];
+                this.key = this.head[0]['children'].length?this.head[0]['children'][0]["true_key"]:this.head[0]['true_key'];
                 // 增加筛选状态key
-                let checkFlag = this.defaultChecked
-                    ? this.unChecked.concat()
-                    : this.checked.concat();
                 this.dataSet.forEach(val => {
                     val["checked"] = this.defaultChecked;
 
@@ -273,6 +292,9 @@ export class BigTableComponent implements OnInit {
     initSortMap() {
         this.head.forEach(val => {
             this.sortMap[val["true_key"]] = null;
+            if(val['children'].length){
+                val['children'].forEach(v=>this.sortMap[v["true_key"]] = null);
+            }
         });
     }
 
@@ -281,11 +303,21 @@ export class BigTableComponent implements OnInit {
         if ($.isEmptyObject(this.sortMap)) {
             this.head.forEach(val => {
                 this.sortMap[val["true_key"]] = null;
+                if(val['children'].length){
+                    val['children'].forEach(v=>this.sortMap[v["true_key"]] = null);
+                }
             });
         } else {
             this.head.forEach(val => {
                 if (!this.sortMap[val["true_key"]]) {
                     this.sortMap[val["true_key"]] = null;
+                    if(val['children'].length){
+                        val['children'].forEach(v=>{
+                            if(!this.sortMap[v["true_key"]]){
+                                this.sortMap[v["true_key"]] = null;
+                            }
+                        })
+                    }
                 }
             });
         }
@@ -392,6 +424,76 @@ export class BigTableComponent implements OnInit {
 
     refresh() {
         this.getRemoteData();
+    }
+
+    // 根据表头层级关系计算表头宽度
+    /*
+        {
+            "name":1,
+            "true_key":2,
+            "hover":3,
+            "colspan":children.length?children.length:1,
+            "rowspan":children.length?2:1,
+            "searchType""string",
+            "children":[]
+        }
+        一级表头:
+        1，如果当前表头没有子表头 rowspan 2 colspan 1
+        2，如果当前表头有子表头 rowspan 1 colspan children.length
+            3，如果当前的表头只有一个子表头 rowspan = colspan = 1
+
+
+        如果children的length =0  rowspan2
+        ！=0  rowspan 1 colspan = children.length
+
+        二级表头:不用算
+    */
+    computedTheadWidth(head):object{
+        let defaultWidth = 20;
+        let widthConfig = [];
+        let twoLevelHead = [];
+        let totalWidth:string;
+
+        head.forEach(v=>{
+            let singleWidth = 0;
+            if(v.children.length){
+                v['colspan'] = v.children.length;
+                v['rowspan'] = 1;
+                v.children.forEach(val=>{
+                    singleWidth=val.name.length*defaultWidth;
+                    widthConfig.push(singleWidth);
+                    twoLevelHead.push(val);
+                })
+            }else{
+                v['colspan'] = 1;
+                v['rowspan'] = 2;
+                singleWidth = defaultWidth*v.name.length;
+                widthConfig.push(singleWidth);
+            }
+        })
+        widthConfig.unshift(61);
+        let colLeftConfig:any[] = [];
+        // 计算首列的left
+        if(head[0]['children'].length){
+            head[0]['children'].forEach((v,i)=>{
+                let sunDis = 0;
+                for(var k=0;k<i+1;k++){
+                    sunDis +=widthConfig[k]
+                }
+                colLeftConfig.push(sunDis);
+            })
+        }else{
+            colLeftConfig.push(widthConfig[0]);
+        }
+
+        let tempTotalWidth = 0;
+        widthConfig.map((v,i)=>{
+            tempTotalWidth+=v;
+            widthConfig[i]+='px'
+        });
+        colLeftConfig.map((v,i)=>colLeftConfig[i]+='px');
+        totalWidth=tempTotalWidth+'px';
+        return {widthConfig,twoLevelHead,colLeftConfig,totalWidth};
     }
 
     /**

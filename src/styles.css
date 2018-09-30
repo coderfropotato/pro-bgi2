@@ -1,17 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import 'node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css';
-body,*{
+body,
+* {
     padding: 0;
     margin: 0;
 }
 
-ul{
+ul {
     list-style: none;
 }
 
-.anticon.active{
-    color:rgb(64, 176, 255)!important;
+.anticon.active {
+    color: rgb(64, 176, 255)!important;
 }
+
 
 /* .filter-panel{
     position:relative;
@@ -23,14 +26,45 @@ ul{
     z-index:100;
 } */
 
-.ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-tbody>tr>td, .ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th, .ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td, .ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th, .ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-tbody>tr>td, .ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-thead>tr>th, .ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td, .ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th, .ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-tbody>tr>td, .ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-thead>tr>th, .ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-tbody>tr>td, .ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-thead>tr>th, .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-tbody>tr>td, .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-thead>tr>th, .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-tbody>tr>td, .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th{
+.ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th {
     white-space: nowrap;
     max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-::-webkit-scrollbar-thumb{
+.ant-table-small.ant-table-bordered .ant-table-tbody>tr>td:last-child,
+.ant-table-small.ant-table-bordered .ant-table-thead>tr>th:last-child {
+    border-right: 1px solid #e8e8e8!important;
+}
+
+.ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th {
+    background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
     border: solid 1px #ddd;
     width: 5px;
     border-radius: 4px;
@@ -42,27 +76,30 @@ ul{
     height: 8px;
 }
 
-
-.table-content{
-    width:100%;
-    min-height:400px;
+.table-content {
+    width: 100%;
+    min-height: 400px;
     position: relative;
 }
-.table-content .error-msg{
-    text-align:center;
-    line-height:400px;
+
+.table-content .error-msg {
+    text-align: center;
+    line-height: 400px;
 }
-.table-bottom{
-    padding:10px 16px;
-    background-color:#f5f5f5;
+
+.table-bottom {
+    padding: 10px 16px;
+    background-color: #f5f5f5;
 }
-.table-top{
-    padding:15px 16px;
-    background-color:#f5f5f5;
+
+.table-top {
+    padding: 15px 16px;
+    background-color: #f5f5f5;
 }
-.table-top .filter-item{
-    padding:6px 4px;
-    background-color:#fff;
-    border:1px solid #f5f5f5;
-    border-radius:2px;
+
+.table-top .filter-item {
+    padding: 6px 4px;
+    background-color: #fff;
+    border: 1px solid #f5f5f5;
+    border-radius: 2px;
 }
