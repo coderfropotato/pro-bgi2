@@ -9,7 +9,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Angular-cli argv intorduce
 
 ```bash
-ng g component xxx --flag --spec=false --inline-style
+ng g component xxx --flat --spec=false --inline-style
 ```
 
 ```javascript
