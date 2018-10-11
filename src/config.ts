@@ -1,6 +1,5 @@
 const config: object = {
-    url: "http://localhost:4200",
-    projectName:"mrna",
+    url: "http://localhost:8086",
 }
 
 
