@@ -3,5 +3,19 @@
     "cxzk1Title": "cxzk is works",
     "sortEmail": "sort email of descend",
     "sortPhone": "sort phone of ascend",
-    "filterGender": "filter gender of equal male"
+    "filterGender": "filter gender of equal male",
+    "rootFilterTitle":"Root Filter status",
+    "childFilterTitle":"Child filter status",
+    "closeButtonText":"close",
+    "clearButtonText":"clear",
+    "confirmButtonText":"confirm",
+    "like":"like",
+    "range":"range",
+    "equal":"equal",
+    "ne":"unequal",
+    "in":"in",
+    "gt":"gt",
+    "lt":"lt",
+    "gte":"gt && equal",
+    "lte":"lt && equal"
 }
