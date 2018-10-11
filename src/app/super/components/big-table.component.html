@@ -1,30 +1,49 @@
 <div class="big-table-component" [id]="idFlag">
     <!-- demo -->
-    <button nz-button nzType="default" (click)="sort('email','descend')">{{sortEmail}}</button>
-    <button nz-button nzType="default" (click)="sort('phone','ascend')">{{sortPhone}}</button>
-    <button nz-button nzType="default" (click)="_filter('tf_query_id2','Gene ID2','equal','2',null)">truekey:tf_mismatch name:Mismatch equal 2 </button>
+    <!-- <button nz-button nzType="default" (click)="sort('email','descend')">{{'sortEmail' | translate}}</button> -->
+    <!-- 外部筛选 -->
+    外部筛选：
+    <button nz-button nzType="default" (click)="_filter('tf_query_id2','Gene ID2','equal','2',null)">truekey:tf_query_id2 name:Gene ID2 equal 2 </button>
     <button nz-button nzType="default" (click)="beginFilter()">开始筛选</button>
+    <button nz-button nzType="default" (click)="refresh()">刷新</button>
+    <br>
+    <!-- 增删列 -->
+    增删列：
     <button nz-button nzType="default" (click)="add1()">add => name age</button>
     <button nz-button nzType="default" (click)="add2()">add => age name</button>
     <button nz-button nzType="default" (click)="add3()">add => age</button>
     <button nz-button nzType="default" (click)="add4()">add => name</button>
-    <button nz-button nzType="default" (click)="refresh()">刷新</button>
-
+    <!-- 一级筛选 -->
+    <br>
+    一级筛选：
+    <button nz-button nzType="default"  (click)="_rootFilter('tf_query_id2','Gene ID2','filter','introduce',null)">Gendid2 introduce
+    </button>
+    <!-- 扩展功能  -->
+    <br>
+    表格转换：
+    <button nz-button nzType="default"  (click)="toExtendTable()">确定</button>
+    <button nz-button nzType="default" (click)="backToDefaultTable()">返回</button>
     <!-- 表格hover模板 -->
     <ng-template #popoverTpl>
         {{popoverText}}
     </ng-template>
 
+    <hr>选中
+    <em *ngFor="let item of checked">{{item}}&emsp;</em>
+    <hr>未选中
+    <em *ngFor="let item of unChecked">{{item}}&emsp;</em>
     <!-- table -->
+    <!-- root filter items -->
+    <div class="table-top" *ngIf="rootHtmlString.length">
+        <span class="filter-head">{{'rootFilterTitle'| translate}}：</span>
+        <span class="filter-item" (click)="deleteRootFilterItem(item)" *ngFor="let item of rootHtmlString" [innerHTML]="item['html']"></span>
+    </div>
+    <!-- child filter items -->
+    <div class="table-top" *ngIf="filterHtmlString.length">
+        <span class="filter-head">{{'childFilterTitle' | translate}}：</span>
+        <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of filterHtmlString" [innerHTML]="item['html']"></span>
+    </div>
     <div class="table-content">
-        <hr>选中
-        <em *ngFor="let item of checked">{{item}}&emsp;</em>
-        <hr>未选中
-        <em *ngFor="let item of unChecked">{{item}}&emsp;</em>
-        <div class="table-top" *ngIf="filterHtmlString.length>1">
-            <span class="filter-head" [innerHTML]="filterHtmlString[0].html"></span>
-            <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of filterHtmlString.slice(1)" [innerHTML]="item['html']"></span>
-        </div>
         <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" x:head.length*150+'px'-->
         <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="{ x:totalWidth }" [nzData]="dataSet" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzBordered [nzWidthConfig]="widthConfig">
             <thead>
@@ -38,7 +57,8 @@
                         <app-filter #child *ngIf="beginFilterStatus" [pid]="idFlag" [searchType]="head[0]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" [filterNamezh]="head[0]['name']" [filterName]="head[0]['true_key']"></app-filter>
                     </th>
                     <!-- 其他列 -->
-                    <th style="text-align: center;"  [nzSortKey]="head[i+1]['true_key']" [(nzSort)]="sortMap[head[i+1]['true_key']]" (nzSortChange)="sort(head[i+1]['true_key'],$event)"  [nzShowSort]="!head[i+1]['children'].length"   [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']" *ngFor="let h of head.slice(1);index as i;trackBy:identify"  >
+                    <th style="text-align: center;" [nzSortKey]="head[i+1]['true_key']" [(nzSort)]="sortMap[head[i+1]['true_key']]" (nzSortChange)="sort(head[i+1]['true_key'],$event)" [nzShowSort]="!head[i+1]['children'].length" [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']"
+                        *ngFor="let h of head.slice(1);index as i;trackBy:identify">
                         <span [nzTitle]="head[i+1]['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
                         <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="idFlag" [searchType]="head[i+1]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" [filterNamezh]="head[i+1]['name']" [filterName]="head[i+1]['true_key']"></app-filter>
                     </th>
