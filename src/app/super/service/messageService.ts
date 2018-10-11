@@ -5,20 +5,21 @@
  * @export
  * @class MessageService
  */
-import {Injectable} from '@angular/core';
-import {Observable,Subject} from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Observable, Subject } from "rxjs";
 
 @Injectable({
     providedIn: "root"
 })
-export class MessageService{
+export class MessageService {
     subject = new Subject<any>();
 
-    send(message){
-        this.subject.next({'message':message});
+    send(message) {
+        this.subject.next({ message: message });
     }
 
-    get():Observable<any>{
+    get(): Observable<any> {
         return this.subject.asObservable();
     }
 }
+
