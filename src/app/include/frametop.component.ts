@@ -22,7 +22,7 @@ export class FrametopComponent implements OnInit {
         private route: ActivatedRoute,
         private translate: TranslateService,
         private router: Router
-    ) { 
+    ) {
         this.translate.addLangs(['zh', 'en']);
         this.translate.setDefaultLang('zh');
         this.browserLang = this.translate.getBrowserLang();
