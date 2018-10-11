@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
     selector: "app-filter",
@@ -45,7 +46,17 @@ export class FilterComponent implements OnInit {
     filtering: boolean = false;
     visible: boolean = false;
 
-    constructor() {}
+    // 国际化
+    closeButtonText:string;
+    clearButtonText:string;
+    confirmButtonText:string;
+
+    constructor(
+        private translate:TranslateService
+    ) {
+        let browserLang = this.translate.getBrowserLang();
+        this.translate.use(browserLang.match(/en|zh/) ? browserLang : 'zh');
+    }
 
     ngOnInit() {
         this.init();
@@ -71,6 +82,8 @@ export class FilterComponent implements OnInit {
             gte: null,
             lte: null
         };
+
+
     }
 
     // 确定
@@ -147,7 +160,6 @@ export class FilterComponent implements OnInit {
         filterValueTwo: any
     ): void {
         this.selectType = filterType;
-
         this.filter = {
             regExp: "",
             rangeA: null,
