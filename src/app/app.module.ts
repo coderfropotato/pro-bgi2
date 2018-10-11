@@ -9,7 +9,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { SimpleReuseStrategy } from './super/service/simpleReuseStrategy';
 // import component
 import { AppComponent } from './app.component';
-import { LoginComponent } from './pages/login/login.component'; 
+import { LoginComponent } from './pages/login/login.component';
 import { IndexComponent } from './pages/mrna/index.component';
 import { cxzk1Component } from './pages/mrna/cxzk1.component';
 import { cxzk2Component } from './pages/mrna/cxzk2.component';
@@ -26,10 +26,11 @@ import { FrametopComponent } from './include/frametop.component';
 import { LeftsideComponent } from './include/leftside.component';
 
 // service
-import { HttpInterService } from './super/service/httpService';
+// import { HttpInterService } from './super/service/httpService';
 import { GlobalService } from './super/service/globalService';
 import { LoadingService } from './super/service/loadingService';
 import { MessageService } from './super/service/messageService'
+import { AjaxService } from './super/service/ajaxService'
 
 // directive
 import { TooltipDirective } from './super/directive/tooltip.directive';
@@ -46,44 +47,89 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // config
 import config from '../config';
+import { SyserrorComponent } from './pages/syserror.component';
 
 const ROUTES:Routes =[
+    // mrna
     {
         'path': 'report/mrna',
         'component': IndexComponent,
+        'data':{
+            'keep':false,
+            'module':'reportMrna'
+        },
         'children': [
             {
                 'path': 'cxzk1',
                 'component': cxzk1Component,
+                'data':{
+                    'keep':true,
+                    'module':"cxzk1"
+                }
             },
             {
                 'path': 'cxzk2',
-                'component': cxzk2Component
+                'component': cxzk2Component,
+                'data':{
+                    'keep':true,
+                    'module':"cxzk2"
+                }
             }
         ],
     },
+    // dna
     {
         'path': 'report/dna',
         'component': DnaIndexComponent,
+        'data':{
+            'keep':false,
+            'module':'reportDna'
+        },
         'children': [
             {
                 'path': 'jyzbd',
                 'component': JyzbdComponent,
+                'data':{
+                    'keep':true,
+                    'module':"jyzbd"
+                }
             }
         ],
     },
+    // common
     {
-        'path':'login',
-        'component':LoginComponent
+        'path':'report/login',
+        'component':LoginComponent,
+        'data':{
+            'keep':false,
+            'module':'login'
+        }
     },
     {
         'path': '',
-        'redirectTo': 'login',
+        'redirectTo': 'report/login',
         'pathMatch': 'full'
     },
     {
-        'path': '404',
-        'component': NotFoundComponent
+        'path': '**',
+        'redirectTo': 'report/404',
+        'pathMatch': 'full'
+    },
+    {
+        'path':"sysError",
+        'component':SyserrorComponent,
+        'data':{
+            'keep':false,
+            'module':'login'
+        }
+    },
+    {
+        'path': 'report/404',
+        'component': NotFoundComponent,
+        'data':{
+            'keep':false,
+            'module':'404'
+        }
     }
 ]
 
@@ -111,6 +157,7 @@ export function createTranslateLoader(http: HttpClient) {
         ErrorComponent,
         DnaIndexComponent,
         JyzbdComponent,
+        SyserrorComponent,
         TooltipDirective
     ],
     // 路由模块在imports 导入
@@ -138,7 +185,8 @@ export function createTranslateLoader(http: HttpClient) {
         LoadingService,
         GlobalService,
         MessageService,
-        { provide: HTTP_INTERCEPTORS, useClass: HttpInterService, multi: true },
+        AjaxService,
+        // { provide: HTTP_INTERCEPTORS, useClass: HttpInterService, multi: true },
         // enable route alive
         { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy },
         // enable hash module
