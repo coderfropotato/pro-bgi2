@@ -11,8 +11,7 @@ import config from "../../../config";
 })
 export class cxzk1Component implements OnInit {
     name: string;
-    list: number[] = [1, 1, 1, 12, 1];
-    title: string;
+    list: number[] = [];
     subscription:Subscription;
     msg:string;
 
@@ -21,26 +20,13 @@ export class cxzk1Component implements OnInit {
         private translate: TranslateService,
         private message:MessageService
     ) {
-        this.translate.onLangChange.subscribe(res => {
-            this.title = this.translate.instant("cxzk1Title");
-        });
-
+        let browserLang = this.translate.getBrowserLang();
+        this.translate.use(browserLang.match(/en|zh/) ? browserLang : 'zh');
     }
 
     ngOnInit() {
         this.list = [1, 1, 1, 12, 1];
         this.name = "joke";
-
-        this.http
-            .post(`${config['url']}/User/login`, { name: "joke", age: 18 })
-            .subscribe(
-                res => {
-                    console.log(res);
-                },
-                error => {
-                    console.log(error.status + "  " + error.statusText);
-                }
-            );
 
         this.subscription = this.message.get().subscribe(data=>{
             console.log(data);
