@@ -27,20 +27,23 @@ export class AjaxService {
         return new Observable(observer => {
             if (this.validTokenInLocal()) {
                 let token = localStorage.getItem("token");
+                let LCID = sessionStorage.getItem("LCID");
                 let head = {
                     headers: new HttpHeaders({
                         "Content-Type": "application/json",
-                        "Authorization": `token ${token}`
+                        Authorization: `token ${token}`
                     })
                 };
+                // 验证token和LCID的合法性
                 this.http
-                    .post(`${config["url"]}/swap_token`, null, head).subscribe(
+                    .post(`${config["url"]}/swap_token`, { LCID }, head)
+                    .subscribe(
                         res => {
                             localStorage.setItem("token", res["token"]);
                             let curHead = {
                                 headers: new HttpHeaders({
                                     "Content-Type": "application/json",
-                                    "Authorization": `token ${res["token"]}`
+                                    Authorization: `token ${res["token"]}`
                                 })
                             };
                             return this.http
@@ -58,18 +61,46 @@ export class AjaxService {
                         },
                         error => {
                             observer.complete();
-                            console.log(error);
+                            // TODO 打开密码验证框
+                            // 模拟登录
+                            // 更新token
                         }
                     );
             } else {
                 observer.complete();
-                this.router.navigate(["sysError"]);
+                this.router.navigateByUrl('/reprot/sysError');
             }
         });
     }
 
+    /**
+     * @description  每次请求验证 用户名 项目类型 token 任一无效都error
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-10-11
+     * @returns
+     * @memberof AjaxService
+     */
     validTokenInLocal() {
-        return !!localStorage.getItem("token");
+        return (
+            !!localStorage.getItem("token") &&
+            !!sessionStorage.getItem("LCID") &&
+            this.validProjectType()
+        );
+    }
+
+    validProjectType() {
+        let containProject = config["containProject"];
+        let projectType = sessionStorage.getItem("PROJECT_TYPE");
+        if (projectType) {
+            for (let i = 0; i < containProject.length; i++) {
+                if (projectType === containProject[i]) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 
     /**

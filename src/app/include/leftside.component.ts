@@ -1,6 +1,6 @@
 import { GlobalService } from './../super/service/globalService';
 import { Component, OnInit } from '@angular/core';
-import config from '../../config';
+import { Observable } from 'rxjs';
 @Component({
     selector: 'app-leftside',
     templateUrl: './leftside.component.html',
@@ -10,8 +10,9 @@ export class LeftsideComponent implements OnInit {
     list: any[];
     projectName:string;
     constructor(
-        private globalService:GlobalService
-    ) { }
+        private globalService:GlobalService,
+    ) {
+    }
 
     ngOnInit() {
         this.list = [
@@ -19,8 +20,7 @@ export class LeftsideComponent implements OnInit {
             "cxzk2",
             "cxzk3"
         ]
-
-        this.projectName =  this.globalService.getProjectName();
+        this.projectName = sessionStorage.getItem('PROJECT_TYPE')
     }
 
 }

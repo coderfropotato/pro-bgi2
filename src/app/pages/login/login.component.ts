@@ -1,4 +1,4 @@
-import { GlobalService } from './../../super/service/globalService';
+import { GlobalService } from "../../super/service/globalService";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import {
@@ -8,11 +8,10 @@ import {
     Validators
 } from "@angular/forms";
 
-
 @Component({
     selector: "login",
     templateUrl: "./login.component.html",
-    styleUrls: ["./login.component.css"],
+    styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
     validateForm: FormGroup;
@@ -23,15 +22,18 @@ export class LoginComponent implements OnInit {
             this.validateForm.controls[i].updateValueAndValidity();
         }
 
+        sessionStorage.setItem('LCID',this.validateForm.value.userName);
+        sessionStorage.setItem('PROJECT_TYPE',this.validateForm.value.userName);
+
         this.router.navigate([`/report/${this.validateForm.value.userName}`]);
-        this.globalService.setProjectName(this.validateForm.value.userName)
     }
 
     constructor(
         private fb: FormBuilder,
         private router: Router,
-        private globalService:GlobalService
-        ) {}
+        private globalService: GlobalService
+    ) {
+    }
 
     ngOnInit(): void {
         this.validateForm = this.fb.group({

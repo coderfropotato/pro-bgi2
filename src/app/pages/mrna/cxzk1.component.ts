@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { TranslateService } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { MessageService } from '../../super/service/messageService';
-import config from "../../../config";
+
 
 @Component({
     selector: "app-cxzk1",
@@ -29,7 +29,6 @@ export class cxzk1Component implements OnInit {
         this.name = "joke";
 
         this.subscription = this.message.get().subscribe(data=>{
-            console.log(data);
             this.msg = data.message;
         })
     }

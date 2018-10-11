@@ -5,7 +5,6 @@ import { DomSanitizer } from "@angular/platform-browser";
     providedIn: "root"
 })
 export class GlobalService {
-    loading: object;
     // 项目名称
     projectName:string;
     constructor(private sanitizer: DomSanitizer) {
@@ -157,20 +156,5 @@ export class GlobalService {
             });
         }
         return html;
-    }
-
-    /**
-     * @description 通过登录接口返回的项目 设置和获取项目名称 供路由跳转
-     * @author Yangwd<277637411@qq.com>
-     * @date 2018-10-11
-     * @param {*} name
-     * @memberof GlobalService
-     */
-    setProjectName(name){
-        this.projectName = name;
-    }
-
-    getProjectName(){
-        return this.projectName;
     }
 }

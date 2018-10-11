@@ -13,7 +13,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { IndexComponent } from './pages/mrna/index.component';
 import { cxzk1Component } from './pages/mrna/cxzk1.component';
 import { cxzk2Component } from './pages/mrna/cxzk2.component';
-import { NotFoundComponent } from './pages/not-found.component';
+import { NotFoundComponent } from './pages/notFound.component';
 import { DnaIndexComponent } from './pages/dna/index.component';
 import { JyzbdComponent } from './pages/dna/jyzbd.component';
 
@@ -106,17 +106,7 @@ const ROUTES:Routes =[
         }
     },
     {
-        'path': '',
-        'redirectTo': 'report/login',
-        'pathMatch': 'full'
-    },
-    {
-        'path': '**',
-        'redirectTo': 'report/404',
-        'pathMatch': 'full'
-    },
-    {
-        'path':"sysError",
+        'path':"reprot/sysError",
         'component':SyserrorComponent,
         'data':{
             'keep':false,
@@ -130,7 +120,18 @@ const ROUTES:Routes =[
             'keep':false,
             'module':'404'
         }
-    }
+    },
+    {
+        'path': '',
+        'redirectTo': 'report/login',
+        'pathMatch': 'full'
+    },
+    {
+        'path': '**',
+        'redirectTo': 'report/404',
+        'pathMatch': 'full'
+    },
+
 ]
 
 

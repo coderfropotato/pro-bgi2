@@ -28,9 +28,6 @@
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js",
-                            "node_modules/jspdf/dist/jspdf.min.js",
-                            "node_modules/html2canvas/dist/html2canvas.min.js",
-                            "node_modules/dom-to-image/dist/dom-to-image.min.js",
                             "src/app/libs/d4/d4.js"
                         ]
                     },
