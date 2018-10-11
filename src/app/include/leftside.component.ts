@@ -1,6 +1,6 @@
+import { GlobalService } from './../super/service/globalService';
 import { Component, OnInit } from '@angular/core';
 import config from '../../config';
-
 @Component({
     selector: 'app-leftside',
     templateUrl: './leftside.component.html',
@@ -8,16 +8,19 @@ import config from '../../config';
 })
 export class LeftsideComponent implements OnInit {
     list: any[];
-    prefix:string;
-    constructor() { }
+    projectName:string;
+    constructor(
+        private globalService:GlobalService
+    ) { }
 
     ngOnInit() {
-        this.prefix = config['projectName'];
         this.list = [
             "cxzk1",
             "cxzk2",
             "cxzk3"
         ]
+
+        this.projectName =  this.globalService.getProjectName();
     }
 
 }
