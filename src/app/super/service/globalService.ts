@@ -6,6 +6,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 })
 export class GlobalService {
     loading: object;
+    // 项目名称
+    projectName:string;
     constructor(private sanitizer: DomSanitizer) {
     }
 
@@ -40,8 +42,8 @@ export class GlobalService {
     transformFilter(filterObjectList) {
         let text: string;
         let htmlStringList: object[] = [];
-        text = "<span>筛选条件:</span>&emsp;";
-        htmlStringList.push({ html: null, obj: null, beforeHtml: text });
+        // text = "<span>筛选条件:</span>&emsp;";
+        // htmlStringList.push({ html: null, obj: null, beforeHtml: text });
 
         if (filterObjectList.length) {
             filterObjectList.forEach(el => {
@@ -121,6 +123,29 @@ export class GlobalService {
         }
     }
 
+    transformRootFilter(rootFilterList){
+        let text: string;
+        let htmlStringList: object[] = [];
+        // text = "<span>一级筛选条件:</span>&emsp;";
+        // htmlStringList.push({ html: null, obj: null, beforeHtml: text });
+
+        if (rootFilterList.length) {
+            rootFilterList.forEach(el => {
+                text = `<span>${
+                    el.filterNamezh
+                }</span>&nbsp;<font color="#f40">${el.filterType}</font>&nbsp;${
+                    el.valueOne
+                }&emsp;`
+                htmlStringList.push({ html: null, obj: el, beforeHtml: text });
+            });
+            return this.trustHtml(htmlStringList);
+        } else {
+            htmlStringList = [];
+            return htmlStringList;
+        }
+
+    }
+
     // 将html字符串 绕过安全检查 生成可以直接通过[innerHTML]绑定的字符串
     trustHtml(html: object[]) {
         if (html.length) {
@@ -132,5 +157,20 @@ export class GlobalService {
             });
         }
         return html;
+    }
+
+    /**
+     * @description 通过登录接口返回的项目 设置和获取项目名称 供路由跳转
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-10-11
+     * @param {*} name
+     * @memberof GlobalService
+     */
+    setProjectName(name){
+        this.projectName = name;
+    }
+
+    getProjectName(){
+        return this.projectName;
     }
 }
