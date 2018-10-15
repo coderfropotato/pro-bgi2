@@ -22,18 +22,16 @@ export class LoginComponent implements OnInit {
             this.validateForm.controls[i].updateValueAndValidity();
         }
 
-        sessionStorage.setItem('LCID',this.validateForm.value.userName);
-        sessionStorage.setItem('PROJECT_TYPE',this.validateForm.value.userName);
-
-        this.router.navigate([`/report/${this.validateForm.value.userName}`]);
+        sessionStorage.setItem("LCID", this.validateForm.value.userName);
+        let LCTYPE = this.validateForm.value.userName;
+        this.router.navigate([`/report/${LCTYPE}`]);
     }
 
     constructor(
         private fb: FormBuilder,
         private router: Router,
         private globalService: GlobalService
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
         this.validateForm = this.fb.group({

@@ -1,12 +1,17 @@
 import { Injectable } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 
+/**
+ * @description 小服务集合
+ * @author Yangwd<277637411@qq.com>
+ * @date 2018-10-12
+ * @export
+ * @class GlobalService
+ */
 @Injectable({
     providedIn: "root"
 })
 export class GlobalService {
-    // 项目名称
-    projectName:string;
     constructor(private sanitizer: DomSanitizer) {
     }
 

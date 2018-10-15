@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-
+import { Component,OnInit } from '@angular/core';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -7,14 +6,12 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-    constructor(
-    ) {}
-
-    list: [
-        {
-            'name': 'joke',
-            'age': 18
+    constructor() {
         }
-    ];
-    
+
+
+    ngOnInit(){
+
+    }
+
 }

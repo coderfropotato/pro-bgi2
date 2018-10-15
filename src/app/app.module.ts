@@ -16,6 +16,7 @@ import { cxzk2Component } from './pages/mrna/cxzk2.component';
 import { NotFoundComponent } from './pages/notFound.component';
 import { DnaIndexComponent } from './pages/dna/index.component';
 import { JyzbdComponent } from './pages/dna/jyzbd.component';
+import {AddColumnComponent} from './super/components/add-column.component';
 
 // import pipe
 import { MyNewPipePipe } from './super/filter/my-new-pipe.pipe';
@@ -30,7 +31,8 @@ import { LeftsideComponent } from './include/leftside.component';
 import { GlobalService } from './super/service/globalService';
 import { LoadingService } from './super/service/loadingService';
 import { MessageService } from './super/service/messageService'
-import { AjaxService } from './super/service/ajaxService'
+import { AjaxService } from './super/service/ajaxService';
+import { StoreService} from './super/service/storeService';
 
 // directive
 import { TooltipDirective } from './super/directive/tooltip.directive';
@@ -49,6 +51,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import config from '../config';
 import { SyserrorComponent } from './pages/syserror.component';
 
+// test
+import {tableComponent} from './pages/mrna/table.component';
+import { AddComponent } from './pages/mrna/add.component';
 const ROUTES:Routes =[
     // mrna
     {
@@ -59,6 +64,24 @@ const ROUTES:Routes =[
             'module':'reportMrna'
         },
         'children': [
+            // demo
+            {
+                'path':'table',
+                'component':tableComponent,
+                'data':{
+                    'keep':true,
+                    'module':'table'
+                }
+            },
+            {
+                'path':'addColumn',
+                'component':AddComponent,
+                'data':{
+                    'keep':true,
+                    'module':'addColumn'
+                }
+            },
+            // page
             {
                 'path': 'cxzk1',
                 'component': cxzk1Component,
@@ -146,6 +169,7 @@ export function createTranslateLoader(http: HttpClient) {
         IndexComponent,
         cxzk1Component,
         cxzk2Component,
+        tableComponent,
         NotFoundComponent,
         AppComponent,
         MyNewPipePipe,
@@ -159,6 +183,8 @@ export function createTranslateLoader(http: HttpClient) {
         DnaIndexComponent,
         JyzbdComponent,
         SyserrorComponent,
+        AddColumnComponent,
+        AddComponent,
         TooltipDirective
     ],
     // 路由模块在imports 导入
@@ -187,6 +213,7 @@ export function createTranslateLoader(http: HttpClient) {
         GlobalService,
         MessageService,
         AjaxService,
+        StoreService,
         // { provide: HTTP_INTERCEPTORS, useClass: HttpInterService, multi: true },
         // enable route alive
         { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy },

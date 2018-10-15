@@ -3,6 +3,14 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs';
 import config from '../../../config';
 
+/**
+ * @description http 拦截器
+ * @author Yangwd<277637411@qq.com>
+ * @date 2018-10-12
+ * @export
+ * @class HttpInterService
+ * @implements {HttpInterceptor}
+ */
 @Injectable()
 export class HttpInterService implements HttpInterceptor {
     skipAuth: string[];

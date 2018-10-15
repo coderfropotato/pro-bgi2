@@ -68,13 +68,13 @@ export class AjaxService {
                     );
             } else {
                 observer.complete();
-                this.router.navigateByUrl('/reprot/sysError');
+                this.router.navigateByUrl("/reprot/sysError");
             }
         });
     }
 
     /**
-     * @description  每次请求验证 用户名 项目类型 token 任一无效都error
+     * @description  每次请求验证 用户名 token 任一无效都error
      * @author Yangwd<277637411@qq.com>
      * @date 2018-10-11
      * @returns
@@ -82,25 +82,8 @@ export class AjaxService {
      */
     validTokenInLocal() {
         return (
-            !!localStorage.getItem("token") &&
-            !!sessionStorage.getItem("LCID") &&
-            this.validProjectType()
+            !!localStorage.getItem("token") && !!sessionStorage.getItem("LCID")
         );
-    }
-
-    validProjectType() {
-        let containProject = config["containProject"];
-        let projectType = sessionStorage.getItem("PROJECT_TYPE");
-        if (projectType) {
-            for (let i = 0; i < containProject.length; i++) {
-                if (projectType === containProject[i]) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            return false;
-        }
     }
 
     /**

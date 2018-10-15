@@ -5,6 +5,14 @@ import {
     DetachedRouteHandle
 } from "@angular/router";
 
+/**
+ * @description 路由复用策略
+ * @author Yangwd<277637411@qq.com>
+ * @date 2018-10-12
+ * @export
+ * @class SimpleReuseStrategy
+ * @implements {RouteReuseStrategy}
+ */
 export class SimpleReuseStrategy implements RouteReuseStrategy {
     _cacheRouters: { [key: string]: any } = {};
 

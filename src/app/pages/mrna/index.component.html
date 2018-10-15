@@ -1,6 +1,6 @@
 <div class="report-mrna">
     <app-frametop></app-frametop>
-    <app-leftside></app-leftside>
+    <app-leftside ng-if="menuList.length" [menu]="menuList"></app-leftside>
     <div class="report-content">
         <router-outlet></router-outlet>
     </div>

@@ -12,7 +12,10 @@ import { Observable, Subject } from "rxjs";
     providedIn: "root"
 })
 export class MessageService {
+    // 实例消息订阅
     subject = new Subject<any>();
+    // 获取增删列的消息订阅
+    addTheadSubject = new Subject<any>();
 
     send(message) {
         this.subject.next({ message: message });
@@ -21,5 +24,12 @@ export class MessageService {
     get(): Observable<any> {
         return this.subject.asObservable();
     }
-}
 
+    sendAddThead(thead) {
+        this.addTheadSubject.next({ thead });
+    }
+
+    getAddThead(): Observable<any> {
+        return this.addTheadSubject.asObservable();
+    }
+}

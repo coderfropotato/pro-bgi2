@@ -6,10 +6,10 @@ import { MessageService } from '../../super/service/messageService';
 
 
 @Component({
-    selector: "app-cxzk1",
-    templateUrl: "./cxzk1.component.html"
+    selector: "app-table",
+    templateUrl: "./table.component.html"
 })
-export class cxzk1Component implements OnInit {
+export class tableComponent implements OnInit {
     subscription:Subscription;
 
     constructor(

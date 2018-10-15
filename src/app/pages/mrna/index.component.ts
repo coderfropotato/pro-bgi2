@@ -1,3 +1,6 @@
+import { StoreService } from "./../../super/service/storeService";
+import { GlobalService } from "./../../super/service/globalService";
+import { AjaxService } from "./../../super/service/ajaxService";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "../../super/service/messageService";
@@ -8,21 +11,95 @@ import config from "../../../config";
     templateUrl: "./index.component.html"
 })
 export class IndexComponent implements OnInit {
+    menuList: any = [];
+    allThead: any = [];
     constructor(
         private routes: ActivatedRoute,
         private router: Router,
-        private message: MessageService
+        private message: MessageService,
+        private ajaxService: AjaxService,
+        private storeService: StoreService
     ) {}
 
     ngOnInit() {
-        this.router.navigate(["/report/mrna/cxzk1"]);
+        // 默认跳转路由
+        this.router.navigate(["/report/mrna/addColumn"]);
+        this.getMenuList();
+        this.getAddThead();
+    }
 
-        setTimeout(() => {
-            this.message.send("message from app");
-        }, 5000);
+    getMenuList() {
+        let LCID = sessionStorage.getItem("LCID");
+        this.ajaxService
+            .getDeferData({
+                data: { LCID },
+                url: "http://localhost:8086/menu"
+            })
+            .subscribe(data => {
+                this.menuList = [
+                    {
+                        url: "mrna/addColumn",
+                        title: "增删列demo",
+                        isExport: true
+                    },
+                    {
+                        url: "mrna/table",
+                        title: "表格demo",
+                        isExport: true
+                    },
+                    {
+                        url: "mrna/cxzk1",
+                        title: "测序质控-1",
+                        isExport: true
+                    },
+                    {
+                        url: "mrna/cxzk2",
+                        title: "测序质控-2",
+                        isExport: true
+                    }
+                ];
+            });
+    }
 
-        if (!sessionStorage.getItem("LCID")) {
-            this.router.navigate(["/report/login"]);
-        }
+    getAddThead() {
+        let LCID = sessionStorage.getItem("LCID");
+        this.ajaxService
+            .getDeferData({
+                data: { LCID },
+                url: "http://localhost:8086/addThead"
+            })
+            .subscribe(data => {
+                this.allThead = [
+                    {
+                        category: "基因属性",
+                        children: [
+                            {name:'Other Gene ID'},
+                            {name:'Transcript'},
+                            {name:'Gene Type'},
+                            {name:'Transcripts Number'},
+                            {name:'Start'}
+                        ]
+                    },
+                    {
+                        category: "样本表达量",
+                        children: [
+                            {name:'HepG2con1'},
+                            {name:"HepG2con2"},
+                            {name:"HepG2con3"},
+                            {name:"Huh7con1"}
+                        ]
+                    },
+                    {
+                        category: "注释",
+                        children: [
+                            {name:"TFs"},
+                            {name:"Kegg Orthology"},
+                            {name:"GO"}
+                        ]
+                    }
+                ];
+
+                this.message.sendAddThead(this.allThead);
+            });
     }
 }

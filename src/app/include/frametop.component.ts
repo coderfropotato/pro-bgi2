@@ -42,8 +42,10 @@ export class FrametopComponent implements OnInit {
     ngOnInit() {
         // 所有当前需要导出pdf的页面的路由  组合在一起导出
         this.pageRoutes = [
+            '/report/mrna/addColumn',
+            '/report/mrna/table',
             '/report/mrna/cxzk1',
-            '/report/mrna/cxzk2'
+            '/report/mrna/cxzk2',
         ];
 
         // 路由导航完成钩子 仅仅针对导出pdf的时候收集dom元素内容使用
@@ -105,35 +107,5 @@ export class FrametopComponent implements OnInit {
 
         window.print();
         window.location.reload();
-
-        /*domToImage.toJpeg(wrap, {
-            quality: 1.0,
-            bgcolor: '#fff',
-            style: {
-                'opacity': '1',
-                'top': '0',
-                'left': '0'
-            }
-        }).then(dataUrl => {
-            let img = new Image();
-            img.src = dataUrl;
-            img.onload = () => {
-                document.body.appendChild(img);
-                let pdf = new jsPdf();
-                // A4 [210mm×297mm]
-                // padding y=14 y=10
-                // content w 190 h 277
-                img.width = 190;  // height 140
-                pdf.addImage(dataUrl, 'JPEG', 14, 10, img.width, img.height);
-                pdf.save(`download.pdf`);
-                wrap.parentNode.removeChild(wrap);
-                img.parentNode.removeChild(img);
-                cb && cb();
-            }
-        }, error => {
-            console.log(error);
-            wrap.parentNode.removeChild(wrap);
-            cb && cb();
-        })*/
     }
 }

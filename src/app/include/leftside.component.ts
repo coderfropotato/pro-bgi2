@@ -1,5 +1,5 @@
 import { GlobalService } from './../super/service/globalService';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,Input} from '@angular/core';
 import { Observable } from 'rxjs';
 @Component({
     selector: 'app-leftside',
@@ -8,19 +8,11 @@ import { Observable } from 'rxjs';
 })
 export class LeftsideComponent implements OnInit {
     list: any[];
-    projectName:string;
+    @Input() menu:object[];
     constructor(
         private globalService:GlobalService,
     ) {
     }
 
-    ngOnInit() {
-        this.list = [
-            "cxzk1",
-            "cxzk2",
-            "cxzk3"
-        ]
-        this.projectName = sessionStorage.getItem('PROJECT_TYPE')
-    }
-
+    ngOnInit() {}
 }

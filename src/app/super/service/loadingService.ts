@@ -1,6 +1,12 @@
 import { Injectable } from "@angular/core";
 declare const document: any;
-
+/**
+ * @description 加载框服务
+ * @author Yangwd<277637411@qq.com>
+ * @date 2018-10-12
+ * @export
+ * @class LoadingService
+ */
 @Injectable({
     providedIn: "root"
 })
