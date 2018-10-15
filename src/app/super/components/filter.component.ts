@@ -1,3 +1,4 @@
+import { StoreService } from './../service/storeService';
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 
@@ -52,10 +53,11 @@ export class FilterComponent implements OnInit {
     confirmButtonText:string;
 
     constructor(
-        private translate:TranslateService
+        private translate:TranslateService,
+        private storeService:StoreService
     ) {
-        let browserLang = this.translate.getBrowserLang();
-        this.translate.use(browserLang.match(/en|zh/) ? browserLang : 'zh');
+        let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
     }
 
     ngOnInit() {

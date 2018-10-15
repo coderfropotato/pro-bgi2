@@ -1,7 +1,7 @@
+import { StoreService } from './../super/service/storeService';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-
 declare const $:any;
 
 @Component({
@@ -21,12 +21,14 @@ export class FrametopComponent implements OnInit {
         private el: ElementRef,
         private route: ActivatedRoute,
         private translate: TranslateService,
-        private router: Router
+        private router: Router,
+        private storeService:StoreService
     ) {
         this.translate.addLangs(['zh', 'en']);
         this.translate.setDefaultLang('zh');
         this.browserLang = this.translate.getBrowserLang();
         this.translate.use(this.browserLang.match(/zh|en/) ? this.browserLang : 'zh');
+        this.storeService.setLang(this.browserLang);
     }
 
     changeLan() {
@@ -37,6 +39,7 @@ export class FrametopComponent implements OnInit {
             this.translate.use('zh');
             this.browserLang = 'zh';
         }
+        this.storeService.setLang(this.browserLang);
     }
 
     ngOnInit() {

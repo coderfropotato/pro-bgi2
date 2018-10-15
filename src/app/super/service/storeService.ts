@@ -11,6 +11,7 @@ import { Injectable } from "@angular/core";
 })
 export class StoreService {
     thead: Array<object> = [];
+    lang:string = 'zh';
     constructor() {}
 
     setThead(thead) {
@@ -19,5 +20,13 @@ export class StoreService {
 
     getThead() {
         return this.thead;
+    }
+
+    setLang(lang){
+        this.lang = lang;
+    }
+
+    getLang(){
+        return this.lang;
     }
 }

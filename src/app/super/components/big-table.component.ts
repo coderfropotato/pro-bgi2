@@ -1,3 +1,4 @@
+import { StoreService } from './../service/storeService';
 import {
     Component,
     OnInit,
@@ -88,10 +89,11 @@ export class BigTableComponent implements OnInit {
         private translate: TranslateService,
         private globalService: GlobalService,
         private loadingService: LoadingService,
-        private ajaxService:AjaxService
+        private ajaxService:AjaxService,
+        private storeService:StoreService
     ) {
-        let browserLang = this.translate.getBrowserLang();
-        this.translate.use(browserLang.match(/en|zh/) ? browserLang : "zh");
+        let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
     }
 
     ngOnInit(): void {
