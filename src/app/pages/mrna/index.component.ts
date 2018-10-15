@@ -23,7 +23,7 @@ export class IndexComponent implements OnInit {
 
     ngOnInit() {
         // 默认跳转路由
-        this.router.navigate(["/report/mrna/addColumn"]);
+        this.router.navigate(["/report/mrna/littleTable"]);
         this.getMenuList();
         this.getAddThead();
     }
@@ -38,15 +38,31 @@ export class IndexComponent implements OnInit {
             .subscribe(data => {
                 this.menuList = [
                     {
-                        url: "mrna/addColumn",
-                        title: "增删列demo",
+                        url: "mrna/littleTable",
+                        title: "小表",
+                        isExport: true
+                    },
+                    {
+                        url: "mrna/commonBigTable",
+                        title: "普通大表",
                         isExport: true
                     },
                     {
                         url: "mrna/table",
-                        title: "表格demo",
+                        title: "GeneId 大表",
                         isExport: true
                     },
+                    {
+                        url:'mrna/tableSwitchChart',
+                        title:"图表切换",
+                        isExport:true
+                    },
+                    {
+                        url: "mrna/addColumn",
+                        title: "增删列",
+                        isExport: true
+                    },
+
                     {
                         url: "mrna/cxzk1",
                         title: "测序质控-1",
@@ -73,28 +89,28 @@ export class IndexComponent implements OnInit {
                     {
                         category: "基因属性",
                         children: [
-                            {name:'Other Gene ID'},
-                            {name:'Transcript'},
-                            {name:'Gene Type'},
-                            {name:'Transcripts Number'},
-                            {name:'Start'}
+                            { name: "Other Gene ID" },
+                            { name: "Transcript" },
+                            { name: "Gene Type" },
+                            { name: "Transcripts Number" },
+                            { name: "Start" }
                         ]
                     },
                     {
                         category: "样本表达量",
                         children: [
-                            {name:'HepG2con1'},
-                            {name:"HepG2con2"},
-                            {name:"HepG2con3"},
-                            {name:"Huh7con1"}
+                            { name: "HepG2con1" },
+                            { name: "HepG2con2" },
+                            { name: "HepG2con3" },
+                            { name: "Huh7con1" }
                         ]
                     },
                     {
                         category: "注释",
                         children: [
-                            {name:"TFs"},
-                            {name:"Kegg Orthology"},
-                            {name:"GO"}
+                            { name: "TFs" },
+                            { name: "Kegg Orthology" },
+                            { name: "GO" }
                         ]
                     }
                 ];

@@ -54,6 +54,9 @@ import { SyserrorComponent } from './pages/syserror.component';
 // test
 import {tableComponent} from './pages/mrna/table.component';
 import { AddComponent } from './pages/mrna/add.component';
+import { LittleTableComponent } from './super/components/little-table.component';
+import { CommonBigTableComponent } from './super/components/common-big-table.component';
+import { TableSwitchChartComponent } from './super/components/table-switch-chart.component';
 const ROUTES:Routes =[
     // mrna
     {
@@ -79,6 +82,30 @@ const ROUTES:Routes =[
                 'data':{
                     'keep':true,
                     'module':'addColumn'
+                }
+            },
+            {
+                'path':'littleTable',
+                'component':LittleTableComponent,
+                'data':{
+                    'keep':true,
+                    'module':'littleTable'
+                }
+            },
+            {
+                'path':'commonBigTable',
+                'component':CommonBigTableComponent,
+                'data':{
+                    'keep':true,
+                    'module':'commonBigTable'
+                }
+            },
+            {
+                'path':'tableSwitchChart',
+                'component':TableSwitchChartComponent,
+                'data':{
+                    'keep':true,
+                    'module':'tableSwitchChart'
                 }
             },
             // page
@@ -185,6 +212,9 @@ export function createTranslateLoader(http: HttpClient) {
         SyserrorComponent,
         AddColumnComponent,
         AddComponent,
+        LittleTableComponent,
+        CommonBigTableComponent,
+        TableSwitchChartComponent,
         TooltipDirective
     ],
     // 路由模块在imports 导入
