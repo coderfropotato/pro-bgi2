@@ -1,17 +1,19 @@
+import { StoreService } from './../../super/service/storeService';
 import { MessageService } from "./../../super/service/messageService";
 import { Component, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
 @Component({
     selector: "app-add",
-    templateUrl: "./add.component.html",
-    styles: []
+    templateUrl: "./add.component.html"
 })
 export class AddComponent implements OnInit {
-    allThead: [] = [];
-    constructor(private messageService: MessageService) {}
+    allThead: Array<object> = [];
+    constructor(
+        private messageService: MessageService,
+        private storeService:StoreService
+    ) {}
 
     ngOnInit() {
-        this.messageService.getAddThead().subscribe(data => {
-            this.allThead = data.thead;
-        });
+        this.allThead = this.storeService.getThead();
     }
 }

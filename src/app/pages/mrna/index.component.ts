@@ -13,6 +13,8 @@ import config from "../../../config";
 export class IndexComponent implements OnInit {
     menuList: any = [];
     allThead: any = [];
+    ready: boolean = false;
+    taskCount: number = 0;
     constructor(
         private routes: ActivatedRoute,
         private router: Router,
@@ -23,7 +25,7 @@ export class IndexComponent implements OnInit {
 
     ngOnInit() {
         // 默认跳转路由
-        this.router.navigate(["/report/mrna/littleTable"]);
+        this.router.navigateByUrl("/report/mrna/littleTable");
         this.getMenuList();
         this.getAddThead();
     }
@@ -53,9 +55,9 @@ export class IndexComponent implements OnInit {
                         isExport: true
                     },
                     {
-                        url:'mrna/tableSwitchChart',
-                        title:"图表切换",
-                        isExport:true
+                        url: "mrna/tableSwitchChart",
+                        title: "图表切换",
+                        isExport: true
                     },
                     {
                         url: "mrna/addColumn",
@@ -74,6 +76,8 @@ export class IndexComponent implements OnInit {
                         isExport: true
                     }
                 ];
+                this.taskCount++;
+                this.computedReadyStatus();
             });
     }
 
@@ -114,8 +118,13 @@ export class IndexComponent implements OnInit {
                         ]
                     }
                 ];
-
-                this.message.sendAddThead(this.allThead);
+                this.storeService.setThead(this.allThead);
+                this.taskCount++;
+                this.computedReadyStatus();
             });
+    }
+
+    computedReadyStatus() {
+        this.ready = this.taskCount == 2;
     }
 }

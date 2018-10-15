@@ -6,17 +6,16 @@ import { Component, OnInit, Input } from "@angular/core";
     styles: []
 })
 export class AddColumnComponent implements OnInit {
-    @Input()
-    thead: [];
+    @Input() thead: Array<object>;
     show: boolean = false;
-    selected: any = [];
-    beforeSelected: any = [];
-    selectCount: number[] = [];
+    selected: Array<object> = [];
+    beforeSelected: Array<object> = [];
+    selectCount: Array<number> = [];
     constructor() {}
 
     ngOnInit() {
-        this.thead.map(val => {
-            return (val["checked"] = false);
+        this.thead.forEach(val => {
+            val["checked"] = false;
         });
         this.applyCheckedStatus();
     }
@@ -105,7 +104,7 @@ export class AddColumnComponent implements OnInit {
         this.applyCheckedStatus();
     }
 
-    closeTag(d){
+    closeTag(d) {
         this.toggleSelect(d);
     }
 

@@ -18,7 +18,7 @@ export class MessageService {
     addTheadSubject = new Subject<any>();
 
     send(message) {
-        this.subject.next({ message: message });
+        this.subject.next({ message });
     }
 
     get(): Observable<any> {

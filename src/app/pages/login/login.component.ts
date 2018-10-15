@@ -23,8 +23,11 @@ export class LoginComponent implements OnInit {
         }
 
         sessionStorage.setItem("LCID", this.validateForm.value.userName);
+        // set test token
+        localStorage.setItem('token','123456');
         let LCTYPE = this.validateForm.value.userName;
-        this.router.navigate([`/report/${LCTYPE}`]);
+        this.router.navigateByUrl(`/report/${LCTYPE}`);
+
     }
 
     constructor(

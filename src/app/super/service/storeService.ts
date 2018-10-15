@@ -10,6 +10,14 @@ import { Injectable } from "@angular/core";
     providedIn: "root"
 })
 export class StoreService {
+    thead: Array<object> = [];
     constructor() {}
 
+    setThead(thead) {
+        this.thead = thead;
+    }
+
+    getThead() {
+        return this.thead;
+    }
 }

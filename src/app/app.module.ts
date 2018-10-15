@@ -160,7 +160,7 @@ const ROUTES:Routes =[
         'component':SyserrorComponent,
         'data':{
             'keep':false,
-            'module':'login'
+            'module':'sysError'
         }
     },
     {

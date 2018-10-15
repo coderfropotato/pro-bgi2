@@ -1,4 +1,4 @@
-<div class="report-mrna">
+<div class="report-mrna" *ngIf="ready">
     <app-frametop></app-frametop>
     <app-leftside ng-if="menuList.length" [menu]="menuList"></app-leftside>
     <div class="report-content">

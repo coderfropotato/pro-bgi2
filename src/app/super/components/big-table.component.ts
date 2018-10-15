@@ -1,7 +1,5 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
 import {
     Component,
-    Injectable,
     OnInit,
     Input,
     ViewChildren
@@ -11,42 +9,12 @@ import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
 import { AjaxService } from "../service/ajaxService";
 
-import { Observable } from "rxjs";
 
 declare const $: any;
 
-@Injectable()
-export class RandomUserService {
-    randomUserUrl = "http://localhost:8086/filter";
-    getUsers(
-        pageIndex: number = 1,
-        pageSize: number = 10,
-        sortField: string,
-        sortOrder: string,
-        searchList: object[],
-        addThead: string[],
-        rootSearchContentList: object[]
-    ): Observable<{}> {
-        const params = {
-            pageIndex,
-            pageSize,
-            sortField,
-            sortOrder,
-            searchList,
-            addThead,
-            rootSearchContentList
-        };
-
-        return this.http.post(`${this.randomUserUrl}`, params);
-    }
-
-    constructor(private http: HttpClient) {}
-}
-
 @Component({
     selector: "app-bigTable",
-    templateUrl: "./big-table.component.html",
-    providers: [RandomUserService]
+    templateUrl: "./big-table.component.html"
 })
 export class BigTableComponent implements OnInit {
     @Input()
@@ -117,7 +85,6 @@ export class BigTableComponent implements OnInit {
     childFilterTitle: string;
 
     constructor(
-        private randomUserService: RandomUserService,
         private translate: TranslateService,
         private globalService: GlobalService,
         private loadingService: LoadingService,
