@@ -164,3 +164,19 @@ ul {
 .tag-wrap .ant-tag{
     margin-bottom:6px;
 }
+.little-table{
+    position: relative;
+}
+
+.table-thead{
+    display: block;
+    clear: both;
+    content: "";
+    padding: 12px;
+}
+.table-thead i{
+    float:right;
+    margin-left:12px;
+    font-size: 12px;
+    cursor: pointer;
+}

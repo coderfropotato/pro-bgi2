@@ -1,3 +1,20 @@
-<p>
-  little-table works!
-</p>
+<div class="little-table">
+  <ng-template #titleTemplate>
+    <div class="table-thead">
+        <i class="anticon anticon-sync" (click)="refresh()"></i>
+        <i class="anticon anticon-download"></i>
+    </div>
+  </ng-template>
+  <nz-table [nzData]="rows" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate" *ngIf="rows.length">
+    <thead>
+      <tr>
+        <th *ngFor="let item of thead;index as i">{{item.name}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of rows;index as idx">
+        <td *ngFor="let item of thead;index as i">{{row[item['true_key']]}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

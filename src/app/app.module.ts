@@ -57,6 +57,7 @@ import { AddComponent } from './pages/mrna/add.component';
 import { LittleTableComponent } from './super/components/little-table.component';
 import { CommonBigTableComponent } from './super/components/common-big-table.component';
 import { TableSwitchChartComponent } from './super/components/table-switch-chart.component';
+import { LittleTableTestComponent } from './pages/mrna/little-table-test.component';
 const ROUTES:Routes =[
     // mrna
     {
@@ -85,11 +86,11 @@ const ROUTES:Routes =[
                 }
             },
             {
-                'path':'littleTable',
-                'component':LittleTableComponent,
+                'path':'littleTableTest',
+                'component':LittleTableTestComponent,
                 'data':{
                     'keep':true,
-                    'module':'littleTable'
+                    'module':'littleTableTest'
                 }
             },
             {
@@ -215,6 +216,7 @@ export function createTranslateLoader(http: HttpClient) {
         LittleTableComponent,
         CommonBigTableComponent,
         TableSwitchChartComponent,
+        LittleTableTestComponent,
         TooltipDirective
     ],
     // 路由模块在imports 导入
