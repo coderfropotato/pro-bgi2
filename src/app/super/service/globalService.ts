@@ -48,7 +48,6 @@ export class GlobalService {
         let htmlStringList: object[] = [];
         // text = "<span>筛选条件:</span>&emsp;";
         // htmlStringList.push({ html: null, obj: null, beforeHtml: text });
-
         if (filterObjectList.length) {
             filterObjectList.forEach(el => {
                 switch (el.filterType) {

@@ -41,6 +41,7 @@ export class FilterComponent implements OnInit {
     deleteData: EventEmitter<any> = new EventEmitter();
 
     filter: object;
+    radioValue:string = 'inter';
 
     // 当前筛选类型  in gt equap ...
     selectType: string;
@@ -124,13 +125,12 @@ export class FilterComponent implements OnInit {
                 break;
         }
 
-        this.emit([this.filterName,this.filterNamezh, this.selectType, valueOne, valueTwo]);
+        this.emit([this.filterName,this.filterNamezh, this.selectType, valueOne, valueTwo,this.radioValue]);
         this.visible = false;
         this.filtering = true;
     }
 
     emit(argv: any): void {
-        console.log(argv);
         this.getData.emit(argv);
     }
 
@@ -153,15 +153,17 @@ export class FilterComponent implements OnInit {
         this.deleteData.emit([this.filterName,this.filterNamezh, beforeFilterType]);
     }
 
-    // 外部更新内部筛选条件
+    // 外部更新内部筛选条件  需要带上交并集类型
     _outerUpdate(
         filterName: string,
         filterNamezh:string,
         filterType: string,
         filterValueOne: any,
-        filterValueTwo: any
+        filterValueTwo: any,
+        crossUnion:string
     ): void {
         this.selectType = filterType;
+        this.radioValue = crossUnion;
         this.filter = {
             regExp: "",
             rangeA: null,
