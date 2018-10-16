@@ -41,7 +41,7 @@ export class FilterComponent implements OnInit {
     deleteData: EventEmitter<any> = new EventEmitter();
 
     filter: object;
-    radioValue:string = 'inter';
+    radioValue:string ;
 
     // 当前筛选类型  in gt equap ...
     selectType: string;
@@ -73,6 +73,7 @@ export class FilterComponent implements OnInit {
             default:
                 this.selectType = "range";
         }
+        this.radioValue = 'inter';
         this.filter = {
             regExp: "",
             rangeA: null,
