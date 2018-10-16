@@ -36,6 +36,13 @@
             <input *ngIf="searchType!=='string' && selectType==='$lte'" type="number" nz-input placeholder="elt" nzSize="default"
                 [(ngModel)]="filter.lte">
         </div>
+        <!-- 交并集选择 -->
+        <div>
+            <nz-radio-group [(ngModel)]="radioValue">
+                <label nz-radio nzValue="inter">交集</label>
+                <label nz-radio nzValue="union">并集</label>
+            </nz-radio-group>
+        </div>
         <!-- button group -->
         <div class="btn-group">
             <button nz-button nzType="primary" nzSize="small" (click)="confirm()">{{'confirmButtonText'| translate}}</button>

@@ -18,11 +18,6 @@ import { DnaIndexComponent } from './pages/dna/index.component';
 import { JyzbdComponent } from './pages/dna/jyzbd.component';
 import {AddColumnComponent} from './super/components/add-column.component';
 
-// import pipe
-import { MyNewPipePipe } from './super/filter/my-new-pipe.pipe';
-import { KeysPipe } from './super/filter/keys.pipe';
-import { HtmlFilter } from './super/filter/html.pipe';
-
 import { FrametopComponent } from './include/frametop.component';
 import { LeftsideComponent } from './include/leftside.component';
 

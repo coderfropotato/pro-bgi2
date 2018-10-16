@@ -1,15 +1,9 @@
-import { StoreService } from './../service/storeService';
-import {
-    Component,
-    OnInit,
-    Input,
-    ViewChildren
-} from "@angular/core";
+import { StoreService } from "./../service/storeService";
+import { Component, OnInit, Input, ViewChildren } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
 import { AjaxService } from "../service/ajaxService";
-
 
 declare const $: any;
 
@@ -24,7 +18,8 @@ export class BigTableComponent implements OnInit {
     idFlag: string;
     @ViewChildren("child")
     children;
-
+    // 初始选中状态
+    checkStatus: boolean;
     // isFirst
     isFirst: boolean = true;
     // 开始排序
@@ -39,7 +34,12 @@ export class BigTableComponent implements OnInit {
     pageSize = 10;
     total = 1;
     dataSet = [];
+    // 总的筛选条件
     searchList: object[] = [];
+    // 并集筛选条件
+    unionSearchConditionList: object[] = [];
+    // 交集筛选条件
+    interSearchConditionList: object[] = [];
 
     sortMap: object = {};
     sortValue = null;
@@ -49,6 +49,8 @@ export class BigTableComponent implements OnInit {
 
     // filter html string
     filterHtmlString: object[] = [];
+    interConditionHtmlString: object[] = [];
+    unionConditionHtmlStirng: object[] = [];
 
     // 增加的头
     addThead: string[] = [];
@@ -80,36 +82,32 @@ export class BigTableComponent implements OnInit {
     rootSearchContentList: object[] = [];
     rootHtmlString: object[] = [];
 
-    // 国际化
-    // 筛选标题
-    rootFilterTitle: string;
-    childFilterTitle: string;
-
     constructor(
         private translate: TranslateService,
         private globalService: GlobalService,
         private loadingService: LoadingService,
-        private ajaxService:AjaxService,
-        private storeService:StoreService
+        private ajaxService: AjaxService,
+        private storeService: StoreService
     ) {
         let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
     }
 
     ngOnInit(): void {
-        this.allChecked = !!this.defaultChecked;
+        this.checkStatus = this.defaultChecked;
+        this.allChecked = !!this.checkStatus;
         this.indeterminate = false;
         this.selectMenu = [
             {
                 text: "全选",
                 onSelect: () => {
-                    this.checkAll(true);
+                    this.globalCheckAll();
                 }
             },
             {
                 text: "反选",
                 onSelect: () => {
-                    this.reverseCheck();
+                    this.globalReverseCheck();
                 }
             }
         ];
@@ -148,11 +146,16 @@ export class BigTableComponent implements OnInit {
                 sortOrder: this.sortValue,
                 searchList: this.searchList,
                 addThead: this.addThead,
-                rootSearchContentList: this.rootSearchContentList
+                rootSearchContentList: this.rootSearchContentList,
+                checkStatus: this.checkStatus,
+                excludeGeneList: this.checkStatus
+                    ? this.unChecked
+                    : this.checked
             }
         };
 
-        this.ajaxService.getDeferData(ajaxConfig).subscribe((data: any) => {
+        this.ajaxService.getDeferData(ajaxConfig).subscribe(
+            (data: any) => {
                 this.loadingService.close(".table-content");
                 let arr = [];
                 this.head = data.baseThead;
@@ -178,9 +181,9 @@ export class BigTableComponent implements OnInit {
                     : this.head[0]["true_key"];
                 // 增加筛选状态key
                 this.dataSet.forEach(val => {
-                    val["checked"] = this.defaultChecked;
+                    val["checked"] = this.checkStatus;
 
-                    if (this.defaultChecked) {
+                    if (this.checkStatus) {
                         this.checkedMap[val[this.key]] = val;
                     } else {
                         this.unCheckedMap[val[this.key]] = val;
@@ -191,7 +194,7 @@ export class BigTableComponent implements OnInit {
                         !$.isEmptyObject(this.unCheckedMap)
                     ) {
                         // 默认选中 就看未选中的列表里有没有当前项 有就变成未选中
-                        if (this.defaultChecked) {
+                        if (this.checkStatus) {
                             if (!$.isEmptyObject(this.unCheckedMap)) {
                                 for (let name in this.unCheckedMap) {
                                     if (name == val[this.key]) {
@@ -215,9 +218,10 @@ export class BigTableComponent implements OnInit {
                 });
                 this.computedStatus();
             },
-            err=>{
+            err => {
                 console.log(err);
-            });
+            }
+        );
     }
 
     // 扩展表
@@ -235,11 +239,16 @@ export class BigTableComponent implements OnInit {
         this.addThead = [];
         this.rootSearchContentList = [];
         this.searchList = [];
+        this.interSearchConditionList = [];
+        this.unionSearchConditionList = [];
         this.sortKey = null;
         this.sortValue = null;
         this.beginFilterStatus = false;
-        this.filterHtmlString = this.globalService.transformFilter(
-            this.searchList
+        this.interConditionHtmlString = this.globalService.transformFilter(
+            this.interSearchConditionList
+        );
+        this.unionConditionHtmlStirng = this.globalService.transformFilter(
+            this.unionSearchConditionList
         );
         this.rootHtmlString = this.globalService.transformRootFilter(
             this.rootSearchContentList
@@ -248,6 +257,7 @@ export class BigTableComponent implements OnInit {
         this.unCheckedMap = {};
         this.checked = [];
         this.unChecked = [];
+        this.checkStatus = this.defaultChecked;
     }
 
     // 选中框
@@ -272,6 +282,7 @@ export class BigTableComponent implements OnInit {
         this.getCollection();
     }
 
+    // 当前页全选
     checkAll(value) {
         this.dataSet.forEach(val => {
             val.checked = value;
@@ -286,6 +297,7 @@ export class BigTableComponent implements OnInit {
         this.computedStatus();
     }
 
+    // 反选
     reverseCheck() {
         this.dataSet.forEach(val => {
             val.checked = !val.checked;
@@ -297,6 +309,29 @@ export class BigTableComponent implements OnInit {
                 delete this.checkedMap[val[this.key]];
             }
         });
+        this.computedStatus();
+    }
+
+    // 全局全选
+    globalCheckAll() {
+        this.checkStatus = true;
+        this.dataSet.forEach(val => {
+            val.checked = this.checkStatus;
+            this.checkedMap[val[this.key]] = val;
+            delete this.unCheckedMap[val[this.key]];
+        });
+        this.computedStatus();
+    }
+
+    // 全局反选
+    globalReverseCheck() {
+        this.checkStatus = !this.checkStatus;
+        this.dataSet.forEach(val => {
+            val.checked = !val.checked;
+        });
+        let temp = JSON.stringify(this.checkedMap);
+        this.checkedMap = JSON.parse(JSON.stringify(this.unCheckedMap));
+        this.unCheckedMap = JSON.parse(temp);
         this.computedStatus();
     }
 
@@ -351,9 +386,7 @@ export class BigTableComponent implements OnInit {
         if (!this.beginFilterStatus) {
             // 重置表格筛选
             this.searchList = [];
-            this.filterHtmlString = this.globalService.transformFilter(
-                this.searchList
-            );
+            this.classifySearchCondition();
 
             // 重置一级筛选
             this.rootSearchContentList = [];
@@ -374,7 +407,8 @@ export class BigTableComponent implements OnInit {
                     filterNamezh: argv[1],
                     filterType: argv[2],
                     valueOne: argv[3],
-                    valueTwo: argv[4]
+                    valueTwo: argv[4],
+                    crossUnion: argv[5]
                 }
             ];
         } else {
@@ -386,7 +420,8 @@ export class BigTableComponent implements OnInit {
                         filterNamezh: argv[1],
                         filterType: argv[2],
                         valueOne: argv[3],
-                        valueTwo: argv[4]
+                        valueTwo: argv[4],
+                        crossUnion: argv[5]
                     };
                     isIn = true;
                 }
@@ -398,15 +433,32 @@ export class BigTableComponent implements OnInit {
                     filterNamezh: argv[1],
                     filterType: argv[2],
                     valueOne: argv[3],
-                    valueTwo: argv[4]
+                    valueTwo: argv[4],
+                    crossUnion: argv[5]
                 });
         }
 
-        // TODO 重新获取数据
         this.getRemoteData();
-        // TODO 重新解析搜索条件
-        this.filterHtmlString = this.globalService.transformFilter(
-            this.searchList
+        this.classifySearchCondition();
+    }
+
+    // 把筛选条件 按交并集归类
+    classifySearchCondition() {
+        this.unionSearchConditionList = [];
+        this.interSearchConditionList = [];
+        if (this.searchList.length) {
+            this.searchList.forEach(val => {
+                val["crossUnion"] === "union"
+                    ? this.unionSearchConditionList.push(val)
+                    : this.interSearchConditionList.push(val);
+            });
+        }
+        
+        this.interConditionHtmlString = this.globalService.transformFilter(
+            this.interSearchConditionList
+        );
+        this.unionConditionHtmlStirng = this.globalService.transformFilter(
+            this.unionSearchConditionList
         );
     }
 
@@ -420,12 +472,8 @@ export class BigTableComponent implements OnInit {
                     val["filterNamezh"] === argv[1]
                 ) {
                     this.searchList.splice(index, 1);
-                    // TODO  重新获取数据
+                    this.classifySearchCondition();
                     this.getRemoteData();
-                    // 更新筛选条件
-                    this.filterHtmlString = this.globalService.transformFilter(
-                        this.searchList
-                    );
                     return;
                 }
             });
@@ -611,6 +659,7 @@ export class BigTableComponent implements OnInit {
      * @param {*} filterType
      * @param {*} filterValueOne
      * @param {*} filterValueTwo
+     * @param {string} crossUnion
      * @memberof BigTableComponent
      */
     _filter(
@@ -618,7 +667,8 @@ export class BigTableComponent implements OnInit {
         filterNamezh,
         filterType,
         filterValueOne,
-        filterValueTwo
+        filterValueTwo,
+        crossUnion
     ) {
         /* 向filter组件传递  idFlag  filterName  filterType
          找匹配idFlag的filter子组件，并更新筛选状态；
@@ -635,18 +685,20 @@ export class BigTableComponent implements OnInit {
                         filterNamezh,
                         filterType,
                         filterValueOne,
-                        filterValueTwo
+                        filterValueTwo,
+                        crossUnion
                     );
                     this.recive([
                         filterName,
                         filterNamezh,
                         filterType,
                         filterValueOne,
-                        filterValueTwo
+                        filterValueTwo,
+                        crossUnion
                     ]);
                 }
             });
-        }, 0);
+        }, 30);
     }
 
     /**
@@ -668,7 +720,7 @@ export class BigTableComponent implements OnInit {
      * @param {string[]} addThead
      * @memberof BigTableComponent
      */
-    _addThead(addThead:string[]){
+    _addThead(addThead: string[]) {
         this.addThead = addThead;
         this.deleteSearchListItemOrderByAddThead();
         this.beforeAddThead = this.addThead.concat();
@@ -722,9 +774,7 @@ export class BigTableComponent implements OnInit {
                 }
             });
 
-            this.filterHtmlString = this.globalService.transformFilter(
-                this.searchList
-            );
+            this.classifySearchCondition();
         }
     }
 
