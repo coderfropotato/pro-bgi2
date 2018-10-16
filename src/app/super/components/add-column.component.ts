@@ -1,3 +1,5 @@
+import { TranslateService } from '@ngx-translate/core';
+import { StoreService } from './../service/storeService';
 import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
@@ -11,7 +13,13 @@ export class AddColumnComponent implements OnInit {
     selected: Array<object> = [];
     beforeSelected: Array<object> = [];
     selectCount: Array<number> = [];
-    constructor() {}
+    constructor(
+        private storeService:StoreService,
+        private translate:TranslateService
+    ) {
+        let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
+    }
 
     ngOnInit() {
         this.thead.forEach(val => {

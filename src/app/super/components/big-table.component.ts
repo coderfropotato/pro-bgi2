@@ -661,6 +661,20 @@ export class BigTableComponent implements OnInit {
         this.sort(filterName, sortMethod);
     }
 
+    /**
+     * @description 外部增删列   字段相同的列保留筛选条件
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-10-15
+     * @param {string[]} addThead
+     * @memberof BigTableComponent
+     */
+    _addThead(addThead:string[]){
+        this.addThead = addThead;
+        this.deleteSearchListItemOrderByAddThead();
+        this.beforeAddThead = this.addThead.concat();
+        this.getRemoteData();
+    }
+
     // test
     add1() {
         this.addThead = ["name", "age"];

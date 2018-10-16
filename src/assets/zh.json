@@ -17,5 +17,12 @@
     "gt":"大于",
     "lt":"小于",
     "gte":"大于等于",
-    "lte":"小于等于"
+    "lte":"小于等于",
+    "addThead":{
+        "addButton":"扩展列",
+        "packUpButton":"收起",
+        "confirmButton":"确定",
+        "clearButton":"清除",
+        "cancelButton":"取消"
+    }
 }

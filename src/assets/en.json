@@ -17,5 +17,12 @@
     "gt":"gt",
     "lt":"lt",
     "gte":"gt && equal",
-    "lte":"lt && equal"
+    "lte":"lt && equal",
+    "addThead":{
+        "addButton":"add",
+        "packUpButton":"close",
+        "confirmButton":"confirm",
+        "clearButton":"clear",
+        "cancelButton":"cancel"
+    }
 }

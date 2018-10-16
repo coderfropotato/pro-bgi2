@@ -58,6 +58,7 @@ import { LittleTableComponent } from './super/components/little-table.component'
 import { CommonBigTableComponent } from './super/components/common-big-table.component';
 import { TableSwitchChartComponent } from './super/components/table-switch-chart.component';
 import { LittleTableTestComponent } from './pages/mrna/little-table-test.component';
+import { AccuracyPipe } from './super/filter/accuracy.pipe';
 const ROUTES:Routes =[
     // mrna
     {
@@ -200,9 +201,6 @@ export function createTranslateLoader(http: HttpClient) {
         tableComponent,
         NotFoundComponent,
         AppComponent,
-        MyNewPipePipe,
-        KeysPipe,
-        HtmlFilter,
         FrametopComponent,
         LeftsideComponent,
         BigTableComponent,
@@ -217,6 +215,7 @@ export function createTranslateLoader(http: HttpClient) {
         CommonBigTableComponent,
         TableSwitchChartComponent,
         LittleTableTestComponent,
+        AccuracyPipe,
         TooltipDirective
     ],
     // 路由模块在imports 导入
