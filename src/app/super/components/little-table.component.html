@@ -5,7 +5,7 @@
         <i class="anticon anticon-download"></i>
     </div>
   </ng-template>
-  <nz-table [nzData]="rows" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate" *ngIf="rows.length">
+  <nz-table class="little-table-class" [nzData]="rows" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate" *ngIf="rows.length">
     <thead>
       <tr>
         <th *ngFor="let item of thead;index as i">{{item.name}}</th>

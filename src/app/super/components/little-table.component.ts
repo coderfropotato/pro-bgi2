@@ -10,8 +10,8 @@ export class LittleTableComponent implements OnInit {
   @Input() url: string;
 
   tableData: object;
-  rows: [] = [];
-  thead: [] = [];
+  rows: any[] = [];
+  thead: any[] = [];
   constructor(
     private ajaxService: AjaxService,
     private loadingService:LoadingService
