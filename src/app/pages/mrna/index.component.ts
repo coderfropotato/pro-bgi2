@@ -44,6 +44,11 @@ export class IndexComponent implements OnInit {
                         isExport: true
                     },
                     {
+                        url:"mrna/transformationTable",
+                        title:"transformation-table",
+                        isExport:true
+                    },
+                    {
                         url: "mrna/commonBigTable",
                         title: "普通大表",
                         isExport: true

@@ -1,21 +1,33 @@
-import { TranslateService } from '@ngx-translate/core';
-import { StoreService } from './../service/storeService';
-import { Component, OnInit, Input } from "@angular/core";
-
+import { TranslateService } from "@ngx-translate/core";
+import { StoreService } from "./../service/storeService";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+/**
+ * @description 增删列
+ * @author Yangwd<277637411@qq.com>
+ * @export
+ * @class AddColumnComponent
+ * @implements {OnInit}
+ */
 @Component({
     selector: "app-add-column",
     templateUrl: "./add-column.component.html",
     styles: []
 })
 export class AddColumnComponent implements OnInit {
-    @Input() thead: Array<object>;
+    @Input()
+    thead: Array<object>;
     show: boolean = false;
     selected: Array<object> = [];
     beforeSelected: Array<object> = [];
     selectCount: Array<number> = [];
+    @Output()
+    addThead: EventEmitter<any> = new EventEmitter();
+    @Output()
+    clearThead: EventEmitter<any> = new EventEmitter();
+
     constructor(
-        private storeService:StoreService,
-        private translate:TranslateService
+        private storeService: StoreService,
+        private translate: TranslateService
     ) {
         let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
@@ -98,6 +110,7 @@ export class AddColumnComponent implements OnInit {
 
     confirm() {
         this.beforeSelected = this.selected.concat([]);
+        this.addThead.emit(this.selected);
     }
 
     clear() {
@@ -105,6 +118,7 @@ export class AddColumnComponent implements OnInit {
         this.beforeSelected = [];
         this.initTheadStatus();
         this.getCheckCount();
+        this.clearThead.emit([]);
     }
 
     cancel() {
@@ -124,5 +138,18 @@ export class AddColumnComponent implements OnInit {
      */
     _resetStatus() {
         this.clear();
+    }
+
+    /**
+     * @description 外部清空不发出事件
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-10-12
+     * @memberof AddColumnComponent
+     */
+    _resetStatusWithoutEmit() {
+        this.selected = [];
+        this.beforeSelected = [];
+        this.initTheadStatus();
+        this.getCheckCount();
     }
 }

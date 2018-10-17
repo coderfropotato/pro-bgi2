@@ -31,7 +31,7 @@ import { StoreService} from './super/service/storeService';
 
 // directive
 import { TooltipDirective } from './super/directive/tooltip.directive';
-import { BigTableComponent } from './super/components/big-table.component';
+import { GeneTableComponent } from './super/components/gene-table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -55,6 +55,8 @@ import { TableSwitchChartComponent } from './super/components/table-switch-chart
 import { LittleTableTestComponent } from './pages/mrna/little-table-test.component';
 import { AccuracyPipe } from './super/filter/accuracy.pipe';
 import {ReanalysisIndexComponent} from './pages/reanalysis/index.component';
+import { TransformationTableComponent } from './super/components/transformation-table.component';
+import { GeneRelativeComponent } from './super/components/gene-relative.component';
 const ROUTES:Routes =[
     // mrna
     {
@@ -80,6 +82,14 @@ const ROUTES:Routes =[
                 'data':{
                     'keep':true,
                     'module':'addColumn'
+                }
+            },
+            {
+                'path':'transformationTable',
+                'component':TransformationTableComponent,
+                'data':{
+                    'keep':true,
+                    'module':"transformationTable"
                 }
             },
             {
@@ -208,7 +218,7 @@ export function createTranslateLoader(http: HttpClient) {
         AppComponent,
         FrametopComponent,
         LeftsideComponent,
-        BigTableComponent,
+        GeneTableComponent,
         FilterComponent,
         ErrorComponent,
         DnaIndexComponent,
@@ -222,6 +232,8 @@ export function createTranslateLoader(http: HttpClient) {
         TableSwitchChartComponent,
         LittleTableTestComponent,
         AccuracyPipe,
+        TransformationTableComponent,
+        GeneRelativeComponent,
         TooltipDirective
     ],
     // 路由模块在imports 导入
