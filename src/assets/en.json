@@ -7,9 +7,13 @@
     "rootFilterTitle":"Root screening conditions",
     "unionFilterTitle":"Union screening conditions",
     "interFilterTitle":"Intersection screening conditions",
-    "closeButtonText":"close",
-    "clearButtonText":"clear",
-    "confirmButtonText":"confirm",
+    "filterPanel": {
+        "closeButtonText": "close",
+        "clearButtonText": "clear",
+        "confirmButtonText": "confirm",
+        "interText":"intersection",
+        "unionText":"union"
+    },
     "like":"like",
     "range":"range",
     "equal":"equal",

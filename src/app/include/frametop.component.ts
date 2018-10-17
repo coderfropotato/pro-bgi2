@@ -111,4 +111,9 @@ export class FrametopComponent implements OnInit {
         window.print();
         window.location.reload();
     }
+
+    analysis(){
+        let url = `${location.href.substring(0,location.href.indexOf('/report'))}/report/reanalysis/index` 
+        window.open(url)
+    }
 }

@@ -24,8 +24,7 @@ export class IndexComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        // 默认跳转路由
-        this.router.navigateByUrl("/report/mrna/littleTableTest");
+        this.router.navigateByUrl('/report/mrna/cxzk1');
         this.getMenuList();
         this.getAddThead();
     }

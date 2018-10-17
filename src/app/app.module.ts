@@ -54,6 +54,7 @@ import { CommonBigTableComponent } from './super/components/common-big-table.com
 import { TableSwitchChartComponent } from './super/components/table-switch-chart.component';
 import { LittleTableTestComponent } from './pages/mrna/little-table-test.component';
 import { AccuracyPipe } from './super/filter/accuracy.pipe';
+import {ReanalysisIndexComponent} from './pages/reanalysis/index.component';
 const ROUTES:Routes =[
     // mrna
     {
@@ -143,6 +144,15 @@ const ROUTES:Routes =[
             }
         ],
     },
+    // 重分析
+    {
+        'path':"report/reanalysis/index",
+        'component':ReanalysisIndexComponent,
+        'data':{
+            'keep':true,
+            'module':'reanalysisIndex'
+        }
+    },
     // common
     {
         'path':'report/login',
@@ -202,6 +212,7 @@ export function createTranslateLoader(http: HttpClient) {
         FilterComponent,
         ErrorComponent,
         DnaIndexComponent,
+        ReanalysisIndexComponent,
         JyzbdComponent,
         SyserrorComponent,
         AddColumnComponent,

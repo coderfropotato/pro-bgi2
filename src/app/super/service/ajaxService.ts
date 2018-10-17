@@ -34,7 +34,7 @@ export class AjaxService {
                         Authorization: `token ${token}`
                     })
                 };
-                // 验证token和LCID的合法性
+                // 验证token的合法性
                 this.http
                     .post(`${config["url"]}/swap_token`, { LCID }, head)
                     .subscribe(
@@ -81,9 +81,8 @@ export class AjaxService {
      * @memberof AjaxService
      */
     validTokenInLocal() {
-        return (
-            !!localStorage.getItem("token") && !!sessionStorage.getItem("LCID")
-        );
+        return !!localStorage.getItem("token");
+        
     }
 
     /**

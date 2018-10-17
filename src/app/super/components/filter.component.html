@@ -39,15 +39,15 @@
         <!-- 交并集选择 -->
         <div>
             <nz-radio-group [(ngModel)]="radioValue">
-                <label nz-radio nzValue="inter">交集</label>
-                <label nz-radio nzValue="union">并集</label>
+                <label nz-radio nzValue="inter">{{'filterPanel.interText' | translate}}</label>
+                <label nz-radio nzValue="union">{{'filterPanel.unionText' | translate}}</label>
             </nz-radio-group>
         </div>
         <!-- button group -->
         <div class="btn-group">
-            <button nz-button nzType="primary" nzSize="small" (click)="confirm()">{{'confirmButtonText'| translate}}</button>
-            <button nz-button nzType="default" nzSize="small" (click)="clear()">{{'clearButtonText' | translate}}</button>
-            <button nz-button nzType="default" nzSize="small" (click)="close()">{{'closeButtonText' | translate}}</button>
+            <button nz-button nzType="primary" nzSize="small" (click)="confirm()">{{'filterPanel.confirmButtonText'| translate}}</button>
+            <button nz-button nzType="default" nzSize="small" (click)="clear()">{{'filterPanel.clearButtonText' | translate}}</button>
+            <button nz-button nzType="default" nzSize="small" (click)="close()">{{'filterPanel.closeButtonText' | translate}}</button>
         </div>
     </div>
 </nz-dropdown>
