@@ -213,3 +213,22 @@ ul {
     clear: both;
     content: "";
 }
+
+.fLeft {
+    float: left;
+}
+
+.fRight {
+    float: right;
+}
+
+.tableSwitchChart {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.clearfix {
+    display: block;
+    clear: both;
+    content: "";
+}
