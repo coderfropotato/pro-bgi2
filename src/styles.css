@@ -105,9 +105,9 @@ ul {
     margin-left: 4px;
 }
 
-.head-item{
+.head-item {
     display: inline-block;
-    padding:8px;
+    padding: 8px;
     line-height: 1;
     background-color: #fff;
     border: 1px solid #eee;
@@ -115,69 +115,101 @@ ul {
     margin-right: 10px;
     cursor: pointer;
 }
-.head-item.active{
+
+.head-item.active {
     background-color: #ccc;
     color: #fff;
 }
-.head-item:hover{
+
+.head-item:hover {
     opacity: 0.7;
 }
-.add-head{
+
+.add-head {
     display: flex;
     margin-bottom: 12px;
 }
 
-.add-head button{
+.add-head button {
     width: 96px;
-    margin-right:26px;
+    margin-right: 26px;
 }
-.add-head > div{
-    flex:1;
+
+.add-head>div {
+    flex: 1;
 }
-.add-foot button{
+
+.add-foot button {
     float: right;
     margin-left: 8px;
 }
-.add-foot:after{
+
+.add-foot:after {
     display: block;
     content: "";
     clear: both;
 }
-.add-thead-head-item{
+
+.add-thead-head-item {
     position: relative;
 }
-.add-thead-head-item b{
+
+.add-thead-head-item b {
     position: absolute;
     text-align: center;
-    right:-20px;
-    top:-12px;
-    height:16px;
-    width:16px;
+    right: -20px;
+    top: -12px;
+    height: 16px;
+    width: 16px;
     font-size: 12px;
     line-height: 16px;
     border-radius: 50%;
     color: #fff;
-    background-color:#52c41a
+    background-color: #52c41a
 }
-.tag-wrap{
+
+.tag-wrap {
     overflow-x: auto;
 }
-.tag-wrap .ant-tag{
-    margin-bottom:6px;
+
+.tag-wrap .ant-tag {
+    margin-bottom: 6px;
 }
-.little-table{
+
+.little-table {
     position: relative;
 }
 
-.table-thead{
+.table-thead i {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.table-thead button i {
+    margin-right: 0px;
+}
+
+.table-thead::after {
     display: block;
     clear: both;
     content: "";
-    padding: 12px;
 }
-.table-thead i{
-    float:right;
-    margin-left:12px;
-    font-size: 12px;
-    cursor: pointer;
+
+.fLeft {
+    float: left;
+}
+
+.fRight {
+    float: right;
+}
+
+.tableSwitchChart {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.clearfix {
+    display: block;
+    clear: both;
+    content: "";
 }

@@ -1,3 +1,46 @@
-<p>
-  table-switch-chart works!
-</p>
+<div class="tableSwitchChart">
+    <ng-template #headerTemplate>
+        <div class="table-thead">
+            <div class="fLeft">
+                <!-- 图表切换按钮 -->
+                <button nz-button [nzSize]="'small'" nzType="default"><i class="anticon anticon-area-chart"></i></button>
+                <button nz-button [nzSize]="'small'" nzType="default"><i class="anticon anticon-table"></i></button>
+                <!-- 下拉框 -->
+                <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
+                    <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+            </div>
+            <div class="fRight">
+                <!-- 精度 -->
+                <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="singleValue" [nzSize]="'small'">
+                    <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+                <!-- 刷新、下载 -->
+                <i class="anticon anticon-sync"></i>
+                <i class="anticon anticon-download"></i>
+            </div>
+        </div>
+    </ng-template>
+
+    <!-- <div class="tableHeader">
+        <ng-container [nzTitle]="headerTemplate"></ng-container>
+    </div> -->
+    <!--固定表头  -->
+    <nz-table #chartSwitchTable nzBordered nzShowPagination="false" [nzTitle]="headerTemplate" [nzData]="dataSet" [nzScroll]="{ y: '240px' }" [nzSize]="'small'">
+        <thead>
+            <tr>
+                <th nzWidth="150px">Name</th>
+                <th nzWidth="150px">Age</th>
+                <th nzWidth="150px">Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of chartSwitchTable.data">
+                <td>{{data.name}}</td>
+                <td>{{data.age}}</td>
+                <td>{{data.address}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+</div>
