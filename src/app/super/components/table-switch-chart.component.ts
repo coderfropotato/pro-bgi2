@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, TemplateRef, Output } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { AjaxService } from "../../super/service/ajaxService";
 import { LoadingService } from "../../super/service/loadingService";
+
+declare const $: any;
 
 @Component({
     selector: 'app-table-switch-chart',
@@ -11,10 +13,13 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() url: string;
     @Input() apiEntity: object;
     @Input() id: string;
+    @Input() chartId: string;
 
     @Input() isShowAccuracy: boolean;
 
     @Input() selectTemplate: TemplateRef<any>;
+
+    @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
     isShowTable: boolean = false;
     tableData: object;
@@ -85,7 +90,7 @@ export class TableSwitchChartComponent implements OnInit {
                     } else {
                         this.error = "";
                         this.tableData = data;
-                        this.drawChart(data.rows);
+                        this.drawChart(data);
                     }
                     this.loadingService.close("#" + this.id);
 
@@ -97,15 +102,15 @@ export class TableSwitchChartComponent implements OnInit {
             )
     }
 
-    drawChart(data){
-
+    drawChart(data) {
+        this.drawChartEmit.emit(data);
     }
 
-    refresh(){
-       this.getData();
+    refresh() {
+        this.getData();
     }
 
-    SelectChange(key,value) {
+    SelectChange(key, value) {
         this.apiEntity[key] = value;
         this.getData();
     }

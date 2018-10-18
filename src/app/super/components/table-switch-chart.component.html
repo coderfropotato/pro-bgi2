@@ -41,8 +41,8 @@
     </nz-table>
 
     <!-- chart -->
-    <div class="chartView" *ngIf="!isShowTable && !error">
-        chart
+    <div class="chartView" [attr.id]="chartId" [class.hide]="isShowTable || error">
+
     </div>
 
     <!-- error -->
