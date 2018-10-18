@@ -8,13 +8,13 @@ import { TranslateService } from "@ngx-translate/core";
     styleUrls: ["./filter.component.css"]
 })
 export class FilterComponent implements OnInit {
-    /*string       searchType    default regExp
+    /*  string       searchType    default regExp
             模糊like    regExp
             等于=
             不等于！=
             包含in
 
-        float double              default    range
+        int double              default    range
             范围A-B     range
             等于=       equal
             不等于！=   $ne
@@ -22,7 +22,10 @@ export class FilterComponent implements OnInit {
             大于（>）   $gt
             小于(<)     $lt
             大于等于（>=）  $gte
-            小于等于（<=）  $lte */
+            小于等于（<=）  $lte
+            绝对值>=     gteabs
+            绝对值>      gtabs
+        */
 
     // 外部数据类型
     @Input()

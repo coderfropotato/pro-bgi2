@@ -33,9 +33,10 @@
                     <!-- 筛选 -->
                     <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" nzTitle="筛选" nz-tooltip (click)="beginFilter()"></i>
                     <!-- 下拉框 -->
-                    <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
+                    <!-- <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
                         <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
-                    </nz-select>
+                    </nz-select> -->
+                    <ng-container *ngTemplateOutlet="selectItems ? selectItems: ''"></ng-container>
                 </div>
                 <div class="fRight">
                     <!-- 精度 -->

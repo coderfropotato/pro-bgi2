@@ -1,5 +1,11 @@
 import { StoreService } from "./../service/storeService";
-import { Component, OnInit, Input, ViewChildren } from "@angular/core";
+import {
+    Component,
+    OnInit,
+    Input,
+    ViewChildren,
+    TemplateRef
+} from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
@@ -28,6 +34,10 @@ export class GeneTableComponent implements OnInit {
     pageEntity: object;
     @Input()
     checkStatusInParams: boolean;
+    // select slot
+    @Input()
+    selectItems: TemplateRef<any>;
+
 
     @ViewChildren("child")
     children;
@@ -106,6 +116,7 @@ export class GeneTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log(this.selectItems)
         this.init();
     }
 
@@ -632,12 +643,16 @@ export class GeneTableComponent implements OnInit {
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
     }
 
+
     /**
      * @description  以下方法为外部调用
      * @author Yangwd<277637411@qq.com>
      * @memberof BigTableComponent
      */
-
+    _setParamsOfEntity(key,value){
+        this.tableEntity[key] = value;
+        this.getRemoteData();
+    }
     /**
      * @description 表格组件外部删除筛选条件
      * @author Yangwd<277637411@qq.com>
