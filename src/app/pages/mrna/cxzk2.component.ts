@@ -61,6 +61,8 @@ export class cxzk2Component implements OnInit {
                 enableChartSelect: true,
                 el: "#chartId222",
                 type: "scatter",
+                width:1000,
+                height:400,
                 radius: 3,
                 hoverRadius: 6,
                 custom: ["height", "weight", "gender"],
