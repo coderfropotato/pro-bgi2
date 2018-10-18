@@ -1,3 +1,12 @@
 <div>
-    <app-table-switch-chart [id]="tableSwitchChart" [url]="url" [apiEntity]="tableEntity" [isShowAccuracy]="true"></app-table-switch-chart>
+    <ng-template #selectTemplate>
+        <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="tableEntity.sample" [nzSize]="'small'" (ngModelChange)="onSelectChange1()" nzShowSearch>
+            <nz-option *ngFor="let sam of sampleList" [nzLabel]="sam" [nzValue]="sam"></nz-option>
+        </nz-select>
+        <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="tableEntity.compare" [nzSize]="'small'" (ngModelChange)="onSelectChange2()" nzShowSearch>
+            <nz-option *ngFor="let com of compareList" [nzLabel]="com" [nzValue]="com"></nz-option>
+        </nz-select>
+    </ng-template>
+
+    <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [url]="url" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate"></app-table-switch-chart>
 </div>
