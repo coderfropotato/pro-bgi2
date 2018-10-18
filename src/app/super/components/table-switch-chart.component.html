@@ -8,8 +8,8 @@
                 <button nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true">
                     <i class="anticon anticon-table"></i></button>
                 <!-- 下拉框 -->
-                <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
-                    <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curValue" [nzSize]="'small'" nzShowSearch>
+                    <nz-option *ngFor="let option of optionList" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
                 </nz-select>
             </div>
             <div class="fRight">
@@ -36,7 +36,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let row of tableData.rows">
-                <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key]}}</td>
+                <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
             </tr>
         </tbody>
     </nz-table>
