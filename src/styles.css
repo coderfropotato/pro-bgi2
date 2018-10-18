@@ -195,6 +195,12 @@ ul {
     content: "";
 }
 
+.tableHeader {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-bottom: 0;
+}
+
 .fLeft {
     float: left;
 }
@@ -212,4 +218,13 @@ ul {
     display: block;
     clear: both;
     content: "";
+}
+
+button.btnActive {
+    border: 1px solid #40a9ff;
+    color: #40a9ff;
+}
+
+.chartView {
+    border: 1px solid #ddd;
 }

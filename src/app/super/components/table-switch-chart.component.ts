@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { AjaxService } from "../../super/service/ajaxService";
+import { LoadingService } from "../../super/service/loadingService";
 
 @Component({
     selector: 'app-table-switch-chart',
@@ -6,23 +8,42 @@ import { Component, OnInit } from '@angular/core';
     styles: []
 })
 export class TableSwitchChartComponent implements OnInit {
+    @Input() url: string;
+    @Input() apiEntity: object;
+    @Input() id: string;
 
-    constructor() { }
+    isShowTable: boolean = false;
+    tableData: object;
 
-    dataSet: any[] = [];
+    constructor(
+        private ajaxService: AjaxService,
+        private loadingService: LoadingService
+    ) { }
+
+
     ngOnInit() {
-        for (var i = 0; i < 50; i++) {
+        this.getData();
+    }
 
-            this.dataSet.push(
+    getData() {
+        this.loadingService.open("#"+this.id);
+        this.ajaxService
+            .getDeferData(
                 {
-                    name: "xf"+i,
-                    age: i+1,
-                    address: "addr"+i
+                    url: this.url,
+                    data: this.apiEntity
                 }
-            );
-
-
-        }
+            )
+            .subscribe(
+                data => {
+                    this.loadingService.close("#"+this.id);
+                    this.tableData = data;
+                },
+                error => {
+                    this.loadingService.close("#"+this.id);
+                    console.log(error);
+                }
+            )
     }
 
 }
