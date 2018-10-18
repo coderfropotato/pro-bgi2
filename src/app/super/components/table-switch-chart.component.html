@@ -3,8 +3,10 @@
         <div class="table-thead tableHeader">
             <div class="fLeft">
                 <!-- 图表切换按钮 -->
-                <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false"><i class="anticon anticon-area-chart"></i></button>
-                <button nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true"><i class="anticon anticon-table"></i></button>
+                <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false">
+                    <i class="anticon anticon-area-chart"></i></button>
+                <button nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true">
+                    <i class="anticon anticon-table"></i></button>
                 <!-- 下拉框 -->
                 <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
                     <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
@@ -12,13 +14,13 @@
             </div>
             <div class="fRight">
                 <!-- 精度下拉框 -->
-                <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="singleValue" [nzSize]="'small'">
-                    <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
+                    <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>
                 </nz-select>
                 <!-- 刷新、下载 -->
                 <i class="anticon anticon-sync"></i>
-                <i class="anticon anticon-download" *ngIf="isShowTable"></i>
-                <i class="anticon anticon-picture" *ngIf="!isShowTable"></i>
+                <i class="anticon anticon-download" *ngIf="isShowTable && !error"></i>
+                <i class="anticon anticon-picture" *ngIf="!isShowTable && !error"></i>
             </div>
         </div>
     </ng-template>
@@ -26,22 +28,25 @@
     <div *ngIf="headers else headerTemplate"></div>
 
     <!-- table：固定表头-->
-    <nz-table nzBordered nzShowPagination="false" [nzScroll]="{ y: '400px' }" [nzSize]="'small'" *ngIf="isShowTable">
+    <nz-table nzBordered nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="{ y: '400px' }" [nzSize]="'small'" *ngIf="isShowTable && !error">
         <thead>
             <tr>
-                <th nzWidth="150px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
+                <th class="center" nzWidth="150px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let row of tableData.rows">
-                <td *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key]}}</td>
+                <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key]}}</td>
             </tr>
         </tbody>
     </nz-table>
 
     <!-- chart -->
-    <div class="chartView" *ngIf="!isShowTable">
+    <div class="chartView" *ngIf="!isShowTable && !error">
         chart
     </div>
+
+    <!-- error -->
+    <app-error [error]="error"></app-error>
 
 </div>

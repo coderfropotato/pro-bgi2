@@ -238,9 +238,14 @@ button.btnActive {
     content: "";
 }
 
-.table-bottom{
-    height:52px;
+.table-bottom {
+    height: 52px;
 }
+
 .chartView {
     border: 1px solid #ddd;
+}
+
+.center {
+    text-align: center !important;
 }
