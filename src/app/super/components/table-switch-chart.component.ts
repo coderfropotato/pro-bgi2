@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, Output } from '@angular/core';
 import { AjaxService } from "../../super/service/ajaxService";
 import { LoadingService } from "../../super/service/loadingService";
 
@@ -14,12 +14,14 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() isShowAccuracy: boolean;
 
+    @Input() selectTemplate: TemplateRef<any>;
+
     isShowTable: boolean = false;
     tableData: object;
     error: string;
 
     accuracyList: object[] = [];
-    accuracy:number=-1;
+    accuracy: number = -1;
 
     constructor(
         private ajaxService: AjaxService,
@@ -28,38 +30,38 @@ export class TableSwitchChartComponent implements OnInit {
 
 
     ngOnInit() {
-        this.accuracyList=[
+        this.accuracyList = [
             {
-                name:"精度：1位小数",
-                value:1
+                name: "精度：1位小数",
+                value: 1
             },
             {
-                name:"精度：2位小数",
-                value:2
+                name: "精度：2位小数",
+                value: 2
             },
             {
-                name:"精度：3位小数",
-                value:3
+                name: "精度：3位小数",
+                value: 3
             },
             {
-                name:"精度：4位小数",
-                value:4
+                name: "精度：4位小数",
+                value: 4
             },
             {
-                name:"精度：5位小数",
-                value:5
+                name: "精度：5位小数",
+                value: 5
             },
             {
-                name:"精度：6位小数",
-                value:6
+                name: "精度：6位小数",
+                value: 6
             },
             {
-                name:"精度：7位小数",
-                value:7
+                name: "精度：7位小数",
+                value: 7
             },
             {
-                name:"精度：全数据",
-                value:-1
+                name: "精度：全数据",
+                value: -1
             }
         ];
         this.getData();
@@ -83,6 +85,7 @@ export class TableSwitchChartComponent implements OnInit {
                     } else {
                         this.error = "";
                         this.tableData = data;
+                        this.drawChart(data.rows);
                     }
                     this.loadingService.close("#" + this.id);
 
@@ -92,6 +95,19 @@ export class TableSwitchChartComponent implements OnInit {
                     this.error = error;
                 }
             )
+    }
+
+    drawChart(data){
+
+    }
+
+    refresh(){
+       this.getData();
+    }
+
+    SelectChange(key,value) {
+        this.apiEntity[key] = value;
+        this.getData();
     }
 
 }

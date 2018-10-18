@@ -8,9 +8,8 @@
                 <button nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true">
                     <i class="anticon anticon-table"></i></button>
                 <!-- 下拉框 -->
-                <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curValue" [nzSize]="'small'" nzShowSearch>
-                    <nz-option *ngFor="let option of optionList" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
-                </nz-select>
+                <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate :''"></ng-container>
+
             </div>
             <div class="fRight">
                 <!-- 精度下拉框 -->
@@ -18,7 +17,7 @@
                     <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>
                 </nz-select>
                 <!-- 刷新、下载 -->
-                <i class="anticon anticon-sync"></i>
+                <i class="anticon anticon-sync" (click)="refresh()"></i>
                 <i class="anticon anticon-download" *ngIf="isShowTable && !error"></i>
                 <i class="anticon anticon-picture" *ngIf="!isShowTable && !error"></i>
             </div>
