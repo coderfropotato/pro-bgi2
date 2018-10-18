@@ -1,21 +1,51 @@
 import { Pipe, PipeTransform } from "@angular/core";
-
+/**
+ * @description 精度过滤器
+ * @author Yangwd<277637411@qq.com>
+ * @export
+ * @class AccuracyPipe
+ * @implements {PipeTransform}
+ * init 千分位
+ * double 精度
+ * string不处理
+ */
 @Pipe({
-    name: "accuracy"
+    name: "accuracyPipe"
 })
 export class AccuracyPipe implements PipeTransform {
-    transform(value: any, args?: any): any {
-        if (args == -1) return value;
-        if (!isNaN(value)) {
-            var f = parseFloat(value);
-            if (isNaN(f)) {
-                return value;
-            } else {
-                return this.toAccuracy(value, args);
-            }
-        } else {
+    transform(value: any, args?: any, type?: any): any {
+        if (type == "string") {
             return value;
+        } else {
+            if (type === "double") {
+                if (args == -1) return value;
+                if (!isNaN(value)) {
+                    var f = parseFloat(value);
+                    if (isNaN(f)) {
+                        return value;
+                    } else {
+                        return this.toAccuracy(value, args);
+                    }
+                } else {
+                    return value;
+                }
+            } else if (type == "int") {
+                return this.toThousands(value);
+            }
         }
+    }
+
+    toThousands(num) {
+        let number = (num || 0).toString(),
+            result = "";
+        while (number.length > 3) {
+            result = "," + number.slice(-3) + result;
+            number = number.slice(0, number.length - 3);
+        }
+        if (number) {
+            result = number + result;
+        }
+        return result;
     }
 
     toAccuracy(value, args) {
