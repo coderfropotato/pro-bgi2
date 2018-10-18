@@ -249,3 +249,7 @@ button.btnActive {
 .center {
     text-align: center !important;
 }
+
+.hide {
+    display: none;
+}
