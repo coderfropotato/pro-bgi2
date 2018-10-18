@@ -8,19 +8,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class cxzk2Component implements OnInit {
-    title: string;
+    url: string;
+    tableEntity: object;
+
     constructor(
         private route: ActivatedRoute,
         private router: Router
     ) { }
 
     ngOnInit() {
-        this.title = 'test';
+        this.url = "";
+        this.tableEntity = {
+            LCID : sessionStorage.getItem("LCID"),
+            sample  : "HBRR1"
+        };
     }
 
-    handlerClick() {
-        this.title = 'clicked'
-    }
 
 }
 
