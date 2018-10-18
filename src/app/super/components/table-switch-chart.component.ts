@@ -38,6 +38,7 @@ export class TableSwitchChartComponent implements OnInit {
                 data => {
                     this.loadingService.close("#"+this.id);
                     this.tableData = data;
+                    console.log(this.tableData);
                 },
                 error => {
                     this.loadingService.close("#"+this.id);

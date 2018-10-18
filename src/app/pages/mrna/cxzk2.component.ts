@@ -17,7 +17,7 @@ export class cxzk2Component implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.url = "";
+        this.url = "http://localhost:8086/tableSwitchChart";
         this.tableEntity = {
             LCID : sessionStorage.getItem("LCID"),
             sample  : "HBRR1"

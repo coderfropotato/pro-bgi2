@@ -26,19 +26,15 @@
     <div *ngIf="headers else headerTemplate"></div>
 
     <!-- table：固定表头-->
-    <nz-table #chartSwitchTable nzBordered nzShowPagination="false" [nzData]="dataSet" [nzScroll]="{ y: '400px' }" [nzSize]="'small'" *ngIf="isShowTable">
+    <nz-table nzBordered nzShowPagination="false" [nzScroll]="{ y: '400px' }" [nzSize]="'small'" *ngIf="isShowTable">
         <thead>
             <tr>
-                <th nzWidth="150px">Name</th>
-                <th nzWidth="150px">Age</th>
-                <th nzWidth="150px">Address</th>
+                <th nzWidth="150px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let data of chartSwitchTable.data">
-                <td>{{data.name}}</td>
-                <td>{{data.age}}</td>
-                <td>{{data.address}}</td>
+            <tr *ngFor="let row of tableData.rows">
+                <td *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key]}}</td>
             </tr>
         </tbody>
     </nz-table>
