@@ -20,6 +20,7 @@ export class LoadingService {
         if (this.mask) return;
         if (wrap && !this.mask) {
             try {
+                wrap.style.position = 'relative';
                 mask.innerHTML = "Loading...";
                 mask.style.fontSize = "24px";
                 mask.style.textAlign = "center";

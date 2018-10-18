@@ -183,10 +183,12 @@ ul {
 .table-thead i {
     margin-right: 10px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .table-thead button i {
     margin-right: 0px;
+    font-size: 16px;
 }
 
 .table-thead::after {
@@ -225,6 +227,20 @@ button.btnActive {
     color: #40a9ff;
 }
 
+.tableSwitchChart {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.clearfix {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.table-bottom{
+    height:52px;
+}
 .chartView {
     border: 1px solid #ddd;
 }

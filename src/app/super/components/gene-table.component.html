@@ -16,32 +16,46 @@
     </button>
     <br> 保存基因集：
     <button nz-button nzType="default">保存基因集</button>
-   
+
 
     <hr>选中
     <em *ngFor="let item of checked">{{item}}&emsp;</em>
     <hr>未选中
     <em *ngFor="let item of unChecked">{{item}}&emsp;</em> -->
     <ng-template #popoverTpl>
-            {{popoverText}}
-        </ng-template>
+        {{popoverText}}
+    </ng-template>
     <!-- table head -->
-    <div class="table">
-        <div class="table-head clearfix">
-            <ul class="left clearfix">
-                <li>
+    <div class="gene-table">
+        <ng-template #headerTemplate>
+            <div class="table-thead">
+                <div class="fLeft">
+                    <!-- 筛选 -->
                     <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" nzTitle="筛选" nz-tooltip (click)="beginFilter()"></i>
-                </li>
-            </ul>
-            <ul class="right clearfix">
-                <li>
-                    <i class="anticon anticon-download" nzTitle="下载" nz-tooltip></i>
-                </li>
-                <li>
+                    <!-- 下拉框 -->
+                    <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
+                        <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                    </nz-select>
+                </div>
+                <div class="fRight">
+                    <!-- 精度 -->
+                    <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'">
+                        <nz-option nzLabel="精度：1位小数" [nzValue]="1"></nz-option>
+                        <nz-option nzLabel="精度：2位小数" [nzValue]="2"></nz-option>
+                        <nz-option nzLabel="精度：3位小数" [nzValue]="3"></nz-option>
+                        <nz-option nzLabel="精度：4位小数" [nzValue]="4"></nz-option>
+                        <nz-option nzLabel="精度：5位小数" [nzValue]="5"></nz-option>
+                        <nz-option nzLabel="精度：6位小数" [nzValue]="6"></nz-option>
+                        <nz-option nzLabel="精度：7位小数" [nzValue]="7"></nz-option>
+                        <nz-option nzLabel="精度：全数据" [nzValue]="-1"></nz-option>
+                    </nz-select>
+                    <!-- 刷新、下载 -->
                     <i class="anticon anticon-reload" nzTitle="刷新" nz-tooltip (click)="refresh()"></i>
-                </li>
-            </ul>
-        </div>
+                    <i class="anticon anticon-download" nzTitle="下载" nz-tooltip></i>
+                </div>
+            </div>
+        </ng-template>
+
         <!-- root filter items -->
         <div class="table-top" *ngIf="rootHtmlString.length">
             <span class="filter-head">{{'rootFilterTitle'| translate}}：</span>
@@ -60,7 +74,8 @@
         <div class="table-content">
             <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" x:head.length*150+'px'-->
             <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="{ x:totalWidth }" [nzData]="dataSet"
-                [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzBordered [nzWidthConfig]="widthConfig">
+                [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" [nzTitle]="headerTemplate" nzBordered
+                [nzWidthConfig]="widthConfig">
                 <thead>
                     <tr>
                         <!-- checkbox -->
@@ -119,8 +134,8 @@
                 </tbody>
             </nz-table>
             <div class="table-bottom">
-                <nz-pagination style="float:left;" [(nzPageIndex)]="tableEntity.pageIndex" [nzTotal]="total" [(nzPageSize)]="tableEntity.pageSize" (nzPageIndexChange)="getRemoteData()"
-                    (nzPageSizeChange)="getRemoteData(true)" nzShowSizeChanger nzShowQuickJumper></nz-pagination>
+                <nz-pagination style="float:left;" [(nzPageIndex)]="tableEntity.pageIndex" [nzTotal]="total" [(nzPageSize)]="tableEntity.pageSize"
+                    (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" nzShowSizeChanger nzShowQuickJumper></nz-pagination>
             </div>
             <app-error *ngIf="error" [error]="error"></app-error>
         </div>
