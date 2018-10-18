@@ -28,9 +28,9 @@ export class TransformationTableComponent implements OnInit {
     url: string;
     checkStatus: boolean;
     excludeGeneList: object;
-    geneList: string[] = [];
+    geneCollectionId: string = '';
 
-    defaultTableCheckStatusInParams: boolean = false;
+    defaultTableCheckStatusInParams: boolean = true;
     defaultTableEntity: object = {
         pageSize: 10,
         pageIndex: 1,
@@ -40,7 +40,7 @@ export class TransformationTableComponent implements OnInit {
         rootSearchContentList: []
     };
 
-    extendTableCheckStatusInParams: boolean = false;
+    extendTableCheckStatusInParams: boolean = true;
     extendTableEntity: object = {
         pageSize: 10,
         pageIndex: 1,
@@ -74,6 +74,7 @@ export class TransformationTableComponent implements OnInit {
         if (this.isFirst) {
             paramsObject = this.defaultTable._getInnerStatusParams();
             entity = paramsObject["tableEntity"];
+            entity['url'] = paramsObject['url'];
         } else {
             // 循环转换
             paramsObject = this.extendTable._getInnerStatusParams();
@@ -83,16 +84,14 @@ export class TransformationTableComponent implements OnInit {
             .getDeferData({
                 url: "http://localhost:8086/getGeneList",
                 data: {
-                    // 是否需要url
-                    check: paramsObject["others"]["checkStatus"],
-                    excludeGeneList: paramsObject["others"]["excludeGeneList"],
-                    geneList: this.geneList
+                    tableEntity:entity,
+                    geneCollectionId: this.geneCollectionId
                 }
             })
             .subscribe(
                 data => {
-                    this.geneList = data["data"];
-                    this.extendTableEntity["geneList"] = this.geneList;
+                    this.geneCollectionId = data["geneCollectionId"];
+                    this.extendTableEntity["geneList"] = this.geneCollectionId;
                     this.addColumn._resetStatusWithoutEmit();
 
                     if (!this.isFirst) {
@@ -113,7 +112,7 @@ export class TransformationTableComponent implements OnInit {
      */
     back() {
         this.addColumn._resetStatusWithoutEmit();
-        this.geneList = [];
+        this.geneCollectionId ="";
         this.showDefault = true;
         this.isFirst = true;
     }
