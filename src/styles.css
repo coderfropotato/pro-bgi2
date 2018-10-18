@@ -232,3 +232,7 @@ ul {
     clear: both;
     content: "";
 }
+
+.table-bottom{
+    height:52px;
+}
