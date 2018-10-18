@@ -128,7 +128,7 @@
                         <!-- 其他列 -->
                         <td *ngFor="let h of tbodyOutFirstCol" (mouseover)="setPopoverText(d[h['true_key']])" [nzContent]="popoverTpl" nzPlacement="right"
                             nz-popover>
-                            {{d[h['true_key']]}}
+                            {{d[h['true_key']] | accuracyPipe : accuracy : h['searchType'] }}
                         </td>
                     </tr>
                 </tbody>
