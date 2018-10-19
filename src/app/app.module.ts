@@ -50,13 +50,14 @@ import { SyserrorComponent } from './pages/syserror.component';
 import {tableComponent} from './pages/mrna/table.component';
 import { AddComponent } from './pages/mrna/add.component';
 import { LittleTableComponent } from './super/components/little-table.component';
-import { CommonBigTableComponent } from './super/components/common-big-table.component';
+import { BigTableComponent } from './super/components/big-table.component';
 import { TableSwitchChartComponent } from './super/components/table-switch-chart.component';
 import { LittleTableTestComponent } from './pages/mrna/little-table-test.component';
 import { AccuracyPipe } from './super/filter/accuracy.pipe';
 import {ReanalysisIndexComponent} from './pages/reanalysis/index.component';
 import { TransformationTableComponent } from './super/components/transformation-table.component';
 import { GeneRelativeComponent } from './super/components/gene-relative.component';
+import { BigTableTestComponent } from './pages/mrna/big-table-test.component';
 const ROUTES:Routes =[
     // mrna
     {
@@ -101,11 +102,11 @@ const ROUTES:Routes =[
                 }
             },
             {
-                'path':'commonBigTable',
-                'component':CommonBigTableComponent,
+                'path':'bigTable',
+                'component':BigTableTestComponent,
                 'data':{
                     'keep':true,
-                    'module':'commonBigTable'
+                    'module':'bigTable'
                 }
             },
             {
@@ -228,12 +229,13 @@ export function createTranslateLoader(http: HttpClient) {
         AddColumnComponent,
         AddComponent,
         LittleTableComponent,
-        CommonBigTableComponent,
+        BigTableComponent,
         TableSwitchChartComponent,
         LittleTableTestComponent,
         AccuracyPipe,
         TransformationTableComponent,
         GeneRelativeComponent,
+        BigTableTestComponent,
         TooltipDirective
     ],
     // 路由模块在imports 导入

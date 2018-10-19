@@ -49,7 +49,7 @@ export class IndexComponent implements OnInit {
                         isExport:true
                     },
                     {
-                        url: "mrna/commonBigTable",
+                        url: "mrna/bigTable",
                         title: "普通大表",
                         isExport: true
                     },
