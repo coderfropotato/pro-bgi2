@@ -19,11 +19,13 @@
                     <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>
                 </nz-select>
                 <!-- 刷新-->
-                <i class="anticon anticon-sync" (click)="refresh()" nz-tooltip nzTitle="刷新"></i>
+                <i *ngIf="!chartUrl" class="anticon anticon-sync" (click)="getTableData()" nz-tooltip nzTitle="刷新"></i>
+                <i *ngIf="chartUrl && isShowTable" class="anticon anticon-sync" (click)="getTableData()" nz-tooltip nzTitle="table刷新"></i>
+                <i *ngIf="chartUrl && !isShowTable" class="anticon anticon-sync" (click)="getChartData()" nz-tooltip nzTitle="chart刷新"></i>
                 <!--表下载  -->
                 <i class="anticon anticon-download" *ngIf="isShowTable && !error" nz-tooltip nzTitle="导出数据"></i>
                 <!-- 图下载 -->
-                <app-chart-export [chartId]="chartId" [chartName]="chartName"></app-chart-export>
+                <app-chart-export *ngIf="!isShowTable && !error" [chartId]="chartId" [chartName]="chartName"></app-chart-export>
             </div>
         </div>
     </ng-template>

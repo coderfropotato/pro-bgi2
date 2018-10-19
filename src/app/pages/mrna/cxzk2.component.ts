@@ -11,7 +11,8 @@ declare const d4:any;
 export class cxzk2Component implements OnInit {
     @ViewChild('tableSwitchChart') tableSwitchChart;
 
-    url: string;
+    tableUrl: string;
+    chartUrl:string;
     tableEntity: object = {
         "LCID": sessionStorage.getItem("LCID"),
         "sample": "",
@@ -27,7 +28,8 @@ export class cxzk2Component implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.url = "http://localhost:8086/tableSwitchChart";
+        this.tableUrl = "http://localhost:8086/tableSwitchChart";
+        this.chartUrl="http://localhost:8086/net";
 
         this.sampleList = ["HBRR1", "HBRR2", "HBRR3", "HBRR4", "uBRR1", "uBRR2", "uBRR3", "uBRR4"];
         this.compareList = ["com1", "com2", "com3", "com4", "compare1", "compare2", "compare3", "compare4"];

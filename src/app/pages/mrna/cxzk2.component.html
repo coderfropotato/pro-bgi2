@@ -8,5 +8,6 @@
         </nz-select>
     </ng-template>
 
-    <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [url]="url" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
+    <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [tableUrl]="tableUrl" [chartUrl]="chartUrl" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'chartId222'"
+        [chartName]="'散点图'"></app-table-switch-chart>
 </div>
