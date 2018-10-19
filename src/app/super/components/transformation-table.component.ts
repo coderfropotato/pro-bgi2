@@ -1,4 +1,4 @@
-import { StoreService } from './../service/storeService';
+import { StoreService } from "./../service/storeService";
 import { AjaxService } from "./../service/ajaxService";
 import { Component, OnInit, ViewChild } from "@angular/core";
 /**
@@ -23,12 +23,12 @@ export class TransformationTableComponent implements OnInit {
     addColumn;
 
     isFirst: boolean = true;
-
+    defaultUrl: string = "";
     params: object;
     url: string;
     checkStatus: boolean;
     excludeGeneList: object;
-    geneCollectionId: string = '';
+    geneCollectionId: string = "all";
 
     defaultTableCheckStatusInParams: boolean = true;
     defaultTableEntity: object = {
@@ -50,11 +50,11 @@ export class TransformationTableComponent implements OnInit {
         rootSearchContentList: []
     };
 
-    allThead:any[]=[];
+    allThead: any[] = [];
 
     constructor(
         private ajaxService: AjaxService,
-        private storeService:StoreService
+        private storeService: StoreService
     ) {
         this.allThead = this.storeService.getThead();
     }
@@ -71,27 +71,46 @@ export class TransformationTableComponent implements OnInit {
     confirm() {
         let paramsObject = {};
         let entity = {};
+        let ajaxConfig = {
+            geneCollectionId: this.geneCollectionId,
+            tableEntity: {},
+            url: ""
+        };
         if (this.isFirst) {
             paramsObject = this.defaultTable._getInnerStatusParams();
             entity = paramsObject["tableEntity"];
-            entity['url'] = paramsObject['url'];
+            ajaxConfig["tableEntity"] = entity;
+            ajaxConfig["url"] = paramsObject["url"];
+            this.defaultUrl = paramsObject["url"];
         } else {
             // 循环转换
             paramsObject = this.extendTable._getInnerStatusParams();
             entity = paramsObject["tableEntity"];
+            ajaxConfig["tableEntity"] = entity;
+            // 如果基因集id被删除了 再进行转换需要带上url
+            if (this.geneCollectionId === "all") {
+                ajaxConfig["url"] = this.defaultUrl;
+            }
         }
         this.ajaxService
             .getDeferData({
                 url: "http://localhost:8086/getGeneList",
-                data: {
-                    tableEntity:entity,
-                    geneCollectionId: this.geneCollectionId
-                }
+                data: ajaxConfig
             })
             .subscribe(
                 data => {
                     this.geneCollectionId = data["geneCollectionId"];
-                    this.extendTableEntity["geneList"] = this.geneCollectionId;
+                    if (this.extendTable) {
+                        this.extendTable._setParamsOfEntityWithoutRequest(
+                            "geneCollectionId",
+                            this.geneCollectionId
+                        );
+                    } else {
+                        this.extendTableEntity[
+                            "geneCollectionId"
+                        ] = this.geneCollectionId;
+                    }
+
                     this.addColumn._resetStatusWithoutEmit();
 
                     if (!this.isFirst) {
@@ -112,23 +131,36 @@ export class TransformationTableComponent implements OnInit {
      */
     back() {
         this.addColumn._resetStatusWithoutEmit();
-        this.geneCollectionId ="";
+        this.geneCollectionId = "all";
         this.showDefault = true;
         this.isFirst = true;
     }
 
-    addThead(thead){
-        if(this.isFirst){
+    /**
+     * @description 删除基因集合id
+     * @author Yangwd<277637411@qq.com>
+     * @memberof TransformationTableComponent
+     */
+    deleteGeneCollection() {
+        this.geneCollectionId = "all";
+        this.extendTable._setParamsOfEntity(
+            "geneCollectionId",
+            this.geneCollectionId
+        );
+    }
+
+    addThead(thead) {
+        if (this.isFirst) {
             this.defaultTable._addThead(thead);
-        }else{
+        } else {
             this.extendTable._addThead(thead);
         }
     }
 
-    clearThead(){
-        if(this.isFirst){
+    clearThead() {
+        if (this.isFirst) {
             this.defaultTable._addThead([]);
-        }else{
+        } else {
             this.extendTable._addThead([]);
         }
     }

@@ -1,6 +1,6 @@
 
 import { StoreService } from "./../service/storeService";
-import { Component, OnInit, Input, ViewChildren } from "@angular/core";
+import { Component, OnInit, Input, ViewChildren,TemplateRef } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
@@ -11,22 +11,27 @@ declare const $: any;
  * @description 普通大表 没有首列选项
  * @author Yangwd<277637411@qq.com>
  * @export
- * @class CommonBigTableComponent
+ * @classBigTableComponent
  * @implements {OnInit}
  */
 @Component({
-    selector: "app-common-big-table",
-    templateUrl: "./common-big-table.component.html"
+    selector: "app-big-table",
+    templateUrl: "./big-table.component.html"
 })
 
-export class CommonBigTableComponent implements OnInit {
+export class BigTableComponent implements OnInit {
+    @Input()idFlag: string;
+    @ViewChildren("child") children;
+    @Input() url: string;
+    @Input() pageEntity: object;
+    tableEntity:object = {};
+    // select slot
     @Input()
-    idFlag: string;
-    @ViewChildren("child")
-    children;
+    selectItems: TemplateRef<any>;
+
     // 开始排序
     beginFilterStatus: boolean = false;
-
+    accuracy = -1;
     head: string[] = [];
     pageIndex = 1;
     pageSize = 10;
@@ -85,6 +90,29 @@ export class CommonBigTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.init();
+    }
+
+    init() {
+        this.tableEntity["pageIndex"] =  1;
+        this.tableEntity["pageSize"] =  10;
+        this.tableEntity["sortValue"] = null;
+        this.tableEntity["sortKey"] = null;
+        this.tableEntity["searchList"] = [];
+        this.tableEntity["rootSearchContentList"] = [];
+        this.tableEntity["addThead"] = [];
+
+        // 把其他的查询参数也放进去
+        if(!$.isEmptyObject(this.pageEntity)){
+            for (let name in this.pageEntity) {
+                if (name in this.tableEntity) {
+                    continue;
+                } else {
+                    this.tableEntity[name] = this.pageEntity[name];
+                }
+            }
+        }
+
         this.getRemoteData();
     }
 
@@ -111,16 +139,8 @@ export class CommonBigTableComponent implements OnInit {
         }
         this.loadingService.open(".table");
         let ajaxConfig = {
-            url: "http://localhost:8086/filter",
-            data: {
-                pageIndex: this.pageIndex,
-                pageSize: this.pageSize,
-                sortField: this.sortKey,
-                sortOrder: this.sortValue,
-                searchList: this.searchList,
-                addThead: this.addThead,
-                rootSearchContentList: this.rootSearchContentList,
-            }
+            url: this.url,
+            data: this.tableEntity
         };
 
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
@@ -446,6 +466,29 @@ export class CommonBigTableComponent implements OnInit {
      * @author Yangwd<277637411@qq.com>
      * @memberof BigTableComponent
      */
+
+    /**
+     * @description  组件外设置内部查询参数 更新参数并发请求
+     * @author Yangwd<277637411@qq.com>
+     * @param {any} key
+     * @param {any} value
+     * @memberof BigTableComponent
+     */
+    _setParamsOfEntity(key,value){
+        this.tableEntity[key] = value;
+        this.getRemoteData();
+    }
+
+    /**
+     * @description  组件外设置内部查询参数 更新参数不发请求
+     * @author Yangwd<277637411@qq.com>
+     * @param {any} key
+     * @param {any} value
+     * @memberof BigTableComponent
+     */
+    _setParamsOfEntityWithoutRequest(key,value){
+        this.tableEntity[key] = value;
+    }
 
     /**
      * @description 表格组件外部删除筛选条件

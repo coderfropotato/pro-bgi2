@@ -649,10 +649,31 @@ export class GeneTableComponent implements OnInit {
      * @author Yangwd<277637411@qq.com>
      * @memberof BigTableComponent
      */
+
+
+    /**
+     * @description  组件外设置内部查询参数 更新参数并发请求
+     * @author Yangwd<277637411@qq.com>
+     * @param {any} key
+     * @param {any} value
+     * @memberof GeneTableComponent
+     */
     _setParamsOfEntity(key,value){
         this.tableEntity[key] = value;
         this.getRemoteData();
     }
+
+    /**
+     * @description  组件外设置内部查询参数 更新参数不发请求
+     * @author Yangwd<277637411@qq.com>
+     * @param {any} key
+     * @param {any} value
+     * @memberof GeneTableComponent
+     */
+    _setParamsOfEntityWithoutRequest(key,value){
+        this.tableEntity[key] = value;
+    }
+
     /**
      * @description 表格组件外部删除筛选条件
      * @author Yangwd<277637411@qq.com>
