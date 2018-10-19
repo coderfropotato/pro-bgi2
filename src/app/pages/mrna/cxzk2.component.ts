@@ -34,6 +34,7 @@ export class cxzk2Component implements OnInit {
 
         this.tableEntity['sample'] = this.sampleList[0];
         this.tableEntity["compare"] = this.compareList[0];
+
     }
 
     onSelectChange1() {

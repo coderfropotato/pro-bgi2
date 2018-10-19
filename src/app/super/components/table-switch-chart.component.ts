@@ -13,7 +13,9 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() url: string;
     @Input() apiEntity: object;
     @Input() id: string;
+
     @Input() chartId: string;
+    @Input() chartName:any;
 
     @Input() isShowAccuracy: boolean;
 

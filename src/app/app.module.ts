@@ -17,6 +17,7 @@ import { NotFoundComponent } from './pages/notFound.component';
 import { DnaIndexComponent } from './pages/dna/index.component';
 import { JyzbdComponent } from './pages/dna/jyzbd.component';
 import {AddColumnComponent} from './super/components/add-column.component';
+import {ChartExportComponent} from './super/components/chart-export.component';
 
 import { FrametopComponent } from './include/frametop.component';
 import { LeftsideComponent } from './include/leftside.component';
@@ -226,6 +227,7 @@ export function createTranslateLoader(http: HttpClient) {
         JyzbdComponent,
         SyserrorComponent,
         AddColumnComponent,
+        ChartExportComponent,
         AddComponent,
         LittleTableComponent,
         CommonBigTableComponent,

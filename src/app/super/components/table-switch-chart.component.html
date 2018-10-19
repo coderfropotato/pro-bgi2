@@ -18,10 +18,12 @@
                 <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
                     <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>
                 </nz-select>
-                <!-- 刷新、下载 -->
+                <!-- 刷新-->
                 <i class="anticon anticon-sync" (click)="refresh()" nz-tooltip nzTitle="刷新"></i>
+                <!--表下载  -->
                 <i class="anticon anticon-download" *ngIf="isShowTable && !error" nz-tooltip nzTitle="导出数据"></i>
-                <i class="anticon anticon-picture" *ngIf="!isShowTable && !error" nz-tooltip nzTitle="导出"></i>
+                <!-- 图下载 -->
+                <app-chart-export [chartId]="chartId" [chartName]="chartName"></app-chart-export>
             </div>
         </div>
     </ng-template>
