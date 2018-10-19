@@ -3,10 +3,12 @@
         <div class="table-thead tableHeader">
             <div class="fLeft">
                 <!-- 图表切换按钮 -->
-                <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false">
-                    <i class="anticon anticon-area-chart"></i></button>
-                <button nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true">
-                    <i class="anticon anticon-table"></i></button>
+                <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip nzTitle="统计视图">
+                    <i class="anticon anticon-area-chart"></i>
+                </button>
+                <button nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true" nz-tooltip nzTitle="表格视图">
+                    <i class="anticon anticon-table"></i>
+                </button>
                 <!-- 下拉框 -->
                 <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate :''"></ng-container>
 
@@ -17,9 +19,9 @@
                     <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>
                 </nz-select>
                 <!-- 刷新、下载 -->
-                <i class="anticon anticon-sync" (click)="refresh()"></i>
-                <i class="anticon anticon-download" *ngIf="isShowTable && !error"></i>
-                <i class="anticon anticon-picture" *ngIf="!isShowTable && !error"></i>
+                <i class="anticon anticon-sync" (click)="refresh()" nz-tooltip nzTitle="刷新"></i>
+                <i class="anticon anticon-download" *ngIf="isShowTable && !error" nz-tooltip nzTitle="导出数据"></i>
+                <i class="anticon anticon-picture" *ngIf="!isShowTable && !error" nz-tooltip nzTitle="导出"></i>
             </div>
         </div>
     </ng-template>
