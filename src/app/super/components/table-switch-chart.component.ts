@@ -11,7 +11,7 @@ declare const $: any;
 })
 export class TableSwitchChartComponent implements OnInit {
     @Input() tableUrl: string;
-    @Input() chartUrl:string; //若存在则表示图api与表api不一致，适用于图复杂（需要单独请求api）场景
+    @Input() chartUrl:string; //可选，若存在则表示图api与表api不一致，适用于图复杂（需要单独请求api）场景
     @Input() apiEntity: object;
 
     @Input() id: string;
@@ -19,9 +19,9 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() chartId: string;
     @Input() chartName:any;
 
-    @Input() isShowAccuracy: boolean;
+    @Input() isShowAccuracy: boolean; //可选，是否有精度下拉选择
 
-    @Input() selectTemplate: TemplateRef<any>;
+    @Input() selectTemplate: TemplateRef<any>; //可选，下拉框模块
 
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
