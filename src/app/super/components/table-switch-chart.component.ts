@@ -10,14 +10,15 @@ declare const $: any;
     styles: []
 })
 export class TableSwitchChartComponent implements OnInit {
-    @Input() tableUrl: string;
-    @Input() chartUrl:string; //可选，若存在则表示图api与表api不一致，适用于图复杂（需要单独请求api）场景
+    @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
+    @Input() tableUrl: string;  //表格api地址；isOnlyChart=true时可不传
+    @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。isOnlyChart=true则为必选。
     @Input() apiEntity: object;
 
     @Input() id: string;
 
     @Input() chartId: string;
-    @Input() chartName:any;
+    @Input() chartName: any;
 
     @Input() isShowAccuracy: boolean; //可选，是否有精度下拉选择
 
@@ -73,8 +74,10 @@ export class TableSwitchChartComponent implements OnInit {
                 value: -1
             }
         ];
-        this.getTableData();
-        if(this.chartUrl){
+        if (!this.isOnlyChart && this.tableUrl) {
+            this.getTableData();
+        }
+        if (this.chartUrl) {
             this.getChartData();
         }
     }
@@ -100,7 +103,7 @@ export class TableSwitchChartComponent implements OnInit {
                     } else {
                         this.error = "";
                         this.tableData = data;
-                        if(!this.chartUrl){
+                        if (!this.chartUrl) {
                             this.drawChart(data);
                         }
                     }
@@ -152,8 +155,10 @@ export class TableSwitchChartComponent implements OnInit {
 
     SelectChange(key, value) {
         this.apiEntity[key] = value;
-        this.getTableData();
-        if(this.chartUrl){
+        if (!this.isOnlyChart && this.tableUrl) {
+            this.getTableData();
+        }
+        if (this.chartUrl) {
             this.getChartData();
         }
     }
