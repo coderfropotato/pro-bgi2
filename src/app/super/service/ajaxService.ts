@@ -82,7 +82,7 @@ export class AjaxService {
      */
     validTokenInLocal() {
         return !!localStorage.getItem("token");
-        
+
     }
 
     /**
@@ -100,5 +100,10 @@ export class AjaxService {
             })
         };
         return this.http.post(params["url"], params["data"], head);
+    }
+
+
+    mockLogin(){
+
     }
 }

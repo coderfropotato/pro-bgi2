@@ -253,3 +253,8 @@ button.btnActive {
 .hide {
     display: none;
 }
+
+.pagination-content button{
+    float:left;
+    margin:0 4px;
+}

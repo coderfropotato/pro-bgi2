@@ -23,39 +23,38 @@
     <hr>未选中
     <em *ngFor="let item of unChecked">{{item}}&emsp;</em> -->
     <ng-template #popoverTpl>
-        {{popoverText}}
+        {{popoverText | accuracyPipe : accuracy : popoverSearchType}}
     </ng-template>
     <!-- table head -->
     <div class="gene-table">
-        <ng-template #headerTemplate>
-            <div class="table-thead">
-                <div class="fLeft">
-                    <!-- 筛选 -->
-                    <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" nzTitle="筛选" nz-tooltip (click)="beginFilter()"></i>
-                    <!-- 下拉框 -->
-                    <!-- <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
+        <div class="table-thead tableHeader">
+            <div class="fLeft">
+                <!-- 筛选 -->
+                <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate" nz-tooltip
+                    (click)="beginFilter()"></i>
+                <!-- 下拉框 -->
+                <!-- <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
                         <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
                     </nz-select> -->
-                    <ng-container *ngTemplateOutlet="selectItems ? selectItems: ''"></ng-container>
-                </div>
-                <div class="fRight">
-                    <!-- 精度 -->
-                    <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'">
-                        <nz-option nzLabel="精度：1位小数" [nzValue]="1"></nz-option>
-                        <nz-option nzLabel="精度：2位小数" [nzValue]="2"></nz-option>
-                        <nz-option nzLabel="精度：3位小数" [nzValue]="3"></nz-option>
-                        <nz-option nzLabel="精度：4位小数" [nzValue]="4"></nz-option>
-                        <nz-option nzLabel="精度：5位小数" [nzValue]="5"></nz-option>
-                        <nz-option nzLabel="精度：6位小数" [nzValue]="6"></nz-option>
-                        <nz-option nzLabel="精度：7位小数" [nzValue]="7"></nz-option>
-                        <nz-option nzLabel="精度：全数据" [nzValue]="-1"></nz-option>
-                    </nz-select>
-                    <!-- 刷新、下载 -->
-                    <i class="anticon anticon-reload" nzTitle="刷新" nz-tooltip (click)="refresh()"></i>
-                    <i class="anticon anticon-download" nzTitle="下载" nz-tooltip></i>
-                </div>
+                <ng-container *ngTemplateOutlet="selectItems ? selectItems: ''"></ng-container>
             </div>
-        </ng-template>
+            <div class="fRight">
+                <!-- 精度 -->
+                <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'">
+                    <nz-option [nzLabel]="'accuracy.toFixedOne' | translate" [nzValue]="1"></nz-option>
+                    <nz-option [nzLabel]="'accuracy.toFixedTwo' | translate" [nzValue]="2"></nz-option>
+                    <nz-option [nzLabel]="'accuracy.toFixedThree' | translate" [nzValue]="3"></nz-option>
+                    <nz-option [nzLabel]="'accuracy.toFixedFour' | translate" [nzValue]="4"></nz-option>
+                    <nz-option [nzLabel]="'accuracy.toFixedFive' | translate" [nzValue]="5"></nz-option>
+                    <nz-option [nzLabel]="'accuracy.toFixedSix' | translate" [nzValue]="6"></nz-option>
+                    <nz-option [nzLabel]="'accuracy.toFixedSeven' | translate" [nzValue]="7"></nz-option>
+                    <nz-option [nzLabel]="'accuracy.toFixedAll' | translate" [nzValue]="-1"></nz-option>
+                </nz-select>
+                <!-- 刷新、下载 -->
+                <i class="anticon anticon-reload" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="refresh()"></i>
+                <app-grid-export [url]="url" [tableEntity]="tableEntity" [fileName]="fileName"></app-grid-export>
+            </div>
+        </div>
 
         <!-- root filter items -->
         <div class="table-top" *ngIf="rootHtmlString.length">
@@ -75,7 +74,7 @@
         <div class="table-content">
             <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" x:head.length*150+'px'-->
             <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="{ x:totalWidth }" [nzData]="dataSet"
-                [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" [nzTitle]="headerTemplate" nzBordered
+                [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"  nzBordered
                 [nzWidthConfig]="widthConfig">
                 <thead>
                     <tr>
@@ -123,12 +122,13 @@
                         <td nzLeft="0px" nzShowCheckbox [(nzChecked)]="d.checked" (nzCheckedChange)="refreshStatus($event,d)"></td>
                         <!-- 首列的二级头表格数据 -->
                         <td *ngFor="let two of (head[0].children.length?head[0].children:[head[0]]);index as i;trackBy:identity" [nzLeft]="colLeftConfig[i]"
-                            (mouseover)="setPopoverText(d[two['true_key']])" [nzContent]="popoverTpl" nzPlacement="right" nz-popover>
-                            {{d[two['true_key']]}}
+                            (mouseover)="setPopoverText(d[two['true_key']],two['searchType'])" [nzContent]="popoverTpl" nzPlacement="right"
+                            nz-popover>
+                            {{d[two['true_key']] | accuracyPipe : accuracy : two['searchType']}}
                         </td>
                         <!-- 其他列 -->
-                        <td *ngFor="let h of tbodyOutFirstCol" (mouseover)="setPopoverText(d[h['true_key']])" [nzContent]="popoverTpl" nzPlacement="right"
-                            nz-popover>
+                        <td *ngFor="let h of tbodyOutFirstCol" (mouseover)="setPopoverText(d[h['true_key']],h['searchType'])" [nzContent]="popoverTpl"
+                            nzPlacement="right" nz-popover>
                             {{d[h['true_key']] | accuracyPipe : accuracy : h['searchType'] }}
                         </td>
                     </tr>

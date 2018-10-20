@@ -2,12 +2,12 @@
 <app-add-column #addColumn [thead]="allThead" (addThead)="addThead($event)" (clearThead)="clearThead()"></app-add-column>
 <div class="transformation-table-component">
     <h4 *ngIf="geneCollectionId" (click)="deleteGeneCollection()">geneCollectionId:{{geneCollectionId}}</h4>
-    <div *ngIf="showDefault">
+    <div *ngIf="isFirst">
         <p style="text-align:center;">默认表</p>
         <app-geneTable #defaultTable url="http://localhost:8086/filter" [pageEntity]="defaultTableEntity" idFlag="transformation-table-default"
             [checkStatusInParams]="defaultTableCheckStatusInParams" [defaultChecked]="true"></app-geneTable>
     </div>
-    <div *ngIf="!showDefault">
+    <div *ngIf="!isFirst">
         <p style="text-align:center;">转换表</p>
         <app-geneTable #extendTable url="http://localhost:8086/tableReverse" [pageEntity]="extendTableEntity" idFlag="transformation-table-extendTable" [checkStatusInParams]="extendTableCheckStatusInParams"
             [defaultChecked]="true"></app-geneTable>

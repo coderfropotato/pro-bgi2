@@ -29,5 +29,29 @@
         "confirmButton": "确定",
         "clearButton": "清除",
         "cancelButton": "取消"
+    },
+    "tableButton":{
+        "refresh":"刷新",
+        "download":"下载",
+        "filter":"筛选"
+    },
+    "accuracy":{
+        "toFixedOne":"精度：1位小数",
+        "toFixedTwo":"精度：2位小数",
+        "toFixedThree":"精度：3位小数",
+        "toFixedFour":"精度：4位小数",
+        "toFixedFive":"精度：5位小数",
+        "toFixedSix":"精度：6位小数",
+        "toFixedSeven":"精度：7位小数",
+        "toFixedAll":"精度：全数据"
+    },
+    "pagination":{
+        "backWard":"上一页",
+        "forWard":"下一页",
+        "jump":"跳至",
+        "page":"页",
+        "pageSizeSelectTen":"10条/页",
+        "pageSizeSelectTwenty":"20条/页",
+        "pageSizeSelectForty":"40条/页"
     }
 }

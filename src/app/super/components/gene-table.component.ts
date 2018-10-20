@@ -34,10 +34,10 @@ export class GeneTableComponent implements OnInit {
     pageEntity: object;
     @Input()
     checkStatusInParams: boolean;
+    @Input() fileName:string;
     // select slot
     @Input()
     selectItems: TemplateRef<any>;
-
 
     @ViewChildren("child")
     children;
@@ -70,6 +70,7 @@ export class GeneTableComponent implements OnInit {
     };
 
     popoverText = "";
+    popoverSearchType = "";
 
     // filter html string
     filterHtmlString: object[] = [];
@@ -116,7 +117,7 @@ export class GeneTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.selectItems)
+        console.log(this.selectItems);
         this.init();
     }
 
@@ -525,8 +526,9 @@ export class GeneTableComponent implements OnInit {
     }
 
     // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
-    setPopoverText(text) {
+    setPopoverText(text,type) {
         this.popoverText = text;
+        this.popoverSearchType = type;
     }
 
     // 删除筛选条件
@@ -643,13 +645,11 @@ export class GeneTableComponent implements OnInit {
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
     }
 
-
     /**
      * @description  以下方法为外部调用
      * @author Yangwd<277637411@qq.com>
      * @memberof BigTableComponent
      */
-
 
     /**
      * @description  组件外设置内部查询参数 更新参数并发请求
@@ -658,7 +658,7 @@ export class GeneTableComponent implements OnInit {
      * @param {any} value
      * @memberof GeneTableComponent
      */
-    _setParamsOfEntity(key,value){
+    _setParamsOfEntity(key, value) {
         this.tableEntity[key] = value;
         this.getRemoteData();
     }
@@ -670,7 +670,7 @@ export class GeneTableComponent implements OnInit {
      * @param {any} value
      * @memberof GeneTableComponent
      */
-    _setParamsOfEntityWithoutRequest(key,value){
+    _setParamsOfEntityWithoutRequest(key, value) {
         this.tableEntity[key] = value;
     }
 
