@@ -10,14 +10,19 @@ declare const $: any;
     styles: []
 })
 export class TableSwitchChartComponent implements OnInit {
-    @Input() url: string;
+    @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
+    @Input() tableUrl: string;  //表格api地址；isOnlyChart=true时可不传
+    @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。isOnlyChart=true则为必选。
     @Input() apiEntity: object;
+
     @Input() id: string;
+
     @Input() chartId: string;
+    @Input() chartName: any;
 
-    @Input() isShowAccuracy: boolean;
+    @Input() isShowAccuracy: boolean; //可选，是否有精度下拉选择
 
-    @Input() selectTemplate: TemplateRef<any>;
+    @Input() selectTemplate: TemplateRef<any>; //可选，下拉框模块
 
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
@@ -69,27 +74,69 @@ export class TableSwitchChartComponent implements OnInit {
                 value: -1
             }
         ];
-        this.getData();
+        if (!this.isOnlyChart && this.tableUrl) {
+            this.getTableData();
+        }
+        if (this.chartUrl) {
+            this.getChartData();
+        }
     }
 
-    getData() {
+    /**
+     * 获取表格数据
+     */
+    getTableData() {
         this.loadingService.open("#" + this.id);
         this.ajaxService
             .getDeferData(
                 {
-                    url: this.url,
+                    url: this.tableUrl,
                     data: this.apiEntity
                 }
             )
             .subscribe(
                 (data: any) => {
-                    if (data.length == 0 || data.rows.length == 0 || $.isEmptyObject(data)) {
+                    if (data.length == 0 || $.isEmptyObject(data) || data.rows.length == 0) {
                         this.error = "nodata";
                     } else if (data.Error) {
                         this.error = "error";
                     } else {
                         this.error = "";
                         this.tableData = data;
+                        if (!this.chartUrl) {
+                            this.drawChart(data);
+                        }
+                    }
+                    this.loadingService.close("#" + this.id);
+
+                },
+                error => {
+                    this.loadingService.close("#" + this.id);
+                    this.error = error;
+                }
+            )
+    }
+
+    /**
+     * 获取图数据（复杂图的api与表api不是同一个）
+     */
+    getChartData() {
+        this.loadingService.open("#" + this.id);
+        this.ajaxService
+            .getDeferData(
+                {
+                    url: this.chartUrl,
+                    data: this.apiEntity
+                }
+            )
+            .subscribe(
+                (data: any) => {
+                    if (data.length == 0 || $.isEmptyObject(data)) {
+                        this.error = "nodata";
+                    } else if (data.Error) {
+                        this.error = "error";
+                    } else {
+                        this.error = "";
                         this.drawChart(data);
                     }
                     this.loadingService.close("#" + this.id);
@@ -106,13 +153,14 @@ export class TableSwitchChartComponent implements OnInit {
         this.drawChartEmit.emit(data);
     }
 
-    refresh() {
-        this.getData();
-    }
-
     SelectChange(key, value) {
         this.apiEntity[key] = value;
-        this.getData();
+        if (!this.isOnlyChart && this.tableUrl) {
+            this.getTableData();
+        }
+        if (this.chartUrl) {
+            this.getChartData();
+        }
     }
 
 }

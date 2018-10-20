@@ -12,15 +12,16 @@ import { NgZorroAntdModule } from "ng-zorro-antd";
 // route state keep alive
 import { SimpleReuseStrategy } from "./super/service/simpleReuseStrategy";
 // import component
-import { AppComponent } from "./app.component";
-import { LoginComponent } from "./pages/login/login.component";
-import { IndexComponent } from "./pages/mrna/index.component";
-import { cxzk1Component } from "./pages/mrna/cxzk1.component";
-import { cxzk2Component } from "./pages/mrna/cxzk2.component";
-import { NotFoundComponent } from "./pages/notFound.component";
-import { DnaIndexComponent } from "./pages/dna/index.component";
-import { JyzbdComponent } from "./pages/dna/jyzbd.component";
-import { AddColumnComponent } from "./super/components/add-column.component";
+import { AppComponent } from './app.component';
+import { LoginComponent } from './pages/login/login.component';
+import { IndexComponent } from './pages/mrna/index.component';
+import { cxzk1Component } from './pages/mrna/cxzk1.component';
+import { cxzk2Component } from './pages/mrna/cxzk2.component';
+import { NotFoundComponent } from './pages/notFound.component';
+import { DnaIndexComponent } from './pages/dna/index.component';
+import { JyzbdComponent } from './pages/dna/jyzbd.component';
+import {AddColumnComponent} from './super/components/add-column.component';
+import {ChartExportComponent} from './super/components/chart-export.component';
 
 import { FrametopComponent } from "./include/frametop.component";
 import { LeftsideComponent } from "./include/leftside.component";
@@ -236,6 +237,7 @@ export function createTranslateLoader(http: HttpClient) {
         JyzbdComponent,
         SyserrorComponent,
         AddColumnComponent,
+        ChartExportComponent,
         AddComponent,
         LittleTableComponent,
         BigTableComponent,
