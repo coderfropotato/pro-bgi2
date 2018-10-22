@@ -29,5 +29,29 @@
         "confirmButton":"confirm",
         "clearButton":"clear",
         "cancelButton":"cancel"
+    },
+    "tableButton":{
+        "refresh":"refresh",
+        "download":"download",
+        "filter":"filter"
+    },
+    "accuracy":{
+        "toFixedOne":"accuracy : fix(1)",
+        "toFixedTwo":"accuracy : fix(2)",
+        "toFixedThree":"accuracy : fix(3)",
+        "toFixedFour":"accuracy : fix(4)",
+        "toFixedFive":"accuracy : fix(5)",
+        "toFixedSix":"accuracy : fix(6)",
+        "toFixedSeven":"accuracy : fix(7)",
+        "toFixedAll":"accuracy : all"
+    },
+    "pagination":{
+        "backward":"Previous page",
+        "forward":"Next page",
+        "jump":"to",
+        "page":"page",
+        "pageSizeSelectTen":"10/page",
+        "pageSizeSelectTwenty":"20/page",
+        "pageSizeSelectForty":"40/page"
     }
 }

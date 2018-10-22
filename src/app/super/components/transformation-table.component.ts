@@ -14,7 +14,6 @@ import { Component, OnInit, ViewChild } from "@angular/core";
     styles: []
 })
 export class TransformationTableComponent implements OnInit {
-    showDefault: boolean = true;
     @ViewChild("defaultTable")
     defaultTable;
     @ViewChild("extendTable")
@@ -69,59 +68,6 @@ export class TransformationTableComponent implements OnInit {
      * 需要重置增删列
      */
     confirm() {
-        let paramsObject = {};
-        let entity = {};
-        let ajaxConfig = {
-            geneCollectionId: this.geneCollectionId,
-            tableEntity: {},
-            url: ""
-        };
-        if (this.isFirst) {
-            paramsObject = this.defaultTable._getInnerStatusParams();
-            entity = paramsObject["tableEntity"];
-            ajaxConfig["tableEntity"] = entity;
-            ajaxConfig["url"] = paramsObject["url"];
-            this.defaultUrl = paramsObject["url"];
-        } else {
-            // 循环转换
-            paramsObject = this.extendTable._getInnerStatusParams();
-            entity = paramsObject["tableEntity"];
-            ajaxConfig["tableEntity"] = entity;
-            // 如果基因集id被删除了 再进行转换需要带上url
-            if (this.geneCollectionId === "all") {
-                ajaxConfig["url"] = this.defaultUrl;
-            }
-        }
-        this.ajaxService
-            .getDeferData({
-                url: "http://localhost:8086/getGeneList",
-                data: ajaxConfig
-            })
-            .subscribe(
-                data => {
-                    this.geneCollectionId = data["geneCollectionId"];
-                    if (this.extendTable) {
-                        this.extendTable._setParamsOfEntityWithoutRequest(
-                            "geneCollectionId",
-                            this.geneCollectionId
-                        );
-                    } else {
-                        this.extendTableEntity[
-                            "geneCollectionId"
-                        ] = this.geneCollectionId;
-                    }
-
-                    this.addColumn._resetStatusWithoutEmit();
-
-                    if (!this.isFirst) {
-                        this.extendTable.initAllTableStatus();
-                        this.extendTable.init();
-                    }
-                    this.showDefault = false;
-                    this.isFirst = false;
-                },
-                error => console.log(error)
-            );
     }
 
     /**
@@ -130,10 +76,6 @@ export class TransformationTableComponent implements OnInit {
      * @memberof TransformationTableComponent
      */
     back() {
-        this.addColumn._resetStatusWithoutEmit();
-        this.geneCollectionId = "all";
-        this.showDefault = true;
-        this.isFirst = true;
     }
 
     /**
@@ -142,11 +84,6 @@ export class TransformationTableComponent implements OnInit {
      * @memberof TransformationTableComponent
      */
     deleteGeneCollection() {
-        this.geneCollectionId = "all";
-        this.extendTable._setParamsOfEntity(
-            "geneCollectionId",
-            this.geneCollectionId
-        );
     }
 
     addThead(thead) {
@@ -163,19 +100,5 @@ export class TransformationTableComponent implements OnInit {
         } else {
             this.extendTable._addThead([]);
         }
-    }
-
-    getGeneList(params) {
-        this.ajaxService
-            .getDeferData({
-                url: "http://localhost:8086/getGeneList",
-                data: params
-            })
-            .subscribe(
-                data => {
-                    return data["data"];
-                },
-                error => console.log(error)
-            );
     }
 }

@@ -63,7 +63,7 @@ export class FrametopComponent implements OnInit {
                                 this.exportPdfFlag = false;
                             });
                         }
-                    }, 300)
+                    }, 1000)
                 }
             });
     }
@@ -113,7 +113,7 @@ export class FrametopComponent implements OnInit {
     }
 
     analysis(){
-        let url = `${location.href.substring(0,location.href.indexOf('/report'))}/report/reanalysis/index` 
+        let url = `${location.href.substring(0,location.href.indexOf('/report'))}/report/reanalysis/index`
         window.open(url)
     }
 }

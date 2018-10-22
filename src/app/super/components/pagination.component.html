@@ -1,0 +1,20 @@
+<div *ngIf="total" class="pagination-content clearfix">
+    <p style="line-height:32px;margin:0;" class="fLeft">Total {{total | accuracyPipe : -1:'int'}} items&emsp;</p>
+    <button [disabled]="isLeft" (click)="handlerBackward()" nz-button nzType="default" [title]="'pagination.backward' | translate">
+        <i class="anticon anticon-left"></i>
+    </button>
+    <button *ngFor="let item of pageIndexList;index as i" nz-button nzType="default" [class.active]="item==pageIndex" (click)="handlerPageIndexClick(item)">{{item}}</button>
+    <button [disabled]="isRight" (click)="handlerForward()" nz-button nzType="default" [title]="'pagination.forward' | translate">
+        <i class="anticon anticon-right" [ngClass]></i>
+    </button>
+    <div class="fLeft">
+        &emsp;{{'pagination.jump' | translate}}
+        <input #pageIndexInput style="width: 50px"  nz-input [(ngModel)]="inputPageIndex" (keyup)="handlerKeyUp($event)"> {{'pagination.page' | translate}}&emsp;
+        <span style="padding-right:12px;" *ngIf="maxLimit">(max:{{maxLimit}})</span>&emsp;
+        <nz-select style="width: 120px;" [(ngModel)]="pageSize" (ngModelChange)="handlerPageSizeChange()">
+            <nz-option [nzValue]="10" [nzLabel]="'pagination.pageSizeSelectTen' | translate"></nz-option>
+            <nz-option [nzValue]="20" [nzLabel]="'pagination.pageSizeSelectTwenty' | translate"></nz-option>
+            <nz-option [nzValue]="40" [nzLabel]="'pagination.pageSizeSelectForty' | translate"></nz-option>
+        </nz-select>
+    </div>
+</div>

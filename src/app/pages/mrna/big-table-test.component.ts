@@ -6,15 +6,11 @@ import { Component, OnInit,ViewChild } from "@angular/core";
     styles: []
 })
 export class BigTableTestComponent implements OnInit {
-    @ViewChild('bigTable') bigTable;
-    pageEntity: object = {
-        sample:"bsa"
-    };
+    url:string = 'http://localhost:8086/filter';
+
     constructor() {}
 
     ngOnInit() {}
 
-    selectChange(){
-        this.bigTable._setParamsOfEntity('sample',this.pageEntity['sample']);
-    }
+
 }

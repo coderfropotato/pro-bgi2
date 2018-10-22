@@ -24,6 +24,8 @@ export class BigTableComponent implements OnInit {
     @ViewChildren("child") children;
     @Input() url: string;
     @Input() pageEntity: object;
+    @Input() fileName:string;
+
     tableEntity:object = {};
     // select slot
     @Input()
@@ -49,6 +51,7 @@ export class BigTableComponent implements OnInit {
     sortKey = null;
 
     popoverText = "";
+    popoverSearchType='';
 
     // filter html string
     filterHtmlString: object[] = [];
@@ -347,7 +350,8 @@ export class BigTableComponent implements OnInit {
     }
 
     // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
-    setPopoverText(text) {
+    setPopoverText(text,type) {
+        this.popoverSearchType = type;
         this.popoverText = text;
     }
 

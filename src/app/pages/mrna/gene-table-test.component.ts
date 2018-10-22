@@ -5,10 +5,10 @@ import { Subscription } from "rxjs";
 import { MessageService } from "../../super/service/messageService";
 
 @Component({
-    selector: "app-table",
-    templateUrl: "./table.component.html"
+    selector: "app-gene-table-test",
+    templateUrl: "./gene-table-test.component.html"
 })
-export class tableComponent implements OnInit {
+export class GeneTableTestComponent implements OnInit {
     subscription: Subscription;
     @ViewChild('geneTable') geneTable;
     pageEntity: object = {

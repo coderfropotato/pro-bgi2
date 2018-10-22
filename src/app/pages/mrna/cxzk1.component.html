@@ -1,4 +1,5 @@
 <div #cxzk1>
-    <h2>cxzk1 works!</h2>
+    <app-pagination [total]="total" [(pageSize)]="pageSize" (pageSizeChange)="sizeChange()" [(pageIndex)]="pageIndex" (pageIndexChange)="indexChange()" [maxLimit]="1000"></app-pagination>
+    <h2 (click)="changeTotal()">change total</h2>
     <div style="width:80%;height:600px;" class="chart-cxzk"></div>
 </div>

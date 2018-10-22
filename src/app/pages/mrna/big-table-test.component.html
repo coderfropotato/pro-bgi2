@@ -1,11 +1,4 @@
 <div class="big-table-test">
-    <ng-template #selectTemplate>
-        <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="pageEntity.sample" (ngModelChange)="selectChange()" [nzSize]="'small'">
-            <nz-option nzLabel="mrna" [nzValue]="'mrna'"></nz-option>
-            <nz-option nzLabel="dna" [nzValue]="'dna'"></nz-option>
-            <nz-option nzLabel="bsa" [nzValue]="'bsa'"></nz-option>
-        </nz-select>
-    </ng-template>
 
-    <app-big-table #bigTable [idFlag]="'big-table-test'" [selectItems]="selectTemplate" url="http://localhost:8086/filter" [pageEntity]="pageEntity"></app-big-table>
+    <app-big-table #bigTable [idFlag]="'big-table-test'"  [url]="url" [pageEntity]="pageEntity"></app-big-table>
 </div>
