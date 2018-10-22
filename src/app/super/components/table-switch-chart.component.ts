@@ -25,6 +25,8 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() selectTemplate: TemplateRef<any>; //可选，下拉框模块
 
+    @Input() setTemplate:TemplateRef<any>; //可选，设置模块
+
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
     // 双向绑定:变量名x，fn命名规范xChange
     @Input() isMultiSelect: boolean; //是否是多选

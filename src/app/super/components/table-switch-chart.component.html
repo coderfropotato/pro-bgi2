@@ -21,6 +21,8 @@
                 <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
                     <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>
                 </nz-select>
+                <!-- 设置 -->
+                <ng-container *ngTemplateOutlet="setTemplate ? setTemplate :''"></ng-container>
                 <!-- 刷新-->
                 <i *ngIf="!chartUrl" class="anticon anticon-sync" (click)="getTableData()" nz-tooltip nzTitle="刷新"></i>
                 <i *ngIf="chartUrl && isShowTable" class="anticon anticon-sync" (click)="getTableData()" nz-tooltip nzTitle="刷新"></i>
