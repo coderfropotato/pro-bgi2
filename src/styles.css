@@ -253,3 +253,11 @@ button.btnActive {
 .hide {
     display: none;
 }
+
+.switchBtn{
+    margin-right:10px;
+}
+
+.multiConfirmBtn{
+    margin-right:10px;
+}
