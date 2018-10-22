@@ -257,4 +257,6 @@ button.btnActive {
 .pagination-content button{
     float:left;
     margin:0 4px;
+    padding:0 12px;
 }
+
