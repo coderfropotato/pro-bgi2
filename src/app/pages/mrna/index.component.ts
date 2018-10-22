@@ -24,7 +24,7 @@ export class IndexComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.router.navigateByUrl('/report/mrna/cxzk1');
+        this.router.navigateByUrl('/report/mrna/cxzk2');
         this.getMenuList();
         this.getAddThead();
     }

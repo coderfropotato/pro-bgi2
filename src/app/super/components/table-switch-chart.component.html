@@ -16,7 +16,7 @@
             <div class="fRight">
                 <!-- 单选、多选 -->
                 <nz-switch *ngIf="!isShowTable && isHasMultiSelect" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="多选" nzUnCheckedChildren="单选"></nz-switch>
-                <button *ngIf="!isShowTable && isHasMultiSelect" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multiConfirm()">确定</button>
+                <button *ngIf="!isShowTable && isHasMultiSelect" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">确定</button>
                 <!-- 精度下拉框 -->
                 <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
                     <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>

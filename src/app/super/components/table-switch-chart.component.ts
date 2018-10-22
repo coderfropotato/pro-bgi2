@@ -26,9 +26,11 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() selectTemplate: TemplateRef<any>; //可选，下拉框模块
 
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
-    // 双向绑定
+    // 双向绑定:变量名x，fn命名规范xChange
     @Input() isMultiSelect: boolean; //是否是多选
-    @Output() isMultiSelectChange:EventEmitter<any> = new EventEmitter();
+    @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
+    //多选确定
+    @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter();
 
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
@@ -38,7 +40,6 @@ export class TableSwitchChartComponent implements OnInit {
 
     accuracyList: object[] = [];
     accuracy: number = -1;
-
 
     constructor(
         private ajaxService: AjaxService,
@@ -165,8 +166,8 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     //多选确定
-    multiConfirm() {
-
+    multipleConfirm() {
+        this.multipleConfirmEmit.emit();
     }
 
     //下拉框change

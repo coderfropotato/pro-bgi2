@@ -24,6 +24,7 @@ export class cxzk2Component implements OnInit {
 
     chart: any;
     isMultiSelect: boolean;
+    selectedData:object[]=[];
 
     constructor(
         private route: ActivatedRoute,
@@ -65,10 +66,8 @@ export class cxzk2Component implements OnInit {
                 enableChartSelect: true,
                 // selectedModule:"",
                 onselect: (d) => {
-                    let selectModule = this.chart.getChartSelectModule();
-                    console.log(this.isMultiSelect);
-                    console.log(selectModule);
-                    console.log(d);
+                    this.selectedData=d;
+                    console.log(this.selectedData);
                 },
                 el: "#chartId222",
                 type: "scatter",
@@ -2664,6 +2663,11 @@ export class cxzk2Component implements OnInit {
             this.chart.selectedModule = "single";
         }
         this.chart.setChartSelectModule(this.chart.selectedModule);
+    }
+
+    //多选确定
+    multipleConfirm(){
+        console.log(this.selectedData);
     }
 
 }
