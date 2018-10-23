@@ -35,4 +35,8 @@ export class GeneRelativeComponent implements OnInit {
     relative(type: string): void {
         console.log(type);
     }
+
+    initRelative(){
+
+    }
 }

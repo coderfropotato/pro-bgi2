@@ -1,4 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
+import { ColorPickerModule,ColorPickerDirective } from 'ngx-color-picker';
+
 import {
     HashLocationStrategy,
     LocationStrategy,
@@ -256,6 +258,7 @@ export function createTranslateLoader(http: HttpClient) {
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        ColorPickerModule,
         NgZorroAntdModule,
         ReactiveFormsModule,
         FormsModule,

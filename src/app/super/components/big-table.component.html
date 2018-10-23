@@ -124,8 +124,8 @@
                 </tbody>
             </nz-table>
             <div class="table-bottom">
-                <nz-pagination style="float:left;" [(nzPageIndex)]="tableEntity.pageIndex" [nzTotal]="total" [(nzPageSize)]="tableEntity.pageSize"
-                    (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" nzShowSizeChanger nzShowQuickJumper></nz-pagination>
+                <app-pagination style="float:left;" [(pageIndex)]="tableEntity.pageIndex" [total]="total" [(pageSize)]="tableEntity.pageSize"
+                    (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()"></app-pagination>
             </div>
             <app-error *ngIf="error" [error]="error"></app-error>
         </div>

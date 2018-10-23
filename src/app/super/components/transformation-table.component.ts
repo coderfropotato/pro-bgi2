@@ -21,32 +21,41 @@ export class TransformationTableComponent implements OnInit {
     @ViewChild("addColumn")
     addColumn;
 
+
+    moduleId :string = '001';
+    // moduleId url1 url2
+
     isFirst: boolean = true;
     defaultUrl: string = "";
     params: object;
     url: string;
     checkStatus: boolean;
     excludeGeneList: object;
-    geneCollectionId: string = "all";
+    geneCollectionId: string = null;
+    currentGeneTable:any = null;
 
-    defaultTableCheckStatusInParams: boolean = true;
+    defaultTableCheckStatusInParams: boolean = false;
     defaultTableEntity: object = {
         pageSize: 10,
         pageIndex: 1,
         sortValue: null,
         sortKey: null,
         searchList: [],
-        rootSearchContentList: []
+        isMatchAll:false,
+        rootSearchContentList: [],
+        geneListId:null
     };
 
-    extendTableCheckStatusInParams: boolean = true;
+    extendTableCheckStatusInParams: boolean = false;
     extendTableEntity: object = {
         pageSize: 10,
         pageIndex: 1,
         sortValue: null,
         sortKey: null,
         searchList: [],
-        rootSearchContentList: []
+        isMatchAll:false,
+        rootSearchContentList: [],
+        geneListId:null
     };
 
     allThead: any[] = [];
@@ -68,6 +77,36 @@ export class TransformationTableComponent implements OnInit {
      * 需要重置增删列
      */
     confirm() {
+        this.currentGeneTable = this.isFirst?this.defaultTable:this.extendTable;
+        // 获取当前表的内部状态
+        let tableInnerStatus = this.currentGeneTable._getInnerStatusParams();
+        // 获取基因集id
+        this.ajaxService.getDeferData({
+            data:{
+                moduleId:"001",
+                geneListId:this.geneCollectionId,
+                maskGene:tableInnerStatus['others'],
+                tableEntity:tableInnerStatus['tableEntity']
+            },
+            url:"http://localhost:8086/getGeneList"
+        }).subscribe(data=>{
+            this.geneCollectionId = data['id'];
+            // 是否是第一次转换 第一次转换就把id集合穿进去
+            if(this.isFirst){
+                this.extendTableEntity['geneListId'] = this.geneCollectionId;
+            }else{
+                // 第二次转换就设置参数 并 重置表格状态
+                // 把获取到的基因集id放在下一个表格的参数里面
+                this.currentGeneTable._setParamsOfEntity('geneListId',this.geneCollectionId);
+                this.currentGeneTable.initAllTableStatus();
+            }
+            // 重置增删列状态
+            this.addColumn._resetStatusWithoutEmit();
+            // 切换表格
+            this.isFirst = false;
+        },error=>{
+            console.log(error);
+        })
     }
 
     /**
@@ -76,6 +115,9 @@ export class TransformationTableComponent implements OnInit {
      * @memberof TransformationTableComponent
      */
     back() {
+        this.geneCollectionId = null;
+        this.addColumn._resetStatusWithoutEmit();
+        this.isFirst = true;
     }
 
     /**
@@ -84,6 +126,8 @@ export class TransformationTableComponent implements OnInit {
      * @memberof TransformationTableComponent
      */
     deleteGeneCollection() {
+        this.geneCollectionId = null;
+        this.currentGeneTable._setParamsOfEntity('isMatchAll',true);
     }
 
     addThead(thead) {

@@ -1,5 +1,6 @@
-import { Injectable } from "@angular/core";
+import { Injectable,TemplateRef } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
+import { NzModalService } from "ng-zorro-antd";
 
 /**
  * @description 小服务集合
@@ -12,8 +13,10 @@ import { DomSanitizer } from "@angular/platform-browser";
     providedIn: "root"
 })
 export class GlobalService {
-    constructor(private sanitizer: DomSanitizer) {
-    }
+    constructor(
+        private sanitizer: DomSanitizer,
+        private modalService: NzModalService
+    ) {}
 
     // 将表格的筛选条件装换成文字
     /*string       searchType    default regExp
@@ -126,7 +129,7 @@ export class GlobalService {
         }
     }
 
-    transformRootFilter(rootFilterList){
+    transformRootFilter(rootFilterList) {
         let text: string;
         let htmlStringList: object[] = [];
         // text = "<span>一级筛选条件:</span>&emsp;";
@@ -138,7 +141,7 @@ export class GlobalService {
                     el.filterNamezh
                 }</span>&nbsp;<font color="#f40">${el.filterType}</font>&nbsp;${
                     el.valueOne
-                }&emsp;`
+                }&emsp;`;
                 htmlStringList.push({ html: null, obj: el, beforeHtml: text });
             });
             return this.trustHtml(htmlStringList);
@@ -146,7 +149,6 @@ export class GlobalService {
             htmlStringList = [];
             return htmlStringList;
         }
-
     }
 
     // 将html字符串 绕过安全检查 生成可以直接通过[innerHTML]绑定的字符串
@@ -160,5 +162,34 @@ export class GlobalService {
             });
         }
         return html;
+    }
+
+    openColorPicker(
+        templateRef:TemplateRef<any>,
+        defaultColor:string,
+        confirmCallBack:object,
+        cancelCallBack:object,
+        posLeft?: string,
+        posTop?: String
+    ): void {
+        this.modalService.create({
+            nzMask: true,
+            nzContent: templateRef,
+            nzStyle: {
+                position: "absolute",
+                marginLeft:`${posLeft?0:-138}px`,
+                marginTop:`${posTop?0:-250}px`,
+                top: posTop || "50%",
+                left: posLeft || "50%",
+            },
+            nzWidth:276,
+            nzMaskClosable:true,
+            nzOnOk:()=>{
+                confirmCallBack();
+            },
+            nzOnCancel(){
+                cancelCallBack();
+            }
+        });
     }
 }
