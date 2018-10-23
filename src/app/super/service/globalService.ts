@@ -167,8 +167,8 @@ export class GlobalService {
     openColorPicker(
         templateRef:TemplateRef<any>,
         defaultColor:string,
-        confirmCallBack:object,
-        cancelCallBack:object,
+        confirmCallBack:any,
+        cancelCallBack:any,
         posLeft?: string,
         posTop?: String
     ): void {

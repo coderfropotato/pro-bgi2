@@ -225,7 +225,7 @@ const ROUTES: Routes = [
 ];
 
 export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, "../assets/", ".json");
+    return new TranslateHttpLoader(http, "../assets/lang/", ".json");
 }
 
 @NgModule({
