@@ -140,8 +140,8 @@ export class GeneTableComponent implements OnInit {
             }
         ];
 
-        this.tableEntity["pageIndex"] = this.pageEntity["pageIndex"] || 1;
-        this.tableEntity["pageSize"] = this.pageEntity["pageSize"] || 10;
+        this.tableEntity["pageIndex"] =  1;
+        this.tableEntity["pageSize"] =  10;
         this.tableEntity["sortValue"] = null;
         this.tableEntity["sortKey"] = null;
         this.tableEntity["searchList"] = [];
