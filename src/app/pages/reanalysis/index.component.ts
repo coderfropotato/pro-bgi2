@@ -1,3 +1,4 @@
+import { StoreService } from './../../super/service/storeService';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import config from '../../../config';
@@ -10,11 +11,12 @@ export class ReanalysisIndexComponent implements OnInit {
 
     constructor(
         private routes: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private storeService:StoreService
     ) { }
 
     ngOnInit() {
-        
+        console.log(this.storeService.getLang())
     }
 
 }

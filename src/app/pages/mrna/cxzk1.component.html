@@ -1,5 +1,12 @@
 <div #cxzk1>
     <app-pagination [total]="total" [(pageSize)]="pageSize" (pageSizeChange)="sizeChange()" [(pageIndex)]="pageIndex" (pageIndexChange)="indexChange()" [maxLimit]="1000"></app-pagination>
-    <h2 (click)="changeTotal()">change total</h2>
-    <div style="width:80%;height:600px;" class="chart-cxzk"></div>
+    <h2 (click)="changeTotal()" [style.color]="color">change total</h2>
+
+    <!-- color picker test -->
+    <div (click)="colorPickerTest()">color picker test  {{color}}</div> 
+    <!-- color picker template -->
+    <ng-template #colorPickerTpl>
+        <input [(colorPicker)]="color"  style="opacity:0;" [cpDialogDisplay]="'inline'"  [cpToggle]="true" [cpAddColorButton]="true" [cpPresetColors]="[]"/>
+    </ng-template>
+    
 </div>

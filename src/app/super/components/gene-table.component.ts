@@ -117,7 +117,6 @@ export class GeneTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.selectItems);
         this.init();
     }
 
@@ -140,8 +139,8 @@ export class GeneTableComponent implements OnInit {
             }
         ];
 
-        this.tableEntity["pageIndex"] = this.pageEntity["pageIndex"] || 1;
-        this.tableEntity["pageSize"] = this.pageEntity["pageSize"] || 10;
+        this.tableEntity["pageIndex"] =  1;
+        this.tableEntity["pageSize"] =  10;
         this.tableEntity["sortValue"] = null;
         this.tableEntity["sortKey"] = null;
         this.tableEntity["searchList"] = [];
@@ -218,6 +217,7 @@ export class GeneTableComponent implements OnInit {
                 this.totalWidth = tempObj["totalWidth"];
                 // 根据表头生成sortmap
                 this.generatorSortMap();
+                if(data.total!=this.total) this.tableEntity['pageIndex'] = 1;
                 this.total = data.total;
                 this.dataSet = data.rows;
                 // 标志key
@@ -288,6 +288,7 @@ export class GeneTableComponent implements OnInit {
         this.unionSearchConditionList = [];
         this.tableEntity["sortKey"] = null;
         this.tableEntity["sortValue"] = null;
+        this.accuracy = -1;
         this.beginFilterStatus = false;
         this.interConditionHtmlString = this.globalService.transformFilter(
             this.interSearchConditionList
@@ -643,6 +644,11 @@ export class GeneTableComponent implements OnInit {
         colLeftConfig.map((v, i) => (colLeftConfig[i] += "px"));
         totalWidth = tempTotalWidth + "px";
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
+    }
+
+    pageSizeChange(){
+        this.tableEntity['pageIndex'] = 1;
+        this.getRemoteData(true);
     }
 
     /**

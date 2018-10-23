@@ -165,6 +165,7 @@ export class BigTableComponent implements OnInit {
                 this.totalWidth = tempObj["totalWidth"];
                 // 根据表头生成sortmap
                 this.generatorSortMap();
+                if(data.total!=this.total) this.tableEntity['pageIndex'] = 1;
                 this.total = data.total;
                 this.dataSet = data.rows;
                 // 标志key
@@ -173,6 +174,7 @@ export class BigTableComponent implements OnInit {
                     : this.head[0]["true_key"];
             },
             err => {
+                this.total = 0;
                 console.log(err);
             }
         );
@@ -463,6 +465,11 @@ export class BigTableComponent implements OnInit {
         colLeftConfig.map((v, i) => (colLeftConfig[i] += "px"));
         totalWidth = tempTotalWidth + "px";
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
+    }
+
+    pageSizeChange(){
+        this.tableEntity['pageIndex'] = 1;
+        this.getRemoteData(true);
     }
 
     /**

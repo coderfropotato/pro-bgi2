@@ -1,0 +1,194 @@
+@import '../../../../node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css';
+@import './setting.scss';
+
+.table-content {
+    width: 100%;
+    min-height: 400px;
+    position: relative;
+}
+
+.table-content .error-msg {
+    text-align: center;
+    line-height: 400px;
+}
+
+.table-bottom {
+    padding: 10px 16px;
+    background-color: #f5f5f5;
+}
+
+.table-top {
+    padding: 8px 16px;
+    background-color: #f5f5f5;
+}
+
+.table-top .filter-item {
+    padding: 6px 4px;
+    background-color: #fff;
+    border: 1px solid #f5f5f5;
+    border-radius: 2px;
+    margin-left: 4px;
+}
+
+.head-item {
+    display: inline-block;
+    padding: 8px;
+    line-height: 1;
+    background-color: #fff;
+    border: 1px solid #eee;
+    color: #386cca;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.head-item.active {
+    background-color: #ccc;
+    color: #fff;
+}
+
+.head-item:hover {
+    opacity: 0.7;
+}
+
+.add-head {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.add-head button {
+    width: 96px;
+    margin-right: 26px;
+}
+
+.add-head>div {
+    flex: 1;
+}
+
+.add-foot button {
+    float: right;
+    margin-left: 8px;
+}
+
+.add-foot:after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
+.add-thead-head-item {
+    position: relative;
+}
+
+.add-thead-head-item b {
+    position: absolute;
+    text-align: center;
+    right: -20px;
+    top: -12px;
+    height: 16px;
+    width: 16px;
+    font-size: 12px;
+    line-height: 16px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #52c41a
+}
+
+.tag-wrap {
+    overflow-x: auto;
+}
+
+.tag-wrap .ant-tag {
+    margin-bottom: 6px;
+}
+
+.little-table {
+    position: relative;
+}
+
+.table-thead i {
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.table-thead button i {
+    margin-right: 0px;
+    font-size: 16px;
+}
+
+.table-thead::after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.tableHeader {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-bottom: 0;
+}
+
+.fLeft {
+    float: left;
+}
+
+.fRight {
+    float: right;
+}
+
+.tableSwitchChart {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.clearfix {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+button.btnActive {
+    border: 1px solid $btn_active_color;
+    color: $btn_active_color;
+}
+
+.tableSwitchChart {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.clearfix {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.table-bottom {
+    height: 52px;
+}
+
+.chartView {
+    border: 1px solid #ddd;
+}
+
+.center {
+    text-align: center !important;
+}
+
+.hide {
+    display: none;
+}
+
+.switchBtn {
+    margin-right: 10px;
+}
+
+.multiConfirmBtn {
+    margin-right: 10px;
+}
+
+.pagination-content button {
+    float: left;
+    margin: 0 4px;
+    padding: 0 12px;
+}
