@@ -35,7 +35,7 @@
         </div>
     </ng-template>
 
-    <div *ngIf="headers else headerTemplate"></div>
+    <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
 
     <!-- table：固定表头-->
     <nz-table nzBordered nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="{ y: '400px' }" [nzSize]="'small'" *ngIf="isShowTable && !error">
@@ -52,7 +52,7 @@
     </nz-table>
 
     <!-- chart -->
-    <div class="chartView" [attr.id]="chartId" [class.hide]="isShowTable || error">
+    <div class="chartView" [attr.id]="chartId" [hidden]="isShowTable || error">
 
     </div>
 
