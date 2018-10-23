@@ -117,7 +117,6 @@ export class GeneTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.selectItems);
         this.init();
     }
 
