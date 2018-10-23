@@ -254,9 +254,16 @@ button.btnActive {
     display: none;
 }
 
-.pagination-content button{
-    float:left;
-    margin:0 4px;
-    padding:0 12px;
+.switchBtn {
+    margin-right: 10px;
 }
 
+.multiConfirmBtn {
+    margin-right: 10px;
+}
+
+.pagination-content button {
+    float: left;
+    margin: 0 4px;
+    padding: 0 12px;
+}

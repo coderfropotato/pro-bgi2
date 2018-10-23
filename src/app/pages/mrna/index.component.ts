@@ -24,7 +24,7 @@ export class IndexComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.router.navigateByUrl('/report/mrna/cxzk1');
+        this.router.navigateByUrl('/report/mrna/net');
         this.getMenuList();
         this.getAddThead();
     }
@@ -58,11 +58,11 @@ export class IndexComponent implements OnInit {
                         title: "GeneId 大表",
                         isExport: true
                     },
-                    // {
-                    //     url: "mrna/tableSwitchChart",
-                    //     title: "图表切换",
-                    //     isExport: true
-                    // },
+                    {
+                        url: "mrna/net",
+                        title: "网络图",
+                        isExport: true
+                    },
                     {
                         url: "mrna/addColumn",
                         title: "增删列",

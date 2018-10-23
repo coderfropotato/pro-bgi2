@@ -19,11 +19,12 @@ import { LoginComponent } from './pages/login/login.component';
 import { IndexComponent } from './pages/mrna/index.component';
 import { cxzk1Component } from './pages/mrna/cxzk1.component';
 import { cxzk2Component } from './pages/mrna/cxzk2.component';
+import { netComponent } from './pages/mrna/net.component';
 import { NotFoundComponent } from './pages/notFound.component';
 import { DnaIndexComponent } from './pages/dna/index.component';
 import { JyzbdComponent } from './pages/dna/jyzbd.component';
-import {AddColumnComponent} from './super/components/add-column.component';
-import {ChartExportComponent} from './super/components/chart-export.component';
+import { AddColumnComponent } from './super/components/add-column.component';
+import { ChartExportComponent } from './super/components/chart-export.component';
 
 import { FrametopComponent } from "./include/frametop.component";
 import { LeftsideComponent } from "./include/leftside.component";
@@ -147,6 +148,14 @@ const ROUTES: Routes = [
                     keep: true,
                     module: "cxzk2"
                 }
+            },
+            {
+                path: "net",
+                component: netComponent,
+                data: {
+                    keep: true,
+                    module: "net"
+                }
             }
         ]
     },
@@ -226,6 +235,7 @@ export function createTranslateLoader(http: HttpClient) {
         IndexComponent,
         cxzk1Component,
         cxzk2Component,
+        netComponent,
         GeneTableTestComponent,
         GeneTableComponent,
         NotFoundComponent,
@@ -288,4 +298,4 @@ export function createTranslateLoader(http: HttpClient) {
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

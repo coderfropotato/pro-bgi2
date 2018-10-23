@@ -13,7 +13,8 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
     @Input() tableUrl: string;  //表格api地址；isOnlyChart=true时可不传
     @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。isOnlyChart=true则为必选。
-    @Input() apiEntity: object;
+
+    @Input() apiEntity: object;  //api请求参数
 
     @Input() id: string;
 
@@ -23,6 +24,15 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() isShowAccuracy: boolean; //可选，是否有精度下拉选择
 
     @Input() selectTemplate: TemplateRef<any>; //可选，下拉框模块
+
+    @Input() setTemplate:TemplateRef<any>; //可选，设置模块
+
+    @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
+    // 双向绑定:变量名x，fn命名规范xChange
+    @Input() isMultiSelect: boolean; //是否是多选
+    @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
+    //多选确定
+    @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter();
 
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
@@ -37,7 +47,6 @@ export class TableSwitchChartComponent implements OnInit {
         private ajaxService: AjaxService,
         private loadingService: LoadingService
     ) { }
-
 
     ngOnInit() {
         this.accuracyList = [
@@ -153,6 +162,17 @@ export class TableSwitchChartComponent implements OnInit {
         this.drawChartEmit.emit(data);
     }
 
+    //单多选按钮改变状态时的事件：获取当前状态（单/多选）
+    getSelectModule() {
+        this.isMultiSelectChange.emit(this.isMultiSelect);
+    }
+
+    //多选确定
+    multipleConfirm() {
+        this.multipleConfirmEmit.emit();
+    }
+
+    //下拉框change
     SelectChange(key, value) {
         this.apiEntity[key] = value;
         if (!this.isOnlyChart && this.tableUrl) {

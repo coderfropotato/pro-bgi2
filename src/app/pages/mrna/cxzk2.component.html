@@ -8,6 +8,23 @@
         </nz-select>
     </ng-template>
 
-    <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [tableUrl]="tableUrl" [chartUrl]="chartUrl" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'chartId222'"
-        [chartName]="'散点图'"></app-table-switch-chart>
+    <ng-template #setTemplate>
+        <nz-dropdown [nzPlacement]="'bottomRight'">
+            <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown></i>
+            <ul nz-menu>
+                <li nz-menu-item>
+                    <a>1st menu item</a>
+                </li>
+                <li nz-menu-item>
+                    <a>2nd menu item</a>
+                </li>
+                <li nz-menu-item>
+                    <a>3rd menu item</a>
+                </li>
+            </ul>
+        </nz-dropdown>
+    </ng-template>
+
+    <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect" (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
+        [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
 </div>
