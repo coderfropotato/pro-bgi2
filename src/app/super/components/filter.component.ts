@@ -1,4 +1,4 @@
-import { StoreService } from './../service/storeService';
+import { StoreService } from "./../service/storeService";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 
@@ -23,8 +23,8 @@ export class FilterComponent implements OnInit {
             小于(<)     $lt
             大于等于（>=）  $gte
             小于等于（<=）  $lte
-            绝对值>=     gteabs
-            绝对值>      gtabs
+            绝对值>=     $gteabs
+            绝对值>      $gtabs
         */
 
     // 外部数据类型
@@ -44,7 +44,7 @@ export class FilterComponent implements OnInit {
     deleteData: EventEmitter<any> = new EventEmitter();
 
     filter: object;
-    radioValue:string ;
+    radioValue: string;
 
     // 当前筛选类型  in gt equap ...
     selectType: string;
@@ -52,13 +52,13 @@ export class FilterComponent implements OnInit {
     visible: boolean = false;
 
     // 国际化
-    closeButtonText:string;
-    clearButtonText:string;
-    confirmButtonText:string;
+    closeButtonText: string;
+    clearButtonText: string;
+    confirmButtonText: string;
 
     constructor(
-        private translate:TranslateService,
-        private storeService:StoreService
+        private translate: TranslateService,
+        private storeService: StoreService
     ) {
         let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
@@ -76,7 +76,7 @@ export class FilterComponent implements OnInit {
             default:
                 this.selectType = "range";
         }
-        this.radioValue = 'inter';
+        this.radioValue = "inter";
         this.filter = {
             regExp: "",
             rangeA: null,
@@ -87,10 +87,10 @@ export class FilterComponent implements OnInit {
             gt: null,
             lt: null,
             gte: null,
-            lte: null
+            lte: null,
+            gteabs: null,
+            gtabs: null
         };
-
-
     }
 
     // 确定
@@ -127,9 +127,22 @@ export class FilterComponent implements OnInit {
             case "$lte":
                 valueOne = this.filter["lte"];
                 break;
+            case "$gteabs":
+                valueOne = this.filter["gteabs"];
+                break;
+            case "$gtabs":
+                valueOne = this.filter["gtabs"];
+                break;
         }
 
-        this.emit([this.filterName,this.filterNamezh, this.selectType, valueOne, valueTwo,this.radioValue]);
+        this.emit([
+            this.filterName,
+            this.filterNamezh,
+            this.selectType,
+            valueOne,
+            valueTwo,
+            this.radioValue
+        ]);
         this.visible = false;
         this.filtering = true;
     }
@@ -154,17 +167,21 @@ export class FilterComponent implements OnInit {
         // 隐藏筛选面板
         this.visible = false;
         // 通知表格删除 筛选条件为  filterName 类型为beforeFilterType 的 筛选对象
-        this.deleteData.emit([this.filterName,this.filterNamezh, beforeFilterType]);
+        this.deleteData.emit([
+            this.filterName,
+            this.filterNamezh,
+            beforeFilterType
+        ]);
     }
 
     // 外部更新内部筛选条件  需要带上交并集类型
     _outerUpdate(
         filterName: string,
-        filterNamezh:string,
+        filterNamezh: string,
         filterType: string,
         filterValueOne: any,
         filterValueTwo: any,
-        crossUnion:string
+        crossUnion: string
     ): void {
         this.selectType = filterType;
         this.radioValue = crossUnion;
@@ -178,7 +195,9 @@ export class FilterComponent implements OnInit {
             gt: null,
             lt: null,
             gte: null,
-            lte: null
+            lte: null,
+            gteabs: null,
+            gtabs: null
         };
 
         switch (filterType) {
@@ -210,6 +229,12 @@ export class FilterComponent implements OnInit {
             case "$lte":
                 this.filter["lte"] = filterValueOne;
                 break;
+            case "$gteabs":
+                this.filter["gteabs"] = filterValueOne;
+                break;
+            case "$gtabs":
+                this.filter["gtabs"] = filterValueOne;
+                break;
         }
 
         // 如果外部更新的字段名称和当前筛选面板的字段一样  那就更新内部筛选条件 并且状态改成筛选中；
@@ -219,8 +244,12 @@ export class FilterComponent implements OnInit {
     /*
         外部删除条件
     */
-    _outerDelete(filterName: string, filterNamezh:string,filterType: string) {
-        if (this.filterName === filterName && this.filterNamezh === filterNamezh &&  this.selectType === filterType) {
+    _outerDelete(filterName: string, filterNamezh: string, filterType: string) {
+        if (
+            this.filterName === filterName &&
+            this.filterNamezh === filterNamezh &&
+            this.selectType === filterType
+        ) {
             // 初始化之前存之前的筛选类型
             let beforeFilterType = this.selectType;
             // 初始化筛选面板
@@ -230,9 +259,13 @@ export class FilterComponent implements OnInit {
             // 隐藏筛选面板
             this.visible = false;
             // 通知表格删除 筛选条件为  filterName 类型为beforeFilterType 的 筛选对象
-            this.deleteData.emit([this.filterName,this.filterNamezh, beforeFilterType]);
-        }else{
-            console.log('else');
+            this.deleteData.emit([
+                this.filterName,
+                this.filterNamezh,
+                beforeFilterType
+            ]);
+        } else {
+            console.log("else");
         }
     }
 }

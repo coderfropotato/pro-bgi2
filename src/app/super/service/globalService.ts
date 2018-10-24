@@ -1,4 +1,4 @@
-import { Injectable,TemplateRef } from "@angular/core";
+import { Injectable, TemplateRef } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { NzModalService } from "ng-zorro-antd";
 
@@ -119,6 +119,20 @@ export class GlobalService {
                             el.valueOne
                         }&emsp;`;
                         break;
+                    case "$gteabs":
+                        text = `<span>${
+                            el.filterNamezh
+                        }</span>&nbsp;<font color="#f40">abs &gt;=</font>&nbsp;${
+                            el.valueOne
+                        }&emsp;`;
+                        break;
+                    case "$gtabs":
+                        text = `<span>${
+                            el.filterNamezh
+                        }</span>&nbsp;<font color="#f40">abs &gt;</font>&nbsp;${
+                            el.valueOne
+                        }&emsp;`;
+                        break;
                 }
                 htmlStringList.push({ html: null, obj: el, beforeHtml: text });
             });
@@ -165,10 +179,10 @@ export class GlobalService {
     }
 
     openColorPicker(
-        templateRef:TemplateRef<any>,
-        defaultColor:string,
-        confirmCallBack:any,
-        cancelCallBack:any,
+        templateRef: TemplateRef<any>,
+        defaultColor: string,
+        confirmCallBack: any,
+        cancelCallBack: any,
         posLeft?: string,
         posTop?: String
     ): void {
@@ -177,17 +191,17 @@ export class GlobalService {
             nzContent: templateRef,
             nzStyle: {
                 position: "absolute",
-                marginLeft:`${posLeft?0:-138}px`,
-                marginTop:`${posTop?0:-250}px`,
+                marginLeft: `${posLeft ? 0 : -138}px`,
+                marginTop: `${posTop ? 0 : -250}px`,
                 top: posTop || "50%",
-                left: posLeft || "50%",
+                left: posLeft || "50%"
             },
-            nzWidth:276,
-            nzMaskClosable:true,
-            nzOnOk:()=>{
+            nzWidth: 276,
+            nzMaskClosable: true,
+            nzOnOk: () => {
                 confirmCallBack();
             },
-            nzOnCancel(){
+            nzOnCancel() {
                 cancelCallBack();
             }
         });
