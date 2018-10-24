@@ -76,9 +76,7 @@ export class TransformationTableComponent implements OnInit {
      * 需要重置增删列
      */
     confirm() {
-        this.currentGeneTable = this.isFirst
-            ? this.defaultTable
-            : this.extendTable;
+        this.currentGeneTable = this.isFirst ? this.defaultTable : this.extendTable;
         // 获取当前表的内部状态
         let tableInnerStatus = this.currentGeneTable._getInnerStatusParams();
         // 获取基因集id
@@ -97,15 +95,13 @@ export class TransformationTableComponent implements OnInit {
                     this.geneCollectionId = data["id"];
                     // 是否是第一次转换 第一次转换就把id集合穿进去
                     if (this.isFirst) {
-                        this.extendTableEntity[
-                            "geneListId"
-                        ] = this.geneCollectionId;
+                        this.extendTableEntity[ "geneListId" ] = this.geneCollectionId;
                     } else {
                         // 第二次转换就设置参数 并 重置表格状态
                         // 把获取到的基因集id放在下一个表格的参数里面
                         this.currentGeneTable.initAllTableStatus();
-                        this.currentGeneTable._setParamsOfEntityWithoutRequest("isMatchAll",false);
-                        this.currentGeneTable._setParamsOfEntity("geneListId",this.geneCollectionId);
+                        this.currentGeneTable._setParamsOfEntityWithoutRequest( "isMatchAll", false );
+                        this.currentGeneTable._setParamsOfEntity( "geneListId", this.geneCollectionId );
                     }
                     // 重置增删列状态
                     this.addColumn._resetStatusWithoutEmit();
@@ -113,9 +109,7 @@ export class TransformationTableComponent implements OnInit {
                     this.isFirst = false;
                     // 切换完成重新指定当前表格
                     setTimeout(() => {
-                        this.currentGeneTable = this.isFirst
-                            ? this.defaultTable
-                            : this.extendTable;
+                        this.currentGeneTable = this.isFirst ? this.defaultTable : this.extendTable;
                     }, 30);
                 },
                 error => {
@@ -146,14 +140,10 @@ export class TransformationTableComponent implements OnInit {
     }
 
     addThead(thead) {
-        this.isFirst
-            ? this.defaultTable._addThead(thead)
-            : this.extendTable._addThead(thead);
+        this.isFirst ? this.defaultTable._addThead(thead) : this.extendTable._addThead(thead);
     }
 
     clearThead() {
-        this.isFirst
-            ? this.defaultTable._addThead([])
-            : this.extendTable._addThead([]);
+        this.isFirst ? this.defaultTable._addThead([]) : this.extendTable._addThead([]);
     }
 }

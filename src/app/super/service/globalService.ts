@@ -180,7 +180,6 @@ export class GlobalService {
 
     openColorPicker(
         templateRef: TemplateRef<any>,
-        defaultColor: string,
         confirmCallBack: any,
         cancelCallBack: any,
         posLeft?: string,
