@@ -1,6 +1,6 @@
 import { AjaxService } from "./../service/ajaxService";
 import { Component, OnInit, Input } from "@angular/core";
-
+declare const $:any;
 @Component({
     selector: "app-grid-export",
     template: `<i class="anticon anticon-download" [nzTitle]="'tableButton.download' | translate" nz-tooltip (click)="download()"></i>`,
@@ -18,14 +18,16 @@ export class GridExportComponent implements OnInit {
 
     ngOnInit() {}
 
+
     download() {
-        this.tableEntity["isExport"] = true;
-        this.tableEntity["fileName"] = this.fileName || '表格下载';
+        let entity = $.extend(true,{},this.tableEntity);
+        entity["isExport"] = true;
+        entity["fileName"] = this.fileName || '表格下载';
 
         this.ajaxService
             .getDeferData({
                 url: this.url,
-                data: this.tableEntity
+                data: entity
             })
             .subscribe(
                 data => {},

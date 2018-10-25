@@ -6,15 +6,17 @@
             <!--  ngModelChange="handlerSelectChange()" -->
             <nz-select style="width: 160px;" nzSize="default" [(ngModel)]="selectType" [nzAllowClear]="false"
                 nzPlaceHolder="Choose">
-                <nz-option *ngIf="searchType==='string'" nzValue='regExp' nzLabel="{{'like' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='range' nzLabel="{{'range' | translate}}"></nz-option>
-                <nz-option nzValue='equal' nzLabel="{{'equal' | translate}}"></nz-option>
-                <nz-option nzValue='$ne' nzLabel="{{'ne' | translate}}"></nz-option>
-                <nz-option nzValue='$in' nzLabel="{{'in'| translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$gt' nzLabel="{{'gt' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$lt' nzLabel="{{'lt' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$gte' nzLabel="{{'gte' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$lte' nzLabel="{{'lte' | translate}}"></nz-option>
+                <nz-option *ngIf="searchType==='string'" nzValue='regExp' nzLabel="{{'filterPanel.like' | translate}}"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue='range' nzLabel="{{'filterPanel.range' | translate}}"></nz-option>
+                <nz-option nzValue='equal' nzLabel="{{'filterPanel.equal' | translate}}"></nz-option>
+                <nz-option nzValue='$ne' nzLabel="{{'filterPanel.ne' | translate}}"></nz-option>
+                <nz-option nzValue='$in' nzLabel="{{'filterPanel.in'| translate}}"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue='$gt' nzLabel="{{'filterPanel.gt' | translate}}"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue='$lt' nzLabel="{{'filterPanel.lt' | translate}}"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue='$gte' nzLabel="{{'filterPanel.gte' | translate}}"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue='$lte' nzLabel="{{'filterPanel.lte' | translate}}"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue='$gteabs' nzLabel="{{'filterPanel.gteabs' | translate}}"></nz-option>
+                <nz-option *ngIf="searchType!=='string'" nzValue='$gtabs' nzLabel="{{'filterPanel.gtabs' | translate}}"></nz-option>
             </nz-select>
         </div>
         <div class="form">
@@ -35,6 +37,10 @@
                 [(ngModel)]="filter.gte">
             <input *ngIf="searchType!=='string' && selectType==='$lte'" type="number" nz-input placeholder="elt" nzSize="default"
                 [(ngModel)]="filter.lte">
+            <input *ngIf="searchType!=='string' && selectType==='$gteabs'" type="number" nz-input placeholder="gteabs" nzSize="default"
+                [(ngModel)]="filter.gteabs">
+            <input *ngIf="searchType!=='string' && selectType==='$gtabs'" type="number" nz-input placeholder="gtabs" nzSize="default"
+                [(ngModel)]="filter.gtabs">
         </div>
         <!-- 交并集选择 -->
         <div>
@@ -45,9 +51,13 @@
         </div>
         <!-- button group -->
         <div class="btn-group">
-            <button nz-button nzType="primary" nzSize="small" (click)="confirm()">{{'filterPanel.confirmButtonText'| translate}}</button>
-            <button nz-button nzType="default" nzSize="small" (click)="clear()">{{'filterPanel.clearButtonText' | translate}}</button>
-            <button nz-button nzType="default" nzSize="small" (click)="close()">{{'filterPanel.closeButtonText' | translate}}</button>
+            <button nz-button nzType="primary" nzSize="small" (click)="confirm()">{{'filterPanel.confirmButtonText'|
+                translate}}</button>
+            <button nz-button nzType="default" nzSize="small" (click)="clear()">{{'filterPanel.clearButtonText' |
+                translate}}</button>
+            <button nz-button nzType="default" nzSize="small" (click)="close()">{{'filterPanel.closeButtonText' |
+                translate}}</button>
         </div>
     </div>
 </nz-dropdown>
+

@@ -1,6 +1,7 @@
 const config: object = {
     url: "http://localhost:8086",
-    containProject: ["mrna", "dna"]
+    javaUrl:"",
+    pyUrl:""
 };
 
 export default config;

@@ -13,11 +13,14 @@ declare const d4: any;
 })
 export class cxzk1Component implements OnInit {
     subscription: Subscription;
-    
+
     // pagination test data
     total: number = 100000;
     pageSize: number = 10;
     pageIndex: number = 1;
+
+    // preset colors
+    presetColor:string[] = ['#fff','#000'];
 
     @ViewChild("colorPickerTpl")colorPickerTpl;
     color: string = "#ccc";
@@ -39,10 +42,10 @@ export class cxzk1Component implements OnInit {
     ngOnDestory() {}
 
     colorPickerTest(){
-        this.globalService.openColorPicker(this.colorPickerTpl,this.color,()=>{
+        this.globalService.openColorPicker(this.colorPickerTpl,()=>{
             this.beforeColor = this.color;
             console.log(`confirm:${this.color}`)
-        },(color)=>{
+        },()=>{
             this.color = this.beforeColor;
             console.log(`cancel:${this.color}`)
         });

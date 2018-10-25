@@ -76,3 +76,7 @@ ul {
     height: 8px;
 }
 
+.color-picker .cp-remove-color-button-class::before{
+    bottom:5.5px!important;
+}
+
