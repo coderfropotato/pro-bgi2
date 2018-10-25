@@ -10,6 +10,9 @@ declare const d3: any;
 
 export class netComponent implements OnInit {
     force: number;
+    isMultiSelect:boolean=false;
+    selectedNodes:object[]=[];
+
     constructor(
         private ajaxService: AjaxService
     ) { }
@@ -39,8 +42,10 @@ export class netComponent implements OnInit {
 
     drawChart(data) {
         d3.select("#netSvg").selectAll("g").remove();
+
+        let that=this;
         const width = 960, height = 800;
-        const svg = d3.select("#netSvg").attr("width", width).attr("height", height);
+        const svg = d3.select("svg#netSvg").attr("width", width).attr("height", height);
 
         let nodeColors = ["#0000ff", "#ff0000"];
         let nodeRadius = [3, 10];
@@ -55,15 +60,15 @@ export class netComponent implements OnInit {
             .data(arrows).enter()
             .append("marker")
             .attr("id", d => d.id)
-            .attr("viewBox",'0 0 10 10')
-            .attr("refX",20)
-            .attr("refY",5)
-            .attr("markerWidth",4)
-            .attr("markerHeight",4)
-            .attr("orient","auto")
+            .attr("viewBox", '0 0 10 10')
+            .attr("refX", 20)
+            .attr("refY", 5)
+            .attr("markerWidth", 4)
+            .attr("markerHeight", 4)
+            .attr("orient", "auto")
             .append("path")
-            .attr("d",'M0,0 L0,10 L10,5 z')
-            .attr("opacity",d=>d.opacity);
+            .attr("d", 'M0,0 L0,10 L10,5 z')
+            .attr("opacity", d => d.opacity);
 
         //node连接数
         for (let i = 0; i < nodes.length; i++) {
@@ -94,6 +99,7 @@ export class netComponent implements OnInit {
 
         // add link
         let link = svg.append("g")
+            .attr("class", "links")
             .selectAll(".link")
             .data(links)
             .enter()
@@ -101,10 +107,11 @@ export class netComponent implements OnInit {
             .attr("class", "link")
             .attr("fill", "none")
             .attr("stroke", d => linkColorScale(d.score))
-            .attr("marker-end",'url(#end-arrow)');
+            .attr("marker-end", 'url(#end-arrow)');
 
         //add node
         let node = svg.append("g")
+            .attr("class", "nodes")
             .selectAll(".node")
             .data(nodes)
             .enter()
@@ -114,10 +121,21 @@ export class netComponent implements OnInit {
             .attr("fill", d => nodeColorScale(d.value))
             .on("mouseover", mouseOver(0.4))
             .on("mouseout", mouseOut)
+            .on("click",function(d){
+                if(!that.isMultiSelect){   // 单选
+                    that.selectedNodes=[];
+                    d3.select("#netSvg").selectAll(".node").attr("stroke-width",null).attr("stroke",null);
+                    d3.select(this).attr("stroke-width",2).attr("stroke","#000");
+                    that.selectedNodes.push(d);
+                }else{  // 多选
+                    d3.select(this).attr("stroke-width",2).attr("stroke","#000");
+                    that.selectedNodes.push(d);
+                }
+            })
             .call(d3.drag()
-            .on("start", dragStart)
-            .on("drag", dragged)
-            .on("end", dragEnd));
+                .on("start", dragStart)
+                .on("drag", dragged)
+                .on("end", dragEnd));
 
         //add nodes to simulation
         simulation.nodes(nodes).on("tick", ticked);
@@ -177,7 +195,9 @@ export class netComponent implements OnInit {
 
                 link.attr("stroke-opacity", m => (m.source === d || m.target === d ? 1 : opacity));
 
-                link.attr('marker-end', m => ( m.source === d || m.target === d ? 'url(#end-arrow)' : 'url(#end-arrow-fade)'));
+                link.attr("stroke-width", m => (m.source === d || m.target === d ? 2 : 1));
+
+                link.attr('marker-end', m => (m.source === d || m.target === d ? 'url(#end-arrow)' : 'url(#end-arrow-fade)'));
             }
         }
 
@@ -185,24 +205,41 @@ export class netComponent implements OnInit {
             node.attr("fill-opacity", 1);
             node.attr("stroke-opacity", 1);
             link.attr("stroke-opacity", 1);
-            link.attr('marker-end',  'url(#end-arrow)');
+            link.attr("stroke-width", 1);
+            link.attr('marker-end', 'url(#end-arrow)');
         }
 
-        function dragStart(d){
+        function dragStart(d) {
             if (!d3.event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
 
-        function dragged(d){
+        function dragged(d) {
             d.fx = d3.event.x;
             d.fy = d3.event.y;
         }
 
-        function dragEnd(d){
+        function dragEnd(d) {
             if (!d3.event.active) simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
         }
+    }
+
+    single(){
+        this.isMultiSelect=false;
+        d3.select("#netSvg").selectAll("circle.node").attr("stroke-width",null).attr("stroke",null);
+        this.selectedNodes=[];
+    }
+
+    multiple(){
+        this.isMultiSelect=true;
+        d3.select("#netSvg").selectAll("circle.node").attr("stroke-width",null).attr("stroke",null);
+        this.selectedNodes=[];
+    }
+
+    comfirm(){
+        console.log(this.selectedNodes);
     }
 }
