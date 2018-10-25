@@ -1,0 +1,57 @@
+{
+    "title": "title",
+    "cxzk1Title": "cxzk is works",
+    "sortEmail": "sort email of descend",
+    "sortPhone": "sort phone of ascend",
+    "filterGender": "filter gender of equal male",
+    "rootFilterTitle":"Root screening conditions",
+    "unionFilterTitle":"Union screening conditions",
+    "interFilterTitle":"Intersection screening conditions",
+    "filterPanel": {
+        "closeButtonText": "close",
+        "clearButtonText": "clear",
+        "confirmButtonText": "confirm",
+        "interText":"intersection",
+        "unionText":"union"
+    },
+    "like":"like",
+    "range":"range",
+    "equal":"equal",
+    "ne":"unequal",
+    "in":"in",
+    "gt":"gt",
+    "lt":"lt",
+    "gte":"gt && equal",
+    "lte":"lt && equal",
+    "addThead":{
+        "addButton":"add",
+        "packUpButton":"close",
+        "confirmButton":"confirm",
+        "clearButton":"clear",
+        "cancelButton":"cancel"
+    },
+    "tableButton":{
+        "refresh":"refresh",
+        "download":"download",
+        "filter":"filter"
+    },
+    "accuracy":{
+        "toFixedOne":"accuracy : fix(1)",
+        "toFixedTwo":"accuracy : fix(2)",
+        "toFixedThree":"accuracy : fix(3)",
+        "toFixedFour":"accuracy : fix(4)",
+        "toFixedFive":"accuracy : fix(5)",
+        "toFixedSix":"accuracy : fix(6)",
+        "toFixedSeven":"accuracy : fix(7)",
+        "toFixedAll":"accuracy : all"
+    },
+    "pagination":{
+        "backward":"Previous page",
+        "forward":"Next page",
+        "jump":"to",
+        "page":"page",
+        "pageSizeSelectTen":"10/page",
+        "pageSizeSelectTwenty":"20/page",
+        "pageSizeSelectForty":"40/page"
+    }
+}
