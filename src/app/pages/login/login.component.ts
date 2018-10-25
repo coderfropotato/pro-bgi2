@@ -8,6 +8,8 @@ import {
     FormGroup,
     Validators
 } from "@angular/forms";
+
+import config from '../../../config';
 @Component({
     selector: "login",
     templateUrl: "./login.component.html",
@@ -38,11 +40,20 @@ export class LoginComponent implements OnInit {
             this.validateForm.controls[i].updateValueAndValidity();
         }
 
-        sessionStorage.setItem("LCID", this.validateForm.value.userName);
-        sessionStorage.setItem("test", 'test session');
-        // set test token
-        localStorage.setItem("token", "123456");
-        let LCTYPE = this.validateForm.value.userName;
-        this.router.navigateByUrl(`/report/${LCTYPE}`);
+        // let LCTYPE = 'mrna';
+        // sessionStorage.setItem("LCID", this.validateForm.value.userName);
+        // localStorage.setItem("token", "123456");
+        // this.router.navigateByUrl(`/report/${LCTYPE}`);
+
+        this.ajaxService.getDeferDataNoAuth({
+            data: {
+                LCID: "demo",
+                Pssword: "123456"
+            },
+            url:`${config['javaPath']}/login`
+        }).subscribe(data=>{
+            console.log(data);
+            return;
+        })
     }
 }

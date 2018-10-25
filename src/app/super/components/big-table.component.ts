@@ -20,7 +20,8 @@ declare const $: any;
 })
 
 export class BigTableComponent implements OnInit {
-    @Input()idFlag: string;
+    @Input()tableId: string;
+    @Input() parentId:string;
     @ViewChildren("child") children;
     @Input() url: string;
     @Input() pageEntity: object;
@@ -134,7 +135,7 @@ export class BigTableComponent implements OnInit {
         if (reset) {
             this.tableEntity['pageIndex'] = 1;
         }
-        this.loadingService.open(".table");
+        this.loadingService.open(`#${this.parentId}`);
         let ajaxConfig = {
             url: this.url,
             data: this.tableEntity
@@ -142,7 +143,7 @@ export class BigTableComponent implements OnInit {
 
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
             (data: any) => {
-                this.loadingService.close(".table");
+                this.loadingService.close(`#${this.parentId}`);
                 let arr = [];
                 this.head = data.baseThead;
 
@@ -168,6 +169,7 @@ export class BigTableComponent implements OnInit {
                     : this.head[0]["true_key"];
             },
             err => {
+                this.loadingService.close(`#${this.parentId}`);
                 this.total = 0;
                 console.log(err);
             }
@@ -507,7 +509,7 @@ export class BigTableComponent implements OnInit {
     _deleteFilter(filterName, filterNamezh, filterType) {
         this.children._results.forEach(val => {
             if (
-                val.pid === this.idFlag &&
+                val.pid === this.tableId &&
                 val.filterName === filterName &&
                 val.selectType === filterType &&
                 val.filterNamezh === filterNamezh
@@ -564,8 +566,8 @@ export class BigTableComponent implements OnInit {
         filterValueTwo,
         crossUnion
     ) {
-        /* 向filter组件传递  idFlag  filterName  filterType
-         找匹配idFlag的filter子组件，并更新筛选状态；
+        /* 向filter组件传递  tableId  filterName  filterType
+         找匹配tableId的filter子组件，并更新筛选状态；
          手动调用本组件的 recive方法  模拟子组件发射的方法
          */
         // 没有打开筛选就打开
@@ -573,7 +575,7 @@ export class BigTableComponent implements OnInit {
         // 待筛选面板渲染完后找到匹配的筛选面板传数据
         setTimeout(() => {
             this.children._results.forEach(val => {
-                if (val.pid === this.idFlag && val.filterName === filterName) {
+                if (val.pid === this.tableId && val.filterName === filterName) {
                     val._outerUpdate(
                         filterName,
                         filterNamezh,

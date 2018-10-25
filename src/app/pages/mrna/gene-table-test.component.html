@@ -1,4 +1,4 @@
-<div class="big-table-content">
+<div class="big-table-content" id="gene-table-test">
 
     <ng-template #selectTemplate>
         <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="pageEntity.sample" (ngModelChange)="selectOneChange()" [nzSize]="'small'">
@@ -9,7 +9,7 @@
     </ng-template>
 
 
-    <app-geneTable #geneTable idFlag="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="true"
+    <app-geneTable #geneTable tableId="table_test" parentId="gene-table-test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="true"
         url="http://localhost:8086/filter" [defaultChecked]="true"></app-geneTable>
 
 </div>
