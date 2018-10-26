@@ -1,4 +1,4 @@
-<div class="big-table-component" [id]="idFlag">
+<div class="big-table-component" [id]="tableId">
     <!-- demo -->
     <!-- <button nz-button nzType="default" (click)="sort('email','descend')">{{'sortEmail' | translate}}</button> -->
     <!-- 外部筛选 -->
@@ -20,7 +20,6 @@
 
     <!-- table head -->
     <div class="table">
-
         <ng-template #popoverTpl>
             {{popoverText | accuracyPipe : accuracy : popoverSearchType}}
         </ng-template>
@@ -79,7 +78,7 @@
                             nzShowSort [nzSortKey]="head[0]['true_key']" (nzSortChange)="sort(head[0]['true_key'],$event)">
                             <span [nzTitle]="head[0]['hover']" nzPlacement="topCenter" nz-tooltip>{{head[0]['name']}}</span>
                             <!-- get app-filter child emit function <recive> <delete> -->
-                            <app-filter #child *ngIf="beginFilterStatus" [pid]="idFlag" [searchType]="head[0]['searchType']" (getData)="recive($event)"
+                            <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="head[0]['searchType']" (getData)="recive($event)"
                                 (deleteData)="delete($event)" [filterNamezh]="head[0]['name']" [filterName]="head[0]['true_key']"></app-filter>
                         </th>
                         <!-- 其他列 -->
@@ -87,7 +86,7 @@
                             [nzShowSort]="!head[i+1]['children'].length" [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']"
                             *ngFor="let h of head.slice(1);index as i;trackBy:identify">
                             <span [nzTitle]="head[i+1]['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
-                            <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="idFlag" [searchType]="head[i+1]['searchType']"
+                            <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="tableId" [searchType]="head[i+1]['searchType']"
                                 (getData)="recive($event)" (deleteData)="delete($event)" [filterNamezh]="head[i+1]['name']" [filterName]="head[i+1]['true_key']"></app-filter>
                         </th>
                     </tr>
@@ -96,14 +95,14 @@
                         <th class="two-level-thead" style="text-align: center;" *ngFor="let h of twoLevelHead.slice(0,head[0].children.length);index as i;trackBy:identify"
                             [(nzSort)]="sortMap[h['true_key']]" nzShowSort [nzSortKey]="h['true_key']" (nzSortChange)="sort(h['true_key'],$event)">
                             <span [nzTitle]="h['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
-                            <app-filter #child *ngIf="beginFilterStatus" [pid]="idFlag" [searchType]="h['searchType']" (getData)="recive($event)" (deleteData)="delete($event)"
+                            <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']" (getData)="recive($event)" (deleteData)="delete($event)"
                                 [filterNamezh]="h['name']" [filterName]="h['true_key']"></app-filter>
                         </th>
                         <!-- 二级表头其他列 -->
                         <th style="text-align: center;" *ngFor="let h of twoLevelHead.slice(head[0].children.length);index as i;trackBy:identify"
                             [(nzSort)]="sortMap[h['true_key']]" nzShowSort [nzSortKey]="h['true_key']" (nzSortChange)="sort(h['true_key'],$event)">
                             <span [nzTitle]="h['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
-                            <app-filter #child *ngIf="beginFilterStatus" [pid]="idFlag" [searchType]="h['searchType']" (getData)="recive($event)" (deleteData)="delete($event)"
+                            <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']" (getData)="recive($event)" (deleteData)="delete($event)"
                                 [filterNamezh]="h['name']" [filterName]="h['true_key']"></app-filter>
                         </th>
                     </tr>
