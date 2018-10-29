@@ -1,6 +1,5 @@
 @import '../../../../node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css';
 @import './setting.scss';
-
 .table-content {
     width: 100%;
     min-height: 400px;
@@ -191,4 +190,9 @@ button.btnActive {
     float: left;
     margin: 0 4px;
     padding: 0 12px;
+}
+
+.selected {
+    stroke: #000;
+    stroke-width: 2;
 }

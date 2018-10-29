@@ -19,7 +19,7 @@ export class netComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.force = 30;
+        this.force = 60;
         this.getData();
     }
 
@@ -75,6 +75,7 @@ export class netComponent implements OnInit {
                 }
             }
             nodes[i].value = count;
+            nodes[i].selected = false;
         }
 
         let maxValue = d3.max(nodes, d => d.value);
@@ -120,15 +121,14 @@ export class netComponent implements OnInit {
             .attr("stroke", d => linkColorScale(d.score))
             .attr("marker-end", 'url(#end-arrow)');
 
-        if (this.isMultiSelect) {
-            let brush = svg.append("g").attr("class", "brush")
-                .call(d3.brush()
-                    .extent([[0, 0], [width, height]])
-                    .on("start", brushStart)
-                    .on("brush", brushed)
-                    .on("end", brushEnd)
-                );
-        }
+        //add brush
+        let brush = svg.append("g").attr("class", "brush")
+            .call(d3.brush()
+                .extent([[0, 0], [width, height]])
+                .on("start", brushStart)
+                .on("brush", brushed)
+                .on("end", brushEnd)
+            );
 
         //add node
         let node = svg.append("g")
@@ -147,13 +147,22 @@ export class netComponent implements OnInit {
 
                 if (!that.isMultiSelect) {   // 单选
                     that.selectedNodes = [];
-                    d3.select("#netSvg").selectAll(".node").attr("stroke-width", null).attr("stroke", null);
-                    d3.select(this).attr("stroke-width", 2).attr("stroke", "#000");
-                    that.selectedNodes.push(d);
+                    d3.select("#netSvg").selectAll(".node").classed("selected", false);
+                    d3.select(this).classed("selected", true);
+                    nodes.forEach(m => {
+                        m.selected = false;
+                    });
+                    d.selected = true;
+                    if(d.selected){
+                        that.selectedNodes.push(d);
+                    }
                     console.log(that.selectedNodes);
                 } else {  // 多选
-                    d3.select(this).attr("stroke-width", 2).attr("stroke", "#000");
-                    that.selectedNodes.push(d);
+                    d3.select(this).classed("selected", true);
+                    d.selected = true;
+                    if(d.selected){
+                        that.selectedNodes.push(d);
+                    }
                 }
             })
             .call(d3.drag()
@@ -173,7 +182,7 @@ export class netComponent implements OnInit {
 
         //通过中间节点，绘制节点之间的曲线路径
         function linkPos(d) {
-            let offset = 30;
+            let offset = 5;
 
             //中间点
             let midPoint_x = (d.source.x + d.target.x) / 2;
@@ -253,11 +262,30 @@ export class netComponent implements OnInit {
         }
 
         // node 拖选
-        function brushStart() { }
+        function brushStart() {
+            if (d3.event.sourceEvent.type != "end") {
+                node.classed("selected", d => d.selected);
+            }
+        }
 
-        function brushed() { }
+        function brushed() {
+            if (d3.event.sourceEvent.type != "end") {
+                let selection = d3.event.selection;
+                node.classed("selected", d => {
+                    return (selection != null
+                        && selection[0][0] <= d.x && d.x <= selection[1][0]
+                        && selection[0][1] <= d.y && d.y <= selection[1][1]);
+                })
+            }
+        }
 
-        function brushEnd() { }
+        function brushEnd() {
+            if (d3.event.selection != null) {
+                let selection = d3.event.selection;
+                d3.select(this).call(d3.event.target.move, null);
+
+            }
+        }
 
     }
 
@@ -265,19 +293,17 @@ export class netComponent implements OnInit {
     single() {
         this.isMultiSelect = false;
         //清空选中的node
-        d3.select("#netSvg").selectAll("circle.node").attr("stroke-width", null).attr("stroke", null);
+        d3.select("#netSvg").selectAll("circle.node").classed("selected", false);
         this.selectedNodes = [];
-        //去掉拖选
-        d3.select("g.brush").remove();
+
     }
 
     //点击“多选”
     multiple() {
         this.isMultiSelect = true;
         //清空选中的node
-        d3.select("#netSvg").selectAll("circle.node").attr("stroke-width", null).attr("stroke", null);
+        d3.select("#netSvg").selectAll("circle.node").classed("selected", false);
         this.selectedNodes = [];
-        this.drawChart(this.chartData);
     }
 
     //点击“确定”
