@@ -77,7 +77,12 @@ export class IndexComponent implements OnInit {
                         url: "mrna/cxzk2",
                         title: "图表切换demo",
                         isExport: true
-                    }
+                    },
+                    {
+                        url: "mrna/multiOmics",
+                        title: "多组学",
+                        isExport: true
+                    },
                 ];
                 this.taskCount++;
                 this.computedReadyStatus();
@@ -131,8 +136,8 @@ export class IndexComponent implements OnInit {
         this.ready = this.taskCount == 2;
         if (this.ready) {
             window.location.href.split('/report')
-            let url = window.location.href.split('/report')[0]+'/report/mrna/cxzk1';
-            window.location.replace(url)
+            let url = window.location.href.split('/report')[0]+'/report/mrna/multiOmics';
+            window.location.replace(url);
         }
     }
 }

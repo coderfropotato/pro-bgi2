@@ -20,6 +20,7 @@ import { IndexComponent } from "./pages/mrna/index.component";
 import { cxzk1Component } from "./pages/mrna/cxzk1.component";
 import { cxzk2Component } from "./pages/mrna/cxzk2.component";
 import { netComponent } from "./pages/mrna/net.component";
+import { multiOmicsComponent } from "./pages/mrna/multiOmics.component";
 import { NotFoundComponent } from "./pages/notFound.component";
 import { DnaIndexComponent } from "./pages/dna/index.component";
 import { JyzbdComponent } from "./pages/dna/jyzbd.component";
@@ -158,6 +159,14 @@ const ROUTES: Routes = [
                     keep: true,
                     module: "net"
                 }
+            },
+            {
+                path: "multiOmics",
+                component: multiOmicsComponent,
+                data: {
+                    keep: true,
+                    module: "multiOmics"
+                }
             }
         ]
     },
@@ -239,6 +248,7 @@ export function createTranslateLoader(http: HttpClient) {
         cxzk1Component,
         cxzk2Component,
         netComponent,
+        multiOmicsComponent,
         GeneTableTestComponent,
         GeneTableComponent,
         NotFoundComponent,
@@ -313,4 +323,4 @@ export function createTranslateLoader(http: HttpClient) {
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
