@@ -1,6 +1,5 @@
 @import "../../../../node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css";
 @import "./setting.scss";
-
 .table-content {
     width: 100%;
     min-height: 400px;
@@ -62,7 +61,7 @@
     margin-right: 26px;
 }
 
-.add-head > div {
+.add-head>div {
     flex: 1;
 }
 
@@ -130,14 +129,18 @@
     border-bottom: 0;
     background-color: $table_header_bgcolor;
 }
-tbody>tr:nth-child(odd){
+
+tbody>tr:nth-child(odd) {
     background-color: #f5f5f5!important;
 }
-tbody>tr:nth-child(even){
+
+tbody>tr:nth-child(even) {
     background-color: #fff!important;
 }
-.ant-table-td-left-sticky, .ant-table-td-right-sticky{
-    background-color:inherit;
+
+.ant-table-td-left-sticky,
+.ant-table-td-right-sticky {
+    background-color: inherit;
 }
 
 .fLeft {
@@ -205,6 +208,11 @@ button.btnActive {
     padding: 0 12px;
 }
 
+.selected {
+    stroke: #000;
+    stroke-width: 2;
+}
+
 // tree-component
 .tree-component {
     padding: 12px;
@@ -216,19 +224,19 @@ button.btnActive {
             font-size: 14px;
             line-height: 28px;
             position: relative;
-            i{
-                font-size:12px;
-                color:#999;
+            i {
+                font-size: 12px;
+                color: #999;
                 position: absolute;
                 width: 16px;
-                height:16px;
-                left:4px;
-                top:6px;
+                height: 16px;
+                left: 4px;
+                top: 6px;
                 cursor: pointer;
             }
-            span{
+            span {
                 margin: 0 !important;
-                padding:2px 6px;
+                padding: 2px 6px;
                 cursor: pointer;
                 user-select: none;
                 &:not(.ant-checkbox):hover {
