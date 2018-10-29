@@ -153,14 +153,14 @@ export class netComponent implements OnInit {
                         m.selected = false;
                     });
                     d.selected = true;
-                    if(d.selected){
+                    if (d.selected) {
                         that.selectedNodes.push(d);
                     }
                     console.log(that.selectedNodes);
                 } else {  // 多选
                     d3.select(this).classed("selected", true);
                     d.selected = true;
-                    if(d.selected){
+                    if (d.selected) {
                         that.selectedNodes.push(d);
                     }
                 }
@@ -271,19 +271,27 @@ export class netComponent implements OnInit {
         function brushed() {
             if (d3.event.sourceEvent.type != "end") {
                 let selection = d3.event.selection;
-                node.classed("selected", d => {
-                    return (selection != null
-                        && selection[0][0] <= d.x && d.x <= selection[1][0]
-                        && selection[0][1] <= d.y && d.y <= selection[1][1]);
-                })
+                if (that.isMultiSelect) {
+                    node.classed("selected", d => {
+                        return (selection != null
+                            && selection[0][0] <= d.x && d.x <= selection[1][0]
+                            && selection[0][1] <= d.y && d.y <= selection[1][1]) || d.selected;
+                    })
+                } else {
+                    node.classed("selected", d => {
+                        return (selection != null
+                            && selection[0][0] <= d.x && d.x <= selection[1][0]
+                            && selection[0][1] <= d.y && d.y <= selection[1][1]);
+                    })
+                }
             }
         }
 
         function brushEnd() {
-            if (d3.event.selection != null) {
-                let selection = d3.event.selection;
+            let selection = d3.event.selection;
+            if (selection != null) {
                 d3.select(this).call(d3.event.target.move, null);
-
+                console.log(d3.select(".nodes").selectAll(".node.selected").nodes());
             }
         }
 
