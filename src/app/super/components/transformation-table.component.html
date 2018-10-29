@@ -4,12 +4,12 @@
     <h4 *ngIf="geneCollectionId" (click)="deleteGeneCollection()">geneCollectionId:{{geneCollectionId}}</h4>
     <div *ngIf="isFirst" id="default-gene-table">
         <p style="text-align:center;">默认表</p>
-        <app-geneTable #defaultTable url="http://localhost:8086/filter" [pageEntity]="defaultTableEntity" [tableId]="'transformation-table-default'" [parentId]="'default-gene-table'"
+        <app-geneTable #defaultTable url="http://localhost:8086/filter" [pageEntity]="defaultTableEntity" [tableId]="'transformation-table-default'"
             [checkStatusInParams]="defaultTableCheckStatusInParams" [defaultChecked]="true"></app-geneTable>
     </div>
     <div *ngIf="!isFirst" id="extend-gene-table">
         <p style="text-align:center;">转换表</p>
-        <app-geneTable #extendTable url="http://localhost:8086/tableReverse" [pageEntity]="extendTableEntity" [tableId]="'transformation-table-extendTable'" [parentId]="'extend-gene-table'" [checkStatusInParams]="extendTableCheckStatusInParams"
+        <app-geneTable #extendTable url="http://localhost:8086/tableReverse" [pageEntity]="extendTableEntity" [tableId]="'transformation-table-extendTable'"  [checkStatusInParams]="extendTableCheckStatusInParams"
             [defaultChecked]="true"></app-geneTable>
     </div>
     <div class="relative" style="display:flex;justify-content:flex-end;">

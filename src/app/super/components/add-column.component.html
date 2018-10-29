@@ -1,12 +1,12 @@
 <div class="add-column">
-    <div class="add-head">
+    <div class="add-head" *ngIf="thead.length">
         <button nz-button nzType="primary" (click)="show = !show"><i class="anticon" [ngClass]="show?' anticon-minus':' anticon-plus'"></i><span
                 *ngIf="!show">{{'addThead.addButton' | translate}}</span><span *ngIf="show">{{'addThead.packUpButton' | translate}}</span></button>
         <div class="tag-wrap" *ngIf="show">
             <nz-tag class="tag" *ngFor="let d of selected;index as i;" [nzColor]="'#2db7f5'" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d.name}}</nz-tag>
         </div>
     </div>
-    <div *ngIf="show" class="items">
+    <div *ngIf="show && thead.length" class="items">
         <nz-tabset>
             <nz-tab *ngFor="let item of thead;index as i" [nzTitle]="titleTemplate">
                 <ng-template #titleTemplate>
@@ -16,9 +16,11 @@
             </nz-tab>
         </nz-tabset>
     </div>
-    <div class="add-foot" *ngIf="show">
+    <div class="add-foot" *ngIf="show && thead.length">
         <button nz-button nzType="default" (click)="cancel()">{{'addThead.cancelButton' | translate}}</button>
         <button nz-button nzType="danger" (click)="clear()">{{'addThead.clearButton' | translate}}</button>
         <button nz-button nzType="primary" (click)="confirm()">{{'addThead.confirmButton' | translate}}</button>
     </div>
+
+    <button *ngIf="!thead.length" nz-button nzType="primary">{{'addThead.noData' | translate}}</button>
 </div>

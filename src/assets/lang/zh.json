@@ -30,7 +30,8 @@
         "packUpButton": "收起",
         "confirmButton": "确定",
         "clearButton": "清除",
-        "cancelButton": "取消"
+        "cancelButton": "取消",
+        "noData":"无数据"
     },
     "tableButton":{
         "refresh":"刷新",

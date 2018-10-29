@@ -29,8 +29,6 @@ export class GeneTableComponent implements OnInit {
     @Input()
     tableId: string;
     @Input()
-    parentId: string;
-    @Input()
     url: string;
     @Input()
     pageEntity: object;
@@ -42,6 +40,7 @@ export class GeneTableComponent implements OnInit {
     @Input()
     selectItems: TemplateRef<any>;
 
+    isLoading:boolean = true;
     @ViewChildren("child")
     children;
     // 初始选中状态
@@ -180,7 +179,8 @@ export class GeneTableComponent implements OnInit {
 
     // 获取表格数据
     getRemoteData(reset: boolean = false): void {
-        this.loadingService.open(`#${this.parentId}`);
+        // this.loadingService.open(`#${this.parentId}`);
+        this.isLoading = true;
 
         if (reset) {
             this.tableEntity["pageIndex"] = 1;
@@ -204,7 +204,8 @@ export class GeneTableComponent implements OnInit {
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
             (responseData: any) => {
                 if (responseData.status === "0" && !$.isEmptyObject(responseData.data)) {
-                    this.loadingService.close(`#${this.parentId}`);
+                    // this.loadingService.close(`#${this.parentId}`);
+                    this.isLoading = false;
                     let arr = [];
                     this.head = responseData.data.baseThead;
 
@@ -272,26 +273,18 @@ export class GeneTableComponent implements OnInit {
                     });
                     this.computedStatus();
                 } else {
-                    this.loadingService.close(`#${this.parentId}`);
+                    // this.loadingService.close(`#${this.parentId}`);
+                    this.isLoading = false;
                     this.total = 0;
                     this.error = "nodata";
                 }
             },
             err => {
-                this.loadingService.close(`#${this.parentId}`);
+                // this.loadingService.close(`#${this.parentId}`);
+                this.isLoading = false;
                 this.total = 0;
-                console.log(err);
             }
         );
-    }
-
-    // 扩展表
-    toExtendTable() {}
-
-    // 返回到初始表
-    backToDefaultTable() {
-        this.initAllTableStatus();
-        this.getRemoteData();
     }
 
     // 重置表格状态 回到初始状态
@@ -576,10 +569,6 @@ export class GeneTableComponent implements OnInit {
         this.getRemoteData();
     }
 
-    relative(relative) {
-        console.log(relative);
-    }
-
     // track by function
     identify(index, item) {
         return item["true_key"];
@@ -713,7 +702,6 @@ export class GeneTableComponent implements OnInit {
                 val.selectType === filterType &&
                 val.filterNamezh === filterNamezh
             ) {
-                console.log(val);
                 val._outerDelete(filterName, filterNamezh, filterType);
             }
         });

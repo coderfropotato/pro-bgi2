@@ -26,8 +26,6 @@ declare const $: any;
 export class BigTableComponent implements OnInit {
     @Input()
     tableId: string;
-    @Input()
-    parentId: string;
     @ViewChildren("child")
     children;
     @Input()
@@ -42,6 +40,7 @@ export class BigTableComponent implements OnInit {
     @Input()
     selectItems: TemplateRef<any>;
 
+    isLoading:boolean = false;
     // 开始排序
     beginFilterStatus: boolean = false;
     accuracy = -1;
@@ -145,7 +144,8 @@ export class BigTableComponent implements OnInit {
         if (reset) {
             this.tableEntity["pageIndex"] = 1;
         }
-        this.loadingService.open(`#${this.parentId}`);
+        // this.loadingService.open(`#${this.parentId}`);
+        this.isLoading = true;
         let ajaxConfig = {
             url: this.url,
             data: this.tableEntity
@@ -157,7 +157,7 @@ export class BigTableComponent implements OnInit {
                     responseData.status === "0" &&
                     !$.isEmptyObject(responseData.data)
                 ) {
-                    this.loadingService.close(`#${this.parentId}`);
+                    // this.loadingService.close(`#${this.parentId}`);
                     let arr = [];
                     this.head = responseData.data.baseThead;
 
@@ -184,25 +184,18 @@ export class BigTableComponent implements OnInit {
                         : this.head[0]["true_key"];
                 } else {
                     this.error = "nodata";
-                    this.loadingService.close(`#${this.parentId}`);
+                    // this.loadingService.close(`#${this.parentId}`);
                     this.total = 0;
                 }
+                this.isLoading = false;
             },
             err => {
-                this.loadingService.close(`#${this.parentId}`);
+                // this.loadingService.close(`#${this.parentId}`);
+                this.isLoading = false;
                 this.total = 0;
                 console.log(err);
             }
         );
-    }
-
-    // 扩展表
-    toExtendTable() {}
-
-    // 返回到初始表
-    backToDefaultTable() {
-        this.initAllTableStatus();
-        this.getRemoteData();
     }
 
     // 重置表格状态 回到初始状态

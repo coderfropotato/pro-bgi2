@@ -39,17 +39,20 @@ export class cxzk1Component implements OnInit {
             key: "root",
             isExpand: false,
             isChecked: false,
+            disabled:false,
             children: [
                 {
                     name: "leaf-one",
                     key: "leaf",
                     isChecked: false,
+                    disabled:false,
                     children: []
                 },
                 {
                     name: "leaf-two",
                     key: "leaf",
                     isChecked: false,
+                    disabled:false,
                     children: []
                 }
             ]
@@ -59,23 +62,27 @@ export class cxzk1Component implements OnInit {
             key: "root",
             isExpand: false,
             isChecked: false,
+            disabled:false,
             children: [
                 {
                     name: "leaf-thr",
                     key: "leaf",
                     isExpand: false,
                     isChecked: false,
+                    disabled:false,
                     children: [
                         {
                             name: "last-leaf",
                             key: "last-leaf",
                             isExpand: false,
                             isChecked: false,
+                            disabled:false,
                             children: [
                                 {
                                     name: "test-last-leaf",
                                     key: "tets-last-leaf",
                                     isChecked: false,
+                                    disabled:false,
                                     children: []
                                 }
                             ]
@@ -86,6 +93,7 @@ export class cxzk1Component implements OnInit {
                     name: "leaf-four",
                     key: "leaf",
                     isChecked: false,
+                    disabled:false,
                     children: []
                 }
             ]
