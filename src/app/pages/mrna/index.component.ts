@@ -24,7 +24,6 @@ export class IndexComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.router.navigateByUrl('/report/mrna/net');
         this.getMenuList();
         this.getAddThead();
     }
@@ -44,9 +43,9 @@ export class IndexComponent implements OnInit {
                         isExport: true
                     },
                     {
-                        url:"mrna/transformationTable",
-                        title:"transformation-table",
-                        isExport:true
+                        url: "mrna/transformationTable",
+                        title: "transformation-table",
+                        isExport: true
                     },
                     {
                         url: "mrna/bigTable",
@@ -130,5 +129,10 @@ export class IndexComponent implements OnInit {
 
     computedReadyStatus() {
         this.ready = this.taskCount == 2;
+        if (this.ready) {
+            window.location.href.split('/report')
+            let url = window.location.href.split('/report')[0]+'/report/mrna/cxzk1';
+            window.location.replace(url)
+        }
     }
 }

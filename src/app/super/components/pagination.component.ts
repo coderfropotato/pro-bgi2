@@ -97,34 +97,48 @@ export class PaginationComponent implements OnInit, OnChanges {
 
     handlerKeyUp(event) {
         if (event.keyCode === 13) {
-            if (/^\d*$/.test("" + this.inputPageIndex)) {
-                if (this.inputPageIndex <= 0) {
-                    if (this.pageIndex != 1) {
-                        this.pageIndex = 1;
-                        this.pageIndexChange.emit(this.pageIndex);
-                    }
-                } else {
-                    let tempIndex =
-                        this.inputPageIndex > this.pageCount
-                            ? this.pageCount
-                            : this.inputPageIndex;
-                    if (tempIndex > this.maxLimit) tempIndex = this.maxLimit;
-                    if (this.pageIndex != tempIndex) {
-                        this.pageIndex = +tempIndex;
-                        this.pageIndexChange.emit(this.pageIndex);
-                    }
-                }
-            } else {
+            this.inputChange();
+        }
+    }
+
+    handlerBlur() {
+        this.inputChange();
+    }
+
+    /**
+     * @description 输入页码
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-10-26
+     * @memberof PaginationComponent
+     */
+    inputChange() {
+        if (/^\d*$/.test("" + this.inputPageIndex)) {
+            if (this.inputPageIndex <= 0) {
                 if (this.pageIndex != 1) {
                     this.pageIndex = 1;
                     this.pageIndexChange.emit(this.pageIndex);
                 }
+            } else {
+                let tempIndex =
+                    this.inputPageIndex > this.pageCount
+                        ? this.pageCount
+                        : this.inputPageIndex;
+                if (tempIndex > this.maxLimit) tempIndex = this.maxLimit;
+                if (this.pageIndex != tempIndex) {
+                    this.pageIndex = +tempIndex;
+                    this.pageIndexChange.emit(this.pageIndex);
+                }
             }
-
-            this.pageIndexInput.nativeElement.blur();
-            this.inputPageIndex = null;
-            this.indexCenterGenerator();
+        } else {
+            if (this.pageIndex != 1) {
+                this.pageIndex = 1;
+                this.pageIndexChange.emit(this.pageIndex);
+            }
         }
+
+        this.pageIndexInput.nativeElement.blur();
+        this.inputPageIndex = null;
+        this.indexCenterGenerator();
     }
     /**
      * @description 以当前索引为中心 生成defaultPageIndexSize个按钮

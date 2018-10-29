@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { ColorPickerModule,ColorPickerDirective } from 'ngx-color-picker';
+import { ColorPickerModule, ColorPickerDirective } from "ngx-color-picker";
 
 import {
     HashLocationStrategy,
@@ -10,21 +10,21 @@ import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
 // module
 import { NgModule } from "@angular/core";
 // import ant ui
-import { NgZorroAntdModule } from "ng-zorro-antd";
+import { NgZorroAntdModule, NZ_MESSAGE_CONFIG } from "ng-zorro-antd";
 // route state keep alive
 import { SimpleReuseStrategy } from "./super/service/simpleReuseStrategy";
 // import component
-import { AppComponent } from './app.component';
-import { LoginComponent } from './pages/login/login.component';
-import { IndexComponent } from './pages/mrna/index.component';
-import { cxzk1Component } from './pages/mrna/cxzk1.component';
-import { cxzk2Component } from './pages/mrna/cxzk2.component';
-import { netComponent } from './pages/mrna/net.component';
-import { NotFoundComponent } from './pages/notFound.component';
-import { DnaIndexComponent } from './pages/dna/index.component';
-import { JyzbdComponent } from './pages/dna/jyzbd.component';
-import { AddColumnComponent } from './super/components/add-column.component';
-import { ChartExportComponent } from './super/components/chart-export.component';
+import { AppComponent } from "./app.component";
+import { LoginComponent } from "./pages/login/login.component";
+import { IndexComponent } from "./pages/mrna/index.component";
+import { cxzk1Component } from "./pages/mrna/cxzk1.component";
+import { cxzk2Component } from "./pages/mrna/cxzk2.component";
+import { netComponent } from "./pages/mrna/net.component";
+import { NotFoundComponent } from "./pages/notFound.component";
+import { DnaIndexComponent } from "./pages/dna/index.component";
+import { JyzbdComponent } from "./pages/dna/jyzbd.component";
+import { AddColumnComponent } from "./super/components/add-column.component";
+import { ChartExportComponent } from "./super/components/chart-export.component";
 
 import { FrametopComponent } from "./include/frametop.component";
 import { LeftsideComponent } from "./include/leftside.component";
@@ -71,8 +71,10 @@ import { TransformationTableComponent } from "./super/components/transformation-
 import { GeneRelativeComponent } from "./super/components/gene-relative.component";
 import { BigTableTestComponent } from "./pages/mrna/big-table-test.component";
 import { GeneTransformTableTestComponent } from "./pages/mrna/gene-transform-table-test.component";
-import { GridExportComponent } from './super/components/grid-export.component';
-import { PaginationComponent } from './super/components/pagination.component';
+import { GridExportComponent } from "./super/components/grid-export.component";
+import { PaginationComponent } from "./super/components/pagination.component";
+import { TreeComponent } from './super/components/tree.component';
+import { TreeItemComponent } from './super/components/tree-item.component';
 const ROUTES: Routes = [
     // mrna
     {
@@ -216,12 +218,13 @@ const ROUTES: Routes = [
         path: "",
         redirectTo: "report/login",
         pathMatch: "full"
-    },
-    {
-        path: "**",
-        redirectTo: "report/404",
-        pathMatch: "full"
     }
+    // },
+    // {
+    //     path: "**",
+    //     redirectTo: "report/404",
+    //     pathMatch: "full"
+    // }
 ];
 
 export function createTranslateLoader(http: HttpClient) {
@@ -262,6 +265,8 @@ export function createTranslateLoader(http: HttpClient) {
         GeneTransformTableTestComponent,
         GridExportComponent,
         PaginationComponent,
+        TreeItemComponent,
+        TreeComponent,
         TooltipDirective
     ],
     // 路由模块在imports 导入
@@ -290,6 +295,16 @@ export function createTranslateLoader(http: HttpClient) {
         MessageService,
         AjaxService,
         StoreService,
+        // , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
+        {
+            provide: NZ_MESSAGE_CONFIG,
+            useValue: {
+                nzDuration: 1000,
+                nzPauseOnHover: true,
+                nzMaxStack: 3,
+                nzAnimate: true
+            }
+        },
         // { provide: HTTP_INTERCEPTORS, useClass: HttpInterService, multi: true },
         // enable route alive
         { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy },
@@ -298,4 +313,4 @@ export function createTranslateLoader(http: HttpClient) {
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

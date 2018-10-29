@@ -36,7 +36,8 @@ export class GeneTableComponent implements OnInit {
     pageEntity: object;
     @Input()
     checkStatusInParams: boolean;
-    @Input() fileName:string;
+    @Input()
+    fileName: string;
     // select slot
     @Input()
     selectItems: TemplateRef<any>;
@@ -141,8 +142,8 @@ export class GeneTableComponent implements OnInit {
             }
         ];
 
-        this.tableEntity["pageIndex"] =  1;
-        this.tableEntity["pageSize"] =  10;
+        this.tableEntity["pageIndex"] = 1;
+        this.tableEntity["pageSize"] = 10;
         this.tableEntity["sortValue"] = null;
         this.tableEntity["sortKey"] = null;
         this.tableEntity["searchList"] = [];
@@ -201,69 +202,80 @@ export class GeneTableComponent implements OnInit {
         };
 
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
-            (data: any) => {
-                this.loadingService.close(`#${this.parentId}`);
-                let arr = [];
-                this.head = data.baseThead;
+            (responseData: any) => {
+                if (responseData.status === "0" && !$.isEmptyObject(responseData.data)) {
+                    this.loadingService.close(`#${this.parentId}`);
+                    let arr = [];
+                    this.head = responseData.data.baseThead;
 
-                data.baseThead.slice(1).forEach(val => {
-                    arr = val.children.length
-                        ? arr.concat(val.children)
-                        : arr.concat(val);
-                });
-                this.tbodyOutFirstCol = arr;
-                let tempObj = this.computedTheadWidth(this.head);
-                this.widthConfig = tempObj["widthConfig"];
-                this.twoLevelHead = tempObj["twoLevelHead"];
-                this.colLeftConfig = tempObj["colLeftConfig"];
-                this.totalWidth = tempObj["totalWidth"];
-                // 根据表头生成sortmap
-                this.generatorSortMap();
-                if(data.total!=this.total) this.tableEntity['pageIndex'] = 1;
-                this.total = data.total;
-                this.dataSet = data.rows;
-                // 标志key
-                this.key = this.head[0]["children"].length
-                    ? this.head[0]["children"][0]["true_key"]
-                    : this.head[0]["true_key"];
-                // 增加筛选状态key
-                this.dataSet.forEach(val => {
-                    val["checked"] = this.checkStatus;
+                    responseData.data.baseThead.slice(1).forEach(val => {
+                        arr = val.children.length
+                            ? arr.concat(val.children)
+                            : arr.concat(val);
+                    });
+                    this.tbodyOutFirstCol = arr;
+                    let tempObj = this.computedTheadWidth(this.head);
+                    this.widthConfig = tempObj["widthConfig"];
+                    this.twoLevelHead = tempObj["twoLevelHead"];
+                    this.colLeftConfig = tempObj["colLeftConfig"];
+                    this.totalWidth = tempObj["totalWidth"];
+                    // 根据表头生成sortmap
+                    this.generatorSortMap();
+                    if (responseData.data.total != this.total)
+                        this.tableEntity["pageIndex"] = 1;
+                    this.total = responseData.data.total;
+                    this.dataSet = responseData.data.rows;
+                    // 标志key
+                    this.key = this.head[0]["children"].length
+                        ? this.head[0]["children"][0]["true_key"]
+                        : this.head[0]["true_key"];
+                    // 增加筛选状态key
+                    this.dataSet.forEach(val => {
+                        val["checked"] = this.checkStatus;
 
-                    if (this.checkStatus) {
-                        this.checkedMap[val[this.key]] = val;
-                    } else {
-                        this.unCheckedMap[val[this.key]] = val;
-                    }
-
-                    if (
-                        !$.isEmptyObject(this.checkedMap) ||
-                        !$.isEmptyObject(this.unCheckedMap)
-                    ) {
-                        // 默认选中 就看未选中的列表里有没有当前项 有就变成未选中
                         if (this.checkStatus) {
-                            if (!$.isEmptyObject(this.unCheckedMap)) {
-                                for (let name in this.unCheckedMap) {
-                                    if (name == val[this.key]) {
-                                        val["checked"] = false;
-                                        delete this.checkedMap[val[this.key]];
+                            this.checkedMap[val[this.key]] = val;
+                        } else {
+                            this.unCheckedMap[val[this.key]] = val;
+                        }
+
+                        if (
+                            !$.isEmptyObject(this.checkedMap) ||
+                            !$.isEmptyObject(this.unCheckedMap)
+                        ) {
+                            // 默认选中 就看未选中的列表里有没有当前项 有就变成未选中
+                            if (this.checkStatus) {
+                                if (!$.isEmptyObject(this.unCheckedMap)) {
+                                    for (let name in this.unCheckedMap) {
+                                        if (name == val[this.key]) {
+                                            val["checked"] = false;
+                                            delete this.checkedMap[
+                                                val[this.key]
+                                            ];
+                                        }
                                     }
                                 }
-                            }
-                        } else {
-                            // 默认不选中  就看选中的列表里有没有当前项 有就变成选中
-                            if (!$.isEmptyObject(this.checkedMap)) {
-                                for (let name in this.checkedMap) {
-                                    if (name == val[this.key]) {
-                                        val["checked"] = true;
-                                        delete this.unCheckedMap[val[this.key]];
+                            } else {
+                                // 默认不选中  就看选中的列表里有没有当前项 有就变成选中
+                                if (!$.isEmptyObject(this.checkedMap)) {
+                                    for (let name in this.checkedMap) {
+                                        if (name == val[this.key]) {
+                                            val["checked"] = true;
+                                            delete this.unCheckedMap[
+                                                val[this.key]
+                                            ];
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                });
-                this.computedStatus();
+                    });
+                    this.computedStatus();
+                } else {
+                    this.loadingService.close(`#${this.parentId}`);
+                    this.total = 0;
+                    this.error = "nodata";
+                }
             },
             err => {
                 this.loadingService.close(`#${this.parentId}`);
@@ -531,7 +543,7 @@ export class GeneTableComponent implements OnInit {
     }
 
     // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
-    setPopoverText(text,type) {
+    setPopoverText(text, type) {
         this.popoverText = text;
         this.popoverSearchType = type;
     }
@@ -650,8 +662,8 @@ export class GeneTableComponent implements OnInit {
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
     }
 
-    pageSizeChange(){
-        this.tableEntity['pageIndex'] = 1;
+    pageSizeChange() {
+        this.tableEntity["pageIndex"] = 1;
         this.getRemoteData(true);
     }
 

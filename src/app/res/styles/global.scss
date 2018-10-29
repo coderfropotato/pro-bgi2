@@ -1,10 +1,12 @@
-@import '../../../../node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css';
-@import './setting.scss';
+@import "../../../../node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css";
+@import "./setting.scss";
 
 .table-content {
     width: 100%;
     min-height: 400px;
     position: relative;
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
 }
 
 .table-content .error-msg {
@@ -60,7 +62,7 @@
     margin-right: 26px;
 }
 
-.add-head>div {
+.add-head > div {
     flex: 1;
 }
 
@@ -90,7 +92,7 @@
     line-height: 16px;
     border-radius: 50%;
     color: #fff;
-    background-color: #52c41a
+    background-color: #52c41a;
 }
 
 .tag-wrap {
@@ -126,6 +128,16 @@
     padding: 8px;
     border: 1px solid #ddd;
     border-bottom: 0;
+    background-color: $table_header_bgcolor;
+}
+tbody>tr:nth-child(odd){
+    background-color: #f5f5f5!important;
+}
+tbody>tr:nth-child(even){
+    background-color: #fff!important;
+}
+.ant-table-td-left-sticky, .ant-table-td-right-sticky{
+    background-color:inherit;
 }
 
 .fLeft {
@@ -191,4 +203,39 @@ button.btnActive {
     float: left;
     margin: 0 4px;
     padding: 0 12px;
+}
+
+// tree-component
+.tree-component {
+    padding: 12px;
+    ul {
+        padding: 0 6px;
+        margin: 0 !important;
+        li {
+            padding: 0 24px;
+            font-size: 14px;
+            line-height: 28px;
+            position: relative;
+            i{
+                font-size:12px;
+                color:#999;
+                position: absolute;
+                width: 16px;
+                height:16px;
+                left:4px;
+                top:6px;
+                cursor: pointer;
+            }
+            span{
+                margin: 0 !important;
+                padding:2px 6px;
+                cursor: pointer;
+                user-select: none;
+                &:not(.ant-checkbox):hover {
+                    background-color: $btn_active_color;
+                    color: #fff;
+                }
+            }
+        }
+    }
 }
