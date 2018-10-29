@@ -9,9 +9,10 @@ declare const d3: any;
 })
 
 export class netComponent implements OnInit {
-    force: number;
-    isMultiSelect:boolean=false;
-    selectedNodes:object[]=[];
+    force: number;  //斥力
+    isMultiSelect: boolean = false;
+    selectedNodes: object[] = [];
+    chartData: any;
 
     constructor(
         private ajaxService: AjaxService
@@ -32,6 +33,7 @@ export class netComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
+                    this.chartData = data;
                     this.drawChart(data);
                 },
                 error => {
@@ -42,8 +44,9 @@ export class netComponent implements OnInit {
 
     drawChart(data) {
         d3.select("#netSvg").selectAll("g").remove();
+        d3.select("#netSvg").selectAll("defs").remove();
 
-        let that=this;
+        let that = this;
         const width = 960, height = 800;
         const svg = d3.select("svg#netSvg").attr("width", width).attr("height", height);
 
@@ -54,6 +57,27 @@ export class netComponent implements OnInit {
         let nodes = data.nodes;
         let links = data.links;
         let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }];
+
+        //node连接数
+        for (let i = 0; i < nodes.length; i++) {
+            let count = 0;
+            if (links.length) {
+                for (let j = 0; j < links.length; j++) {
+                    if ((typeof links[j].source === "string") && (typeof links[j].target === "string")) {
+                        if ((nodes[i].id === links[j].source) || (nodes[i].id === links[j].target)) {
+                            count++;
+                        }
+                    } else {
+                        if ((nodes[i].id === links[j].source.id) || (nodes[i].id === links[j].target.id)) {
+                            count++;
+                        }
+                    }
+                }
+            }
+            nodes[i].value = count;
+        }
+
+        let maxValue = d3.max(nodes, d => d.value);
 
         //箭头
         svg.append("defs").selectAll("marker")
@@ -69,19 +93,6 @@ export class netComponent implements OnInit {
             .append("path")
             .attr("d", 'M0,0 L0,10 L10,5 z')
             .attr("opacity", d => d.opacity);
-
-        //node连接数
-        for (let i = 0; i < nodes.length; i++) {
-            var count = 0;
-            for (var j = 0; j < links.length; j++) {
-                if (nodes[i].id === links[j].source || nodes[i].id === links[j].target) {
-                    count++;
-                }
-            }
-            nodes[i].value = count;
-        }
-
-        let maxValue = d3.max(nodes, d => d.value);
 
         //比例尺
         let nodeColorScale = d3.scaleLinear().domain([0, maxValue]).range(nodeColors).interpolate(d3.interpolateRgb);
@@ -109,6 +120,16 @@ export class netComponent implements OnInit {
             .attr("stroke", d => linkColorScale(d.score))
             .attr("marker-end", 'url(#end-arrow)');
 
+        if (this.isMultiSelect) {
+            let brush = svg.append("g").attr("class", "brush")
+                .call(d3.brush()
+                    .extent([[0, 0], [width, height]])
+                    .on("start", brushStart)
+                    .on("brush", brushed)
+                    .on("end", brushEnd)
+                );
+        }
+
         //add node
         let node = svg.append("g")
             .attr("class", "nodes")
@@ -121,14 +142,17 @@ export class netComponent implements OnInit {
             .attr("fill", d => nodeColorScale(d.value))
             .on("mouseover", mouseOver(0.4))
             .on("mouseout", mouseOut)
-            .on("click",function(d){
-                if(!that.isMultiSelect){   // 单选
-                    that.selectedNodes=[];
-                    d3.select("#netSvg").selectAll(".node").attr("stroke-width",null).attr("stroke",null);
-                    d3.select(this).attr("stroke-width",2).attr("stroke","#000");
+            .on("click", function (d) {
+                d3.event.stopPropagation();
+
+                if (!that.isMultiSelect) {   // 单选
+                    that.selectedNodes = [];
+                    d3.select("#netSvg").selectAll(".node").attr("stroke-width", null).attr("stroke", null);
+                    d3.select(this).attr("stroke-width", 2).attr("stroke", "#000");
                     that.selectedNodes.push(d);
-                }else{  // 多选
-                    d3.select(this).attr("stroke-width",2).attr("stroke","#000");
+                    console.log(that.selectedNodes);
+                } else {  // 多选
+                    d3.select(this).attr("stroke-width", 2).attr("stroke", "#000");
                     that.selectedNodes.push(d);
                 }
             })
@@ -181,6 +205,7 @@ export class netComponent implements OnInit {
             return linkedByIndex[a.index + "," + b.index] || linkedByIndex[b.index + "," + a.index] || a.index === b.index;
         }
 
+        //node hover
         function mouseOver(opacity) {
             return d => {
                 node.attr("fill-opacity", m => {
@@ -209,6 +234,7 @@ export class netComponent implements OnInit {
             link.attr('marker-end', 'url(#end-arrow)');
         }
 
+        //node 拖拽
         function dragStart(d) {
             if (!d3.event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
@@ -225,21 +251,37 @@ export class netComponent implements OnInit {
             d.fx = null;
             d.fy = null;
         }
+
+        // node 拖选
+        function brushStart() { }
+
+        function brushed() { }
+
+        function brushEnd() { }
+
     }
 
-    single(){
-        this.isMultiSelect=false;
-        d3.select("#netSvg").selectAll("circle.node").attr("stroke-width",null).attr("stroke",null);
-        this.selectedNodes=[];
+    //点击“单选”
+    single() {
+        this.isMultiSelect = false;
+        //清空选中的node
+        d3.select("#netSvg").selectAll("circle.node").attr("stroke-width", null).attr("stroke", null);
+        this.selectedNodes = [];
+        //去掉拖选
+        d3.select("g.brush").remove();
     }
 
-    multiple(){
-        this.isMultiSelect=true;
-        d3.select("#netSvg").selectAll("circle.node").attr("stroke-width",null).attr("stroke",null);
-        this.selectedNodes=[];
+    //点击“多选”
+    multiple() {
+        this.isMultiSelect = true;
+        //清空选中的node
+        d3.select("#netSvg").selectAll("circle.node").attr("stroke-width", null).attr("stroke", null);
+        this.selectedNodes = [];
+        this.drawChart(this.chartData);
     }
 
-    comfirm(){
+    //点击“确定”
+    comfirm() {
         console.log(this.selectedNodes);
     }
 }
