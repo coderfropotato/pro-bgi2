@@ -1,6 +1,11 @@
-
 import { StoreService } from "./../service/storeService";
-import { Component, OnInit, Input, ViewChildren,TemplateRef } from "@angular/core";
+import {
+    Component,
+    OnInit,
+    Input,
+    ViewChildren,
+    TemplateRef
+} from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
@@ -18,16 +23,21 @@ declare const $: any;
     selector: "app-big-table",
     templateUrl: "./big-table.component.html"
 })
-
 export class BigTableComponent implements OnInit {
-    @Input()tableId: string;
-    @Input() parentId:string;
-    @ViewChildren("child") children;
-    @Input() url: string;
-    @Input() pageEntity: object;
-    @Input() fileName:string;
+    @Input()
+    tableId: string;
+    @Input()
+    parentId: string;
+    @ViewChildren("child")
+    children;
+    @Input()
+    url: string;
+    @Input()
+    pageEntity: object;
+    @Input()
+    fileName: string;
 
-    tableEntity:object = {};
+    tableEntity: object = {};
     // select slot
     @Input()
     selectItems: TemplateRef<any>;
@@ -48,7 +58,7 @@ export class BigTableComponent implements OnInit {
     sortKey = null;
 
     popoverText = "";
-    popoverSearchType='';
+    popoverSearchType = "";
 
     // filter html string
     filterHtmlString: object[] = [];
@@ -92,8 +102,8 @@ export class BigTableComponent implements OnInit {
     }
 
     init() {
-        this.tableEntity["pageIndex"] =  1;
-        this.tableEntity["pageSize"] =  10;
+        this.tableEntity["pageIndex"] = 1;
+        this.tableEntity["pageSize"] = 10;
         this.tableEntity["sortValue"] = null;
         this.tableEntity["sortKey"] = null;
         this.tableEntity["searchList"] = [];
@@ -101,7 +111,7 @@ export class BigTableComponent implements OnInit {
         this.tableEntity["addThead"] = [];
 
         // 把其他的查询参数也放进去
-        if(!$.isEmptyObject(this.pageEntity)){
+        if (!$.isEmptyObject(this.pageEntity)) {
             for (let name in this.pageEntity) {
                 if (name in this.tableEntity) {
                     continue;
@@ -133,7 +143,7 @@ export class BigTableComponent implements OnInit {
     // 获取表格数据
     getRemoteData(reset: boolean = false): void {
         if (reset) {
-            this.tableEntity['pageIndex'] = 1;
+            this.tableEntity["pageIndex"] = 1;
         }
         this.loadingService.open(`#${this.parentId}`);
         let ajaxConfig = {
@@ -142,31 +152,41 @@ export class BigTableComponent implements OnInit {
         };
 
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
-            (data: any) => {
-                this.loadingService.close(`#${this.parentId}`);
-                let arr = [];
-                this.head = data.baseThead;
+            (responseData: any) => {
+                if (
+                    responseData.status === "0" &&
+                    !$.isEmptyObject(responseData.data)
+                ) {
+                    this.loadingService.close(`#${this.parentId}`);
+                    let arr = [];
+                    this.head = responseData.data.baseThead;
 
-                data.baseThead.slice(1).forEach(val => {
-                    arr = val.children.length
-                        ? arr.concat(val.children)
-                        : arr.concat(val);
-                });
-                this.tbodyOutFirstCol = arr;
-                let tempObj = this.computedTheadWidth(this.head);
-                this.widthConfig = tempObj["widthConfig"];
-                this.twoLevelHead = tempObj["twoLevelHead"];
-                this.colLeftConfig = tempObj["colLeftConfig"];
-                this.totalWidth = tempObj["totalWidth"];
-                // 根据表头生成sortmap
-                this.generatorSortMap();
-                if(data.total!=this.total) this.tableEntity['pageIndex'] = 1;
-                this.total = data.total;
-                this.dataSet = data.rows;
-                // 标志key
-                this.key = this.head[0]["children"].length
-                    ? this.head[0]["children"][0]["true_key"]
-                    : this.head[0]["true_key"];
+                    responseData.data.baseThead.slice(1).forEach(val => {
+                        arr = val.children.length
+                            ? arr.concat(val.children)
+                            : arr.concat(val);
+                    });
+                    this.tbodyOutFirstCol = arr;
+                    let tempObj = this.computedTheadWidth(this.head);
+                    this.widthConfig = tempObj["widthConfig"];
+                    this.twoLevelHead = tempObj["twoLevelHead"];
+                    this.colLeftConfig = tempObj["colLeftConfig"];
+                    this.totalWidth = tempObj["totalWidth"];
+                    // 根据表头生成sortmap
+                    this.generatorSortMap();
+                    if (responseData.data.total != this.total)
+                        this.tableEntity["pageIndex"] = 1;
+                    this.total = responseData.data.total;
+                    this.dataSet = responseData.data.rows;
+                    // 标志key
+                    this.key = this.head[0]["children"].length
+                        ? this.head[0]["children"][0]["true_key"]
+                        : this.head[0]["true_key"];
+                } else {
+                    this.error = "nodata";
+                    this.loadingService.close(`#${this.parentId}`);
+                    this.total = 0;
+                }
             },
             err => {
                 this.loadingService.close(`#${this.parentId}`);
@@ -187,14 +207,14 @@ export class BigTableComponent implements OnInit {
 
     // 重置表格状态 回到初始状态
     initAllTableStatus() {
-        this.tableEntity['pageIndex'] = 1;
-        this.tableEntity['addThead'] = [];
-        this.tableEntity['rootSearchContentList'] = [];
-        this.tableEntity['searchList'] = [];
+        this.tableEntity["pageIndex"] = 1;
+        this.tableEntity["addThead"] = [];
+        this.tableEntity["rootSearchContentList"] = [];
+        this.tableEntity["searchList"] = [];
         this.interSearchConditionList = [];
         this.unionSearchConditionList = [];
-        this.tableEntity['sortKey'] = null;
-        this.tableEntity['sortValue'] = null;
+        this.tableEntity["sortKey"] = null;
+        this.tableEntity["sortValue"] = null;
         this.beginFilterStatus = false;
         this.interConditionHtmlString = this.globalService.transformFilter(
             this.interSearchConditionList
@@ -203,7 +223,7 @@ export class BigTableComponent implements OnInit {
             this.unionSearchConditionList
         );
         this.rootHtmlString = this.globalService.transformRootFilter(
-            this.tableEntity['rootSearchContentList']
+            this.tableEntity["rootSearchContentList"]
         );
     }
 
@@ -252,13 +272,13 @@ export class BigTableComponent implements OnInit {
         // 关闭筛选 重置筛选条件
         if (!this.beginFilterStatus) {
             // 重置表格筛选
-            this.tableEntity['searchList'] = [];
+            this.tableEntity["searchList"] = [];
             this.classifySearchCondition();
 
             // 重置一级筛选
-            this.tableEntity['rootSearchContentList'] = [];
+            this.tableEntity["rootSearchContentList"] = [];
             this.rootHtmlString = this.globalService.transformRootFilter(
-                this.tableEntity['rootSearchContentList']
+                this.tableEntity["rootSearchContentList"]
             );
 
             this.getRemoteData();
@@ -267,8 +287,8 @@ export class BigTableComponent implements OnInit {
 
     //添加搜索 收到参数 整理搜索条件
     recive(argv) {
-        if (!this.tableEntity['searchList']) {
-            this.tableEntity['searchList'] = [
+        if (!this.tableEntity["searchList"]) {
+            this.tableEntity["searchList"] = [
                 {
                     filterName: argv[0],
                     filterNamezh: argv[1],
@@ -280,9 +300,9 @@ export class BigTableComponent implements OnInit {
             ];
         } else {
             var isIn = false;
-            this.tableEntity['searchList'].forEach((val, index) => {
+            this.tableEntity["searchList"].forEach((val, index) => {
                 if (val["filterName"] === argv[0]) {
-                    this.tableEntity['searchList'][index] = {
+                    this.tableEntity["searchList"][index] = {
                         filterName: argv[0],
                         filterNamezh: argv[1],
                         filterType: argv[2],
@@ -295,7 +315,7 @@ export class BigTableComponent implements OnInit {
             });
 
             if (!isIn)
-                this.tableEntity['searchList'].push({
+                this.tableEntity["searchList"].push({
                     filterName: argv[0],
                     filterNamezh: argv[1],
                     filterType: argv[2],
@@ -313,8 +333,8 @@ export class BigTableComponent implements OnInit {
     classifySearchCondition() {
         this.unionSearchConditionList = [];
         this.interSearchConditionList = [];
-        if (this.tableEntity['searchList'].length) {
-            this.tableEntity['searchList'].forEach(val => {
+        if (this.tableEntity["searchList"].length) {
+            this.tableEntity["searchList"].forEach(val => {
                 val["crossUnion"] === "union"
                     ? this.unionSearchConditionList.push(val)
                     : this.interSearchConditionList.push(val);
@@ -332,13 +352,13 @@ export class BigTableComponent implements OnInit {
     // 清空搜索
     // 筛选面板组件 发来的删除筛选字段的请求
     delete(argv) {
-        if (this.tableEntity['searchList'].length) {
-            this.tableEntity['searchList'].forEach((val, index) => {
+        if (this.tableEntity["searchList"].length) {
+            this.tableEntity["searchList"].forEach((val, index) => {
                 if (
                     val["filterName"] === argv[0] &&
                     val["filterNamezh"] === argv[1]
                 ) {
-                    this.tableEntity['searchList'].splice(index, 1);
+                    this.tableEntity["searchList"].splice(index, 1);
                     this.classifySearchCondition();
                     this.getRemoteData();
                     return;
@@ -348,7 +368,7 @@ export class BigTableComponent implements OnInit {
     }
 
     // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
-    setPopoverText(text,type) {
+    setPopoverText(text, type) {
         this.popoverSearchType = type;
         this.popoverText = text;
     }
@@ -366,15 +386,15 @@ export class BigTableComponent implements OnInit {
     // 删除一级筛选条件
     deleteRootFilterItem(item) {
         let filterObj = item.obj;
-        this.tableEntity['rootSearchContentList'].forEach((val, index) => {
+        this.tableEntity["rootSearchContentList"].forEach((val, index) => {
             if (
                 val["filterName"] === filterObj["filterName"] &&
                 val["filterNamezh"] === filterObj["filterNamezh"] &&
                 val["filterType"] === filterObj["filterType"]
             ) {
-                this.tableEntity['rootSearchContentList'].splice(index, 1);
+                this.tableEntity["rootSearchContentList"].splice(index, 1);
                 this.rootHtmlString = this.globalService.transformRootFilter(
-                    this.tableEntity['rootSearchContentList']
+                    this.tableEntity["rootSearchContentList"]
                 );
             }
         });
@@ -463,8 +483,8 @@ export class BigTableComponent implements OnInit {
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
     }
 
-    pageSizeChange(){
-        this.tableEntity['pageIndex'] = 1;
+    pageSizeChange() {
+        this.tableEntity["pageIndex"] = 1;
         this.getRemoteData(true);
     }
 
@@ -481,7 +501,7 @@ export class BigTableComponent implements OnInit {
      * @param {any} value
      * @memberof BigTableComponent
      */
-    _setParamsOfEntity(key,value){
+    _setParamsOfEntity(key, value) {
         this.tableEntity[key] = value;
         this.getRemoteData();
     }
@@ -493,7 +513,7 @@ export class BigTableComponent implements OnInit {
      * @param {any} value
      * @memberof BigTableComponent
      */
-    _setParamsOfEntityWithoutRequest(key,value){
+    _setParamsOfEntityWithoutRequest(key, value) {
         this.tableEntity[key] = value;
     }
 
@@ -529,17 +549,24 @@ export class BigTableComponent implements OnInit {
      */
     _rootFilter(filterName, filterNamezh, filterType, valueOne, valueTwo) {
         let obj = { filterName, filterNamezh, filterType, valueOne, valueTwo };
-        for (let i = 0; i < this.tableEntity['rootSearchContentList'].length; i++) {
-            if (this.tableEntity['rootSearchContentList'][i]["filterName"] === filterName) {
-                this.tableEntity['rootSearchContentList'][i] = obj;
+        for (
+            let i = 0;
+            i < this.tableEntity["rootSearchContentList"].length;
+            i++
+        ) {
+            if (
+                this.tableEntity["rootSearchContentList"][i]["filterName"] ===
+                filterName
+            ) {
+                this.tableEntity["rootSearchContentList"][i] = obj;
                 this.getRemoteData();
                 return;
             }
         }
 
-        this.tableEntity['rootSearchContentList'].push(obj);
+        this.tableEntity["rootSearchContentList"].push(obj);
         this.rootHtmlString = this.globalService.transformRootFilter(
-            this.tableEntity['rootSearchContentList']
+            this.tableEntity["rootSearchContentList"]
         );
         this.getRemoteData();
     }
@@ -654,9 +681,9 @@ export class BigTableComponent implements OnInit {
             this.beforeAddThead.forEach(val => {
                 if (!this.isInArr(val, this.addThead)) {
                     // 删除搜索条件
-                    this.tableEntity['searchList'].forEach((v, n) => {
+                    this.tableEntity["searchList"].forEach((v, n) => {
                         if (v["filterName"] === `${val}`) {
-                            this.tableEntity['searchList'].splice(n, 1);
+                            this.tableEntity["searchList"].splice(n, 1);
                         }
                     });
                     // 删除排序

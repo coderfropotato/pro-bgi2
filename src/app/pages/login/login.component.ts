@@ -2,6 +2,7 @@ import { AjaxService } from "./../../super/service/ajaxService";
 import { GlobalService } from "../../super/service/globalService";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { NzMessageService } from "ng-zorro-antd";
 import {
     AbstractControl,
     FormBuilder,
@@ -9,7 +10,7 @@ import {
     Validators
 } from "@angular/forms";
 
-import config from '../../../config';
+import config from "../../../config";
 @Component({
     selector: "login",
     templateUrl: "./login.component.html",
@@ -22,10 +23,14 @@ export class LoginComponent implements OnInit {
         private fb: FormBuilder,
         private router: Router,
         private globalService: GlobalService,
-        private ajaxService: AjaxService
+        private ajaxService: AjaxService,
+        private nzMessageService: NzMessageService
     ) {}
 
     ngOnInit(): void {
+        window.localStorage.clear();
+        window.sessionStorage.clear();
+
         this.validateForm = this.fb.group({
             userName: [null, [Validators.required]],
             password: [null, [Validators.required]],
@@ -40,20 +45,32 @@ export class LoginComponent implements OnInit {
             this.validateForm.controls[i].updateValueAndValidity();
         }
 
-        // let LCTYPE = 'mrna';
-        // sessionStorage.setItem("LCID", this.validateForm.value.userName);
-        // localStorage.setItem("token", "123456");
-        // this.router.navigateByUrl(`/report/${LCTYPE}`);
 
-        this.ajaxService.getDeferDataNoAuth({
-            data: {
-                LCID: "demo",
-                Pssword: "123456"
-            },
-            url:`${config['javaPath']}/login`
-        }).subscribe(data=>{
-            console.log(data);
-            return;
-        })
+        sessionStorage.setItem("LCID", 'demo');
+        localStorage.setItem("token", '123456');
+        this.router.navigateByUrl(`/report/mrna`);
+
+        // this.ajaxService
+        //     .getDeferDataNoAuth({
+        //         data: {
+        //             LCID: this.validateForm.value.userName,
+        //             Password: this.validateForm.value.password
+        //         },
+        //         url: `${config["javaPath"]}/login`
+        //     })
+        //     .subscribe(
+        //         (data) => {
+        //             if(data['status']=='0'){
+        //                 sessionStorage.setItem("LCID", this.validateForm.value.userName);
+        //                 localStorage.setItem("token", data['data'].token);
+        //                 this.router.navigateByUrl(`/report/${data['data'].LCType}`);
+        //             }else{
+        //                 this.nzMessageService.warning('账号或密码错误')
+        //             }
+        //         },
+        //         err => {
+        //             console.log(err);
+        //         }
+        //     );
     }
 }

@@ -68,7 +68,7 @@ export class AjaxService {
                     );
             } else {
                 observer.complete();
-                this.router.navigateByUrl("/reprot/sysError");
+                this.router.navigate(["/reprot/sysError"]);
             }
         });
     }
@@ -81,7 +81,7 @@ export class AjaxService {
      * @memberof AjaxService
      */
     validTokenInLocal() {
-        return !!localStorage.getItem("token");
+        return !!localStorage.getItem("token") && !!sessionStorage.getItem("LCID");
 
     }
 
@@ -100,10 +100,5 @@ export class AjaxService {
             })
         };
         return this.http.post(params["url"], params["data"], head);
-    }
-
-
-    mockLogin(){
-
     }
 }
