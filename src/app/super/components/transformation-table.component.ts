@@ -22,11 +22,14 @@ export class TransformationTableComponent implements OnInit {
     @Input() defaultTableUrl;
     @Input() defaultTableId;
     @Input() defaultTableDefaultChecked;
+    @Input() defaultTableCheckStatusInParams;
 
     @Input() extendTableEntity;
     @Input() extendTableUrl;
     @Input() extendTableId;
     @Input() extendTableDefaultChecked;
+    @Input() extendTableCheckStatusInParams;
+
 
     isFirst: boolean = true;
     defaultUrl: string = "";
@@ -58,15 +61,25 @@ export class TransformationTableComponent implements OnInit {
         this.currentGeneTable = this.isFirst ? this.defaultTable : this.extendTable;
         // 获取当前表的内部状态
         let tableInnerStatus = this.currentGeneTable._getInnerStatusParams();
+        let ajaxData = {
+            checkStatus:tableInnerStatus['others']['checkStatus'],
+            checked:tableInnerStatus['others']['excludeGeneList']['checked'],
+            unChecked:tableInnerStatus['others']['excludeGeneList']['unChecked'],
+            connects:["ppi","coex"]
+        }
+        for(let key in tableInnerStatus["tableEntity"]){
+            ajaxData[key] = tableInnerStatus["tableEntity"][key];
+        }
+        // {
+        //     // geneListId: this.geneCollectionId,
+        //     maskGene: tableInnerStatus["others"],
+        //     // tableEntity: tableInnerStatus["tableEntity"],
+        //     connects:["ppi","coex"]
+        // }
         // 获取基因集id
         this.ajaxService
             .getDeferData({
-                data: {
-                    geneListId: this.geneCollectionId,
-                    maskGene: tableInnerStatus["others"],
-                    tableEntity: tableInnerStatus["tableEntity"],
-                    connects:["ppi","coex"]
-                },
+                data: ajaxData,
                 url: "http://localhost:8086/getGeneList"
             })
             .subscribe(

@@ -20,6 +20,7 @@ export class GeneTransformTableTestComponent implements OnInit {
     defaultTableUrl:string = "http://localhost:8086/filter";
     defaultTableId:string = 'transformation-table-default';
     defaultTableDefaultChecked:boolean = true;
+    defaultTableCheckStatusInParams=false;
 
     extendTableEntity: object = {
         pageSize: 10,
@@ -35,7 +36,7 @@ export class GeneTransformTableTestComponent implements OnInit {
     extendTableUrl:string = "http://localhost:8086/tableReverse";
     extendTableId:string = 'transformation-table-extendTable';
     extendTableDefaultChecked:boolean = true;
-
+    extendTableCheckStatusInParams = false
     constructor() {}
 
     ngOnInit() {}

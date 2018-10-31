@@ -187,13 +187,9 @@ export class GeneTableComponent implements OnInit {
         }
 
         if (this.checkStatusInParams) {
-            let checkStatus = {};
-            checkStatus["check"] = this.checkStatus;
-            checkStatus["excludeGeneList"] = {
-                checked: this.checked,
-                unChecked: this.unChecked
-            };
-            this.tableEntity["checkStatus"] = checkStatus;
+            this.tableEntity['checkStatus'] = this.checkStatus;
+            this.tableEntity['checked'] = this.checked;
+            this.tableEntity['unChecked'] = this.unChecked;
         }
 
         let ajaxConfig = {
