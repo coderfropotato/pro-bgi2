@@ -24,7 +24,7 @@ export class TreeComponent implements OnInit, OnChanges {
     @Input()
     theadMap: object;
     @Input()
-    theadReverseMap: object;
+    theadReflactMap: object;
     @Input()
     selectData: any = [];
     @Output()
@@ -34,13 +34,19 @@ export class TreeComponent implements OnInit, OnChanges {
     expandChangeEvent: EventEmitter<any> = new EventEmitter();
     @Output()
     checkedChangeEvent: EventEmitter<any> = new EventEmitter();
-
+    @Output()
+    composeTheadChange: EventEmitter<any> = new EventEmitter();
 
     selectComposeThead = [];
+    beforeComposeThead = [];
     constructor() {}
 
     ngOnInit() {
         this.treeApplySelectData(this.treeData, this.selectData);
+
+        setTimeout(()=>{
+            this._reset();
+        },5000)
     }
 
     ngOnChanges(simpleChanges: SimpleChanges) {
@@ -64,14 +70,22 @@ export class TreeComponent implements OnInit, OnChanges {
                 }
             });
         }
-        this.selectDataChange.emit(this.selectData);
-
         // 过滤出当前选择项匹配的字段
         let matchObject = this.getCanSuitHeadBySelectData();
-        let suitableItems = matchObject['treeCanSelectItems'];
-        this.selectComposeThead = matchObject['curThead'];
+        let suitableItems = matchObject["treeCanSelectItems"];
+        this.selectComposeThead = matchObject["curThead"];
+
+        // 把选中的数据和组合出来的头数据发射出去
+        this.selectDataChange.emit(this.selectData);
+        if (
+            this.stringing(this.selectComposeThead) !=
+            this.stringing(this.beforeComposeThead)
+        ) {
+            this.beforeComposeThead = this.selectComposeThead.concat();
+            this.composeTheadChange.emit(this.selectComposeThead);
+        }
         // 遍历树把不匹配的字段 disabled = true
-        this.treeSetDisabledStatus(this.treeData,suitableItems,true);
+        this.treeSetDisabledStatus(this.treeData, suitableItems, true);
     }
 
     expandChange(floder) {
@@ -113,7 +127,7 @@ export class TreeComponent implements OnInit, OnChanges {
      * @returns
      * @memberof TreeComponent
      */
-    treeSetDisabledStatus(treeNodes, treeItemNames,status) {
+    treeSetDisabledStatus(treeNodes, treeItemNames, status) {
         if (!treeNodes || !treeNodes.length) return;
         let stack = [];
         for (var i = 0, len = treeNodes.length; i < len; i++) {
@@ -122,13 +136,13 @@ export class TreeComponent implements OnInit, OnChanges {
         let item;
         while (stack.length) {
             item = stack.shift();
-            if(treeItemNames!=='all'){
+            if (treeItemNames !== "all") {
                 if (treeItemNames.includes(item.name)) {
                     item.disabled = !status;
-                }else{
+                } else {
                     item.disabled = status;
                 }
-            }else{
+            } else {
                 item.disabled = false;
             }
 
@@ -137,7 +151,6 @@ export class TreeComponent implements OnInit, OnChanges {
             }
         }
     }
-
 
     /**
      * @description 根据当前选择的字段，获取可以匹配的字段名集合
@@ -152,7 +165,7 @@ export class TreeComponent implements OnInit, OnChanges {
         // 反向根据并集的表头字段找到可组合的字段 求并集
         // 收集匹配的集合
         this.selectData.forEach(v => {
-            temp.push(this.theadReverseMap[v["name"]]);
+            temp.push(this.theadReflactMap[v["name"]]);
         });
         // 所有集合求交集
         // 按数组长度排序
@@ -179,22 +192,33 @@ export class TreeComponent implements OnInit, OnChanges {
             });
 
             // 找出公共项对应的表头集合的组合集合 去重
+            // 组合 abc abcd   选中ab的时候 d的状态
+            console.log(publicItems);
             publicItems.forEach(v => {
-                composeItemsTemp = composeItemsTemp.concat(this.theadMap[v]);
+                composeItemsTemp = composeItemsTemp.concat(
+                    this.theadMap[v].slice(0, this.selectData.length + 1)
+                );
             });
             let tempJson = {};
-            composeItemsTemp.forEach(v => {
-                tempJson[v] = 1;
-            });
+            composeItemsTemp.forEach(v => (tempJson[v] = 1));
             composeItems = Object.keys(tempJson);
 
             // 看当前可能匹配的表头里的 可组合的集合是不是都在当前选择的数据里  任一不在就删掉
-            let selectNames = this.selectData.map(v=>v['name']);
-            for(let j=0;j<publicItems.length;j++){
-                if(this.theadMap[publicItems[j]].length){
-                    for(let i=0;i<this.theadMap[publicItems[j]].length;i++){
-                        if(!this.arrIncludeItem(selectNames,this.theadMap[publicItems[j]][i])){
-                            publicItems.splice(j,1);
+            let selectNames = this.selectData.map(v => v["name"]);
+            for (let j = 0; j < publicItems.length; j++) {
+                if (this.theadMap[publicItems[j]].length) {
+                    for (
+                        let i = 0;
+                        i < this.theadMap[publicItems[j]].length;
+                        i++
+                    ) {
+                        if (
+                            !this.arrIncludeItem(
+                                selectNames,
+                                this.theadMap[publicItems[j]][i]
+                            )
+                        ) {
+                            publicItems.splice(j, 1);
                             j--;
                             break;
                         }
@@ -203,9 +227,11 @@ export class TreeComponent implements OnInit, OnChanges {
             }
 
             // 当前选择的项 单一匹配所有的头
-            this.selectData.forEach(v => {
-                if (v['name'] in this.theadMap) singleThead.push(v['name']);
-            });
+            if (this.selectData.length == 1) {
+                this.selectData.forEach(v => {
+                    if (v["name"] in this.theadMap) singleThead.push(v["name"]);
+                });
+            }
         }
 
         return temp.length
@@ -230,5 +256,38 @@ export class TreeComponent implements OnInit, OnChanges {
      */
     arrIncludeItem(arr, item) {
         return arr.includes(item);
+    }
+
+    stringing(obj) {
+        return JSON.stringify(obj);
+    }
+
+    /**
+     * @description 重置树状态
+     * 默认 不选中  展开  不禁用
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-10-31
+     * @returns
+     * @memberof TreeComponent
+     */
+    _reset() {
+        this.selectComposeThead = [];
+        this.beforeComposeThead = [];
+
+        if (!this.treeData || !this.treeData.length) return;
+        let stack = [];
+        for (var i = 0, len = this.treeData.length; i < len; i++) {
+            stack.push(this.treeData[i]);
+        }
+        let item;
+        while (stack.length) {
+            item = stack.shift();
+            item.isChecked = false;
+            item.isExpand = true;
+            item.disabled = false;
+            if (item.children && item.children.length) {
+                stack = stack.concat(item.children);
+            }
+        }
     }
 }
