@@ -32,69 +32,131 @@ export class cxzk1Component implements OnInit {
     beforeColor: string = "#ccc";
 
     // tree test
-    selectData = ["root1"];
+    selectData = [];
+    // 所有表格的头 带可组合字段
+    theadMap: object = {
+        category1: [],
+        category2: [],
+        category3: [],
+        category4: [],
+        "category1-compose1": ["category1", "compose1"],
+        "category1-compose1-one": ["category1", "compose1", "one"],
+        "category2-compose2": ["category2", "compose2"],
+        "category3-compose3-thr": ["category3", "compose3", "thr"],
+        "category4-compose4-four": ["category4", "compose4", "four"],
+        "category1-compose1-four-thr": ["category1", "compose1", "four", "thr"]
+    };
+    theadReverseMap = {};
     treeData = [
         {
-            name: "root1",
+            name: "category",
             key: "root",
             isExpand: false,
             isChecked: false,
-            disabled:false,
+            disabled: true,
+            isRoot: true,
             children: [
                 {
-                    name: "leaf-one",
-                    key: "leaf",
+                    name: "category1",
+                    key: "catogory1",
                     isChecked: false,
-                    disabled:false,
-                    children: []
+                    disabled: false,
+                    children: [
+                        {
+                            name: "category2",
+                            key: "category2",
+                            isChecked: false,
+                            disabled: false,
+                            children: []
+                        }
+                    ]
                 },
                 {
-                    name: "leaf-two",
-                    key: "leaf",
+                    name: "category3",
+                    key: "category3",
                     isChecked: false,
-                    disabled:false,
+                    disabled: false,
+                    children: [
+                        {
+                            name: "category4",
+                            key: "category4",
+                            isChecked: false,
+                            disabled: false,
+                            children: []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            name: "compose",
+            key: "compose",
+            isExpand: false,
+            isChecked: false,
+            disabled: true,
+            isRoot: true,
+            children: [
+                {
+                    name: "compose1",
+                    key: "compose1",
+                    isChecked: false,
+                    disabled: false,
+                    children: [
+                        {
+                            name: "compose3",
+                            key: "compose3",
+                            isChecked: false,
+                            disabled: false,
+                            children: []
+                        },
+                        {
+                            name: "compose4",
+                            key: "compose4",
+                            isChecked: false,
+                            disabled: false,
+                            children: []
+                        }
+                    ]
+                },
+                {
+                    name: "compose2",
+                    key: "compose2",
+                    isChecked: false,
+                    disabled: false,
                     children: []
                 }
             ]
         },
         {
-            name: "root2",
-            key: "root",
+            name: "type",
+            key: "type",
             isExpand: false,
             isChecked: false,
-            disabled:false,
+            disabled: true,
+            isRoot: true,
             children: [
                 {
-                    name: "leaf-thr",
-                    key: "leaf",
-                    isExpand: false,
+                    name: "one",
+                    key: "one",
                     isChecked: false,
-                    disabled:false,
+                    disabled: false,
                     children: [
                         {
-                            name: "last-leaf",
-                            key: "last-leaf",
-                            isExpand: false,
+                            name: "thr",
+                            key: "thr",
                             isChecked: false,
-                            disabled:false,
+                            disabled: false,
                             children: [
                                 {
-                                    name: "test-last-leaf",
-                                    key: "tets-last-leaf",
+                                    name: "four",
+                                    key: "four",
                                     isChecked: false,
-                                    disabled:false,
+                                    disabled: false,
                                     children: []
                                 }
                             ]
                         }
                     ]
-                },
-                {
-                    name: "leaf-four",
-                    key: "leaf",
-                    isChecked: false,
-                    disabled:false,
-                    children: []
                 }
             ]
         }
@@ -129,6 +191,21 @@ export class cxzk1Component implements OnInit {
 
     ngOnInit() {
         this.getVennData();
+
+        //根据theadMap 生成theadReverseMap
+        for (let key in this.theadMap) {
+            if (this.theadMap[key].length) {
+                this.theadMap[key].forEach((val, index) => {
+                    if (val in this.theadReverseMap) {
+                        this.theadReverseMap[val].push(key);
+                    } else {
+                        this.theadReverseMap[val] = [key];
+                    }
+                });
+            }
+        }
+
+        console.log(this.theadReverseMap);
     }
 
     ngOnDestory() {}
