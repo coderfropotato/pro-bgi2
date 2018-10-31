@@ -206,15 +206,12 @@ export class cxzk1Component implements OnInit {
                 });
             }
         }
-
-        console.log(this.theadReflactMap);
     }
 
     ngOnDestory() {}
 
     // test tree selectChange
     composeTheadChange(obj){
-        console.log(obj)
     }
 
     colorPickerTest() {

@@ -43,10 +43,6 @@ export class TreeComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.treeApplySelectData(this.treeData, this.selectData);
-
-        setTimeout(()=>{
-            this._reset();
-        },5000)
     }
 
     ngOnChanges(simpleChanges: SimpleChanges) {
@@ -192,8 +188,7 @@ export class TreeComponent implements OnInit, OnChanges {
             });
 
             // 找出公共项对应的表头集合的组合集合 去重
-            // 组合 abc abcd   选中ab的时候 d的状态
-            console.log(publicItems);
+            // 组合 abc abcd   选中ab的时候 d的状态为不可选
             publicItems.forEach(v => {
                 composeItemsTemp = composeItemsTemp.concat(
                     this.theadMap[v].slice(0, this.selectData.length + 1)
