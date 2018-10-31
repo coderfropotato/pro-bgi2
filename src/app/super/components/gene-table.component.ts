@@ -492,6 +492,12 @@ export class GeneTableComponent implements OnInit {
                     crossUnion: argv[5]
                 });
         }
+        // 每次筛选的时候 重置选中的集合
+        this.checkStatus = this.defaultChecked;
+        this.checkedMap = {};
+        this.unCheckedMap = {};
+        this.checked = [];
+        this.unChecked = [];
 
         this.getRemoteData();
         this.classifySearchCondition();
