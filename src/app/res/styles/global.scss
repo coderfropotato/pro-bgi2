@@ -240,7 +240,8 @@ button.btnActive {
                 cursor: pointer;
                 user-select: none;
                 &.disabled{
-                    color:#ccc;
+                    color:#ddd;
+                    cursor: not-allowed;
                 }
                 &:not(.ant-checkbox):not(.disabled):hover {
                     background-color: $btn_active_color;

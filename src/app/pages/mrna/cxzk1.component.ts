@@ -43,10 +43,12 @@ export class cxzk1Component implements OnInit {
         "category1-compose1-one": ["category1", "compose1", "one"],
         "category2-compose2": ["category2", "compose2"],
         "category3-compose3-thr": ["category3", "compose3", "thr"],
+        "category3-compose3": ["category3", "compose3"],
         "category4-compose4-four": ["category4", "compose4", "four"],
         "category1-compose1-four-thr": ["category1", "compose1", "four", "thr"]
     };
-    theadReverseMap = {};
+
+    theadReflactMap = {};
     treeData = [
         {
             name: "category",
@@ -192,23 +194,28 @@ export class cxzk1Component implements OnInit {
     ngOnInit() {
         this.getVennData();
 
-        //根据theadMap 生成theadReverseMap
+        //根据theadMap 生成theadReflactMap
         for (let key in this.theadMap) {
             if (this.theadMap[key].length) {
                 this.theadMap[key].forEach((val, index) => {
-                    if (val in this.theadReverseMap) {
-                        this.theadReverseMap[val].push(key);
+                    if (val in this.theadReflactMap) {
+                        this.theadReflactMap[val].push(key);
                     } else {
-                        this.theadReverseMap[val] = [key];
+                        this.theadReflactMap[val] = [key];
                     }
                 });
             }
         }
 
-        console.log(this.theadReverseMap);
+        console.log(this.theadReflactMap);
     }
 
     ngOnDestory() {}
+
+    // test tree selectChange
+    composeTheadChange(obj){
+        console.log(obj)
+    }
 
     colorPickerTest() {
         this.globalService.openColorPicker(
