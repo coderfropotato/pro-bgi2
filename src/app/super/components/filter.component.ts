@@ -56,6 +56,15 @@ export class FilterComponent implements OnInit {
     clearButtonText: string;
     confirmButtonText: string;
 
+    // 存每次确定后的值
+    beforeSearchOne: any;
+    beforeSearchTwo: any;
+    beforeRadioValue: any;
+    beforeSelectType: string;
+
+    // 输入值判断
+    nodata: boolean = false;
+
     constructor(
         private translate: TranslateService,
         private storeService: StoreService
@@ -77,27 +86,42 @@ export class FilterComponent implements OnInit {
                 this.selectType = "range";
         }
         this.radioValue = "inter";
+        this.beforeRadioValue = "inter";
+        this.beforeSearchOne = "";
+        this.beforeSearchTwo = "";
+        this.beforeSelectType = this.selectType;
+        this.nodata = false;
         this.filter = {
             regExp: "",
-            rangeA: null,
-            rangeB: null,
+            rangeA: "",
+            rangeB: "",
             equal: "",
             unequal: "",
             in: "",
-            gt: null,
-            lt: null,
-            gte: null,
-            lte: null,
-            gteabs: null,
-            gtabs: null
+            gt: "",
+            lt: "",
+            gte: "",
+            lte: "",
+            gteabs: "",
+            gtabs: ""
         };
+    }
+
+    // 下拉选择变化
+    selectChange() {
+        this.nodata = false;
+    }
+
+    // 输入值的时候
+    oninput() {
+        this.nodata = false;
     }
 
     // 确定
     confirm() {
         // 找出所有修改的值 传给父级
-        let valueOne = null,
-            valueTwo = null;
+        let valueOne = "",
+            valueTwo = "";
         switch (this.selectType) {
             case "regExp":
                 valueOne = this.filter["regExp"];
@@ -134,6 +158,40 @@ export class FilterComponent implements OnInit {
                 valueOne = this.filter["gtabs"];
                 break;
         }
+        // 必填值
+        if (this.selectType === "range") {
+            if (
+                (!this.force(valueOne)) ||
+                (!this.force(valueTwo))
+            ) {
+                this.nodata = true;
+                return;
+            } else {
+                this.nodata = false;
+            }
+        } else {
+            if (!this.force(valueOne)) {
+                this.nodata = true;
+                return;
+            } else {
+                this.nodata = false;
+            }
+        }
+
+        // 值变了才传给父组件
+        if (
+            this.beforeRadioValue === this.radioValue &&
+            this.beforeSearchOne === valueOne &&
+            this.beforeSearchTwo === valueTwo &&
+            this.beforeSelectType === this.selectType
+        ) {
+            return;
+        }
+
+        this.beforeSearchOne = valueOne;
+        this.beforeSearchTwo = valueTwo;
+        this.beforeRadioValue = this.radioValue;
+        this.beforeSelectType = this.selectType;
 
         this.emit([
             this.filterName,
@@ -174,6 +232,25 @@ export class FilterComponent implements OnInit {
         ]);
     }
 
+    /**
+     * @description 输入的值是否有效
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-11-01
+     * @param {*} val
+     * @returns
+     * @memberof FilterComponent
+     */
+    force(val){
+        if(typeof val === 'string'){
+            return val.length?true:false;
+        }else if(typeof val === 'number'){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
     // 外部更新内部筛选条件  需要带上交并集类型
     _outerUpdate(
         filterName: string,
@@ -187,17 +264,17 @@ export class FilterComponent implements OnInit {
         this.radioValue = crossUnion;
         this.filter = {
             regExp: "",
-            rangeA: null,
-            rangeB: null,
+            rangeA: "",
+            rangeB: "",
             equal: "",
             unequal: "",
             in: "",
-            gt: null,
-            lt: null,
-            gte: null,
-            lte: null,
-            gteabs: null,
-            gtabs: null
+            gt: "",
+            lt: "",
+            gte: "",
+            lte: "",
+            gteabs: "",
+            gtabs: ""
         };
 
         switch (filterType) {
@@ -268,4 +345,6 @@ export class FilterComponent implements OnInit {
             console.log("else");
         }
     }
+
+
 }

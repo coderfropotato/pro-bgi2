@@ -5,7 +5,7 @@
         <div>
             <!--  ngModelChange="handlerSelectChange()" -->
             <nz-select style="width: 160px;" nzSize="default" [(ngModel)]="selectType" [nzAllowClear]="false"
-                nzPlaceHolder="Choose">
+                nzPlaceHolder="Choose" (ngModelChange)="selectChange()">
                 <nz-option *ngIf="searchType==='string'" nzValue='regExp' nzLabel="{{'filterPanel.like' | translate}}"></nz-option>
                 <nz-option *ngIf="searchType!=='string'" nzValue='range' nzLabel="{{'filterPanel.range' | translate}}"></nz-option>
                 <nz-option nzValue='equal' nzLabel="{{'filterPanel.equal' | translate}}"></nz-option>
@@ -21,27 +21,28 @@
         </div>
         <div class="form">
             <input *ngIf="searchType==='string' && selectType==='regExp'" type="text" nz-input placeholder="like"
-                nzSize="default" [(ngModel)]="filter.regExp">
+                nzSize="default" (input)="oninput()" [(ngModel)]="filter.regExp">
             <input *ngIf="searchType!=='string' && selectType==='range'" type="number" nz-input placeholder="rangeA"
-                nzSize="default" [(ngModel)]="filter.rangeA">
-            <input *ngIf="searchType!=='string' && selectType==='range'" type="number" nz-input placeholder="rangeB"
-                nzSize="default" [(ngModel)]="filter.rangeB">
-            <input *ngIf="selectType==='equal'" type="text" nz-input placeholder="equal" nzSize="default" [(ngModel)]="filter.equal">
-            <input *ngIf="selectType==='$ne'" type="text" nz-input placeholder="unequal" nzSize="default" [(ngModel)]="filter.unequal">
-            <textarea *ngIf="selectType==='$in'" type="text" nz-input placeholder="in" nzSize="default" [(ngModel)]="filter.in"></textarea>
-            <input *ngIf="searchType!=='string' && selectType==='$gt'" type="number" nz-input placeholder="gt" nzSize="default"
+                nzSize="default" (input)="oninput()" [(ngModel)]="filter.rangeA">
+            <input style="margin-top:6px;" *ngIf="searchType!=='string' && selectType==='range'" type="number" nz-input placeholder="rangeB"
+                nzSize="default" (input)="oninput()" [(ngModel)]="filter.rangeB">
+            <input *ngIf="selectType==='equal'" type="text" nz-input placeholder="equal" nzSize="default" (input)="oninput()" [(ngModel)]="filter.equal">
+            <input *ngIf="selectType==='$ne'" type="text" nz-input placeholder="unequal" nzSize="default" (input)="oninput()" [(ngModel)]="filter.unequal">
+            <textarea *ngIf="selectType==='$in'" type="text" nz-input placeholder="in" nzSize="default" (input)="oninput()" [(ngModel)]="filter.in"></textarea>
+            <input *ngIf="searchType!=='string' && selectType==='$gt'" type="number" nz-input placeholder="gt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gt">
-            <input *ngIf="searchType!=='string' && selectType==='$lt'" type="number" nz-input placeholder="lt" nzSize="default"
+            <input *ngIf="searchType!=='string' && selectType==='$lt'" type="number" nz-input placeholder="lt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.lt">
-            <input *ngIf="searchType!=='string' && selectType==='$gte'" type="number" nz-input placeholder="egt" nzSize="default"
+            <input *ngIf="searchType!=='string' && selectType==='$gte'" type="number" nz-input placeholder="egt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gte">
-            <input *ngIf="searchType!=='string' && selectType==='$lte'" type="number" nz-input placeholder="elt" nzSize="default"
+            <input *ngIf="searchType!=='string' && selectType==='$lte'" type="number" nz-input placeholder="elt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.lte">
-            <input *ngIf="searchType!=='string' && selectType==='$gteabs'" type="number" nz-input placeholder="gteabs" nzSize="default"
+            <input *ngIf="searchType!=='string' && selectType==='$gteabs'" type="number" nz-input placeholder="gteabs" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gteabs">
-            <input *ngIf="searchType!=='string' && selectType==='$gtabs'" type="number" nz-input placeholder="gtabs" nzSize="default"
+            <input *ngIf="searchType!=='string' && selectType==='$gtabs'" type="number" nz-input placeholder="gtabs" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gtabs">
         </div>
+        <p *ngIf="nodata">输入值不能为空！</p>
         <!-- 交并集选择 -->
         <div>
             <nz-radio-group [(ngModel)]="radioValue">
