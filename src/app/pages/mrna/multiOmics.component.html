@@ -1,3 +1,8 @@
-<div class="multiOmics">
+<button nz-button nzType="default" (click)="addY()">初始</button>&nbsp;
+<button nz-button nzType="default" (click)="addX()">X 定性</button>&nbsp;
+<button nz-button nzType="default" [class.btnActive]="!isMultiSelect" (click)="single()">单选</button> &nbsp;
+<button nz-button nzType="default" [class.btnActive]="isMultiSelect" (click)="multiple()">多选</button>&nbsp;
+<button nz-button nzType="default" [disabled]="!isMultiSelect" (click)="comfirm()">确定</button>&nbsp;
+<div class="multiOmics" style="width:80%;margin:auto;text-align: center">
     <svg id="multiOmicsSvg"></svg>
 </div>
