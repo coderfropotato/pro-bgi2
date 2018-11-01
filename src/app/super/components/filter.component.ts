@@ -87,23 +87,23 @@ export class FilterComponent implements OnInit {
         }
         this.radioValue = "inter";
         this.beforeRadioValue = "inter";
-        this.beforeSearchOne = null;
-        this.beforeSearchTwo = null;
+        this.beforeSearchOne = "";
+        this.beforeSearchTwo = "";
         this.beforeSelectType = this.selectType;
         this.nodata = false;
         this.filter = {
-            regExp: null,
-            rangeA: null,
-            rangeB: null,
-            equal: null,
-            unequal: null,
-            in: null,
-            gt: null,
-            lt: null,
-            gte: null,
-            lte: null,
-            gteabs: null,
-            gtabs: null
+            regExp: "",
+            rangeA: "",
+            rangeB: "",
+            equal: "",
+            unequal: "",
+            in: "",
+            gt: "",
+            lt: "",
+            gte: "",
+            lte: "",
+            gteabs: "",
+            gtabs: ""
         };
     }
 
@@ -120,8 +120,8 @@ export class FilterComponent implements OnInit {
     // 确定
     confirm() {
         // 找出所有修改的值 传给父级
-        let valueOne = null,
-            valueTwo = null;
+        let valueOne = "",
+            valueTwo = "";
         switch (this.selectType) {
             case "regExp":
                 valueOne = this.filter["regExp"];
@@ -161,8 +161,8 @@ export class FilterComponent implements OnInit {
         // 必填值
         if (this.selectType === "range") {
             if (
-                (!valueOne && valueOne != 0) ||
-                (!valueTwo && valueTwo != 0)
+                (!this.force(valueOne)) ||
+                (!this.force(valueTwo))
             ) {
                 this.nodata = true;
                 return;
@@ -170,7 +170,7 @@ export class FilterComponent implements OnInit {
                 this.nodata = false;
             }
         } else {
-            if (!valueOne && valueOne!=0) {
+            if (!this.force(valueOne)) {
                 this.nodata = true;
                 return;
             } else {
@@ -232,6 +232,25 @@ export class FilterComponent implements OnInit {
         ]);
     }
 
+    /**
+     * @description 输入的值是否有效
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-11-01
+     * @param {*} val
+     * @returns
+     * @memberof FilterComponent
+     */
+    force(val){
+        if(typeof val === 'string'){
+            return val.length?true:false;
+        }else if(typeof val === 'number'){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
     // 外部更新内部筛选条件  需要带上交并集类型
     _outerUpdate(
         filterName: string,
@@ -245,17 +264,17 @@ export class FilterComponent implements OnInit {
         this.radioValue = crossUnion;
         this.filter = {
             regExp: "",
-            rangeA: null,
-            rangeB: null,
+            rangeA: "",
+            rangeB: "",
             equal: "",
             unequal: "",
             in: "",
-            gt: null,
-            lt: null,
-            gte: null,
-            lte: null,
-            gteabs: null,
-            gtabs: null
+            gt: "",
+            lt: "",
+            gte: "",
+            lte: "",
+            gteabs: "",
+            gtabs: ""
         };
 
         switch (filterType) {
@@ -326,4 +345,6 @@ export class FilterComponent implements OnInit {
             console.log("else");
         }
     }
+
+
 }
