@@ -13,7 +13,8 @@
     <!-- tree test -->
     <br>
     <h3>test tree component</h3>
-    <app-tree [(selectData)]="selectData" [treeData]="treeData"></app-tree>
+    <span *ngFor="let v of selectData">{{ v.name}}&emsp;</span>
+    <app-tree [(selectData)]="selectData" [theadReflactMap]="theadReflactMap" [theadMap]="theadMap" [treeData]="treeData" (composeTheadChange)="composeTheadChange($event)"></app-tree>
 
 
     <!-- venn -->

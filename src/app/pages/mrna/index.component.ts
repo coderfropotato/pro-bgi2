@@ -4,6 +4,7 @@ import { AjaxService } from "./../../super/service/ajaxService";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "../../super/service/messageService";
+import { NgxSpinnerService } from 'ngx-spinner';
 import config from "../../../config";
 
 @Component({
@@ -20,12 +21,16 @@ export class IndexComponent implements OnInit {
         private router: Router,
         private message: MessageService,
         private ajaxService: AjaxService,
-        private storeService: StoreService
+        private storeService: StoreService,
+        private ngxSpinnerService:NgxSpinnerService
     ) {}
 
     ngOnInit() {
-        this.getMenuList();
-        this.getAddThead();
+        this.ngxSpinnerService.show();
+        setTimeout(()=>{
+            this.getMenuList();
+            this.getAddThead();
+        },1000)
     }
 
     getMenuList() {
@@ -135,6 +140,9 @@ export class IndexComponent implements OnInit {
     computedReadyStatus() {
         this.ready = this.taskCount == 2;
         if (this.ready) {
+            setTimeout(()=>{
+                this.ngxSpinnerService.hide();
+            },800)
             window.location.href.split('/report')
             let url = window.location.href.split('/report')[0]+'/report/mrna/multiOmics';
             window.location.replace(url);

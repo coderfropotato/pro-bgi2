@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ColorPickerModule, ColorPickerDirective } from "ngx-color-picker";
-
+import { NgxSpinnerModule } from 'ngx-spinner';
 import {
     HashLocationStrategy,
     LocationStrategy,
@@ -283,6 +283,7 @@ export function createTranslateLoader(http: HttpClient) {
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        NgxSpinnerModule,
         ColorPickerModule,
         NgZorroAntdModule,
         ReactiveFormsModule,

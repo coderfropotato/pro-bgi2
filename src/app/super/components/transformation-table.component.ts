@@ -1,6 +1,6 @@
 import { StoreService } from "./../service/storeService";
 import { AjaxService } from "./../service/ajaxService";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
 /**
  * @description 表格转换
  * @author Yangwd<277637411@qq.com>
@@ -14,15 +14,22 @@ import { Component, OnInit, ViewChild } from "@angular/core";
     styles: []
 })
 export class TransformationTableComponent implements OnInit {
-    @ViewChild("defaultTable")
-    defaultTable;
-    @ViewChild("extendTable")
-    extendTable;
-    @ViewChild("addColumn")
-    addColumn;
+    @ViewChild("defaultTable") defaultTable;
+    @ViewChild("extendTable") extendTable;
+    @ViewChild("addColumn") addColumn;
 
-    moduleId: string = "001";
-    // moduleId url1 url2
+    @Input() defaultTableEntity;
+    @Input() defaultTableUrl;
+    @Input() defaultTableId;
+    @Input() defaultTableDefaultChecked;
+    @Input() defaultTableCheckStatusInParams;
+
+    @Input() extendTableEntity;
+    @Input() extendTableUrl;
+    @Input() extendTableId;
+    @Input() extendTableDefaultChecked;
+    @Input() extendTableCheckStatusInParams;
+
 
     isFirst: boolean = true;
     defaultUrl: string = "";
@@ -32,31 +39,6 @@ export class TransformationTableComponent implements OnInit {
     excludeGeneList: object;
     geneCollectionId: string = null;
     currentGeneTable: any = null;
-
-    defaultTableCheckStatusInParams: boolean = false;
-    defaultTableEntity: object = {
-        pageSize: 10,
-        pageIndex: 1,
-        sortValue: null,
-        sortKey: null,
-        searchList: [],
-        isMatchAll: false,
-        rootSearchContentList: [],
-        geneListId: null
-    };
-
-    extendTableCheckStatusInParams: boolean = false;
-    extendTableEntity: object = {
-        pageSize: 10,
-        pageIndex: 1,
-        sortValue: null,
-        sortKey: null,
-        searchList: [],
-        isMatchAll: false,
-        rootSearchContentList: [],
-        geneListId: null
-    };
-
     allThead: any[] = [];
 
     constructor(
@@ -79,15 +61,25 @@ export class TransformationTableComponent implements OnInit {
         this.currentGeneTable = this.isFirst ? this.defaultTable : this.extendTable;
         // 获取当前表的内部状态
         let tableInnerStatus = this.currentGeneTable._getInnerStatusParams();
+        let ajaxData = {
+            checkStatus:tableInnerStatus['others']['checkStatus'],
+            checked:tableInnerStatus['others']['excludeGeneList']['checked'],
+            unChecked:tableInnerStatus['others']['excludeGeneList']['unChecked'],
+            connects:["ppi","coex"]
+        }
+        for(let key in tableInnerStatus["tableEntity"]){
+            ajaxData[key] = tableInnerStatus["tableEntity"][key];
+        }
+        // {
+        //     // geneListId: this.geneCollectionId,
+        //     maskGene: tableInnerStatus["others"],
+        //     // tableEntity: tableInnerStatus["tableEntity"],
+        //     connects:["ppi","coex"]
+        // }
         // 获取基因集id
         this.ajaxService
             .getDeferData({
-                data: {
-                    moduleId: "001",
-                    geneListId: this.geneCollectionId,
-                    maskGene: tableInnerStatus["others"],
-                    tableEntity: tableInnerStatus["tableEntity"]
-                },
+                data: ajaxData,
                 url: "http://localhost:8086/getGeneList"
             })
             .subscribe(
@@ -135,15 +127,21 @@ export class TransformationTableComponent implements OnInit {
      * @memberof TransformationTableComponent
      */
     deleteGeneCollection() {
-        // this.geneCollectionId = null;
         this.currentGeneTable._setParamsOfEntity("isMatchAll", true);
     }
 
-    addThead(thead) {
+    /**
+     * @description 外部更新addThead查询条件并发请求
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-10-31
+     * @param {*} thead
+     * @memberof TransformationTableComponent
+     */
+    _addThead(thead) {
         this.isFirst ? this.defaultTable._addThead(thead) : this.extendTable._addThead(thead);
     }
 
-    clearThead() {
+    _clearThead() {
         this.isFirst ? this.defaultTable._addThead([]) : this.extendTable._addThead([]);
     }
 }

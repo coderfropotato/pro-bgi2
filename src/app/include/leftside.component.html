@@ -1,5 +1,5 @@
 <div class="left-side">
-    <ul>
+    <ul *ngIf="menu.length">
         <li *ngFor="let item of menu;let i = index"><a routerLinkActive="active" routerLink="/report/{{item.url}}">{{item.title}}</a></li>
     </ul>
 </div>
