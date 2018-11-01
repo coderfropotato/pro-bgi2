@@ -88,6 +88,7 @@ export class multiOmicsComponent implements OnInit {
             height = width;
 
             d.transX = (temp - eachTypeWidth) + i * typeSpace;
+            d.w = rectWidth;
 
             d.data.forEach(m => {
                 m.w = rectWidth;
@@ -118,7 +119,6 @@ export class multiOmicsComponent implements OnInit {
         let totalWidth = margin.left + width + legend_chart_Space + legendWidth + margin.right,
             totalHeight = height + margin.top + margin.bottom;
 
-        console.log(column)
         // 比例尺
         let yColumnScale = d3.scaleLinear()
             .range([eachChartHeight, 0]).domain([0, yColumnMax]).nice();
@@ -144,12 +144,12 @@ export class multiOmicsComponent implements OnInit {
             .attr("y2", 0)
             .style("stroke", "#000000");
 
-        xAxisColumn.append("line")
-            .attr("x1", width - 1)
-            .attr("y1", 0)
-            .attr("x2", width - 1)
-            .attr("y2", 6)
-            .style("stroke", "#000000");
+        // xAxisColumn.append("line")
+        // .attr("x1", width - 1)
+        // .attr("y1", 0)
+        // .attr("x2", width - 1)
+        // .attr("y2", 6)
+        // .style("stroke", "#000000");
 
         // column y
         column_g.append("g").attr("class", "yAxis-column").call(yColumnAxis);
@@ -160,7 +160,7 @@ export class multiOmicsComponent implements OnInit {
             .append("text").attr("font-size", "14px")
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
-            .attr("transform",`rotate(-90)`)
+            .attr("transform", `rotate(-90)`)
             .text("Number")
 
         // column rect
@@ -187,10 +187,114 @@ export class multiOmicsComponent implements OnInit {
             .text(d => d.x);
 
         // boxplot
-        let boxplot_g = svg.selectAll(".boxplot")
-            .data(boxplot).enter()
-            .append("g").attr("class", "boxplot").attr("transform", (d, i) => `translate(${margin.left},${margin.top + (boxplotLength - 1 - i) * (eachChartHeight + chartSpace)})`)
+        if (boxplotLength) {
+            boxplot.forEach((d, i) => {
 
+                d.data.forEach(m => {
+
+                    column.forEach(a => {
+                        if (m.type === a.type) {
+                            m.transX = a.transX;
+                        }
+                    })
+
+                    m.boxList.forEach(t => {
+                        t.type = m.type;
+                        column.forEach(b => {
+                            if (t.type === b.type) {
+                                t.w = b.w;
+                            }
+                        })
+
+                    })
+                })
+
+                let boxplot_g = svg
+                    .append("g").attr("class", "boxplot")
+                    .attr("transform", `translate(${margin.left},${margin.top + (boxplotLength - 1 - i) * (eachChartHeight + chartSpace)})`);
+
+                let yScaleBox = d3.scaleLinear().domain([0, d.yMax]).range([eachChartHeight, 0]).nice();
+                let yAxisBox = d3.axisLeft(yScaleBox).ticks(5).tickFormat(d3.format("1"));
+
+                // boxplot y
+                boxplot_g.append("g").attr("class", "yAxis-boxplot").call(yAxisBox);
+
+                // boxplot y text
+                boxplot_g.append("g").attr("class", "yText-boxplot")
+                    .attr("transform", `translate(-40,${eachChartHeight / 2})`)
+                    .append("text").attr("font-size", "14px")
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+                    .attr("transform", `rotate(-90)`)
+                    .text(d.relation)
+
+                // boxplot x
+                let xAxisBox = boxplot_g.append("g").attr("class", "xAxis-boxplot")
+                    .attr("transform", `translate(0,${eachChartHeight})`);
+
+                xAxisBox.append("line")
+                    .attr("x1", 0)
+                    .attr("y1", 0)
+                    .attr("x2", width)
+                    .attr("y2", 0)
+                    .style("stroke", "#000000");
+
+                //boxplots g
+                let boxplots = boxplot_g.append("g").attr("class", "boxplots")
+                    .selectAll(".typeBoxs")
+                    .data(d.data).enter()
+                    .append("g")
+                    .attr("class", "typeBoxs")
+                    .attr("transform", m => `translate(${m.transX},0)`)
+                    .selectAll(".boxs")
+                    .data(m => m.boxList).enter();
+
+                // vertical line
+                this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w + k.w / 2, k => yScaleBox(k.box.high), (k, i) => (i + 1) * rectSpace + i * k.w + k.w / 2, k => yScaleBox(k.box.low));
+
+                // high line
+                this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w + k.w / 4, k => yScaleBox(k.box.high), (k, i) => (i + 1) * rectSpace + i * k.w + 3 * k.w / 4, k => yScaleBox(k.box.high));
+
+                // low line
+                this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w + k.w / 4, k => yScaleBox(k.box.low), (k, i) => (i + 1) * rectSpace + i * k.w + 3 * k.w / 4, k => yScaleBox(k.box.low));
+
+                // rect
+                boxplots
+                    .append("rect")
+                    .attr("transform", (k, i) => `translate(${(i + 1) * rectSpace + i * k.w},${yScaleBox(k.box.y2)})`)
+                    .attr("width", k => k.w)
+                    .attr("height", k => Math.abs(yScaleBox(k.box.y2) - yScaleBox(k.box.y1)))
+                    .attr("fill", k => colorScale(k.type))
+
+                //median line
+                this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w, k => yScaleBox(k.box.median), (k, i) => (i + 1) * rectSpace + i * k.w + k.w, k => yScaleBox(k.box.median));
+
+                // scatter .exit().remove()去掉多余的元素
+                const radius = 3;
+                boxplots.append("g").attr("class", "boxPoints")
+                    .attr("transform", (k, i) => `translate(${(i + 1) * rectSpace + i * k.w + k.w / 2},0)`)
+                    .selectAll(".allPoints")
+                    .data(z => z.scatters).enter()
+                    .append("circle")
+                    .attr("r", radius)
+                    .attr("fill", "#faca0c")
+                    .attr("cx", 0)
+                    .attr("cy", m => yScaleBox(m.y))
+
+            })
+        }
+
+    }
+
+    //画线
+    _drawLline(g, x1, y1, x2, y2) {
+        g.append("line")
+            .attr("stroke-width", 1)
+            .attr("stroke", "#000000")
+            .attr("x1", x1)
+            .attr("y1", y1)
+            .attr("x2", x2)
+            .attr("y2", y2);
     }
 
     single() {
