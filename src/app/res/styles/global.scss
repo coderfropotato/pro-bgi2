@@ -61,7 +61,7 @@
     margin-right: 26px;
 }
 
-.add-head>div {
+.add-head > div {
     flex: 1;
 }
 
@@ -130,12 +130,12 @@
     background-color: $table_header_bgcolor;
 }
 
-tbody>tr:nth-child(odd) {
-    background-color: #f5f5f5!important;
+tbody > tr:nth-child(odd) {
+    background-color: #f5f5f5 !important;
 }
 
-tbody>tr:nth-child(even) {
-    background-color: #fff!important;
+tbody > tr:nth-child(even) {
+    background-color: #fff !important;
 }
 
 .ant-table-td-left-sticky,
@@ -235,12 +235,12 @@ button.btnActive {
                 cursor: pointer;
             }
             label span {
-                margin: 0!important;
+                margin: 0 !important;
                 padding: 2px 6px;
                 cursor: pointer;
                 user-select: none;
-                &.disabled{
-                    color:#ddd;
+                &.disabled {
+                    color: #ddd;
                     cursor: not-allowed;
                 }
                 &:not(.ant-checkbox):not(.disabled):hover {
@@ -253,7 +253,55 @@ button.btnActive {
 }
 
 // loading
-.loading p{
+.loading p {
     color: #fff;
     font-size: 16px;
+}
+
+// popover
+.ng-popover {
+    min-width: 120px;
+    min-height: 40px;
+    border-radius: 2px;
+    padding: 8px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    user-select: text;
+    white-space: normal;
+    font-weight: 400;
+    text-align: left;
+    border:1px solid #e0e0e0;
+    background-color: #fff;
+    .arrow-outer {
+        position:absolute;
+        top:50%;
+        margin-top: -8px;
+		border: 8px solid transparent;
+    }
+    .arrow-inner {
+        position:absolute;
+        top:50%;
+        margin-top: -8px;
+		border: 8px solid transparent;
+    }
+    &.right{
+        .arrow-outer{
+            left:-17px;
+            border-right: 8px solid #e0e0e0;
+        }
+        .arrow-inner{
+            left:-15px;
+            border-right: 8px solid #fff;
+        }
+    }
+    &.left{
+        .arrow-outer{
+            right:-17px;
+            border-left: 8px solid #e0e0e0;
+        }
+        .arrow-inner{
+            right:-15px;
+            border-left: 8px solid #fff;
+        }
+    }
 }

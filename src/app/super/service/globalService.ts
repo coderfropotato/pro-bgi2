@@ -1,7 +1,7 @@
 import { Injectable, TemplateRef } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { NzModalService } from "ng-zorro-antd";
-
+declare const $: any;
 /**
  * @description 小服务集合
  * @author Yangwd<277637411@qq.com>
@@ -204,5 +204,44 @@ export class GlobalService {
                 cancelCallBack();
             }
         });
+    }
+
+    showPopOver(event, text) {
+        console.log(event);
+        if ($(".ng-popover").length) $(".ng-popover").remove();
+
+        let pop = $(
+            `<div class='ng-popover'>${text}<i class="arrow-outer"></i><i class="arrow-inner"></i></div>`
+        );
+
+        $("body")
+            .css("position", "realtive")
+            .append(pop);
+
+        pop.css("position", "absolute")
+            .css("opacity", 0)
+            .css("z-index", 100);
+        let dis = 20;
+        let direction = "right";
+        let w = pop.outerWidth();
+        let h = pop.outerHeight();
+
+        console.log(w, h);
+        if (event.pageX + w < document.body.clientWidth - 20) {
+            // right
+            direction = "right";
+            pop.css("left", event.pageX  + dis);
+        } else {
+            // left
+            direction = "left";
+            pop.css("left", event.pageX - w - dis);
+        }
+
+        pop.css("top", event.pageY - h / 2);
+        pop.addClass(direction).css("opacity", 1);
+    }
+
+    hidePopOver() {
+        $(".ng-popover").remove();
     }
 }

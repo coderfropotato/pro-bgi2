@@ -56,6 +56,15 @@ export class FilterComponent implements OnInit {
     clearButtonText: string;
     confirmButtonText: string;
 
+    // 存每次确定后的值
+    beforeSearchOne: any;
+    beforeSearchTwo: any;
+    beforeRadioValue: any;
+    beforeSelectType: string;
+
+    // 输入值判断
+    nodata: boolean = false;
+
     constructor(
         private translate: TranslateService,
         private storeService: StoreService
@@ -77,13 +86,18 @@ export class FilterComponent implements OnInit {
                 this.selectType = "range";
         }
         this.radioValue = "inter";
+        this.beforeRadioValue = "inter";
+        this.beforeSearchOne = null;
+        this.beforeSearchTwo = null;
+        this.beforeSelectType = this.selectType;
+        this.nodata = false;
         this.filter = {
-            regExp: "",
+            regExp: null,
             rangeA: null,
             rangeB: null,
-            equal: "",
-            unequal: "",
-            in: "",
+            equal: null,
+            unequal: null,
+            in: null,
             gt: null,
             lt: null,
             gte: null,
@@ -91,6 +105,16 @@ export class FilterComponent implements OnInit {
             gteabs: null,
             gtabs: null
         };
+    }
+
+    // 下拉选择变化
+    selectChange() {
+        this.nodata = false;
+    }
+
+    // 输入值的时候
+    oninput() {
+        this.nodata = false;
     }
 
     // 确定
@@ -134,6 +158,40 @@ export class FilterComponent implements OnInit {
                 valueOne = this.filter["gtabs"];
                 break;
         }
+        // 必填值
+        if (this.selectType === "range") {
+            if (
+                (!valueOne && valueOne != 0) ||
+                (!valueTwo && valueTwo != 0)
+            ) {
+                this.nodata = true;
+                return;
+            } else {
+                this.nodata = false;
+            }
+        } else {
+            if (!valueOne && valueOne!=0) {
+                this.nodata = true;
+                return;
+            } else {
+                this.nodata = false;
+            }
+        }
+
+        // 值变了才传给父组件
+        if (
+            this.beforeRadioValue === this.radioValue &&
+            this.beforeSearchOne === valueOne &&
+            this.beforeSearchTwo === valueTwo &&
+            this.beforeSelectType === this.selectType
+        ) {
+            return;
+        }
+
+        this.beforeSearchOne = valueOne;
+        this.beforeSearchTwo = valueTwo;
+        this.beforeRadioValue = this.radioValue;
+        this.beforeSelectType = this.selectType;
 
         this.emit([
             this.filterName,
