@@ -24,7 +24,7 @@ export class multiOmicsComponent implements OnInit {
         this.ajaxService
             .getDeferData(
                 {
-                    url: "http://localhost:8086/multiOmicsY",
+                    url: "http://localhost:8086/multiOmics",
                     data: {}
                 }
             )
@@ -64,8 +64,8 @@ export class multiOmicsComponent implements OnInit {
         const rectSpace = 5;  // 每个矩形的间距
 
         // 图例
-        let legendRectW = 12, // 小矩形宽
-            legendRectH = 12; // 小矩形高
+        let legendRectW = 16, // 小矩形宽
+            legendRectH = 16; // 小矩形高
         let legend_chart_Space = 24, //图例与图距离
             legendBottom = 6, //图例上下之间的距离
             legend_text_space = 4; //图例矩形与文字之间的距离
@@ -176,6 +176,7 @@ export class multiOmicsComponent implements OnInit {
             .attr("width", d => d.w)
             .attr("height", d => yColumnScale(0) - yColumnScale(d.y))
             .style("fill", d => colorScale(d.type))
+            .style("cursor","pointer")
 
         columns.selectAll(".xAxisText")
             .data(d => d.data).enter()
@@ -265,11 +266,12 @@ export class multiOmicsComponent implements OnInit {
                     .attr("width", k => k.w)
                     .attr("height", k => Math.abs(yScaleBox(k.box.y2) - yScaleBox(k.box.y1)))
                     .attr("fill", k => colorScale(k.type))
+                    .style("cursor","pointer")
 
                 //median line
                 this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w, k => yScaleBox(k.box.median), (k, i) => (i + 1) * rectSpace + i * k.w + k.w, k => yScaleBox(k.box.median));
 
-                // scatter .exit().remove()去掉多余的元素
+                // scatter
                 const radius = 3;
                 boxplots.append("g").attr("class", "boxPoints")
                     .attr("transform", (k, i) => `translate(${(i + 1) * rectSpace + i * k.w + k.w / 2},0)`)
@@ -279,11 +281,36 @@ export class multiOmicsComponent implements OnInit {
                     .attr("r", radius)
                     .attr("fill", "#faca0c")
                     .attr("cx", 0)
-                    .attr("cy", m => yScaleBox(m.y))
+                    .attr("cy", m => yScaleBox(m))
 
             })
         }
 
+        //图例
+        let legend_g = svg.append("g").attr("class", "legend")
+            .attr("transform", `translate(${margin.left + width + legend_chart_Space},${margin.top + height / 2})`);
+
+        // legend rect
+        legend_g.selectAll(".legendRects")
+            .data(column).enter()
+            .append("rect")
+            .attr("y", (d, i) => i * (legendBottom + legendRectH))
+            .attr("width", legendRectW)
+            .attr("height", legendRectH)
+            .style("fill", d => colorScale(d.type))
+            .style("cursor","pointer")
+
+        // legend text
+        legend_g
+            .selectAll(".legendTexts")
+            .data(column).enter()
+            .append("text")
+            .style("text-anchor", "start")
+            .style("dominant-baseline", "middle")
+            .style("font-size", "12px")
+            .attr("x", legend_text_space + legendRectW)
+            .attr("y", (d, i) => i * (legendBottom + legendRectH) + legendRectH / 2)
+            .text(d => d.type)
     }
 
     //画线
@@ -310,14 +337,6 @@ export class multiOmicsComponent implements OnInit {
     }
 
     //demo
-    addX() {
-        this.getDataX();
-    }
-
-    addY() {
-        this.getDataY();
-    }
-
     getDataX() {
         this.ajaxService
             .getDeferData(
@@ -340,7 +359,7 @@ export class multiOmicsComponent implements OnInit {
         this.ajaxService
             .getDeferData(
                 {
-                    url: "http://localhost:8086/multiOmics",
+                    url: "http://localhost:8086/multiOmicsY",
                     data: {}
                 }
             )
