@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { AjaxService } from 'src/app/super/service/ajaxService';
+import { GlobalService } from 'src/app/super/service/globalService';
 
 declare const d3: any;
+declare const $:any;
 
 @Component({
     selector: 'app-multiOmics',
@@ -12,8 +14,11 @@ export class multiOmicsComponent implements OnInit {
     isMultiSelect: boolean = false;
     selectedList: object[] = [];
 
+    chartData:any;
+
     constructor(
-        private ajaxService: AjaxService
+        private ajaxService: AjaxService,
+        private globalService: GlobalService
     ) { }
 
     ngOnInit() {
@@ -30,6 +35,7 @@ export class multiOmicsComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
+                    this.chartData=data;
                     this.drawChart(data);
                 },
                 error => {
@@ -40,6 +46,7 @@ export class multiOmicsComponent implements OnInit {
 
     drawChart(data) {
         d3.select("#multiOmicsSvg").selectAll("g").remove();
+        let that = this;
 
         let colors = ["#3195BC", "#FF6666", "#009e71", "#DBBBAF", "#A7BBC3", "#FF9896", "#F4CA60", "#6F74A5", "#E57066", "#C49C94", "#3b9b99", "#FACA0C", "#F3C9DD", "#0BBCD6"];
 
@@ -175,8 +182,28 @@ export class multiOmicsComponent implements OnInit {
             .attr("transform", (d, i) => `translate(${(i + 1) * rectSpace + i * d.w},${yColumnScale(d.y)})`)
             .attr("width", d => d.w)
             .attr("height", d => yColumnScale(0) - yColumnScale(d.y))
-            .style("fill", d => colorScale(d.type))
-            .style("cursor","pointer")
+            .attr("fill", d => colorScale(d.type))
+            .style("cursor", "pointer")
+            .on("mouseover", m => {
+                this.globalService.showPopOver(d3.event, m.y);
+            })
+            .on("mouseout", () => {
+                this.globalService.hidePopOver();
+            })
+            .on("click", function (d) {
+                if (that.isMultiSelect) { //多选
+                    d3.select(this).style("fill", "#FF4C06");
+                    that.selectedList.push(d);
+                } else {  //单选
+                    that.selectedList=[];
+                    d3.select("#multiOmicsSvg").selectAll(".columnRect").nodes().forEach(v=>{
+                        $(v).css("fill", $(v).attr("fill"));
+                    })
+                    d3.select(this).style("fill", "#FF4C06");
+                    that.selectedList.push(d);
+                    console.log(that.selectedList);
+                }
+            })
 
         columns.selectAll(".xAxisText")
             .data(d => d.data).enter()
@@ -266,7 +293,14 @@ export class multiOmicsComponent implements OnInit {
                     .attr("width", k => k.w)
                     .attr("height", k => Math.abs(yScaleBox(k.box.y2) - yScaleBox(k.box.y1)))
                     .attr("fill", k => colorScale(k.type))
-                    .style("cursor","pointer")
+                    .style("cursor", "pointer")
+                    .on("mouseover", m => {
+                        let text = `上限：${m.box.high}<br>上四分位数：${m.box.y2}<br>中位数：${m.box.median}<br>下四分位数：${m.box.y1}<br>下限：${m.box.low}`;
+                        this.globalService.showPopOver(d3.event, text);
+                    })
+                    .on("mouseout", () => {
+                        this.globalService.hidePopOver();
+                    })
 
                 //median line
                 this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w, k => yScaleBox(k.box.median), (k, i) => (i + 1) * rectSpace + i * k.w + k.w, k => yScaleBox(k.box.median));
@@ -282,6 +316,12 @@ export class multiOmicsComponent implements OnInit {
                     .attr("fill", "#faca0c")
                     .attr("cx", 0)
                     .attr("cy", m => yScaleBox(m))
+                    .on("mouseover", m => {
+                        this.globalService.showPopOver(d3.event, m);
+                    })
+                    .on("mouseout", () => {
+                        this.globalService.hidePopOver();
+                    })
 
             })
         }
@@ -298,7 +338,7 @@ export class multiOmicsComponent implements OnInit {
             .attr("width", legendRectW)
             .attr("height", legendRectH)
             .style("fill", d => colorScale(d.type))
-            .style("cursor","pointer")
+            .style("cursor", "pointer")
 
         // legend text
         legend_g
@@ -324,12 +364,16 @@ export class multiOmicsComponent implements OnInit {
             .attr("y2", y2);
     }
 
-    single() {
+    single(data) {
         this.isMultiSelect = false;
+        this.selectedList=[];
+        this.drawChart(data);
     }
 
-    multiple() {
+    multiple(data) {
         this.isMultiSelect = true;
+        this.selectedList=[];
+        this.drawChart(data);
     }
 
     comfirm() {
@@ -347,6 +391,7 @@ export class multiOmicsComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
+                    this.chartData=data;
                     this.drawChart(data);
                 },
                 error => {
@@ -365,6 +410,7 @@ export class multiOmicsComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
+                    this.chartData=data;
                     this.drawChart(data);
                 },
                 error => {

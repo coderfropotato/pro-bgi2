@@ -1,9 +1,10 @@
 <button nz-button nzType="default" (click)="ngOnInit()">初始</button>&nbsp;
 <button nz-button nzType="default" (click)="getDataX()">X 定性</button>&nbsp;
 <button nz-button nzType="default" (click)="getDataY()">y 定量</button>&nbsp;
-<button nz-button nzType="default" [class.btnActive]="!isMultiSelect" (click)="single()">单选</button> &nbsp;
-<button nz-button nzType="default" [class.btnActive]="isMultiSelect" (click)="multiple()">多选</button>&nbsp;
+<button nz-button nzType="default" [class.btnActive]="!isMultiSelect" (click)="single(chartData)">单选</button> &nbsp;
+<button nz-button nzType="default" [class.btnActive]="isMultiSelect" (click)="multiple(chartData)">多选</button>&nbsp;
 <button nz-button nzType="default" [disabled]="!isMultiSelect" (click)="comfirm()">确定</button>&nbsp;
-<div class="multiOmics" style="width:80%;margin:auto;text-align: center">
+<app-chart-export [chartId]="'multiOmics'" [chartName]="'多组学'"></app-chart-export>
+<div id="multiOmics" style="width:80%;margin:auto;text-align: center">
     <svg id="multiOmicsSvg"></svg>
 </div>
