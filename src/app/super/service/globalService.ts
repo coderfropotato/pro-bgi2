@@ -206,8 +206,15 @@ export class GlobalService {
         });
     }
 
+    /**
+     * @description popover
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-11-02
+     * @param {*} event 事件对象
+     * @param {*} text 显示的文本信息
+     * @memberof GlobalService
+     */
     showPopOver(event, text) {
-        console.log(event);
         if ($(".ng-popover").length) $(".ng-popover").remove();
 
         let pop = $(
@@ -226,7 +233,6 @@ export class GlobalService {
         let w = pop.outerWidth();
         let h = pop.outerHeight();
 
-        console.log(w, h);
         if (event.pageX + w < document.body.clientWidth - 20) {
             // right
             direction = "right";
