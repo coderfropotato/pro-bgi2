@@ -248,6 +248,7 @@ export class GlobalService {
     }
 
     hidePopOver() {
+
         $(".ng-popover").remove();
     }
 }

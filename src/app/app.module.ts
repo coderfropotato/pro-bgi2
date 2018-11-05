@@ -76,6 +76,7 @@ import { GridExportComponent } from "./super/components/grid-export.component";
 import { PaginationComponent } from "./super/components/pagination.component";
 import { TreeComponent } from './super/components/tree.component';
 import { TreeItemComponent } from './super/components/tree-item.component';
+import { ColorPickerComponent } from './super/components/color-picker.component';
 const ROUTES: Routes = [
     // mrna
     {
@@ -277,6 +278,7 @@ export function createTranslateLoader(http: HttpClient) {
         PaginationComponent,
         TreeItemComponent,
         TreeComponent,
+        ColorPickerComponent,
         TooltipDirective
     ],
     // 路由模块在imports 导入

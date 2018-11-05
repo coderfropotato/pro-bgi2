@@ -26,6 +26,10 @@ export class cxzk2Component implements OnInit {
     isMultiSelect: boolean;
     selectedData:object[]=[];
 
+    color = 'red'; // 默认颜色
+    legendIndex = 0; // 修改颜色的时候 需要保存点击的图例的索引 后面设置颜色会用到
+    show = false;  // 是否显示颜色选择器
+
     constructor(
         private route: ActivatedRoute,
         private router: Router
@@ -52,11 +56,16 @@ export class cxzk2Component implements OnInit {
         this.tableSwitchChart.SelectChange('compare', this.tableEntity["compare"]);
     }
 
+    handlerColorChange(color){
+        this.chart.setColor(color, this.legendIndex);
+        this.chart.redraw();
+    }
+
     drawChart(data) {
         let config: object = {
             chart: {
                 title: "散点图",
-                titleClick: function (event) {
+                dblclick: function (event) {
                     var name = prompt("请输入需要修改的标题", "");
                     if (name) {
                         this.setChartTitle(name);
@@ -81,7 +90,7 @@ export class cxzk2Component implements OnInit {
             axis: {
                 x: {
                     title: "Height(CM)",
-                    titleClick: function (event) {
+                    dblclick: function (event) {
                         var name = prompt("请输入需要修改的标题", "");
                         if (name) {
                             this.setXTitle(name);
@@ -91,7 +100,7 @@ export class cxzk2Component implements OnInit {
                 },
                 y: {
                     title: "Weight(KG)",
-                    titleClick: function (event) {
+                    dblclick: function (event) {
                         var name = prompt("请输入需要修改的标题", "");
                         if (name) {
                             this.setYTitle(name);
@@ -103,7 +112,12 @@ export class cxzk2Component implements OnInit {
             legend: {
                 show: true,
                 position: "right",
-                data: ["female", "male"]
+                data: ["female", "male"],
+                dblclick:(d,index)=>{
+                    this.color = d[0].getAttribute('fill');
+                    this.show = true;
+                    this.legendIndex = index;
+                }
             },
             tooltip: function (d) {
                 return (

@@ -39,4 +39,8 @@ export class GeneRelativeComponent implements OnInit {
     initRelative(){
 
     }
+
+    _getRelative(){
+        return [Math.random(),Math.random()]
+    }
 }
