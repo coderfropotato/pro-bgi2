@@ -263,6 +263,7 @@ export class multiOmicsComponent implements OnInit {
                     m.boxList.forEach(t => {
                         t.type = m.type;
                         t.checked = false;
+                        t.relation = d.relation;
                         column.forEach(b => {
                             if (t.type === b.type) {
                                 t.w = b.w;
