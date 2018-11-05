@@ -17,6 +17,7 @@ export class TransformationTableComponent implements OnInit {
     @ViewChild("defaultTable") defaultTable;
     @ViewChild("extendTable") extendTable;
     @ViewChild("addColumn") addColumn;
+    @ViewChild("relative") relative;
 
     @Input() defaultTableEntity;
     @Input() defaultTableUrl;
@@ -59,13 +60,15 @@ export class TransformationTableComponent implements OnInit {
      */
     confirm() {
         this.currentGeneTable = this.isFirst ? this.defaultTable : this.extendTable;
+        // 获取当前关系
+        let curConnects = this.relative._getRelative();
         // 获取当前表的内部状态
         let tableInnerStatus = this.currentGeneTable._getInnerStatusParams();
         let ajaxData = {
             checkStatus:tableInnerStatus['others']['checkStatus'],
             checked:tableInnerStatus['others']['excludeGeneList']['checked'],
             unChecked:tableInnerStatus['others']['excludeGeneList']['unChecked'],
-            connects:["ppi","coex"]
+            connects:tableInnerStatus['tableEntity']['connects']
         }
         for(let key in tableInnerStatus["tableEntity"]){
             ajaxData[key] = tableInnerStatus["tableEntity"][key];
@@ -88,11 +91,13 @@ export class TransformationTableComponent implements OnInit {
                     // 是否是第一次转换 第一次转换就把id集合穿进去
                     if (this.isFirst) {
                         this.extendTableEntity[ "geneListId" ] = this.geneCollectionId;
+                        this.extendTableEntity[ "connects" ] = curConnects;
                     } else {
                         // 第二次转换就设置参数 并 重置表格状态
                         // 把获取到的基因集id放在下一个表格的参数里面
                         this.currentGeneTable.initAllTableStatus();
                         this.currentGeneTable._setParamsOfEntityWithoutRequest( "isMatchAll", false );
+                        this.currentGeneTable._setParamsOfEntityWithoutRequest( "connects", curConnects );
                         this.currentGeneTable._setParamsOfEntity( "geneListId", this.geneCollectionId );
                     }
                     // 重置增删列状态

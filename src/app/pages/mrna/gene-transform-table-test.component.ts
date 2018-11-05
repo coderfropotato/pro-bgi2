@@ -15,6 +15,7 @@ export class GeneTransformTableTestComponent implements OnInit {
         indexName:"gene",
         isMatchAll: false,
         rootSearchContentList: [],
+        connects:[],
         geneListId: null
     };
     defaultTableUrl:string = "http://localhost:8086/filter";
@@ -31,6 +32,7 @@ export class GeneTransformTableTestComponent implements OnInit {
         indexName:"gene",
         isMatchAll: false,
         rootSearchContentList: [],
+        connects:[],
         geneListId: null
     };
     extendTableUrl:string = "http://localhost:8086/tableReverse";
