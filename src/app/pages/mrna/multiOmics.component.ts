@@ -3,7 +3,7 @@ import { AjaxService } from 'src/app/super/service/ajaxService';
 import { GlobalService } from 'src/app/super/service/globalService';
 
 declare const d3: any;
-declare const $:any;
+declare const $: any;
 
 @Component({
     selector: 'app-multiOmics',
@@ -12,9 +12,10 @@ declare const $:any;
 
 export class multiOmicsComponent implements OnInit {
     isMultiSelect: boolean = false;
-    selectedList: object[] = [];
+    selectedColumn: object[] = []; //选中的柱状图柱子
+    selectedBox: object[] = [];  //选中的箱线图箱体
 
-    chartData:any;
+    chartData: any;
 
     constructor(
         private ajaxService: AjaxService,
@@ -35,7 +36,7 @@ export class multiOmicsComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    this.chartData=data;
+                    this.chartData = data;
                     this.drawChart(data);
                 },
                 error => {
@@ -100,6 +101,7 @@ export class multiOmicsComponent implements OnInit {
             d.data.forEach(m => {
                 m.w = rectWidth;
                 m.type = d.type;
+                m.checked = false;
                 allXTexts.push(m.x);
                 allYColumn.push(m.y);
             })
@@ -184,24 +186,56 @@ export class multiOmicsComponent implements OnInit {
             .attr("height", d => yColumnScale(0) - yColumnScale(d.y))
             .attr("fill", d => colorScale(d.type))
             .style("cursor", "pointer")
-            .on("mouseover", m => {
-                this.globalService.showPopOver(d3.event, m.y);
+            .on("mouseover", d => {
+                this.globalService.showPopOver(d3.event, d.y);
             })
             .on("mouseout", () => {
                 this.globalService.hidePopOver();
             })
             .on("click", function (d) {
                 if (that.isMultiSelect) { //多选
-                    d3.select(this).style("fill", "#FF4C06");
-                    that.selectedList.push(d);
+                    d.checked = !d.checked;
+                    if (d.checked) {
+                        d3.select(this).style("fill", "#FF4C06");
+                        that.selectedColumn.push(d);
+                    } else {
+                        d3.select(this).style("fill", colorScale(d.type));
+                    }
+
+                    that.selectedColumn.forEach((m, i) => {
+                        if (!m.checked) {
+                            that.selectedColumn.splice(i, 1);
+                        }
+                    })
+
                 } else {  //单选
-                    that.selectedList=[];
-                    d3.select("#multiOmicsSvg").selectAll(".columnRect").nodes().forEach(v=>{
+                    that.selectedColumn = [];
+
+                    d3.select("#multiOmicsSvg").selectAll(".columnRect").nodes().forEach(v => {
+                        $(v).css("fill", $(v).attr("fill"));
+                    })
+                    d3.select("#multiOmicsSvg").selectAll(".boxplotRect").nodes().forEach(v => {
                         $(v).css("fill", $(v).attr("fill"));
                     })
                     d3.select(this).style("fill", "#FF4C06");
-                    that.selectedList.push(d);
-                    console.log(that.selectedList);
+
+                    column.forEach(m => {
+                        m.data.forEach(n => {
+                            n.checked = false;
+                        })
+                    })
+
+                    boxplot.forEach(a => {
+                        a.data.forEach(b => {
+                            b.boxList.forEach(c => {
+                                c.checked = false;
+                            })
+                        })
+                    })
+
+                    d.checked = true;
+                    that.selectedColumn.push(d);
+                    console.log(that.selectedColumn);
                 }
             })
 
@@ -228,6 +262,7 @@ export class multiOmicsComponent implements OnInit {
 
                     m.boxList.forEach(t => {
                         t.type = m.type;
+                        t.checked = false;
                         column.forEach(b => {
                             if (t.type === b.type) {
                                 t.w = b.w;
@@ -289,6 +324,7 @@ export class multiOmicsComponent implements OnInit {
                 // rect
                 boxplots
                     .append("rect")
+                    .attr("class", "boxplotRect")
                     .attr("transform", (k, i) => `translate(${(i + 1) * rectSpace + i * k.w},${yScaleBox(k.box.y2)})`)
                     .attr("width", k => k.w)
                     .attr("height", k => Math.abs(yScaleBox(k.box.y2) - yScaleBox(k.box.y1)))
@@ -300,6 +336,50 @@ export class multiOmicsComponent implements OnInit {
                     })
                     .on("mouseout", () => {
                         this.globalService.hidePopOver();
+                    })
+                    .on("click", function (m) {
+                        if (that.isMultiSelect) { //多选
+                            m.checked = !m.checked;
+                            if (m.checked) {
+                                d3.select(this).style("fill", "#FF4C06");
+                                that.selectedBox.push(m);
+                            } else {
+                                d3.select(this).style("fill", colorScale(m.type));
+                            }
+
+                            that.selectedBox.forEach((n, k) => {
+                                if (!n.checked) {
+                                    that.selectedBox.splice(k, 1);
+                                }
+                            })
+
+                        } else {  //单选
+                            that.selectedBox = [];
+
+                            d3.select("#multiOmicsSvg").selectAll(".columnRect").nodes().forEach(v => {
+                                $(v).css("fill", $(v).attr("fill"));
+                            })
+                            d3.select("#multiOmicsSvg").selectAll(".boxplotRect").nodes().forEach(v => {
+                                $(v).css("fill", $(v).attr("fill"));
+                            })
+                            d3.select(this).style("fill", "#FF4C06");
+
+                            column.forEach(k => {
+                                k.data.forEach(n => {
+                                    n.checked = false;
+                                })
+                            })
+                            boxplot.forEach(a => {
+                                a.data.forEach(b => {
+                                    b.boxList.forEach(c => {
+                                        c.checked = false;
+                                    })
+                                })
+                            })
+                            m.checked = true;
+                            that.selectedBox.push(m);
+                            console.log(that.selectedBox);
+                        }
                     })
 
                 //median line
@@ -364,20 +444,23 @@ export class multiOmicsComponent implements OnInit {
             .attr("y2", y2);
     }
 
-    single(data) {
+    single() {
         this.isMultiSelect = false;
-        this.selectedList=[];
-        this.drawChart(data);
+        this.selectedColumn = [];
+        this.selectedBox = [];
+        this.drawChart(this.chartData);
     }
 
-    multiple(data) {
+    multiple() {
         this.isMultiSelect = true;
-        this.selectedList=[];
-        this.drawChart(data);
+        this.selectedColumn = [];
+        this.selectedBox = [];
+        this.drawChart(this.chartData);
     }
 
     comfirm() {
-        console.log(this.selectedList);
+        console.log(this.selectedColumn);
+        console.log(this.selectedBox);
     }
 
     //demo
@@ -391,7 +474,7 @@ export class multiOmicsComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    this.chartData=data;
+                    this.chartData = data;
                     this.drawChart(data);
                 },
                 error => {
@@ -410,7 +493,7 @@ export class multiOmicsComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    this.chartData=data;
+                    this.chartData = data;
                     this.drawChart(data);
                 },
                 error => {
