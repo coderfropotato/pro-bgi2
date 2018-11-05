@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { GlobalService } from 'src/app/super/service/globalService';
+import { LoadingService } from 'src/app/super/service/loadingService';
 
 declare const d3: any;
 declare const $: any;
@@ -17,16 +18,24 @@ export class multiOmicsComponent implements OnInit {
 
     chartData: any;
 
+    colors: string[] = [];
+    legendIndex: number = 0; //当前点击图例的索引
+    color: string; //当前选中的color
+    isShowColorPanel: boolean = false;
+
     constructor(
         private ajaxService: AjaxService,
-        private globalService: GlobalService
+        private globalService: GlobalService,
+        private loadingService:LoadingService
     ) { }
 
     ngOnInit() {
+        this.colors = ["#3195BC", "#FF6666", "#009e71", "#FF9896", "#F4CA60", "#6F74A5", "#C49C94", "#3b9b99", "#FACA0C", "#F3C9DD"];
         this.getData();
     }
 
     getData() {
+        this.loadingService.open("#multiOmics");
         this.ajaxService
             .getDeferData(
                 {
@@ -38,8 +47,10 @@ export class multiOmicsComponent implements OnInit {
                 (data: any) => {
                     this.chartData = data;
                     this.drawChart(data);
+                    this.loadingService.close("#multiOmics");
                 },
                 error => {
+                    this.loadingService.close("#multiOmics");
                     console.log(error);
                 }
             )
@@ -48,8 +59,6 @@ export class multiOmicsComponent implements OnInit {
     drawChart(data) {
         d3.select("#multiOmicsSvg").selectAll("g").remove();
         let that = this;
-
-        let colors = ["#3195BC", "#FF6666", "#009e71", "#DBBBAF", "#A7BBC3", "#FF9896", "#F4CA60", "#6F74A5", "#E57066", "#C49C94", "#3b9b99", "#FACA0C", "#F3C9DD", "#0BBCD6"];
 
         //data
         let column = data.column;
@@ -85,8 +94,11 @@ export class multiOmicsComponent implements OnInit {
         let allXTexts = [];
         let allYColumn = [];
 
+        let colors = [];
         let temp = 0
         column.forEach((d, i) => {
+            colors.push(this.colors[i]);
+
             let rectsLength = d.data.length;
             rectWidth = widthScale(rectsLength);
             eachTypeWidth = rectsLength * rectWidth + (rectsLength + 1) * rectSpace;
@@ -418,8 +430,13 @@ export class multiOmicsComponent implements OnInit {
             .attr("y", (d, i) => i * (legendBottom + legendRectH))
             .attr("width", legendRectW)
             .attr("height", legendRectH)
-            .style("fill", d => colorScale(d.type))
+            .attr("fill", d => colorScale(d.type))
             .style("cursor", "pointer")
+            .on("click", (d, i) => {
+                this.color = colorScale(d.type);
+                this.isShowColorPanel = true;
+                this.legendIndex = i;
+            })
 
         // legend text
         legend_g
@@ -464,8 +481,15 @@ export class multiOmicsComponent implements OnInit {
         console.log(this.selectedBox);
     }
 
+    colorChange(color) {
+        this.color = color;
+        this.colors.splice(this.legendIndex, 1, color);
+        this.drawChart(this.chartData);
+    }
+
     //demo
     getDataX() {
+        this.loadingService.open("#multiOmics");
         this.ajaxService
             .getDeferData(
                 {
@@ -477,14 +501,17 @@ export class multiOmicsComponent implements OnInit {
                 (data: any) => {
                     this.chartData = data;
                     this.drawChart(data);
+                    this.loadingService.close("#multiOmics");
                 },
                 error => {
+                    this.loadingService.close("#multiOmics");
                     console.log(error);
                 }
             )
     }
 
     getDataY() {
+        this.loadingService.open("#multiOmics");
         this.ajaxService
             .getDeferData(
                 {
@@ -496,8 +523,10 @@ export class multiOmicsComponent implements OnInit {
                 (data: any) => {
                     this.chartData = data;
                     this.drawChart(data);
+                    this.loadingService.close("#multiOmics");
                 },
                 error => {
+                    this.loadingService.close("#multiOmics");
                     console.log(error);
                 }
             )
