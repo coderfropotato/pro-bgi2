@@ -4,7 +4,7 @@ declare const $: any;
 @Component({
     selector: "app-color-picker",
     template: `<div class="color-picker-mask" [hidden]="!show">
-                        <div class="color-picker-warp" [hidden]="hide">
+                        <div class="color-picker-warp">
                             <input [colorPicker]="color" style="opacity:0;"
                                 [cpDialogDisplay]="'inline'" [cpSaveClickOutside]="false"
                                 [cpToggle]="show"
@@ -14,7 +14,7 @@ declare const $: any;
                                 [cpCancelButtonClass]="'ant-btn ant-btn-default'"
                                 [cpOKButton]="true"
                                 [cpOKButtonClass]="'ant-btn ant-btn-primary'"
-                                (colorPickerCancel)="handlerCancel($event)"
+                                (colorPickerCancel)="handlerCancel()"
                                 (colorPickerSelect)="handlerConfirm($event)"
                             />
                         </div>
@@ -52,12 +52,12 @@ export class ColorPickerComponent implements OnInit {
     @Input()
     color; // 默认选中的颜色
     @Output()
-    colorChange: EventEmitter = new EventEmitter();
+    colorChange: EventEmitter<any> = new EventEmitter();
 
     @Input()
     show; // 是否显示选择器
     @Output()
-    showChange: EventEmitter = new EventEmitter();
+    showChange: EventEmitter<any> = new EventEmitter();
 
     presetColor = ["#000", "#fff"];
 

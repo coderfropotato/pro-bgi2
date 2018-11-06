@@ -45,7 +45,6 @@ export class cxzk2Component implements OnInit {
 
         this.tableEntity['sample'] = this.sampleList[0];
         this.tableEntity["compare"] = this.compareList[0];
-
     }
 
     onSelectChange1() {
@@ -62,6 +61,7 @@ export class cxzk2Component implements OnInit {
     }
 
     drawChart(data) {
+        console.log(this);
         let config: object = {
             chart: {
                 title: "散点图",
@@ -129,6 +129,7 @@ export class cxzk2Component implements OnInit {
                 );
             }
         };
+        console.log(config);
 
         this.chart = new d4().init(config);
     }

@@ -146,6 +146,7 @@ export class TableSwitchChartComponent implements OnInit {
                         this.error = "error";
                     } else {
                         this.error = "";
+                        console.log(this);
                         this.drawChart(data);
                     }
                     this.loadingService.close("#" + this.id);

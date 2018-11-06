@@ -40,7 +40,7 @@ export class SimpleReuseStrategy implements RouteReuseStrategy {
     // 在缓存中有的都认为允许还原路由
     public shouldAttach(route: ActivatedRouteSnapshot): boolean {
         // login的时候默认清除路由缓存
-        if (route.routeConfig.data.module === "login") {
+        if (route.routeConfig.data.module === "login" ||  route.routeConfig.data.module.indexOf('clearRouteCache')            ) {
             this._cacheRouters = {};
         }
         return (

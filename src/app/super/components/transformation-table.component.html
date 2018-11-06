@@ -1,5 +1,5 @@
 <!-- 增删列demo -->
-<app-add-column #addColumn [thead]="allThead" (addThead)="addThead($event)" (clearThead)="clearThead()"></app-add-column>
+<app-add-column #addColumn [thead]="allThead" (addThead)="_addThead($event)" (clearThead)="_clearThead()"></app-add-column>
 <div class="transformation-table-component">
     <h4 *ngIf="geneCollectionId" (click)="deleteGeneCollection()">geneCollectionId:{{geneCollectionId}}</h4>
     <div *ngIf="isFirst" id="default-gene-table">

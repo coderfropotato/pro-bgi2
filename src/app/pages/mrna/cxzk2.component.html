@@ -27,11 +27,10 @@
         </nz-dropdown>
     </ng-template>
     <div>
-
-        <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
+        <app-table-switch-chart #tableSwitchChart  [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
             (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl"
             [chartUrl]="chartUrl" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate"
-            [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
+            [setTemplate]="setTemplate"  (drawChartEmit)="drawChart($event)" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
 
         <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
     </div>

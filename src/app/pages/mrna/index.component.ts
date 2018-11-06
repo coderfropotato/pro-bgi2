@@ -1,12 +1,14 @@
+import { Observable, fromEvent } from "rxjs";
 import { StoreService } from "./../../super/service/storeService";
 import { GlobalService } from "./../../super/service/globalService";
 import { AjaxService } from "./../../super/service/ajaxService";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "../../super/service/messageService";
-import { NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerService } from "ngx-spinner";
 import config from "../../../config";
-
+declare const window: any;
+declare const $:any;
 @Component({
     selector: "app-mrna-index",
     templateUrl: "./index.component.html"
@@ -22,15 +24,20 @@ export class IndexComponent implements OnInit {
         private message: MessageService,
         private ajaxService: AjaxService,
         private storeService: StoreService,
-        private ngxSpinnerService:NgxSpinnerService
+        private ngxSpinnerService: NgxSpinnerService
     ) {}
 
     ngOnInit() {
         this.ngxSpinnerService.show();
-        setTimeout(()=>{
-            this.getMenuList();
-            this.getAddThead();
-        },1000)
+
+        this.getAddThead();
+        this.getMenuList();
+
+        this.router.navigateByUrl('/report/mrna');
+
+        setTimeout(() => {
+            this.ngxSpinnerService.hide();
+        }, 1000);
     }
 
     getMenuList() {
@@ -87,10 +94,8 @@ export class IndexComponent implements OnInit {
                         url: "mrna/multiOmics",
                         title: "多组学",
                         isExport: true
-                    },
+                    }
                 ];
-                this.taskCount++;
-                this.computedReadyStatus();
             });
     }
 
@@ -132,19 +137,19 @@ export class IndexComponent implements OnInit {
                     }
                 ];
                 this.storeService.setThead(this.allThead);
-                this.taskCount++;
-                this.computedReadyStatus();
             });
     }
 
     computedReadyStatus() {
         this.ready = this.taskCount == 2;
         if (this.ready) {
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.ngxSpinnerService.hide();
-            },800)
-            window.location.href.split('/report')
-            let url = window.location.href.split('/report')[0]+'/report/mrna/multiOmics';
+            }, 800);
+            window.location.href.split("/report");
+            let url =
+                window.location.href.split("/report")[0] +
+                "/report/mrna/multiOmics";
             window.location.replace(url);
         }
     }

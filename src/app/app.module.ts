@@ -1,19 +1,11 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ColorPickerModule, ColorPickerDirective } from "ngx-color-picker";
 import { NgxSpinnerModule } from 'ngx-spinner';
-import {
-    HashLocationStrategy,
-    LocationStrategy,
-    registerLocaleData
-} from "@angular/common";
+import { HashLocationStrategy, LocationStrategy, registerLocaleData } from "@angular/common";
 import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
-// module
 import { NgModule } from "@angular/core";
-// import ant ui
 import { NgZorroAntdModule, NZ_MESSAGE_CONFIG } from "ng-zorro-antd";
-// route state keep alive
 import { SimpleReuseStrategy } from "./super/service/simpleReuseStrategy";
-// import component
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { IndexComponent } from "./pages/mrna/index.component";
@@ -59,7 +51,6 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import config from "../config";
 import { SyserrorComponent } from "./pages/syserror.component";
 
-// test
 import { GeneTableTestComponent } from "./pages/mrna/gene-table-test.component";
 import { AddComponent } from "./pages/mrna/add.component";
 import { LittleTableComponent } from "./super/components/little-table.component";
@@ -84,10 +75,16 @@ const ROUTES: Routes = [
         component: IndexComponent,
         data: {
             keep: false,
-            module: "reportMrna"
+            // 刷新页面的时候 是否需要清除路由缓存  module中带clearRouteCache就清除
+            module: "mrnaIndex-clearRouteCache"
         },
         children: [
             // demo
+            {
+                path: "",
+                redirectTo: "multiOmics",
+                pathMatch: "full",
+            },
             {
                 path: "table",
                 component: GeneTableTestComponent,

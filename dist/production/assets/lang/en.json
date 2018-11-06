@@ -31,7 +31,8 @@
         "packUpButton":"close",
         "confirmButton":"confirm",
         "clearButton":"clear",
-        "cancelButton":"cancel"
+        "cancelButton":"cancel",
+        "noData":"no data"
     },
     "tableButton":{
         "refresh":"refresh",
