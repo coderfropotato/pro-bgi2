@@ -68,13 +68,15 @@ import { PaginationComponent } from "./super/components/pagination.component";
 import { TreeComponent } from './super/components/tree.component';
 import { TreeItemComponent } from './super/components/tree-item.component';
 import { ColorPickerComponent } from './super/components/color-picker.component';
+import { DiffComponent } from './pages/mrna/diff.component';
+import { VennComponent } from './pages/mrna/venn.component';
 const ROUTES: Routes = [
     // mrna
     {
         path: "report/mrna",
         component: IndexComponent,
         data: {
-            keep: false,
+            keep: true,
             // 刷新页面的时候 是否需要清除路由缓存  module中带clearRouteCache就清除
             module: "mrnaIndex-clearRouteCache"
         },
@@ -82,7 +84,7 @@ const ROUTES: Routes = [
             // demo
             {
                 path: "",
-                redirectTo: "multiOmics",
+                redirectTo: "diff",
                 pathMatch: "full",
             },
             {
@@ -164,6 +166,22 @@ const ROUTES: Routes = [
                 data: {
                     keep: true,
                     module: "multiOmics"
+                }
+            },
+            {
+                path: "diff",
+                component: DiffComponent,
+                data: {
+                    keep: true,
+                    module: "diff"
+                }
+            },
+            {
+                path: "venn",
+                component: VennComponent,
+                data: {
+                    keep: true,
+                    module: "venn"
                 }
             }
         ]
@@ -274,6 +292,8 @@ export function createTranslateLoader(http: HttpClient) {
         GridExportComponent,
         PaginationComponent,
         TreeItemComponent,
+        DiffComponent,
+        VennComponent,
         TreeComponent,
         ColorPickerComponent,
         TooltipDirective

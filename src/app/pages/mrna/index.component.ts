@@ -8,7 +8,7 @@ import { MessageService } from "../../super/service/messageService";
 import { NgxSpinnerService } from "ngx-spinner";
 import config from "../../../config";
 declare const window: any;
-declare const $:any;
+declare const $: any;
 @Component({
     selector: "app-mrna-index",
     templateUrl: "./index.component.html"
@@ -18,6 +18,7 @@ export class IndexComponent implements OnInit {
     allThead: any = [];
     ready: boolean = false;
     taskCount: number = 0;
+    indexMenu:Object;
     constructor(
         private routes: ActivatedRoute,
         private router: Router,
@@ -30,17 +31,35 @@ export class IndexComponent implements OnInit {
     ngOnInit() {
         this.ngxSpinnerService.show();
 
-        this.getAddThead();
-        this.getMenuList();
-
-        this.router.navigateByUrl('/report/mrna');
-
-        setTimeout(() => {
-            this.ngxSpinnerService.hide();
-        }, 1000);
+        (async () => {
+            try {
+                await this.getLcInfo();
+                // await this.getAddThead();
+                await this.getMenuList();
+                setTimeout(() => {
+                    this.ngxSpinnerService.hide();
+                }, 300);
+            } catch (error) {}
+        })();
     }
 
-    getMenuList() {
+    async getLcInfo() {
+        this.ajaxService
+            .getDeferData({
+                url: `${config["javaPath"]}/LCINFO/${sessionStorage.getItem(
+                    "LCID"
+                )}`
+            })
+            .subscribe(data => {
+                if (data["status"] === "0") {
+                    for (let key in data["data"]) {
+                        this.storeService.setStore(key, data["data"][key]);
+                    }
+                }
+            });
+    }
+
+    async getMenuList() {
         let LCID = sessionStorage.getItem("LCID");
         this.ajaxService
             .getDeferData({
@@ -49,6 +68,16 @@ export class IndexComponent implements OnInit {
             })
             .subscribe(data => {
                 this.menuList = [
+                    {
+                        url: "mrna/diff",
+                        title: "差异",
+                        isExport: true
+                    },
+                    {
+                        url: "mrna/venn",
+                        title: "韦恩",
+                        isExport: true
+                    },
                     {
                         url: "mrna/littleTableTest",
                         title: "小表",
@@ -99,7 +128,7 @@ export class IndexComponent implements OnInit {
             });
     }
 
-    getAddThead() {
+    async getAddThead() {
         let LCID = sessionStorage.getItem("LCID");
         this.ajaxService
             .getDeferData({
@@ -138,19 +167,5 @@ export class IndexComponent implements OnInit {
                 ];
                 this.storeService.setThead(this.allThead);
             });
-    }
-
-    computedReadyStatus() {
-        this.ready = this.taskCount == 2;
-        if (this.ready) {
-            setTimeout(() => {
-                this.ngxSpinnerService.hide();
-            }, 800);
-            window.location.href.split("/report");
-            let url =
-                window.location.href.split("/report")[0] +
-                "/report/mrna/multiOmics";
-            window.location.replace(url);
-        }
     }
 }

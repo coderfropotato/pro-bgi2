@@ -113,7 +113,7 @@ export class multiOmicsComponent implements OnInit {
             d.data.forEach(m => {
                 m.w = rectWidth;
                 m.type = d.type;
-                m.checked = false;
+                m['checked'] = false;
                 allXTexts.push(m.x);
                 allYColumn.push(m.y);
             })
@@ -206,8 +206,8 @@ export class multiOmicsComponent implements OnInit {
             })
             .on("click", function (d) {
                 if (that.isMultiSelect) { //多选
-                    d.checked = !d.checked;
-                    if (d.checked) {
+                    d['checked'] = !d['checked'];
+                    if (d['checked']) {
                         d3.select(this).style("fill", "#FF4C06");
                         that.selectedColumn.push(d);
                     } else {
@@ -215,7 +215,7 @@ export class multiOmicsComponent implements OnInit {
                     }
 
                     that.selectedColumn.forEach((m, i) => {
-                        if (!m.checked) {
+                        if (!m['checked']) {
                             that.selectedColumn.splice(i, 1);
                         }
                     })
@@ -233,19 +233,19 @@ export class multiOmicsComponent implements OnInit {
 
                     column.forEach(m => {
                         m.data.forEach(n => {
-                            n.checked = false;
+                            n['checked'] = false;
                         })
                     })
 
                     boxplot.forEach(a => {
                         a.data.forEach(b => {
                             b.boxList.forEach(c => {
-                                c.checked = false;
+                                c['checked'] = false;
                             })
                         })
                     })
 
-                    d.checked = true;
+                    d['checked'] = true;
                     that.selectedColumn.push(d);
                     console.log(that.selectedColumn);
                 }
@@ -274,7 +274,7 @@ export class multiOmicsComponent implements OnInit {
 
                     m.boxList.forEach(t => {
                         t.type = m.type;
-                        t.checked = false;
+                        t['checked'] = false;
                         t.relation = d.relation;
                         column.forEach(b => {
                             if (t.type === b.type) {
@@ -352,8 +352,8 @@ export class multiOmicsComponent implements OnInit {
                     })
                     .on("click", function (m) {
                         if (that.isMultiSelect) { //多选
-                            m.checked = !m.checked;
-                            if (m.checked) {
+                            m['checked'] = !m['checked'];
+                            if (m['checked']) {
                                 d3.select(this).style("fill", "#FF4C06");
                                 that.selectedBox.push(m);
                             } else {
@@ -361,7 +361,7 @@ export class multiOmicsComponent implements OnInit {
                             }
 
                             that.selectedBox.forEach((n, k) => {
-                                if (!n.checked) {
+                                if (!n['checked']) {
                                     that.selectedBox.splice(k, 1);
                                 }
                             })
@@ -379,17 +379,17 @@ export class multiOmicsComponent implements OnInit {
 
                             column.forEach(k => {
                                 k.data.forEach(n => {
-                                    n.checked = false;
+                                    n['checked'] = false;
                                 })
                             })
                             boxplot.forEach(a => {
                                 a.data.forEach(b => {
                                     b.boxList.forEach(c => {
-                                        c.checked = false;
+                                        c['checked'] = false;
                                     })
                                 })
                             })
-                            m.checked = true;
+                            m['checked'] = true;
                             that.selectedBox.push(m);
                             console.log(that.selectedBox);
                         }

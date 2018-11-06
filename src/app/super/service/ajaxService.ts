@@ -36,14 +36,15 @@ export class AjaxService {
                 };
                 // 验证token的合法性
                 this.http
-                    .post(`${config["url"]}/swap_token`, { LCID }, head)
+                    .post(`${config["javaPath"]}/swap_token`, { LCID }, head)
                     .subscribe(
                         res => {
-                            localStorage.setItem("token", res["token"]);
+                            let curToken = res['data'][0]
+                            localStorage.setItem("token", curToken);
                             let curHead = {
                                 headers: new HttpHeaders({
                                     "Content-Type": "application/json",
-                                    Authorization: `token ${res["token"]}`
+                                    Authorization: `token ${curToken}`
                                 })
                             };
                             return this.http
