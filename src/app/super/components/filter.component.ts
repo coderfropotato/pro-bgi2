@@ -27,25 +27,20 @@ export class FilterComponent implements OnInit {
             绝对值>      $gtabs
         */
 
-    // 外部数据类型
-    @Input()
-    searchType: string;
-    @Input()
-    filterName: string;
-    @Input()
-    filterNamezh: string;
-    @Input()
-    callBack: object;
-    @Input()
-    pid: string;
-    @Output()
-    getData: EventEmitter<any> = new EventEmitter();
-    @Output()
-    deleteData: EventEmitter<any> = new EventEmitter();
+    // 表头的数据类型
+    @Input() searchType: string;
+    // 表头的查询名称
+    @Input() filterName: string;
+    // 表头在页面显示的名称
+    @Input() filterNamezh: string;
+    // 筛选的时候 向外发出当前筛选的值
+    @Output() getData: EventEmitter<any> = new EventEmitter();
+    // 筛选面板清空发出的事件
+    @Output() deleteData: EventEmitter<any> = new EventEmitter();
 
+    
     filter: object;
     radioValue: string;
-
     // 当前筛选类型  in gt equap ...
     selectType: string;
     filtering: boolean = false;

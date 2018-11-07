@@ -7,12 +7,13 @@ declare const $:any;
     styles: []
 })
 export class GridExportComponent implements OnInit {
-    @Input()
-    url: string;
-    @Input()
-    tableEntity: object;
-    @Input()
-    fileName: any;
+    // 查询表格的api
+    @Input() url: string;
+    // 表格的查询参数
+    @Input() tableEntity: object;
+    // 表格的下载名称
+    @Input() fileName: any;
+    
 
     constructor(private ajaxService: AjaxService) {}
 

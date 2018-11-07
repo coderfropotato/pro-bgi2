@@ -25,20 +25,17 @@ import {
     styles: []
 })
 export class PaginationComponent implements OnInit, OnChanges {
-    @Input()
-    total: number;
-    @Input()
-    maxLimit: number;
+    // 表格数据的总条数
+    @Input() total: number;
+    // 页码输入框的最大可输入值
+    @Input() maxLimit: number;
+    // 索引  双向绑定
+    @Input() pageIndex: number;
+    @Output() pageIndexChange = new EventEmitter();
+    // 单页显示数据条数  双向绑定
+    @Input() pageSize: number;
+    @Output() pageSizeChange = new EventEmitter();
 
-    @Input()
-    pageIndex: number;
-    @Output()
-    pageIndexChange = new EventEmitter();
-
-    @Input()
-    pageSize: number;
-    @Output()
-    pageSizeChange = new EventEmitter();
 
     @ViewChild("pageIndexInput")
     pageIndexInput;

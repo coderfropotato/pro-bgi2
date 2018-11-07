@@ -19,23 +19,53 @@ declare const $: any;
     styles: []
 })
 export class TreeComponent implements OnInit, OnChanges {
-    @Input()
-    treeData: Array<object> = [];
-    @Input()
-    theadMap: object;
-    @Input()
-    theadReflactMap: object;
-    @Input()
-    selectData: any = [];
-    @Output()
-    selectDataChange: EventEmitter<any> = new EventEmitter();
-
-    @Output()
-    expandChangeEvent: EventEmitter<any> = new EventEmitter();
-    @Output()
-    checkedChangeEvent: EventEmitter<any> = new EventEmitter();
-    @Output()
-    composeTheadChange: EventEmitter<any> = new EventEmitter();
+    // 树元数据
+    @Input() treeData: Array<object> = [];
+    /** 每一个表头可拆分的字段
+     *  theadMap: object = {
+        category1: [],
+        category2: [],
+        category3: [],
+        category4: [],
+        "category1-compose1": ["category1", "compose1"],
+        "category1-compose1-one": ["category1", "compose1", "one"],
+        "category2-compose2": ["category2", "compose2"],
+        "category3-compose3-thr": ["category3", "compose3", "thr"],
+        "category3-compose3": ["category3", "compose3"],
+        "category4-compose4-four": ["category4", "compose4", "four"],
+        "category1-compose1-four-thr": ["category1", "compose1", "four", "thr"]
+       };
+     */
+    @Input() theadMap: object;
+    // 每一个组成表头的字段  对应的表头
+    /**
+     *  theadMap
+     * {
+     * "category1-compose1-one": ["category1", "compose1", "one"],
+     * "category2-compose2": ["category2", "compose2"]
+     * }
+     *
+     *  theadReflactMap
+     * {
+     *      category1:["category1-compose1-one"],
+     *      compose1:["category1-compose1-one"],
+     *      one:["category1-compose1-one"],
+     *      category2:["category2-compose2"],
+     *      compose2:["category2-compose2"]
+     * }
+     *
+     */
+    @Input() theadReflactMap: object;
+    // 选中的数据
+    @Input() selectData: any = [];
+    // 选中的数据变化的时候  发出的事件
+    @Output() selectDataChange: EventEmitter<any> = new EventEmitter();
+    // 展开收起变化的时候 发出的事件
+    @Output() expandChangeEvent: EventEmitter<any> = new EventEmitter();
+    // 选中变化的时候 发出的事件
+    @Output() checkedChangeEvent: EventEmitter<any> = new EventEmitter();
+    // 树中选中的项 可组成表头并且变化了 发出的事件
+    @Output() composeTheadChange: EventEmitter<any> = new EventEmitter();
 
     selectComposeThead = [];
     beforeComposeThead = [];

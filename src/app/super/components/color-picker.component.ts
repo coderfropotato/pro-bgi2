@@ -49,15 +49,11 @@ declare const $: any;
     ]
 })
 export class ColorPickerComponent implements OnInit {
-    @Input()
-    color; // 默认选中的颜色
-    @Output()
-    colorChange: EventEmitter<any> = new EventEmitter();
+    @Input() color; // 默认选中的颜色
+    @Output() colorChange: EventEmitter<any> = new EventEmitter();
 
-    @Input()
-    show; // 是否显示选择器
-    @Output()
-    showChange: EventEmitter<any> = new EventEmitter();
+    @Input() show; // 是否显示当前颜色选择器
+    @Output() showChange: EventEmitter<any> = new EventEmitter();
 
     presetColor = ["#000", "#fff"];
 

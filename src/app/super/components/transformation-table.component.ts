@@ -14,22 +14,31 @@ import { Component, OnInit, ViewChild, Input } from "@angular/core";
     styles: []
 })
 export class TransformationTableComponent implements OnInit {
+    // 默认表的表格参数
+    @Input() defaultTableEntity;
+    // 默认表的api
+    @Input() defaultTableUrl;
+    // 默认表的id
+    @Input() defaultTableId;
+    // 默认表的默认选中状态
+    @Input() defaultTableDefaultChecked;
+    // 默认表的 gene选中状态是否放在参数里面
+    @Input() defaultTableCheckStatusInParams;
+    // 转换表的查询参数
+    @Input() extendTableEntity;
+    // 转换表的api
+    @Input() extendTableUrl;
+    // 转换表的id
+    @Input() extendTableId;
+    // 转换表的默认选中状态
+    @Input() extendTableDefaultChecked;
+    // 转换表的 gene选中状态是否放在参数里面
+    @Input() extendTableCheckStatusInParams;
+
     @ViewChild("defaultTable") defaultTable;
     @ViewChild("extendTable") extendTable;
     @ViewChild("addColumn") addColumn;
     @ViewChild("relative") relative;
-
-    @Input() defaultTableEntity;
-    @Input() defaultTableUrl;
-    @Input() defaultTableId;
-    @Input() defaultTableDefaultChecked;
-    @Input() defaultTableCheckStatusInParams;
-
-    @Input() extendTableEntity;
-    @Input() extendTableUrl;
-    @Input() extendTableId;
-    @Input() extendTableDefaultChecked;
-    @Input() extendTableCheckStatusInParams;
 
 
     isFirst: boolean = true;

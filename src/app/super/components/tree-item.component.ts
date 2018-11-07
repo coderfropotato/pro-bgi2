@@ -15,12 +15,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
     styles: []
 })
 export class TreeItemComponent implements OnInit {
-    @Input()
-    floder: Array<object>;
-    @Output()
-    treeItemCheckedChange: EventEmitter<any> = new EventEmitter();
-    @Output()
-    treeItemExpandChange: EventEmitter<any> = new EventEmitter();
+    @Input() floder: Array<object>;
+    @Output() treeItemCheckedChange: EventEmitter<any> = new EventEmitter();
+    @Output() treeItemExpandChange: EventEmitter<any> = new EventEmitter();
+
     constructor() {}
 
     ngOnInit() {}

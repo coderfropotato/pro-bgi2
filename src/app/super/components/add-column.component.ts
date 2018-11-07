@@ -14,16 +14,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
     styles: []
 })
 export class AddColumnComponent implements OnInit {
-    @Input()
-    thead: Array<object>;
+    @Input() thead: Array<object>;  // 默认显示的表头
+
     show: boolean = false;
     selected: Array<object> = [];
     beforeSelected: Array<object> = [];
     selectCount: Array<number> = [];
-    @Output()
-    addThead: EventEmitter<any> = new EventEmitter();
-    @Output()
-    clearThead: EventEmitter<any> = new EventEmitter();
+    @Output() addThead: EventEmitter<any> = new EventEmitter(); // 添加头的时候发出的事件
+    @Output() clearThead: EventEmitter<any> = new EventEmitter(); // 清除头的时候发出的事件
 
     constructor(
         private storeService: StoreService,

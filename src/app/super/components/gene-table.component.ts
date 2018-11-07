@@ -24,21 +24,29 @@ declare const $: any;
     templateUrl: "./gene-table.component.html"
 })
 export class GeneTableComponent implements OnInit {
-    @Input()
-    defaultChecked: boolean;
-    @Input()
-    tableId: string;
-    @Input()
-    url: string;
-    @Input()
-    pageEntity: object;
-    @Input()
-    checkStatusInParams: boolean;
-    @Input()
-    fileName: string;
-    // select slot
-    @Input()
-    selectItems: TemplateRef<any>;
+    // 基因表的默认选中还是补选中
+    @Input() defaultChecked: boolean;
+    // 表的id
+    @Input() tableId: string;
+    // 表格的请求api
+    @Input() url: string;
+    /** 默认参数
+     * this.tableEntity["pageIndex"] = 1;
+        this.tableEntity["pageSize"] = 10;
+        this.tableEntity["sortValue"] = null;
+        this.tableEntity["sortKey"] = null;
+        this.tableEntity["searchList"] = [];
+        this.tableEntity["rootSearchContentList"] = [];
+        this.tableEntity["addThead"] = [];
+        如果有默认参数之外的参数 需要传进来，如果没有可以不传。
+     */
+    @Input() pageEntity: object;
+    // 是否把表的gene选中状态放在表的查询参数里面 默认false
+    @Input() checkStatusInParams: boolean;
+    // 表格下载的名称
+    @Input() fileName: string;
+    // 表格模板插槽
+    @Input() selectItems: TemplateRef<any>;
 
     isLoading:boolean = true;
     @ViewChildren("child")

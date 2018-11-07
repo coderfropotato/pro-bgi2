@@ -24,21 +24,21 @@ declare const $: any;
     templateUrl: "./big-table.component.html"
 })
 export class BigTableComponent implements OnInit {
-    @Input()
-    tableId: string;
-    @ViewChildren("child")
-    children;
-    @Input()
-    url: string;
-    @Input()
-    pageEntity: object;
-    @Input()
-    fileName: string;
+    // 表格id
+    @Input() tableId: string;
+    // 表格请求api
+    @Input() url: string;
+    // 表格查询参数可有可无  默认有 pageSize pageIndex sortValue sortKey searchList rootSearchContentList addThead
+    // 对于有超出默认参数之外的查询参数 需要放在pageEntity里传进来
+    @Input() pageEntity: object;
+    // 表格下载名称
+    @Input() fileName: string;
+    // 下拉选项模板插槽 TemplateRef
+    @Input() selectItems: TemplateRef<any>;
 
+
+    @ViewChildren("child") children;
     tableEntity: object = {};
-    // select slot
-    @Input()
-    selectItems: TemplateRef<any>;
 
     isLoading:boolean = false;
     // 开始排序
