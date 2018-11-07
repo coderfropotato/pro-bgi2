@@ -120,20 +120,18 @@ export class multiOmicsComponent implements OnInit {
 
         height = width;
 
-        eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
-
         //判断极值
         if (!boxplotLength) {
-            if (eachChartHeight >= 400) {
-                eachChartHeight = 400;
-                height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
+            if (height >= 600) {
+                height = 600;
             }
         } else {
-            if (eachChartHeight >= 200) {
-                eachChartHeight = 200;
-                height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
+            if (height >= 1200) {
+                height = 1200;
             }
         }
+
+        eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
 
         //计算max
         let typeTextMax = d3.max(column, d => d.type.length);
