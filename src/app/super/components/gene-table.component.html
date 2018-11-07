@@ -148,7 +148,7 @@
                 <app-error *ngIf="error" [error]="error"></app-error>
                 <div class="table-bottom" *ngIf="!error">
                     <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total"
-                        [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()"></app-pagination>
+                        [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()" [maxLimit]="1000"></app-pagination>
                 </div>
             </div>
         </div>

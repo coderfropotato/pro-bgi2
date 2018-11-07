@@ -219,17 +219,14 @@ export class cxzk1Component implements OnInit {
             this.colorPickerTpl,
             () => {
                 this.beforeColor = this.color;
-                console.log(`confirm:${this.color}`);
             },
             () => {
                 this.color = this.beforeColor;
-                console.log(`cancel:${this.color}`);
             }
         );
     }
 
     sizeChange() {
-        console.log(this.pageSize);
         this.pageIndex = 1;
     }
 

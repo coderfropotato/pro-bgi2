@@ -137,7 +137,7 @@
                 </nz-table>
                 <div class="table-bottom">
                     <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total"
-                        [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()"></app-pagination>
+                        [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()" [maxLimit]="1000"></app-pagination>
                 </div>
                 <app-error *ngIf="error" [error]="error"></app-error>
             </div>

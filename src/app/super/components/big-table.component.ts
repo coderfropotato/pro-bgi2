@@ -527,7 +527,6 @@ export class BigTableComponent implements OnInit {
                 val.selectType === filterType &&
                 val.filterNamezh === filterNamezh
             ) {
-                console.log(val);
                 val._outerDelete(filterName, filterNamezh, filterType);
             }
         });

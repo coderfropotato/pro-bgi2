@@ -61,7 +61,6 @@ export class cxzk2Component implements OnInit {
     }
 
     drawChart(data) {
-        console.log(this);
         let config: object = {
             chart: {
                 title: "散点图",
@@ -76,7 +75,6 @@ export class cxzk2Component implements OnInit {
                 // selectedModule:"",
                 onselect: (d) => {
                     this.selectedData=d;
-                    console.log(this.selectedData);
                 },
                 el: "#chartId222",
                 type: "scatter",
@@ -129,7 +127,6 @@ export class cxzk2Component implements OnInit {
                 );
             }
         };
-        console.log(config);
 
         this.chart = new d4().init(config);
     }

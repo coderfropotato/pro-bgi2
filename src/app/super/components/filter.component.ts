@@ -341,8 +341,6 @@ export class FilterComponent implements OnInit {
                 this.filterNamezh,
                 beforeFilterType
             ]);
-        } else {
-            console.log("else");
         }
     }
 

@@ -1,7 +1,11 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ColorPickerModule, ColorPickerDirective } from "ngx-color-picker";
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { HashLocationStrategy, LocationStrategy, registerLocaleData } from "@angular/common";
+import { NgxSpinnerModule } from "ngx-spinner";
+import {
+    HashLocationStrategy,
+    LocationStrategy,
+    registerLocaleData
+} from "@angular/common";
 import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { NgZorroAntdModule, NZ_MESSAGE_CONFIG } from "ng-zorro-antd";
@@ -65,11 +69,11 @@ import { BigTableTestComponent } from "./pages/mrna/big-table-test.component";
 import { GeneTransformTableTestComponent } from "./pages/mrna/gene-transform-table-test.component";
 import { GridExportComponent } from "./super/components/grid-export.component";
 import { PaginationComponent } from "./super/components/pagination.component";
-import { TreeComponent } from './super/components/tree.component';
-import { TreeItemComponent } from './super/components/tree-item.component';
-import { ColorPickerComponent } from './super/components/color-picker.component';
-import { DiffComponent } from './pages/mrna/diff.component';
-import { VennComponent } from './pages/mrna/venn.component';
+import { TreeComponent } from "./super/components/tree.component";
+import { TreeItemComponent } from "./super/components/tree-item.component";
+import { ColorPickerComponent } from "./super/components/color-picker.component";
+import { DiffComponent } from "./pages/mrna/diff.component";
+import { VennComponent } from "./pages/mrna/venn.component";
 const ROUTES: Routes = [
     // mrna
     {
@@ -85,7 +89,7 @@ const ROUTES: Routes = [
             {
                 path: "",
                 redirectTo: "diff",
-                pathMatch: "full",
+                pathMatch: "full"
             },
             {
                 path: "table",
@@ -183,6 +187,11 @@ const ROUTES: Routes = [
                     keep: true,
                     module: "venn"
                 }
+            },
+            {
+                path: "**",
+                redirectTo: "diff",
+                pathMatch: "full"
             }
         ]
     },
@@ -343,4 +352,4 @@ export function createTranslateLoader(http: HttpClient) {
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
