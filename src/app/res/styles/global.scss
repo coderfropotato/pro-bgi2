@@ -2,7 +2,7 @@
 @import "./setting.scss";
 .table-content {
     width: 100%;
-    min-height: 400px;
+    // min-height: 400px;
     position: relative;
     border: 1px solid #ddd;
     border-radius: 0 0 4px 4px;
@@ -270,38 +270,51 @@ button.btnActive {
     white-space: normal;
     font-weight: 400;
     text-align: left;
-    border:1px solid #e0e0e0;
+    border: 1px solid #e0e0e0;
     background-color: #fff;
     .arrow-outer {
-        position:absolute;
-        top:50%;
+        position: absolute;
+        top: 50%;
         margin-top: -8px;
-		border: 8px solid transparent;
+        border: 8px solid transparent;
     }
     .arrow-inner {
-        position:absolute;
-        top:50%;
+        position: absolute;
+        top: 50%;
         margin-top: -8px;
-		border: 8px solid transparent;
+        border: 8px solid transparent;
     }
-    &.right{
-        .arrow-outer{
-            left:-17px;
+    &.right {
+        .arrow-outer {
+            left: -17px;
             border-right: 8px solid #e0e0e0;
         }
-        .arrow-inner{
-            left:-15px;
+        .arrow-inner {
+            left: -15px;
             border-right: 8px solid #fff;
         }
     }
-    &.left{
-        .arrow-outer{
-            right:-17px;
+    &.left {
+        .arrow-outer {
+            right: -17px;
             border-left: 8px solid #e0e0e0;
         }
-        .arrow-inner{
-            right:-15px;
+        .arrow-inner {
+            right: -15px;
             border-left: 8px solid #fff;
         }
+    }
+}
+
+// table error
+.table-error {
+    width: 310px;
+    height: 300px;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 80px;
+    background: url(../img/error.png) no-repeat center 30px;
+    p{
+        padding-top: 200px;
     }
 }

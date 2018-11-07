@@ -17,24 +17,7 @@
     <app-tree [(selectData)]="selectData" [theadReflactMap]="theadReflactMap" [theadMap]="theadMap" [treeData]="treeData" (composeTheadChange)="composeTheadChange($event)"></app-tree>
 
 
-    <!-- venn -->
-    <div id="venn-chart"></div>
-    <div id="venn-table" style="width: 800px; margin: 0 auto;">
-        <ng-template #selectTemplate>
-            <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="pageEntity.compareGroup[0]" (ngModelChange)="selectOneChange()" [nzSize]="'small'">
-                <nz-option nzLabel="a1" [nzValue]="'a1'"></nz-option>
-                <nz-option nzLabel="b1" [nzValue]="'b1'"></nz-option>
-                <nz-option nzLabel="c1" [nzValue]="'c1'"></nz-option>
-            </nz-select>
-            <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="pageEntity.compareGroup[1]" (ngModelChange)="selectOneChange()" [nzSize]="'small'">
-                <nz-option nzLabel="a2" [nzValue]="'a2'"></nz-option>
-                <nz-option nzLabel="b2" [nzValue]="'b2'"></nz-option>
-                <nz-option nzLabel="c2" [nzValue]="'c2'"></nz-option>
-            </nz-select>
-        </ng-template>
-        <app-geneTable #geneTable tableId="table_venn" parentId="venn-table" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
-            [url]="url" [defaultChecked]="true"></app-geneTable>
-    </div>
+    
     <br>
     <br>
     <br>

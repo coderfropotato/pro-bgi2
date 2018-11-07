@@ -13,6 +13,7 @@ export class StoreService {
     thead: Array<object> = [];
     lang:string = 'zh';
     store:object=  {};
+    navigatedRoute :Array<string>= [];
     constructor() {}
 
     setThead(thead) {
@@ -37,5 +38,17 @@ export class StoreService {
 
     getStore(key){
         return this.store[key];
+    }
+
+    // 记录导航过的路由
+    setNavigatedRoutes(url){
+        if(!this.navigatedRoute.includes(url)){
+            this.navigatedRoute.push(url)
+        }
+    }
+
+    // 获取导航过的路由的集合
+    getNavigatedRoutes(){
+        return this.navigatedRoute;
     }
 }

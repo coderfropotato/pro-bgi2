@@ -36,6 +36,8 @@ export class IndexComponent implements OnInit {
             if (event instanceof NavigationEnd) {
                 this.routerState = !this.routerState;
                 this.routerStateCode = this.routerState ? "active" : "inactive";
+
+                this.storeService.setNavigatedRoutes(this.router.url);
             }
         });
     }
@@ -81,58 +83,58 @@ export class IndexComponent implements OnInit {
             .subscribe(data => {
                 this.menuList = [
                     {
-                        url: "mrna/diff",
+                        url: "diff",
                         title: "差异",
                         isExport: true
                     },
                     {
-                        url: "mrna/venn",
+                        url: "venn",
                         title: "韦恩",
                         isExport: true
                     },
                     {
-                        url: "mrna/littleTableTest",
+                        url: "littleTableTest",
                         title: "小表",
                         isExport: true
                     },
                     {
-                        url: "mrna/transformationTable",
+                        url: "transformationTable",
                         title: "transformation-table",
                         isExport: true
                     },
                     {
-                        url: "mrna/bigTable",
+                        url: "bigTable",
                         title: "普通大表",
                         isExport: true
                     },
                     {
-                        url: "mrna/table",
+                        url: "table",
                         title: "GeneId 大表",
                         isExport: true
                     },
                     {
-                        url: "mrna/net",
+                        url: "net",
                         title: "网络图",
                         isExport: true
                     },
                     {
-                        url: "mrna/addColumn",
+                        url: "addColumn",
                         title: "增删列",
                         isExport: true
                     },
 
                     {
-                        url: "mrna/cxzk1",
+                        url: "cxzk1",
                         title: "测序质控-1",
                         isExport: true
                     },
                     {
-                        url: "mrna/cxzk2",
+                        url: "cxzk2",
                         title: "图表切换demo",
                         isExport: true
                     },
                     {
-                        url: "mrna/multiOmics",
+                        url: "multiOmics",
                         title: "多组学",
                         isExport: true
                     }

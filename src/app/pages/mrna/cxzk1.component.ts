@@ -192,8 +192,6 @@ export class cxzk1Component implements OnInit {
     }
 
     ngOnInit() {
-        this.getVennData();
-
         //根据theadMap 生成theadReflactMap
         for (let key in this.theadMap) {
             if (this.theadMap[key].length) {
@@ -237,56 +235,6 @@ export class cxzk1Component implements OnInit {
 
     indexChange() {
         console.log(this.pageIndex);
-    }
-
-    // venn test
-    getVennData() {
-        this.ajaxService
-            .getDeferData({
-                url: `${config["javaPath"]}/DiffVenn/graph`,
-                data: {
-                    path: "aisdb0001.gene_diff",
-                    from: 0,
-                    size: 1000000,
-                    LCID: "demo",
-                    FDR: 0.001,
-                    log2FC: 1.01,
-                    compareGroup: [
-                        "A1-vs-B1",
-                        "A1-vs-C1",
-                        "B1-vs-C1",
-                        "B2-vs-A2",
-                        "C2-vs-A2",
-                        "C2-vs-B2"
-                    ]
-                }
-                // data: {
-                //     path: "aisdb0001.gene_diff",
-                //     from: 0,
-                //     size: 1000000,
-                //     FDR: 0.001,
-                //     log2FC: 1.0,
-                //     LCID: sessionStorage.getItem("LCID"),
-                //     compareGroup: ["A1-vs-B1", "A1-vs-C1"]
-                // }
-            })
-            .subscribe(
-                data => {
-                    console.log(data);
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-    }
-
-    drawVenn(data) {
-        let oVenn = new Venn({ id: "venn-chart" })
-            .config({
-                data: data,
-                compareGroup: this.pageEntity["sample"]
-            })
-            .drawVenn();
     }
 
     selectOneChange() {
