@@ -3,22 +3,27 @@ import { StoreService } from "./../../super/service/storeService";
 import { GlobalService } from "./../../super/service/globalService";
 import { AjaxService } from "./../../super/service/ajaxService";
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { MessageService } from "../../super/service/messageService";
 import { NgxSpinnerService } from "ngx-spinner";
 import config from "../../../config";
+import { routeAnimation } from "../../super/animation/animation";
 declare const window: any;
 declare const $: any;
 @Component({
     selector: "app-mrna-index",
-    templateUrl: "./index.component.html"
+    templateUrl: "./index.component.html",
+    animations: [routeAnimation]
 })
 export class IndexComponent implements OnInit {
     menuList: any = [];
     allThead: any = [];
     ready: boolean = false;
     taskCount: number = 0;
-    indexMenu:Object;
+    indexMenu: Object;
+
+    routerState: boolean = true;
+    routerStateCode: string = "active";
     constructor(
         private routes: ActivatedRoute,
         private router: Router,
@@ -26,7 +31,14 @@ export class IndexComponent implements OnInit {
         private ajaxService: AjaxService,
         private storeService: StoreService,
         private ngxSpinnerService: NgxSpinnerService
-    ) {}
+    ) {
+        this.router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                this.routerState = !this.routerState;
+                this.routerStateCode = this.routerState ? "active" : "inactive";
+            }
+        });
+    }
 
     ngOnInit() {
         this.ngxSpinnerService.show();

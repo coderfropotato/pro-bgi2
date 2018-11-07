@@ -37,8 +37,9 @@ export class FilterComponent implements OnInit {
     @Output() getData: EventEmitter<any> = new EventEmitter();
     // 筛选面板清空发出的事件
     @Output() deleteData: EventEmitter<any> = new EventEmitter();
+    // 父级表格的id
+    @Input() pid;
 
-    
     filter: object;
     radioValue: string;
     // 当前筛选类型  in gt equap ...
