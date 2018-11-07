@@ -61,7 +61,7 @@
     margin-right: 26px;
 }
 
-.add-head > div {
+.add-head>div {
     flex: 1;
 }
 
@@ -130,11 +130,11 @@
     background-color: $table_header_bgcolor;
 }
 
-tbody > tr:nth-child(odd) {
+tbody>tr:nth-child(odd) {
     background-color: #f5f5f5 !important;
 }
 
-tbody > tr:nth-child(even) {
+tbody>tr:nth-child(even) {
     background-color: #fff !important;
 }
 
@@ -184,6 +184,7 @@ button.btnActive {
 
 .chartView {
     border: 1px solid #ddd;
+    text-align: center;
 }
 
 .center {

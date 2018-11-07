@@ -26,7 +26,7 @@ export class multiOmicsComponent implements OnInit {
     constructor(
         private ajaxService: AjaxService,
         private globalService: GlobalService,
-        private loadingService:LoadingService
+        private loadingService: LoadingService
     ) { }
 
     ngOnInit() {
@@ -88,7 +88,7 @@ export class multiOmicsComponent implements OnInit {
             legend_text_space = 4; //图例矩形与文字之间的距离
 
         //根据每组柱子数量决定柱子宽度
-        let widthScale = d3.scaleLinear().domain([1, 50]).range([30, 10]).clamp(true);
+        let widthScale = d3.scaleLinear().domain([1, 60]).range([50, 8]).clamp(true);
 
         //calculate min max
         let allXTexts = [];
@@ -105,7 +105,6 @@ export class multiOmicsComponent implements OnInit {
 
             temp += eachTypeWidth;
             width = temp + typeSpace * (columnLength - 1);
-            height = width;
 
             d.transX = (temp - eachTypeWidth) + i * typeSpace;
             d.w = rectWidth;
@@ -119,8 +118,22 @@ export class multiOmicsComponent implements OnInit {
             })
         });
 
+        height = width;
+
+        //判断极值
+        if (!boxplotLength) {
+            if (height >= 600) {
+                height = 600;
+            }
+        } else {
+            if (height >= 1200) {
+                height = 1200;
+            }
+        }
+
         eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
 
+        //计算max
         let typeTextMax = d3.max(column, d => d.type.length);
 
         let xmaxLength = d3.max(allXTexts, d => d.length);
@@ -175,7 +188,7 @@ export class multiOmicsComponent implements OnInit {
         // column y
         column_g.append("g").attr("class", "yAxis-column").call(yColumnAxis);
 
-        // column y text
+        // column y title
         column_g.append("g").attr("class", "yText-column")
             .attr("transform", `translate(-40,${eachChartHeight / 2})`)
             .append("text").attr("font-size", "14px")
@@ -251,10 +264,11 @@ export class multiOmicsComponent implements OnInit {
                 }
             })
 
+        // column x text
         columns.selectAll(".xAxisText")
             .data(d => d.data).enter()
             .append("text").attr("class", "xAxisText")
-            .style("font-size", "12px")
+            .style("font-size", "10px")
             .attr("text-anchor", "end")
             .attr("dominant-baseline", "middle")
             .attr("transform", (d, i) => `translate(${(i + 1) * rectSpace + i * d.w + d.w / 2},${eachChartHeight + 6}) rotate(-45)`)
@@ -295,7 +309,7 @@ export class multiOmicsComponent implements OnInit {
                 // boxplot y
                 boxplot_g.append("g").attr("class", "yAxis-boxplot").call(yAxisBox);
 
-                // boxplot y text
+                // boxplot y title
                 boxplot_g.append("g").attr("class", "yText-boxplot")
                     .attr("transform", `translate(-40,${eachChartHeight / 2})`)
                     .append("text").attr("font-size", "14px")
