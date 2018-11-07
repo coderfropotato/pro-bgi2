@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { AjaxService } from "../../super/service/ajaxService";
-import { LoadingService } from "../../super/service/loadingService";
 
 declare const $: any;
 
@@ -25,7 +24,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() selectTemplate: TemplateRef<any>; //可选，下拉框模块
 
-    @Input() setTemplate:TemplateRef<any>; //可选，设置模块
+    @Input() setTemplate: TemplateRef<any>; //可选，设置模块
 
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
     // 双向绑定:变量名x，fn命名规范xChange
@@ -39,13 +38,13 @@ export class TableSwitchChartComponent implements OnInit {
     isShowTable: boolean = false;
     tableData: object;
     error: string;
+    isLoading: boolean = false;
 
     accuracyList: object[] = [];
     accuracy: number = -1;
 
     constructor(
-        private ajaxService: AjaxService,
-        private loadingService: LoadingService
+        private ajaxService: AjaxService
     ) { }
 
     ngOnInit() {
@@ -95,7 +94,7 @@ export class TableSwitchChartComponent implements OnInit {
      * 获取表格数据
      */
     getTableData() {
-        this.loadingService.open("#" + this.id);
+        this.isLoading = true;
         this.ajaxService
             .getDeferData(
                 {
@@ -105,22 +104,22 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.length == 0 || $.isEmptyObject(data) || data.rows.length == 0) {
+                    if (data.data.length == 0 || $.isEmptyObject(data.data)) {
                         this.error = "nodata";
-                    } else if (data.Error) {
+                    } else if (data.status != 0) {
                         this.error = "error";
                     } else {
                         this.error = "";
-                        this.tableData = data;
+                        this.tableData = data.data;
                         if (!this.chartUrl) {
-                            this.drawChart(data);
+                            this.drawChart(data.data);
                         }
                     }
-                    this.loadingService.close("#" + this.id);
+                    this.isLoading = false;
 
                 },
                 error => {
-                    this.loadingService.close("#" + this.id);
+                    this.isLoading = false;
                     this.error = error;
                 }
             )
@@ -130,7 +129,7 @@ export class TableSwitchChartComponent implements OnInit {
      * 获取图数据（复杂图的api与表api不是同一个）
      */
     getChartData() {
-        this.loadingService.open("#" + this.id);
+        this.isLoading = true;
         this.ajaxService
             .getDeferData(
                 {
@@ -140,20 +139,18 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.length == 0 || $.isEmptyObject(data)) {
+                    if (data.data.length == 0 || $.isEmptyObject(data.data)) {
                         this.error = "nodata";
-                    } else if (data.Error) {
+                    } else if (data.status != 0) {
                         this.error = "error";
                     } else {
                         this.error = "";
-                        console.log(this);
-                        this.drawChart(data);
+                        this.drawChart(data.data);
                     }
-                    this.loadingService.close("#" + this.id);
-
+                    this.isLoading = false;
                 },
                 error => {
-                    this.loadingService.close("#" + this.id);
+                    this.isLoading = false;
                     this.error = error;
                 }
             )
