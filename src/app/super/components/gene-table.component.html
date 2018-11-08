@@ -77,7 +77,7 @@
             </div>
             <div class="table-content">
                 <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" x:head.length*150+'px'-->
-                <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="{ x:totalWidth }"
+                <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="{ x:totalWidth,y:'388px' }"
                     [nzData]="dataSet" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"
                     nzBordered [nzWidthConfig]="widthConfig">
                     <thead>
