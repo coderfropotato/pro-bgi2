@@ -2,7 +2,7 @@ import { MessageService } from "./../../super/service/messageService";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { fromEvent } from "rxjs";
 declare const $: any;
-
+declare const d4: any;
 @Component({
     selector: "app-layout1",
     templateUrl: "./layout1.component.html",
@@ -10,12 +10,15 @@ declare const $: any;
 })
 export class Layout1Component implements OnInit {
     // 表格高度相关
-    @ViewChild('right') right;
-    @ViewChild('func') func;
+    @ViewChild("right")
+    right;
+    @ViewChild("func")
+    func;
 
     @ViewChild("tableSwitchChart")
     tableSwitchChart;
 
+    switch: boolean = false;
     tableUrl: string;
     chartUrl: string;
     tableEntity: object = {
@@ -24,9 +27,9 @@ export class Layout1Component implements OnInit {
         compare: ""
     };
 
-    pageEntity:object = {
-        pageSize:20
-    }
+    pageEntity: object = {
+        pageSize: 20
+    };
 
     sampleList: string[] = [];
     compareList: string[] = [];
@@ -81,8 +84,14 @@ export class Layout1Component implements OnInit {
         });
     }
 
+    switchChange(status) {
+        this.switch = status;
+    }
+
     computedTableHeight() {
-        this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+        this.tableHeight =
+            this.right.nativeElement.offsetHeight -
+            this.func.nativeElement.offsetHeight;
     }
 
     onSelectChange1() {

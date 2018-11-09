@@ -23,8 +23,10 @@
                             "src/assets"
                         ],
                         "styles": [
+                            "src/app/res/styles/theme.less",
                             "node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css",
-                            "src/app/res/styles/reset.css", "src/app/res/styles/global.scss"
+                            "src/app/res/styles/reset.css",
+                            "src/app/res/styles/global.scss"
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js",

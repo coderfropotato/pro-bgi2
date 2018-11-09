@@ -215,27 +215,45 @@ button.btnActive {
     width: 100%;
     height: calc(100% - 80px);
     overflow: hidden;
-    padding:$padding;
+    padding: $padding;
 }
-.content{
+.content {
     width: 100%;
     height: 100%;
     display: flex;
-    min-width:1350px;
-    &.column{
+    min-width: 1350px;
+    &.column {
         flex-direction: column;
     }
-    &.row{
+    &.row {
         flex-direction: row;
     }
-    &>div:not(.bar){
+    & .left{
+        flex:2;
+        &.unexpand{
+            flex:1;
+        }
+    }
+    & .right{
+        transition: .3s all ease;
         flex:1;
+        &.expand{
+            flex:2;
+        }
+    }
+    & .switch {
+        position: fixed;
+        right: 40px;
+        top: 46px;
+    }
+    & > div:not(.bar) {
         overflow: auto;
-        box-shadow:$boxshadow;
+        box-shadow: $boxshadow;
         background-color: #fff;
     }
+
 }
-.bar{
+.bar {
     width: 12px;
     height: 12px;
 }
@@ -252,7 +270,7 @@ button.btnActive {
     ul {
         margin: 0;
         box-sizing: border-box;
-        display:flex;
+        display: flex;
         li {
             padding: 8px 4px;
             a {
