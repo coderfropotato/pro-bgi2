@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 /**
  * @description 全局消息通信
  * @author Yangwd<277637411@qq.com>
@@ -6,8 +7,7 @@
  * @class MessageService
  */
 import { Injectable } from "@angular/core";
-import { Observable, Subject } from "rxjs";
-
+import { Observable, Subject, fromEvent } from "rxjs";
 @Injectable({
     providedIn: "root"
 })
@@ -16,6 +16,8 @@ export class MessageService {
     subject = new Subject<any>();
     // 获取增删列的消息订阅
     addTheadSubject = new Subject<any>();
+    // windowResize 主题
+    windowResize = new Subject<any>();
 
     send(message) {
         this.subject.next({ message });
@@ -31,5 +33,13 @@ export class MessageService {
 
     getAddThead(): Observable<any> {
         return this.addTheadSubject.asObservable();
+    }
+
+    sendResize(){
+        this.windowResize.next({message:"resize"});
+    }
+
+    getResize(){
+        return this.windowResize.asObservable();
     }
 }

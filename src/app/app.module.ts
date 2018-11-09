@@ -23,8 +23,8 @@ import { JyzbdComponent } from "./pages/dna/jyzbd.component";
 import { AddColumnComponent } from "./super/components/add-column.component";
 import { ChartExportComponent } from "./super/components/chart-export.component";
 
-import { FrametopComponent } from "./include/frametop.component";
-import { LeftsideComponent } from "./include/leftside.component";
+import { TopComponent } from "./include/top.component";
+import { MenuComponent } from "./include/menu.component";
 
 // service
 // import { HttpInterService } from './super/service/httpService';
@@ -74,6 +74,8 @@ import { TreeItemComponent } from "./super/components/tree-item.component";
 import { ColorPickerComponent } from "./super/components/color-picker.component";
 import { DiffComponent } from "./pages/mrna/diff.component";
 import { VennComponent } from "./pages/mrna/venn.component";
+import { Layout1Component } from './pages/mrna/layout1.component';
+import { Layout2Component } from './pages/mrna/layout2.component';
 const ROUTES: Routes = [
     // mrna
     {
@@ -88,7 +90,7 @@ const ROUTES: Routes = [
             // demo
             {
                 path: "",
-                redirectTo: "diff",
+                redirectTo: "layout1",
                 pathMatch: "full"
             },
             {
@@ -189,6 +191,22 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "layout1",
+                component: Layout1Component,
+                data: {
+                    keep: true,
+                    module: "layout1"
+                }
+            },
+            {
+                path: "layout2",
+                component: Layout2Component,
+                data: {
+                    keep: true,
+                    module: "layout2"
+                }
+            },
+            {
                 path: "**",
                 redirectTo: "diff",
                 pathMatch: "full"
@@ -278,8 +296,8 @@ export function createTranslateLoader(http: HttpClient) {
         GeneTableComponent,
         NotFoundComponent,
         AppComponent,
-        FrametopComponent,
-        LeftsideComponent,
+        TopComponent,
+        MenuComponent,
         FilterComponent,
         ErrorComponent,
         DnaIndexComponent,
@@ -303,6 +321,8 @@ export function createTranslateLoader(http: HttpClient) {
         TreeItemComponent,
         DiffComponent,
         VennComponent,
+        Layout1Component,
+        Layout2Component,
         TreeComponent,
         ColorPickerComponent,
         TooltipDirective

@@ -1,10 +1,18 @@
+import { MessageService } from './../service/messageService';
+import { Observable,fromEvent } from 'rxjs';
 import { StoreService } from "./../service/storeService";
 import {
     Component,
     OnInit,
     Input,
     ViewChildren,
-    TemplateRef
+    TemplateRef,
+    OnChanges,
+    SimpleChanges,
+    AfterViewChecked,
+    AfterViewInit,
+    ElementRef,
+    ViewChild,
 } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
@@ -23,13 +31,16 @@ declare const $: any;
     selector: "app-geneTable",
     templateUrl: "./gene-table.component.html"
 })
-export class GeneTableComponent implements OnInit {
+export class GeneTableComponent implements OnInit, OnChanges {
     // 基因表的默认选中还是补选中
-    @Input() defaultChecked: boolean;
+    @Input()
+    defaultChecked: boolean;
     // 表的id
-    @Input() tableId: string;
+    @Input()
+    tableId: string;
     // 表格的请求api
-    @Input() url: string;
+    @Input()
+    url: string;
     /** 默认参数
      * this.tableEntity["pageIndex"] = 1;
         this.tableEntity["pageSize"] = 10;
@@ -40,15 +51,27 @@ export class GeneTableComponent implements OnInit {
         this.tableEntity["addThead"] = [];
         如果有默认参数之外的参数 需要传进来，如果没有可以不传。
      */
-    @Input() pageEntity: object;
+    @Input()
+    pageEntity: object;
     // 是否把表的gene选中状态放在表的查询参数里面 默认false
-    @Input() checkStatusInParams: boolean;
+    @Input()
+    checkStatusInParams: boolean;
     // 表格下载的名称
-    @Input() fileName: string;
+    @Input()
+    fileName: string;
     // 表格模板插槽
-    @Input() selectItems: TemplateRef<any>;
+    @Input()
+    selectItems: TemplateRef<any>;
+    // 计算后的表格高度
+    @Input()
+    tableHeight: number = 0;
 
-    isLoading:boolean = true;
+    @ViewChild("tableHeader") tableHeader;
+    @ViewChild("tableFilter") tableFilter;
+    @ViewChild("tableBottom") tableBottom;
+
+    scroll: any = { x: "0", y: "0" };
+    isLoading: boolean = true;
     @ViewChildren("child")
     children;
     // 初始选中状态
@@ -120,7 +143,9 @@ export class GeneTableComponent implements OnInit {
         private globalService: GlobalService,
         private loadingService: LoadingService,
         private ajaxService: AjaxService,
-        private storeService: StoreService
+        private storeService: StoreService,
+        private el:ElementRef,
+        private message:MessageService
     ) {
         let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
@@ -128,6 +153,20 @@ export class GeneTableComponent implements OnInit {
 
     ngOnInit(): void {
         this.init();
+    }
+
+    // 页面加载完成的时候会把算好的 tableHeight传进来，触发changes 然后组件内部计算表格滚动区域的高度；
+    ngOnChanges(change: SimpleChanges) {
+        if (
+            "tableHeight" in change &&
+            change["tableHeight"] &&
+            !change["tableHeight"]["firstChange"]
+        ) {
+            this.computedTbody(change["tableHeight"]["currentValue"]);
+        } else {
+            // 不传高度默认显示十条数据的高度 默认滚动高度388px
+            this.scroll["y"] = '388px';
+        }
     }
 
     init() {
@@ -150,7 +189,7 @@ export class GeneTableComponent implements OnInit {
         ];
 
         this.tableEntity["pageIndex"] = 1;
-        this.tableEntity["pageSize"] = 10;
+        this.tableEntity["pageSize"] = this.pageEntity['pageSize'] || 20;
         this.tableEntity["sortValue"] = null;
         this.tableEntity["sortKey"] = null;
         this.tableEntity["searchList"] = [];
@@ -195,9 +234,9 @@ export class GeneTableComponent implements OnInit {
         }
 
         if (this.checkStatusInParams) {
-            this.tableEntity['checkStatus'] = this.checkStatus;
-            this.tableEntity['checked'] = this.checked;
-            this.tableEntity['unChecked'] = this.unChecked;
+            this.tableEntity["checkStatus"] = this.checkStatus;
+            this.tableEntity["checked"] = this.checked;
+            this.tableEntity["unChecked"] = this.unChecked;
         }
 
         let ajaxConfig = {
@@ -207,7 +246,10 @@ export class GeneTableComponent implements OnInit {
 
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
             (responseData: any) => {
-                if (responseData.status === "0" && !$.isEmptyObject(responseData.data)) {
+                if (
+                    responseData.status === "0" &&
+                    !$.isEmptyObject(responseData.data)
+                ) {
                     // this.loadingService.close(`#${this.parentId}`);
                     this.isLoading = false;
                     let arr = [];
@@ -525,6 +567,11 @@ export class GeneTableComponent implements OnInit {
         this.unionConditionHtmlStirng = this.globalService.transformFilter(
             this.unionSearchConditionList
         );
+
+        // 每次分类筛选条件的时候 重新计算表格滚动区域高度
+        setTimeout(()=>{
+            this.computedTbody(this.tableHeight);
+        })
     }
 
     // 清空搜索
@@ -625,14 +672,14 @@ export class GeneTableComponent implements OnInit {
                 v["colspan"] = v.children.length;
                 v["rowspan"] = 1;
                 v.children.forEach(val => {
-                    singleWidth = val.name.length * defaultWidth;
+                    singleWidth = val.name.length * defaultWidth + 22;
                     widthConfig.push(singleWidth);
                     twoLevelHead.push(val);
                 });
             } else {
                 v["colspan"] = 1;
                 v["rowspan"] = 2;
-                singleWidth = defaultWidth * v.name.length;
+                singleWidth = defaultWidth * v.name.length + 22;
                 widthConfig.push(singleWidth);
             }
         });
@@ -658,7 +705,23 @@ export class GeneTableComponent implements OnInit {
         });
         colLeftConfig.map((v, i) => (colLeftConfig[i] += "px"));
         totalWidth = tempTotalWidth + "px";
+        this.scroll["x"] = totalWidth;
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
+    }
+
+    computedTbody(tableHeight) {
+        // 固定头的高度
+        let head = $(`#${this.tableId} .ant-table-fixed .ant-table-thead`).outerHeight();
+        // 分页的高度
+        let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
+        // 筛选条件的高度
+        let filter = $(`#${this.tableId} .table-filter`).outerHeight();
+        // 表头工具栏的高度
+        let tools = $(`#${this.tableId} .table-thead`).outerHeight();
+        let res = tableHeight - head - bottom - filter - tools - 4;
+        $(`#${this.tableId} .ant-table-body`).css('height',`${res}px`);
+
+        this.scroll["y"] = `${res}px`;
     }
 
     pageSizeChange() {

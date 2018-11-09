@@ -10,7 +10,7 @@
     <div class="fLeft">
         &emsp;{{'pagination.jump' | translate}}
         <input #pageIndexInput style="width: 50px"  nz-input [(ngModel)]="inputPageIndex" (keyup)="handlerKeyUp($event)" (blur)="handlerBlur()"> {{'pagination.page' | translate}}&emsp;
-        <span style="padding-right:12px;" *ngIf="maxLimit">(max:{{maxLimit}})</span>&emsp;
+        <!-- <span style="padding-right:12px;" *ngIf="maxLimit">(max:{{maxLimit}})</span>&emsp; -->
         <nz-select style="width: 120px;" [(ngModel)]="pageSize" (ngModelChange)="handlerPageSizeChange()">
             <nz-option [nzValue]="10" [nzLabel]="'pagination.pageSizeSelectTen' | translate"></nz-option>
             <nz-option [nzValue]="20" [nzLabel]="'pagination.pageSizeSelectTwenty' | translate"></nz-option>

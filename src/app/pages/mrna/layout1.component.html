@@ -1,0 +1,14 @@
+<div class="content row page-layout1">
+    <div class="left">
+        <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
+            (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl"
+            [chartUrl]="chartUrl" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate"
+            [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
+    </div>
+    <div class="bar"></div>
+    <div #right class="right">
+        <div #func  style="height:80px;background-color:#ccc;"></div>
+        <app-geneTable #geneTable tableId="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity"
+            [checkStatusInParams]="false" url="http://localhost:8086/filter" [tableHeight]="tableHeight" [defaultChecked]="true"></app-geneTable>
+    </div>
+</div>

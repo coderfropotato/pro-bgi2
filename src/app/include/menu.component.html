@@ -1,4 +1,4 @@
-<div class="left-side">
+<div class="menu">
     <ul *ngIf="menu.length">
         <li *ngFor="let item of menu;let i = index"><a routerLinkActive="active" routerLink="/report/mrna/{{item.url}}">{{item.title}}</a></li>
     </ul>

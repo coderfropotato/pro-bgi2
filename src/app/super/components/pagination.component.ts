@@ -26,22 +26,27 @@ import {
 })
 export class PaginationComponent implements OnInit, OnChanges {
     // 表格数据的总条数
-    @Input() total: number;
+    @Input()
+    total: number;
     // 页码输入框的最大可输入值
-    @Input() maxLimit: number;
+    @Input()
+    maxLimit: number;
     // 索引  双向绑定
-    @Input() pageIndex: number;
-    @Output() pageIndexChange = new EventEmitter();
+    @Input()
+    pageIndex: number;
+    @Output()
+    pageIndexChange = new EventEmitter();
     // 单页显示数据条数  双向绑定
-    @Input() pageSize: number;
-    @Output() pageSizeChange = new EventEmitter();
-
+    @Input()
+    pageSize: number;
+    @Output()
+    pageSizeChange = new EventEmitter();
 
     @ViewChild("pageIndexInput")
     pageIndexInput;
 
     pageCount: number = 0;
-    defaultPageIndexSize: number = 5;
+    defaultPageIndexSize: number = 3;
     pageIndexList: number[] = [];
     inputPageIndex: number;
     isLeft: boolean = false;
@@ -160,13 +165,15 @@ export class PaginationComponent implements OnInit, OnChanges {
 
             if (this.pageCount > this.defaultPageIndexSize) {
                 // 靠右
-                if (this.pageCount - this.pageIndex <= 2) {
+                if (this.pageCount - this.pageIndex <= 1) {
+                    // 5=>2 3=>1
                     for (let i = this.defaultPageIndexSize - 1; i > -1; i--) {
                         this.pageIndexList.push(this.pageCount - i);
                     }
                     this.isLeft = false;
                     this.isRight = true;
-                } else if (this.pageIndex <= 3) {
+                } else if (this.pageIndex <= 1) {
+                    // 5 => 3   3 =>1
                     // 靠左
                     for (let i = 1; i < this.defaultPageIndexSize + 1; i++) {
                         this.pageIndexList.push(i);
@@ -176,11 +183,9 @@ export class PaginationComponent implements OnInit, OnChanges {
                 } else {
                     // 正常情况 不靠边
                     this.pageIndexList = [
-                        +this.pageIndex - 2,
                         +this.pageIndex - 1,
                         +this.pageIndex,
-                        +this.pageIndex + 1,
-                        +this.pageIndex + 2
+                        +this.pageIndex + 1
                     ];
                     this.isLeft = this.isRight = false;
                 }

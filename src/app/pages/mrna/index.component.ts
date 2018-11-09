@@ -83,6 +83,16 @@ export class IndexComponent implements OnInit {
             .subscribe(data => {
                 this.menuList = [
                     {
+                        url: "layout1",
+                        title: "布局1",
+                        isExport: true
+                    },
+                    {
+                        url: "layout2",
+                        title: "布局2",
+                        isExport: true
+                    },
+                    {
                         url: "diff",
                         title: "差异",
                         isExport: true

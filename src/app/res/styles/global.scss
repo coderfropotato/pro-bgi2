@@ -61,7 +61,7 @@
     margin-right: 26px;
 }
 
-.add-head>div {
+.add-head > div {
     flex: 1;
 }
 
@@ -130,11 +130,11 @@
     background-color: $table_header_bgcolor;
 }
 
-tbody>tr:nth-child(odd) {
+tbody > tr:nth-child(odd) {
     background-color: #f5f5f5 !important;
 }
 
-tbody>tr:nth-child(even) {
+tbody > tr:nth-child(even) {
     background-color: #fff !important;
 }
 
@@ -152,7 +152,6 @@ tbody>tr:nth-child(even) {
 }
 
 .tableSwitchChart {
-    width: 90%;
     margin: 0 auto;
 }
 
@@ -201,6 +200,70 @@ button.btnActive {
 .selected {
     stroke: #000;
     stroke-width: 2;
+}
+.report {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: $background_color;
+}
+.report-wrap {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.report-content {
+    width: 100%;
+    height: calc(100% - 80px);
+    overflow: hidden;
+    padding:$padding;
+}
+.content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    min-width:1350px;
+    &.column{
+        flex-direction: column;
+    }
+    &.row{
+        flex-direction: row;
+    }
+    &>div:not(.bar){
+        flex:1;
+        overflow: auto;
+        box-shadow:$boxshadow;
+        background-color: #fff;
+    }
+}
+.bar{
+    width: 12px;
+    height: 12px;
+}
+// top
+.top {
+    height: 40px;
+    background-color: $them_color;
+}
+// menu
+.menu {
+    height: 40px;
+    border-bottom: $border;
+    background-color: #fff;
+    ul {
+        margin: 0;
+        box-sizing: border-box;
+        display:flex;
+        li {
+            padding: 8px 4px;
+            a {
+                color: $menu_font_color;
+                &.active {
+                    color: $menu_active_font_color;
+                }
+            }
+        }
+    }
 }
 
 // tree-component
@@ -304,7 +367,7 @@ button.btnActive {
     text-align: center;
     padding-bottom: 80px;
     background: url(../img/error.png) no-repeat center 30px;
-    p{
+    p {
         padding-top: 200px;
     }
 }

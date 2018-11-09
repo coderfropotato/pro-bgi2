@@ -1,6 +1,6 @@
-<div class="report-mrna">
-    <app-frametop></app-frametop>
-    <app-leftside [menu]="menuList"></app-leftside>
+<div class="report-mrna report-wrap">
+    <app-top></app-top>
+    <app-menu [menu]="menuList"></app-menu>
     <!-- [@routeAnimation]="routerStateCode" -->
     <div class="report-content">
         <router-outlet></router-outlet>

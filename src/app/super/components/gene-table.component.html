@@ -28,7 +28,7 @@
         </ng-template>
         <!-- table head -->
         <div class="gene-table">
-            <div class="table-thead tableHeader">
+            <div #tableHeader class="table-thead tableHeader">
                 <div class="fLeft">
                     <!-- 筛选 -->
                     <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate"
@@ -58,26 +58,28 @@
             </div>
 
             <!-- root filter items -->
-            <div class="table-top" *ngIf="rootHtmlString.length">
-                <span class="filter-head">{{'rootFilterTitle'| translate}}：</span>
-                <span class="filter-item" (click)="deleteRootFilterItem(item)" *ngFor="let item of rootHtmlString"
-                    [innerHTML]="item['html']"></span>
-            </div>
-            <!-- 交集 interSearchConditionList -->
-            <div class="table-top" *ngIf="interConditionHtmlString.length">
-                <span class="filter-head">{{'interFilterTitle' | translate}}：</span>
-                <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of interConditionHtmlString"
-                    [innerHTML]="item['html']"></span>
-            </div>
-            <!-- 并集 unionSearchConditionList  -->
-            <div class="table-top" *ngIf="unionConditionHtmlStirng.length">
-                <span class="filter-head">{{'unionFilterTitle' | translate}}：</span>
-                <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of unionConditionHtmlStirng"
-                    [innerHTML]="item['html']"></span>
+            <div #tableFilter class="table-filter">
+                <div class="table-top" [hidden]="!rootHtmlString.length">
+                    <span class="filter-head">{{'rootFilterTitle'| translate}}：</span>
+                    <span class="filter-item" (click)="deleteRootFilterItem(item)" *ngFor="let item of rootHtmlString"
+                        [innerHTML]="item['html']"></span>
+                </div>
+                <!-- 交集 interSearchConditionList -->
+                <div class="table-top" [hidden]="!interConditionHtmlString.length">
+                    <span class="filter-head">{{'interFilterTitle' | translate}}：</span>
+                    <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of interConditionHtmlString"
+                        [innerHTML]="item['html']"></span>
+                </div>
+                <!-- 并集 unionSearchConditionList  -->
+                <div class="table-top" [hidden]="!unionConditionHtmlStirng.length">
+                    <span class="filter-head">{{'unionFilterTitle' | translate}}：</span>
+                    <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of unionConditionHtmlStirng"
+                        [innerHTML]="item['html']"></span>
+                </div>
             </div>
             <div class="table-content">
                 <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" x:head.length*150+'px'-->
-                <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="{ x:totalWidth,y:'388px' }"
+                <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="scroll"
                     [nzData]="dataSet" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"
                     nzBordered [nzWidthConfig]="widthConfig">
                     <thead>
@@ -88,7 +90,7 @@
                                 (nzCheckedChange)="checkAll($event)"></th>
                             <!-- 首列 -->
                             <th style="text-align: center;" [attr.colspan]="head[0]['colspan']" [attr.rowspan]="head[0]['rowspan']"
-                                [nzLeft]="colLeftConfig[0]" [(nzSort)]="sortMap[head[0]['true_key']]" nzShowSort
+                                [nzLeft]="colLeftConfig[0]" [(nzSort)]="sortMap[head[0]['true_key']]" [nzShowSort]="head[0]['searchType']!='string'"
                                 [nzSortKey]="head[0]['true_key']" (nzSortChange)="sort(head[0]['true_key'],$event)">
                                 <span [nzTitle]="head[0]['hover']" nzPlacement="topCenter" nz-tooltip>{{head[0]['name']}}</span>
                                 <!-- get app-filter child emit function <recive> <delete> -->
@@ -98,7 +100,7 @@
                             </th>
                             <!-- 其他列 -->
                             <th style="text-align: center;" [nzSortKey]="head[i+1]['true_key']" [(nzSort)]="sortMap[head[i+1]['true_key']]"
-                                (nzSortChange)="sort(head[i+1]['true_key'],$event)" [nzShowSort]="!head[i+1]['children'].length"
+                                (nzSortChange)="sort(head[i+1]['true_key'],$event)" [nzShowSort]="!head[i+1]['children'].length && head[i+1]['searchType']!='string'"
                                 [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']" *ngFor="let h of head.slice(1);index as i;trackBy:identify">
                                 <span [nzTitle]="head[i+1]['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
                                 <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="tableId"
@@ -109,7 +111,7 @@
                         <tr ng-if="twoLevelHead.length">
                             <!-- 二级表头首列 -->
                             <th class="two-level-thead" style="text-align: center;" *ngFor="let h of twoLevelHead.slice(0,head[0].children.length);index as i;trackBy:identify"
-                                [nzLeft]="colLeftConfig[i]" [(nzSort)]="sortMap[h['true_key']]" nzShowSort [nzSortKey]="h['true_key']"
+                                [nzLeft]="colLeftConfig[i]" [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
                                 (nzSortChange)="sort(h['true_key'],$event)">
                                 <span [nzTitle]="h['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
                                 <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']"
@@ -118,7 +120,7 @@
                             </th>
                             <!-- 二级表头其他列 -->
                             <th style="text-align: center;" *ngFor="let h of twoLevelHead.slice(head[0].children.length);index as i;trackBy:identify"
-                                [(nzSort)]="sortMap[h['true_key']]" nzShowSort [nzSortKey]="h['true_key']"
+                                [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
                                 (nzSortChange)="sort(h['true_key'],$event)">
                                 <span [nzTitle]="h['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
                                 <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']"
@@ -146,9 +148,10 @@
                     </tbody>
                 </nz-table>
                 <app-error *ngIf="error" [error]="error"></app-error>
-                <div class="table-bottom" *ngIf="!error">
+                <div #tableBottom class="table-bottom" *ngIf="!error">
                     <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total"
-                        [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()" [maxLimit]="1000"></app-pagination>
+                        [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()"
+                        [maxLimit]="1000"></app-pagination>
                 </div>
             </div>
         </div>
