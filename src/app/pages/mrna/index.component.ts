@@ -147,6 +147,11 @@ export class IndexComponent implements OnInit {
                         url: "multiOmics",
                         title: "多组学",
                         isExport: true
+                    },
+                    {
+                        url: "cluster",
+                        title: "聚类",
+                        isExport: true
                     }
                 ];
             });
