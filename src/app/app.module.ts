@@ -83,16 +83,15 @@ const ROUTES: Routes = [
         component: IndexComponent,
         data: {
             keep: true,
-            // 刷新页面的时候 是否需要清除路由缓存  module中带clearRouteCache就清除
-            module: "mrnaIndex-clearRouteCache"
+            module: "mrnaIndex"
         },
         children: [
             // demo
-            {
-                path: "",
-                redirectTo: "layout1",
-                pathMatch: "full"
-            },
+            // {
+            //     path: "",
+            //     redirectTo: "layout1",
+            //     pathMatch: "full"
+            // },
             {
                 path: "table",
                 component: GeneTableTestComponent,
@@ -205,12 +204,13 @@ const ROUTES: Routes = [
                     keep: true,
                     module: "layout2"
                 }
-            },
-            {
-                path: "**",
-                redirectTo: "diff",
-                pathMatch: "full"
             }
+            // ,
+            // {
+            //     path: "**",
+            //     redirectTo: "diff",
+            //     pathMatch: "full"
+            // }
         ]
     },
     // dna

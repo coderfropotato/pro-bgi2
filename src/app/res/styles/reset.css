@@ -13,7 +13,7 @@ body,html{
     overflow: hidden;
 }
 
-ul {
+ul,ol {
     list-style: none;
 }
 

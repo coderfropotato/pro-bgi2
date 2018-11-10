@@ -44,7 +44,6 @@ export class IndexComponent implements OnInit {
 
     ngOnInit() {
         this.ngxSpinnerService.show();
-
         (async () => {
             try {
                 await this.getLcInfo();
@@ -83,72 +82,140 @@ export class IndexComponent implements OnInit {
             .subscribe(data => {
                 this.menuList = [
                     {
-                        url: "layout1",
-                        title: "布局1",
-                        isExport: true
+                        category: "布局一",
+                        children: [
+                            {
+                                url: "layout1",
+                                name: "布局页面",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "layout2",
-                        title: "布局2",
-                        isExport: true
+                        category: "布局二",
+                        children: [
+                            {
+                                url: "layout2",
+                                name: "布局页面",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "diff",
-                        title: "差异",
-                        isExport: true
+                        category: "差异基因",
+                        children: [
+                            {
+                                url: "diff",
+                                name: "差异",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "venn",
-                        title: "韦恩",
-                        isExport: true
+                        category: "韦恩图",
+                        children: [
+                            {
+                                url: "venn",
+                                name: "韦恩",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "littleTableTest",
-                        title: "小表",
-                        isExport: true
+                        category: "小表_demo",
+                        children: [
+                            {
+                                url: "littleTableTest",
+                                name: "小表",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "transformationTable",
-                        title: "transformation-table",
-                        isExport: true
+                        category: "表格转换_demo",
+                        children: [
+                            {
+                                url: "transformationTable",
+                                name: "transformation-table",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "bigTable",
-                        title: "普通大表",
-                        isExport: true
+                        category: "普通大表_demo",
+                        children: [
+                            {
+                                url: "littleTableTest",
+                                name: "普通大表",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "table",
-                        title: "GeneId 大表",
-                        isExport: true
+                        category: "基因表_demo",
+                        children: [
+                            {
+                                url: "table",
+                                name: "GeneId 大表",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "net",
-                        title: "网络图",
-                        isExport: true
+                        category: "网络图_demo",
+                        children: [
+                            {
+                                url: "net",
+                                name: "网络图",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "addColumn",
-                        title: "增删列",
-                        isExport: true
-                    },
-
-                    {
-                        url: "cxzk1",
-                        title: "测序质控-1",
-                        isExport: true
-                    },
-                    {
-                        url: "cxzk2",
-                        title: "图表切换demo",
-                        isExport: true
+                        category: "增删列_demo",
+                        children: [
+                            {
+                                url: "addColumn",
+                                name: "增删列",
+                                isExport: true
+                            }
+                        ]
                     },
                     {
-                        url: "multiOmics",
-                        title: "多组学",
-                        isExport: true
+                        category: "测序质控_demo",
+                        children: [
+                            {
+                                url: "cxzk1",
+                                name: "测序质控",
+                                isExport: true
+                            }
+                        ]
+                    },
+                    {
+                        category: "图标切换_demo",
+                        children: [
+                            {
+                                url: "cxzk2",
+                                name: "图表切换",
+                                isExport: true
+                            }
+                        ]
+                    },
+                    {
+                        category: "多组学_demo",
+                        children: [
+                            {
+                                url: "multiOmics",
+                                name: "多组学",
+                                isExport: true
+                            }
+                        ]
                     }
                 ];
+
+                //动态跳第一个页面
+                let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
+                window.location.replace(url)
             });
     }
 

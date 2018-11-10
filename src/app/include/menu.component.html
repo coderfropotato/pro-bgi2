@@ -1,5 +1,17 @@
 <div class="menu">
-    <ul *ngIf="menu.length">
-        <li *ngFor="let item of menu;let i = index"><a routerLinkActive="active" routerLink="/report/mrna/{{item.url}}">{{item.title}}</a></li>
-    </ul>
+    <div style="display:inline-block">
+        <ul *ngIf="menu.length" (mouseenter)="expand = true" (mouseleave)="menuMouseLeave()">
+            <li *ngFor="let item of menu;let i = index" (mouseover)="menuMouseOver(item,i)">
+                <span [class.active]="item['active']">{{item.category}}</span>
+            </li>
+        </ul>
+    </div>
+
+    <ol class="sub-menu" [class.active]="expand" (mouseenter)="subMenuMouseEnter()" (mouseleave)="subMenuMouseLeave()">
+        <li *ngFor="let sub of expandItem;index as it;" [class.active]="sub['active']" (click)="jump(sub)">
+            <img src="http://temp.im/144x144" />
+            <p>描述信息描述信息描述信息描述信息描述信息描述信息描述信息描述信息</p>
+            <a class="menu-button">{{sub['name']}}</a>
+        </li>
+    </ol>
 </div>

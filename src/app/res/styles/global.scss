@@ -4,7 +4,7 @@
     width: 100%;
     // min-height: 400px;
     position: relative;
-    border: 1px solid #ddd;
+    border: $border;
     border-radius: 0 0 4px 4px;
 }
 
@@ -36,7 +36,7 @@
     padding: 8px;
     line-height: 1;
     background-color: #fff;
-    border: 1px solid #eee;
+    border: $border;
     color: #386cca;
     margin-right: 10px;
     cursor: pointer;
@@ -125,9 +125,14 @@
 
 .tableHeader {
     padding: 8px;
-    border: 1px solid #ddd;
+    border: $border;
     border-bottom: 0;
     background-color: $table_header_bgcolor;
+}
+.table-top {
+    border: $border;
+    border-top: 0;
+    border-bottom: 0;
 }
 
 tbody > tr:nth-child(odd) {
@@ -228,17 +233,17 @@ button.btnActive {
     &.row {
         flex-direction: row;
     }
-    & .left{
-        flex:2;
-        &.unexpand{
-            flex:1;
+    & .left {
+        flex: 2;
+        &.unexpand {
+            flex: 1;
         }
     }
-    & .right{
-        transition: .3s all ease;
-        flex:1;
-        &.expand{
-            flex:2;
+    & .right {
+        transition: 0.3s all ease;
+        flex: 1;
+        &.expand {
+            flex: 2;
         }
     }
     & .switch {
@@ -251,7 +256,6 @@ button.btnActive {
         box-shadow: $boxshadow;
         background-color: #fff;
     }
-
 }
 .bar {
     width: 12px;
@@ -266,9 +270,10 @@ button.btnActive {
 // menu
 .menu {
     height: 40px;
-    min-width:$min-width;
+    min-width: $min-width;
     border-bottom: $border;
     background-color: #fff;
+    position: relative;
     ul {
         margin: 0;
         box-sizing: border-box;
@@ -276,14 +281,62 @@ button.btnActive {
         @include display-flex;
         li {
             padding: 8px 4px;
-            &:hover{
+            &:hover {
                 @include hover-animate;
             }
-            a {
+            span {
                 color: $menu_font_color;
                 &.active {
                     color: $menu_active_font_color;
                 }
+            }
+        }
+    }
+    ol {
+        opacity: 0;
+        width: 100%;
+        min-width: $min-width;
+        margin: 0;
+        height: 310px;
+        transition: 0.3s all ease;
+        position: absolute;
+        left: 0;
+        top: 120px;
+        @include display-flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        background-color: #fff;
+        z-index: 10;
+        &.active {
+            opacity: 1;
+            left: 0;
+            top: 40px;
+            z-index:12;
+        }
+        li {
+            width: 310px;
+            padding: 12px;
+            @include display-flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            transition:.6s all ease;
+            &:hover{
+                @include hover-animate;
+            }
+            img{
+                margin-top:24px;
+            }
+            p{
+                margin-top: 12px;
+                margin-bottom:0;
+            }
+            .menu-button{
+                @include submenu-button;
+            }
+            &.active{
+                background-color: $them_color;
             }
         }
     }
@@ -346,7 +399,7 @@ button.btnActive {
     white-space: normal;
     font-weight: 400;
     text-align: left;
-    border: 1px solid #e0e0e0;
+    border: $border;
     background-color: #fff;
     .arrow-outer {
         position: absolute;
@@ -363,7 +416,7 @@ button.btnActive {
     &.right {
         .arrow-outer {
             left: -17px;
-            border-right: 8px solid #e0e0e0;
+            border-right: 8px solid $border-color;
         }
         .arrow-inner {
             left: -15px;
@@ -373,7 +426,7 @@ button.btnActive {
     &.left {
         .arrow-outer {
             right: -17px;
-            border-left: 8px solid #e0e0e0;
+            border-left: 8px solid $border-color;
         }
         .arrow-inner {
             right: -15px;
