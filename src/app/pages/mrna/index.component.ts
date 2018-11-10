@@ -210,6 +210,16 @@ export class IndexComponent implements OnInit {
                                 isExport: true
                             }
                         ]
+                    },
+                    {
+                        category: "聚类_demo",
+                        children: [
+                            {
+                                url: "cluster",
+                                name: "聚类",
+                                isExport: true
+                            }
+                        ]
                     }
                 ];
 

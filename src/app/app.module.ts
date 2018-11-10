@@ -17,6 +17,7 @@ import { cxzk1Component } from "./pages/mrna/cxzk1.component";
 import { cxzk2Component } from "./pages/mrna/cxzk2.component";
 import { netComponent } from "./pages/mrna/net.component";
 import { multiOmicsComponent } from "./pages/mrna/multiOmics.component";
+import { clusterComponent } from "./pages/mrna/cluster.component";
 import { NotFoundComponent } from "./pages/notFound.component";
 import { DnaIndexComponent } from "./pages/dna/index.component";
 import { JyzbdComponent } from "./pages/dna/jyzbd.component";
@@ -204,6 +205,14 @@ const ROUTES: Routes = [
                     keep: true,
                     module: "layout2"
                 }
+            },
+            {
+                path: "cluster",
+                component: clusterComponent,
+                data: {
+                    keep: true,
+                    module: "cluster"
+                }
             }
             // ,
             // {
@@ -292,6 +301,7 @@ export function createTranslateLoader(http: HttpClient) {
         cxzk2Component,
         netComponent,
         multiOmicsComponent,
+        clusterComponent,
         GeneTableTestComponent,
         GeneTableComponent,
         NotFoundComponent,
