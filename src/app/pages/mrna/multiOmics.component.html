@@ -12,25 +12,14 @@
 </div> -->
 
 <ng-template #setTemplate>
-    <nz-dropdown [nzPlacement]="'bottomRight'">
-        <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown></i>
-        <ul nz-menu>
-            <li nz-menu-item>
-                <a>1st menu item</a>
-            </li>
-            <li nz-menu-item>
-                <a>2nd menu item</a>
-            </li>
-            <li nz-menu-item>
-                <a>3rd menu item</a>
-            </li>
-        </ul>
-    </nz-dropdown>
+
+    <app-multiOmicsSet></app-multiOmicsSet>
+
 </ng-template>
 
 <div>
-    <app-table-switch-chart #multiOmicsChart [id]="'multiOmics'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect" (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [isOnlyChart]="true" [chartUrl]="chartUrl"
-        [apiEntity]="chartEntity" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'multiOmicsSvg'" [chartName]="'多组学关联图'">
+    <app-table-switch-chart #multiOmicsChart [id]="'multiOmics'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect" (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [isOnlyChart]="true" [chartUrl]="chartUrl" [apiEntity]="chartEntity"
+        [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'multiOmicsSvg'" [chartName]="'多组学关联图'">
     </app-table-switch-chart>
 
     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>

@@ -62,6 +62,7 @@ import { LittleTableComponent } from "./super/components/little-table.component"
 import { BigTableComponent } from "./super/components/big-table.component";
 import { TableSwitchChartComponent } from "./super/components/table-switch-chart.component";
 import { LittleTableTestComponent } from "./pages/mrna/little-table-test.component";
+import { MultiOmicsSetComponent } from './super/components/multiOmicsSet.component';
 import { AccuracyPipe } from "./super/filter/accuracy.pipe";
 import { ReanalysisIndexComponent } from "./pages/reanalysis/index.component";
 import { TransformationTableComponent } from "./super/components/transformation-table.component";
@@ -139,6 +140,14 @@ const ROUTES: Routes = [
                 data: {
                     keep: true,
                     module: "tableSwitchChart"
+                }
+            },
+            {
+                path: "MultiOmicsSet",
+                component: MultiOmicsSetComponent,
+                data: {
+                    keep: true,
+                    module: "MultiOmicsSet"
                 }
             },
             // page
@@ -321,6 +330,7 @@ export function createTranslateLoader(http: HttpClient) {
         BigTableComponent,
         TableSwitchChartComponent,
         LittleTableTestComponent,
+        MultiOmicsSetComponent,
         AccuracyPipe,
         TransformationTableComponent,
         GeneRelativeComponent,
