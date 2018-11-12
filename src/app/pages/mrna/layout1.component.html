@@ -1,18 +1,23 @@
 <div class="content row page-layout1">
-    <div class="left" [class.unexpand]="switch">
-        <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
-            (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl"
-            [chartUrl]="chartUrl" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate"
-            [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
+    <!-- class="left column" -->
+    <div #left class="left column" [class.unexpand]="switch">
+        <div class="left-top">
+            <h4>title</h4>
+            <p>descdesc</p>
+        </div>
+        <div class="left-bottom">
+            <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
+                (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
+                [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate"
+                (drawChartEmit)="drawChart($event)" [flex]="true" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
+        </div>
     </div>
-    <div class="bar"></div>
     <div #right class="right" [class.expand]="switch">
         <div class="switch">
             <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></nz-switch>
         </div>
         <div #func style="height:80px;background-color:#ccc;"></div>
-        <app-geneTable #geneTable tableId="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity"
-            [checkStatusInParams]="false" url="http://localhost:8086/filter" [tableHeight]="tableHeight"
-            [defaultChecked]="true"></app-geneTable>
+        <app-geneTable tableId="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
+            url="http://localhost:8086/filter" [tableHeight]="tableHeight" [defaultChecked]="true"></app-geneTable>
     </div>
 </div>

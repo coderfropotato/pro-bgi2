@@ -47,9 +47,7 @@ export class TopComponent implements OnInit {
 
     ngOnInit() {
         // 所有当前需要导出pdf的页面的路由  组合在一起导出
-        this.pageRoutes = [
-            "/report/mrna/layout1",
-        ];
+        this.pageRoutes = ["/report/mrna/layout1"];
 
         // 路由导航完成钩子 仅仅针对导出pdf的时候收集dom元素内容使用
         this.router.events.subscribe(event => {
@@ -69,19 +67,22 @@ export class TopComponent implements OnInit {
 
     // 获取各个路由需要导出模块的html，导出pdf；
     async exportPdf() {
-        let _this = this;
         let count: number = 0;
+        let _self = this;
         this.exportPdfFlag = true;
         this.navigatedRoutes = this.storeService.getNavigatedRoutes();
 
-        if (this.route["_routerState"].snapshot.url === this.pageRoutes[0] && this.pageRoutes.length>1) {
+        if (
+            this.route["_routerState"].snapshot.url === this.pageRoutes[0] &&
+            this.pageRoutes.length > 1
+        ) {
             this.htmlString = [$(".report-content").html()];
             count++;
-        }else if(this.pageRoutes.length==1){
+        } else if (this.pageRoutes.length == 1) {
             this.htmlString = [$(".report-content").html()];
-            this.downloadPdf(()=>{
+            this.downloadPdf(() => {
                 this.exportPdfFlag = false;
-            })
+            });
         } else {
             this.htmlString = [];
         }
@@ -104,12 +105,12 @@ export class TopComponent implements OnInit {
         //     count++;
         // }
 
-        function asyncNavigatePage(pageUrl, flag = false) {
+        async function asyncNavigatePage (pageUrl, flag = false){
             // flag true表示最后一次导航马上要下载pdf
             return new Promise((resolve, reject) => {
-                _this.router.navigateByUrl(pageUrl);
+                _self.router.navigateByUrl(pageUrl);
                 // 之前导航过
-                if (_this.navigatedRoutes.includes(pageUrl)) {
+                if (_self.navigatedRoutes.includes(pageUrl)) {
                     setTimeout(() => {
                         resolve();
                     }, 1000);
@@ -119,16 +120,16 @@ export class TopComponent implements OnInit {
                         resolve();
                     }, 3000);
                 }
-                if (flag) _this.exportPdfFlag = "done";
+                if (flag) _self.exportPdfFlag = "done";
             });
-        }
+        };
     }
 
     // download pdf orderby htmlstring
     downloadPdf(cb) {
         // document.body.innerHTML = "";
         // document.body.innerHTML = `<div>${this.htmlString.join("")}</div>`;
-        $('.report-content').html(`<div>${this.htmlString.join("")}</div>`);
+        $(".report-content").html(`<div>${this.htmlString.join("")}</div>`);
         document.body.style.width = window.screen.width + "px";
 
         window.print();

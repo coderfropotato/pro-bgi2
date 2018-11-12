@@ -70,6 +70,9 @@ ul,ol {
 .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th {
     background: #f5f5f5;
 }
+.ant-spin-nested-loading,.ant-spin-container{
+    height: inherit;
+}
 
 /* 表格最后一行的每一格底部机上border */
 .ant-table-content .ant-table-row:last-child td{

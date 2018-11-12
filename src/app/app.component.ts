@@ -13,7 +13,6 @@ export class AppComponent {
         fromEvent(window, "resize")
             .pipe(debounceTime(300))
             .subscribe(event => {
-                // 发送resize通知所有需要计算布局的组件 （页面级订阅消息）
                 this.message.sendResize();
             });
     }
