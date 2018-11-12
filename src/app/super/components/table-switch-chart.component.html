@@ -45,7 +45,7 @@
 
             <div #tableContent class="table-content" style="flex:1">
                 <!-- table：固定表头-->
-                <nz-table nzBordered nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="{ y: '400px' }" [nzSize]="'small'" *ngIf="isShowTable && !error">
+                <nz-table nzBordered nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
                     <thead>
                         <tr>
                             <th class="center" nzWidth="150px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
