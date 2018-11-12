@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input,ViewChild, TemplateRef, Output, EventEmitter,AfterViewInit } from '@angular/core';
 import { AjaxService } from "../../super/service/ajaxService";
 
 declare const $: any;
@@ -39,6 +39,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
+    scroll:object = { y: '400px' };
     isShowTable: boolean = false;
     tableData: any;
     chartData: any;
@@ -93,6 +94,11 @@ export class TableSwitchChartComponent implements OnInit {
         if (this.chartUrl) {
             this.getChartData();
         }
+    }
+
+    // 初始化计算表滚动的高度
+    ngAfterViewInit(){
+        this.scroll["y"] = (this.tableContent.nativeElement.offsetWidth - 37)+'px';
     }
 
     /**
@@ -191,7 +197,4 @@ export class TableSwitchChartComponent implements OnInit {
             this.getChartData();
         }
     }
-
-    // 计算表的滚动高度
-
 }
