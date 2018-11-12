@@ -1,4 +1,4 @@
-<div class="gene-table-component" [id]="tableId">
+<div #geneTable class="gene-table-component" [id]="tableId">
     <nz-spin [nzSpinning]="isLoading" nzTip='Loading...'>
         <!-- demo -->
         <!-- <button nz-button nzType="default" (click)="sort('email','descend')">{{'sortEmail' | translate}}</button> -->
@@ -82,7 +82,7 @@
                 <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="scroll"
                     [nzData]="dataSet" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"
                     nzBordered [nzWidthConfig]="widthConfig">
-                    <thead>
+                    <thead #thead>
                         <tr>
                             <!-- checkbox -->
                             <th nzLeft="0px" [attr.rowspan]="twoLevelHead.length?2:1" nzShowCheckbox nzShowRowSelection

@@ -8,15 +8,12 @@ declare const d4: any;
     templateUrl: "./layout1.component.html",
     styles: []
 })
-export class Layout1Component implements OnInit {
+export class Layout1Component implements OnInit,AfterViewInit {
     // 表格高度相关
-    @ViewChild("right")
-    right;
-    @ViewChild("func")
-    func;
-
-    @ViewChild("tableSwitchChart")
-    tableSwitchChart;
+    @ViewChild("left") left;
+    @ViewChild("right") right;
+    @ViewChild("func") func;
+    @ViewChild("tableSwitchChart") tableSwitchChart;
 
     switch: boolean = false;
     tableUrl: string;
@@ -73,19 +70,28 @@ export class Layout1Component implements OnInit {
         this.tableEntity["sample"] = this.sampleList[0];
         this.tableEntity["compare"] = this.compareList[0];
 
-        // window加载完成计算表格的高度
-        fromEvent(window, "load").subscribe(event => {
-            this.computedTableHeight();
-        });
-
         // 订阅windowResize 重新计算表格滚动高度
         this.message.getResize().subscribe(res => {
             if (res["message"] === "resize") this.computedTableHeight();
+            // 基础图需要重画
+            this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
         });
+    }
+
+    ngAfterViewInit(){
+        setTimeout(()=>{
+            this.computedTableHeight();
+        },0)
     }
 
     switchChange(status) {
         this.switch = status;
+        // 基础图需要重画
+        let timer = null;
+        if(timer) clearTimeout(timer);
+        timer = setTimeout(()=>{
+            this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
+        },300)
     }
 
     computedTableHeight() {
@@ -113,7 +119,20 @@ export class Layout1Component implements OnInit {
         this.chart.redraw();
     }
 
+    redrawChart(width,height?){
+
+        this.isMultiSelect = false;
+        this.chart.setChartSelectModule('single');
+
+        let options = this.chart.getOptions();
+        options['chart']['width'] = width;
+        options['chart']['height'] = height || options['chart']['height'];
+        this.chart.setOptions(options);
+        this.chart.redraw();
+    }
+
     drawChart(data) {
+        let _self = this;
         let config: object = {
             chart: {
                 title: "散点图",
@@ -131,8 +150,8 @@ export class Layout1Component implements OnInit {
                 },
                 el: "#chartId222",
                 type: "scatter",
-                width: 800,
-                height: 400,
+                width: _self.left.nativeElement.offsetWidth * 0.9,
+                height: 600,
                 radius: 3,
                 hoverRadius: 6,
                 custom: ["height", "weight", "gender"],

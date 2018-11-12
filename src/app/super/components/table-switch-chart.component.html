@@ -1,21 +1,25 @@
 <ng-template #headerTemplate>
-    <div class="table-thead tableHeader">
+    <div #tableHeader class="table-thead tableHeader">
         <div class="fLeft">
             <!-- 图表切换按钮 -->
-            <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip nzTitle="统计视图">
-                    <i class="anticon anticon-area-chart"></i>
-                </button>
-            <button *ngIf="!isOnlyChart" nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true" nz-tooltip nzTitle="表格视图">
-                    <i class="anticon anticon-table"></i>
-                </button>
+            <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip
+                nzTitle="统计视图">
+                <i class="anticon anticon-area-chart"></i>
+            </button>
+            <button *ngIf="!isOnlyChart" nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true"
+                nz-tooltip nzTitle="表格视图">
+                <i class="anticon anticon-table"></i>
+            </button>
             <!-- 下拉框 -->
             <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate :''"></ng-container>
 
         </div>
         <div class="fRight">
             <!-- 单选、多选 -->
-            <nz-switch *ngIf="!isShowTable && isHasMultiSelect" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="多选" nzUnCheckedChildren="单选"></nz-switch>
-            <button *ngIf="!isShowTable && isHasMultiSelect" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">确定</button>
+            <nz-switch *ngIf="!isShowTable && isHasMultiSelect" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()"
+                nzCheckedChildren="多选" nzUnCheckedChildren="单选"></nz-switch>
+            <button *ngIf="!isShowTable && isHasMultiSelect" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect"
+                (click)="multipleConfirm()">确定</button>
             <!-- 精度下拉框 -->
             <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
                 <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>
@@ -34,31 +38,32 @@
     </div>
 </ng-template>
 
-<div class="tableSwitchChart" [attr.id]="id">
-    <nz-spin [nzSpinning]="isLoading" nzTip='Loading...'>
+<div class="tableSwitchChart" [class.table-switch-chart-flex]="flex" [class.full-height]="flex" [attr.id]="id">
+    <nz-spin [nzSpinning]="isLoading" nzTip='Loading...' [class.extend-height]="flex">
+        <div class="flex column" [class.extend-height]="flex">
+            <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
 
-        <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
+            <div #tableContent class="table-content" style="flex:1">
+                <!-- table：固定表头-->
+                <nz-table nzBordered nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="{ y: '400px' }" [nzSize]="'small'" *ngIf="isShowTable && !error">
+                    <thead>
+                        <tr>
+                            <th class="center" nzWidth="150px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of tableData.rows">
+                            <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
 
-        <div class="table-content">
-            <!-- table：固定表头-->
-            <nz-table nzBordered nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="{ y: '400px' }" [nzSize]="'small'" *ngIf="isShowTable && !error">
-                <thead>
-                    <tr>
-                        <th class="center" nzWidth="150px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let row of tableData.rows">
-                        <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
-                    </tr>
-                </tbody>
-            </nz-table>
+                <!-- chart -->
+                <div class="chartView" [attr.id]="chartId" [hidden]="isShowTable || error"></div>
 
-            <!-- chart -->
-            <div class="chartView" [attr.id]="chartId" [hidden]="isShowTable || error"></div>
-
-            <!-- error -->
-            <app-error [error]="error"></app-error>
+                <!-- error -->
+                <app-error [error]="error"></app-error>
+            </div>
         </div>
     </nz-spin>
 </div>

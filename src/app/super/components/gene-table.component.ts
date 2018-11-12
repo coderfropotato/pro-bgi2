@@ -1,5 +1,5 @@
-import { MessageService } from './../service/messageService';
-import { Observable,fromEvent } from 'rxjs';
+import { MessageService } from "./../service/messageService";
+import { Observable, fromEvent } from "rxjs";
 import { StoreService } from "./../service/storeService";
 import {
     Component,
@@ -11,8 +11,9 @@ import {
     SimpleChanges,
     AfterViewChecked,
     AfterViewInit,
+    AfterContentInit,
     ElementRef,
-    ViewChild,
+    ViewChild
 } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
@@ -66,18 +67,12 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input()
     tableHeight: number = 0;
 
-    @ViewChild("tableHeader") tableHeader;
-    @ViewChild("tableFilter") tableFilter;
-    @ViewChild("tableBottom") tableBottom;
-
     scroll: any = { x: "0", y: "0" };
     isLoading: boolean = true;
     @ViewChildren("child")
     children;
     // 初始选中状态
     checkStatus: boolean;
-    // isFirst
-    isFirst: boolean = true;
     // 开始排序
     beginFilterStatus: boolean = false;
 
@@ -144,8 +139,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
         private loadingService: LoadingService,
         private ajaxService: AjaxService,
         private storeService: StoreService,
-        private el:ElementRef,
-        private message:MessageService
+        private el: ElementRef,
+        private message: MessageService
     ) {
         let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
@@ -157,15 +152,11 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
     // 页面加载完成的时候会把算好的 tableHeight传进来，触发changes 然后组件内部计算表格滚动区域的高度；
     ngOnChanges(change: SimpleChanges) {
-        if (
-            "tableHeight" in change &&
-            change["tableHeight"] &&
-            !change["tableHeight"]["firstChange"]
-        ) {
+        if ("tableHeight" in change && change["tableHeight"]["currentValue"]) {
             this.computedTbody(change["tableHeight"]["currentValue"]);
         } else {
             // 不传高度默认显示十条数据的高度 默认滚动高度388px
-            this.scroll["y"] = '388px';
+            this.scroll["y"] = "388px";
         }
     }
 
@@ -189,7 +180,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         ];
 
         this.tableEntity["pageIndex"] = 1;
-        this.tableEntity["pageSize"] = this.pageEntity['pageSize'] || 20;
+        this.tableEntity["pageSize"] = this.pageEntity["pageSize"] || 20;
         this.tableEntity["sortValue"] = null;
         this.tableEntity["sortKey"] = null;
         this.tableEntity["searchList"] = [];
@@ -266,6 +257,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     this.twoLevelHead = tempObj["twoLevelHead"];
                     this.colLeftConfig = tempObj["colLeftConfig"];
                     this.totalWidth = tempObj["totalWidth"];
+                    this.scroll["x"] = this.totalWidth;
                     // 根据表头生成sortmap
                     this.generatorSortMap();
                     if (responseData.data.total != this.total)
@@ -317,13 +309,16 @@ export class GeneTableComponent implements OnInit, OnChanges {
                             }
                         }
                     });
-                    this.computedStatus();
                 } else {
                     // this.loadingService.close(`#${this.parentId}`);
                     this.isLoading = false;
                     this.total = 0;
                     this.error = "nodata";
                 }
+
+                setTimeout(() => {
+                    this.computedTbody(this.tableHeight);
+                }, 0);
             },
             err => {
                 // this.loadingService.close(`#${this.parentId}`);
@@ -569,9 +564,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
         );
 
         // 每次分类筛选条件的时候 重新计算表格滚动区域高度
-        setTimeout(()=>{
+        setTimeout(() => {
             this.computedTbody(this.tableHeight);
-        })
+        }, 0);
     }
 
     // 清空搜索
@@ -661,7 +656,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof BigTableComponent
      */
     computedTheadWidth(head): object {
-        let defaultWidth = 20;
+        let defaultWidth =21;
         let widthConfig = [];
         let twoLevelHead = [];
         let totalWidth: string;
@@ -705,13 +700,14 @@ export class GeneTableComponent implements OnInit, OnChanges {
         });
         colLeftConfig.map((v, i) => (colLeftConfig[i] += "px"));
         totalWidth = tempTotalWidth + "px";
-        this.scroll["x"] = totalWidth;
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
     }
 
     computedTbody(tableHeight) {
         // 固定头的高度
-        let head = $(`#${this.tableId} .ant-table-fixed .ant-table-thead`).outerHeight();
+        let head = $(
+            `#${this.tableId} .ant-table-fixed .ant-table-thead`
+        ).outerHeight();
         // 分页的高度
         let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
         // 筛选条件的高度
@@ -719,8 +715,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
         // 表头工具栏的高度
         let tools = $(`#${this.tableId} .table-thead`).outerHeight();
         let res = tableHeight - head - bottom - filter - tools - 4;
-        $(`#${this.tableId} .ant-table-body`).css('height',`${res}px`);
 
+        $(`#${this.tableId} .ant-table-body`).css("height", `${res}px`);
         this.scroll["y"] = `${res}px`;
     }
 
@@ -778,6 +774,25 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 val._outerDelete(filterName, filterNamezh, filterType);
             }
         });
+    }
+
+    /**
+     * @description 表格组件外部清空筛选条件
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-10-09
+     * @memberof BigTableComponent
+     */
+    _clearFilter() {
+        this.beginFilterStatus = false;
+        this.tableEntity["searchList"] = [];
+        this.classifySearchCondition();
+
+        this.tableEntity["rootSearchContentList"] = [];
+        this.rootHtmlString = this.globalService.transformRootFilter(
+            this.tableEntity["rootSearchContentList"]
+        );
+
+        this.getRemoteData();
     }
 
     /**

@@ -88,11 +88,11 @@ const ROUTES: Routes = [
         },
         children: [
             // demo
-            // {
-            //     path: "",
-            //     redirectTo: "layout1",
-            //     pathMatch: "full"
-            // },
+            {
+                path: "",
+                redirectTo: "layout1",
+                pathMatch: "full"
+            },
             {
                 path: "table",
                 component: GeneTableTestComponent,
