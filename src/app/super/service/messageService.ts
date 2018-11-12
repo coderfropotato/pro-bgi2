@@ -1,4 +1,3 @@
-import { Subject } from 'rxjs';
 /**
  * @description 全局消息通信
  * @author Yangwd<277637411@qq.com>

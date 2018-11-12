@@ -69,7 +69,7 @@ export class TopComponent implements OnInit {
 
     // 获取各个路由需要导出模块的html，导出pdf；
     async exportPdf() {
-        let _this = this;
+        let _self = this;
         let count: number = 0;
         this.exportPdfFlag = true;
         this.navigatedRoutes = this.storeService.getNavigatedRoutes();
@@ -107,9 +107,9 @@ export class TopComponent implements OnInit {
         function asyncNavigatePage(pageUrl, flag = false) {
             // flag true表示最后一次导航马上要下载pdf
             return new Promise((resolve, reject) => {
-                _this.router.navigateByUrl(pageUrl);
+                _self.router.navigateByUrl(pageUrl);
                 // 之前导航过
-                if (_this.navigatedRoutes.includes(pageUrl)) {
+                if (_self.navigatedRoutes.includes(pageUrl)) {
                     setTimeout(() => {
                         resolve();
                     }, 1000);
@@ -119,7 +119,7 @@ export class TopComponent implements OnInit {
                         resolve();
                     }, 3000);
                 }
-                if (flag) _this.exportPdfFlag = "done";
+                if (flag) _self.exportPdfFlag = "done";
             });
         }
     }
