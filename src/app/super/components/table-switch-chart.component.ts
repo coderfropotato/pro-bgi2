@@ -41,7 +41,8 @@ export class TableSwitchChartComponent implements OnInit {
 
     scroll:object = { y: '400px' };
     isShowTable: boolean = false;
-    tableData: object;
+    tableData: any;
+    chartData: any;
     error: string;
     isLoading: boolean = false;
 
@@ -122,6 +123,7 @@ export class TableSwitchChartComponent implements OnInit {
                         this.error = "";
                         this.tableData = data.data;
                         if (!this.chartUrl) {
+                            this.chartData = data.data;
                             this.drawChart(data.data);
                         }
                     }
@@ -155,6 +157,7 @@ export class TableSwitchChartComponent implements OnInit {
                         this.error = "error";
                     } else {
                         this.error = "";
+                        this.chartData = data.data;
                         this.drawChart(data.data);
                     }
                     this.isLoading = false;
@@ -168,6 +171,10 @@ export class TableSwitchChartComponent implements OnInit {
 
     drawChart(data) {
         this.drawChartEmit.emit(data);
+    }
+
+    redraw() {
+        this.drawChart(this.chartData);
     }
 
     //单多选按钮改变状态时的事件：获取当前状态（单/多选）
