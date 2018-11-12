@@ -12,6 +12,10 @@ import {
     templateUrl: "./menu.component.html"
 })
 export class MenuComponent implements OnChanges {
+<<<<<<< HEAD
+=======
+    list: any[];
+>>>>>>> 3817be40729732f347e2317e2ce874c3636e52a0
     expandItem: any = [];
     expand: boolean = false;
     timer: any = null;

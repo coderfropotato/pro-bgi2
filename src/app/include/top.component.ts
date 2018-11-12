@@ -67,8 +67,8 @@ export class TopComponent implements OnInit {
 
     // 获取各个路由需要导出模块的html，导出pdf；
     async exportPdf() {
-        let count: number = 0;
         let _self = this;
+        let count: number = 0;
         this.exportPdfFlag = true;
         this.navigatedRoutes = this.storeService.getNavigatedRoutes();
 
