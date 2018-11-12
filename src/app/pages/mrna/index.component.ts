@@ -145,7 +145,7 @@ export class IndexComponent implements OnInit {
                         category: "普通大表_demo",
                         children: [
                             {
-                                url: "littleTableTest",
+                                url: "bigTable",
                                 name: "普通大表",
                                 isExport: true
                             }

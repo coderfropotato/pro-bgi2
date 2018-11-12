@@ -656,7 +656,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof BigTableComponent
      */
     computedTheadWidth(head): object {
-        let defaultWidth =21;
+        let defaultWidth = 20;
         let widthConfig = [];
         let twoLevelHead = [];
         let totalWidth: string;
@@ -704,20 +704,22 @@ export class GeneTableComponent implements OnInit, OnChanges {
     }
 
     computedTbody(tableHeight) {
-        // 固定头的高度
-        let head = $(
-            `#${this.tableId} .ant-table-fixed .ant-table-thead`
-        ).outerHeight();
-        // 分页的高度
-        let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
-        // 筛选条件的高度
-        let filter = $(`#${this.tableId} .table-filter`).outerHeight();
-        // 表头工具栏的高度
-        let tools = $(`#${this.tableId} .table-thead`).outerHeight();
-        let res = tableHeight - head - bottom - filter - tools - 4;
-
-        $(`#${this.tableId} .ant-table-body`).css("height", `${res}px`);
-        this.scroll["y"] = `${res}px`;
+        if(tableHeight){
+            // 固定头的高度
+            let head = $(
+                `#${this.tableId} .ant-table-fixed .ant-table-thead`
+            ).outerHeight();
+            // 分页的高度
+            let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
+            // 筛选条件的高度
+            let filter = $(`#${this.tableId} .table-filter`).outerHeight();
+            // 表头工具栏的高度
+            let tools = $(`#${this.tableId} .table-thead`).outerHeight();
+            let res = tableHeight - head - bottom - filter - tools - 4;
+    
+            $(`#${this.tableId} .ant-table-body`).css("height", `${res}px`);
+            this.scroll["y"] = `${res}px`;
+        }
     }
 
     pageSizeChange() {
