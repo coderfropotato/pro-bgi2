@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input,ViewChild, TemplateRef, Output, EventEmitter,AfterViewInit } from '@angular/core';
 import { AjaxService } from "../../super/service/ajaxService";
 
 declare const $: any;
@@ -9,6 +9,8 @@ declare const $: any;
     styles: []
 })
 export class TableSwitchChartComponent implements OnInit {
+    @ViewChild("tableContent") tableContent;
+
     @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
     @Input() tableUrl: string;  //表格api地址；isOnlyChart=true时可不传
     @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。isOnlyChart=true则为必选。
@@ -29,14 +31,17 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
     // 双向绑定:变量名x，fn命名规范xChange
     @Input() isMultiSelect: boolean; //是否是多选
+    @Input() flex:boolean; // 是否flex布局
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
     //多选确定
     @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter();
 
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
+    scroll:object = { y: '400px' };
     isShowTable: boolean = false;
-    tableData: object;
+    tableData: any;
+    chartData: any;
     error: string;
     isLoading: boolean = false;
 
@@ -90,6 +95,11 @@ export class TableSwitchChartComponent implements OnInit {
         }
     }
 
+    // 初始化计算表滚动的高度
+    ngAfterViewInit(){
+        this.scroll["y"] = (this.tableContent.nativeElement.offsetWidth - 37)+'px';
+    }
+
     /**
      * 获取表格数据
      */
@@ -112,6 +122,7 @@ export class TableSwitchChartComponent implements OnInit {
                         this.error = "";
                         this.tableData = data.data;
                         if (!this.chartUrl) {
+                            this.chartData = data.data;
                             this.drawChart(data.data);
                         }
                     }
@@ -145,6 +156,7 @@ export class TableSwitchChartComponent implements OnInit {
                         this.error = "error";
                     } else {
                         this.error = "";
+                        this.chartData = data.data;
                         this.drawChart(data.data);
                     }
                     this.isLoading = false;
@@ -158,6 +170,10 @@ export class TableSwitchChartComponent implements OnInit {
 
     drawChart(data) {
         this.drawChartEmit.emit(data);
+    }
+
+    redraw() {
+        this.drawChart(this.chartData);
     }
 
     //单多选按钮改变状态时的事件：获取当前状态（单/多选）
@@ -180,5 +196,4 @@ export class TableSwitchChartComponent implements OnInit {
             this.getChartData();
         }
     }
-
 }
