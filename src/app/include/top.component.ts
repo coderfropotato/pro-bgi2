@@ -1,3 +1,4 @@
+import { ToolsService } from './../super/service/toolsService';
 import { StoreService } from "../super/service/storeService";
 import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
@@ -23,7 +24,8 @@ export class TopComponent implements OnInit {
         private route: ActivatedRoute,
         private translate: TranslateService,
         private router: Router,
-        private storeService: StoreService
+        private storeService: StoreService,
+        private toolService:ToolsService
     ) {
         this.translate.addLangs(["zh", "en"]);
         this.translate.setDefaultLang("zh");
@@ -137,10 +139,11 @@ export class TopComponent implements OnInit {
     }
 
     analysis() {
-        let url = `${location.href.substring(
-            0,
-            location.href.indexOf("/report")
-        )}/report/reanalysis/index`;
-        window.open(url);
+        // let url = `${location.href.substring(
+        //     0,
+        //     location.href.indexOf("/report")
+        // )}/report/reanalysis/index`;
+        // window.open(url);
+        this.toolService.showTools(100);
     }
 }

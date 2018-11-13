@@ -1,24 +1,13 @@
+import { ToolsService } from './../service/toolsService';
 import { MessageService } from "./../service/messageService";
 import { Observable, fromEvent } from "rxjs";
 import { StoreService } from "./../service/storeService";
-import {
-    Component,
-    OnInit,
-    Input,
-    ViewChildren,
-    TemplateRef,
-    OnChanges,
-    SimpleChanges,
-    AfterViewChecked,
-    AfterViewInit,
-    AfterContentInit,
-    ElementRef,
-    ViewChild
-} from "@angular/core";
+import { Component, OnInit, Input, ViewChildren, TemplateRef, OnChanges, SimpleChanges, AfterViewChecked, AfterViewInit, AfterContentInit, ElementRef, ViewChild } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
 import { AjaxService } from "../service/ajaxService";
+import { NzNotificationService } from 'ng-zorro-antd';
 
 declare const $: any;
 /**
@@ -140,7 +129,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
         private ajaxService: AjaxService,
         private storeService: StoreService,
         private el: ElementRef,
-        private message: MessageService
+        private message: MessageService,
+        private notify:NzNotificationService,
+        private toolsService:ToolsService
     ) {
         let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
@@ -308,6 +299,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                                 }
                             }
                         }
+                        this.getCollection();
                     });
                 } else {
                     // this.loadingService.close(`#${this.parentId}`);
@@ -716,7 +708,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
             // 表头工具栏的高度
             let tools = $(`#${this.tableId} .table-thead`).outerHeight();
             let res = tableHeight - head - bottom - filter - tools - 4;
-    
+
             $(`#${this.tableId} .ant-table-body`).css("height", `${res}px`);
             this.scroll["y"] = `${res}px`;
         }
@@ -725,6 +717,23 @@ export class GeneTableComponent implements OnInit, OnChanges {
     pageSizeChange() {
         this.tableEntity["pageIndex"] = 1;
         this.getRemoteData(true);
+    }
+
+    /**
+     * @description 点击分析按钮
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-11-13
+     * @memberof GeneTableComponent
+     */
+    analysis(){
+        if(!this.checked.length){
+            this.notify.blank("tips：", '请选择需要分析的基因', {
+                nzStyle:{"width":"200px"},
+                nzDuration:2000
+              })
+        }else{
+            this.toolsService.showTools(this.checked);
+        }
     }
 
     /**

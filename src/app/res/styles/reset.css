@@ -79,6 +79,11 @@ ul,ol {
     border-bottom: 1px solid #e8e8e8!important;
 }
 
+/*  全局消息提示notify */
+.ant-notification{
+    width: auto!important;
+}
+
 ::-webkit-scrollbar-thumb {
     border: solid 1px #ddd;
     width: 5px;
