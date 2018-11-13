@@ -167,13 +167,13 @@ tbody > tr:nth-child(even) {
     clear: both;
     content: "";
 }
-.flex{
+.flex {
     display: flex;
 }
-.extend-height{
-    height:inherit;
+.extend-height {
+    height: inherit;
 }
-.full-height{
+.full-height {
     height: 100%;
 }
 
@@ -233,7 +233,7 @@ button.btnActive {
     overflow: hidden;
     padding: $padding;
 }
-.full{
+.full {
     width: 100%;
     height: 100%;
 }
@@ -249,32 +249,32 @@ button.btnActive {
     min-width: $min-width;
     display: flex;
     flex-direction: row;
-    & .left {
+    .left {
         overflow: auto;
-        flex:2;
+        flex: 2;
         margin-right: 16px;
         display: flex;
-        &.unexpand{
-            flex:1;
+        &.unexpand {
+            flex: 1;
         }
-        .left-top{
+        .left-top {
             @include module-style;
-            margin-bottom:12px;
-            padding:12px;
+            margin-bottom: 12px;
+            padding: 12px;
         }
-        .left-bottom{
+        .left-bottom {
             @include module-style;
             padding: 12px;
-            flex:1;
+            flex: 1;
         }
     }
-    & .right {
+    .right {
         height: 100%;
-        flex:1;
+        flex: 1;
         transition: 0.2s all ease;
         @include module-style;
-        &.expand{
-            flex:2;
+        &.expand {
+            flex: 2;
         }
     }
     & .switch {
@@ -474,6 +474,86 @@ button.btnActive {
         padding-top: 200px;
     }
 }
+
+// 小工具
+.tool-component{
+    padding:16px;
+}
+.tools-wrap{
+    height:calc(100% - 32px)!important;
+    transform: translate(-16px,16px)!important;
+    .ant-drawer-body{
+        padding: 24px!important;
+        ul{
+            li{
+                float:left;
+                width: 100px;
+                height: 114px;
+                margin-bottom: 24px;
+                text-align: center;
+                cursor: pointer;
+                img{
+                    transition: .3s all ease;
+                    border-width: 2px 2px 4px;
+                    border-style: solid;
+                    border-color: transparent;
+                    &:hover{
+                        transform:perspective(600px) translate3d(0px, -5px, 0px) rotateX(-22deg);
+                        border-color: rgb(82,120,248) rgb(82,120,248) rgba(99,133,248,0.9);
+                        box-shadow:rgba(65,96,198,0.2) 0px 5px 20px;
+                    }
+                }
+            }
+        }
+    }
+    .tools-desc{
+        max-height:180px;
+        overflow-y: auto;
+        h5{
+            font-size:15px;
+        }
+        p{
+            font-size: 14px;
+        }
+    }
+}
+
+// 基因表的 分析按钮
+.table-analysis-button{
+    background: rgba(108, 210, 150, 0.9);
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    border-radius: 50px;
+    transition: all 0.2s ease-out 0s;
+    box-shadow: rgba(92, 206, 139, 0) 0px 0px;
+    cursor: pointer;
+    &.invaild{
+        opacity: 0.5;
+    }
+    &.active{
+        opacity: 0.9;
+    }
+    &:hover{
+        @include hover-animate(rgb(92,206,139));
+        background-color: rgb(92,206,139);
+        opacity: 1;
+    }
+    b{
+        margin:0 10px;
+    }
+    span{
+        transition: .3s all ease;
+        background:rgba(0, 0, 0, 0.15);
+        padding: 2px 8px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 11px;
+        border-radius: 20px;
+        margin-right: 8px;
+    }
+}
+
 
 //venn
 .mven_div{

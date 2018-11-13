@@ -1,15 +1,13 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ColorPickerModule, ColorPickerDirective } from "ngx-color-picker";
 import { NgxSpinnerModule } from "ngx-spinner";
-import {
-    HashLocationStrategy,
-    LocationStrategy,
-    registerLocaleData
-} from "@angular/common";
+import { HashLocationStrategy, LocationStrategy, registerLocaleData } from "@angular/common";
 import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { NgZorroAntdModule, NZ_MESSAGE_CONFIG } from "ng-zorro-antd";
 import { SimpleReuseStrategy } from "./super/service/simpleReuseStrategy";
+
+// 组件
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { IndexComponent } from "./pages/mrna/index.component";
@@ -23,39 +21,12 @@ import { DnaIndexComponent } from "./pages/dna/index.component";
 import { JyzbdComponent } from "./pages/dna/jyzbd.component";
 import { AddColumnComponent } from "./super/components/add-column.component";
 import { ChartExportComponent } from "./super/components/chart-export.component";
-
+import { GeneTableComponent } from "./super/components/gene-table.component";
 import { TopComponent } from "./include/top.component";
 import { MenuComponent } from "./include/menu.component";
-
-// service
-// import { HttpInterService } from './super/service/httpService';
-import { GlobalService } from "./super/service/globalService";
-import { LoadingService } from "./super/service/loadingService";
-import { MessageService } from "./super/service/messageService";
-import { AjaxService } from "./super/service/ajaxService";
-import { StoreService } from "./super/service/storeService";
-
-// directive
-import { TooltipDirective } from "./super/directive/tooltip.directive";
-import { GeneTableComponent } from "./super/components/gene-table.component";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {
-    HttpClientModule,
-    HttpClient,
-    HTTP_INTERCEPTORS
-} from "@angular/common/http";
 import { FilterComponent } from "./super/components/filter.component";
 import { ErrorComponent } from "./super/components/error.component";
-
-// international
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-
-// config
-import config from "../config";
 import { SyserrorComponent } from "./pages/syserror.component";
-
 import { GeneTableTestComponent } from "./pages/mrna/gene-table-test.component";
 import { AddComponent } from "./pages/mrna/add.component";
 import { LittleTableComponent } from "./super/components/little-table.component";
@@ -63,7 +34,6 @@ import { BigTableComponent } from "./super/components/big-table.component";
 import { TableSwitchChartComponent } from "./super/components/table-switch-chart.component";
 import { LittleTableTestComponent } from "./pages/mrna/little-table-test.component";
 import { MultiOmicsSetComponent } from './super/components/multiOmicsSet.component';
-import { AccuracyPipe } from "./super/filter/accuracy.pipe";
 import { ReanalysisIndexComponent } from "./pages/reanalysis/index.component";
 import { TransformationTableComponent } from "./super/components/transformation-table.component";
 import { GeneRelativeComponent } from "./super/components/gene-relative.component";
@@ -78,6 +48,28 @@ import { DiffComponent } from "./pages/mrna/diff.component";
 import { VennComponent } from "./pages/mrna/venn.component";
 import { Layout1Component } from './pages/mrna/layout1.component';
 import { Layout2Component } from './pages/mrna/layout2.component';
+import { ToolsComponent } from './super/components/tools.component';
+
+// 服务
+// import { HttpInterService } from './super/service/httpService';
+import { GlobalService } from "./super/service/globalService";
+import { LoadingService } from "./super/service/loadingService";
+import { MessageService } from "./super/service/messageService";
+import { AjaxService } from "./super/service/ajaxService";
+import { StoreService } from "./super/service/storeService";
+import { TooltipDirective } from "./super/directive/tooltip.directive";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from "@angular/common/http";
+
+// 国际化
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+
+// 管道
+import { AccuracyPipe } from "./super/filter/accuracy.pipe";
+import config from "../config";
+
 const ROUTES: Routes = [
     // mrna
     {
@@ -344,6 +336,7 @@ export function createTranslateLoader(http: HttpClient) {
         Layout1Component,
         Layout2Component,
         TreeComponent,
+        ToolsComponent,
         ColorPickerComponent,
         TooltipDirective
     ],

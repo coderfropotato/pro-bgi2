@@ -151,7 +151,13 @@
                 <div #tableBottom class="table-bottom" *ngIf="!error">
                     <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total"
                         [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()"
-                        [maxLimit]="1000"></app-pagination>
+                        [maxLimit]="1000">
+                    </app-pagination>
+                    <!-- 分析按钮 -->
+                    <div class="table-analysis-button" (click)="analysis()" [class.invaild]="!checked.length" [class.active]="checked.length" style="float:right;">
+                        <b>分析</b>
+                        <span>{{checked.length}}&nbsp;例</span>
+                    </div>
                 </div>
             </div>
         </div>
