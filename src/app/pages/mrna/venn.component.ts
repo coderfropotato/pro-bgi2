@@ -84,8 +84,14 @@ export class VennComponent implements OnInit {
             })
             .subscribe(
                 data => {
-                    //this.drawVenn(data);
-                    this.showVenn(data);
+                    //console.log(data.data)
+                    // if(data.data.length>5){
+                    //     this.showUpSetR(data);
+                    // }else{
+                    //     this.drawVenn(data);
+                    // }
+                    this.showUpSetR(data);
+                   
                 },
                 error => {
                     console.log(error);
@@ -120,13 +126,30 @@ export class VennComponent implements OnInit {
 
     }
 
-    showVenn(data){
-        console.log(data)
+    showUpSetR(data){
+        // let selectBar = [];
+        // let tempBar = data.data.bar;
+        // for (let index = 0; index < tempBar.length; index++) {
+        //     const element = tempBar[index].value;
+        //     if(element!=0){
+        //         selectBar.push(tempBar[index]);
+        //     }
+        // }
+
+        let t_chartID = document.getElementById("chartId22122");
+        let Div = document.createElement("div");
+        Div.className ="mven_div";
+        let str = "<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'></svg>";
+        Div.innerHTML=str;
+        t_chartID.appendChild(Div);
+        
         let List = {
             total:data.data.total,
             bar:data.data.bar
         };
         
+        // console.log(selectBar)
+        // console.log(data.data.bar)
         //左侧数据
         let total_name = [];
         let total_value = [];
@@ -148,7 +171,7 @@ export class VennComponent implements OnInit {
         let d3_xScale; //矩阵圆点的x轴
         let d3_yScale; //矩阵圆点的y轴
         let d3_rectWidth = 24; //柱子的宽度
-        let d3_rectKong = 4; //柱子间的间宽
+        let d3_rectKong = 6; //柱子间的间宽
         let d3_xlength = bar_value.length;; //矩阵圆点的x轴有多少柱子
         let d3_ylength = total_value.length;; //矩阵圆点的y轴有多少柱子
         let d3_width = d3_rectWidth * d3_xlength + d3_rectKong*(d3_xlength+1);
@@ -162,7 +185,7 @@ export class VennComponent implements OnInit {
         let tempCricle;    //圆
     
         let svg_height = 300 + d3_height + 20 + 10 + 20 + 20;//计算最外层svg高度
-        let svg_width = 320 + d3_width + 30 + 30 + 20 + 80; //计算最外层svg宽度
+        let svg_width = 320 + d3_width + 60 + 30 + 20 + 80; //计算最外层svg宽度
 
         let svg=d3.select("#svg").attr("width", svg_width).attr("height", svg_height);
     
@@ -179,7 +202,7 @@ export class VennComponent implements OnInit {
             let height = 300;
     
             //画布周边的空白
-            let padding = { left: 30, right: 30, top: 20, bottom: 10 };
+            let padding = { left: 60, right: 30, top: 20, bottom: 10 };
             let svg1 = d3.select("#svg")
                 .append("svg")
                 .attr("x", "320")
@@ -194,6 +217,8 @@ export class VennComponent implements OnInit {
                 .range([height - padding.bottom - padding.top, 0]);
     
             d3_xScale = xScale;
+            let xAxis = d3.axisBottom(xScale)
+            let yAxis = d3.axisLeft(yScale).ticks(5)
     
             let rects = svg1.selectAll('.MyRect')
                 .data(bar_value)
@@ -244,11 +269,11 @@ export class VennComponent implements OnInit {
             svg1.append('g')
                 .attr('class', 'axis_x1')
                 .attr("transform", "translate(" + padding.left + "," + (height - padding.bottom) + ")")
-                .call(d3.axisBottom(xScale));
+                .call(xAxis);
             svg1.append('g')
                 .attr('class', 'axis_y1')
                 .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
-                .call(d3.axisLeft(yScale));
+                .call(yAxis);
         }
     
         function drawSvg2() {
@@ -277,7 +302,7 @@ export class VennComponent implements OnInit {
     
             d3_yScale = yScale;
     
-            let xAxis = d3.axisBottom(xScale)
+            let xAxis = d3.axisBottom(xScale).ticks(5)
             let yAxis = d3.axisRight(yScale)
     
             let rects = svg2.selectAll('MyRect2')
@@ -342,7 +367,8 @@ export class VennComponent implements OnInit {
                             sortName(d,d3.select(this));                
                         });
     
-            svg2.append("g").attr("class", "axis_x2").attr("transform", "translate(" + padding.left + "," + (height - padding.bottom) + ")").call(xAxis);
+            svg2.append("g").attr("class", "axis_x2").attr("transform", "translate(" + padding.left + "," + (height - padding.bottom) + ")").call(xAxis).selectAll("text")
+            .attr("transform", "rotate(-10)");
             svg2.append("g").attr("class", "axis_y2").attr("transform", "translate(" + (width - padding.right) + "," + (padding.top) + ")").call(yAxis);
         }
     
@@ -394,7 +420,7 @@ export class VennComponent implements OnInit {
                 let temp = {};
                 for (let j = 0; j < col; j++) {
                     temp = {
-                        "x_axis": 30 + d3_xScale(bar_name[i]) + d3_rectWidth / 2,
+                        "x_axis": 30 + d3_xScale(bar_name[i]) + d3_rectWidth / 2+30,
                         "y_axis": d3_yScale(total_name[j]) + d3_rectWidth / 2,
                         "r": d3_rectWidth/2,
                         "flag": threeC(total_name[j],bar_name[i])?true:false,
