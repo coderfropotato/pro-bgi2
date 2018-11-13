@@ -97,7 +97,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     // 初始化计算表滚动的高度
     ngAfterViewInit(){
-        this.scroll["y"] = (this.tableContent.nativeElement.offsetWidth - 37)+'px';
+        this.scroll["y"] = (this.tableContent.nativeElement.offsetHeight - 37)+'px';
     }
 
     /**
