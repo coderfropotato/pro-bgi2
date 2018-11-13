@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { GlobalService } from 'src/app/super/service/globalService';
-import { LoadingService } from 'src/app/super/service/loadingService';
 
 declare const d3: any;
 declare const $: any;
@@ -28,8 +27,7 @@ export class multiOmicsComponent implements OnInit {
 
     constructor(
         private ajaxService: AjaxService,
-        private globalService: GlobalService,
-        private loadingService: LoadingService
+        private globalService: GlobalService
     ) { }
 
     ngOnInit() {
@@ -42,7 +40,6 @@ export class multiOmicsComponent implements OnInit {
     }
 
     // getData() {
-    //     this.loadingService.open("#multiOmics");
     //     this.ajaxService
     //         .getDeferData(
     //             {
@@ -53,10 +50,8 @@ export class multiOmicsComponent implements OnInit {
     //         .subscribe(
     //             (data: any) => {
     //                 this.drawChart(data);
-    //                 this.loadingService.close("#multiOmics");
     //             },
     //             error => {
-    //                 this.loadingService.close("#multiOmics");
     //                 console.log(error);
     //             }
     //         )
@@ -517,7 +512,6 @@ export class multiOmicsComponent implements OnInit {
 
     //demo
     getDataX() {
-        this.loadingService.open("#multiOmics");
         this.ajaxService
             .getDeferData(
                 {
@@ -528,17 +522,14 @@ export class multiOmicsComponent implements OnInit {
             .subscribe(
                 (data: any) => {
                     this.drawChart(data);
-                    this.loadingService.close("#multiOmics");
                 },
                 error => {
-                    this.loadingService.close("#multiOmics");
                     console.log(error);
                 }
             )
     }
 
     getDataY() {
-        this.loadingService.open("#multiOmics");
         this.ajaxService
             .getDeferData(
                 {
@@ -549,10 +540,8 @@ export class multiOmicsComponent implements OnInit {
             .subscribe(
                 (data: any) => {
                     this.drawChart(data);
-                    this.loadingService.close("#multiOmics");
                 },
                 error => {
-                    this.loadingService.close("#multiOmics");
                     console.log(error);
                 }
             )

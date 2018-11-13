@@ -9,7 +9,6 @@ declare const $: any;
     styles: []
 })
 export class TableSwitchChartComponent implements OnInit {
-    @ViewChild("tableHeader") tableHeader;
     @ViewChild("tableContent") tableContent;
 
     @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
@@ -32,7 +31,7 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
     // 双向绑定:变量名x，fn命名规范xChange
     @Input() isMultiSelect: boolean; //是否是多选
-    @Input() flex:boolean; // 是否flex布局 
+    @Input() flex:boolean; // 是否flex布局
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
     //多选确定
     @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter();
