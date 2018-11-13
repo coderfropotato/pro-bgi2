@@ -1,10 +1,15 @@
 <!-- venn -->
 <div class="venn">
     <div id="venn-chart">
-        <app-table-switch-chart #tableSwitchChart  [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
+        <!-- <app-table-switch-chart #tableSwitchChart  [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
         (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl"
         [chartUrl]="chartUrl" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate"
-        [setTemplate]="setTemplate"  (drawChartEmit)="drawVenn($event)" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
+        [setTemplate]="setTemplate"  (drawChartEmit)="drawVenn($event)" [chartId]="'chartId22122'" [chartName]="'散点图'"></app-table-switch-chart> -->
+        <div class="mven_div">
+            <svg id="svg" class="m_svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            </svg>
+        </div>
+        
     </div>
     <div id="venn-table" style="width: 800px; margin: 0 auto;">
         <ng-template #selectTemplate>
