@@ -7,10 +7,10 @@ declare const d3: any;
 declare const Venn:any;
 @Component({
     selector: "app-venn-component",
-    templateUrl: "./venn.component.html",
+    templateUrl: "./diffVenn.component.html",
     styles: []
 })
-export class VennComponent implements OnInit,AfterViewInit {
+export class DiffVennComponent implements OnInit,AfterViewInit {
     // 表格高度相关
     @ViewChild("left") left;
     @ViewChild("right") right;
@@ -116,8 +116,8 @@ export class VennComponent implements OnInit,AfterViewInit {
                     }else{
                         this.drawVenn(data);
                     }
-                   
-                   
+
+
                 },
                 error => {
                     console.log(error);
@@ -217,13 +217,13 @@ export class VennComponent implements OnInit,AfterViewInit {
         let str = "<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'></svg>";
         Div.innerHTML=str;
         t_chartID.appendChild(Div);
-        
+
         let List = {
             total:data.data.total,
             //rows:data.data.rows,
             rows:selectBar
         };
-        
+
         //左侧数据
         let total_name = [];
         let total_value = [];
@@ -231,7 +231,7 @@ export class VennComponent implements OnInit,AfterViewInit {
             total_name.push(List.total[i].name);
             total_value.push(List.total[i].value);
         }
-    
+
         //上侧数据
         let bar_name = [];
         let bar_value = [];
@@ -239,7 +239,7 @@ export class VennComponent implements OnInit,AfterViewInit {
             bar_name.push(List.rows[i].name);
             bar_value.push(List.rows[i].value);
         }
-    
+
         let d3_xScale; //矩阵圆点的x轴
         let d3_yScale; //矩阵圆点的y轴
         let d3_rectWidth = 16; //柱子的宽度
@@ -251,14 +251,14 @@ export class VennComponent implements OnInit,AfterViewInit {
 
         let d3_width = d3_rectWidth * d3_xlength+ d3_rectKong*(d3_xlength+1);
         let d3_height = d3_rectWidth * d3_ylength + d3_rectKong*(d3_ylength+1);
-    
+
         let nameList=[];
         let tempName={};
         let drawCircle = [];
         let tempThat;
         let tempP;
         let tempCricle;    //圆
-    
+
         let padding1 = { left: 60, right: 30, top: 20, bottom: 10 };
         let padding2 = { left: 20, right: 80, top: 0, bottom: 30 };
 
@@ -266,17 +266,17 @@ export class VennComponent implements OnInit,AfterViewInit {
         let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
 
         let svg=d3.select("#svg").attr("width", svg_width).attr("height", svg_height);
-    
+
         drawSvg();
         drawSvg2();
         drawSvg3();
-    
+
         function drawSvg() {
             let width = d3_width+padding1.left+padding1.right;
             let height = 300;
-    
+
             //画布周边的空白 .paddingInner(0.8)
-            
+
             let svg1 = d3.select("#svg")
                 .append("svg")
                 .attr("x", "320")
@@ -286,16 +286,16 @@ export class VennComponent implements OnInit,AfterViewInit {
             let xScale = d3.scaleBand()
                 .domain(bar_name)
                 .range([0, d3_width])
-                .paddingOuter(0.1) 
+                .paddingOuter(0.1)
                 .paddingInner(1);
             let yScale = d3.scaleLinear()
                 .domain([0, d3.max(bar_value)])
                 .range([height - padding1.bottom - padding1.top, 0]);
-    
+
             d3_xScale = xScale;
             let xAxis = d3.axisBottom(xScale)
             let yAxis = d3.axisLeft(yScale).ticks(5)
-    
+
             let rects = svg1.selectAll('.MyRect')
                 .data(bar_value)
                 .enter()
@@ -310,7 +310,7 @@ export class VennComponent implements OnInit,AfterViewInit {
                     d3.selectAll('.MyRect').attr("fill","black");
                     d3.select(this).select(".MyRect").attr("fill","steelblue");
                 });
-    
+
             rects.append('rect')
                 .attr('class', 'MyRect')
                 .attr("transform", "translate(" + padding1.left + "," + padding1.top + ")")
@@ -328,8 +328,8 @@ export class VennComponent implements OnInit,AfterViewInit {
                 .attr("stroke-width",10)
                 .attr("stroke","black")
                 .attr("stroke-opacity",0);
-                
-    
+
+
             svg1.append('g')
                 .attr('class', 'axis_x1')
                 .attr("transform", "translate(" + padding1.left + "," + (height - padding1.bottom) + ")")
@@ -339,33 +339,33 @@ export class VennComponent implements OnInit,AfterViewInit {
                 .attr("transform", "translate(" + padding1.left + "," + padding1.top + ")")
                 .call(yAxis);
         }
-    
+
         function drawSvg2() {
             let width = 320;
             let height = d3_height+padding2.top+padding2.bottom;
-    
+
             let svg2 = d3.select("#svg")
                 .append("svg")
                 .attr("x", "0")
                 .attr("y", "300")
                 .attr("width", width)
                 .attr("height", height);
-    
+
             let xScale = d3.scaleLinear()
                 .domain([0, d3.max(total_value)])
                 .range([width - padding2.left - padding2.right, 0]);
-    
+
             let yScale = d3.scaleBand()
                 .domain(total_name)
                 .range([d3_height,0])
                 ;
-    
-    
+
+
             d3_yScale = yScale;
-    
+
             let xAxis = d3.axisBottom(xScale).ticks(5)
             let yAxis = d3.axisRight(yScale)
-    
+
             let rects = svg2.selectAll('MyRect2')
                 .data(total_value)
                 .enter()
@@ -382,7 +382,7 @@ export class VennComponent implements OnInit,AfterViewInit {
                     d3.selectAll('.MyRect2').attr("fill","black");
                     d3.select(this).select(".MyRect2").attr("fill","steelblue");
                 });
-    
+
             rects.append("rect")
                 .attr("class", "MyRect2")
                 .attr("x", function (d, i) {
@@ -401,7 +401,7 @@ export class VennComponent implements OnInit,AfterViewInit {
                 .attr("stroke-width",10)
                 .attr("stroke","black")
                 .attr("stroke-opacity",0);
-    
+
             let texts = svg2.selectAll('text')
                         .data(total_name)
                         .enter()
@@ -418,14 +418,14 @@ export class VennComponent implements OnInit,AfterViewInit {
                         })
                         .on("click",function(d,i){
                             d3.select(this).style("fill", "red");
-                            sortName(d,d3.select(this));                
+                            sortName(d,d3.select(this));
                         });
-    
+
             svg2.append("g").attr("class", "axis_x2").attr("transform", "translate(" + padding2.left + "," + (height - padding2.bottom) + ")").call(xAxis).selectAll("text")
             .attr("transform", "rotate(-10)");
             svg2.append("g").attr("class", "axis_y2").attr("transform", "translate(" + (width - padding2.right) + "," + (padding2.top) + ")").call(yAxis);
         }
-    
+
         function sortName(d,that){
             if(nameList.length==0){
                 nameList.push(d);
@@ -446,30 +446,30 @@ export class VennComponent implements OnInit,AfterViewInit {
                     that.style("fill", "red");
                 }
             }
-            
+
             nameToCircle(nameList);
         }
-    
+
         function drawSvg3() {
             let width = d3_width+padding1.left+padding1.right;
             let height = d3_height+padding2.top+padding2.bottom;
-    
+
             let svg3 = d3.select("#svg")
                 .append("svg")
                 .attr("x", "320")
                 .attr("y", "300")
                 .attr('width', width)
                 .attr('height', height);
-    
+
             tempThat = svg3;
-    
+
             let xAxis = d3.axisBottom(d3_xScale);
             let yAxis = d3.axisRight(d3_yScale);
-    
+
             let jsonCircles = [];
             let row = d3_xlength;
             let col = d3_ylength;
-    
+
             for (let i = 0; i < row; i++) {
                 let temp = {};
                 for (let j = 0; j < col; j++) {
@@ -486,18 +486,18 @@ export class VennComponent implements OnInit,AfterViewInit {
                     jsonCircles.push(temp);
                 }
             }
-            
-    
+
+
             drawCircle = jsonCircles;
-    
+
             makeBaseCircle(jsonCircles,svg3); //造点 这时候包含点的颜色 添加圆 基本圆
-    
+
             drawLine(sortArr(jsonCircles,'x_axis'),svg3,"black");//把x轴相同的分在一起 画线
-    
+
             svg3.append("g").attr("class", "axis_xCircle").attr("transform", "translate(30,0)").call(xAxis);
             svg3.append("g").attr("class", "axis_yCircle").attr("transform", "translate(30,0)").call(yAxis);
         }
-    
+
         function threeC(lis1,lis2){
             let m_flag = false;
             lis2=lis2.split("n");
@@ -518,8 +518,8 @@ export class VennComponent implements OnInit,AfterViewInit {
             .on("mouseout", function (d) {
                 console.log(d3.select(this));
             });
-    
-            svg_t.selectAll(".MyCircle") 
+
+            svg_t.selectAll(".MyCircle")
                 .data(arr)
                 .enter()
                 .append("circle")
@@ -533,8 +533,8 @@ export class VennComponent implements OnInit,AfterViewInit {
                 .attr("r", function (d, i) {
                     return d["r"];
                 })
-                .style("fill", function (d) { 
-                    return d.color; 
+                .style("fill", function (d) {
+                    return d.color;
                 })
             let tempList = sortArr(arr,'x_axis');
             for (let i = 0; i < tempList.length; i++) {
@@ -551,7 +551,7 @@ export class VennComponent implements OnInit,AfterViewInit {
                     .attr('opacity', 0);
             }
         }
-    
+
         //选择后画圆
         function selectBaseCircle2(arr,targetArr,num){
             let tempA = [];
@@ -561,14 +561,14 @@ export class VennComponent implements OnInit,AfterViewInit {
                         arr[index].color="red";
                         tempA.push(arr[index]);
                     }
-                    
+
                 }
-                
+
             }
-    
+
             return tempA;
-        }  
-        
+        }
+
         //画线第1步
         function drawLine(targetGroup,svg_f,color){
             let temp = [];
@@ -579,11 +579,11 @@ export class VennComponent implements OnInit,AfterViewInit {
             //     .on("mouseout", function (d) {
             //         d3.select(this).select(".MyRect3").attr("fill","none")
             //     });
-    
+
             let line = d3.line()
                     .x(function (d) { return d.x_axis; })
                     .y(function (d) { return d.y_axis; });
-            
+
             for (let i = 0; i < targetGroup.length; i++) {
                 for(let j=0;j<targetGroup[i].length;j++){
                     if(targetGroup[i][j].flag){
@@ -591,7 +591,7 @@ export class VennComponent implements OnInit,AfterViewInit {
                     }
                 }
                 let tempArr=secondArr(targetGroup[i]);  //画线2 把每组中要画的点提取到一起
-    
+
                 let path = tempThatone.append('path')
                     .attr('class', 'line')
                     .attr('d', line(tempArr))
@@ -599,23 +599,23 @@ export class VennComponent implements OnInit,AfterViewInit {
                     .attr("stroke-width", 3);
             }
         }
-        
+
         //选择名字画线第2步
         function drawLine2(targetGroup,svg_s,color,num){
-            
+
             //let tempArr=secondArr(targetGroup);
             if(targetGroup.length>1){
                 let line = d3.line()
                     .x(function (d) { return d.x_axis; })
                     .y(function (d) { return d.y_axis; });
-                
+
                 tempP = svg_s.append('path')
                     .attr('class', 'line')
                     .attr('d', line(targetGroup))
                     .attr("stroke", color)
                     .attr("stroke-width", 3);
             }
-    
+
             tempCricle = svg_s.selectAll('.MyCircle2')
                     .data(targetGroup)
                     .enter()
@@ -630,11 +630,11 @@ export class VennComponent implements OnInit,AfterViewInit {
                     .attr('r', function (d, i) {
                         return d["r"];
                     })
-                    .style("fill", function (d) { 
-                        return d.color; 
+                    .style("fill", function (d) {
+                        return d.color;
                     });
         }
-    
+
         //画线2 把每组中要画的点提取到一起
         function secondArr(arr) {
             let tempArr = [];
@@ -645,21 +645,21 @@ export class VennComponent implements OnInit,AfterViewInit {
             }
             return tempArr;
         }
-    
+
         //把x轴相同的分在一起
         function sortArr(arr, str) {
             let _arr = [],
                 _t = [],
                 // 临时的变量
                 _tmp;
-    
+
             // 按照特定的参数将数组排序将具有相同值得排在一起
             arr = arr.sort(function (a, b) {
                 let s = a[str],
                     t = b[str];
                 return s < t ? -1 : 1;
             });
-    
+
             if (arr.length) {
                 _tmp = arr[0][str];
             }
@@ -680,7 +680,7 @@ export class VennComponent implements OnInit,AfterViewInit {
             _arr.push(_t);
             return _arr;
         }
-    
+
         function nameToCircle(nameList){
             if(tempCricle != undefined){
                 tempCricle.remove();
@@ -689,7 +689,7 @@ export class VennComponent implements OnInit,AfterViewInit {
             {
                 tempP.remove();
             }
-    
+
             let tempdata=selectBaseCircle2(drawCircle,nameList.sort(),nameList.length);
             drawLine2(tempdata,tempThat,"red",5);//把x轴相同的分在一起 画线
         }

@@ -44,8 +44,8 @@ import { PaginationComponent } from "./super/components/pagination.component";
 import { TreeComponent } from "./super/components/tree.component";
 import { TreeItemComponent } from "./super/components/tree-item.component";
 import { ColorPickerComponent } from "./super/components/color-picker.component";
-import { DiffComponent } from "./pages/mrna/diff.component";
-import { VennComponent } from "./pages/mrna/venn.component";
+import { ExpressVennComponent } from "./pages/mrna/expressVenn.component";
+import { DiffVennComponent } from "./pages/mrna/diffVenn.component";
 import { Layout1Component } from './pages/mrna/layout1.component';
 import { Layout2Component } from './pages/mrna/layout2.component';
 import { ToolsComponent } from './super/components/tools.component';
@@ -176,19 +176,19 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "diff",
-                component: DiffComponent,
+                path: "express-venn",
+                component: ExpressVennComponent,
                 data: {
                     keep: true,
-                    module: "diff"
+                    module: "expressVenn"
                 }
             },
             {
-                path: "venn",
-                component: VennComponent,
+                path: "diff-venn",
+                component: DiffVennComponent,
                 data: {
                     keep: true,
-                    module: "venn"
+                    module: "diffVenn"
                 }
             },
             {
@@ -331,8 +331,8 @@ export function createTranslateLoader(http: HttpClient) {
         GridExportComponent,
         PaginationComponent,
         TreeItemComponent,
-        DiffComponent,
-        VennComponent,
+        ExpressVennComponent,
+        DiffVennComponent,
         Layout1Component,
         Layout2Component,
         TreeComponent,

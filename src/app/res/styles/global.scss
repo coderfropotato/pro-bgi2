@@ -6,7 +6,7 @@
     position: relative;
     border: $border;
     border-radius: 0 0 4px 4px;
-    overflow: auto;
+    // overflow: auto;
 }
 
 .table-content .error-msg {
@@ -244,37 +244,38 @@ button.btnActive {
     flex-direction: row;
 }
 .content {
+    // flex 5
     width: 100%;
     height: 100%;
     min-width: $min-width;
     display: flex;
     flex-direction: row;
-    .left {
+    .left-layout {
         overflow: auto;
-        flex: 2;
+        flex: 3;
         margin-right: 16px;
         display: flex;
         &.unexpand {
-            flex: 1;
+            flex: 2;
         }
-        .left-top {
+        .left-top-layout {
             @include module-style;
             margin-bottom: 12px;
             padding: 12px;
         }
-        .left-bottom {
+        .left-bottom-layout {
             @include module-style;
             padding: 12px;
             flex: 1;
         }
     }
-    .right {
+    .right-layout {
         height: 100%;
-        flex: 1;
+        flex: 2;
         transition: 0.2s all ease;
         @include module-style;
         &.expand {
-            flex: 2;
+            flex: 3;
         }
     }
     & .switch {
