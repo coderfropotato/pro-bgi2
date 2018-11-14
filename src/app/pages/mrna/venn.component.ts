@@ -1,5 +1,7 @@
+import { MessageService } from "./../../super/service/messageService";
 import { AjaxService } from 'src/app/super/service/ajaxService';
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { GlobalService } from 'src/app/super/service/globalService';
 import config from '../../../config';
 declare const d3: any;
 declare const Venn:any;
@@ -8,14 +10,24 @@ declare const Venn:any;
     templateUrl: "./venn.component.html",
     styles: []
 })
-export class VennComponent implements OnInit {
-    // 图表切换
+export class VennComponent implements OnInit,AfterViewInit {
+    // 表格高度相关
+    @ViewChild("left") left;
+    @ViewChild("right") right;
+    @ViewChild("func") func;
+    @ViewChild("tableSwitchChart") tableSwitchChart;
+
+    switch: boolean = false;
     tableUrl: string;
     chartUrl: string;
     tableEntity: object = {
-        "LCID": sessionStorage.getItem("LCID"),
-        "sample": "",
-        "compare": ""
+        LCID: sessionStorage.getItem("LCID"),
+        sample: "",
+        compare: ""
+    };
+
+    pageEntity: object = {
+        pageSize: 20
     };
 
     sampleList: string[] = [];
@@ -23,39 +35,53 @@ export class VennComponent implements OnInit {
 
     chart: any;
     isMultiSelect: boolean;
-    selectedData:object[]=[];
+    selectedData: object[] = [];
 
-    // 大表
-    pageEntity:object = {
-        pageSize:10,
-        pageIndex:1,
-        addThead:[],
-        searchList:[],
-        rootSearchContentList:[],
-        sortKey:"",
-        sortValue:"",
-        sample:["A1","B1"]
-    }
-    //url = `${config["javaPath"]}/DiffVenn/table`;
-    //url = `${config["javaPath"]}/DiffVenn/table`;
-
+    tableHeight = 0;
+    color = "red"; // 默认颜色
+    legendIndex = 0; // 修改颜色的时候 需要保存点击的图例的索引 后面设置颜色会用到
+    show = false; // 是否显示颜色选择器
     constructor(
-        private ajaxService:AjaxService
-    ) {}
+        private message: MessageService,
+        private ajaxService:AjaxService,
+        private globalService: GlobalService
+        ) {}
 
     ngOnInit() {
         this.isMultiSelect = false;
-        // this.tableUrl = `${config["javaPath"]}/DiffVenn/table`;
-        // this.chartUrl = `${config["javaPath"]}/DiffVenn/graph`;
+        //this.tableUrl = "http://localhost:8086/Venn/diffGeneGraph";
+        //this.chartUrl = "http://localhost:8086/scatter";
 
-        // this.tableUrl = `${config["javaPath"]}/DiffVenn/table`;
-        // this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
+        this.sampleList = [
+            "HBRR1",
+            "HBRR2",
+            "HBRR3",
+            "HBRR4",
+            "uBRR1",
+            "uBRR2",
+            "uBRR3",
+            "uBRR4"
+        ];
+        this.compareList = [
+            "com1",
+            "com2",
+            "com3",
+            "com4",
+            "compare1",
+            "compare2",
+            "compare3",
+            "compare4"
+        ];
 
-        this.sampleList = ["HBRR1", "HBRR2", "HBRR3", "HBRR4", "uBRR1", "uBRR2", "uBRR3", "uBRR4"];
-        this.compareList = ["com1", "com2", "com3", "com4", "compare1", "compare2", "compare3", "compare4"];
-
-        this.tableEntity['sample'] = this.sampleList[0];
+        this.tableEntity["sample"] = this.sampleList[0];
         this.tableEntity["compare"] = this.compareList[0];
+
+        // 订阅windowResize 重新计算表格滚动高度
+        this.message.getResize().subscribe(res => {
+            if (res["message"] === "resize") this.computedTableHeight();
+            // 基础图需要重画
+            this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
+        });
 
         this.getVennData();
     }
@@ -85,12 +111,12 @@ export class VennComponent implements OnInit {
             .subscribe(
                 data => {
                     //console.log(data.data)
-                    // if(data.data.length>5){
-                    //     this.showUpSetR(data);
-                    // }else{
-                    //     this.drawVenn(data);
-                    // }
-                    this.showUpSetR(data);
+                    if(data['data'].length>5){
+                        this.showUpSetR(data);
+                    }else{
+                        this.drawVenn(data);
+                    }
+                   
                    
                 },
                 error => {
@@ -100,7 +126,7 @@ export class VennComponent implements OnInit {
     }
 
     drawVenn(data) {
-        let tempA = data.data.bar.map(o=>{return{CompareGroup:o.name, Count:o.value}});
+        let tempA = data.data.rows.map(o=>{return{CompareGroup:o.name, Count:o.value}});
         let tempR = [];
         for (let index = 0; index < tempA.length; index++) {
             const element = tempA[index];
@@ -121,20 +147,69 @@ export class VennComponent implements OnInit {
             })
             .drawVenn();
     }
+    ngAfterViewInit(){
+        setTimeout(()=>{
+            this.computedTableHeight();
+        },0)
+    }
 
-    multiSelectChange(){
+    switchChange(status) {
+        this.switch = status;
+        // 基础图需要重画
+        let timer = null;
+        if(timer) clearTimeout(timer);
+        timer = setTimeout(()=>{
+            this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
+        },300)
+    }
 
+    computedTableHeight() {
+        this.tableHeight =
+            this.right.nativeElement.offsetHeight -
+            this.func.nativeElement.offsetHeight;
+    }
+
+    onSelectChange1() {
+        this.tableSwitchChart.SelectChange(
+            "sample",
+            this.tableEntity["sample"]
+        );
+    }
+
+    onSelectChange2() {
+        this.tableSwitchChart.SelectChange(
+            "compare",
+            this.tableEntity["compare"]
+        );
+    }
+
+    handlerColorChange(color) {
+        this.chart.setColor(color, this.legendIndex);
+        this.chart.redraw();
+    }
+
+    redrawChart(width,height?){
+
+        this.isMultiSelect = false;
+        this.chart.setChartSelectModule('single');
+
+        let options = this.chart.getOptions();
+        options['chart']['width'] = width;
+        options['chart']['height'] = height || options['chart']['height'];
+        this.chart.setOptions(options);
+        this.chart.redraw();
     }
 
     showUpSetR(data){
-        // let selectBar = [];
-        // let tempBar = data.data.bar;
-        // for (let index = 0; index < tempBar.length; index++) {
-        //     const element = tempBar[index].value;
-        //     if(element!=0){
-        //         selectBar.push(tempBar[index]);
-        //     }
-        // }
+        let _self = this;
+        let selectBar = [];
+        let tempBar = data.data.rows;
+        for (let index = 0; index < tempBar.length; index++) {
+            const element = tempBar[index].value;
+            if(element!=0){
+                selectBar.push(tempBar[index]);
+            }
+        }
 
         let t_chartID = document.getElementById("chartId22122");
         let Div = document.createElement("div");
@@ -145,15 +220,13 @@ export class VennComponent implements OnInit {
         
         let List = {
             total:data.data.total,
-            bar:data.data.bar
+            //rows:data.data.rows,
+            rows:selectBar
         };
         
-        // console.log(selectBar)
-        // console.log(data.data.bar)
         //左侧数据
         let total_name = [];
         let total_value = [];
-        let total_lenght = List.total.length;
         for(let i = 0;i<List.total.length;i++){
             total_name.push(List.total[i].name);
             total_value.push(List.total[i].value);
@@ -162,19 +235,21 @@ export class VennComponent implements OnInit {
         //上侧数据
         let bar_name = [];
         let bar_value = [];
-        let bar_length = List.bar.length;
-        for(let i = 0;i<List.bar.length;i++){
-            bar_name.push(List.bar[i].name);
-            bar_value.push(List.bar[i].value);
+        for(let i = 0;i<List.rows.length;i++){
+            bar_name.push(List.rows[i].name);
+            bar_value.push(List.rows[i].value);
         }
     
         let d3_xScale; //矩阵圆点的x轴
         let d3_yScale; //矩阵圆点的y轴
-        let d3_rectWidth = 24; //柱子的宽度
+        let d3_rectWidth = 16; //柱子的宽度
         let d3_rectKong = 6; //柱子间的间宽
         let d3_xlength = bar_value.length;; //矩阵圆点的x轴有多少柱子
         let d3_ylength = total_value.length;; //矩阵圆点的y轴有多少柱子
-        let d3_width = d3_rectWidth * d3_xlength + d3_rectKong*(d3_xlength+1);
+        // let d3_width = d3_rectWidth * d3_xlength + d3_rectKong*(d3_xlength+1);
+        // let d3_height = d3_rectWidth * d3_ylength + d3_rectKong*(d3_ylength+1);
+
+        let d3_width = d3_rectWidth * d3_xlength+ d3_rectKong*(d3_xlength+1);
         let d3_height = d3_rectWidth * d3_ylength + d3_rectKong*(d3_ylength+1);
     
         let nameList=[];
@@ -184,25 +259,24 @@ export class VennComponent implements OnInit {
         let tempP;
         let tempCricle;    //圆
     
-        let svg_height = 300 + d3_height + 20 + 10 + 20 + 20;//计算最外层svg高度
-        let svg_width = 320 + d3_width + 60 + 30 + 20 + 80; //计算最外层svg宽度
+        let padding1 = { left: 60, right: 30, top: 20, bottom: 10 };
+        let padding2 = { left: 20, right: 80, top: 0, bottom: 30 };
+
+        let svg_height = 300 + d3_height + padding1.top + padding1.bottom + padding2.top + padding2.bottom;//计算最外层svg高度
+        let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
 
         let svg=d3.select("#svg").attr("width", svg_width).attr("height", svg_height);
-    
-        let tooltip = d3.select(".mven_div").append("div")
-            .attr("class", "tooltip") //用于css设置类样式
-            .attr("opacity", 0.0);
     
         drawSvg();
         drawSvg2();
         drawSvg3();
     
         function drawSvg() {
-            let width = d3_width;
+            let width = d3_width+padding1.left+padding1.right;
             let height = 300;
     
-            //画布周边的空白
-            let padding = { left: 60, right: 30, top: 20, bottom: 10 };
+            //画布周边的空白 .paddingInner(0.8)
+            
             let svg1 = d3.select("#svg")
                 .append("svg")
                 .attr("x", "320")
@@ -211,10 +285,12 @@ export class VennComponent implements OnInit {
                 .attr('height', height);
             let xScale = d3.scaleBand()
                 .domain(bar_name)
-                .range([0, width - padding.left - padding.right]);
+                .range([0, d3_width])
+                .paddingOuter(0.1) 
+                .paddingInner(1);
             let yScale = d3.scaleLinear()
                 .domain([0, d3.max(bar_value)])
-                .range([height - padding.bottom - padding.top, 0]);
+                .range([height - padding1.bottom - padding1.top, 0]);
     
             d3_xScale = xScale;
             let xAxis = d3.axisBottom(xScale)
@@ -224,23 +300,11 @@ export class VennComponent implements OnInit {
                 .data(bar_value)
                 .enter()
                 .append('g')
-                .on("mouseover", function (d, i) {
-                    //添加标签
-                    svg.append("text")
-                        .attr("id", "tooltip")
-                        .attr("x", xScale(bar_name[i])- d3_rectKong)
-                        .attr("y", yScale(d))
-                        .attr("text-anchor", "middle")
-                        .attr("font-family", "sans-setif")
-                        .attr("font-size", "11px")
-                        .attr("font-weight", "bold")
-                        .attr("z-index",9999)
-                        .attr("fill", "blue")
-                        .text("数量为" + d);
-    
+                .on("mouseover", d => {
+                    _self.globalService.showPopOver(d3.event, d);
                 })
-                .on("mouseout", function (d) {
-                    d3.select("#tooltip").remove();
+                .on("mouseout", () => {
+                    _self.globalService.hidePopOver();
                 })
                 .on("click",function(d,i){
                     d3.selectAll('.MyRect').attr("fill","black");
@@ -249,16 +313,16 @@ export class VennComponent implements OnInit {
     
             rects.append('rect')
                 .attr('class', 'MyRect')
-                .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
+                .attr("transform", "translate(" + padding1.left + "," + padding1.top + ")")
                 .attr('x', function (d, i) {
-                    return xScale(bar_name[i]) + d3_rectKong;
+                    return xScale(bar_name[i]);
                 })
                 .attr('y', function (d, i) {
                     return yScale(d);
                 })
-                .attr('width', d3_rectWidth - d3_rectKong * 2)
+                .attr('width', d3_rectWidth)
                 .attr('height', function (d, i) {
-                    return height - padding.bottom - padding.top - yScale(d);
+                    return height - padding1.bottom - padding1.top - yScale(d);
                 })
                 .attr("fill","black")
                 .attr("stroke-width",10)
@@ -268,21 +332,17 @@ export class VennComponent implements OnInit {
     
             svg1.append('g')
                 .attr('class', 'axis_x1')
-                .attr("transform", "translate(" + padding.left + "," + (height - padding.bottom) + ")")
+                .attr("transform", "translate(" + padding1.left + "," + (height - padding1.bottom) + ")")
                 .call(xAxis);
             svg1.append('g')
                 .attr('class', 'axis_y1')
-                .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
+                .attr("transform", "translate(" + padding1.left + "," + padding1.top + ")")
                 .call(yAxis);
         }
     
         function drawSvg2() {
             let width = 320;
-            let height = d3_height;
-    
-            let min = d3.min(total_value);
-            let max = d3.max(total_value);
-            let padding = { left: 20, right: 80, top: 0, bottom: 20 };
+            let height = d3_height+padding2.top+padding2.bottom;
     
             let svg2 = d3.select("#svg")
                 .append("svg")
@@ -293,11 +353,12 @@ export class VennComponent implements OnInit {
     
             let xScale = d3.scaleLinear()
                 .domain([0, d3.max(total_value)])
-                .range([width - padding.left - padding.right, 0]);
+                .range([width - padding2.left - padding2.right, 0]);
     
             let yScale = d3.scaleBand()
                 .domain(total_name)
-                .range([height - padding.top - padding.bottom, 0]);
+                .range([d3_height,0])
+                ;
     
     
             d3_yScale = yScale;
@@ -309,20 +370,13 @@ export class VennComponent implements OnInit {
                 .data(total_value)
                 .enter()
                 .append('g')
-                .on("mouseover", function (d, i) {
-                    svg.append("text")
-                        .attr("id", "tooltip")
-                        .attr("x", xScale(d)+60)
-                        .attr("y", yScale(total_name[i]) + d3_rectKong)
-                        .attr("text-anchor", "middle")
-                        .attr("font-family", "sans-setif")
-                        .attr("font-size", "11px")
-                        .attr("font-weight", "bold")
-                        .attr("fill", "blue")
-                        .text("数量为" + d);
+                .on("mouseover", d => {
+                    // console.log(d3.event)
+                    // console.log(d)
+                    _self.globalService.showPopOver(d3.event, d);
                 })
-                .on("mouseout", function (d) {
-                    d3.select("#tooltip").remove();
+                .on("mouseout", () => {
+                    _self.globalService.hidePopOver();
                 })
                 .on("click",function(d,i){
                     d3.selectAll('.MyRect2').attr("fill","black");
@@ -332,16 +386,16 @@ export class VennComponent implements OnInit {
             rects.append("rect")
                 .attr("class", "MyRect2")
                 .attr("x", function (d, i) {
-                    return xScale(d) + padding.left;
+                    return xScale(d) + padding2.left;
                 })
                 .attr("y", function (d, i) {
-                    return yScale(total_name[i]) + d3_rectKong;
+                    return yScale(total_name[i]);
                 })
                 .attr("width", function (d, i) {
-                    return width - padding.right - xScale(d) - padding.left;
+                    return width - padding2.right - xScale(d) - padding2.left;
                 })
                 .attr("height", function (d, i) {
-                    return d3_rectWidth - d3_rectKong * 2;
+                    return d3_rectWidth;
                 })
                 .attr("fill","black")
                 .attr("stroke-width",10)
@@ -354,22 +408,22 @@ export class VennComponent implements OnInit {
                         .append('text')
                         .attr("class","MyText")
                         .attr("dx",function (d, i) {
-                            return xScale(0)+padding.left+5;
+                            return xScale(0)+padding2.left+10;
                         })
                         .attr("dy",function (d, i) {
-                            return yScale(total_name[i])+padding.bottom;
+                            return yScale(total_name[i])+d3_rectKong*2;
                         })
                         .text(function (d, i) {
                             return d;
                         })
                         .on("click",function(d,i){
-                            //d3.select(this).style("fill", "red");
+                            d3.select(this).style("fill", "red");
                             sortName(d,d3.select(this));                
                         });
     
-            svg2.append("g").attr("class", "axis_x2").attr("transform", "translate(" + padding.left + "," + (height - padding.bottom) + ")").call(xAxis).selectAll("text")
+            svg2.append("g").attr("class", "axis_x2").attr("transform", "translate(" + padding2.left + "," + (height - padding2.bottom) + ")").call(xAxis).selectAll("text")
             .attr("transform", "rotate(-10)");
-            svg2.append("g").attr("class", "axis_y2").attr("transform", "translate(" + (width - padding.right) + "," + (padding.top) + ")").call(yAxis);
+            svg2.append("g").attr("class", "axis_y2").attr("transform", "translate(" + (width - padding2.right) + "," + (padding2.top) + ")").call(yAxis);
         }
     
         function sortName(d,that){
@@ -397,8 +451,8 @@ export class VennComponent implements OnInit {
         }
     
         function drawSvg3() {
-            let width = d3_width;
-            let height = d3_height;
+            let width = d3_width+padding1.left+padding1.right;
+            let height = d3_height+padding2.top+padding2.bottom;
     
             let svg3 = d3.select("#svg")
                 .append("svg")
@@ -420,7 +474,7 @@ export class VennComponent implements OnInit {
                 let temp = {};
                 for (let j = 0; j < col; j++) {
                     temp = {
-                        "x_axis": 30 + d3_xScale(bar_name[i]) + d3_rectWidth / 2+30,
+                        "x_axis": d3_xScale(bar_name[i]) + d3_rectWidth / 2+padding1.left,
                         "y_axis": d3_yScale(total_name[j]) + d3_rectWidth / 2,
                         "r": d3_rectWidth/2,
                         "flag": threeC(total_name[j],bar_name[i])?true:false,
@@ -477,7 +531,7 @@ export class VennComponent implements OnInit {
                     return d["y_axis"];
                 })
                 .attr("r", function (d, i) {
-                    return d["r"] - d3_rectKong;
+                    return d["r"];
                 })
                 .style("fill", function (d) { 
                     return d.color; 
@@ -486,11 +540,11 @@ export class VennComponent implements OnInit {
             for (let i = 0; i < tempList.length; i++) {
                 svg_t.append('rect')
                     .attr('class', 'MyRect3')
-                    .attr('x', tempList[i][0]["x_axis"]-d3_rectWidth/2+d3_rectKong)
+                    .attr('x', tempList[i][0]["x_axis"]-d3_rectWidth/2)
                     .attr('y', function (d, i) {
                         return 0;
                     })
-                    .attr('width', d3_rectWidth - d3_rectKong * 2)
+                    .attr('width', d3_rectWidth)
                     .attr('height', function (d, i) {
                         return d3_height;
                     })
@@ -574,7 +628,7 @@ export class VennComponent implements OnInit {
                         return d["y_axis"];
                     })
                     .attr('r', function (d, i) {
-                        return d["r"] - d3_rectKong;
+                        return d["r"];
                     })
                     .style("fill", function (d) { 
                         return d.color; 
