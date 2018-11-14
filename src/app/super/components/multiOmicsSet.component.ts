@@ -159,47 +159,6 @@ export class MultiOmicsSetComponent implements OnInit {
         })
     }
 
-    //点击“修改”
-    updateInfo(info) {
-        this.isShowAddPanel=false;
-        this.isShowUpdatePanel=true;
-        this.curUpdateInfo=info;
-    }
-
-    //修改面板，定量分类change
-    updateClassifyChange(){
-        this.rationList = [];
-        this.rationClassifyList.forEach((d) => {
-            if (d['name'] === this.curUpdateClassify) {
-                this.rationList = d['data'];
-            }
-        })
-    }
-
-    //定量列选择
-    updateRationColSelect(item){
-        this.curUpdateInfo['rationCol']=item;
-        this.isShowUpdatePanel=false;
-    }
-
-    //删除
-    deleteInfo(i) {
-        this.isShowAddPanel=false;
-        this.isShowUpdatePanel=false;
-        this.infoList.splice(i,1);
-    }
-
-    // 设置 确定
-    rationInfoConfirm() {
-
-    }
-
-    //设置 取消
-    rationInfoCance() {
-
-    }
-
-
     //点击“添加定量信息”
     addInfo() {
         this.isShowAddPanel = true;
@@ -239,6 +198,46 @@ export class MultiOmicsSetComponent implements OnInit {
     rationColCance() {
         this.curRationCol='';
         this.isShowAddPanel = false;
+    }
+
+    //点击“修改”
+    updateInfo(info) {
+        this.isShowAddPanel=false;
+        this.isShowUpdatePanel=true;
+        this.curUpdateInfo=info;
+    }
+
+    //修改面板，定量分类change
+    updateClassifyChange(){
+        this.rationList = [];
+        this.rationClassifyList.forEach((d) => {
+            if (d['name'] === this.curUpdateClassify) {
+                this.rationList = d['data'];
+            }
+        })
+    }
+
+    //修改面板，定量列选择
+    updateRationColSelect(item){
+        this.curUpdateInfo['rationCol']=item;
+        this.isShowUpdatePanel=false;
+    }
+
+    //点击“删除”
+    deleteInfo(i) {
+        this.isShowAddPanel=false;
+        this.isShowUpdatePanel=false;
+        this.infoList.splice(i,1);
+    }
+
+    // 设置 确定
+    rationInfoConfirm() {
+
+    }
+
+    //设置 取消
+    rationInfoCance() {
+
     }
 
     //判断item是否在数组中
