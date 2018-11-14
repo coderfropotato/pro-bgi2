@@ -35,7 +35,7 @@ export class multiOmicsComponent implements OnInit {
         this.chartEntity = {
             "LCID": sessionStorage.getItem('LCID')
         }
-        this.chartUrl = "http://localhost:8086/multiOmics";
+        this.chartUrl = "http://localhost:8086/multiOmicsX";
         // this.getData();
     }
 

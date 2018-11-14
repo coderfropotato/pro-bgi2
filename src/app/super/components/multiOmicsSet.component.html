@@ -1,6 +1,7 @@
-<nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'">
-    <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" (click)="setClick()" nz-dropdown></i>
+<nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="isShowSetPanel" (nzVisibleChange)="setClick()">
+    <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown></i>
 
+    <!-- 设置面板 -->
     <div class="setPanel" nz-menu>
         <div class="center setPanelTitle">定量信息选择</div>
 
@@ -35,7 +36,7 @@
         </div>
     </div>
 
-    <!-- 添加定量信息面板 -->
+    <!-- 添加面板 -->
     <div class="rationClassify" *ngIf="isShowAddPanel && rationClassifyList.length">
         <div class="rationClassifyRow">
             <span>定量类型：</span>
