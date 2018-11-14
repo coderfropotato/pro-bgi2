@@ -181,7 +181,62 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
         }
 
         let t_chartID = document.getElementById("chartId22122");
-        let str = "<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'></svg>";
+        let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+            <style>
+                .MyRect {
+                    cursor: pointer;
+                }
+                .MyRect2 {
+                    cursor: pointer;
+                }
+            
+                .MyCircle {
+                    fill: gray;
+                }
+                .axis_x1{
+                    display: none;
+                }
+                .axis_y1{
+                    /* display: none; */
+                }
+                .axis_x2{
+                    /* display: none; */
+                }
+                .axis_y2{
+                    display: none;
+                }
+                .axis_xCircle {
+                    display: none;
+                }
+                .axis_yCircle {
+                    display: none;
+                }
+                .MyText{
+                    cursor: pointer;
+                }
+            
+                .MyRect3{
+                    fill:none;
+                    cursor: pointer;
+                }
+                .textStyle{
+                    font-size: 15px;
+                    cursor: pointer;
+                }
+                .tooltip {
+                    font-family: simsun;
+                    font-size: 16px;
+                    width: 120;
+                    height: auto;
+                    position: absolute;
+                    text-align: center;
+                    border-style: solid;
+                    border-width: 1px;
+                    background-color: white;
+                    border-radius: 5px;
+                }
+            </style>
+        </svg>`;
         t_chartID.innerHTML=str;
 
         let List = {
