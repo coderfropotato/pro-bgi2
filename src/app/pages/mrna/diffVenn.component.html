@@ -1,0 +1,35 @@
+<!-- venn -->
+<div class="content row venn">
+    <!-- <div id="venn-chart">
+        <app-table-switch-chart #tableSwitchChart  [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
+        (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl"
+        [chartUrl]="chartUrl" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate"
+        [setTemplate]="setTemplate"  (drawChartEmit)="drawVenn($event)" [chartId]="'chartId22122'" [chartName]="'韦恩图'"></app-table-switch-chart>
+    </div>
+    <div id="venn-table" style="width: 800px; margin: 0 auto;">
+        <ng-template #selectTemplate>
+        </ng-template>
+        <app-geneTable #geneTable tableId="table_venn" parentId="venn-table" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
+            [url]="url" [defaultChecked]="true"></app-geneTable>
+    </div> -->
+    <div #left class="left-layout column" [class.unexpand]="switch">
+        <div class="left-top-layout">
+            <h4>title</h4>
+            <p>我是韦恩图</p>
+        </div>
+        <div class="left-bottom-layout">
+            <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
+                (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
+                [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate"
+                (drawChartEmit)="drawVenn($event)" [flex]="true" [chartId]="'chartId22122'" [chartName]="'韦恩图'"></app-table-switch-chart>
+        </div>
+    </div>
+    <div #right class="right-layout" [class.expand]="switch">
+        <div class="switch">
+            <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></nz-switch>
+        </div>
+        <div #func style="height:80px;background-color:#ccc;"></div>
+        <app-geneTable tableId="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
+            url="" [tableHeight]="tableHeight" [defaultChecked]="false"></app-geneTable>
+    </div>
+</div>

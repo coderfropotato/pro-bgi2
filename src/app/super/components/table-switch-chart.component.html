@@ -39,12 +39,12 @@
         <div class="flex column" [class.extend-height]="flex">
             <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
 
-            <div #tableContent class="table-content" style="flex:1">
+            <div #tableContent class="table-content" style="flex:1" [ngStyle]="{'overflow-x':!isShowTable?'auto':'unset'}">
                 <!-- table：固定表头-->
-                <nz-table nzBordered nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
+                <nz-table nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
                     <thead>
                         <tr>
-                            <th class="center" nzWidth="150px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
+                            <th class="center" nzWidth="120px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
                         </tr>
                     </thead>
                     <tbody>

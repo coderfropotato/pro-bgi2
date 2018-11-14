@@ -1,18 +1,19 @@
 <div class="content row page-layout1">
     <!-- class="left column" -->
-    <div #left class="left column" [class.unexpand]="switch">
-        <div class="left-top">
+    <div #left class="left-layout column" [class.unexpand]="switch">
+        <div class="left-top-layout">
             <h4>title</h4>
             <p>descdesc</p>
         </div>
-        <div class="left-bottom">
+        <div class="left-bottom-layout">
             <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
                 (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
                 [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate"
                 (drawChartEmit)="drawChart($event)" [flex]="true" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
+            <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
     </div>
-    <div #right class="right" [class.expand]="switch">
+    <div #right class="right-layout" [class.expand]="switch">
         <div class="switch">
             <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></nz-switch>
         </div>

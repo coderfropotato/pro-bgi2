@@ -102,21 +102,21 @@ export class IndexComponent implements OnInit {
                         ]
                     },
                     {
-                        category: "差异基因",
+                        category: "表达量",
                         children: [
                             {
-                                url: "diff",
-                                name: "差异",
+                                url: "express-venn",
+                                name: "表达量venn",
                                 isExport: true
                             }
                         ]
                     },
                     {
-                        category: "韦恩图",
+                        category: "差异",
                         children: [
                             {
-                                url: "venn",
-                                name: "韦恩",
+                                url: "diff-venn",
+                                name: "差异venn",
                                 isExport: true
                             }
                         ]

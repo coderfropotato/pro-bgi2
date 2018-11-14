@@ -55,6 +55,10 @@ ul,ol {
     text-overflow: ellipsis;
 }
 
+.ant-table-small .ant-table-content .ant-table-thead:first-child th{
+    border-bottom: 0!important;
+}
+
 .ant-table-small.ant-table-bordered .ant-table-tbody>tr>td:last-child,
 .ant-table-small.ant-table-bordered .ant-table-thead>tr>th:last-child {
     border-right: 1px solid #e8e8e8!important;
@@ -83,10 +87,10 @@ ul,ol {
 .ant-notification{
     width: auto!important;
 }
-
+/*
 ::-webkit-scrollbar-thumb {
     border: solid 1px #ddd;
-    width: 5px;
+    width: 0px;
     border-radius: 4px;
     background-color: #D8D8D8;
 }
@@ -95,6 +99,9 @@ ul,ol {
     width: 8px;
     height: 8px;
 }
+::-webkit-scrollbar-button{
+    display: none!important;
+} */
 
 .color-picker .cp-remove-color-button-class::before{
     bottom:5.5px!important;

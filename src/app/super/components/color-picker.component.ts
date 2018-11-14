@@ -8,6 +8,7 @@ declare const $: any;
                             <input [colorPicker]="color" style="opacity:0;"
                                 [cpDialogDisplay]="'inline'" [cpSaveClickOutside]="false"
                                 [cpToggle]="show"
+                                [cpAddColorButtonText]="'AddColor'"
                                 [cpAddColorButton]="true"
                                 [(cpPresetColors)]="presetColor"
                                 [cpCancelButton]="true"

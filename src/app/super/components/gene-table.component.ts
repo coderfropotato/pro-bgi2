@@ -299,6 +299,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                                 }
                             }
                         }
+                        this.computedStatus();
                         this.getCollection();
                     });
                 } else {

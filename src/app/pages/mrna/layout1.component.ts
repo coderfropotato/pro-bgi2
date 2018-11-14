@@ -84,6 +84,11 @@ export class Layout1Component implements OnInit,AfterViewInit {
         },0)
     }
 
+    handlerColorChange(color){
+        this.chart.setColor(color, this.legendIndex);
+        this.chart.redraw();
+    }
+
     switchChange(status) {
         this.switch = status;
         // 基础图需要重画
@@ -112,11 +117,6 @@ export class Layout1Component implements OnInit,AfterViewInit {
             "compare",
             this.tableEntity["compare"]
         );
-    }
-
-    handlerColorChange(color) {
-        this.chart.setColor(color, this.legendIndex);
-        this.chart.redraw();
     }
 
     redrawChart(width,height?){
