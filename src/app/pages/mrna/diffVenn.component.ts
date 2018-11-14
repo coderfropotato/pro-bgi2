@@ -20,27 +20,33 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
     switch: boolean = false;
     tableUrl: string;
     chartUrl: string;
+
     tableEntity: object = {
-        LCID: sessionStorage.getItem("LCID"),
-        sample: "",
-        compare: ""
+        "LCID": "demo3",
+        "compareGroup": [
+            "A1-vs-B1",
+            "A1-vs-C1",
+            "C2-vs-A2"
+        ],
+        "geneType": "transcript",
+        "species": "aisdb",
+        "diffThreshold": {
+            "PossionDis": {
+                "log2FC": 1,
+                "FDR": 0.001
+            }
+        }
     };
 
     pageEntity: object = {
         pageSize: 20
     };
 
-    sampleList: string[] = [];
-    compareList: string[] = [];
-
     chart: any;
     isMultiSelect: boolean;
     selectedData: object[] = [];
 
     tableHeight = 0;
-    color = "red"; // 默认颜色
-    legendIndex = 0; // 修改颜色的时候 需要保存点击的图例的索引 后面设置颜色会用到
-    show = false; // 是否显示颜色选择器
     constructor(
         private message: MessageService,
         private ajaxService:AjaxService,
@@ -49,32 +55,8 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
 
     ngOnInit() {
         this.isMultiSelect = false;
-        //this.tableUrl = "http://localhost:8086/Venn/diffGeneGraph";
-        //this.chartUrl = "http://localhost:8086/scatter";
-
-        this.sampleList = [
-            "HBRR1",
-            "HBRR2",
-            "HBRR3",
-            "HBRR4",
-            "uBRR1",
-            "uBRR2",
-            "uBRR3",
-            "uBRR4"
-        ];
-        this.compareList = [
-            "com1",
-            "com2",
-            "com3",
-            "com4",
-            "compare1",
-            "compare2",
-            "compare3",
-            "compare4"
-        ];
-
-        this.tableEntity["sample"] = this.sampleList[0];
-        this.tableEntity["compare"] = this.compareList[0];
+        this.tableUrl = "";
+        this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
 
         // 订阅windowResize 重新计算表格滚动高度
         this.message.getResize().subscribe(res => {
@@ -83,10 +65,9 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
             this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
         });
 
-        this.getVennData();
+        //this.getVennData(); //获取Venn图数据
     }
 
-    // venn test
     getVennData() {
         this.ajaxService
             .getDeferData({
@@ -110,14 +91,11 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
             })
             .subscribe(
                 data => {
-                    //console.log(data.data)
                     if(data['data'].length>5){
                         this.showUpSetR(data);
                     }else{
-                        this.drawVenn(data);
+                        this.showVenn(data);
                     }
-
-
                 },
                 error => {
                     console.log(error);
@@ -126,26 +104,12 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
     }
 
     drawVenn(data) {
-        let tempA = data.data.rows.map(o=>{return{CompareGroup:o.name, Count:o.value}});
-        let tempR = [];
-        for (let index = 0; index < tempA.length; index++) {
-            const element = tempA[index];
-            let tempO = {
-                result:element
-            }
-            tempR.push(tempO);
-        }
-
-        let oVenn = new Venn({ id: "chartId22122" })
-            .config({
-                data: tempR,
-                compareGroup:  [
-                    "A1-vs-B1",
-                    "A1-vs-C1",
-                    "C2-vs-A2"
-                ]
-            })
-            .drawVenn();
+        // if(data['total'].length>5){
+        //     this.showUpSetR(data);
+        // }else{
+        //     this.showVenn(data);
+        // }
+        this.showUpSetR(data);
     }
     ngAfterViewInit(){
         setTimeout(()=>{
@@ -170,40 +134,45 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
     }
 
     onSelectChange1() {
-        this.tableSwitchChart.SelectChange(
-            "sample",
-            this.tableEntity["sample"]
-        );
+        
     }
 
     onSelectChange2() {
-        this.tableSwitchChart.SelectChange(
-            "compare",
-            this.tableEntity["compare"]
-        );
-    }
-
-    handlerColorChange(color) {
-        this.chart.setColor(color, this.legendIndex);
-        this.chart.redraw();
+        
     }
 
     redrawChart(width,height?){
-
         this.isMultiSelect = false;
-        this.chart.setChartSelectModule('single');
-
-        let options = this.chart.getOptions();
-        options['chart']['width'] = width;
-        options['chart']['height'] = height || options['chart']['height'];
-        this.chart.setOptions(options);
-        this.chart.redraw();
+   
     }
 
+    showVenn(data) {
+        let tempA = data.rows.map(o=>{return{CompareGroup:o.name, Count:o.value}});
+        let tempR = [];
+        for (let index = 0; index < tempA.length; index++) {
+            const element = tempA[index];
+            let tempO = {
+                result:element
+            }
+            tempR.push(tempO);
+        }
+
+        let oVenn = new Venn({ id: "chartId22122" })
+            .config({
+                data: tempR,
+                compareGroup:  [
+                    "A1-vs-B1",
+                    "A1-vs-C1",
+                    "C2-vs-A2"
+                ]
+            })
+            .drawVenn();
+    }
     showUpSetR(data){
+        document.getElementById("chartId22122").innerHTML="";
         let _self = this;
         let selectBar = [];
-        let tempBar = data.data.rows;
+        let tempBar = data.rows;
         for (let index = 0; index < tempBar.length; index++) {
             const element = tempBar[index].value;
             if(element!=0){
@@ -212,15 +181,12 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
         }
 
         let t_chartID = document.getElementById("chartId22122");
-        let Div = document.createElement("div");
-        Div.className ="mven_div";
         let str = "<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'></svg>";
-        Div.innerHTML=str;
-        t_chartID.appendChild(Div);
+        t_chartID.innerHTML=str;
 
         let List = {
-            total:data.data.total,
-            //rows:data.data.rows,
+            total:data.total,
+            //rows:data.rows,
             rows:selectBar
         };
 
@@ -246,8 +212,6 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
         let d3_rectKong = 6; //柱子间的间宽
         let d3_xlength = bar_value.length;; //矩阵圆点的x轴有多少柱子
         let d3_ylength = total_value.length;; //矩阵圆点的y轴有多少柱子
-        // let d3_width = d3_rectWidth * d3_xlength + d3_rectKong*(d3_xlength+1);
-        // let d3_height = d3_rectWidth * d3_ylength + d3_rectKong*(d3_ylength+1);
 
         let d3_width = d3_rectWidth * d3_xlength+ d3_rectKong*(d3_xlength+1);
         let d3_height = d3_rectWidth * d3_ylength + d3_rectKong*(d3_ylength+1);
@@ -274,8 +238,6 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
         function drawSvg() {
             let width = d3_width+padding1.left+padding1.right;
             let height = 300;
-
-            //画布周边的空白 .paddingInner(0.8)
 
             let svg1 = d3.select("#svg")
                 .append("svg")
@@ -371,8 +333,6 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
                 .enter()
                 .append('g')
                 .on("mouseover", d => {
-                    // console.log(d3.event)
-                    // console.log(d)
                     _self.globalService.showPopOver(d3.event, d);
                 })
                 .on("mouseout", () => {
@@ -602,8 +562,6 @@ export class DiffVennComponent implements OnInit,AfterViewInit {
 
         //选择名字画线第2步
         function drawLine2(targetGroup,svg_s,color,num){
-
-            //let tempArr=secondArr(targetGroup);
             if(targetGroup.length>1){
                 let line = d3.line()
                     .x(function (d) { return d.x_axis; })
