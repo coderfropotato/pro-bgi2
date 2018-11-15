@@ -10,7 +10,7 @@ declare const d4: any;
     templateUrl: "./layout1.component.html",
     styles: []
 })
-export class Layout1Component implements OnInit,AfterViewInit {
+export class Layout1Component implements OnInit {
     // 表格高度相关
     @ViewChild("left") left;
     @ViewChild("right") right;
