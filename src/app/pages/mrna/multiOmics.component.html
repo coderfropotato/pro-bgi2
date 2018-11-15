@@ -13,7 +13,7 @@
 
 <ng-template #setTemplate>
 
-    <app-multiOmicsSet></app-multiOmicsSet>
+    <app-multiOmicsSet (confirm)="setConfirm($event)"></app-multiOmicsSet>
 
 </ng-template>
 
