@@ -1,23 +1,24 @@
 <!-- venn -->
 <div class="content row venn">
-    <!-- <div id="venn-chart">
-        <app-table-switch-chart #tableSwitchChart  [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
-        (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl"
-        [chartUrl]="chartUrl" [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate"
-        [setTemplate]="setTemplate"  (drawChartEmit)="drawVenn($event)" [chartId]="'chartId22122'" [chartName]="'韦恩图'"></app-table-switch-chart>
-    </div>
-    <div id="venn-table" style="width: 800px; margin: 0 auto;">
-        <ng-template #selectTemplate>
-        </ng-template>
-        <app-geneTable #geneTable tableId="table_venn" parentId="venn-table" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
-            [url]="url" [defaultChecked]="true"></app-geneTable>
-    </div> -->
     <div #left class="left-layout column" [class.unexpand]="switch">
         <div class="left-top-layout">
             <h4>title</h4>
-            <p>我是韦恩图</p>
+            <p>我是差异韦恩图</p>
         </div>
         <div class="left-bottom-layout">
+            <ng-template #setTemplate>
+                <nz-dropdown [nzPlacement]="'bottomRight'">
+                    <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown></i>
+                    <ul nz-menu>
+                        <li nz-menu-item style="width:200;height:100px;">
+                            <div>
+                                <nz-slider nzRange [nzDefaultValue]="[20, 50]" [nzDisabled]="disabled"></nz-slider>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                </nz-dropdown>
+            </ng-template>
             <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
                 (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
                 [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate"
