@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AjaxService } from '../service/ajaxService';
 
 @Component({
@@ -62,6 +62,8 @@ import { AjaxService } from '../service/ajaxService';
 })
 
 export class MultiOmicsSetComponent implements OnInit {
+    @Output() confirm: EventEmitter<any> = new EventEmitter();
+
     rationClassifyList: object[] = [];
     curRationClassify: string;
 
@@ -72,13 +74,13 @@ export class MultiOmicsSetComponent implements OnInit {
     curRelation: string;
 
     infoList: object[] = [];
-    confirmInfoList:object[]=[];
+    confirmInfoList: object[] = [];
 
     isShowAddPanel: boolean = false;
 
     isShowUpdatePanel: boolean = false;
 
-    isShowSetPanel:boolean=false;
+    isShowSetPanel: boolean = false;
 
     curUpdateClassify: string;
     rationList: string[] = [];
@@ -98,7 +100,7 @@ export class MultiOmicsSetComponent implements OnInit {
     setClick() {
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
-        this.infoList=[...this.confirmInfoList];
+        this.infoList = [...this.confirmInfoList];
     }
 
     //获取定量信息
@@ -238,8 +240,9 @@ export class MultiOmicsSetComponent implements OnInit {
     setConfirm() {
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
-        this.isShowSetPanel=false;
-        this.confirmInfoList=[...this.infoList];
+        this.isShowSetPanel = false;
+        this.confirmInfoList = [...this.infoList];
+        this.confirm.emit(this.confirmInfoList);
     }
 
     //设置 取消
@@ -247,7 +250,7 @@ export class MultiOmicsSetComponent implements OnInit {
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
         this.isShowSetPanel = false;
-        this.infoList=[...this.confirmInfoList];
+        this.infoList = [...this.confirmInfoList];
     }
 
     //判断item是否在数组中

@@ -178,6 +178,15 @@ export class TableSwitchChartComponent implements OnInit {
         this.drawChart(this.chartData);
     }
 
+    reSendApi(){
+        if (!this.isOnlyChart && this.tableUrl) {
+            this.getTableData();
+        }
+        if (this.chartUrl) {
+            this.getChartData();
+        }
+    }
+
     //单多选按钮改变状态时的事件：获取当前状态（单/多选）
     getSelectModule() {
         this.isMultiSelectChange.emit(this.isMultiSelect);

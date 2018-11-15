@@ -33,29 +33,11 @@ export class multiOmicsComponent implements OnInit {
     ngOnInit() {
         this.colors = ["#3195BC", "#FF6666", "#009e71", "#FF9896", "#F4CA60", "#6F74A5", "#C49C94", "#3b9b99", "#FACA0C", "#F3C9DD"];
         this.chartEntity = {
-            "LCID": sessionStorage.getItem('LCID')
+            "LCID": sessionStorage.getItem('LCID'),
+            "setArr": []
         }
-        this.chartUrl = "http://localhost:8086/multiOmicsX";
-        // this.getData();
+        this.chartUrl = "http://localhost:8086/multiOmicsY";
     }
-
-    // getData() {
-    //     this.ajaxService
-    //         .getDeferData(
-    //             {
-    //                 url: "http://localhost:8086/multiOmics",
-    //                 data: {}
-    //             }
-    //         )
-    //         .subscribe(
-    //             (data: any) => {
-    //                 this.drawChart(data);
-    //             },
-    //             error => {
-    //                 console.log(error);
-    //             }
-    //         )
-    // }
 
     drawChart(data) {
         d3.select("#multiOmicsSvg svg").remove();
@@ -508,6 +490,12 @@ export class multiOmicsComponent implements OnInit {
         this.color = color;
         this.colors.splice(this.legendIndex, 1, color);
         this.multiOmicsChart.redraw();
+    }
+
+    //设置 确定
+    setConfirm(setArr) {
+        this.chartEntity['setArr'] = setArr;
+        this.multiOmicsChart.reSendApi();
     }
 
     //demo
