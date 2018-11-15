@@ -72,6 +72,7 @@ export class MultiOmicsSetComponent implements OnInit {
     curRelation: string;
 
     infoList: object[] = [];
+    confirmInfoList:object[]=[];
 
     isShowAddPanel: boolean = false;
 
@@ -97,6 +98,7 @@ export class MultiOmicsSetComponent implements OnInit {
     setClick() {
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
+        this.infoList=[...this.confirmInfoList];
     }
 
     //获取定量信息
@@ -183,7 +185,7 @@ export class MultiOmicsSetComponent implements OnInit {
     }
 
     //添加面板， 确定
-    rationColConfirm() {
+    addConfirm() {
         let infoObj = {
             relation: this.curRelation,
             rationCol: this.curRationCol
@@ -197,7 +199,7 @@ export class MultiOmicsSetComponent implements OnInit {
     }
 
     //添加面板， 取消
-    rationColCance() {
+    addCance() {
         this.curRationCol = '';
         this.isShowAddPanel = false;
     }
@@ -233,18 +235,19 @@ export class MultiOmicsSetComponent implements OnInit {
     }
 
     // 设置 确定
-    rationInfoConfirm() {
+    setConfirm() {
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
         this.isShowSetPanel=false;
-        console.log(this.infoList);
+        this.confirmInfoList=[...this.infoList];
     }
 
     //设置 取消
-    rationInfoCance() {
+    setCance() {
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
-        this.isShowSetPanel=false;
+        this.isShowSetPanel = false;
+        this.infoList=[...this.confirmInfoList];
     }
 
     //判断item是否在数组中
