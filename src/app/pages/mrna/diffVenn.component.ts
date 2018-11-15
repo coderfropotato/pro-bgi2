@@ -689,10 +689,9 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
                         return d3_height;
                     })
                     .attr("opacity", 0.1)
-                    .attr("fill","#89cff0")
+                    .attr("fill","#87CEFA")
                     .on("mouseover", function(d, i) {
-                        //console.log(d3.select(this));
-                        d3.select(this).attr("opacity", 0.7)
+                        d3.select(this).attr("opacity", 0.5)
                     })
                     .on("mouseout", function(d) {
                         d3.select(this).attr("opacity", 0.1)

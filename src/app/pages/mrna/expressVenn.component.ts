@@ -207,7 +207,6 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
              }
          
              .MyRect3{
-                 fill:none;
                  cursor: pointer;
              }
              .textStyle{
@@ -632,15 +631,6 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         //造点 这时候包含点的颜色 添加圆 基本圆
         function makeBaseCircle(arr, svg_t) {
             svg_t
-                .selectAll(".MyRect3")
-                .on("mouseover", function(d, i) {
-                    console.log(d3.select(this));
-                })
-                .on("mouseout", function(d) {
-                    console.log(d3.select(this));
-                });
-
-            svg_t
                 .selectAll(".MyCircle")
                 .data(arr)
                 .enter()
@@ -660,8 +650,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 });
             let tempList = sortArr(arr, "x_axis");
             for (let i = 0; i < tempList.length; i++) {
-                svg_t
-                    .append("rect")
+                svg_t.append("rect")
                     .attr("class", "MyRect3")
                     .attr("x", tempList[i][0]["x_axis"] - d3_rectWidth / 2)
                     .attr("y", function(d, i) {
@@ -671,7 +660,15 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                     .attr("height", function(d, i) {
                         return d3_height;
                     })
-                    .attr("opacity", 0);
+                    .attr("opacity", 0.1)
+                    .attr("fill","#87CEFA")
+                    .on("mouseover", function(d, i) {
+                        d3.select(this).attr("opacity", 0.5)
+                    })
+                    .on("mouseout", function(d) {
+                        d3.select(this).attr("opacity", 0.1)
+                    })
+                    ;
             }
         }
 
@@ -701,8 +698,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             //         d3.select(this).select(".MyRect3").attr("fill","none")
             //     });
 
-            let line = d3
-                .line()
+            let line = d3.line()
                 .x(function(d) {
                     return d.x_axis;
                 })
@@ -722,7 +718,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                     .append("path")
                     .attr("class", "line")
                     .attr("d", line(tempArr))
-                    .attr("stroke", "black")
+                    .attr("stroke", "#666")
                     .attr("stroke-width", 3);
             }
         }
