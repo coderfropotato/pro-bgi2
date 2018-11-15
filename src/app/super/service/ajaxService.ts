@@ -39,37 +39,39 @@ export class AjaxService {
                     .post(`${config["javaPath"]}/swap_token`, { LCID }, head)
                     .subscribe(
                         res => {
-                            let curToken = res['data'][0]
-                            localStorage.setItem("token", curToken);
-                            let curHead = {
-                                headers: new HttpHeaders({
-                                    "Content-Type": "application/json",
-                                    Authorization: `token ${curToken}`
-                                })
-                            };
-                            return this.http
-                                .post(params["url"], params["data"], curHead)
-                                .subscribe(
-                                    data => {
-                                        observer.next(data);
-                                        observer.complete();
-                                    },
-                                    error => {
-                                        observer.error(error);
-                                        observer.complete();
-                                    }
-                                );
+                            if(res['status']!='0'){
+                                observer.complete();
+                                this.router.navigateByUrl("/reprot/sysError");
+                            }else{
+                                let curToken = res['data'][0]
+                                localStorage.setItem("token", curToken);
+                                let curHead = {
+                                    headers: new HttpHeaders({
+                                        "Content-Type": "application/json",
+                                        Authorization: `token ${curToken}`
+                                    })
+                                };
+                                return this.http
+                                    .post(params["url"], params["data"], curHead)
+                                    .subscribe(
+                                        data => {
+                                            observer.next(data);
+                                            observer.complete();
+                                        },
+                                        error => {
+                                            observer.error(error);
+                                            observer.complete();
+                                        }
+                                    );
+                            }
                         },
                         error => {
                             observer.complete();
-                            // TODO 打开密码验证框
-                            // 模拟登录
-                            // 更新token
                         }
                     );
             } else {
                 observer.complete();
-                this.router.navigate(["/reprot/sysError"]);
+                this.router.navigateByUrl("/reprot/sysError");
             }
         });
     }

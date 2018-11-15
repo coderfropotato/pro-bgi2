@@ -1,5 +1,10 @@
-@import "../../../../node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css";
+
 @import "./setting.scss";
+
+.anticon.active {
+    color: $them_color!important;
+}
+
 .table-content {
     width: 100%;
     // min-height: 400px;
@@ -55,7 +60,6 @@
 
 .add-head {
     display: flex;
-    margin-bottom: 12px;
 }
 
 .add-head button {
@@ -281,7 +285,7 @@ button.btnActive {
     }
     & .switch {
         position: fixed;
-        right: 40px;
+        right: 150px;
         top: 46px;
     }
 }
@@ -299,6 +303,7 @@ button.btnActive {
 // menu
 .menu {
     height: 40px;
+    padding: 0 20px;
     min-width: $min-width;
     border-bottom: $border;
     background-color: #fff;
@@ -408,6 +413,11 @@ button.btnActive {
             }
         }
     }
+}
+
+// 表格border
+.no-outside-border .table-content{
+    border: 0;
 }
 
 // loading
@@ -522,7 +532,6 @@ button.btnActive {
 
 // 基因表的 分析按钮
 .table-analysis-button{
-    background: rgba(108, 210, 150, 0.9);
     height: 30px;
     line-height: 30px;
     color: #fff;
@@ -530,13 +539,24 @@ button.btnActive {
     transition: all 0.2s ease-out 0s;
     box-shadow: rgba(92, 206, 139, 0) 0px 0px;
     cursor: pointer;
+    &.blue{
+        background-color: $them_color;
+    }
+    &.green{
+        background: rgba(108, 210, 150, 0.9);
+    }
     &.invaild{
         opacity: 0.5;
     }
     &.active{
         opacity: 0.9;
     }
-    &:hover{
+    &.blue:hover{
+        @include hover-animate($them_color);
+        background-color: $them_color;
+        opacity: 1;
+    }
+    &.green:hover{
         @include hover-animate(rgb(92,206,139));
         background-color: rgb(92,206,139);
         opacity: 1;

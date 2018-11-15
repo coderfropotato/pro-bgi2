@@ -228,12 +228,15 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
             (responseData: any) => {
-                if (
-                    responseData.status === "0" &&
-                    !$.isEmptyObject(responseData.data)
-                ) {
-                    // this.loadingService.close(`#${this.parentId}`);
+                if (responseData.status == "0") {
                     this.isLoading = false;
+                    if(!responseData.data['rows'].length){
+                        this.total = 0;
+                        this.error = "nodata";
+                        return;
+                    }
+                    this.error = '';
+                    // this.loadingService.close(`#${this.parentId}`);
                     let arr = [];
                     this.head = responseData.data.baseThead;
 
@@ -306,7 +309,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     // this.loadingService.close(`#${this.parentId}`);
                     this.isLoading = false;
                     this.total = 0;
-                    this.error = "nodata";
+                    this.error = "error";
                 }
 
                 setTimeout(() => {
@@ -708,7 +711,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
             let filter = $(`#${this.tableId} .table-filter`).outerHeight();
             // 表头工具栏的高度
             let tools = $(`#${this.tableId} .table-thead`).outerHeight();
-            let res = tableHeight - head - bottom - filter - tools - 4;
+            let res = tableHeight - head - bottom - filter - tools - 2;
 
             $(`#${this.tableId} .ant-table-body`).css("height", `${res}px`);
             this.scroll["y"] = `${res}px`;

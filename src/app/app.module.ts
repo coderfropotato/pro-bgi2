@@ -6,6 +6,7 @@ import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { NgZorroAntdModule, NZ_MESSAGE_CONFIG } from "ng-zorro-antd";
 import { SimpleReuseStrategy } from "./super/service/simpleReuseStrategy";
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 // 组件
 import { AppComponent } from "./app.component";
@@ -49,6 +50,7 @@ import { DiffVennComponent } from "./pages/mrna/diffVenn.component";
 import { Layout1Component } from './pages/mrna/layout1.component';
 import { Layout2Component } from './pages/mrna/layout2.component';
 import { ToolsComponent } from './super/components/tools.component';
+import {SysDefendComponent} from './pages/sysDefend.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -61,6 +63,7 @@ import { TooltipDirective } from "./super/directive/tooltip.directive";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { SysDefendService } from './super/service/sysDefendService';
 
 // 国际化
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
@@ -79,6 +82,7 @@ const ROUTES: Routes = [
             keep: true,
             module: "mrnaIndex"
         },
+        canActivateChild: [SysDefendService],
         children: [
             // demo
             {
@@ -215,12 +219,6 @@ const ROUTES: Routes = [
                     module: "cluster"
                 }
             }
-            // ,
-            // {
-            //     path: "**",
-            //     redirectTo: "diff",
-            //     pathMatch: "full"
-            // }
         ]
     },
     // dna
@@ -231,6 +229,7 @@ const ROUTES: Routes = [
             keep: false,
             module: "reportDna"
         },
+        canActivateChild: [SysDefendService],
         children: [
             {
                 path: "jyzbd",
@@ -246,6 +245,7 @@ const ROUTES: Routes = [
     {
         path: "report/reanalysis/index",
         component: ReanalysisIndexComponent,
+        canActivate: [SysDefendService],
         data: {
             keep: true,
             module: "reanalysisIndex"
@@ -255,14 +255,16 @@ const ROUTES: Routes = [
     {
         path: "report/login",
         component: LoginComponent,
+        canActivate: [SysDefendService],
         data: {
             keep: false,
-            module: "login"
+            module: "login",
         }
     },
     {
         path: "reprot/sysError",
         component: SyserrorComponent,
+        canActivate: [SysDefendService],
         data: {
             keep: false,
             module: "sysError"
@@ -271,22 +273,32 @@ const ROUTES: Routes = [
     {
         path: "report/404",
         component: NotFoundComponent,
+        canActivate: [SysDefendService],
         data: {
             keep: false,
             module: "404"
         }
     },
     {
+        path:"report/sysDefend",
+        component:SysDefendComponent,
+        data: {
+            keep: false,
+            module: "sysDefend"
+        }
+    },
+    {
         path: "",
         redirectTo: "report/login",
+        canActivate: [SysDefendService],
+        pathMatch: "full"
+    },
+    {
+        path: "**",
+        redirectTo: "report/404",
+        canActivate: [SysDefendService],
         pathMatch: "full"
     }
-    // },
-    // {
-    //     path: "**",
-    //     redirectTo: "report/404",
-    //     pathMatch: "full"
-    // }
 ];
 
 export function createTranslateLoader(http: HttpClient) {
@@ -296,6 +308,7 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
     // 组件，指令，过滤器（管道） 申明在declarations 里
     declarations: [
+        SysDefendComponent,
         LoginComponent,
         IndexComponent,
         cxzk1Component,
@@ -344,6 +357,7 @@ export function createTranslateLoader(http: HttpClient) {
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        AngularResizedEventModule,
         NgxSpinnerModule,
         ColorPickerModule,
         NgZorroAntdModule,
@@ -367,6 +381,7 @@ export function createTranslateLoader(http: HttpClient) {
         MessageService,
         AjaxService,
         StoreService,
+        SysDefendService,
         // , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
         {
             provide: NZ_MESSAGE_CONFIG,
@@ -381,7 +396,7 @@ export function createTranslateLoader(http: HttpClient) {
         // enable route alive
         { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy },
         // enable hash module
-        { provide: LocationStrategy, useClass: HashLocationStrategy }
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],
     bootstrap: [AppComponent]
 })

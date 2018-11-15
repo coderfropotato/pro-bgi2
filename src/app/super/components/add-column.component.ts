@@ -15,8 +15,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 })
 export class AddColumnComponent implements OnInit {
     @Input() thead: Array<object>;  // 默认显示的表头
+    @Output() toggle:EventEmitter<any> = new EventEmitter(); // 显示隐藏
 
-    show: boolean = false;
+    show:boolean = false;
     selected: Array<object> = [];
     beforeSelected: Array<object> = [];
     selectCount: Array<number> = [];
@@ -36,6 +37,13 @@ export class AddColumnComponent implements OnInit {
             val["checked"] = false;
         });
         this.applyCheckedStatus();
+    }
+
+    toggleShow(){
+        this.show = !this.show;
+        setTimeout(()=>{
+            this.toggle.emit(this.show);
+        },0)
     }
 
     toggleSelect(item): void {

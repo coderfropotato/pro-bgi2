@@ -1,5 +1,5 @@
-<div class="menu">
-    <div style="display:inline-block">
+<div class="menu clearfix">
+    <div style="display:inline-block" class="fLeft">
         <ul *ngIf="menu.length" (mouseenter)="expand = true" (mouseleave)="menuMouseLeave()">
             <li *ngFor="let item of menu;let i = index" (mouseover)="menuMouseOver(item,i)">
                 <span [class.active]="item['active']">{{item.category}}</span>
@@ -15,5 +15,8 @@
         </li>
     </ol>
 
-    <div class=""></div>
+    <div class="table-analysis-button  blue fRight" (click)="analysis()" style="margin-top: 4px;">
+        <b>我的分析</b>
+        <span><i class="anticon anticon-appstore"></i></span>
+    </div>
 </div>

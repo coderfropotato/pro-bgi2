@@ -2,7 +2,7 @@
     <app-top></app-top>
     <app-menu [menu]="menuList"></app-menu>
     <!-- [@routeAnimation]="routerStateCode" -->
-    <div class="report-content">
+    <div *ngIf="ready" class="report-content">
         <router-outlet></router-outlet>
     </div>
     <app-tools></app-tools>

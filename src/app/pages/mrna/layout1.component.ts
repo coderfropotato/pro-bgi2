@@ -1,6 +1,8 @@
+import { StoreService } from './../../super/service/storeService';
 import { MessageService } from "./../../super/service/messageService";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { fromEvent } from "rxjs";
+import { ResizedEvent } from 'angular-resize-event/resized-event';
 declare const $: any;
 declare const d4: any;
 @Component({
@@ -8,7 +10,7 @@ declare const d4: any;
     templateUrl: "./layout1.component.html",
     styles: []
 })
-export class Layout1Component implements OnInit,AfterViewInit {
+export class Layout1Component implements OnInit {
     // 表格高度相关
     @ViewChild("left") left;
     @ViewChild("right") right;
@@ -39,9 +41,15 @@ export class Layout1Component implements OnInit,AfterViewInit {
     color = "red"; // 默认颜色
     legendIndex = 0; // 修改颜色的时候 需要保存点击的图例的索引 后面设置颜色会用到
     show = false; // 是否显示颜色选择器
-    constructor(private message: MessageService) {}
+
+    allThead = [];
+    constructor(
+        private message: MessageService,
+        private storeService:StoreService
+        ) {}
 
     ngOnInit() {
+        this.allThead = this.storeService.getThead();
         this.isMultiSelect = false;
         this.tableUrl = "http://localhost:8086/tableSwitchChart";
         this.chartUrl = "http://localhost:8086/scatter";
@@ -78,10 +86,9 @@ export class Layout1Component implements OnInit,AfterViewInit {
         });
     }
 
-    ngAfterViewInit(){
-        setTimeout(()=>{
-            this.computedTableHeight();
-        },0)
+    // 表格上方功能区 resize重新计算表格高度
+    resize(event:ResizedEvent){
+        this.computedTableHeight();
     }
 
     handlerColorChange(color){
