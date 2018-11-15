@@ -1,26 +1,27 @@
-<nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'">
-    <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" (click)="setClick()" nz-dropdown></i>
+<nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="isShowSetPanel" (nzVisibleChange)="setClick()">
+    <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown></i>
 
+    <!-- 设置面板 -->
     <div class="setPanel" nz-menu>
         <div class="center setPanelTitle">定量信息选择</div>
 
         <div class="infoContent" *ngIf="infoList.length">
             <span class="infoTitle center">关联基因</span>
             <span class="infoTitle center">定量列</span>
-            <div class="infoContent" *ngFor="let info of infoList">
+            <div class="infoContent" *ngFor="let info of infoList;let i=index">
                 <div class="infoCol">
                     <nz-select style="width: 100px;margin-left: 10px" [(ngModel)]="info.relation" [nzSize]="'small'" (ngModelChange)="relationChange()" nzShowSearch>
-                        <nz-option *ngFor="let relation of relationList" [nzLabel]="relation" [nzValue]="relation"></nz-option>
+                        <nz-option [nzDisabled]='relation.isDisabled' *ngFor="let relation of relationList" [nzLabel]="relation.name" [nzValue]="relation.name"></nz-option>
                     </nz-select>
                 </div>
                 <div class="infoCol">
                     <span>{{info.rationCol}}</span>
                 </div>
                 <div class="infoCol">
-                    <span><i nz-icon class="anticon anticon-form" theme="outline" nz-tooltip nzTitle="修改"></i></span>
+                    <i nz-icon class="anticon anticon-form" theme="outline" nz-tooltip nzTitle="修改" (click)="updateInfo(info)"></i>
                 </div>
                 <div class="infoCol">
-                    <i nz-icon class="anticon anticon-close" theme="outline" nz-tooltip nzTitle="删除"></i>
+                    <i nz-icon class="anticon anticon-close" theme="outline" nz-tooltip nzTitle="删除" (click)="deleteInfo(i)"></i>
                 </div>
             </div>
         </div>
@@ -30,12 +31,13 @@
         </div>
 
         <div class="setBtns right">
-            <button nz-button nzType="primary">确定</button>&nbsp;
-            <button nz-button nzType="default">取消</button>
+            <button nz-button nzType="primary" (click)="rationInfoConfirm()">确定</button>&nbsp;
+            <button nz-button nzType="default" (click)="rationInfoCance()">取消</button>
         </div>
     </div>
 
-    <div class="rationClassify" *ngIf="isShowRationClassify && rationClassifyList.length">
+    <!-- 添加面板 -->
+    <div class="rationClassify" *ngIf="isShowAddPanel && rationClassifyList.length">
         <div class="rationClassifyRow">
             <span>定量类型：</span>
             <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curRationClassify" [nzSize]="'small'" (ngModelChange)="rationClassifyChange()" nzShowSearch>
@@ -43,12 +45,26 @@
             </nz-select>
         </div>
         <div class="rationClassifyRow">
-            <span>数据选择：</span>
+            <span>定量列：</span>
             <button (click)="rationColSelect(item)" style="margin-right:5px;margin-bottom:5px " nz-button nzType="default" *ngFor="let item of rations">{{item}}</button>&nbsp;
         </div>
         <div class="setBtns right">
             <button nz-button nzType="primary" (click)="rationColConfirm()">确定</button>&nbsp;
             <button nz-button nzType="default" (click)="rationColCance()">取消</button>
+        </div>
+    </div>
+
+    <!-- 修改面板 -->
+    <div class="rationClassify" *ngIf="isShowUpdatePanel && rationClassifyList.length">
+        <div class="rationClassifyRow">
+            <span>定量类型：</span>
+            <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curUpdateClassify" [nzSize]="'small'" (ngModelChange)="updateClassifyChange()" nzShowSearch>
+                <nz-option *ngFor="let ration of rationClassifyList" [nzLabel]="ration?.name" [nzValue]="ration?.name"></nz-option>
+            </nz-select>
+        </div>
+        <div class="rationClassifyRow">
+            <span>定量列：</span>
+            <button (click)="updateRationColSelect(item)" style="margin-right:5px;margin-bottom:5px " nz-button nzType="default" *ngFor="let item of rationList">{{item}}</button>&nbsp;
         </div>
     </div>
 

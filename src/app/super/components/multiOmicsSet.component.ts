@@ -64,15 +64,25 @@ import { AjaxService } from '../service/ajaxService';
 export class MultiOmicsSetComponent implements OnInit {
     rationClassifyList: object[] = [];
     curRationClassify: string;
+
     rations: string[] = [];
     curRationCol: string;
 
-    relationList: string[] = [];
+    relationList: object[] = [];
     curRelation: string;
 
     infoList: object[] = [];
 
-    isShowRationClassify: boolean = false;
+    isShowAddPanel: boolean = false;
+
+    isShowUpdatePanel: boolean = false;
+
+    isShowSetPanel:boolean=false;
+
+    curUpdateClassify: string;
+    rationList: string[] = [];
+
+    curUpdateInfo: object;
 
     constructor(
         private ajaxService: AjaxService
@@ -83,19 +93,10 @@ export class MultiOmicsSetComponent implements OnInit {
         this.getRelations();
     }
 
-    //点击“设置”icon
+    //点击“设置”、“面板以外区域”
     setClick() {
-        this.isShowRationClassify = false;
-    }
-
-    //获取关联基因列表
-    getRelations() {
-        this.relationList = ["false", 'ggi', 'ppi', 'cp_exp'];
-        this.curRelation = this.relationList[0];
-    }
-
-    relationChange() {
-        console.log(this.curRelation)
+        this.isShowAddPanel = false;
+        this.isShowUpdatePanel = false;
     }
 
     //获取定量信息
@@ -119,20 +120,54 @@ export class MultiOmicsSetComponent implements OnInit {
         ];
 
         this.curRationClassify = this.rationClassifyList[0]['name'];
+        this.curUpdateClassify = this.rationClassifyList[0]['name'];
 
         this.rationClassifyList.forEach((d) => {
             if (d['name'] === this.curRationClassify) {
                 this.rations = d['data'];
             }
+
+            if (d['name'] === this.curUpdateClassify) {
+                this.rationList = d['data'];
+            }
+
+        })
+
+    }
+
+    //获取关联基因列表
+    getRelations() {
+        let data = ["false", 'ggi', 'ppi', 'cp_exp'];
+        data.forEach(d => {
+            this.relationList.push({
+                name: d,
+                isDisabled: false
+            })
+        })
+        this.curRelation = this.relationList[0]['name'];
+    }
+
+    //关联基因change
+    relationChange() {
+        this.relationList.forEach(d => {
+            d['isDisabled'] = false;
+            this.infoList.forEach(m => {
+                if (d['name'] !== 'false') {
+                    if (d['name'] === m['relation']) {
+                        d['isDisabled'] = true;
+                    }
+                }
+            });
         })
     }
 
     //点击“添加定量信息”
     addInfo() {
-        this.isShowRationClassify = true;
+        this.isShowAddPanel = true;
+        this.isShowUpdatePanel = false;
     }
 
-    //定量分类change
+    //添加面板，定量分类change
     rationClassifyChange() {
         this.rations = [];
         this.rationClassifyList.forEach((d) => {
@@ -142,43 +177,95 @@ export class MultiOmicsSetComponent implements OnInit {
         })
     }
 
-    // 选择定量列数据
+    // 添加面板，选择定量列
     rationColSelect(item) {
         this.curRationCol = item;
     }
 
-    //选择定量列 确定
+    //添加面板， 确定
     rationColConfirm() {
         let infoObj = {
             relation: this.curRelation,
             rationCol: this.curRationCol
         }
 
-        if (!this.isInArray(this.curRationCol, this.infoList, 'rationCol') && this.infoList.length < 5) {
+        if (!this.isInArray(this.curRationCol, this.infoList, 'rationCol')['status'] && this.infoList.length < 5 && this.curRationCol) {
             this.infoList.push(infoObj);
         }
 
-        this.isShowRationClassify = false;
+        this.isShowAddPanel = false;
     }
 
-    //选择定量列 取消
+    //添加面板， 取消
     rationColCance() {
-        this.isShowRationClassify = false;
+        this.curRationCol = '';
+        this.isShowAddPanel = false;
     }
 
-    //数组去重
+    //点击“修改”
+    updateInfo(info) {
+        this.isShowAddPanel = false;
+        this.isShowUpdatePanel = true;
+        this.curUpdateInfo = info;
+    }
+
+    //修改面板，定量分类change
+    updateClassifyChange() {
+        this.rationList = [];
+        this.rationClassifyList.forEach((d) => {
+            if (d['name'] === this.curUpdateClassify) {
+                this.rationList = d['data'];
+            }
+        })
+    }
+
+    //修改面板，定量列选择
+    updateRationColSelect(item) {
+        this.curUpdateInfo['rationCol'] = item;
+        this.isShowUpdatePanel = false;
+    }
+
+    //点击“删除”
+    deleteInfo(i) {
+        this.isShowAddPanel = false;
+        this.isShowUpdatePanel = false;
+        this.infoList.splice(i, 1);
+    }
+
+    // 设置 确定
+    rationInfoConfirm() {
+        this.isShowAddPanel = false;
+        this.isShowUpdatePanel = false;
+        this.isShowSetPanel=false;
+        console.log(this.infoList);
+    }
+
+    //设置 取消
+    rationInfoCance() {
+        this.isShowAddPanel = false;
+        this.isShowUpdatePanel = false;
+        this.isShowSetPanel=false;
+    }
+
+    //判断item是否在数组中
     isInArray(item, arr, key) {
         if (key) {
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i][key] === item) {
-                    return true;
+                    return {
+                        index: i,
+                        status: true
+                    };
                 }
             }
 
         } else {
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] === item) {
-                    return true;
+                    return {
+                        index: i,
+                        status: true
+                    };
                 }
             }
         }
