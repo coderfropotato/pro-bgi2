@@ -40,7 +40,7 @@ export class multiOmicsComponent implements OnInit {
     }
 
     drawChart(data) {
-        d3.select("#multiOmicsSvg svg").remove();
+        d3.select("#multiOmicsChartDiv svg").remove();
         let that = this;
 
         //data
@@ -145,7 +145,7 @@ export class multiOmicsComponent implements OnInit {
         let colorScale = d3.scaleOrdinal().range(colors.map(function (d) { return d })).domain(column.map(function (d) { return d.type }));
 
         // svg
-        let svg = d3.select("#multiOmicsSvg").append("svg").attr("width", totalWidth).attr("height", totalHeight);
+        let svg = d3.select("#multiOmicsChartDiv").append("svg").attr("width", totalWidth).attr("height", totalHeight);
 
         // column
         let column_g = svg.append("g").attr("class", "column").attr("transform", `translate(${margin.left},${margin.top + (eachChartHeight + chartSpace) * boxplotLength})`);
@@ -219,10 +219,10 @@ export class multiOmicsComponent implements OnInit {
                 } else {  //单选
                     that.selectedColumn = [];
 
-                    d3.select("#multiOmicsSvg svg").selectAll(".columnRect").nodes().forEach(v => {
+                    d3.select("#multiOmicsChartDiv svg").selectAll(".columnRect").nodes().forEach(v => {
                         $(v).css("fill", $(v).attr("fill"));
                     })
-                    d3.select("#multiOmicsSvg svg").selectAll(".boxplotRect").nodes().forEach(v => {
+                    d3.select("#multiOmicsChartDiv svg").selectAll(".boxplotRect").nodes().forEach(v => {
                         $(v).css("fill", $(v).attr("fill"));
                     })
                     d3.select(this).style("fill", "#FF4C06");
@@ -366,10 +366,10 @@ export class multiOmicsComponent implements OnInit {
                         } else {  //单选
                             that.selectedBox = [];
 
-                            d3.select("#multiOmicsSvg svg").selectAll(".columnRect").nodes().forEach(v => {
+                            d3.select("#multiOmicsChartDiv svg").selectAll(".columnRect").nodes().forEach(v => {
                                 $(v).css("fill", $(v).attr("fill"));
                             })
-                            d3.select("#multiOmicsSvg svg").selectAll(".boxplotRect").nodes().forEach(v => {
+                            d3.select("#multiOmicsChartDiv svg").selectAll(".boxplotRect").nodes().forEach(v => {
                                 $(v).css("fill", $(v).attr("fill"));
                             })
                             d3.select(this).style("fill", "#FF4C06");

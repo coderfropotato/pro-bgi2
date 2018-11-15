@@ -7,29 +7,21 @@ import { AjaxService } from 'src/app/super/service/ajaxService';
 })
 
 export class clusterComponent implements OnInit {
+    chartUrl: string;
+    chartEntity: object;
+
     constructor(
         private ajaxService: AjaxService
     ) { }
 
     ngOnInit() {
-        this.getData();
+        this.chartUrl = 'http://localhost:8086/cluster';
+        this.chartEntity = {
+            "LCID": sessionStorage.getItem('LCID')
+        }
     }
 
-    getData() {
-        this.ajaxService
-            .getDeferData({
-                url: 'http://localhost:8086/cluster',
-                data: {}
-            })
-            .subscribe(
-                (data: any) => {
-                    this.drawCluster(data);
-                    console.log(data)
-                }
-            )
-    }
-
-    drawCluster(data) {
-
+    drawChart(data) {
+        console.log(data);
     }
 }
