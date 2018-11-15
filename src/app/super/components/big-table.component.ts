@@ -153,11 +153,14 @@ export class BigTableComponent implements OnInit {
 
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
             (responseData: any) => {
-                if (
-                    responseData.status === "0" &&
-                    !$.isEmptyObject(responseData.data)
-                ) {
-                    // this.loadingService.close(`#${this.parentId}`);
+                if (responseData.status == "0" ) {
+                    this.isLoading = false;
+                    if(!responseData.data['rows'].length){
+                        this.total = 0;
+                        this.error = 'nodata';
+                        return;
+                    }
+                    this.error = '';
                     let arr = [];
                     this.head = responseData.data.baseThead;
 
@@ -182,18 +185,12 @@ export class BigTableComponent implements OnInit {
                     this.key = this.head[0]["children"].length
                         ? this.head[0]["children"][0]["true_key"]
                         : this.head[0]["true_key"];
-                } else {
-                    this.error = "nodata";
-                    // this.loadingService.close(`#${this.parentId}`);
-                    this.total = 0;
                 }
-                this.isLoading = false;
             },
             err => {
-                // this.loadingService.close(`#${this.parentId}`);
                 this.isLoading = false;
                 this.total = 0;
-                console.log(err);
+                this.error = 'error';
             }
         );
     }

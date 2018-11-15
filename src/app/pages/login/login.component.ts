@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
             this.validateForm.controls[i].markAsDirty();
             this.validateForm.controls[i].updateValueAndValidity();
         }
+
         if (
             this.validateForm.controls["password"]["valid"] &&
             this.validateForm.controls["userName"]["valid"] &&

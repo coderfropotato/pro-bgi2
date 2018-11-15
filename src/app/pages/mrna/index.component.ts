@@ -47,8 +47,9 @@ export class IndexComponent implements OnInit {
         (async () => {
             try {
                 await this.getLcInfo();
-                // await this.getAddThead();
+                await this.getAddThead();
                 await this.getMenuList();
+                this.ready = true;
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
                 }, 300);
@@ -57,216 +58,240 @@ export class IndexComponent implements OnInit {
     }
 
     async getLcInfo() {
-        this.ajaxService
-            .getDeferData({
-                url: `${config["javaPath"]}/LCINFO/${sessionStorage.getItem(
-                    "LCID"
-                )}`
-            })
-            .subscribe(data => {
-                if (data["status"] === "0") {
-                    for (let key in data["data"]) {
-                        this.storeService.setStore(key, data["data"][key]);
-                    }
-                }
-            });
+        return new Promise((resolve, reject) => {
+            this.ajaxService
+                .getDeferData({
+                    url: `${config["javaPath"]}/LCINFO/${sessionStorage.getItem(
+                        "LCID"
+                    )}`
+                })
+                .subscribe(
+                    data => {
+                        if (data["status"] === "0") {
+                            for (let key in data["data"]) {
+                                this.storeService.setStore(
+                                    key,
+                                    data["data"][key]
+                                );
+                            }
+                        }
+                        resolve("success");
+                    },
+                    () => reject("error")
+                );
+        });
     }
 
     async getMenuList() {
-        let LCID = sessionStorage.getItem("LCID");
-        this.ajaxService
-            .getDeferData({
-                data: { LCID },
-                url: "http://localhost:8086/menu"
-            })
-            .subscribe(data => {
-                this.menuList = [
-                    {
-                        category: "布局一",
-                        children: [
+        return new Promise((resolve, reject) => {
+            let LCID = sessionStorage.getItem("LCID");
+            this.ajaxService
+                .getDeferData({
+                    data: { LCID },
+                    url: "http://localhost:8086/menu"
+                })
+                .subscribe(
+                    data => {
+                        this.menuList = [
                             {
-                                url: "layout1",
-                                name: "布局页面",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "布局二",
-                        children: [
+                                category: "布局一",
+                                children: [
+                                    {
+                                        url: "layout1",
+                                        name: "布局页面",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "layout2",
-                                name: "布局页面",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "表达量",
-                        children: [
+                                category: "布局二",
+                                children: [
+                                    {
+                                        url: "layout2",
+                                        name: "布局页面",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "express-venn",
-                                name: "表达量venn",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "差异",
-                        children: [
+                                category: "表达量",
+                                children: [
+                                    {
+                                        url: "express-venn",
+                                        name: "表达量venn",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "diff-venn",
-                                name: "差异venn",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "小表_demo",
-                        children: [
+                                category: "差异",
+                                children: [
+                                    {
+                                        url: "diff-venn",
+                                        name: "差异venn",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "littleTableTest",
-                                name: "小表",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "表格转换_demo",
-                        children: [
+                                category: "小表_demo",
+                                children: [
+                                    {
+                                        url: "littleTableTest",
+                                        name: "小表",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "transformationTable",
-                                name: "transformation-table",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "普通大表_demo",
-                        children: [
+                                category: "表格转换_demo",
+                                children: [
+                                    {
+                                        url: "transformationTable",
+                                        name: "transformation-table",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "bigTable",
-                                name: "普通大表",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "基因表_demo",
-                        children: [
+                                category: "普通大表_demo",
+                                children: [
+                                    {
+                                        url: "bigTable",
+                                        name: "普通大表",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "table",
-                                name: "GeneId 大表",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "网络图_demo",
-                        children: [
+                                category: "基因表_demo",
+                                children: [
+                                    {
+                                        url: "table",
+                                        name: "GeneId 大表",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "net",
-                                name: "网络图",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "增删列_demo",
-                        children: [
+                                category: "网络图_demo",
+                                children: [
+                                    {
+                                        url: "net",
+                                        name: "网络图",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "addColumn",
-                                name: "增删列",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "测序质控_demo",
-                        children: [
+                                category: "增删列_demo",
+                                children: [
+                                    {
+                                        url: "addColumn",
+                                        name: "增删列",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "cxzk1",
-                                name: "测序质控",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "图标切换_demo",
-                        children: [
+                                category: "测序质控_demo",
+                                children: [
+                                    {
+                                        url: "cxzk1",
+                                        name: "测序质控",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "cxzk2",
-                                name: "图表切换",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "多组学_demo",
-                        children: [
+                                category: "图标切换_demo",
+                                children: [
+                                    {
+                                        url: "cxzk2",
+                                        name: "图表切换",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "multiOmics",
-                                name: "多组学",
-                                isExport: true
-                            }
-                        ]
-                    },
-                    {
-                        category: "聚类_demo",
-                        children: [
+                                category: "多组学_demo",
+                                children: [
+                                    {
+                                        url: "multiOmics",
+                                        name: "多组学",
+                                        isExport: true
+                                    }
+                                ]
+                            },
                             {
-                                url: "cluster",
-                                name: "聚类",
-                                isExport: true
+                                category: "聚类_demo",
+                                children: [
+                                    {
+                                        url: "cluster",
+                                        name: "聚类",
+                                        isExport: true
+                                    }
+                                ]
                             }
-                        ]
-                    }
-                ];
+                        ];
 
-                //动态跳第一个页面
-                // let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
-                // window.location.replace(url)
-            });
+                        //动态跳第一个页面
+                        // let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
+                        // window.location.replace(url)
+                        resolve("success");
+                    },
+                    () => {
+                        reject("error");
+                    }
+                );
+        });
     }
 
     async getAddThead() {
-        let LCID = sessionStorage.getItem("LCID");
-        this.ajaxService
-            .getDeferData({
-                data: { LCID },
-                url: "http://localhost:8086/addThead"
-            })
-            .subscribe(data => {
-                this.allThead = [
-                    {
-                        category: "基因属性",
-                        children: [
-                            { name: "Other Gene ID" },
-                            { name: "Transcript" },
-                            { name: "Gene Type" },
-                            { name: "Transcripts Number" },
-                            { name: "Start" }
-                        ]
+        return new Promise((resolve, reject) => {
+            let LCID = sessionStorage.getItem("LCID");
+            this.ajaxService
+                .getDeferData({
+                    data: { LCID },
+                    url: "http://localhost:8086/addThead"
+                })
+                .subscribe(
+                    data => {
+                        this.allThead = [
+                            {
+                                category: "基因属性",
+                                children: [
+                                    { name: "Other Gene ID" },
+                                    { name: "Transcript" },
+                                    { name: "Gene Type" },
+                                    { name: "Transcripts Number" },
+                                    { name: "Start" }
+                                ]
+                            },
+                            {
+                                category: "样本表达量",
+                                children: [
+                                    { name: "HepG2con1" },
+                                    { name: "HepG2con2" },
+                                    { name: "HepG2con3" },
+                                    { name: "Huh7con1" }
+                                ]
+                            },
+                            {
+                                category: "注释",
+                                children: [
+                                    { name: "TFs" },
+                                    { name: "Kegg Orthology" },
+                                    { name: "GO" }
+                                ]
+                            }
+                        ];
+
+                        this.storeService.setThead(this.allThead);
+                        resolve("success");
                     },
-                    {
-                        category: "样本表达量",
-                        children: [
-                            { name: "HepG2con1" },
-                            { name: "HepG2con2" },
-                            { name: "HepG2con3" },
-                            { name: "Huh7con1" }
-                        ]
-                    },
-                    {
-                        category: "注释",
-                        children: [
-                            { name: "TFs" },
-                            { name: "Kegg Orthology" },
-                            { name: "GO" }
-                        ]
-                    }
-                ];
-                this.storeService.setThead(this.allThead);
-            });
+                    () => reject("error")
+                );
+        });
     }
 }

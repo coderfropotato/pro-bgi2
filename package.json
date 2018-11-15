@@ -24,6 +24,7 @@
         "@ngx-translate/core": "^10.0.2",
         "@ngx-translate/http-loader": "^3.0.1",
         "@types/html2canvas": "^0.0.33",
+        "angular-resize-event": "^0.4.4",
         "core-js": "^2.5.4",
         "jquery": "^3.3.1",
         "ng-zorro-antd": "^1.4.1",

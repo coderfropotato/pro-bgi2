@@ -17,9 +17,6 @@ ul,ol {
     list-style: none;
 }
 
-.anticon.active {
-    color: rgb(64, 176, 255)!important;
-}
 
 
 
@@ -72,7 +69,7 @@ ul,ol {
 .ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-thead>tr>th,
 .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-thead>tr>th,
 .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th {
-    background: #f5f5f5;
+    background: #fff;
 }
 .ant-spin-nested-loading,.ant-spin-container{
     height: inherit;

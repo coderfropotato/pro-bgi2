@@ -46,6 +46,7 @@ export class MenuComponent implements OnChanges {
     }
 
     menuMouseOver(menu, index) {
+        if (this.timer) clearTimeout(this.timer);
         this.index = index;
         this.expandItem = menu["children"];
     }

@@ -17,8 +17,11 @@
         <div class="switch">
             <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></nz-switch>
         </div>
-        <div #func style="height:80px;background-color:#ccc;"></div>
-        <app-geneTable tableId="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
+        <div #func (resized)="resize($event)" style="background-color:#fff;padding:12px;">
+            <!-- 增删列 -->
+            <app-add-column [thead]="allThead"></app-add-column>
+        </div>
+        <app-geneTable class="no-outside-border" tableId="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
             url="http://localhost:8086/filter" [tableHeight]="tableHeight" [defaultChecked]="false"></app-geneTable>
     </div>
 </div>
