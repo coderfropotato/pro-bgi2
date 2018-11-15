@@ -218,11 +218,11 @@ export class TreeComponent implements OnInit, OnChanges {
             });
 
             // 找出公共项对应的表头集合的组合集合 去重
-            // 组合 abc abcd   选中ab的时候 d的状态为不可选
             publicItems.forEach(v => {
-                composeItemsTemp = composeItemsTemp.concat(
-                    this.theadMap[v].slice(0, this.selectData.length + 1)
-                );
+                composeItemsTemp = composeItemsTemp.concat(this.theadMap[v]);
+                // composeItemsTemp = composeItemsTemp.concat(
+                //     this.theadMap[v].slice(0, this.selectData.length + 1)
+                // );
             });
             let tempJson = {};
             composeItemsTemp.forEach(v => (tempJson[v] = 1));
