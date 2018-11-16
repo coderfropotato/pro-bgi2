@@ -63,33 +63,32 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
         });
 
-        //this.getVennData(); //获取Venn图数据
     }
 
-    getVennData() {
-        this.ajaxService
-            .getDeferData({
-                url: `${config["javaPath"]}/Venn/expressionGraph`,
-                data: {
-                    LCID: "demo3",
-                    sample: ["A1", "B1", "C"],
-                    geneType: "transcript",
-                    species: "aisdb"
-                }
-            })
-            .subscribe(
-                data => {
-                    if (data["data"].length > 5) {
-                        this.showUpSetR(data);
-                    } else {
-                        this.showVenn(data);
-                    }
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-    }
+    // getVennData() {
+    //     this.ajaxService
+    //         .getDeferData({
+    //             url: `${config["javaPath"]}/Venn/expressionGraph`,
+    //             data: {
+    //                 LCID: "demo3",
+    //                 sample: ["A1", "B1", "C"],
+    //                 geneType: "transcript",
+    //                 species: "aisdb"
+    //             }
+    //         })
+    //         .subscribe(
+    //             data => {
+    //                 if (data["data"].length > 5) {
+    //                     this.showUpSetR(data);
+    //                 } else {
+    //                     this.showVenn(data);
+    //                 }
+    //             },
+    //             error => {
+    //                 console.log(error);
+    //             }
+    //         );
+    // }
 
     drawVenn(data) {
         // if(data['total'].length>5){
@@ -121,6 +120,9 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             this.func.nativeElement.offsetHeight;
     }
 
+    fpkmSelect(){
+        alert(11111)
+    }
     //单、多选change
     multiSelectChange() {
         if (this.isMultiSelect) {
@@ -130,7 +132,6 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             console.log(this.singleMultiSelect);
             console.log(this.doubleMultiSelect);
         }
-        //console.log(this.isMultiSelect)
     }
 
     //多选确定
@@ -194,7 +195,13 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                  /* display: none; */
              }
              .axis_y2{
-                  display: none;
+                   display: none;
+             }
+             .axis_xk{
+                
+             }
+             .axis_yk{
+                display: none;
              }
              .axis_xCircle {
                  display: none;
@@ -204,6 +211,9 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
              }
              .MyText{
                  cursor: pointer;
+                 overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
              }
          
              .MyRect3{
@@ -238,10 +248,31 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         //左侧数据
         let total_name = [];
         let total_value = [];
+        let total_name_max = [];
         for (let i = 0; i < List.total.length; i++) {
+            total_name_max.push(getBLen(List.total[i].name));
             total_name.push(List.total[i].name);
             total_value.push(List.total[i].value);
         }
+
+        let max_name=Math.max.apply(null, total_name_max);
+        let target_name='';
+        for(let i = 0; i < total_name_max.length; i++){
+            if(max_name==total_name_max[i]){
+                target_name=total_name[i];
+                break;
+            }
+        }
+
+        let mText = d3.select("#chartId22122").append('svg').append('text').text(target_name).attr('class','mText');
+        let left_name_length = mText.nodes()[0].getBBox().width;
+        //let left_name_length = document.querySelector(".mText").getBBox().width;
+        if(left_name_length>100){
+            left_name_length=100;
+        }
+        mText.remove();
+        let kong_name_right=10;
+        console.log(left_name_length)
 
         //上侧数据
         let bar_name = [];
@@ -271,7 +302,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         let tempCricle; //圆
 
         let padding1 = { left: 60, right: 30, top: 20, bottom: 10 };
-        let padding2 = { left: 20, right: 80, top: 0, bottom: 30 };
+        let padding2 = { left: 0, right: 10, top: 0, bottom: 30 };
 
         let svg_height =
             300 +
@@ -295,36 +326,37 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
 
         drawSvg();
         drawSvg2();
+        drawSvgName();
         drawSvg3();
 
         function drawSvg() {
-            let width = d3_width + padding1.left + padding1.right;
-            let height = 300;
+            let width1 = d3_width + padding1.left + padding1.right;
+            let height1 = 300;
 
             let svg1 = d3
                 .select("#svg")
                 .append("svg")
                 .attr("x", "320")
                 .attr("y", "0")
-                .attr("width", width)
-                .attr("height", height)
+                .attr("width", width1)
+                .attr("height", height1)
                 .attr("class","svg1");
-            let xScale = d3
+            let xScale1 = d3
                 .scaleBand()
                 .domain(bar_name)
                 .range([0, d3_width])
                 .paddingOuter(0.1)
                 .paddingInner(1);
-            let yScale = d3
+            let yScale1 = d3
                 .scaleLinear()
                 .domain([0, d3.max(bar_value)])
-                .range([height - padding1.bottom - padding1.top, 0]);
+                .range([height1 - padding1.bottom - padding1.top, 0]);
 
-            d3_xScale = xScale;
-            let xAxis = d3.axisBottom(xScale);
-            let yAxis = d3.axisLeft(yScale).ticks(5);
+            d3_xScale = xScale1;
+            let xAxis1 = d3.axisBottom(xScale1);
+            let yAxis1 = d3.axisLeft(yScale1).ticks(5);
 
-            let rects = svg1.selectAll("MyRect1")
+            let rects1 = svg1.selectAll("MyRect1")
                 .data(bar_value)
                 .enter()
                 .append("g")
@@ -356,21 +388,21 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                     }
                 });
 
-            rects.append("rect")
+            rects1.append("rect")
                 .attr("class", "MyRect")
                 .attr(
                     "transform",
                     "translate(" + padding1.left + "," + padding1.top + ")"
                 )
                 .attr("x", function(d, i) {
-                    return xScale(bar_name[i]);
+                    return xScale1(bar_name[i]);
                 })
                 .attr("y", function(d, i) {
-                    return yScale(d);
+                    return yScale1(d);
                 })
                 .attr("width", d3_rectWidth)
                 .attr("height", function(d, i) {
-                    return height - padding1.bottom - padding1.top - yScale(d);
+                    return height1 - padding1.bottom - padding1.top - yScale1(d);
                 })
                 .attr("fill", "black")
                 .attr("stroke-width", 10)
@@ -379,53 +411,43 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
 
             svg1.append("g")
                 .attr("class", "axis_x1")
-                .attr(
-                    "transform",
-                    "translate(" +
-                        padding1.left +
-                        "," +
-                        (height - padding1.bottom) +
-                        ")"
-                )
-                .call(xAxis);
+                .attr("transform","translate(" +padding1.left +"," +(height1 - padding1.bottom) +")")
+                .call(xAxis1);
             svg1.append("g")
                 .attr("class", "axis_y1")
-                .attr(
-                    "transform",
-                    "translate(" + padding1.left + "," + padding1.top + ")"
-                )
-                .call(yAxis);
+                .attr("transform","translate(" + padding1.left + "," + padding1.top + ")")
+                .call(yAxis1);
         }
 
         function drawSvg2() {
-            let width = 320;
-            let height = d3_height + padding2.top + padding2.bottom;
+            let width2 = 320-left_name_length-kong_name_right+padding1.left;
+            let height2 = d3_height + padding2.top + padding2.bottom;
 
             let svg2 = d3
                 .select("#svg")
                 .append("svg")
-                .attr("x", padding2.left)
+                .attr("x", "0")
                 .attr("y", "300")
-                .attr("width", width)
-                .attr("height", height)
+                .attr("width", width2)
+                .attr("height", height2)
                 .attr("class","svg2");
 
-            let xScale = d3
+            let xScale2 = d3
                 .scaleLinear()
                 .domain([0, d3.max(total_value)])
-                .range([width - padding2.left - padding2.right, 0]);
+                .range([width2-padding2.right, 0]);
 
-            let yScale = d3
+            let yScale2 = d3
                 .scaleBand()
                 .domain(total_name)
                 .range([d3_height, 0]);
 
-            d3_yScale = yScale;
+            d3_yScale = yScale2;
 
-            let xAxis = d3.axisBottom(xScale).ticks(4);
-            let yAxis = d3.axisRight(yScale);
+            let xAxis2 = d3.axisBottom(xScale2).ticks(4);
+            let yAxis2 = d3.axisRight(yScale2);
 
-            let rects = svg2
+            let rects2 = svg2
                 .selectAll("MyRect2")
                 .data(total_value)
                 .enter()
@@ -458,17 +480,16 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                     }
                 });
 
-            rects
-                .append("rect")
+            rects2.append("rect")
                 .attr("class", "MyRect")
                 .attr("x", function(d, i) {
-                    return xScale(d) + padding2.left;
+                    return xScale2(d) + padding2.left;
                 })
                 .attr("y", function(d, i) {
-                    return yScale(total_name[i]);
+                    return yScale2(total_name[i]);
                 })
                 .attr("width", function(d, i) {
-                    return width - padding2.right - xScale(d) - padding2.left;
+                    return width2 - padding2.right - xScale2(d) - padding2.left;
                 })
                 .attr("height", function(d, i) {
                     return d3_rectWidth;
@@ -478,17 +499,71 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 .attr("stroke", "black")
                 .attr("stroke-opacity", 0);
 
-            let texts = svg2
+            // let texts2 = svg2
+            //     .selectAll("text")
+            //     .data(total_name)
+            //     .enter()
+            //     .append("text")
+            //     .attr("class", "MyText")
+            //     .attr("width",left_name_length)
+            //     .attr("dx", function(d, i) {
+            //         return xScale2(0) + padding2.left + d3_rectKong * 2;
+            //     })
+            //     .attr("dy", function(d, i) {
+            //         return yScale2(total_name[i]) + d3_rectKong * 2;
+            //     })
+            //     .text(function(d, i) {
+            //         return d;
+            //     })
+            //     .on("click", function(d, i) {
+            //         d3.select(this).style("fill", "red");
+            //         sortName(d, d3.select(this));
+            //     });
+
+            svg2.append("g")
+                .attr("class", "axis_x2")
+                .attr("transform","translate(" +padding2.left +"," +(height2 - padding2.bottom) +")")
+                .call(xAxis2)
+                .selectAll("text")
+                .attr("fontsize","12");
+            svg2.append("g")
+                .attr("class", "axis_y2")
+                .attr("transform","translate(" +(width2-padding2.right) +"," +padding2.top +")")
+                .call(yAxis2);
+        }
+        
+        function drawSvgName(){
+            let widthk = left_name_length+kong_name_right;
+            let heightk = d3_height + padding2.top + padding2.bottom;
+
+            let svgk = d3
+                .select("#svg")
+                .append("svg")
+                .attr("x", 320-left_name_length-kong_name_right+padding1.left)
+                .attr("y", "300")
+                .attr("width", widthk)
+                .attr("height", heightk)
+                .attr("class","svgk");
+            
+            let yScalek = d3
+                .scaleBand()
+                .domain(total_name)
+                .range([d3_height, 0]);
+
+            let yAxisk = d3.axisLeft(yScalek);
+
+            let textsk = svgk
                 .selectAll("text")
                 .data(total_name)
                 .enter()
                 .append("text")
                 .attr("class", "MyText")
+                .attr("width",left_name_length)
                 .attr("dx", function(d, i) {
-                    return xScale(0) + padding2.left + d3_rectKong * 2;
+                    return 0;
                 })
                 .attr("dy", function(d, i) {
-                    return yScale(total_name[i]) + d3_rectKong * 2;
+                    return yScalek(total_name[i]) + d3_rectKong * 2;
                 })
                 .text(function(d, i) {
                     return d;
@@ -497,30 +572,10 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                     d3.select(this).style("fill", "red");
                     sortName(d, d3.select(this));
                 });
-
-            svg2.append("g")
-                .attr("class", "axis_x2")
-                .attr(
-                    "transform",
-                    "translate(" +
-                        padding2.left +
-                        "," +
-                        (height - padding2.bottom) +
-                        ")"
-                )
-                .call(xAxis)
-                .selectAll("text");
-            svg2.append("g")
-                .attr("class", "axis_y2")
-                .attr(
-                    "transform",
-                    "translate(" +
-                        (width - padding2.right) +
-                        "," +
-                        padding2.top +
-                        ")"
-                )
-                .call(yAxis);
+            svgk.append("g")
+                .attr("class", "axis_yk")
+                .attr("transform","translate(" +(0) +"," +padding2.top +")")
+                .call(yAxisk);
         }
 
         function sortName(d, that) {
@@ -547,22 +602,23 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             nameToCircle(nameList);
         }
 
+
         function drawSvg3() {
-            let width = d3_width + padding1.left + padding1.right;
-            let height = d3_height + padding2.top + padding2.bottom;
+            let width3 = d3_width + padding1.left + padding1.right;
+            let height3 = d3_height + padding2.top + padding2.bottom;
 
             let svg3 = d3
                 .select("#svg")
                 .append("svg")
                 .attr("x", "320")
                 .attr("y", "300")
-                .attr("width", width)
-                .attr("height", height);
+                .attr("width", width3)
+                .attr("height", height3);
 
             tempThat = svg3;
 
-            let xAxis = d3.axisBottom(d3_xScale);
-            let yAxis = d3.axisRight(d3_yScale);
+            let xAxis3 = d3.axisBottom(d3_xScale);
+            let yAxis3 = d3.axisRight(d3_yScale);
 
             let jsonCircles = [];
             let row = d3_xlength;
@@ -601,11 +657,11 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             svg3.append("g")
                 .attr("class", "axis_xCircle")
                 .attr("transform", "translate(30,0)")
-                .call(xAxis);
+                .call(xAxis3);
             svg3.append("g")
                 .attr("class", "axis_yCircle")
                 .attr("transform", "translate(30,0)")
-                .call(yAxis);
+                .call(yAxis3);
         }
 
         function threeC(lis1, lis2) {
@@ -823,6 +879,14 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 nameList.length
             );
             drawLine2(tempdata, tempThat, "red", 5); //把x轴相同的分在一起 画线
+        }
+
+        function getBLen(str) {
+            if (str == null) return 0;
+            if (typeof str != "string"){
+              str += "";
+            }
+            return str.replace(/[^\x00-\xff]/g,"01").length;
         }
     }
 }

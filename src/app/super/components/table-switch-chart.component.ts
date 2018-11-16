@@ -6,14 +6,7 @@ declare const $: any;
 @Component({
     selector: 'app-table-switch-chart',
     templateUrl: './table-switch-chart.component.html',
-    styles: [
-        `
-        .textError{
-            color:"red";
-            font-size:14px;
-        }
-        `
-    ]
+    styles: []
 })
 export class TableSwitchChartComponent implements OnInit {
     @ViewChild("tableContent") tableContent;
@@ -38,23 +31,28 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
     // 双向绑定:变量名x，fn命名规范xChange
     @Input() isMultiSelect: boolean; //是否是多选
-    @Input() flex: boolean; // 是否flex布局
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
     //多选确定
     @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter();
 
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
+    @Input() flex: boolean; // 是否flex布局
+
     /**
-     * selectPanelUrl 、selectPanelEntity 或 selectPanelData，二者选一；
+     * selectPanelUrl 、selectPanelEntity 或 selectPanelData，二者选一传入；
         selectPanelUrl 、selectPanelEntity：选择面板需请求api获取，返回数据结构是string[];
         selectPanelData：从local或session中直接拿到储存的数据，数据结构是string[];
      */
-    @Input() selectPanelUrl: string;  //可选，选择面板请求api的url
-    @Input() selectPanelEntity: object;  //可选，参数
-    @Input() selectPanelData: string[]; //可选，选择面板的数据
-    @Input() defaultSelectNum: number; //可选， 选择面板 默认选中个数
-    @Output() selectConfirmEmit:EventEmitter<any> = new EventEmitter(); // 选择面板 确定
+    @Input() selectPanelUrl: string;  //选择面板请求api的url
+    @Input() selectPanelEntity: object;  //请求api的参数
+
+    @Input() selectPanelData: string[]; //选择面板的数据
+
+    @Input() defaultSelectNum: number; //可选， 选择面板数据默认选中个数; 若不传或0则全不选; -1表示全选
+    @Output() defaultSelectList: EventEmitter<any> = new EventEmitter(); //默认选中的数据
+
+    @Output() selectConfirmEmit: EventEmitter<any> = new EventEmitter(); // 选择面板 确定
 
     scroll: object = { y: '400px' };
     isShowTable: boolean = false;
@@ -66,9 +64,9 @@ export class TableSwitchChartComponent implements OnInit {
     accuracyList: object[] = [];
     accuracy: number = -1;
 
-    selectPanelList: object[] = [];
+    selectPanelList: object[] = [];  //选择面板数据
     isHasSelectPanel: boolean;
-    selectedList: string[] = [];
+    selectedList: string[] = [];  //选中的数据
 
     constructor(
         private ajaxService: AjaxService
@@ -110,8 +108,6 @@ export class TableSwitchChartComponent implements OnInit {
             }
         ];
 
-        this.reGetData();
-
         if (this.selectPanelData) {
             this.isHasSelectPanel = true;
             this.calculateSelectPanelData(this.selectPanelData);
@@ -120,6 +116,7 @@ export class TableSwitchChartComponent implements OnInit {
             this.getSelectPanelList();
         } else {
             this.isHasSelectPanel = false;
+            this.reGetData();
         }
 
     }
@@ -160,32 +157,51 @@ export class TableSwitchChartComponent implements OnInit {
 
     //求 选择面板 使用的数据
     calculateSelectPanelData(data) {
-        if (this.defaultSelectNum) {
-            for (let i = 0; i < this.defaultSelectNum; i++) {
-                this.selectPanelList[i]['isChecked'] = true;
-            }
-        }else{
-            data.forEach(d => {
-                this.selectPanelList.push({
-                    name: d,
-                    isChecked: false
-                })
-            });
+        data.forEach(d => {
+            this.selectPanelList.push({
+                name: d,
+                isChecked: false
+            })
+        });
 
+        if (this.defaultSelectNum) {
+            if (this.defaultSelectNum === -1) {
+                this.selectPanelList.forEach(d => {
+                    d['isChecked'] = true;
+                })
+            } else {
+                for (let i = 0; i < this.defaultSelectNum; i++) {
+                    this.selectPanelList[i]['isChecked'] = true;
+                }
+            }
         }
+
+        this.selectPanelList.forEach(d => {
+            if (d['isChecked']) {
+                this.selectedList.push(d['name']);
+            }
+        })
+
+        this.defaultSelectList.emit(this.selectedList);
+        this.reGetData();
     }
 
     //选择面板 选择
     selectClick(item) {
         item['isChecked'] = !item['isChecked'];
-        if (item['isChecked']) {
-            this.selectedList.push(item);
-        }
+
+        this.selectedList = [];
+
+        this.selectPanelList.forEach(d => {
+            if (d['isChecked']) {
+                this.selectedList.push(d['name']);
+            }
+        })
     }
 
     //选择面板 确定
     selectConfirm() {
-        this.selectConfirmEmit.emit();
+        this.selectConfirmEmit.emit(this.selectedList);
     }
 
     /**

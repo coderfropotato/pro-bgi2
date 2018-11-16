@@ -16,7 +16,8 @@ export class cxzk2Component implements OnInit {
     tableEntity: object = {
         "LCID": sessionStorage.getItem("LCID"),
         "sample": "",
-        "compare": ""
+        "compare": "",
+        "samples": []
     };
 
     sampleList: string[] = [];
@@ -24,11 +25,16 @@ export class cxzk2Component implements OnInit {
 
     chart: any;
     isMultiSelect: boolean;
-    selectedData:object[]=[];
+    selectedData: object[] = [];
 
     color = 'red'; // 默认颜色
     legendIndex = 0; // 修改颜色的时候 需要保存点击的图例的索引 后面设置颜色会用到
     show = false;  // 是否显示颜色选择器
+
+    selectPanelUrl: string;
+    selectPanelEntity: object = {
+        "LCID": sessionStorage.getItem("LCID")
+    }
 
     constructor(
         private route: ActivatedRoute,
@@ -45,6 +51,8 @@ export class cxzk2Component implements OnInit {
 
         this.tableEntity['sample'] = this.sampleList[0];
         this.tableEntity["compare"] = this.compareList[0];
+
+        this.selectPanelUrl = 'http://localhost:8086/samples';
     }
 
     onSelectChange1() {
@@ -55,7 +63,7 @@ export class cxzk2Component implements OnInit {
         this.tableSwitchChart.SelectChange('compare', this.tableEntity["compare"]);
     }
 
-    handlerColorChange(color){
+    handlerColorChange(color) {
         this.chart.setColor(color, this.legendIndex);
         this.chart.redraw();
     }
@@ -74,7 +82,7 @@ export class cxzk2Component implements OnInit {
                 enableChartSelect: true,
                 // selectedModule:"",
                 onselect: (d) => {
-                    this.selectedData=d;
+                    this.selectedData = d;
                 },
                 el: "#chartId222",
                 type: "scatter",
@@ -111,7 +119,7 @@ export class cxzk2Component implements OnInit {
                 show: true,
                 position: "right",
                 data: ["female", "male"],
-                dblclick:(d,index)=>{
+                dblclick: (d, index) => {
                     this.color = d[0].getAttribute('fill');
                     this.show = true;
                     this.legendIndex = index;
@@ -142,8 +150,19 @@ export class cxzk2Component implements OnInit {
     }
 
     //多选确定
-    multipleConfirm(){
+    multipleConfirm() {
         console.log(this.selectedData);
+    }
+
+    //默认选中数据
+    defaultSelectList(data) {
+        this.tableEntity['samples'] = data;
+    }
+
+    //选择面板 确定
+    selectConfirm(data) {
+        this.tableEntity['samples'] = data;
+        this.tableSwitchChart.reGetData();
     }
 
 }

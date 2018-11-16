@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
     }
 
     // 登录
-    submitForm(): void {
+    submitForm(){
         for (const i in this.validateForm.controls) {
             this.validateForm.controls[i].markAsDirty();
             this.validateForm.controls[i].updateValueAndValidity();
