@@ -265,8 +265,8 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         }
 
         let mText = d3.select("#chartId22122").append('svg').append('text').text(target_name).attr('class','mText');
-        //let left_name_length = mText.node()[0].getBBox().width;
-        let left_name_length = document.querySelector(".mText").getBBox().width;
+        let left_name_length = mText.nodes()[0].getBBox().width;
+        //let left_name_length = document.querySelector(".mText").getBBox().width;
         if(left_name_length>100){
             left_name_length=100;
         }
