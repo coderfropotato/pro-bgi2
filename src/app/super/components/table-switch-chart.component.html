@@ -35,9 +35,10 @@
 </ng-template>
 
 <ng-template #selectPanel>
-    <button nz-button nzType="primary" [nzSize]="'small'" *ngFor="let item of selectPanelList" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
-    <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length">确定</button>
-    <span class="textError" *ngIf="!selectedList.length">请至少选择一个</span>
+    <div class="selectPanel">
+        <button nz-button nzType="default" [nzSize]="'small'" *ngFor="let item of selectPanelList" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
+        <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length">确定</button>
+    </div>
 </ng-template>
 
 <div class="tableSwitchChart" [class.table-switch-chart-flex]="flex" [class.full-height]="flex" [attr.id]="id">
@@ -45,9 +46,9 @@
         <div class="flex column" [class.extend-height]="flex">
             <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
 
-            <ng-container *ngTemplateOutlet="(selectPanel && isHasSelectPanel) ? selectPanel :''"></ng-container>
-
             <div #tableContent class="table-content" style="flex:1" [ngStyle]="{'overflow-x':!isShowTable?'auto':'unset'}">
+                <ng-container *ngTemplateOutlet="(selectPanel && isHasSelectPanel) ? selectPanel :''"></ng-container>
+
                 <!-- table：固定表头-->
                 <nz-table nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
                     <thead>
@@ -63,7 +64,7 @@
                 </nz-table>
 
                 <!-- chart -->
-                <div class="chartView" [attr.id]="chartId" [hidden]="isShowTable || error"></div>
+                <div class="center" [attr.id]="chartId" [hidden]="isShowTable || error"></div>
 
                 <!-- error -->
                 <app-error [error]="error"></app-error>

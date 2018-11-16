@@ -1,8 +1,17 @@
-
 @import "./setting.scss";
-
 .anticon.active {
     color: $them_color!important;
+}
+
+.selectPanel {
+    max-height: 400px;
+    overflow: auto;
+    padding: 10px 20px;
+    border-bottom: $border;
+}
+
+.selectPanel button {
+    margin-right: 10px;
 }
 
 .table-content {
@@ -67,7 +76,7 @@
     margin-right: 26px;
 }
 
-.add-head > div {
+.add-head>div {
     flex: 1;
 }
 
@@ -136,17 +145,18 @@
     border-bottom: 0;
     background-color: $table_header_bgcolor;
 }
+
 .table-top {
     border: $border;
     border-top: 0;
     border-bottom: 0;
 }
 
-tbody > tr:nth-child(odd) {
+tbody>tr:nth-child(odd) {
     background-color: #f5f5f5 !important;
 }
 
-tbody > tr:nth-child(even) {
+tbody>tr:nth-child(even) {
     background-color: #fff !important;
 }
 
@@ -173,27 +183,27 @@ tbody > tr:nth-child(even) {
     clear: both;
     content: "";
 }
+
 .flex {
     display: flex;
 }
+
 .extend-height {
     height: inherit;
 }
+
 .full-height {
     height: 100%;
 }
 
 button.btnActive {
-    border: 1px solid $btn_active_color;
-    color: $btn_active_color;
+    border: 1px solid $btn_active_color !important;
+    color: #fff !important;
+    background: $btn_active_color !important;
 }
 
 .table-bottom {
     height: 52px;
-}
-
-.chartView {
-    text-align: center;
 }
 
 .center {
@@ -222,33 +232,40 @@ button.btnActive {
     stroke: #000;
     stroke-width: 2;
 }
+
 .report {
     width: 100%;
     height: 100%;
     overflow: hidden;
     background-color: $background_color;
 }
+
 .report-wrap {
     width: 100%;
     height: 100%;
     overflow: hidden;
 }
+
 .report-content {
     width: 100%;
     height: calc(100% - 80px);
     overflow: hidden;
     padding: $padding;
 }
+
 .full {
     width: 100%;
     height: 100%;
 }
+
 .column {
     flex-direction: column;
 }
+
 .row {
     flex-direction: row;
 }
+
 .content {
     // flex 5
     width: 100%;
@@ -290,17 +307,20 @@ button.btnActive {
         top: 46px;
     }
 }
+
 .bar {
     width: 12px;
     height: 12px;
     background-color: $background_color;
 }
+
 // top
 .top {
     height: 40px;
     min-width: $min-width;
     background-color: $them_color;
 }
+
 // menu
 .menu {
     height: 40px;
@@ -417,7 +437,7 @@ button.btnActive {
 }
 
 // 表格border
-.no-outside-border .table-content{
+.no-outside-border .table-content {
     border: 0;
 }
 
@@ -489,50 +509,51 @@ button.btnActive {
 }
 
 // 小工具
-.tool-component{
-    padding:16px;
+.tool-component {
+    padding: 16px;
 }
-.tools-wrap{
-    height:calc(100% - 32px)!important;
-    transform: translate(-16px,16px)!important;
-    .ant-drawer-body{
+
+.tools-wrap {
+    height: calc(100% - 32px)!important;
+    transform: translate(-16px, 16px)!important;
+    .ant-drawer-body {
         padding: 24px!important;
-        ul{
-            li{
-                float:left;
+        ul {
+            li {
+                float: left;
                 width: 100px;
                 height: 114px;
                 margin-bottom: 24px;
                 text-align: center;
                 cursor: pointer;
-                img{
+                img {
                     transition: .3s all ease;
                     border-width: 2px 2px 4px;
                     border-style: solid;
                     border-color: transparent;
-                    &:hover{
-                        transform:perspective(600px) translate3d(0px, -5px, 0px) rotateX(-22deg);
-                        border-color: rgb(82,120,248) rgb(82,120,248) rgba(99,133,248,0.9);
-                        box-shadow:rgba(65,96,198,0.2) 0px 5px 20px;
+                    &:hover {
+                        transform: perspective(600px) translate3d(0px, -5px, 0px) rotateX(-22deg);
+                        border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
+                        box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
                     }
                 }
             }
         }
     }
-    .tools-desc{
-        max-height:180px;
+    .tools-desc {
+        max-height: 180px;
         overflow-y: auto;
-        h5{
-            font-size:15px;
+        h5 {
+            font-size: 15px;
         }
-        p{
+        p {
             font-size: 14px;
         }
     }
 }
 
 // 基因表的 分析按钮
-.table-analysis-button{
+.table-analysis-button {
     height: 30px;
     line-height: 30px;
     color: #fff;
@@ -540,34 +561,34 @@ button.btnActive {
     transition: all 0.2s ease-out 0s;
     box-shadow: rgba(92, 206, 139, 0) 0px 0px;
     cursor: pointer;
-    &.blue{
+    &.blue {
         background-color: $them_color;
     }
-    &.green{
+    &.green {
         background: rgba(108, 210, 150, 0.9);
     }
-    &.invaild{
+    &.invaild {
         opacity: 0.5;
     }
-    &.active{
+    &.active {
         opacity: 0.9;
     }
-    &.blue:hover{
+    &.blue:hover {
         @include hover-animate($them_color);
         background-color: $them_color;
         opacity: 1;
     }
-    &.green:hover{
-        @include hover-animate(rgb(92,206,139));
-        background-color: rgb(92,206,139);
+    &.green:hover {
+        @include hover-animate(rgb(92, 206, 139));
+        background-color: rgb(92, 206, 139);
         opacity: 1;
     }
-    b{
-        margin:0 10px;
+    b {
+        margin: 0 10px;
     }
-    span{
+    span {
         transition: .3s all ease;
-        background:rgba(0, 0, 0, 0.15);
+        background: rgba(0, 0, 0, 0.15);
         padding: 2px 8px;
         height: 24px;
         line-height: 24px;
@@ -576,4 +597,3 @@ button.btnActive {
         margin-right: 8px;
     }
 }
-
