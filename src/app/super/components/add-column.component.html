@@ -1,9 +1,11 @@
 <div class="add-column">
     <div class="add-head" *ngIf="thead.length">
-        <button nz-button nzType="primary" (click)="toggleShow()"><i class="anticon" [ngClass]="show?' anticon-minus':' anticon-plus'"></i><span
-                *ngIf="!show">{{'addThead.addButton' | translate}}</span><span *ngIf="show">{{'addThead.packUpButton' | translate}}</span></button>
+        <button nz-button nzType="primary" (click)="toggleShow()"><i class="anticon" [ngClass]="show?' anticon-minus':' anticon-plus'"></i>
+            <span *ngIf="!show">{{'addThead.addButton' | translate}}</span>
+            <span *ngIf="show">{{'addThead.packUpButton' | translate}}</span>
+        </button>
         <div class="tag-wrap" *ngIf="show">
-            <nz-tag class="tag" *ngFor="let d of selected;index as i;" [nzColor]="'#2db7f5'" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d.name}}</nz-tag>
+            <nz-tag class="tag" *ngFor="let d of selected;index as i;" [nzColor]="'rgb(82, 120, 248)'" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d.name}}</nz-tag>
         </div>
     </div>
     <div *ngIf="show && thead.length" class="items">

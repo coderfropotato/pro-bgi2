@@ -67,6 +67,14 @@ export class LoginComponent implements OnInit {
             this.validateForm.controls[i].updateValueAndValidity();
         }
 
+        sessionStorage.setItem( "LCID", this.validateForm.value.userName );
+        localStorage.setItem("token",'123');
+        this.LCType = 'mrna';
+        this.router.navigateByUrl(`/report/mrna`);
+        this.storeService.setStore("LCType", this.LCType);
+
+        return;
+
         if (
             this.validateForm.controls["password"]["valid"] &&
             this.validateForm.controls["userName"]["valid"] &&
