@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,ViewChild, TemplateRef, Output, EventEmitter,AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { AjaxService } from "../../super/service/ajaxService";
 
 declare const $: any;
@@ -6,7 +6,14 @@ declare const $: any;
 @Component({
     selector: 'app-table-switch-chart',
     templateUrl: './table-switch-chart.component.html',
-    styles: []
+    styles: [
+        `
+        .textError{
+            color:"red";
+            font-size:14px;
+        }
+        `
+    ]
 })
 export class TableSwitchChartComponent implements OnInit {
     @ViewChild("tableContent") tableContent;
@@ -31,14 +38,25 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
     // 双向绑定:变量名x，fn命名规范xChange
     @Input() isMultiSelect: boolean; //是否是多选
-    @Input() flex:boolean; // 是否flex布局
+    @Input() flex: boolean; // 是否flex布局
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
     //多选确定
     @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter();
 
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
-    scroll:object = { y: '400px' };
+    /**
+     * selectPanelUrl 、selectPanelEntity 或 selectPanelData，二者选一；
+        selectPanelUrl 、selectPanelEntity：选择面板需请求api获取，返回数据结构是string[];
+        selectPanelData：从local或session中直接拿到储存的数据，数据结构是string[];
+     */
+    @Input() selectPanelUrl: string;  //可选，选择面板请求api的url
+    @Input() selectPanelEntity: object;  //可选，参数
+    @Input() selectPanelData: string[]; //可选，选择面板的数据
+    @Input() defaultSelectNum: number; //可选， 选择面板 默认选中个数
+    @Output() selectConfirmEmit:EventEmitter<any> = new EventEmitter(); // 选择面板 确定
+
+    scroll: object = { y: '400px' };
     isShowTable: boolean = false;
     tableData: any;
     chartData: any;
@@ -47,6 +65,10 @@ export class TableSwitchChartComponent implements OnInit {
 
     accuracyList: object[] = [];
     accuracy: number = -1;
+
+    selectPanelList: object[] = [];
+    isHasSelectPanel: boolean;
+    selectedList: string[] = [];
 
     constructor(
         private ajaxService: AjaxService
@@ -87,19 +109,83 @@ export class TableSwitchChartComponent implements OnInit {
                 value: -1
             }
         ];
-        if (!this.isOnlyChart && this.tableUrl) {
-            this.getTableData();
+
+        this.reGetData();
+
+        if (this.selectPanelData) {
+            this.isHasSelectPanel = true;
+            this.calculateSelectPanelData(this.selectPanelData);
+        } else if (this.selectPanelUrl && this.selectPanelEntity) {
+            this.isHasSelectPanel = true;
+            this.getSelectPanelList();
+        } else {
+            this.isHasSelectPanel = false;
         }
-        if (this.chartUrl) {
-            this.getChartData();
-        }
+
     }
 
     // 初始化计算表滚动的高度
-    ngAfterViewInit(){
+    ngAfterViewInit() {
         setTimeout(() => {
-            this.scroll["y"] = (this.tableContent.nativeElement.offsetHeight - 37)+'px';
+            this.scroll["y"] = (this.tableContent.nativeElement.offsetHeight - 37) + 'px';
         }, 200);
+    }
+
+    //获取选择面板数据
+    getSelectPanelList() {
+        this.ajaxService
+            .getDeferData(
+                {
+                    url: this.selectPanelUrl,
+                    data: this.selectPanelEntity
+                }
+            )
+            .subscribe(
+                (data: any) => {
+                    if (data.data.length == 0 || $.isEmptyObject(data.data)) {
+                        this.selectPanelList = [];
+                    } else if (data.status != 0) {
+                        this.selectPanelList = [];
+                    } else {
+                        let selects = data.data;
+                        this.calculateSelectPanelData(selects);
+                    }
+
+                },
+                error => {
+                    this.error = error;
+                }
+            )
+    }
+
+    //求 选择面板 使用的数据
+    calculateSelectPanelData(data) {
+        if (this.defaultSelectNum) {
+            for (let i = 0; i < this.defaultSelectNum; i++) {
+                this.selectPanelList[i]['isChecked'] = true;
+            }
+        }else{
+            data.forEach(d => {
+                this.selectPanelList.push({
+                    name: d,
+                    isChecked: false
+                })
+            });
+
+        }
+    }
+
+    //选择面板 选择
+    selectClick(item) {
+        item['isChecked'] = !item['isChecked'];
+        if (item['isChecked']) {
+            this.selectedList.push(item);
+        }
+    }
+
+    //选择面板 确定
+    selectConfirm() {
+        this.selectConfirmEmit.emit();
     }
 
     /**
@@ -178,7 +264,7 @@ export class TableSwitchChartComponent implements OnInit {
         this.drawChart(this.chartData);
     }
 
-    reSendApi(){
+    reGetData() {
         if (!this.isOnlyChart && this.tableUrl) {
             this.getTableData();
         }
@@ -200,11 +286,6 @@ export class TableSwitchChartComponent implements OnInit {
     //下拉框change
     SelectChange(key, value) {
         this.apiEntity[key] = value;
-        if (!this.isOnlyChart && this.tableUrl) {
-            this.getTableData();
-        }
-        if (this.chartUrl) {
-            this.getChartData();
-        }
+        this.reGetData();
     }
 }
