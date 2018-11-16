@@ -19,4 +19,9 @@
         <b>我的分析</b>
         <span><i class="anticon anticon-appstore"></i></span>
     </div>
+    <!-- gene isoform -->
+    <div class="fRight" style="margin-top: 7px;margin-right: 12px;">
+        <nz-switch [ngModel]="pageModuleService['defaultModule']==='gene'" (ngModelChange)="moduleSwitchChange($event)" nzCheckedChildren="gene" nzUnCheckedChildren="iso"></nz-switch>
+    </div>
+
 </div>

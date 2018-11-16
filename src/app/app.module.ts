@@ -64,6 +64,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SysDefendService } from './super/service/sysDefendService';
+import { PageModuleService } from './super/service/pageModuleService';
 
 // 国际化
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
@@ -382,6 +383,7 @@ export function createTranslateLoader(http: HttpClient) {
         AjaxService,
         StoreService,
         SysDefendService,
+        PageModuleService,
         // , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
         {
             provide: NZ_MESSAGE_CONFIG,

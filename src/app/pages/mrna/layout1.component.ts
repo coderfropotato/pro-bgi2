@@ -1,8 +1,10 @@
+import { PageModuleService } from './../../super/service/pageModuleService';
 import { StoreService } from './../../super/service/storeService';
 import { MessageService } from "./../../super/service/messageService";
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, OnInit, ViewChild, AfterViewInit,OnChanges,SimpleChange,OnDestroy,ViewContainerRef } from "@angular/core";
 import { fromEvent } from "rxjs";
 import { ResizedEvent } from 'angular-resize-event/resized-event';
+
 declare const $: any;
 declare const d4: any;
 @Component({
@@ -43,10 +45,16 @@ export class Layout1Component implements OnInit {
     show = false; // 是否显示颜色选择器
 
     allThead = [];
+
     constructor(
         private message: MessageService,
-        private storeService:StoreService
-        ) {}
+        private storeService:StoreService,
+        private pageModuleService:PageModuleService
+        ) {
+            pageModuleService.as().subscribe(notify=>{
+                console.log('switch change')
+            })
+        }
 
     ngOnInit() {
         this.allThead = this.storeService.getThead();
@@ -54,26 +62,8 @@ export class Layout1Component implements OnInit {
         this.tableUrl = "http://localhost:8086/tableSwitchChart";
         this.chartUrl = "http://localhost:8086/scatter";
 
-        this.sampleList = [
-            "HBRR1",
-            "HBRR2",
-            "HBRR3",
-            "HBRR4",
-            "uBRR1",
-            "uBRR2",
-            "uBRR3",
-            "uBRR4"
-        ];
-        this.compareList = [
-            "com1",
-            "com2",
-            "com3",
-            "com4",
-            "compare1",
-            "compare2",
-            "compare3",
-            "compare4"
-        ];
+        this.sampleList = [ "HBRR1", "HBRR2", "HBRR3", "HBRR4", "uBRR1", "uBRR2", "uBRR3", "uBRR4" ];
+        this.compareList = [ "com1", "com2", "com3", "com4", "compare1", "compare2", "compare3", "compare4" ];
 
         this.tableEntity["sample"] = this.sampleList[0];
         this.tableEntity["compare"] = this.compareList[0];
@@ -107,9 +97,9 @@ export class Layout1Component implements OnInit {
     }
 
     computedTableHeight() {
-        this.tableHeight =
-            this.right.nativeElement.offsetHeight -
-            this.func.nativeElement.offsetHeight;
+        try {
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+        } catch (error) {}
     }
 
     onSelectChange1() {

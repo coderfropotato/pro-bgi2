@@ -1,12 +1,7 @@
+import { PageModuleService } from './../super/service/pageModuleService';
 import { Router } from "@angular/router";
 import { GlobalService } from "../super/service/globalService";
-import {
-    Component,
-    OnInit,
-    Input,
-    OnChanges,
-    SimpleChanges
-} from "@angular/core";
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from "@angular/core";
 @Component({
     selector: "app-menu",
     templateUrl: "./menu.component.html"
@@ -18,10 +13,15 @@ export class MenuComponent implements OnChanges {
     timer: any = null;
     index: number = 0;
 
-    @Input()
-    menu: object[];
+    moduleSwitch:true;
 
-    constructor(private router: Router, private globalService: GlobalService) {}
+    @Input() menu: object[];
+
+    constructor(
+        private router: Router,
+        private globalService: GlobalService,
+        private pageModuleService:PageModuleService
+        ) {}
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes["menu"].currentValue.length) {
@@ -43,6 +43,10 @@ export class MenuComponent implements OnChanges {
                 });
             }
         });
+    }
+
+    moduleSwitchChange(status){
+        this.pageModuleService.setModule(status?'gene':'iso');
     }
 
     menuMouseOver(menu, index) {
