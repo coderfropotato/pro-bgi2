@@ -1,6 +1,6 @@
 @import "./setting.scss";
 .anticon.active {
-    color: $them_color!important;
+    color: $them_color !important;
 }
 
 .selectPanel {
@@ -236,20 +236,20 @@ button.btnActive {
 .report {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    // overflow: hidden;
     background-color: $background_color;
 }
 
 .report-wrap {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    // overflow: hidden;
 }
 
 .report-content {
     width: 100%;
     height: calc(100% - 80px);
-    overflow: hidden;
+    // overflow: hidden;
     padding: $padding;
 }
 
@@ -272,6 +272,7 @@ button.btnActive {
     height: 100%;
     min-width: $min-width;
     display: flex;
+    page-break-before: always;
     flex-direction: row;
     .left-layout {
         overflow: auto;
@@ -397,6 +398,15 @@ button.btnActive {
     }
 }
 
+// 颜色选择器
+.color-picker .button-area>button:first-child {
+    margin-right: 12px;
+}
+
+.color-picker-warp {
+    top: 10%!important;
+}
+
 // tree-component
 .tree-component {
     padding: 12px;
@@ -514,10 +524,10 @@ button.btnActive {
 }
 
 .tools-wrap {
-    height: calc(100% - 32px)!important;
-    transform: translate(-16px, 16px)!important;
+    height: calc(100% - 32px) !important;
+    transform: translate(-16px, 16px) !important;
     .ant-drawer-body {
-        padding: 24px!important;
+        padding: 24px !important;
         ul {
             li {
                 float: left;
@@ -527,7 +537,7 @@ button.btnActive {
                 text-align: center;
                 cursor: pointer;
                 img {
-                    transition: .3s all ease;
+                    transition: 0.3s all ease;
                     border-width: 2px 2px 4px;
                     border-style: solid;
                     border-color: transparent;
@@ -587,7 +597,7 @@ button.btnActive {
         margin: 0 10px;
     }
     span {
-        transition: .3s all ease;
+        transition: 0.3s all ease;
         background: rgba(0, 0, 0, 0.15);
         padding: 2px 8px;
         height: 24px;

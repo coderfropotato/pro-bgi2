@@ -25,10 +25,9 @@ declare const $: any;
                 (nzOnClose)="close()"
             >
             gene:{{toolsService['geneCount']}}
-            gene-d:{{toolsService['geneList'] | json}}
 
                 <ul class="clearfix">
-                    <li *ngFor="let tool of toolList; index as i" >
+                    <li *ngFor="let tool of toolList; index as i" (click)="selectParams()">
                         <img src="http://temp.im/68x82" (mouseover)="handlerMouseOver(tool)"/>
                         <p style="margin-top:12px;">{{tool['name']}}</p>
                     </li>
@@ -37,6 +36,9 @@ declare const $: any;
                     <h5>{{title}}</h5>
                     <p>{{desc}}</p>
                 </div>
+
+                <nz-drawer [nzClosable]="true" [nzMaskStyle]="{'background-color':transparent}" [nzVisible]="childVisible" [nzMaskClosable]="true"
+                [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="参数选择" (nzOnClose)="handlerChildClose()"></nz-drawer>
             </nz-drawer>
         </div>
     `,
@@ -78,6 +80,9 @@ export class ToolsComponent implements OnInit {
     ];
     desc:string = '';
     title:String = '';
+
+    // 子模块参数
+    childVisible = false;
     constructor(private toolsService: ToolsService) {}
 
     ngOnInit() {}
@@ -85,6 +90,7 @@ export class ToolsComponent implements OnInit {
     init(){
         this.desc = '';
         this.title = '';
+        this.childVisible = false;
     }
 
     close() {
@@ -95,5 +101,13 @@ export class ToolsComponent implements OnInit {
     handlerMouseOver(tool){
         this.title = tool['name'];
         this.desc = tool['desc'];
+    }
+
+    selectParams(){
+        this.childVisible = true;
+    }
+
+    handlerChildClose(){
+        this.childVisible = false;
     }
 }

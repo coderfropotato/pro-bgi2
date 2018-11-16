@@ -133,6 +133,10 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
             this.func.nativeElement.offsetHeight;
     }
 
+    fpkmSelect(){
+        alert(11111)
+    }
+
     //单、多选change
     multiSelectChange() {
         if (this.isMultiSelect) {
@@ -271,14 +275,7 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
         txt.setAttribute( "id", 'mtext' );
         txt.textContent = target_name;
         t_chartID.appendChild(txt);
-        
-        document.getElementById("mtext");
         console.log(document.getElementById("mtext").style.width)
-        //document.getElementNS("mtext").getBBox();
-
-        // console.log(target_name)
-        // let Test=d3.select("#svg").data(target_name).enter().append("text").attr("class", "MyTestText");
-        // console.log(Test.length)
 
         //上侧数据
         let bar_name = [];

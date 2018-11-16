@@ -49,7 +49,7 @@ export class TopComponent implements OnInit {
 
     ngOnInit() {
         // 所有当前需要导出pdf的页面的路由  组合在一起导出
-        this.pageRoutes = ["/report/mrna/layout1"];
+        this.pageRoutes = ["/report/mrna/layout1","/report/mrna/table"];
 
         // 路由导航完成钩子 仅仅针对导出pdf的时候收集dom元素内容使用
         this.router.events.subscribe(event => {
@@ -73,6 +73,9 @@ export class TopComponent implements OnInit {
         let count: number = 0;
         this.exportPdfFlag = true;
         this.navigatedRoutes = this.storeService.getNavigatedRoutes();
+        $('body').css('overflow','unset');
+        $('.menu').remove();
+        $('.top').remove();
 
         if (
             this.route["_routerState"].snapshot.url === this.pageRoutes[0] &&
@@ -129,9 +132,7 @@ export class TopComponent implements OnInit {
 
     // download pdf orderby htmlstring
     downloadPdf(cb) {
-        // document.body.innerHTML = "";
-        // document.body.innerHTML = `<div>${this.htmlString.join("")}</div>`;
-        $(".report-content").html(`<div>${this.htmlString.join("")}</div>`);
+        $(".report-wrap").html(`<div>${this.htmlString.join("")}</div>`);
         document.body.style.width = window.screen.width + "px";
 
         window.print();
@@ -144,6 +145,5 @@ export class TopComponent implements OnInit {
         //     location.href.indexOf("/report")
         // )}/report/reanalysis/index`;
         // window.open(url);
-        this.toolService.showTools(100);
     }
 }
