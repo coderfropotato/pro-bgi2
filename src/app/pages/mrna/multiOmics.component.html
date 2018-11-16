@@ -19,7 +19,7 @@
 
 <div>
     <app-table-switch-chart #multiOmicsChart [id]="'multiOmics'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect" (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [isOnlyChart]="true" [chartUrl]="chartUrl" [apiEntity]="chartEntity"
-        [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'multiOmicsSvg'" [chartName]="'多组学关联图'">
+        [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'multiOmicsChartDiv'" [chartName]="'多组学关联图'">
     </app-table-switch-chart>
 
     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
