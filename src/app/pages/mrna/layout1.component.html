@@ -1,5 +1,4 @@
 <div class="content row page-layout1">
-    <!-- class="left column" -->
     <div #left class="left-layout column" [class.unexpand]="switch">
         <div class="left-top-layout">
             <h4>title</h4>
@@ -20,6 +19,8 @@
         <div #func (resized)="resize($event)" style="background-color:#fff;padding:12px;">
             <!-- 增删列 -->
             <app-add-column [thead]="allThead"></app-add-column>
+            <!-- button -->
+            <button nz-button>12312312</button>
         </div>
         <app-geneTable class="no-outside-border" tableId="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
             url="http://localhost:8086/filter" [tableHeight]="tableHeight" [defaultChecked]="false"></app-geneTable>
