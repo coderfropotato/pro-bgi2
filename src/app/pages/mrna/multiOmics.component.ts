@@ -495,7 +495,7 @@ export class multiOmicsComponent implements OnInit {
     //设置 确定
     setConfirm(setArr) {
         this.chartEntity['setArr'] = setArr;
-        this.multiOmicsChart.reSendApi();
+        this.multiOmicsChart.reGetData();
     }
 
     //demo
