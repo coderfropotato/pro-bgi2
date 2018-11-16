@@ -178,6 +178,10 @@ tbody>tr:nth-child(even) {
     margin: 0 auto;
 }
 
+.tableSwitchChart .ant-table-small {
+    border: 0 !important;
+}
+
 .clearfix {
     display: block;
     clear: both;
