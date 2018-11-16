@@ -40,14 +40,18 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() flex: boolean; // 是否flex布局
 
     /**
-     * selectPanelUrl 、selectPanelEntity 或 selectPanelData，二者选一；
+     * selectPanelUrl 、selectPanelEntity 或 selectPanelData，二者选一传入；
         selectPanelUrl 、selectPanelEntity：选择面板需请求api获取，返回数据结构是string[];
         selectPanelData：从local或session中直接拿到储存的数据，数据结构是string[];
      */
-    @Input() selectPanelUrl: string;  //可选，选择面板请求api的url
-    @Input() selectPanelEntity: object;  //可选，参数
-    @Input() selectPanelData: string[]; //可选，选择面板的数据
-    @Input() defaultSelectNum: number; //可选， 选择面板 默认选中个数;-1表示全选
+    @Input() selectPanelUrl: string;  //选择面板请求api的url
+    @Input() selectPanelEntity: object;  //请求api的参数
+
+    @Input() selectPanelData: string[]; //选择面板的数据
+
+    @Input() defaultSelectNum: number; //可选， 选择面板数据默认选中个数; 若不传或0则全不选; -1表示全选
+    @Output() defaultSelectList: EventEmitter<any> = new EventEmitter(); //默认选中的数据
+
     @Output() selectConfirmEmit: EventEmitter<any> = new EventEmitter(); // 选择面板 确定
 
     scroll: object = { y: '400px' };
@@ -60,9 +64,9 @@ export class TableSwitchChartComponent implements OnInit {
     accuracyList: object[] = [];
     accuracy: number = -1;
 
-    selectPanelList: object[] = [];
+    selectPanelList: object[] = [];  //选择面板数据
     isHasSelectPanel: boolean;
-    selectedList: string[] = [];
+    selectedList: string[] = [];  //选中的数据
 
     constructor(
         private ajaxService: AjaxService
@@ -104,8 +108,6 @@ export class TableSwitchChartComponent implements OnInit {
             }
         ];
 
-        this.reGetData();
-
         if (this.selectPanelData) {
             this.isHasSelectPanel = true;
             this.calculateSelectPanelData(this.selectPanelData);
@@ -114,6 +116,7 @@ export class TableSwitchChartComponent implements OnInit {
             this.getSelectPanelList();
         } else {
             this.isHasSelectPanel = false;
+            this.reGetData();
         }
 
     }
@@ -178,13 +181,16 @@ export class TableSwitchChartComponent implements OnInit {
                 this.selectedList.push(d['name']);
             }
         })
+
+        this.defaultSelectList.emit(this.selectedList);
+        this.reGetData();
     }
 
     //选择面板 选择
     selectClick(item) {
         item['isChecked'] = !item['isChecked'];
 
-        this.selectedList=[];
+        this.selectedList = [];
 
         this.selectPanelList.forEach(d => {
             if (d['isChecked']) {

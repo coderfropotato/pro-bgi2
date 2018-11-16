@@ -154,9 +154,13 @@ export class cxzk2Component implements OnInit {
         console.log(this.selectedData);
     }
 
+    //默认选中数据
+    defaultSelectList(data) {
+        this.tableEntity['samples'] = data;
+    }
+
     //选择面板 确定
     selectConfirm(data) {
-        console.log(data)
         this.tableEntity['samples'] = data;
         this.tableSwitchChart.reGetData();
     }
