@@ -1,8 +1,7 @@
-
 @import "./setting.scss";
 
 .anticon.active {
-    color: $them_color!important;
+    color: $them_color !important;
 }
 
 .table-content {
@@ -225,18 +224,18 @@ button.btnActive {
 .report {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    // overflow: hidden;
     background-color: $background_color;
 }
 .report-wrap {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    // overflow: hidden;
 }
 .report-content {
     width: 100%;
     height: calc(100% - 80px);
-    overflow: hidden;
+    // overflow: hidden;
     padding: $padding;
 }
 .full {
@@ -249,12 +248,14 @@ button.btnActive {
 .row {
     flex-direction: row;
 }
+
 .content {
     // flex 5
     width: 100%;
     height: 100%;
     min-width: $min-width;
     display: flex;
+    page-break-before: always;
     flex-direction: row;
     .left-layout {
         overflow: auto;
@@ -377,6 +378,14 @@ button.btnActive {
     }
 }
 
+// 颜色选择器
+.color-picker .button-area > button:first-child{
+    margin-right: 12px;
+}
+.color-picker-warp{
+    top:10%!important;
+}
+
 // tree-component
 .tree-component {
     padding: 12px;
@@ -417,7 +426,7 @@ button.btnActive {
 }
 
 // 表格border
-.no-outside-border .table-content{
+.no-outside-border .table-content {
     border: 0;
 }
 
@@ -489,50 +498,52 @@ button.btnActive {
 }
 
 // 小工具
-.tool-component{
-    padding:16px;
+.tool-component {
+    padding: 16px;
 }
-.tools-wrap{
-    height:calc(100% - 32px)!important;
-    transform: translate(-16px,16px)!important;
-    .ant-drawer-body{
-        padding: 24px!important;
-        ul{
-            li{
-                float:left;
+.tools-wrap {
+    height: calc(100% - 32px) !important;
+    transform: translate(-16px, 16px) !important;
+    .ant-drawer-body {
+        padding: 24px !important;
+        ul {
+            li {
+                float: left;
                 width: 100px;
                 height: 114px;
                 margin-bottom: 24px;
                 text-align: center;
                 cursor: pointer;
-                img{
-                    transition: .3s all ease;
+                img {
+                    transition: 0.3s all ease;
                     border-width: 2px 2px 4px;
                     border-style: solid;
                     border-color: transparent;
-                    &:hover{
-                        transform:perspective(600px) translate3d(0px, -5px, 0px) rotateX(-22deg);
-                        border-color: rgb(82,120,248) rgb(82,120,248) rgba(99,133,248,0.9);
-                        box-shadow:rgba(65,96,198,0.2) 0px 5px 20px;
+                    &:hover {
+                        transform: perspective(600px)
+                            translate3d(0px, -5px, 0px) rotateX(-22deg);
+                        border-color: rgb(82, 120, 248) rgb(82, 120, 248)
+                            rgba(99, 133, 248, 0.9);
+                        box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
                     }
                 }
             }
         }
     }
-    .tools-desc{
-        max-height:180px;
+    .tools-desc {
+        max-height: 180px;
         overflow-y: auto;
-        h5{
-            font-size:15px;
+        h5 {
+            font-size: 15px;
         }
-        p{
+        p {
             font-size: 14px;
         }
     }
 }
 
 // 基因表的 分析按钮
-.table-analysis-button{
+.table-analysis-button {
     height: 30px;
     line-height: 30px;
     color: #fff;
@@ -540,34 +551,34 @@ button.btnActive {
     transition: all 0.2s ease-out 0s;
     box-shadow: rgba(92, 206, 139, 0) 0px 0px;
     cursor: pointer;
-    &.blue{
+    &.blue {
         background-color: $them_color;
     }
-    &.green{
+    &.green {
         background: rgba(108, 210, 150, 0.9);
     }
-    &.invaild{
+    &.invaild {
         opacity: 0.5;
     }
-    &.active{
+    &.active {
         opacity: 0.9;
     }
-    &.blue:hover{
+    &.blue:hover {
         @include hover-animate($them_color);
         background-color: $them_color;
         opacity: 1;
     }
-    &.green:hover{
-        @include hover-animate(rgb(92,206,139));
-        background-color: rgb(92,206,139);
+    &.green:hover {
+        @include hover-animate(rgb(92, 206, 139));
+        background-color: rgb(92, 206, 139);
         opacity: 1;
     }
-    b{
-        margin:0 10px;
+    b {
+        margin: 0 10px;
     }
-    span{
-        transition: .3s all ease;
-        background:rgba(0, 0, 0, 0.15);
+    span {
+        transition: 0.3s all ease;
+        background: rgba(0, 0, 0, 0.15);
         padding: 2px 8px;
         height: 24px;
         line-height: 24px;
@@ -576,4 +587,3 @@ button.btnActive {
         margin-right: 8px;
     }
 }
-

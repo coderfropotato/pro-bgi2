@@ -47,7 +47,7 @@ export class IndexComponent implements OnInit {
         (async () => {
             try {
                 // await this.getLcInfo();
-                // await this.getAddThead();
+                await this.getAddThead();
                 await this.getMenuList();
                 this.ready = true;
                 setTimeout(() => {
