@@ -1,4 +1,5 @@
 import { MessageService } from "./../../super/service/messageService";
+import { StoreService } from "./../../super/service/storeService";
 import { AjaxService } from "src/app/super/service/ajaxService";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { GlobalService } from "src/app/super/service/globalService";
@@ -22,12 +23,23 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     tableUrl: string;
     chartUrl: string;
 
+    selectPanelData: string[]=this.store.getStore("sample");
+
     tableEntity: object = {
-        LCID: "demo3",
-        sample: ["A1", "B1", "C"],
-        geneType: "transcript",
-        species: "aisdb"
+        LCID: this.store.getStore("LCID"),
+        compareGroup: this.store.getStore("diff_plan"),
+        geneType: "gene",
+        species: this.store.getStore("genome"),
+        diffThreshold: this.store.getStore("diff_threshold")
     };
+
+    p_show:boolean=this.store.getStore("diff_threshold").hasOwnProperty('PossionDis');
+    p_log2FC:string=this.p_show?this.store.getStore("diff_threshold").PossionDis.log2FC:'';
+    p_FDR:string=this.p_show?this.store.getStore("diff_threshold").PossionDis.FDR:'';
+    
+    n_show:boolean=this.store.getStore("diff_threshold").hasOwnProperty('NOIseq');
+    n_log2FC:string=this.n_show?this.store.getStore("diff_threshold").NOIseq.log2FC:'';
+    n_proba:string=this.n_show?this.store.getStore("diff_threshold").NOIseq.probability:'';
 
     singleMultiSelect: object = {
         name: ""
@@ -47,6 +59,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     tableHeight = 0;
     constructor(
         private message: MessageService,
+        private store:StoreService,
         private ajaxService: AjaxService,
         private globalService: GlobalService
     ) {}
@@ -54,7 +67,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.isMultiSelect = false;
         this.tableUrl = "";
-        this.chartUrl = `${config["javaPath"]}/Venn/expressionGraph`;
+        this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
 
         // 订阅windowResize 重新计算表格滚动高度
         this.message.getResize().subscribe(res => {
@@ -91,13 +104,10 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     // }
 
     drawVenn(data) {
-        // if(data['total'].length>5){
-        //     this.showUpSetR(data);
-        // }else{
-        //     this.showVenn(data);
-        // }
         this.showUpSetR(data);
+        //this.showVenn(data);
     }
+
     ngAfterViewInit() {
         setTimeout(() => {
             this.computedTableHeight();
@@ -120,6 +130,19 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             this.func.nativeElement.offsetHeight;
     }
 
+
+    OnChange(value: string): void{
+        this.p_log2FC=value;
+    }
+    OnChange2(value: string): void{
+        this.p_FDR=value;
+    }
+
+    setConfirm(){
+        console.log(this.p_log2FC)
+        console.log(this.p_FDR)
+    }
+
     fpkmSelect(){
         alert(11111)
     }
@@ -137,6 +160,17 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     //多选确定
     multipleConfirm() {
         //console.log();
+    }
+
+    //默认选中数据
+    defaultSelectList(data) {
+        //this.tableEntity['samples'] = data;
+        console.log(data)
+    }
+
+    //选择面板 确定
+    selectConfirm(data) {
+        console.log(data)
     }
 
     redrawChart(width, height?) {
@@ -159,7 +193,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         let oVenn = new Venn({ id: "chartId22122" })
             .config({
                 data: tempR,
-                compareGroup: ["A1", "B1", "C"]
+                compareGroup: this.store.getStore("diff_plan")
             })
             .drawVenn();
     }
@@ -183,7 +217,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
              }
          
              .MyCircle {
-                 fill: gray;
+                 //fill: gray;
              }
              .axis_x1{
                  display: none;
@@ -300,9 +334,10 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         let tempThat;
         let tempP;
         let tempCricle; //圆
+        let tempThatTwo; 
 
         let padding1 = { left: 60, right: 30, top: 20, bottom: 10 };
-        let padding2 = { left: 0, right: 10, top: 0, bottom: 30 };
+        let padding2 = { left: 40, right: 10, top: 0, bottom: 30 };
 
         let svg_height =
             300 +
@@ -628,19 +663,12 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 let temp = {};
                 for (let j = 0; j < col; j++) {
                     temp = {
-                        x_axis:
-                            d3_xScale(bar_name[i]) +
-                            d3_rectWidth / 2 +
-                            padding1.left,
+                        x_axis:d3_xScale(bar_name[i]) +d3_rectWidth / 2 +padding1.left,
                         y_axis: d3_yScale(total_name[j]) + d3_rectWidth / 2,
                         r: d3_rectWidth / 2,
                         flag: threeC(total_name[j], bar_name[i]) ? true : false,
-                        color: threeC(total_name[j], bar_name[i])
-                            ? "black"
-                            : "gray",
-                        nameX: threeC(total_name[j], bar_name[i])
-                            ? bar_name[i]
-                            : "",
+                        color: threeC(total_name[j], bar_name[i])? "black": "gray",
+                        nameX: threeC(total_name[j], bar_name[i])? bar_name[i]: "",
                         nameY: total_name[j],
                         sort: sortC(bar_name[i])
                     };
@@ -650,7 +678,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
 
             drawCircle = jsonCircles;
 
-            makeBaseCircle(jsonCircles, svg3); //造点 这时候包含点的颜色 添加圆 基本圆
+            makeBaseCircle(jsonCircles, svg3); //造点 这时候包含点的颜色 基本圆
 
             drawLine(sortArr(jsonCircles, "x_axis"), svg3, "black"); //把x轴相同的分在一起 画线
 
@@ -664,30 +692,9 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 .call(yAxis3);
         }
 
-        function threeC(lis1, lis2) {
-            let m_flag = false;
-            if(lis2.indexOf("∩")!=-1){
-                lis2 = lis2.split("∩");
-                for (let index = 0; index < lis2.length; index++) {
-                    if (lis2[index] == lis1) m_flag = true;
-                }
-                
-            }else{
-                if(lis1==lis2){
-                    m_flag = true;
-                }else{
-                    m_flag = false;
-                }
-            }
-            return m_flag;
-        }
-        function sortC(lis2) {
-            return lis2.split("∩").sort();
-        }
         //造点 这时候包含点的颜色 添加圆 基本圆
         function makeBaseCircle(arr, svg_t) {
-            svg_t
-                .selectAll(".MyCircle")
+            svg_t.selectAll(".MyCircle")
                 .data(arr)
                 .enter()
                 .append("circle")
@@ -728,31 +735,10 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             }
         }
 
-        //选择后画圆
-        function selectBaseCircle2(arr, targetArr, num) {
-            let tempA = [];
-            for (let index = 0; index < arr.length; index++) {
-                if (targetArr.toString() == arr[index].sort.toString()) {
-                    if (arr[index].flag) {
-                        arr[index].color = "red";
-                        tempA.push(arr[index]);
-                    }
-                }
-            }
-
-            return tempA;
-        }
-
-        //画线第1步
         function drawLine(targetGroup, svg_f, color) {
             let temp = [];
             let tempThatone = svg_f.append("g");
-            //     .on("mouseover", function (d, i) {
-            //         d3.select(this).select(".MyRect3").attr("fill","red");
-            //     })
-            //     .on("mouseout", function (d) {
-            //         d3.select(this).select(".MyRect3").attr("fill","none")
-            //     });
+            tempThatTwo=tempThatone
 
             let line = d3.line()
                 .x(function(d) {
@@ -768,66 +754,33 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                         temp.push(targetGroup[i][j]);
                     }
                 }
-                let tempArr = secondArr(targetGroup[i]); //画线2 把每组中要画的点提取到一起
+                let tempArr = secondArr(targetGroup[i]);
 
                 let path = tempThatone
                     .append("path")
                     .attr("class", "line")
                     .attr("d", line(tempArr))
-                    .attr("stroke", "#666")
-                    .attr("stroke-width", 3);
-            }
-        }
-
-        //选择名字画线第2步
-        function drawLine2(targetGroup, svg_s, color, num) {
-            if (targetGroup.length > 1) {
-                let line = d3
-                    .line()
-                    .x(function(d) {
-                        return d.x_axis;
-                    })
-                    .y(function(d) {
-                        return d.y_axis;
-                    });
-
-                tempP = svg_s
-                    .append("path")
-                    .attr("class", "line")
-                    .attr("d", line(targetGroup))
-                    .attr("stroke", color)
+                    .attr("stroke", "black")
                     .attr("stroke-width", 3);
             }
 
-            tempCricle = svg_s
-                .selectAll(".MyCircle2")
-                .data(targetGroup)
+            var g = tempThatone.selectAll('.MyCircle2')
+                .data(temp)
                 .enter()
-                .append("circle")
-                .attr("class", "MyCircle2")
-                .attr("cx", function(d, i) {
+                .append('circle')
+                .attr('class', 'MyCircle2')
+                .attr('cx', function (d, i) {
                     return d["x_axis"];
                 })
-                .attr("cy", function(d, i) {
+                .attr('cy', function (d, i) {
                     return d["y_axis"];
                 })
-                .attr("r", function(d, i) {
+                .attr('r', function (d, i) {
                     return d["r"];
                 })
-                .style("fill", function(d) {
-                    return d.color;
+                .style("fill", function (d) { 
+                    return d.color; 
                 });
-        }
-
-        //画线2 把每组中要画的点提取到一起
-        function secondArr(arr) {
-            let tempArr = [];
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i].flag == true) {
-                    tempArr.push(arr[i]);
-                }
-            }
-            return tempArr;
         }
 
         //把x轴相同的分在一起
@@ -865,6 +818,39 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             return _arr;
         }
 
+        function threeC(lis1, lis2) {
+            let m_flag = false;
+            if(lis2.indexOf("∩")!=-1){
+                lis2 = lis2.split("∩");
+                for (let index = 0; index < lis2.length; index++) {
+                    if (lis2[index] == lis1) m_flag = true;
+                }
+                
+            }else{
+                if(lis1==lis2){
+                    m_flag = true;
+                }else{
+                    m_flag = false;
+                }
+            }
+            return m_flag;
+        }
+
+        function sortC(lis2) {
+            return lis2.split("∩").sort();
+        }
+
+        // 把每组中要画的点提取到一起
+        function secondArr(arr) {
+            let tempArr = [];
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].flag == true) {
+                    tempArr.push(arr[i]);
+                }
+            }
+            return tempArr;
+        }
+
         function nameToCircle(nameList) {
             if (tempCricle != undefined) {
                 tempCricle.remove();
@@ -872,13 +858,60 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
             if (tempP != undefined) {
                 tempP.remove();
             }
+            let tempdata = selectBaseCircle2(drawCircle,nameList.sort(),nameList.length);
+            drawLine2(tempdata, tempThatTwo, "red"); //把x轴相同的分在一起 画线
+        }
+        function selectBaseCircle2(arr, targetArr, num) {
+            let tempA = [];
+            for (let index = 0; index < arr.length; index++) {
+                if (targetArr.toString() == arr[index].sort.toString()) {
+                    if (arr[index].flag) {
+                        arr[index].color = "red";
+                        tempA.push(arr[index]);
+                    }
+                }
+            }
+            return tempA;
+        }
 
-            let tempdata = selectBaseCircle2(
-                drawCircle,
-                nameList.sort(),
-                nameList.length
-            );
-            drawLine2(tempdata, tempThat, "red", 5); //把x轴相同的分在一起 画线
+        function drawLine2(targetGroup, svg_s, color) {
+            console.log(targetGroup)
+            if (targetGroup.length > 1) {
+                let line = d3
+                    .line()
+                    .x(function(d) {
+                        return d.x_axis;
+                    })
+                    .y(function(d) {
+                        return d.y_axis;
+                    });
+
+                tempP = svg_s
+                    .append("path")
+                    .attr("class", "line")
+                    .attr("d", line(targetGroup))
+                    .attr("stroke", color)
+                    .attr("stroke-width", 3);
+            }
+
+            tempCricle = svg_s
+                .selectAll(".MyCircle3")
+                .data(targetGroup)
+                .enter()
+                .append("circle")
+                .attr("class", "MyCircle3")
+                .attr("cx", function(d, i) {
+                    return d["x_axis"];
+                })
+                .attr("cy", function(d, i) {
+                    return d["y_axis"];
+                })
+                .attr("r", function(d, i) {
+                    return d["r"];
+                })
+                .style("fill", function(d) {
+                    return d.color;
+                });
         }
 
         function getBLen(str) {
