@@ -1,3 +1,4 @@
+import { PageModuleService } from "./../../super/service/pageModuleService";
 import { MessageService } from "./../../super/service/messageService";
 import { AjaxService } from "src/app/super/service/ajaxService";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
@@ -10,7 +11,7 @@ declare const Venn: any;
     templateUrl: "./diffVenn.component.html",
     styles: []
 })
-export class DiffVennComponent implements OnInit, AfterViewInit {
+export class DiffVennComponent implements OnInit {
     // 表格高度相关
     @ViewChild("left") left;
     @ViewChild("right") right;
@@ -21,18 +22,8 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
     tableUrl: string;
     chartUrl: string;
 
-    tableEntity: object = {
-        LCID: "demo3",
-        compareGroup: ["A1-vs-B1", "A1-vs-C1", "C2-vs-A2"],
-        geneType: "transcript",
-        species: "aisdb",
-        diffThreshold: {
-            PossionDis: {
-                log2FC: 1,
-                FDR: 0.001
-            }
-        }
-    };
+    vennEntity: object;
+    bigTableEntity: object;
 
     singleMultiSelect: object = {
         name: ""
@@ -42,10 +33,6 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
         total_name: ""
     }; //多选
 
-    pageEntity: object = {
-        pageSize: 20
-    };
-
     chart: any;
     isMultiSelect: boolean;
     selectedData: object[] = [];
@@ -54,87 +41,64 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
     constructor(
         private message: MessageService,
         private ajaxService: AjaxService,
-        private globalService: GlobalService
-    ) {}
-
-    ngOnInit() {
-        this.isMultiSelect = false;
-        this.tableUrl = "";
-        this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
+        private globalService: GlobalService,
+        private pageModuleService: PageModuleService
+    ) {
+        // 订阅gene/transcript
+        this.pageModuleService.as().subscribe(() => {
+            this.ngOnInit();
+        });
 
         // 订阅windowResize 重新计算表格滚动高度
         this.message.getResize().subscribe(res => {
             if (res["message"] === "resize") this.computedTableHeight();
-            // 基础图需要重画
-            this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
         });
-
-        //this.getVennData(); //获取Venn图数据
     }
 
-    getVennData() {
-        this.ajaxService
-            .getDeferData({
-                url: `${config["javaPath"]}/Venn/diffGeneGraph`,
-                data: {
-                    LCID: "demo3",
-                    compareGroup: ["A1-vs-B1", "A1-vs-C1", "C2-vs-A2"],
-                    geneType: "transcript",
-                    species: "aisdb",
-                    diffThreshold: {
-                        PossionDis: {
-                            log2FC: 1,
-                            FDR: 0.001
-                        }
-                    }
+    ngOnInit() {
+        this.isMultiSelect = false;
+        this.selectedData = [];
+        this.tableUrl = `${config["javaPath"]}/Venn/diffGeneTable`;
+        this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
+        this.vennEntity = {
+            LCID: sessionStorage.getItem("LCID"),
+            compareGroup: ["A1-vs-B1", "A1-vs-C1", "C2-vs-A2"],
+            geneType: "gene",
+            species: "aisdb",
+            diffThreshold: {
+                PossionDis: {
+                    log2FC: 1,
+                    FDR: 0.001
                 }
-            })
-            .subscribe(
-                data => {
-                    if (data["data"].length > 5) {
-                        this.showUpSetR(data);
-                    } else {
-                        this.showVenn(data);
-                    }
-                },
-                error => {
-                    console.log(error);
+            }
+        };
+        this.bigTableEntity = {
+            LCID: sessionStorage.getItem("LCID"),
+            pageSize: 20,
+            compareGroup: ["A1-vs-B1", "A1-vs-C1", "C2-vs-A2"],
+            geneType: "gene",
+            species: "aisdb",
+            diffThreshold: {
+                PossionDis: {
+                    log2FC: 1,
+                    FDR: 0.001
                 }
-            );
+            }
+        };
     }
 
     drawVenn(data) {
-        // if(data['total'].length>5){
-        //     this.showUpSetR(data);
-        // }else{
-        //     this.showVenn(data);
-        // }
         this.showUpSetR(data);
-    }
-    ngAfterViewInit() {
-        setTimeout(() => {
-            this.computedTableHeight();
-        }, 0);
     }
 
     switchChange(status) {
         this.switch = status;
-        // 基础图需要重画
-        let timer = null;
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => {
-            this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
-        }, 300);
     }
 
     computedTableHeight() {
         this.tableHeight =
             this.right.nativeElement.offsetHeight -
             this.func.nativeElement.offsetHeight;
-    }
-
-    fpkmSelect(){
-        alert(11111)
     }
 
     //单、多选change
@@ -152,10 +116,6 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
     //多选确定
     multipleConfirm() {
         //console.log();
-    }
-
-    redrawChart(width, height?) {
-        this.isMultiSelect = false;
     }
 
     showVenn(data) {
@@ -178,6 +138,7 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
             })
             .drawVenn();
     }
+
     showUpSetR(data) {
         document.getElementById("chartId22122").innerHTML = "";
         let _self = this;
@@ -197,7 +158,7 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
                 .MyRect {
                     cursor: pointer;
                 }
-            
+
                 .MyCircle {
                     fill: gray;
                 }
@@ -222,7 +183,7 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
                 .MyText{
                     cursor: pointer;
                 }
-            
+
                 .MyRect3{
                     cursor: pointer;
                 }
@@ -262,20 +223,23 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
             total_value.push(List.total[i].value);
         }
 
-        let max_name=Math.max.apply(null, total_name_max);
-        let target_name='';
-        for(let i = 0; i < total_name_max.length; i++){
-            if(max_name==total_name_max[i]){
-                target_name=total_name[i];
+        let max_name = Math.max.apply(null, total_name_max);
+        let target_name = "";
+        for (let i = 0; i < total_name_max.length; i++) {
+            if (max_name == total_name_max[i]) {
+                target_name = total_name[i];
                 break;
             }
         }
 
-        let txt = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-        txt.setAttribute( "id", 'mtext' );
+        let txt = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
+        txt.setAttribute("id", "mtext");
         txt.textContent = target_name;
         t_chartID.appendChild(txt);
-        console.log(document.getElementById("mtext").style.width)
+        console.log(document.getElementById("mtext").style.width);
 
         //上侧数据
         let bar_name = [];
@@ -330,7 +294,7 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
         drawSvg();
         drawSvg2();
         drawSvg3();
-        
+
         function drawSvg() {
             let width = d3_width + padding1.left + padding1.right;
             let height = 300;
@@ -391,7 +355,8 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
                     }
                 });
 
-            rects.append("rect")
+            rects
+                .append("rect")
                 .attr("class", "MyRect")
                 .attr(
                     "transform",
@@ -493,7 +458,8 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
                     }
                 });
 
-            rects.append("rect")
+            rects
+                .append("rect")
                 .attr("class", "MyRect")
                 .attr("x", function(d, i) {
                     return xScale(d) + padding2.left;
@@ -605,12 +571,19 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
                 let temp = {};
                 for (let j = 0; j < col; j++) {
                     temp = {
-                        x_axis:d3_xScale(bar_name[i]) +d3_rectWidth / 2 +padding1.left,
+                        x_axis:
+                            d3_xScale(bar_name[i]) +
+                            d3_rectWidth / 2 +
+                            padding1.left,
                         y_axis: d3_yScale(total_name[j]) + d3_rectWidth / 2,
                         r: d3_rectWidth / 2,
                         flag: threeC(total_name[j], bar_name[i]) ? true : false,
-                        color: threeC(total_name[j], bar_name[i])? "black": "gray",
-                        nameX: threeC(total_name[j], bar_name[i])? bar_name[i]: "",
+                        color: threeC(total_name[j], bar_name[i])
+                            ? "black"
+                            : "gray",
+                        nameX: threeC(total_name[j], bar_name[i])
+                            ? bar_name[i]
+                            : "",
                         nameY: total_name[j],
                         sort: sortC(bar_name[i])
                     };
@@ -636,16 +609,15 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
 
         function threeC(lis1, lis2) {
             let m_flag = false;
-            if(lis2.indexOf("∩")!=-1){
+            if (lis2.indexOf("∩") != -1) {
                 lis2 = lis2.split("∩");
                 for (let index = 0; index < lis2.length; index++) {
                     if (lis2[index] == lis1) m_flag = true;
                 }
-                
-            }else{
-                if(lis1==lis2){
+            } else {
+                if (lis1 == lis2) {
                     m_flag = true;
-                }else{
+                } else {
                     m_flag = false;
                 }
             }
@@ -656,7 +628,8 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
         }
         //造点 这时候包含点的颜色 添加圆 基本圆
         function makeBaseCircle(arr, svg_t) {
-            svg_t.selectAll(".MyCircle")
+            svg_t
+                .selectAll(".MyCircle")
                 .data(arr)
                 .enter()
                 .append("circle")
@@ -675,7 +648,8 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
                 });
             let tempList = sortArr(arr, "x_axis");
             for (let i = 0; i < tempList.length; i++) {
-                svg_t.append("rect")
+                svg_t
+                    .append("rect")
                     .attr("class", "MyRect3")
                     .attr("x", tempList[i][0]["x_axis"] - d3_rectWidth / 2)
                     .attr("y", function(d, i) {
@@ -686,14 +660,13 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
                         return d3_height;
                     })
                     .attr("opacity", 0.1)
-                    .attr("fill","#87CEFA")
+                    .attr("fill", "#87CEFA")
                     .on("mouseover", function(d, i) {
-                        d3.select(this).attr("opacity", 0.5)
+                        d3.select(this).attr("opacity", 0.5);
                     })
                     .on("mouseout", function(d) {
-                        d3.select(this).attr("opacity", 0.1)
-                    })
-                    ;
+                        d3.select(this).attr("opacity", 0.1);
+                    });
             }
         }
 
@@ -853,10 +826,10 @@ export class DiffVennComponent implements OnInit, AfterViewInit {
 
         function getBLen(str) {
             if (str == null) return 0;
-            if (typeof str != "string"){
-              str += "";
+            if (typeof str != "string") {
+                str += "";
             }
-            return str.replace(/[^\x00-\xff]/g,"01").length;
+            return str.replace(/[^\x00-\xff]/g, "01").length;
         }
     }
 }

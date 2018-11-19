@@ -22,15 +22,6 @@ declare const $: any;
     templateUrl: "./gene-table.component.html"
 })
 export class GeneTableComponent implements OnInit, OnChanges {
-    // 基因表的默认选中还是补选中
-    @Input()
-    defaultChecked: boolean;
-    // 表的id
-    @Input()
-    tableId: string;
-    // 表格的请求api
-    @Input()
-    url: string;
     /** 默认参数
      * this.tableEntity["pageIndex"] = 1;
         this.tableEntity["pageSize"] = 10;
@@ -41,20 +32,15 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.tableEntity["addThead"] = [];
         如果有默认参数之外的参数 需要传进来，如果没有可以不传。
      */
-    @Input()
-    pageEntity: object;
-    // 是否把表的gene选中状态放在表的查询参数里面 默认false
-    @Input()
-    checkStatusInParams: boolean;
-    // 表格下载的名称
-    @Input()
-    fileName: string;
-    // 表格模板插槽
-    @Input()
-    selectItems: TemplateRef<any>;
-    // 计算后的表格高度
-    @Input()
-    tableHeight: number = 0;
+
+    @Input() defaultChecked: boolean = false; // 基因表的默认选中还是不选中
+    @Input() tableId: string; // 表的id
+    @Input() url: string; // 表格的请求api
+    @Input() pageEntity: object;  // 表格的请求参数
+    @Input() checkStatusInParams: boolean; // 是否把表的gene选中状态放在表的查询参数里面 默认false
+    @Input() fileName: string; // 表格下载的名称?
+    @Input() selectItems: TemplateRef<any>; // 表格模板插槽?
+    @Input() tableHeight: number = 0; // 计算后的表格高度?
 
     scroll: any = { x: "0", y: "0" };
     isLoading: boolean = true;
@@ -742,10 +728,20 @@ export class GeneTableComponent implements OnInit, OnChanges {
     }
 
     /**
-     * @description  以下方法为外部调用
+     * @description 组件外设置内部查询参数 更新参数并发请求
      * @author Yangwd<277637411@qq.com>
-     * @memberof BigTableComponent
+     * @date 2018-11-19
+     * @param {*} object
+     * @memberof GeneTableComponent
      */
+    _setParamsOfObject(object){
+        if(!$.isEmptyObject(object)){
+            for(let key in object){
+                this.tableEntity[key] = object[key];
+            }
+            this.getRemoteData();
+        }
+    }
 
     /**
      * @description  组件外设置内部查询参数 更新参数并发请求

@@ -47,7 +47,7 @@ import { TreeItemComponent } from "./super/components/tree-item.component";
 import { ColorPickerComponent } from "./super/components/color-picker.component";
 import { ExpressVennComponent } from "./pages/mrna/expressVenn.component";
 import { DiffVennComponent } from "./pages/mrna/diffVenn.component";
-import { Layout1Component } from './pages/mrna/layout1.component';
+import { Layout1Component,AppLayoutPage } from './pages/mrna/layout1.component';
 import { Layout2Component } from './pages/mrna/layout2.component';
 import { ToolsComponent } from './super/components/tools.component';
 import {SysDefendComponent} from './pages/sysDefend.component';
@@ -198,7 +198,7 @@ const ROUTES: Routes = [
             },
             {
                 path: "layout1",
-                component: Layout1Component,
+                component: AppLayoutPage,
                 data: {
                     keep: true,
                     module: "layout1"
@@ -309,6 +309,7 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
     // 组件，指令，过滤器（管道） 申明在declarations 里
     declarations: [
+        AppLayoutPage,
         SysDefendComponent,
         LoginComponent,
         IndexComponent,

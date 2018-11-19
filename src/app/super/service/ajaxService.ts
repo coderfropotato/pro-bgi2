@@ -26,29 +26,29 @@ export class AjaxService {
         // 验证本地有没有token
         return new Observable(observer => {
             if (this.validTokenInLocal()) {
-                // let token = localStorage.getItem("token");
-                // let LCID = sessionStorage.getItem("LCID");
-                // let head = {
-                //     headers: new HttpHeaders({
-                //         "Content-Type": "application/json",
-                //         Authorization: `token ${token}`
-                //     })
-                // };
-                // // 验证token的合法性
-                // this.http
-                //     .post(`${config["javaPath"]}/swap_token`, { LCID }, head)
-                //     .subscribe(
-                //         res => {
-                //             if(res['status']!='0'){
-                //                 observer.complete();
-                //                 this.router.navigateByUrl("/reprot/sysError");
-                //             }else{
-                //                 let curToken = res['data'][0]
-                //                 localStorage.setItem("token", curToken);
+                let token = localStorage.getItem("token");
+                let LCID = sessionStorage.getItem("LCID");
+                let head = {
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                        Authorization: `token ${token}`
+                    })
+                };
+                // 验证token的合法性
+                this.http
+                    .post(`${config["javaPath"]}/swap_token`, { LCID }, head)
+                    .subscribe(
+                        res => {
+                            if(res['status']!='0'){
+                                observer.complete();
+                                this.router.navigateByUrl("/reprot/sysError");
+                            }else{
+                                let curToken = res['data'][0]
+                                localStorage.setItem("token", curToken);
                                 let curHead = {
                                     headers: new HttpHeaders({
                                         "Content-Type": "application/json",
-                                        Authorization: `token 123`  // curToken
+                                        Authorization: `token ${curToken}`  // curToken
                                     })
                                 };
                                 return this.http
@@ -63,12 +63,12 @@ export class AjaxService {
                                             observer.complete();
                                         }
                                     );
-                    //         }
-                    //     },
-                    //     error => {
-                    //         observer.complete();
-                    //     }
-                    // );
+                            }
+                        },
+                        error => {
+                            observer.complete();
+                        }
+                    );
             } else {
                 observer.complete();
                 this.router.navigateByUrl("/reprot/sysError");
