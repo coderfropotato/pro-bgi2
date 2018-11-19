@@ -1,34 +1,34 @@
 
-    <div class="content row page-layout1" *ngIf="pageModuleService['renderModule']">
-            <div #left class="left-layout column" [class.unexpand]="switch">
-                    <!-- 模块描述 -->
-                    <div class="left-top-layout">
-                        <h4>{{title}}</h4>
-                        <p>descdesc</p>
-                    </div>
-                    <div class="left-bottom-layout">
-                        <!-- 图表切换 -->
-                        <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
-                            (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
-                            [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate"
-                            (drawChartEmit)="drawChart($event)" [flex]="true" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
-                            <!-- 颜色选择器 -->
-                        <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
-                    </div>
-                </div>
-                <div #right class="right-layout" [class.expand]="switch">
-                    <!-- 模块宽度切换 -->
-                    <div class="switch">
-                            <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></nz-switch>
-                    </div>
-                    <div #func (resized)="resize($event)" style="background-color:#fff;padding:12px;">
-                        <!-- 增删列 -->
-                        <app-add-column [thead]="allThead"></app-add-column>
-                    </div>
-                    <!-- 基因表 -->
-                    <app-geneTable class="no-outside-border" tableId="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
-                        url="http://localhost:8086/filter" [tableHeight]="tableHeight" [defaultChecked]="false"></app-geneTable>
-                </div>
-    </div>
+<div class="content row page-layout1" *ngIf="pageModuleService['renderModule']">
+    <div #left class="left-layout column" [class.unexpand]="switch">
 
+      <!-- 模块描述 -->
+        <div class="left-top-layout">
+            <h4>{{title}}</h4>
+            <p>descdesc</p>
+        </div>
+        <div class="left-bottom-layout">
+            <!-- 图表切换 -->
+            <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
+                (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
+                [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate"
+                (drawChartEmit)="drawChart($event)" [flex]="true" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
+                <!-- 颜色选择器 -->
+            <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
+        </div>
+    </div>
+    <div #right class="right-layout" [class.expand]="switch">
+        <!-- 模块宽度切换 -->
+        <div class="switch">
+                <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></nz-switch>
+        </div>
+        <div #func (resized)="resize($event)" style="background-color:#fff;padding:12px;">
+            <!-- 增删列 -->
+            <app-add-column [thead]="allThead"></app-add-column>
+        </div>
+        <!-- 基因表 -->
+        <app-geneTable class="no-outside-border" tableId="table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
+            url="http://localhost:8086/filter" [tableHeight]="tableHeight" [defaultChecked]="false"></app-geneTable>
+    </div>
+</div>
 

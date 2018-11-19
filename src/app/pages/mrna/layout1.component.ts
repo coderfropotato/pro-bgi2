@@ -51,8 +51,8 @@ export class Layout1Component implements OnInit {
         private storeService:StoreService,
         private pageModuleService:PageModuleService
         ) {
-            pageModuleService.as().subscribe(notify=>{
-                console.log('switch change')
+            this.pageModuleService.as().subscribe(()=>{
+                this.ngOnInit();
             })
         }
 
@@ -214,4 +214,24 @@ export class Layout1Component implements OnInit {
     multipleConfirm() {
         console.log(this.selectedData);
     }
+}
+
+
+/**
+ * @description page
+ * @author Yangwd<277637411@qq.com>
+ * @date 2018-11-19
+ * @export
+ * @class AppLayoutPage
+ */
+@Component({
+    selector: 'app-layout-page',
+    template: `<app-layout1 *ngIf="pageModuleService['renderModule']"></app-layout1>`
+})
+
+export class AppLayoutPage  {
+    constructor(
+        private pageModuleService:PageModuleService
+    ) { }
+
 }

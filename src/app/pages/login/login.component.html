@@ -23,7 +23,7 @@
         <!-- ma -->
         <nz-form-item>
             <nz-form-control>
-                <img (click)="handlerVerificationClick()" style="width:100px;height:40px;border:1px solid #ccc;margin-right:20px;" src="http://192.168.29.20/checkImg/{{uuid}}" alt="验证码">
+                <img (click)="handlerVerificationClick()" style="width:100px;height:40px;border:1px solid #ccc;margin-right:20px;" [src]="imgUrl" alt="验证码">
                 <nz-input-group style="width:180px;" nzPrefixIcon="anticon anticon-lock">
                     <input  type="text" nz-input formControlName="verificationCode" placeholder="Verification code">
                 </nz-input-group>

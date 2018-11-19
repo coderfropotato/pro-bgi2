@@ -22,6 +22,8 @@ export class LoginComponent implements OnInit {
     validateForm: FormGroup;
     uuid: string;
     LCType: string;
+    config:object;
+    imgUrl:string;
     constructor(
         private fb: FormBuilder,
         private router: Router,
@@ -33,6 +35,8 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         this.uuid = this.generateUuid();
+        this.config = config;
+        this.imgUrl = `${this.config['javaPath']}/checkImg/${this.uuid}`;
         window.localStorage.clear();
         window.sessionStorage.clear();
 
@@ -67,53 +71,52 @@ export class LoginComponent implements OnInit {
             this.validateForm.controls[i].updateValueAndValidity();
         }
 
-        sessionStorage.setItem( "LCID", this.validateForm.value.userName );
-        localStorage.setItem("token",'123');
-        this.LCType = 'mrna';
-        this.router.navigateByUrl(`/report/mrna`);
-        this.storeService.setStore("LCType", this.LCType);
+        // sessionStorage.setItem( "LCID", this.validateForm.value.userName );
+        // localStorage.setItem("token",'123');
+        // this.LCType = 'mrna';
+        // this.router.navigateByUrl(`/report/mrna`);
+        // this.storeService.setStore("LCType", this.LCType);
 
-        // return;
 
-        // if (
-        //     this.validateForm.controls["password"]["valid"] &&
-        //     this.validateForm.controls["userName"]["valid"] &&
-        //     this.validateForm.controls["verificationCode"]["valid"]
-        // ) {
-        //     this.ajaxService
-        //         .getDeferDataNoAuth({
-        //             data: {
-        //                 LCID: this.validateForm.value.userName,
-        //                 Password: this.validateForm.value.password,
-        //                 code: this.validateForm.value.verificationCode,
-        //                 uuid: this.uuid
-        //             },
-        //             url: `${config["javaPath"]}/login`
-        //         })
-        //         .subscribe(
-        //             data => {
-        //                 if (data["status"] == "0") {
-        //                     sessionStorage.setItem(
-        //                         "LCID",
-        //                         this.validateForm.value.userName
-        //                     );
-        //                     localStorage.setItem("token", data["data"].token);
-        //                     this.LCType = data["data"].LCType;
-        //                     this.router.navigateByUrl(
-        //                         `/report/${data["data"].LCType}`
-        //                     );
+        if (
+            this.validateForm.controls["password"]["valid"] &&
+            this.validateForm.controls["userName"]["valid"] &&
+            this.validateForm.controls["verificationCode"]["valid"]
+        ) {
+            this.ajaxService
+                .getDeferDataNoAuth({
+                    data: {
+                        LCID: this.validateForm.value.userName,
+                        Password: this.validateForm.value.password,
+                        code: this.validateForm.value.verificationCode,
+                        uuid: this.uuid
+                    },
+                    url: `${config["javaPath"]}/login`
+                })
+                .subscribe(
+                    data => {
+                        if (data["status"] == "0") {
+                            sessionStorage.setItem(
+                                "LCID",
+                                this.validateForm.value.userName
+                            );
+                            localStorage.setItem("token", data["data"].token);
+                            this.LCType = data["data"].LCType;
+                            this.router.navigateByUrl(
+                                `/report/${data["data"].LCType}`
+                            );
 
-        //                     this.storeService.setStore("LCType", this.LCType);
-        //                 } else {
-        //                     this.nzMessageService.warning(data["message"]);
-        //                     // 重新生成验证码
-        //                     this.handlerVerificationClick();
-        //                 }
-        //             },
-        //             err => {
-        //                 console.log(err);
-        //             }
-        //         );
-        // }
+                            this.storeService.setStore("LCType", this.LCType);
+                        } else {
+                            this.nzMessageService.warning(data["message"]);
+                            // 重新生成验证码
+                            this.handlerVerificationClick();
+                        }
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                );
+        }
     }
 }

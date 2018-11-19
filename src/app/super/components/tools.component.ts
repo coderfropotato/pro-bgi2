@@ -11,37 +11,7 @@ import {
 declare const $: any;
 @Component({
     selector: "app-tools",
-    template: `
-        <div class="tool-component">
-            <nz-drawer
-                [nzClosable]="true"
-                [nzVisible]="toolsService['visible']"
-                [nzMaskClosable]="true"
-                [nzBodyStyle]="{ padding: '12px' }"
-                [nzWrapClassName]="'tools-wrap'"
-                [nzWidth]="376"
-                nzPlacement="right"
-                nzTitle="请选择一个分析方案"
-                (nzOnClose)="close()"
-            >
-            gene:{{toolsService['geneCount']}}
-
-                <ul class="clearfix">
-                    <li *ngFor="let tool of toolList; index as i" (click)="selectParams()">
-                        <img src="http://temp.im/68x82" (mouseover)="handlerMouseOver(tool)"/>
-                        <p style="margin-top:12px;">{{tool['name']}}</p>
-                    </li>
-                </ul>
-                <div class="tools-desc" *ngIf="desc && title">
-                    <h5>{{title}}</h5>
-                    <p>{{desc}}</p>
-                </div>
-
-                <nz-drawer [nzClosable]="true" [nzMaskStyle]="{'background-color':transparent}" [nzVisible]="childVisible" [nzMaskClosable]="true"
-                [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="参数选择" (nzOnClose)="handlerChildClose()"></nz-drawer>
-            </nz-drawer>
-        </div>
-    `,
+    templateUrl: "./tools.component.html",
     styles: []
 })
 export class ToolsComponent implements OnInit {
