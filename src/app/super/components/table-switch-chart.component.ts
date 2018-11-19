@@ -139,9 +139,9 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.data.length == 0 || $.isEmptyObject(data.data)) {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                         this.selectPanelList = [];
-                    } else if (data.status != 0) {
+                    } else if (data.status != "0") {
                         this.selectPanelList = [];
                     } else {
                         let selects = data.data;
@@ -218,11 +218,13 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.data.length == 0 || $.isEmptyObject(data.data)) {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                         this.error = "nodata";
-                    } else if (data.status != 0) {
+                    } else if (data.status === "-1") {
                         this.error = "error";
-                    } else {
+                    } else if(data.status === "-2"){
+                        this.error = "dataOver";
+                    }else {
                         this.error = "";
                         this.tableData = data.data;
                         if (!this.chartUrl) {
@@ -254,10 +256,12 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.data.length == 0 || $.isEmptyObject(data.data)) {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                         this.error = "nodata";
-                    } else if (data.status != 0) {
+                    } else if (data.status === "-1") {
                         this.error = "error";
+                    } else if(data.status === "-2"){
+                        this.error = "dataOver";
                     } else {
                         this.error = "";
                         this.chartData = data.data;

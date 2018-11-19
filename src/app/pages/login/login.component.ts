@@ -73,47 +73,47 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl(`/report/mrna`);
         this.storeService.setStore("LCType", this.LCType);
 
-        return;
+        // return;
 
-        if (
-            this.validateForm.controls["password"]["valid"] &&
-            this.validateForm.controls["userName"]["valid"] &&
-            this.validateForm.controls["verificationCode"]["valid"]
-        ) {
-            this.ajaxService
-                .getDeferDataNoAuth({
-                    data: {
-                        LCID: this.validateForm.value.userName,
-                        Password: this.validateForm.value.password,
-                        code: this.validateForm.value.verificationCode,
-                        uuid: this.uuid
-                    },
-                    url: `${config["javaPath"]}/login`
-                })
-                .subscribe(
-                    data => {
-                        if (data["status"] == "0") {
-                            sessionStorage.setItem(
-                                "LCID",
-                                this.validateForm.value.userName
-                            );
-                            localStorage.setItem("token", data["data"].token);
-                            this.LCType = data["data"].LCType;
-                            this.router.navigateByUrl(
-                                `/report/${data["data"].LCType}`
-                            );
+        // if (
+        //     this.validateForm.controls["password"]["valid"] &&
+        //     this.validateForm.controls["userName"]["valid"] &&
+        //     this.validateForm.controls["verificationCode"]["valid"]
+        // ) {
+        //     this.ajaxService
+        //         .getDeferDataNoAuth({
+        //             data: {
+        //                 LCID: this.validateForm.value.userName,
+        //                 Password: this.validateForm.value.password,
+        //                 code: this.validateForm.value.verificationCode,
+        //                 uuid: this.uuid
+        //             },
+        //             url: `${config["javaPath"]}/login`
+        //         })
+        //         .subscribe(
+        //             data => {
+        //                 if (data["status"] == "0") {
+        //                     sessionStorage.setItem(
+        //                         "LCID",
+        //                         this.validateForm.value.userName
+        //                     );
+        //                     localStorage.setItem("token", data["data"].token);
+        //                     this.LCType = data["data"].LCType;
+        //                     this.router.navigateByUrl(
+        //                         `/report/${data["data"].LCType}`
+        //                     );
 
-                            this.storeService.setStore("LCType", this.LCType);
-                        } else {
-                            this.nzMessageService.warning(data["message"]);
-                            // 重新生成验证码
-                            this.handlerVerificationClick();
-                        }
-                    },
-                    err => {
-                        console.log(err);
-                    }
-                );
-        }
+        //                     this.storeService.setStore("LCType", this.LCType);
+        //                 } else {
+        //                     this.nzMessageService.warning(data["message"]);
+        //                     // 重新生成验证码
+        //                     this.handlerVerificationClick();
+        //                 }
+        //             },
+        //             err => {
+        //                 console.log(err);
+        //             }
+        //         );
+        // }
     }
 }
