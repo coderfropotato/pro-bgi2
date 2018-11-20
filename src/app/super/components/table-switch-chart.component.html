@@ -36,8 +36,13 @@
 
 <ng-template #selectPanel>
     <div class="selectPanel">
-        <button nz-button nzType="default" [nzSize]="'small'" *ngFor="let item of selectPanelList" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
-        <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length">确定</button>
+        <div *ngFor="let selected of selectPanelList">
+            <span>{{selected.type}}</span>&nbsp;
+            <button nz-button nzType="default" [nzSize]="'small'" *ngFor="let item of selected.data" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
+        </div>
+        <div class="right">
+            <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length">确定</button>
+        </div>
     </div>
 </ng-template>
 

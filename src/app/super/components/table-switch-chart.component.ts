@@ -41,13 +41,13 @@ export class TableSwitchChartComponent implements OnInit {
 
     /**
      * selectPanelUrl 、selectPanelEntity 或 selectPanelData，二者选一传入；
-        selectPanelUrl 、selectPanelEntity：选择面板需请求api获取，返回数据结构是string[];
-        selectPanelData：从local或session中直接拿到储存的数据，数据结构是string[];
+        selectPanelUrl 、selectPanelEntity：选择面板需请求api获取，返回数据结构是object[]={type:'sample',data:['sample1','sample2']};
+        selectPanelData：从本地直接拿到储存的数据，数据结构是object[]={type:'sample',data:['sample1','sample2']};
      */
     @Input() selectPanelUrl: string;  //选择面板请求api的url
     @Input() selectPanelEntity: object;  //请求api的参数
 
-    @Input() selectPanelData: string[]; //选择面板的数据
+    @Input() selectPanelData: object[]; //选择面板的数据
 
     @Input() defaultSelectNum: number; //可选， 选择面板数据默认选中个数; 若不传或0则全不选; -1表示全选
     @Output() defaultSelectList: EventEmitter<any> = new EventEmitter(); //默认选中的数据
@@ -139,9 +139,9 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.data.length == 0 || $.isEmptyObject(data.data)) {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                         this.selectPanelList = [];
-                    } else if (data.status != 0) {
+                    } else if (data.status != "0") {
                         this.selectPanelList = [];
                     } else {
                         let selects = data.data;
@@ -159,27 +159,44 @@ export class TableSwitchChartComponent implements OnInit {
     calculateSelectPanelData(data) {
         data.forEach(d => {
             this.selectPanelList.push({
-                name: d,
-                isChecked: false
+                type: d['type'],
+                data: []
             })
         });
 
+        this.selectPanelList.forEach((d)=> {
+            data.forEach((m)=> {
+                if (d['type'] === m['type']) {
+                    m.data.forEach((k) =>{
+                        d['data'].push({
+                            name: k,
+                            isChecked: false
+                        })
+                    })
+                }
+            })
+        })
+
         if (this.defaultSelectNum) {
-            if (this.defaultSelectNum === -1) {
+            if (this.defaultSelectNum === -1) { //全选
                 this.selectPanelList.forEach(d => {
-                    d['isChecked'] = true;
+                    d['data'].forEach(m => {
+                        m['isChecked'] = true;
+                    })
                 })
             } else {
                 for (let i = 0; i < this.defaultSelectNum; i++) {
-                    this.selectPanelList[i]['isChecked'] = true;
+                    this.selectPanelList[0]['data'][i]['isChecked'] = true;
                 }
             }
         }
 
         this.selectPanelList.forEach(d => {
-            if (d['isChecked']) {
-                this.selectedList.push(d['name']);
-            }
+            d['data'].forEach(m => {
+                if (m['isChecked']) {
+                    this.selectedList.push(m['name']);
+                }
+            })
         })
 
         this.defaultSelectList.emit(this.selectedList);
@@ -193,9 +210,11 @@ export class TableSwitchChartComponent implements OnInit {
         this.selectedList = [];
 
         this.selectPanelList.forEach(d => {
-            if (d['isChecked']) {
-                this.selectedList.push(d['name']);
-            }
+            d['data'].forEach(m => {
+                if (m['isChecked']) {
+                    this.selectedList.push(m['name']);
+                }
+            })
         })
     }
 
@@ -218,10 +237,12 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.data.length == 0 || $.isEmptyObject(data.data)) {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                         this.error = "nodata";
-                    } else if (data.status != 0) {
+                    } else if (data.status === "-1") {
                         this.error = "error";
+                    } else if (data.status === "-2") {
+                        this.error = "dataOver";
                     } else {
                         this.error = "";
                         this.tableData = data.data;
@@ -254,10 +275,12 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.data.length == 0 || $.isEmptyObject(data.data)) {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                         this.error = "nodata";
-                    } else if (data.status != 0) {
+                    } else if (data.status === "-1") {
                         this.error = "error";
+                    } else if (data.status === "-2") {
+                        this.error = "dataOver";
                     } else {
                         this.error = "";
                         this.chartData = data.data;
