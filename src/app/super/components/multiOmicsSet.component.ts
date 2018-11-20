@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AjaxService } from '../service/ajaxService';
+import config from '../../../config';
+import { StoreService } from '../service/storeService';
 
 @Component({
     selector: 'app-multiOmicsSet',
@@ -41,6 +43,14 @@ import { AjaxService } from '../service/ajaxService';
         }
         .rationClassifyRow{
             margin-bottom:10px;
+            max-height: 400px;
+            overflow: auto;
+        }
+        .infoCol.rationColInfo{
+            width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space:nowrap
         }
         .infoCol{
             float:left;
@@ -69,6 +79,7 @@ export class MultiOmicsSetComponent implements OnInit {
 
     rations: string[] = [];
     curRationCol: string;
+    curRationColCategory: string;
 
     relationList: object[] = [];
     curRelation: string;
@@ -88,7 +99,8 @@ export class MultiOmicsSetComponent implements OnInit {
     curUpdateInfo: object;
 
     constructor(
-        private ajaxService: AjaxService
+        private ajaxService: AjaxService,
+        private storeService: StoreService
     ) { }
 
     ngOnInit() {
@@ -105,50 +117,62 @@ export class MultiOmicsSetComponent implements OnInit {
 
     //获取定量信息
     getRationClassify() {
-        this.rationClassifyList = [{
-            "name": "定量分类1",
-            "data": ["s1_fpkm1", "s1_fpkm2", "s1_fpkm3", "s1_fpkm4", "s1_fpkm5", "s1_fpkm6", "s1_fpkm7", "s1_fpkm8", "s1_fpkm9"]
-        },
-        {
-            "name": "定量分类2",
-            "data": ["s2_fpkm1", "s2_fpkm2", "s2_fpkm3", "s2_fpkm4", "s2_fpkm5", "s2_fpkm6", "s2_fpkm7", "s2_fpkm8", "s2_fpkm9", "s2_fpkm10"]
-        },
-        {
-            "name": "定量分类3",
-            "data": ["s3_fpkm1", "s3_fpkm2", "s3_fpkm3", "s3_fpkm4", "s3_fpkm5"]
-        },
-        {
-            "name": "定量分类4",
-            "data": ["s4_fpkm1", "s4_fpkm2", "s4_fpkm3"]
-        }
-        ];
+        this.ajaxService
+            .getDeferData({
+                url: `${config['javaPath']}/addQuantity`,
+                data: {
+                    "LCID": this.storeService.getStore('LCID'),
+                    "geneType": "gene"  // gene 或 transcript
+                }
+            })
+            .subscribe(
+                (data: any) => {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                        this.rationClassifyList = [];
+                    } else if (data.status === "-1") {
+                        this.rationClassifyList = [];
+                    } else if (data.status === "-2") {
+                        this.rationClassifyList = [];
+                    } else {
+                        this.rationClassifyList = data.data;
 
-        this.curRationClassify = this.rationClassifyList[0]['name'];
-        this.curUpdateClassify = this.rationClassifyList[0]['name'];
+                        this.curRationClassify = this.rationClassifyList[0]['name'];
+                        this.curUpdateClassify = this.rationClassifyList[0]['name'];
 
-        this.rationClassifyList.forEach((d) => {
-            if (d['name'] === this.curRationClassify) {
-                this.rations = d['data'];
-            }
+                        this.rationClassifyList.forEach((d) => {
+                            if (d['name'] === this.curRationClassify) {
+                                this.rations = d['data'];
+                            }
 
-            if (d['name'] === this.curUpdateClassify) {
-                this.rationList = d['data'];
-            }
+                            if (d['name'] === this.curUpdateClassify) {
+                                this.rationList = d['data'];
+                            }
 
-        })
-
+                        })
+                    }
+                },
+                error => {
+                    this.rationClassifyList = [];
+                    console.log(error);
+                }
+            )
     }
 
     //获取关联基因列表
     getRelations() {
-        let data = ["false", 'ggi', 'ppi', 'cp_exp'];
+        let data = this.storeService.getStore('relations');
+        data.unshift({
+            key: "false",
+            name: "false"
+        })
         data.forEach(d => {
             this.relationList.push({
-                name: d,
+                key: d['key'],
+                name: d['name'],
                 isDisabled: false
             })
         })
-        this.curRelation = this.relationList[0]['name'];
+        this.curRelation = this.relationList[0]['key'];
     }
 
     //关联基因change
@@ -156,8 +180,8 @@ export class MultiOmicsSetComponent implements OnInit {
         this.relationList.forEach(d => {
             d['isDisabled'] = false;
             this.infoList.forEach(m => {
-                if (d['name'] !== 'false') {
-                    if (d['name'] === m['relation']) {
+                if (d['key'] !== 'false') {
+                    if (d['key'] === m['relation']) {
                         d['isDisabled'] = true;
                     }
                 }
@@ -183,17 +207,19 @@ export class MultiOmicsSetComponent implements OnInit {
 
     // 添加面板，选择定量列
     rationColSelect(item) {
-        this.curRationCol = item;
+        this.curRationCol = item['key'];
+        this.curRationColCategory = item['category'];
     }
 
     //添加面板， 确定
     addConfirm() {
         let infoObj = {
             relation: this.curRelation,
-            rationCol: this.curRationCol
+            key: this.curRationCol,
+            category: this.curRationColCategory
         }
 
-        if (!this.isInArray(this.curRationCol, this.infoList, 'rationCol')['status'] && this.infoList.length < 5 && this.curRationCol) {
+        if (!this.isInArray(this.curRationCol, this.infoList, 'key')['status'] && this.infoList.length < 5 && this.curRationCol) {
             this.infoList.push(infoObj);
         }
 
@@ -225,7 +251,8 @@ export class MultiOmicsSetComponent implements OnInit {
 
     //修改面板，定量列选择
     updateRationColSelect(item) {
-        this.curUpdateInfo['rationCol'] = item;
+        this.curUpdateInfo['key'] = item['key'];
+        this.curUpdateInfo['category'] = item['category'];
         this.isShowUpdatePanel = false;
     }
 
