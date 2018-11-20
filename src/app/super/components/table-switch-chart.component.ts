@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { AjaxService } from "../../super/service/ajaxService";
+import { MessageService } from '../service/messageService';
 
 declare const $: any;
 
@@ -10,6 +11,7 @@ declare const $: any;
 })
 export class TableSwitchChartComponent implements OnInit {
     @ViewChild("tableContent") tableContent;
+    @ViewChild('selectPanel') selectPanel;
 
     @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
     @Input() tableUrl: string;  //表格api地址；isOnlyChart=true时可不传
@@ -69,8 +71,14 @@ export class TableSwitchChartComponent implements OnInit {
     selectedList: string[] = [];  //选中的数据
 
     constructor(
-        private ajaxService: AjaxService
-    ) { }
+        private ajaxService: AjaxService,
+        private messageService: MessageService
+    ) {
+
+        this.messageService.getResize().subscribe(res => {
+            if (res["message"] === "resize") this.scrollHeight();
+        });
+    }
 
     ngOnInit() {
         this.accuracyList = [
@@ -118,14 +126,26 @@ export class TableSwitchChartComponent implements OnInit {
             this.isHasSelectPanel = false;
             this.reGetData();
         }
-
     }
 
     // 初始化计算表滚动的高度
     ngAfterViewInit() {
         setTimeout(() => {
-            this.scroll["y"] = (this.tableContent.nativeElement.offsetHeight - 37) + 'px';
+            this.scrollHeight();
         }, 200);
+    }
+
+    scrollHeight() {
+        let tableContentH = this.tableContent.nativeElement.offsetHeight;
+        console.log(tableContentH)
+        let selectPanelH = 0;
+        if (this.isHasSelectPanel && this.selectPanelList.length) {
+            selectPanelH = this.selectPanel.nativeElement.offsetHeight;
+        }
+        console.log(selectPanelH);
+        let scrollH = (tableContentH - selectPanelH - 38) + 'px';
+        this.scroll['y'] = scrollH;
+        console.log(scrollH)
     }
 
     //获取选择面板数据
@@ -164,10 +184,10 @@ export class TableSwitchChartComponent implements OnInit {
             })
         });
 
-        this.selectPanelList.forEach((d)=> {
-            data.forEach((m)=> {
+        this.selectPanelList.forEach((d) => {
+            data.forEach((m) => {
                 if (d['type'] === m['type']) {
-                    m.data.forEach((k) =>{
+                    m.data.forEach((k) => {
                         d['data'].push({
                             name: k,
                             isChecked: false
