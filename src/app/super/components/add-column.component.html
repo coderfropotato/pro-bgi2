@@ -5,7 +5,7 @@
             <span *ngIf="show">{{'addThead.packUpButton' | translate}}</span>
         </button>
         <div class="tag-wrap" *ngIf="show">
-            <nz-tag class="tag" *ngFor="let d of selected;index as i;" [nzColor]="'rgb(82, 120, 248)'" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d.name}}</nz-tag>
+            <nz-tag class="tag" *ngFor="let d of selected;index as i;" [nzColor]="'rgb(82, 120, 248)'" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d.key}}</nz-tag>
         </div>
     </div>
     <div *ngIf="show && thead.length" class="items">
@@ -14,7 +14,7 @@
                 <ng-template #titleTemplate>
                     <span class="add-thead-head-item">{{ item.category}}<b *ngIf="selectCount[i]">{{selectCount[i]}}</b></span>
                 </ng-template>
-                <span class="head-item" [ngClass]="{'active':head.checked}" *ngFor="let head of item.children" (click)="toggleSelect(head)">{{head.name}}</span>
+                <span class="head-item" [ngClass]="{'active':head.checked}" *ngFor="let head of item.children" (click)="toggleSelect(head)">{{head.key}}</span>
             </nz-tab>
         </nz-tabset>
     </div>

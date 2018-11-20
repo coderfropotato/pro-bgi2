@@ -2,20 +2,7 @@ import { ToolsService } from "./../service/toolsService";
 import { MessageService } from "./../service/messageService";
 import { Observable, fromEvent } from "rxjs";
 import { StoreService } from "./../service/storeService";
-import {
-    Component,
-    OnInit,
-    Input,
-    ViewChildren,
-    TemplateRef,
-    OnChanges,
-    SimpleChanges,
-    AfterViewChecked,
-    AfterViewInit,
-    AfterContentInit,
-    ElementRef,
-    ViewChild
-} from "@angular/core";
+import { Component, OnInit, Input, ViewChildren, TemplateRef, OnChanges, SimpleChanges, AfterViewChecked, AfterViewInit, AfterContentInit, ElementRef, ViewChild, Output, EventEmitter } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
@@ -55,6 +42,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() selectItems: TemplateRef<any>; // 表格模板插槽?
     @Input() tableHeight: number = 0; // 计算后的表格高度?
     @Input() tableType:string = 'common'; // 表的类型  普通 还是 transform
+    @Input() emitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
+    @Output() emitBaseTheadChange:EventEmitter<any> = new EventEmitter();
+
+    @Output() baseTheadChange:EventEmitter<any> = new EventEmitter();
 
     mongoId:any = null;
     scroll: any = { x: "0", y: "0" };
@@ -251,8 +242,15 @@ export class GeneTableComponent implements OnInit, OnChanges {
                         this.error = "nodata";
                         return;
                     }
+
+                    // 是否需要发射表头
+                    if(this.emitBaseThead){
+                        this.emitBaseThead = false;
+                        this.emitBaseTheadChange.emit(this.emitBaseThead);
+                        this.baseTheadChange.emit({baseThead:responseData['data']['baseThead']});
+                    }
+
                     this.error = "";
-                    // this.loadingService.close(`#${this.parentId}`);
                     let arr = [];
                     this.head = responseData.data.baseThead;
 

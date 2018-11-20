@@ -52,6 +52,10 @@ export class DiffVennComponent implements OnInit {
     extendDefaultChecked:boolean;
     extendCheckStatusInParams:boolean;
 
+    compareGroup = {type:"compareGroup",data:this.storeService.getStore('diff_plan')};
+    selectComporeGroup = this.compareGroup['data'].slice(0,2);
+    selectNum = this.selectComporeGroup.length;
+
     activedCompareGroup:any[] = [];
     singleMultiSelect: object = {
         name: ""
@@ -69,7 +73,6 @@ export class DiffVennComponent implements OnInit {
     defaultTableHeight = 0;
     allThead = [];
     first = true;
-    transformFirst = true;
     constructor(
         private message: MessageService,
         private ajaxService: AjaxService,
@@ -89,6 +92,7 @@ export class DiffVennComponent implements OnInit {
         this.selectedData = [];
         this.allThead = this.storeService.getThead();
         this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
+
         this.vennEntity = {
             LCID: sessionStorage.getItem("LCID"),
             compareGroup: this.activedCompareGroup,
@@ -111,11 +115,7 @@ export class DiffVennComponent implements OnInit {
             leftChooseList: [], //upsetR参数
             upChooseList: [], //胜利n图选中部分参数
             compareGroup: this.activedCompareGroup, //比较组
-            addThead: [
-                { category: "expression", key: "fpkm_A1" },
-                { category: "expression", key: "fpkm_A2" },
-                { category: "expression", key: "fpkm_B1" }
-            ], //扩展列
+            addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             mongoId: null,
             sortKey: null, //排序
@@ -141,11 +141,7 @@ export class DiffVennComponent implements OnInit {
             leftChooseList: [], //upsetR参数
             upChooseList: [], //胜利n图选中部分参数
             compareGroup: this.activedCompareGroup, //比较组
-            addThead: [
-                { category: "expression", key: "fpkm_A1" },
-                { category: "expression", key: "fpkm_A2" },
-                { category: "expression", key: "fpkm_B1" }
-            ], //扩展列
+            addThead: [], //扩展列
             transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             mongoId: null,
             sortKey: null, //排序
@@ -170,6 +166,11 @@ export class DiffVennComponent implements OnInit {
         },30)
     }
 
+    addThead(select){
+        this.transformTable._addThead(select);
+    }
+
+    // 表格转换 确定
     confirm(){
         let checkParams = this.transformTable._getInnerParams();
         if(this.first){
@@ -188,6 +189,7 @@ export class DiffVennComponent implements OnInit {
         }
     }
 
+    // 表格转换返回
     back(){
         this.first = true;
     }
