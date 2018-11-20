@@ -92,7 +92,7 @@
                             <th style="text-align: center;" [attr.colspan]="head[0]['colspan']" [attr.rowspan]="head[0]['rowspan']"
                                 [nzLeft]="colLeftConfig[0]" [(nzSort)]="sortMap[head[0]['true_key']]" [nzShowSort]="head[0]['searchType']!='string'"
                                 [nzSortKey]="head[0]['true_key']" (nzSortChange)="sort(head[0]['true_key'],$event)">
-                                <span [nzTitle]="head[0]['hover']" nzPlacement="topCenter" nz-tooltip>{{head[0]['name']}}</span>
+                                <span [nzTitle]="head[0]['hover']?head[0]['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{head[0]['name']}}</span>
                                 <!-- get app-filter child emit function <recive> <delete> -->
                                 <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="head[0]['searchType']"
                                     (getData)="recive($event)" (deleteData)="delete($event)" [filterNamezh]="head[0]['name']"
@@ -102,7 +102,7 @@
                             <th style="text-align: center;" [nzSortKey]="head[i+1]['true_key']" [(nzSort)]="sortMap[head[i+1]['true_key']]"
                                 (nzSortChange)="sort(head[i+1]['true_key'],$event)" [nzShowSort]="!head[i+1]['children'].length && head[i+1]['searchType']!='string'"
                                 [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']" *ngFor="let h of head.slice(1);index as i;trackBy:identify">
-                                <span [nzTitle]="head[i+1]['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
+                                <span [nzTitle]="head[i+1]['hover']?head[i+1]['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
                                 <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="tableId"
                                     [searchType]="head[i+1]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)"
                                     [filterNamezh]="head[i+1]['name']" [filterName]="head[i+1]['true_key']"></app-filter>
@@ -113,7 +113,7 @@
                             <th class="two-level-thead" style="text-align: center;" *ngFor="let h of twoLevelHead.slice(0,head[0].children.length);index as i;trackBy:identify"
                                 [nzLeft]="colLeftConfig[i]" [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
                                 (nzSortChange)="sort(h['true_key'],$event)">
-                                <span [nzTitle]="h['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
+                                <span [nzTitle]="h['hover']?h['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
                                 <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']"
                                     (getData)="recive($event)" (deleteData)="delete($event)" [filterNamezh]="h['name']"
                                     [filterName]="h['true_key']"></app-filter>
@@ -122,7 +122,7 @@
                             <th style="text-align: center;" *ngFor="let h of twoLevelHead.slice(head[0].children.length);index as i;trackBy:identify"
                                 [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
                                 (nzSortChange)="sort(h['true_key'],$event)">
-                                <span [nzTitle]="h['hover']" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
+                                <span [nzTitle]="h['hover']?h['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
                                 <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']"
                                     (getData)="recive($event)" (deleteData)="delete($event)" [filterNamezh]="h['name']"
                                     [filterName]="h['true_key']"></app-filter>

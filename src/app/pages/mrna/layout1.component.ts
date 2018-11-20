@@ -8,11 +8,21 @@ import { ResizedEvent } from 'angular-resize-event/resized-event';
 declare const $: any;
 declare const d4: any;
 @Component({
+    selector: "app-layout-page",
+    template:`<app-layout1 *ngIf="pageModuleService['renderModule']"></app-layout1>`,
+    styles: []
+})
+export class Layout1Page{
+    constructor( private pageModuleService:PageModuleService){
+    }
+}
+
+@Component({
     selector: "app-layout1",
     templateUrl: "./layout1.component.html",
     styles: []
 })
-export class Layout1Component implements OnInit {
+export class Layout1Component implements OnInit,AfterViewInit {
     // 表格高度相关
     @ViewChild("left") left;
     @ViewChild("right") right;
@@ -51,9 +61,12 @@ export class Layout1Component implements OnInit {
         private storeService:StoreService,
         private pageModuleService:PageModuleService
         ) {
-            this.pageModuleService.as().subscribe(()=>{
-                this.ngOnInit();
-            })
+            // 订阅windowResize 重新计算表格滚动高度
+            this.message.getResize().subscribe(res => {
+                if (res["message"] === "resize") this.computedTableHeight();
+                // 基础图需要重画
+                this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
+            });
         }
 
     ngOnInit() {
@@ -67,13 +80,12 @@ export class Layout1Component implements OnInit {
 
         this.tableEntity["sample"] = this.sampleList[0];
         this.tableEntity["compare"] = this.compareList[0];
+    }
 
-        // 订阅windowResize 重新计算表格滚动高度
-        this.message.getResize().subscribe(res => {
-            if (res["message"] === "resize") this.computedTableHeight();
-            // 基础图需要重画
-            this.redrawChart(this.left.nativeElement.offsetWidth * 0.9);
-        });
+    ngAfterViewInit(){
+        setTimeout(()=>{
+            this.computedTableHeight();
+        },30)
     }
 
     // 表格上方功能区 resize重新计算表格高度

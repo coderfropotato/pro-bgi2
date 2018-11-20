@@ -1,5 +1,5 @@
 <!-- venn -->
-<div class="content row venn">
+<div class="content row venn" >
     <div #left class="left-layout column" [class.unexpand]="switch">
         <div class="left-top-layout">
             <h4>title</h4>
@@ -45,16 +45,36 @@
             </ng-template>
             <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
                 (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
-                [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate"
+                [apiEntity]="vennEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate"
                 (drawChartEmit)="drawVenn($event)" [flex]="true" [chartId]="'chartId22122'" [chartName]="'韦恩图'"></app-table-switch-chart>
         </div>
     </div>
-    <div #right class="right-layout" [class.expand]="switch">
+    <div #right class="right-layout" [class.expand]="switch" (click)="resize($event)">
         <div class="switch">
             <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></nz-switch>
         </div>
-        <div #func style="height:80px;background-color:#ccc;"></div>
-        <app-geneTable tableId="venn_table" [selectItems]="selectTemplate" [pageEntity]="bigTableEntity" [checkStatusInParams]="false"
-            url="" [tableHeight]="tableHeight" [defaultChecked]="false"></app-geneTable>
+        <div class="func" #func>
+            <!-- 增删列 -->
+            <app-add-column [thead]="allThead"></app-add-column>
+            <!-- 关系 -->
+            <!-- <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()"></app-gene-relative> -->
+            <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()"></app-gene-relative>
+        </div>
+
+        <!--表格转换 -->
+        <app-table-transformation class="no-outside-border" #transformTable
+            [(isFirst)]="first"
+            [defaultTableEntity]="defaultEntity"
+            [defaultTableUrl]="defaultUrl"
+            [defaultTableId]="defaultTableId"
+            [defaultTableDefaultChecked]="defaultDefaultChecked"
+
+            [extendTableEntity]="extendEntity"
+            [extendTableUrl]="extendUrl"
+            [extendTableId]="extendTableId"
+            [extendTableDefaultChecked]="extendDefaultChecked"
+
+            [tableHeight]="tableHeight"
+        ></app-table-transformation>
     </div>
 </div>

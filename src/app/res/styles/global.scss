@@ -270,6 +270,11 @@ button.btnActive {
     flex-direction: row;
 }
 
+.func{
+    background-color:#fff;
+    padding:12px;
+}
+
 .content {
     // flex 5
     width: 100%;
@@ -279,7 +284,7 @@ button.btnActive {
     display: flex;
     flex-direction: row;
     .left-layout {
-        overflow: auto;
+        overflow: hidden;
         flex: 3;
         margin-right: 16px;
         display: flex;
@@ -299,6 +304,7 @@ button.btnActive {
     }
     .right-layout {
         height: 100%;
+        overflow: hidden;
         flex: 2;
         transition: 0.2s all ease;
         @include module-style;
@@ -451,8 +457,13 @@ button.btnActive {
 }
 
 // 表格border
-.no-outside-border .table-content {
-    border: 0;
+.no-outside-border {
+    .table-content {
+        border: 0;
+    }
+    .error-component{
+        border: none;
+    }
 }
 
 // loading

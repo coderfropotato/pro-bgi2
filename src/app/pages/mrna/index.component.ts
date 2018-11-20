@@ -46,7 +46,7 @@ export class IndexComponent implements OnInit {
         this.ngxSpinnerService.show();
         (async () => {
             try {
-                // await this.getLcInfo();
+                await this.getLcInfo();
                 await this.getAddThead();
                 await this.getMenuList();
                 this.ready = true;

@@ -1,11 +1,27 @@
+import { StoreService } from "./../../super/service/storeService";
 import { PageModuleService } from "./../../super/service/pageModuleService";
 import { MessageService } from "./../../super/service/messageService";
 import { AjaxService } from "src/app/super/service/ajaxService";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { GlobalService } from "src/app/super/service/globalService";
 import config from "../../../config";
+import { ResizedEvent } from "angular-resize-event/resized-event";
+import { truncateSync } from "fs";
 declare const d3: any;
 declare const Venn: any;
+
+@Component({
+    selector: "app-venn-page",
+    template: `<app-venn-component *ngIf="pageModuleService['renderModule']"></app-venn-component>`,
+    styles: []
+})
+export class DiffVennPage {
+    constructor(
+        private pageModuleService:PageModuleService
+    ){}
+}
+
+
 @Component({
     selector: "app-venn-component",
     templateUrl: "./diffVenn.component.html",
@@ -17,14 +33,26 @@ export class DiffVennComponent implements OnInit {
     @ViewChild("right") right;
     @ViewChild("func") func;
     @ViewChild("tableSwitchChart") tableSwitchChart;
+    @ViewChild("transformTable") transformTable;
 
     switch: boolean = false;
     tableUrl: string;
     chartUrl: string;
 
     vennEntity: object;
-    bigTableEntity: object;
+    defaultEntity: object;
+    defaultUrl: string;
+    defaultTableId:string;
+    defaultDefaultChecked:boolean;
+    defaultCheckStatusInParams:boolean;
 
+    extendEntity: object;
+    extendUrl: string;
+    extendTableId:string;
+    extendDefaultChecked:boolean;
+    extendCheckStatusInParams:boolean;
+
+    activedCompareGroup:any[] = [];
     singleMultiSelect: object = {
         name: ""
     }; //单选
@@ -38,17 +66,17 @@ export class DiffVennComponent implements OnInit {
     selectedData: object[] = [];
 
     tableHeight = 0;
+    defaultTableHeight = 0;
+    allThead = [];
+    first = true;
+    transformFirst = true;
     constructor(
         private message: MessageService,
         private ajaxService: AjaxService,
         private globalService: GlobalService,
-        private pageModuleService: PageModuleService
+        private pageModuleService: PageModuleService,
+        private storeService: StoreService
     ) {
-        // 订阅gene/transcript
-        this.pageModuleService.as().subscribe(() => {
-            this.ngOnInit();
-        });
-
         // 订阅windowResize 重新计算表格滚动高度
         this.message.getResize().subscribe(res => {
             if (res["message"] === "resize") this.computedTableHeight();
@@ -57,14 +85,16 @@ export class DiffVennComponent implements OnInit {
 
     ngOnInit() {
         this.isMultiSelect = false;
+        this.first = true;
         this.selectedData = [];
-        this.tableUrl = `${config["javaPath"]}/Venn/diffGeneTable`;
+        this.allThead = this.storeService.getThead();
         this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
         this.vennEntity = {
             LCID: sessionStorage.getItem("LCID"),
-            compareGroup: ["A1-vs-B1", "A1-vs-C1", "C2-vs-A2"],
-            geneType: "gene",
+            compareGroup: this.activedCompareGroup,
+            geneType: this.pageModuleService.defaultModule,
             species: "aisdb",
+            version: this.storeService.getStore("reference"),
             diffThreshold: {
                 PossionDis: {
                     log2FC: 1,
@@ -72,19 +102,99 @@ export class DiffVennComponent implements OnInit {
                 }
             }
         };
-        this.bigTableEntity = {
-            LCID: sessionStorage.getItem("LCID"),
+
+        this.defaultUrl = `${config["javaPath"]}/Venn/diffGeneTable`;
+        this.defaultEntity = {
+            pageIndex: 1, //分页
             pageSize: 20,
-            compareGroup: ["A1-vs-B1", "A1-vs-C1", "C2-vs-A2"],
-            geneType: "gene",
-            species: "aisdb",
+            LCID: sessionStorage.getItem('LCID'), //流程id
+            leftChooseList: [], //upsetR参数
+            upChooseList: [], //胜利n图选中部分参数
+            compareGroup: this.activedCompareGroup, //比较组
+            addThead: [
+                { category: "expression", key: "fpkm_A1" },
+                { category: "expression", key: "fpkm_A2" },
+                { category: "expression", key: "fpkm_B1" }
+            ], //扩展列
+            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+            mongoId: null,
+            sortKey: null, //排序
+            sortValue: null,
+            chartType: null, //是否转化。矩阵为matrix
+            relations: ["ppi", "rbp", "cerna"], //关系组（简写，索引最后一个字段）
+            geneType: this.pageModuleService.defaultModule, //基因类型gene和transcript
+            species: "aisdb", //物种
             diffThreshold: {
-                PossionDis: {
-                    log2FC: 1,
-                    FDR: 0.001
-                }
-            }
+                PossionDis: { log2FC: 1, FDR: 0.001 }
+            },
+            version: this.storeService.getStore("reference"),
+            searchList: []
         };
+        this.defaultTableId = 'diff_venn_default_gene';
+        this.defaultDefaultChecked =true;
+
+        this.extendUrl = `${config["javaPath"]}/Venn/diffGeneTable`;
+        this.extendEntity = {
+            pageIndex: 1, //分页
+            pageSize: 20,
+            LCID: sessionStorage.getItem('LCID'), //流程id
+            leftChooseList: [], //upsetR参数
+            upChooseList: [], //胜利n图选中部分参数
+            compareGroup: this.activedCompareGroup, //比较组
+            addThead: [
+                { category: "expression", key: "fpkm_A1" },
+                { category: "expression", key: "fpkm_A2" },
+                { category: "expression", key: "fpkm_B1" }
+            ], //扩展列
+            transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+            mongoId: null,
+            sortKey: null, //排序
+            sortValue: null,
+            chartType: "matrix", //是否转化。矩阵为matrix
+            relations: ["ppi", "rbp", "cerna"], //关系组（简写，索引最后一个字段）
+            geneType: this.pageModuleService.defaultModule, //基因类型gene和transcript
+            species: "aisdb", //物种
+            diffThreshold: {
+                PossionDis: { log2FC: 1, FDR: 0.001 }
+            },
+            version: this.storeService.getStore("reference"),
+            searchList: []
+        };
+        this.extendTableId = 'diff_venn_extend_gene';
+        this.extendDefaultChecked =true;
+    }
+
+    ngAfterViewInit() {
+        setTimeout(()=>{
+            this.computedTableHeight();
+        },30)
+    }
+
+    confirm(){
+        let checkParams = this.transformTable._getInnerParams();
+        if(this.first){
+            this.extendEntity['checkStatus']=checkParams['others']['checkStatus'];
+            this.extendEntity['unChecked']=checkParams['others']['excludeGeneList']['unChecked'];
+            this.extendEntity['checked']=checkParams['others']['excludeGeneList']['checked'];
+            this.extendEntity['mongoId'] = checkParams['mongoId'];
+            this.first = false;
+        }else{
+            console.log(checkParams);
+            this.transformTable._initTableStatus();
+            this.transformTable._setExtendParamsWithoutRequest('checkStatus',checkParams['others']['checkStatus']);
+            this.transformTable._setExtendParamsWithoutRequest('checked',checkParams['others']['excludeGeneList']['checked']);
+            this.transformTable._setExtendParamsWithoutRequest('unChecked',checkParams['others']['excludeGeneList']['unChecked']);
+            this.transformTable._getData();
+        }
+    }
+
+    back(){
+        this.first = true;
+    }
+
+    // 表格上方功能区 resize重新计算表格高度
+    resize(event: ResizedEvent) {
+        this.computedTableHeight();
     }
 
     drawVenn(data) {
@@ -96,9 +206,11 @@ export class DiffVennComponent implements OnInit {
     }
 
     computedTableHeight() {
-        this.tableHeight =
-            this.right.nativeElement.offsetHeight -
-            this.func.nativeElement.offsetHeight;
+        try {
+            this.tableHeight =
+                this.right.nativeElement.offsetHeight -
+                this.func.nativeElement.offsetHeight;
+        } catch (error) {}
     }
 
     //单、多选change

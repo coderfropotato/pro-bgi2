@@ -1,13 +1,26 @@
-import { ToolsService } from './../service/toolsService';
+import { ToolsService } from "./../service/toolsService";
 import { MessageService } from "./../service/messageService";
 import { Observable, fromEvent } from "rxjs";
 import { StoreService } from "./../service/storeService";
-import { Component, OnInit, Input, ViewChildren, TemplateRef, OnChanges, SimpleChanges, AfterViewChecked, AfterViewInit, AfterContentInit, ElementRef, ViewChild } from "@angular/core";
+import {
+    Component,
+    OnInit,
+    Input,
+    ViewChildren,
+    TemplateRef,
+    OnChanges,
+    SimpleChanges,
+    AfterViewChecked,
+    AfterViewInit,
+    AfterContentInit,
+    ElementRef,
+    ViewChild
+} from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
 import { AjaxService } from "../service/ajaxService";
-import { NzNotificationService } from 'ng-zorro-antd';
+import { NzNotificationService } from "ng-zorro-antd";
 
 declare const $: any;
 /**
@@ -36,12 +49,14 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() defaultChecked: boolean = false; // 基因表的默认选中还是不选中
     @Input() tableId: string; // 表的id
     @Input() url: string; // 表格的请求api
-    @Input() pageEntity: object;  // 表格的请求参数
+    @Input() pageEntity: object; // 表格的请求参数
     @Input() checkStatusInParams: boolean; // 是否把表的gene选中状态放在表的查询参数里面 默认false
     @Input() fileName: string; // 表格下载的名称?
     @Input() selectItems: TemplateRef<any>; // 表格模板插槽?
     @Input() tableHeight: number = 0; // 计算后的表格高度?
+    @Input() tableType:string = 'common'; // 表的类型  普通 还是 transform
 
+    mongoId:any = null;
     scroll: any = { x: "0", y: "0" };
     isLoading: boolean = true;
     @ViewChildren("child")
@@ -108,6 +123,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
     rootHtmlString: object[] = [];
 
+    isFirst = true;
+
     constructor(
         private translate: TranslateService,
         private globalService: GlobalService,
@@ -116,8 +133,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
         private storeService: StoreService,
         private el: ElementRef,
         private message: MessageService,
-        private notify:NzNotificationService,
-        private toolsService:ToolsService
+        private notify: NzNotificationService,
+        private toolsService: ToolsService
     ) {
         let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
@@ -195,6 +212,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
     // 获取表格数据
     getRemoteData(reset: boolean = false): void {
         // this.loadingService.open(`#${this.parentId}`);
+        console.log(this.checked);
+        console.log(this.unChecked);
         this.isLoading = true;
 
         if (reset) {
@@ -207,21 +226,32 @@ export class GeneTableComponent implements OnInit, OnChanges {
             this.tableEntity["unChecked"] = this.unChecked;
         }
 
+
         let ajaxConfig = {
             url: this.url,
             data: this.tableEntity
         };
 
+        // 如果是转换表把上次的mongoid 放在下一次的参数里面
+        if(this.tableType==='transform') this.tableEntity['mongoId'] = this.mongoId;
+
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
             (responseData: any) => {
+                // 如果需要保存基因集合id 并且 返回值有id这个key （针对转换表) 就保存下来
+                this.isLoading = false;
                 if (responseData.status == "0") {
-                    this.isLoading = false;
-                    if(!responseData.data['rows'].length){
+                    if(this.tableType === 'transform'){
+                        this.tableEntity['transform'] = false;
+                        this.tableEntity['chartType'] = "matrix";
+                        this.mongoId = responseData['data']['mongoId'];
+                        if(this.isFirst) this.applyOnceBeforeStatusThenReset();
+                    }
+                    if (!responseData.data["rows"].length) {
                         this.total = 0;
                         this.error = "nodata";
                         return;
                     }
-                    this.error = '';
+                    this.error = "";
                     // this.loadingService.close(`#${this.parentId}`);
                     let arr = [];
                     this.head = responseData.data.baseThead;
@@ -240,8 +270,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     this.scroll["x"] = this.totalWidth;
                     // 根据表头生成sortmap
                     this.generatorSortMap();
-                    if (responseData.data.total != this.total)
-                        this.tableEntity["pageIndex"] = 1;
+                    if (responseData.data.total != this.total) this.tableEntity["pageIndex"] = 1;
                     this.total = responseData.data.total;
                     this.dataSet = responseData.data.rows;
                     // 标志key
@@ -291,16 +320,16 @@ export class GeneTableComponent implements OnInit, OnChanges {
                         this.computedStatus();
                         this.getCollection();
                     });
+                    this.isFirst = false;
                 } else {
                     // this.loadingService.close(`#${this.parentId}`);
-                    this.isLoading = false;
                     this.total = 0;
                     this.error = "error";
                 }
 
                 setTimeout(() => {
                     this.computedTbody(this.tableHeight);
-                }, 0);
+                }, 30);
             },
             err => {
                 // this.loadingService.close(`#${this.parentId}`);
@@ -336,6 +365,12 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.checked = [];
         this.unChecked = [];
         this.checkStatus = this.defaultChecked;
+
+        if(this.tableType==='transform'){
+            this.tableEntity['transform'] = true;
+            this.tableEntity['chartType'] = 'matrix';
+            this.tableEntity['mongoId'] = this.mongoId;
+        }
     }
 
     // 选中框
@@ -416,6 +451,16 @@ export class GeneTableComponent implements OnInit, OnChanges {
     getCollection() {
         this.checked = Object.keys(this.checkedMap);
         this.unChecked = Object.keys(this.unCheckedMap);
+    }
+
+    applyOnceBeforeStatusThenReset(){
+        this.checkedMap = {};
+        this.unCheckedMap = {};
+        this.checked = [];
+        this.unChecked = [];
+        if('checkStatus' in this.tableEntity) this.tableEntity['checkStatus'] = this.defaultChecked;
+        if('checked' in this.tableEntity) this.tableEntity['checked'] = [];
+        if('unChecked' in this.tableEntity) this.tableEntity['unChecked'] = [];
     }
 
     // 重置排序状态
@@ -609,8 +654,15 @@ export class GeneTableComponent implements OnInit, OnChanges {
     }
 
     refresh() {
+        if(this.tableType==='transform'){
+            this.tableEntity['mongoId'] = this.mongoId;
+            this.tableEntity['transform'] = false;
+            this.tableEntity['chartType'] = 'matrix'
+        }
         this.getRemoteData();
     }
+
+
 
     /**
      * @description  根据表头层级关系计算表头宽度
@@ -688,9 +740,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
     computedTbody(tableHeight) {
         if(tableHeight){
             // 固定头的高度
-            let head = $(
-                `#${this.tableId} .ant-table-fixed .ant-table-thead`
-            ).outerHeight();
+            let head = $(`#${this.tableId} .ant-table-fixed .ant-table-thead`).outerHeight();
             // 分页的高度
             let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
             // 筛选条件的高度
@@ -698,7 +748,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
             // 表头工具栏的高度
             let tools = $(`#${this.tableId} .table-thead`).outerHeight();
             let res = tableHeight - head - bottom - filter - tools - 2;
-
             $(`#${this.tableId} .ant-table-body`).css("height", `${res}px`);
             this.scroll["y"] = `${res}px`;
         }
@@ -715,15 +764,15 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @date 2018-11-13
      * @memberof GeneTableComponent
      */
-    analysis(){
-        if(!this.checked.length){
-            this.notify.blank("tips：", '请选择需要分析的基因', {
-                nzStyle:{"width":"200px"},
-                nzDuration:2000
-              })
-        }else{
+    analysis() {
+        if (!this.checked.length) {
+            this.notify.blank("tips：", "请选择需要分析的基因", {
+                nzStyle: { width: "200px" },
+                nzDuration: 2000
+            });
+        } else {
             let params = this._getInnerStatusParams();
-            this.toolsService.showTools(this.total,params);
+            this.toolsService.showTools(this.total, params);
         }
     }
 
@@ -734,9 +783,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @param {*} object
      * @memberof GeneTableComponent
      */
-    _setParamsOfObject(object){
-        if(!$.isEmptyObject(object)){
-            for(let key in object){
+    _setParamsOfObject(object) {
+        if (!$.isEmptyObject(object)) {
+            for (let key in object) {
                 this.tableEntity[key] = object[key];
             }
             this.getRemoteData();
@@ -783,6 +832,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 val.selectType === filterType &&
                 val.filterNamezh === filterNamezh
             ) {
+                alert('delete');
                 val._outerDelete(filterName, filterNamezh, filterType);
             }
         });
@@ -933,8 +983,13 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     checked: this.checked,
                     unChecked: this.unChecked
                 }
-            }
+            },
+            mongoId:this.mongoId || null
         };
+    }
+
+    _getData(){
+        this.getRemoteData();
     }
 
     deleteSearchListItemOrderByAddThead() {

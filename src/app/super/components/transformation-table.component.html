@@ -1,18 +1,12 @@
 <!-- 增删列demo -->
-<app-add-column #addColumn [thead]="allThead" (addThead)="_addThead($event)" (clearThead)="_clearThead()"></app-add-column>
 <div class="transformation-table-component">
     <h4 *ngIf="geneCollectionId" (click)="deleteGeneCollection()">geneCollectionId:{{geneCollectionId}}</h4>
     <div *ngIf="isFirst" id="default-gene-table">
-        <p style="text-align:center;">默认表</p>
         <app-geneTable #defaultTable [url]="defaultTableUrl" [pageEntity]="defaultTableEntity" [tableId]="defaultTableId"
-             [defaultChecked]="defaultTableDefaultChecked" [checkStatusInParams]="defaultTableCheckStatusInParams"></app-geneTable>
+             [defaultChecked]="defaultTableDefaultChecked" [tableHeight]="tableHeight" [checkStatusInParams]="defaultTableCheckStatusInParams"></app-geneTable>
     </div>
     <div *ngIf="!isFirst" id="extend-gene-table">
-        <p style="text-align:center;">转换表</p>
         <app-geneTable #extendTable [url]="extendTableUrl" [pageEntity]="extendTableEntity" [tableId]="extendTableId"
-            [defaultChecked]="extendTableDefaultChecked" [checkStatusInParams]="extendTableCheckStatusInParams"></app-geneTable>
-    </div>
-    <div class="relative" style="display:flex;justify-content:flex-end;">
-        <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()"></app-gene-relative>
+            [defaultChecked]="extendTableDefaultChecked" [tableHeight]="tableHeight" [checkStatusInParams]="extendTableCheckStatusInParams" [tableType]="'transform'"></app-geneTable>
     </div>
 </div>
