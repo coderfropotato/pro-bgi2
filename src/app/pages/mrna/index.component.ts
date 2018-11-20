@@ -259,30 +259,11 @@ export class IndexComponent implements OnInit {
                     data => {
                         this.allThead = [
                             {
-                                category: "基因属性",
+                                category: "expression",
                                 children: [
-                                    { name: "Other Gene ID" },
-                                    { name: "Transcript" },
-                                    { name: "Gene Type" },
-                                    { name: "Transcripts Number" },
-                                    { name: "Start" }
-                                ]
-                            },
-                            {
-                                category: "样本表达量",
-                                children: [
-                                    { name: "HepG2con1" },
-                                    { name: "HepG2con2" },
-                                    { name: "HepG2con3" },
-                                    { name: "Huh7con1" }
-                                ]
-                            },
-                            {
-                                category: "注释",
-                                children: [
-                                    { name: "TFs" },
-                                    { name: "Kegg Orthology" },
-                                    { name: "GO" }
+                                    { key: "fpkm_A1" },
+                                    { key: "fpkm_A2" },
+                                    { key: "fpkm_B1 Type" }
                                 ]
                             }
                         ];

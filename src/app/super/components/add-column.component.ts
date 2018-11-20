@@ -61,7 +61,7 @@ export class AddColumnComponent implements OnInit {
                         this.isInArr(
                             val["children"][i],
                             this.beforeSelected,
-                            "name"
+                            "key"
                         )
                     ) {
                         status = true;
@@ -110,6 +110,7 @@ export class AddColumnComponent implements OnInit {
         this.thead.forEach(val => {
             val["children"].forEach(v => {
                 v.checked = false;
+                v['category'] = val['category'];
             });
         });
     }

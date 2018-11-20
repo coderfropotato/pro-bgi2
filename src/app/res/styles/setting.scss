@@ -44,7 +44,7 @@ $min-width: 1350px; // 页面最小宽度
 
 // 每一格小模块的样式
 @mixin module-style {
-    overflow: auto;
+    // overflow: auto;
     box-shadow: $boxshadow;
     background-color: #fff;
 }

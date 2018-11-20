@@ -34,14 +34,13 @@ export class TransformationTableComponent implements OnInit {
     @Input() extendTableDefaultChecked;
     // 转换表的 gene选中状态是否放在参数里面
     @Input() extendTableCheckStatusInParams;
+    @Input() tableHeight;
+    @Input() isFirst;
 
     @ViewChild("defaultTable") defaultTable;
     @ViewChild("extendTable") extendTable;
-    @ViewChild("addColumn") addColumn;
-    @ViewChild("relative") relative;
 
 
-    isFirst: boolean = true;
     defaultUrl: string = "";
     params: object;
     url: string;
@@ -61,90 +60,6 @@ export class TransformationTableComponent implements OnInit {
     ngOnInit() {}
 
     /**
-     * @description 转换表格数据
-     * @author Yangwd<277637411@qq.com>
-     * @memberof TransformationTableComponent
-     * 查询转换表格数据 需要在原表格参数基础上 加上 基因集和原始表的api名称
-     * 需要重置增删列
-     */
-    confirm() {
-        this.currentGeneTable = this.isFirst ? this.defaultTable : this.extendTable;
-        // 获取当前关系
-        let curConnects = this.relative._getRelative();
-        // 获取当前表的内部状态
-        let tableInnerStatus = this.currentGeneTable._getInnerStatusParams();
-        let ajaxData = {
-            checkStatus:tableInnerStatus['others']['checkStatus'],
-            checked:tableInnerStatus['others']['excludeGeneList']['checked'],
-            unChecked:tableInnerStatus['others']['excludeGeneList']['unChecked'],
-            connects:tableInnerStatus['tableEntity']['connects']
-        }
-        for(let key in tableInnerStatus["tableEntity"]){
-            ajaxData[key] = tableInnerStatus["tableEntity"][key];
-        }
-        // {
-        //     // geneListId: this.geneCollectionId,
-        //     maskGene: tableInnerStatus["others"],
-        //     // tableEntity: tableInnerStatus["tableEntity"],
-        //     connects:["ppi","coex"]
-        // }
-        // 获取基因集id
-        this.ajaxService
-            .getDeferData({
-                data: ajaxData,
-                url: "http://localhost:8086/getGeneList"
-            })
-            .subscribe(
-                data => {
-                    this.geneCollectionId = data["id"];
-                    // 是否是第一次转换 第一次转换就把id集合穿进去
-                    if (this.isFirst) {
-                        this.extendTableEntity[ "geneListId" ] = this.geneCollectionId;
-                        this.extendTableEntity[ "connects" ] = curConnects;
-                    } else {
-                        // 第二次转换就设置参数 并 重置表格状态
-                        // 把获取到的基因集id放在下一个表格的参数里面
-                        this.currentGeneTable.initAllTableStatus();
-                        this.currentGeneTable._setParamsOfEntityWithoutRequest( "isMatchAll", false );
-                        this.currentGeneTable._setParamsOfEntityWithoutRequest( "connects", curConnects );
-                        this.currentGeneTable._setParamsOfEntity( "geneListId", this.geneCollectionId );
-                    }
-                    // 重置增删列状态
-                    this.addColumn._resetStatusWithoutEmit();
-                    // 切换表格
-                    this.isFirst = false;
-                    // 切换完成重新指定当前表格
-                    setTimeout(() => {
-                        this.currentGeneTable = this.isFirst ? this.defaultTable : this.extendTable;
-                    }, 30);
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-    }
-
-    /**
-     * @description 返回初始表格
-     * @author Yangwd<277637411@qq.com>
-     * @memberof TransformationTableComponent
-     */
-    back() {
-        this.geneCollectionId = null;
-        this.addColumn._resetStatusWithoutEmit();
-        this.isFirst = true;
-    }
-
-    /**
-     * @description 删除当前表格显示的基因
-     * @author Yangwd<277637411@qq.com>
-     * @memberof TransformationTableComponent
-     */
-    deleteGeneCollection() {
-        this.currentGeneTable._setParamsOfEntity("isMatchAll", true);
-    }
-
-    /**
      * @description 外部更新addThead查询条件并发请求
      * @author Yangwd<277637411@qq.com>
      * @date 2018-10-31
@@ -157,5 +72,32 @@ export class TransformationTableComponent implements OnInit {
 
     _clearThead() {
         this.isFirst ? this.defaultTable._addThead([]) : this.extendTable._addThead([]);
+    }
+
+    _setExtendParams(key,value){
+        this.extendTable._setParamsOfEntity(key,value);
+    }
+
+    _setExtendParamsWithoutRequest(key,value){
+        this.extendTable._setParamsOfEntityWithoutRequest(key,value);
+    }
+
+    _setDefaultParamsWithoutRequest(key,value){
+        this.defaultTable._setParamsOfEntityWithoutRequest(key,value);
+    }
+    _setDefaultParams(key,value){
+        this.defaultTable._setParamsOfEntity(key,value);
+    }
+
+    _initTableStatus(){
+        this.isFirst ? this.defaultTable.initAllTableStatus() : this.extendTable.initAllTableStatus();
+    }
+
+    _getInnerParams(){
+        return this.isFirst ? this.defaultTable._getInnerStatusParams() : this.extendTable._getInnerStatusParams();
+    }
+
+    _getData(){
+        this.isFirst ? this.defaultTable._getData() : this.extendTable._getData();
     }
 }

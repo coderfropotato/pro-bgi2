@@ -31,6 +31,8 @@ export class AccuracyPipe implements PipeTransform {
                 }
             } else if (type == "int") {
                 return this.toThousands(value);
+            } else{
+                return value;
             }
         }
     }
