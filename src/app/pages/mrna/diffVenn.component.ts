@@ -1,4 +1,5 @@
 import { PageModuleService } from "./../../super/service/pageModuleService";
+import { StoreService } from "./../../super/service/storeService";
 import { MessageService } from "./../../super/service/messageService";
 import { AjaxService } from "src/app/super/service/ajaxService";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
@@ -22,16 +23,35 @@ export class DiffVennComponent implements OnInit {
     tableUrl: string;
     chartUrl: string;
 
-    vennEntity: object;
-    bigTableEntity: object;
+    
+    vennEntity: object = {};
+    bigTableEntity: object = {};
 
+    tableEntity: object = {};
+    selectPanelData: object[] = [];
+    venn_or_upsetR:boolean;
+
+    p_show:boolean;//设置里面的PossionDis
+    p_log2FC:string;
+    p_FDR:string;
+    
+    n_show:boolean;//设置里面的NOIseq
+    n_log2FC:string;
+    n_proba:string;
+
+    //单选
     singleMultiSelect: object = {
         name: ""
-    }; //单选
+    }; 
+
+    //多选
     doubleMultiSelect: object = {
         bar_name: "",
         total_name: ""
-    }; //多选
+    }; 
+    pageEntity: object = {
+        pageSize: 20
+    };
 
     chart: any;
     isMultiSelect: boolean;
@@ -40,6 +60,7 @@ export class DiffVennComponent implements OnInit {
     tableHeight = 0;
     constructor(
         private message: MessageService,
+        private store:StoreService,
         private ajaxService: AjaxService,
         private globalService: GlobalService,
         private pageModuleService: PageModuleService
@@ -60,6 +81,31 @@ export class DiffVennComponent implements OnInit {
         this.selectedData = [];
         this.tableUrl = `${config["javaPath"]}/Venn/diffGeneTable`;
         this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
+
+        this.p_show=this.store.getStore("diff_threshold").hasOwnProperty('PossionDis'); //设置里面的PossionDis
+        this.p_log2FC=this.p_show?this.store.getStore("diff_threshold").PossionDis.log2FC:'';
+        this.p_FDR=this.p_show?this.store.getStore("diff_threshold").PossionDis.FDR:'';
+        
+        this.n_show=this.store.getStore("diff_threshold").hasOwnProperty('NOIseq');//设置里面的NOIseq
+        this.n_log2FC=this.n_show?this.store.getStore("diff_threshold").NOIseq.log2FC:'';
+        this.n_proba=this.n_show?this.store.getStore("diff_threshold").NOIseq.probability:'';
+        
+        this.selectPanelData=[//差异面板的数据
+            {
+                type: "compareGroup",
+                data: this.store.getStore("diff_plan")
+            }
+        ];
+
+        this.tableEntity = {//查询参数
+            LCID: this.store.getStore("LCID"),
+            compareGroup: this.store.getStore("diff_plan"),
+            geneType: "gene",
+            species: this.store.getStore("genome"),
+            diffThreshold: this.store.getStore("diff_threshold")
+        };
+
+
         this.vennEntity = {
             LCID: sessionStorage.getItem("LCID"),
             compareGroup: ["A1-vs-B1", "A1-vs-C1", "C2-vs-A2"],
@@ -87,8 +133,32 @@ export class DiffVennComponent implements OnInit {
         };
     }
 
-    drawVenn(data) {
-        this.showUpSetR(data);
+    getVennOrUpsetR() { //二次查询
+        this.ajaxService
+            .getDeferData({
+                url: `${config["javaPath"]}/Venn/diffGeneGraph`,
+                data: this.tableEntity
+            })
+            .subscribe(
+                data => {
+                    this.drawVenn(data['data']);
+                },
+                error => {
+                    console.log(error);
+                }
+
+            );
+    }
+
+    drawVenn(data) {//封装组件事件返回调用函数+二次调用显示数据
+        if (data["total"].length > 5) {
+            this.venn_or_upsetR = true;
+            this.showUpSetR(data);
+        } else {
+            this.venn_or_upsetR = false;
+            this.showVenn(data);
+        }
+        
     }
 
     switchChange(status) {
@@ -101,23 +171,54 @@ export class DiffVennComponent implements OnInit {
             this.func.nativeElement.offsetHeight;
     }
 
+    OnChange(value: string): void{//设置里面的PossionDis的log2FC
+        this.p_log2FC=value;
+    }
+    OnChange2(value: string): void{//设置里面的PossionDis的FDR
+        this.p_FDR=value;
+    }
+
+    setConfirm(){ //设置下拉面板点击确定时候的两个参数
+        this.tableEntity['diff_threshold'].log2FC=this.p_log2FC;
+        this.tableEntity['diff_threshold'].FDR=this.p_FDR;
+    }
+
     //单、多选change
     multiSelectChange() {
-        if (this.isMultiSelect) {
-            console.log(this.singleMultiSelect);
-            console.log(this.doubleMultiSelect);
-        } else {
-            console.log(this.singleMultiSelect);
-            console.log(this.doubleMultiSelect);
+        
+    }
+
+    //多选确定,可以选多个柱子
+    multipleConfirm() { 
+        if(this.venn_or_upsetR){//upsetR确定
+            if (this.isMultiSelect) {//多选
+                console.log(this.doubleMultiSelect);
+            } else {
+                console.log(this.singleMultiSelect);
+            }
+        }else{//venn确定
+
         }
-        //console.log(this.isMultiSelect)
+        
     }
 
-    //多选确定
-    multipleConfirm() {
-        //console.log();
+    //选择面板，默认选中数据
+    defaultSelectList(data) {
+        console.log(data)
     }
 
+    //选择面板 确定筛选的数据
+    selectConfirm(data) {
+        //console.log(data)
+        this.tableEntity['compareGroup'] = data;
+        this.getVennOrUpsetR();
+    }
+
+    redrawChart(width, height?) {
+        this.isMultiSelect = false;
+    }
+
+    //显示venn图
     showVenn(data) {
         let tempA = data.rows.map(o => {
             return { CompareGroup: o.name, Count: o.value };
@@ -134,15 +235,17 @@ export class DiffVennComponent implements OnInit {
         let oVenn = new Venn({ id: "chartId22122" })
             .config({
                 data: tempR,
-                compareGroup: ["A1-vs-B1", "A1-vs-C1", "C2-vs-A2"]
+                compareGroup: this.tableEntity['compareGroup']
             })
-            .drawVenn();
+            .drawVenn()
+            .on('click', function (d) {
+                console.log(d);
+            });
     }
-
+    //显示upsetR图
     showUpSetR(data) {
         document.getElementById("chartId22122").innerHTML = "";
         let _self = this;
-
         let selectBar = [];
         let tempBar = data.rows;
         for (let index = 0; index < tempBar.length; index++) {
@@ -154,57 +257,66 @@ export class DiffVennComponent implements OnInit {
 
         let t_chartID = document.getElementById("chartId22122");
         let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-            <style>
-                .MyRect {
-                    cursor: pointer;
-                }
-
-                .MyCircle {
-                    fill: gray;
-                }
-                .axis_x1{
-                    display: none;
-                }
-                .axis_y1{
-                    /* display: none; */
-                }
-                .axis_x2{
-                    /* display: none; */
-                }
-                .axis_y2{
-                    display: none;
-                }
-                .axis_xCircle {
-                    display: none;
-                }
-                .axis_yCircle {
-                    display: none;
-                }
-                .MyText{
-                    cursor: pointer;
-                }
-
-                .MyRect3{
-                    cursor: pointer;
-                }
-                .textStyle{
-                    font-size: 15px;
-                    cursor: pointer;
-                }
-                .tooltip {
-                    font-family: simsun;
-                    font-size: 16px;
-                    width: 120;
-                    height: auto;
-                    position: absolute;
-                    text-align: center;
-                    border-style: solid;
-                    border-width: 1px;
-                    background-color: white;
-                    border-radius: 5px;
-                }
-            </style>
-        </svg>`;
+         <style>
+             .MyRect {
+                 cursor: pointer;
+             }
+         
+             .MyCircle {
+                 //fill: gray;
+             }
+             .axis_x1{
+                 display: none;
+             }
+             .axis_y1{
+                 /* display: none; */
+             }
+             .axis_x2{
+                 /* display: none; */
+             }
+             .axis_y2{
+                   display: none;
+             }
+             .axis_xk{
+                
+             }
+             .axis_yk{
+                display: none;
+             }
+             .axis_xCircle {
+                 display: none;
+             }
+             .axis_yCircle {
+                 display: none;
+             }
+             .MyText{
+                 cursor: pointer;
+                 overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+             }
+         
+             .MyRect3{
+                 cursor: pointer;
+             }
+             .textStyle{
+                 font-size: 15px;
+                 cursor: pointer;
+             }
+             .tooltip {
+                 font-family: simsun;
+                 font-size: 16px;
+                 width: 120;
+                 height: auto;
+                 position: absolute;
+                 text-align: center;
+                 border-style: solid;
+                 border-width: 1px;
+                 background-color: white;
+                 border-radius: 5px;
+             }
+         </style>
+     </svg>`;
         t_chartID.innerHTML = str;
 
         let List = {
@@ -223,23 +335,24 @@ export class DiffVennComponent implements OnInit {
             total_value.push(List.total[i].value);
         }
 
-        let max_name = Math.max.apply(null, total_name_max);
-        let target_name = "";
-        for (let i = 0; i < total_name_max.length; i++) {
-            if (max_name == total_name_max[i]) {
-                target_name = total_name[i];
+        let max_name=Math.max.apply(null, total_name_max);
+        let target_name='';
+        for(let i = 0; i < total_name_max.length; i++){
+            if(max_name==total_name_max[i]){
+                target_name=total_name[i];
                 break;
             }
         }
 
-        let txt = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "text"
-        );
-        txt.setAttribute("id", "mtext");
-        txt.textContent = target_name;
-        t_chartID.appendChild(txt);
-        console.log(document.getElementById("mtext").style.width);
+        let mText = d3.select("#chartId22122").append('svg').append('text').text(target_name).attr('class','mText');
+        let left_name_length = mText.nodes()[0].getBBox().width;
+        //let left_name_length = document.querySelector(".mText").getBBox().width;
+        if(left_name_length>100){
+            left_name_length=100;
+        }
+        mText.remove();
+        let kong_name_right=10;
+        //console.log(left_name_length)
 
         //上侧数据
         let bar_name = [];
@@ -267,9 +380,10 @@ export class DiffVennComponent implements OnInit {
         let tempThat;
         let tempP;
         let tempCricle; //圆
+        let tempThatTwo; 
 
         let padding1 = { left: 60, right: 30, top: 20, bottom: 10 };
-        let padding2 = { left: 20, right: 80, top: 0, bottom: 30 };
+        let padding2 = { left: 0, right: 10, top: 0, bottom: 30 };
 
         let svg_height =
             300 +
@@ -293,42 +407,43 @@ export class DiffVennComponent implements OnInit {
 
         drawSvg();
         drawSvg2();
+        drawSvgName();
         drawSvg3();
 
         function drawSvg() {
-            let width = d3_width + padding1.left + padding1.right;
-            let height = 300;
+            let width1 = d3_width + padding1.left + padding1.right;
+            let height1 = 300;
 
             let svg1 = d3
                 .select("#svg")
                 .append("svg")
                 .attr("x", "320")
                 .attr("y", "0")
-                .attr("width", width)
-                .attr("height", height)
-                .attr("class", "svg1");
-            let xScale = d3
+                .attr("width", width1)
+                .attr("height", height1)
+                .attr("class","svg1");
+            let xScale1 = d3
                 .scaleBand()
                 .domain(bar_name)
                 .range([0, d3_width])
                 .paddingOuter(0.1)
                 .paddingInner(1);
-            let yScale = d3
+            let yScale1 = d3
                 .scaleLinear()
                 .domain([0, d3.max(bar_value)])
-                .range([height - padding1.bottom - padding1.top, 0]);
+                .range([height1 - padding1.bottom - padding1.top, 0]);
 
-            d3_xScale = xScale;
-            let xAxis = d3.axisBottom(xScale);
-            let yAxis = d3.axisLeft(yScale).ticks(5);
+            d3_xScale = xScale1;
+            let xAxis1 = d3.axisBottom(xScale1);
+            let yAxis1 = d3.axisLeft(yScale1).ticks(5);
 
-            let rects = svg1
-                .selectAll("MyRect1")
+            let rects1 = svg1.selectAll("MyRect1")
                 .data(bar_value)
                 .enter()
                 .append("g")
-                .on("mouseover", d => {
-                    _self.globalService.showPopOver(d3.event, d);
+                .on("mouseover", function(d, i) {
+                    let tipText = `name: ${bar_name[i]}<br> value:  ${d}`;
+                    _self.globalService.showPopOver(d3.event, tipText);
                 })
                 .on("mouseout", () => {
                     _self.globalService.hidePopOver();
@@ -341,8 +456,8 @@ export class DiffVennComponent implements OnInit {
                             .attr("fill", "steelblue");
                         _self.singleMultiSelect["name"] = bar_name[i];
                         _self.doubleMultiSelect["bar_name"] = bar_name[i];
-                        console.log(_self.singleMultiSelect);
-                        console.log(_self.doubleMultiSelect);
+                        //console.log(_self.singleMultiSelect);
+                        //console.log(_self.doubleMultiSelect);
                     } else {
                         d3.select(".svg1")
                             .selectAll(".MyRect")
@@ -351,26 +466,25 @@ export class DiffVennComponent implements OnInit {
                             .select(".MyRect")
                             .attr("fill", "steelblue");
                         _self.doubleMultiSelect["bar_name"] = bar_name[i];
-                        console.log(_self.doubleMultiSelect);
+                        //console.log(_self.doubleMultiSelect);
                     }
                 });
 
-            rects
-                .append("rect")
+            rects1.append("rect")
                 .attr("class", "MyRect")
                 .attr(
                     "transform",
                     "translate(" + padding1.left + "," + padding1.top + ")"
                 )
                 .attr("x", function(d, i) {
-                    return xScale(bar_name[i]);
+                    return xScale1(bar_name[i]);
                 })
                 .attr("y", function(d, i) {
-                    return yScale(d);
+                    return yScale1(d);
                 })
                 .attr("width", d3_rectWidth)
                 .attr("height", function(d, i) {
-                    return height - padding1.bottom - padding1.top - yScale(d);
+                    return height1 - padding1.bottom - padding1.top - yScale1(d);
                 })
                 .attr("fill", "black")
                 .attr("stroke-width", 10)
@@ -379,59 +493,50 @@ export class DiffVennComponent implements OnInit {
 
             svg1.append("g")
                 .attr("class", "axis_x1")
-                .attr(
-                    "transform",
-                    "translate(" +
-                        padding1.left +
-                        "," +
-                        (height - padding1.bottom) +
-                        ")"
-                )
-                .call(xAxis);
+                .attr("transform","translate(" +padding1.left +"," +(height1 - padding1.bottom) +")")
+                .call(xAxis1);
             svg1.append("g")
                 .attr("class", "axis_y1")
-                .attr(
-                    "transform",
-                    "translate(" + padding1.left + "," + padding1.top + ")"
-                )
-                .call(yAxis);
+                .attr("transform","translate(" + padding1.left + "," + padding1.top + ")")
+                .call(yAxis1);
         }
 
         function drawSvg2() {
-            let width = 320;
-            let height = d3_height + padding2.top + padding2.bottom;
+            let width2 = 320-left_name_length-kong_name_right;
+            let height2 = d3_height + padding2.top + padding2.bottom;
 
             let svg2 = d3
                 .select("#svg")
                 .append("svg")
-                .attr("x", padding2.left)
+                .attr("x", padding1.left)
                 .attr("y", "300")
-                .attr("width", width)
-                .attr("height", height)
-                .attr("class", "svg2");
+                .attr("width", width2)
+                .attr("height", height2)
+                .attr("class","svg2");
 
-            let xScale = d3
+            let xScale2 = d3
                 .scaleLinear()
                 .domain([0, d3.max(total_value)])
-                .range([width - padding2.left - padding2.right, 0]);
+                .range([width2-padding2.right, 0]);
 
-            let yScale = d3
+            let yScale2 = d3
                 .scaleBand()
                 .domain(total_name)
                 .range([d3_height, 0]);
 
-            d3_yScale = yScale;
+            d3_yScale = yScale2;
 
-            let xAxis = d3.axisBottom(xScale).ticks(5);
-            let yAxis = d3.axisRight(yScale);
+            let xAxis2 = d3.axisBottom(xScale2).ticks(4);
+            let yAxis2 = d3.axisRight(yScale2);
 
-            let rects = svg2
+            let rects2 = svg2
                 .selectAll("MyRect2")
                 .data(total_value)
                 .enter()
                 .append("g")
-                .on("mouseover", d => {
-                    _self.globalService.showPopOver(d3.event, d);
+                .on("mouseover", function(d,i){
+                    let tipText = `name: ${total_name[i]}<br> value:  ${d}`;
+                    _self.globalService.showPopOver(d3.event, tipText);
                 })
                 .on("mouseout", () => {
                     _self.globalService.hidePopOver();
@@ -444,8 +549,8 @@ export class DiffVennComponent implements OnInit {
                             .attr("fill", "steelblue");
                         _self.singleMultiSelect["name"] = total_name[i];
                         _self.doubleMultiSelect["total_name"] = total_name[i];
-                        console.log(_self.singleMultiSelect);
-                        console.log(_self.doubleMultiSelect);
+                        //console.log(_self.singleMultiSelect);
+                        //console.log(_self.doubleMultiSelect);
                     } else {
                         d3.select(".svg2")
                             .selectAll(".MyRect")
@@ -454,21 +559,20 @@ export class DiffVennComponent implements OnInit {
                             .select(".MyRect")
                             .attr("fill", "steelblue");
                         _self.doubleMultiSelect["total_name"] = total_name[i];
-                        console.log(_self.doubleMultiSelect);
+                        //console.log(_self.doubleMultiSelect);
                     }
                 });
 
-            rects
-                .append("rect")
+            rects2.append("rect")
                 .attr("class", "MyRect")
                 .attr("x", function(d, i) {
-                    return xScale(d) + padding2.left;
+                    return xScale2(d) + padding2.left;
                 })
                 .attr("y", function(d, i) {
-                    return yScale(total_name[i]);
+                    return yScale2(total_name[i]);
                 })
                 .attr("width", function(d, i) {
-                    return width - padding2.right - xScale(d) - padding2.left;
+                    return width2 - padding2.right - xScale2(d) - padding2.left;
                 })
                 .attr("height", function(d, i) {
                     return d3_rectWidth;
@@ -478,17 +582,50 @@ export class DiffVennComponent implements OnInit {
                 .attr("stroke", "black")
                 .attr("stroke-opacity", 0);
 
-            let texts = svg2
+            svg2.append("g")
+                .attr("class", "axis_x2")
+                .attr("transform","translate(" +padding2.left +"," +(height2 - padding2.bottom) +")")
+                .call(xAxis2)
+                .selectAll("text")
+                .attr("fontsize","12");
+            svg2.append("g")
+                .attr("class", "axis_y2")
+                .attr("transform","translate(" +(width2-padding2.right) +"," +padding2.top +")")
+                .call(yAxis2);
+        }
+        
+        function drawSvgName(){
+            let widthk = left_name_length+kong_name_right;
+            let heightk = d3_height + padding2.top + padding2.bottom;
+
+            let svgk = d3
+                .select("#svg")
+                .append("svg")
+                .attr("x", 320-left_name_length-kong_name_right+padding1.left)
+                .attr("y", "300")
+                .attr("width", widthk)
+                .attr("height", heightk)
+                .attr("class","svgk");
+            
+            let yScalek = d3
+                .scaleBand()
+                .domain(total_name)
+                .range([d3_height, 0]);
+
+            let yAxisk = d3.axisLeft(yScalek);
+
+            let textsk = svgk
                 .selectAll("text")
                 .data(total_name)
                 .enter()
                 .append("text")
                 .attr("class", "MyText")
+                .attr("width",left_name_length)
                 .attr("dx", function(d, i) {
-                    return xScale(0) + padding2.left + d3_rectKong * 2;
+                    return 0;
                 })
                 .attr("dy", function(d, i) {
-                    return yScale(total_name[i]) + d3_rectKong * 2;
+                    return yScalek(total_name[i]) + d3_rectKong * 2;
                 })
                 .text(function(d, i) {
                     return d;
@@ -497,29 +634,10 @@ export class DiffVennComponent implements OnInit {
                     d3.select(this).style("fill", "red");
                     sortName(d, d3.select(this));
                 });
-
-            svg2.append("g")
-                .attr("class", "axis_x2")
-                .attr(
-                    "transform",
-                    "translate(" +
-                        padding2.left +
-                        "," +
-                        (height - padding2.bottom) +
-                        ")"
-                )
-                .call(xAxis);
-            svg2.append("g")
-                .attr("class", "axis_y2")
-                .attr(
-                    "transform",
-                    "translate(" +
-                        (width - padding2.right) +
-                        "," +
-                        padding2.top +
-                        ")"
-                )
-                .call(yAxis);
+            svgk.append("g")
+                .attr("class", "axis_yk")
+                .attr("transform","translate(" +(0) +"," +padding2.top +")")
+                .call(yAxisk);
         }
 
         function sortName(d, that) {
@@ -546,22 +664,23 @@ export class DiffVennComponent implements OnInit {
             nameToCircle(nameList);
         }
 
+
         function drawSvg3() {
-            let width = d3_width + padding1.left + padding1.right;
-            let height = d3_height + padding2.top + padding2.bottom;
+            let width3 = d3_width + padding1.left + padding1.right;
+            let height3 = d3_height + padding2.top + padding2.bottom;
 
             let svg3 = d3
                 .select("#svg")
                 .append("svg")
                 .attr("x", "320")
                 .attr("y", "300")
-                .attr("width", width)
-                .attr("height", height);
+                .attr("width", width3)
+                .attr("height", height3);
 
             tempThat = svg3;
 
-            let xAxis = d3.axisBottom(d3_xScale);
-            let yAxis = d3.axisRight(d3_yScale);
+            let xAxis3 = d3.axisBottom(d3_xScale);
+            let yAxis3 = d3.axisRight(d3_yScale);
 
             let jsonCircles = [];
             let row = d3_xlength;
@@ -571,19 +690,12 @@ export class DiffVennComponent implements OnInit {
                 let temp = {};
                 for (let j = 0; j < col; j++) {
                     temp = {
-                        x_axis:
-                            d3_xScale(bar_name[i]) +
-                            d3_rectWidth / 2 +
-                            padding1.left,
+                        x_axis:d3_xScale(bar_name[i]) +d3_rectWidth / 2 +padding1.left,
                         y_axis: d3_yScale(total_name[j]) + d3_rectWidth / 2,
                         r: d3_rectWidth / 2,
                         flag: threeC(total_name[j], bar_name[i]) ? true : false,
-                        color: threeC(total_name[j], bar_name[i])
-                            ? "black"
-                            : "gray",
-                        nameX: threeC(total_name[j], bar_name[i])
-                            ? bar_name[i]
-                            : "",
+                        color: threeC(total_name[j], bar_name[i])? "black": "gray",
+                        nameX: threeC(total_name[j], bar_name[i])? bar_name[i]: "",
                         nameY: total_name[j],
                         sort: sortC(bar_name[i])
                     };
@@ -593,43 +705,23 @@ export class DiffVennComponent implements OnInit {
 
             drawCircle = jsonCircles;
 
-            makeBaseCircle(jsonCircles, svg3); //造点 这时候包含点的颜色 添加圆 基本圆
+            makeBaseCircle(jsonCircles, svg3); //造点 这时候包含点的颜色 基本圆
 
             drawLine(sortArr(jsonCircles, "x_axis"), svg3, "black"); //把x轴相同的分在一起 画线
 
             svg3.append("g")
                 .attr("class", "axis_xCircle")
                 .attr("transform", "translate(30,0)")
-                .call(xAxis);
+                .call(xAxis3);
             svg3.append("g")
                 .attr("class", "axis_yCircle")
                 .attr("transform", "translate(30,0)")
-                .call(yAxis);
+                .call(yAxis3);
         }
 
-        function threeC(lis1, lis2) {
-            let m_flag = false;
-            if (lis2.indexOf("∩") != -1) {
-                lis2 = lis2.split("∩");
-                for (let index = 0; index < lis2.length; index++) {
-                    if (lis2[index] == lis1) m_flag = true;
-                }
-            } else {
-                if (lis1 == lis2) {
-                    m_flag = true;
-                } else {
-                    m_flag = false;
-                }
-            }
-            return m_flag;
-        }
-        function sortC(lis2) {
-            return lis2.split("∩").sort();
-        }
         //造点 这时候包含点的颜色 添加圆 基本圆
         function makeBaseCircle(arr, svg_t) {
-            svg_t
-                .selectAll(".MyCircle")
+            svg_t.selectAll(".MyCircle")
                 .data(arr)
                 .enter()
                 .append("circle")
@@ -648,8 +740,7 @@ export class DiffVennComponent implements OnInit {
                 });
             let tempList = sortArr(arr, "x_axis");
             for (let i = 0; i < tempList.length; i++) {
-                svg_t
-                    .append("rect")
+                svg_t.append("rect")
                     .attr("class", "MyRect3")
                     .attr("x", tempList[i][0]["x_axis"] - d3_rectWidth / 2)
                     .attr("y", function(d, i) {
@@ -660,44 +751,23 @@ export class DiffVennComponent implements OnInit {
                         return d3_height;
                     })
                     .attr("opacity", 0.1)
-                    .attr("fill", "#87CEFA")
+                    .attr("fill","#87CEFA")
                     .on("mouseover", function(d, i) {
-                        d3.select(this).attr("opacity", 0.5);
+                        d3.select(this).attr("opacity", 0.5)
                     })
                     .on("mouseout", function(d) {
-                        d3.select(this).attr("opacity", 0.1);
-                    });
+                        d3.select(this).attr("opacity", 0.1)
+                    })
+                    ;
             }
         }
 
-        //选择后画圆
-        function selectBaseCircle2(arr, targetArr, num) {
-            let tempA = [];
-            for (let index = 0; index < arr.length; index++) {
-                if (targetArr.toString() == arr[index].sort.toString()) {
-                    if (arr[index].flag) {
-                        arr[index].color = "red";
-                        tempA.push(arr[index]);
-                    }
-                }
-            }
-
-            return tempA;
-        }
-
-        //画线第1步
         function drawLine(targetGroup, svg_f, color) {
             let temp = [];
             let tempThatone = svg_f.append("g");
-            //     .on("mouseover", function (d, i) {
-            //         d3.select(this).select(".MyRect3").attr("fill","red");
-            //     })
-            //     .on("mouseout", function (d) {
-            //         d3.select(this).select(".MyRect3").attr("fill","none")
-            //     });
+            tempThatTwo=tempThatone
 
-            let line = d3
-                .line()
+            let line = d3.line()
                 .x(function(d) {
                     return d.x_axis;
                 })
@@ -711,7 +781,7 @@ export class DiffVennComponent implements OnInit {
                         temp.push(targetGroup[i][j]);
                     }
                 }
-                let tempArr = secondArr(targetGroup[i]); //画线2 把每组中要画的点提取到一起
+                let tempArr = secondArr(targetGroup[i]);
 
                 let path = tempThatone
                     .append("path")
@@ -720,57 +790,24 @@ export class DiffVennComponent implements OnInit {
                     .attr("stroke", "black")
                     .attr("stroke-width", 3);
             }
-        }
 
-        //选择名字画线第2步
-        function drawLine2(targetGroup, svg_s, color, num) {
-            if (targetGroup.length > 1) {
-                let line = d3
-                    .line()
-                    .x(function(d) {
-                        return d.x_axis;
-                    })
-                    .y(function(d) {
-                        return d.y_axis;
-                    });
-
-                tempP = svg_s
-                    .append("path")
-                    .attr("class", "line")
-                    .attr("d", line(targetGroup))
-                    .attr("stroke", color)
-                    .attr("stroke-width", 3);
-            }
-
-            tempCricle = svg_s
-                .selectAll(".MyCircle2")
-                .data(targetGroup)
+            var g = tempThatone.selectAll('.MyCircle2')
+                .data(temp)
                 .enter()
-                .append("circle")
-                .attr("class", "MyCircle2")
-                .attr("cx", function(d, i) {
+                .append('circle')
+                .attr('class', 'MyCircle2')
+                .attr('cx', function (d, i) {
                     return d["x_axis"];
                 })
-                .attr("cy", function(d, i) {
+                .attr('cy', function (d, i) {
                     return d["y_axis"];
                 })
-                .attr("r", function(d, i) {
+                .attr('r', function (d, i) {
                     return d["r"];
                 })
-                .style("fill", function(d) {
-                    return d.color;
+                .style("fill", function (d) { 
+                    return d.color; 
                 });
-        }
-
-        //画线2 把每组中要画的点提取到一起
-        function secondArr(arr) {
-            let tempArr = [];
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i].flag == true) {
-                    tempArr.push(arr[i]);
-                }
-            }
-            return tempArr;
         }
 
         //把x轴相同的分在一起
@@ -808,6 +845,39 @@ export class DiffVennComponent implements OnInit {
             return _arr;
         }
 
+        function threeC(lis1, lis2) {
+            let m_flag = false;
+            if(lis2.indexOf("∩")!=-1){
+                lis2 = lis2.split("∩");
+                for (let index = 0; index < lis2.length; index++) {
+                    if (lis2[index] == lis1) m_flag = true;
+                }
+                
+            }else{
+                if(lis1==lis2){
+                    m_flag = true;
+                }else{
+                    m_flag = false;
+                }
+            }
+            return m_flag;
+        }
+
+        function sortC(lis2) {
+            return lis2.split("∩").sort();
+        }
+
+        // 把每组中要画的点提取到一起
+        function secondArr(arr) {
+            let tempArr = [];
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].flag == true) {
+                    tempArr.push(arr[i]);
+                }
+            }
+            return tempArr;
+        }
+
         function nameToCircle(nameList) {
             if (tempCricle != undefined) {
                 tempCricle.remove();
@@ -815,21 +885,68 @@ export class DiffVennComponent implements OnInit {
             if (tempP != undefined) {
                 tempP.remove();
             }
+            let tempdata = selectBaseCircle2(drawCircle,nameList.sort(),nameList.length);
+            drawLine2(tempdata, tempThatTwo, "red"); //把x轴相同的分在一起 画线
+        }
+        function selectBaseCircle2(arr, targetArr, num) {
+            let tempA = [];
+            for (let index = 0; index < arr.length; index++) {
+                if (targetArr.toString() == arr[index].sort.toString()) {
+                    if (arr[index].flag) {
+                        arr[index].color = "red";
+                        tempA.push(arr[index]);
+                    }
+                }
+            }
+            return tempA;
+        }
 
-            let tempdata = selectBaseCircle2(
-                drawCircle,
-                nameList.sort(),
-                nameList.length
-            );
-            drawLine2(tempdata, tempThat, "red", 5); //把x轴相同的分在一起 画线
+        function drawLine2(targetGroup, svg_s, color) {
+            //console.log(targetGroup)
+            if (targetGroup.length > 1) {
+                let line = d3
+                    .line()
+                    .x(function(d) {
+                        return d.x_axis;
+                    })
+                    .y(function(d) {
+                        return d.y_axis;
+                    });
+
+                tempP = svg_s
+                    .append("path")
+                    .attr("class", "line")
+                    .attr("d", line(targetGroup))
+                    .attr("stroke", color)
+                    .attr("stroke-width", 3);
+            }
+
+            tempCricle = svg_s
+                .selectAll(".MyCircle3")
+                .data(targetGroup)
+                .enter()
+                .append("circle")
+                .attr("class", "MyCircle3")
+                .attr("cx", function(d, i) {
+                    return d["x_axis"];
+                })
+                .attr("cy", function(d, i) {
+                    return d["y_axis"];
+                })
+                .attr("r", function(d, i) {
+                    return d["r"];
+                })
+                .style("fill", function(d) {
+                    return d.color;
+                });
         }
 
         function getBLen(str) {
             if (str == null) return 0;
-            if (typeof str != "string") {
-                str += "";
+            if (typeof str != "string"){
+              str += "";
             }
-            return str.replace(/[^\x00-\xff]/g, "01").length;
+            return str.replace(/[^\x00-\xff]/g,"01").length;
         }
     }
 }

@@ -178,7 +178,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 console.log(this.singleMultiSelect);
             }
         }else{//venn确定
-            
+
         }
         
     }
@@ -219,9 +219,8 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 compareGroup: this.tableEntity['compareGroup']
             })
             .drawVenn()
-            .on('click', function () {
-                if (!this.$select.$data.result.GeneIds.length) return;
-                console.log(this.$select.$data.result.GeneIds);
+            .on('click', function (d) {
+                console.log(d);
             });
     }
     //显示upsetR图
@@ -334,7 +333,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         }
         mText.remove();
         let kong_name_right=10;
-        console.log(left_name_length)
+        //console.log(left_name_length)
 
         //上侧数据
         let bar_name = [];
@@ -438,8 +437,8 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                             .attr("fill", "steelblue");
                         _self.singleMultiSelect["name"] = bar_name[i];
                         _self.doubleMultiSelect["bar_name"] = bar_name[i];
-                        console.log(_self.singleMultiSelect);
-                        console.log(_self.doubleMultiSelect);
+                        //console.log(_self.singleMultiSelect);
+                        //console.log(_self.doubleMultiSelect);
                     } else {
                         d3.select(".svg1")
                             .selectAll(".MyRect")
@@ -448,7 +447,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                             .select(".MyRect")
                             .attr("fill", "steelblue");
                         _self.doubleMultiSelect["bar_name"] = bar_name[i];
-                        console.log(_self.doubleMultiSelect);
+                        //console.log(_self.doubleMultiSelect);
                     }
                 });
 
@@ -531,8 +530,8 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                             .attr("fill", "steelblue");
                         _self.singleMultiSelect["name"] = total_name[i];
                         _self.doubleMultiSelect["total_name"] = total_name[i];
-                        console.log(_self.singleMultiSelect);
-                        console.log(_self.doubleMultiSelect);
+                        //console.log(_self.singleMultiSelect);
+                        //console.log(_self.doubleMultiSelect);
                     } else {
                         d3.select(".svg2")
                             .selectAll(".MyRect")
@@ -541,7 +540,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                             .select(".MyRect")
                             .attr("fill", "steelblue");
                         _self.doubleMultiSelect["total_name"] = total_name[i];
-                        console.log(_self.doubleMultiSelect);
+                        //console.log(_self.doubleMultiSelect);
                     }
                 });
 
@@ -884,7 +883,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         }
 
         function drawLine2(targetGroup, svg_s, color) {
-            console.log(targetGroup)
+            //console.log(targetGroup)
             if (targetGroup.length > 1) {
                 let line = d3
                     .line()
