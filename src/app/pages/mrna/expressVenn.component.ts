@@ -337,7 +337,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         let tempThatTwo; 
 
         let padding1 = { left: 60, right: 30, top: 20, bottom: 10 };
-        let padding2 = { left: 40, right: 10, top: 0, bottom: 30 };
+        let padding2 = { left: 0, right: 10, top: 0, bottom: 30 };
 
         let svg_height =
             300 +
@@ -455,13 +455,13 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         }
 
         function drawSvg2() {
-            let width2 = 320-left_name_length-kong_name_right+padding1.left;
+            let width2 = 320-left_name_length-kong_name_right;
             let height2 = d3_height + padding2.top + padding2.bottom;
 
             let svg2 = d3
                 .select("#svg")
                 .append("svg")
-                .attr("x", "0")
+                .attr("x", padding1.left)
                 .attr("y", "300")
                 .attr("width", width2)
                 .attr("height", height2)
@@ -533,27 +533,6 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 .attr("stroke-width", 10)
                 .attr("stroke", "black")
                 .attr("stroke-opacity", 0);
-
-            // let texts2 = svg2
-            //     .selectAll("text")
-            //     .data(total_name)
-            //     .enter()
-            //     .append("text")
-            //     .attr("class", "MyText")
-            //     .attr("width",left_name_length)
-            //     .attr("dx", function(d, i) {
-            //         return xScale2(0) + padding2.left + d3_rectKong * 2;
-            //     })
-            //     .attr("dy", function(d, i) {
-            //         return yScale2(total_name[i]) + d3_rectKong * 2;
-            //     })
-            //     .text(function(d, i) {
-            //         return d;
-            //     })
-            //     .on("click", function(d, i) {
-            //         d3.select(this).style("fill", "red");
-            //         sortName(d, d3.select(this));
-            //     });
 
             svg2.append("g")
                 .attr("class", "axis_x2")
