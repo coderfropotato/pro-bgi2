@@ -23,31 +23,31 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     tableUrl: string;
     chartUrl: string;
 
-    selectPanelData: string[]=this.store.getStore("sample");
-
-    tableEntity: object = {
-        LCID: this.store.getStore("LCID"),
-        compareGroup: this.store.getStore("diff_plan"),
-        geneType: "gene",
-        species: this.store.getStore("genome"),
-        diffThreshold: this.store.getStore("diff_threshold")
-    };
-
-    p_show:boolean=this.store.getStore("diff_threshold").hasOwnProperty('PossionDis');
-    p_log2FC:string=this.p_show?this.store.getStore("diff_threshold").PossionDis.log2FC:'';
-    p_FDR:string=this.p_show?this.store.getStore("diff_threshold").PossionDis.FDR:'';
     
-    n_show:boolean=this.store.getStore("diff_threshold").hasOwnProperty('NOIseq');
-    n_log2FC:string=this.n_show?this.store.getStore("diff_threshold").NOIseq.log2FC:'';
-    n_proba:string=this.n_show?this.store.getStore("diff_threshold").NOIseq.probability:'';
 
+    tableEntity: object = {};
+
+    selectPanelData: object[] = [];
+    venn_or_upsetR:boolean;
+
+    p_show:boolean;//设置里面的PossionDis
+    p_log2FC:string;
+    p_FDR:string;
+    
+    n_show:boolean;//设置里面的NOIseq
+    n_log2FC:string;
+    n_proba:string;
+
+    //单选
     singleMultiSelect: object = {
         name: ""
-    }; //单选
+    }; 
+
+    //多选
     doubleMultiSelect: object = {
         bar_name: "",
         total_name: ""
-    }; //多选
+    }; 
     pageEntity: object = {
         pageSize: 20
     };
@@ -69,6 +69,29 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         this.tableUrl = "";
         this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
 
+        this.p_show=this.store.getStore("diff_threshold").hasOwnProperty('PossionDis'); //设置里面的PossionDis
+        this.p_log2FC=this.p_show?this.store.getStore("diff_threshold").PossionDis.log2FC:'';
+        this.p_FDR=this.p_show?this.store.getStore("diff_threshold").PossionDis.FDR:'';
+        
+        this.n_show=this.store.getStore("diff_threshold").hasOwnProperty('NOIseq');//设置里面的NOIseq
+        this.n_log2FC=this.n_show?this.store.getStore("diff_threshold").NOIseq.log2FC:'';
+        this.n_proba=this.n_show?this.store.getStore("diff_threshold").NOIseq.probability:'';
+        
+        this.selectPanelData=[//差异面板的数据
+            {
+                type: "compareGroup",
+                data: this.store.getStore("diff_plan")
+            }
+        ];
+
+        this.tableEntity = {//查询参数
+            LCID: this.store.getStore("LCID"),
+            compareGroup: this.store.getStore("diff_plan"),
+            geneType: "gene",
+            species: this.store.getStore("genome"),
+            diffThreshold: this.store.getStore("diff_threshold")
+        };
+
         // 订阅windowResize 重新计算表格滚动高度
         this.message.getResize().subscribe(res => {
             if (res["message"] === "resize") this.computedTableHeight();
@@ -78,34 +101,32 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
 
     }
 
-    // getVennData() {
-    //     this.ajaxService
-    //         .getDeferData({
-    //             url: `${config["javaPath"]}/Venn/expressionGraph`,
-    //             data: {
-    //                 LCID: "demo3",
-    //                 sample: ["A1", "B1", "C"],
-    //                 geneType: "transcript",
-    //                 species: "aisdb"
-    //             }
-    //         })
-    //         .subscribe(
-    //             data => {
-    //                 if (data["data"].length > 5) {
-    //                     this.showUpSetR(data);
-    //                 } else {
-    //                     this.showVenn(data);
-    //                 }
-    //             },
-    //             error => {
-    //                 console.log(error);
-    //             }
-    //         );
-    // }
+    getVennOrUpsetR() { //二次查询
+        this.ajaxService
+            .getDeferData({
+                url: `${config["javaPath"]}/Venn/diffGeneGraph`,
+                data: this.tableEntity
+            })
+            .subscribe(
+                data => {
+                    this.drawVenn(data['data']);
+                },
+                error => {
+                    console.log(error);
+                }
 
-    drawVenn(data) {
-        this.showUpSetR(data);
-        //this.showVenn(data);
+            );
+    }
+
+    drawVenn(data) {//封装组件事件返回调用函数+二次调用显示数据
+        if (data["total"].length > 5) {
+            this.venn_or_upsetR = true;
+            this.showUpSetR(data);
+        } else {
+            this.venn_or_upsetR = false;
+            this.showVenn(data);
+        }
+        
     }
 
     ngAfterViewInit() {
@@ -131,52 +152,54 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     }
 
 
-    OnChange(value: string): void{
+    OnChange(value: string): void{//设置里面的PossionDis的log2FC
         this.p_log2FC=value;
     }
-    OnChange2(value: string): void{
+    OnChange2(value: string): void{//设置里面的PossionDis的FDR
         this.p_FDR=value;
     }
 
-    setConfirm(){
-        console.log(this.p_log2FC)
-        console.log(this.p_FDR)
+    setConfirm(){ //设置下拉面板点击确定时候的两个参数
+        this.tableEntity['diff_threshold'].log2FC=this.p_log2FC;
+        this.tableEntity['diff_threshold'].FDR=this.p_FDR;
     }
 
-    fpkmSelect(){
-        alert(11111)
-    }
     //单、多选change
     multiSelectChange() {
-        if (this.isMultiSelect) {
-            console.log(this.singleMultiSelect);
-            console.log(this.doubleMultiSelect);
-        } else {
-            console.log(this.singleMultiSelect);
-            console.log(this.doubleMultiSelect);
+        
+    }
+
+    //多选确定,可以选多个柱子
+    multipleConfirm() { 
+        if(this.venn_or_upsetR){//upsetR确定
+            if (this.isMultiSelect) {//多选
+                console.log(this.doubleMultiSelect);
+            } else {
+                console.log(this.singleMultiSelect);
+            }
+        }else{//venn确定
+            
         }
+        
     }
 
-    //多选确定
-    multipleConfirm() {
-        //console.log();
-    }
-
-    //默认选中数据
+    //选择面板，默认选中数据
     defaultSelectList(data) {
-        //this.tableEntity['samples'] = data;
         console.log(data)
     }
 
-    //选择面板 确定
+    //选择面板 确定筛选的数据
     selectConfirm(data) {
-        console.log(data)
+        //console.log(data)
+        this.tableEntity['compareGroup'] = data;
+        this.getVennOrUpsetR();
     }
 
     redrawChart(width, height?) {
         this.isMultiSelect = false;
     }
 
+    //显示venn图
     showVenn(data) {
         let tempA = data.rows.map(o => {
             return { CompareGroup: o.name, Count: o.value };
@@ -193,10 +216,15 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         let oVenn = new Venn({ id: "chartId22122" })
             .config({
                 data: tempR,
-                compareGroup: this.store.getStore("diff_plan")
+                compareGroup: this.tableEntity['compareGroup']
             })
-            .drawVenn();
+            .drawVenn()
+            .on('click', function () {
+                if (!this.$select.$data.result.GeneIds.length) return;
+                console.log(this.$select.$data.result.GeneIds);
+            });
     }
+    //显示upsetR图
     showUpSetR(data) {
         document.getElementById("chartId22122").innerHTML = "";
         let _self = this;
@@ -395,8 +423,9 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 .data(bar_value)
                 .enter()
                 .append("g")
-                .on("mouseover", d => {
-                    _self.globalService.showPopOver(d3.event, d);
+                .on("mouseover", function(d, i) {
+                    let tipText = `name: ${bar_name[i]}<br> value:  ${d}`;
+                    _self.globalService.showPopOver(d3.event, tipText);
                 })
                 .on("mouseout", () => {
                     _self.globalService.hidePopOver();
@@ -487,8 +516,9 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 .data(total_value)
                 .enter()
                 .append("g")
-                .on("mouseover", d => {
-                    _self.globalService.showPopOver(d3.event, d);
+                .on("mouseover", function(d,i){
+                    let tipText = `name: ${total_name[i]}<br> value:  ${d}`;
+                    _self.globalService.showPopOver(d3.event, tipText);
                 })
                 .on("mouseout", () => {
                     _self.globalService.hidePopOver();
