@@ -2,7 +2,9 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AjaxService } from '../service/ajaxService';
 import config from '../../../config';
 import { StoreService } from '../service/storeService';
-import { NzNotificationService } from 'ng-zorro-antd'
+import { NzNotificationService } from 'ng-zorro-antd';
+
+declare const $: any;
 
 @Component({
     selector: 'app-multiOmicsSet',
@@ -79,11 +81,10 @@ export class MultiOmicsSetComponent implements OnInit {
     curRationClassify: string;
 
     rations: string[] = [];
-    curRationCol: string;
-    curRationColCategory: string;
+    curRation: object = {};
 
     relationList: object[] = [];
-    curRelation: string;
+    curRelation: object = {};
 
     infoList: object[] = [];
     confirmInfoList: object[] = [];
@@ -97,7 +98,7 @@ export class MultiOmicsSetComponent implements OnInit {
     curUpdateClassify: string;
     rationList: string[] = [];
 
-    curUpdateInfo: object;
+    curUpdateInfo: object = {};
 
     constructor(
         private ajaxService: AjaxService,
@@ -155,7 +156,6 @@ export class MultiOmicsSetComponent implements OnInit {
                 },
                 error => {
                     this.rationClassifyList = [];
-                    console.log(error);
                 }
             )
     }
@@ -167,6 +167,7 @@ export class MultiOmicsSetComponent implements OnInit {
             key: "false",
             name: "false"
         })
+
         data.forEach(d => {
             this.relationList.push({
                 key: d['key'],
@@ -174,11 +175,16 @@ export class MultiOmicsSetComponent implements OnInit {
                 isDisabled: false
             })
         })
-        this.curRelation = this.relationList[0]['key'];
+
+        this.curRelation = this.relationList[0];
+
     }
 
     //关联基因change
-    relationChange() {
+    relationChange(info) {
+        this.isShowAddPanel = false;
+        this.isShowUpdatePanel = false;
+
         this.relationList.forEach(d => {
             d['isDisabled'] = false;
             this.infoList.forEach(m => {
@@ -188,7 +194,11 @@ export class MultiOmicsSetComponent implements OnInit {
                     }
                 }
             });
+
+            if (info['relation'] === d['key']) info['relationName'] = d['name'];
+
         })
+
     }
 
     //点击“添加定量信息”
@@ -209,22 +219,43 @@ export class MultiOmicsSetComponent implements OnInit {
 
     // 添加面板，选择定量列
     rationColSelect(item) {
-        this.curRationCol = item['key'];
-        this.curRationColCategory = item['category'];
+        this.curRation = item;
     }
 
     //添加面板， 确定
     addConfirm() {
-        let infoObj = {
-            relation: this.curRelation,
-            key: this.curRationCol,
-            category: this.curRationColCategory
+        if ($.isEmptyObject(this.curRation)) {
+            this.notification.warning('添加定量信息', '请选择一个定量列');
+            return;
         }
 
-        if (!this.isInArray(this.curRationCol, this.infoList, 'key')['status'] && this.infoList.length < 5 && this.curRationCol) {
-            this.infoList.push(infoObj);
-        } else {
+        let infoObj = {
+            relation: this.curRelation['key'],
+            relationName: this.curRelation['name'],
+            key: this.curRation['key'],
+            category: this.curRation['category'],
+            name: this.curRation['name']
+        }
+
+        if (this.infoList.length >= 5) {
+            this.notification.warning('添加定量信息', '最多添加5项');
+            this.isShowAddPanel = false;
+            return;
+        }
+
+        let falseRelationArr = [];
+        if(this.infoList.length){
+            this.infoList.forEach(d => {
+                if (d['relation'] === 'false') {
+                    falseRelationArr.push(d['key']);
+                }
+            })
+        }
+
+        if(this.isInArray(this.curRation['key'],falseRelationArr,'')){
             this.notification.warning('添加定量信息', '不能重复添加');
+        }else{
+            this.infoList.push(infoObj);
         }
 
         this.isShowAddPanel = false;
@@ -232,7 +263,7 @@ export class MultiOmicsSetComponent implements OnInit {
 
     //添加面板， 取消
     addCance() {
-        this.curRationCol = '';
+        this.curRation = {};
         this.isShowAddPanel = false;
     }
 
@@ -257,6 +288,7 @@ export class MultiOmicsSetComponent implements OnInit {
     updateRationColSelect(item) {
         this.curUpdateInfo['key'] = item['key'];
         this.curUpdateInfo['category'] = item['category'];
+        this.curUpdateInfo['name'] = item['name'];
         this.isShowUpdatePanel = false;
     }
 
@@ -289,20 +321,14 @@ export class MultiOmicsSetComponent implements OnInit {
         if (key) {
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i][key] === item) {
-                    return {
-                        index: i,
-                        status: true
-                    };
+                    return true;
                 }
             }
 
         } else {
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] === item) {
-                    return {
-                        index: i,
-                        status: true
-                    };
+                    return true;
                 }
             }
         }
