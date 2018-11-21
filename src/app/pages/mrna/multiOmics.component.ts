@@ -35,21 +35,9 @@ export class multiOmicsComponent implements OnInit {
         this.colors = ["#3195BC", "#FF6666", "#009e71", "#FF9896", "#F4CA60", "#6F74A5", "#C49C94", "#3b9b99", "#FACA0C", "#F3C9DD"];
         this.chartEntity = {
                 "id": "58beccbe6d4049b9bc881868f0cb1516",
-                "quantity": [
-                    // {
-                    //     "relation": "ppi",
-                    //     "key": "fpkm_A1",
-                    //     "category": "aisdb.gene_expression"
-                    // },
-                    // {
-                    //     "relation": "rbp",
-                    //     "key": "diffexp_log2fc_A1-vs-B1",
-                    //     "category": "aisdb.gene_diff"
-                    // }
-                ]
+                "quantity": []
             }
-            this.chartUrl = "http://localhost:8086/multiOmicsY";
-        // this.chartUrl = `${config["javaPath"]}/multiOmics/graph`;
+        this.chartUrl = `${config["javaPath"]}/multiOmics/graph`;
     }
 
     drawChart(data) {
@@ -299,8 +287,8 @@ export class multiOmicsComponent implements OnInit {
                     .append("g").attr("class", "boxplot")
                     .attr("transform", `translate(${margin.left},${margin.top + (boxplotLength - 1 - i) * (eachChartHeight + chartSpace)})`);
 
-                let yScaleBox = d3.scaleLinear().domain([0, d.yMax]).range([eachChartHeight, 0]).nice();
-                let yAxisBox = d3.axisLeft(yScaleBox).ticks(5).tickFormat(d3.format("1"));
+                let yScaleBox = d3.scaleLinear().domain([d.yMin, d.yMax]).range([eachChartHeight, 0]).nice();
+                let yAxisBox = d3.axisLeft(yScaleBox).ticks(2).tickFormat(d3.format("1"));
 
                 // boxplot y
                 boxplot_g.append("g").attr("class", "yAxis-boxplot").call(yAxisBox);
@@ -512,40 +500,4 @@ export class multiOmicsComponent implements OnInit {
         console.log(setArr)
     }
 
-    //demo
-    getDataX() {
-        this.ajaxService
-            .getDeferData(
-                {
-                    url: "http://localhost:8086/multiOmicsX",
-                    data: {}
-                }
-            )
-            .subscribe(
-                (data: any) => {
-                    this.drawChart(data);
-                },
-                error => {
-                    console.log(error);
-                }
-            )
-    }
-
-    getDataY() {
-        this.ajaxService
-            .getDeferData(
-                {
-                    url: "http://localhost:8086/multiOmicsY",
-                    data: {}
-                }
-            )
-            .subscribe(
-                (data: any) => {
-                    this.drawChart(data);
-                },
-                error => {
-                    console.log(error);
-                }
-            )
-    }
 }
