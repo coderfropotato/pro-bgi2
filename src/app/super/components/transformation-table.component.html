@@ -1,12 +1,37 @@
 <!-- 增删列demo -->
 <div class="transformation-table-component">
-    <h4 *ngIf="geneCollectionId" (click)="deleteGeneCollection()">geneCollectionId:{{geneCollectionId}}</h4>
+    <h4 *ngIf="geneCollectionId" (click)="deleteGeneCollection()">
+        geneCollectionId:{{ geneCollectionId }}
+    </h4>
     <div *ngIf="isFirst" id="default-gene-table">
-        <app-geneTable #defaultTable [url]="defaultTableUrl" [pageEntity]="defaultTableEntity" [tableId]="defaultTableId"
-             [defaultChecked]="defaultTableDefaultChecked" [tableHeight]="tableHeight" [checkStatusInParams]="defaultTableCheckStatusInParams"></app-geneTable>
+        <app-geneTable
+            #defaultTable
+            [url]="defaultTableUrl"
+            [pageEntity]="defaultTableEntity"
+            [tableId]="defaultTableId"
+            [defaultChecked]="defaultTableDefaultChecked"
+            [tableHeight]="tableHeight"
+            [(emitBaseThead)]="defaultEmitBaseThead"
+            (emitBaseTheadChange)="handlerDefaultEmitChange($event)"
+            (baseTheadChange)="handlerDefaultBaseTheadChange($event)"
+            [showMatchAll]="showMatchAll"
+            [checkStatusInParams]="defaultTableCheckStatusInParams"
+        ></app-geneTable>
     </div>
     <div *ngIf="!isFirst" id="extend-gene-table">
-        <app-geneTable #extendTable [url]="extendTableUrl" [pageEntity]="extendTableEntity" [tableId]="extendTableId"
-            [defaultChecked]="extendTableDefaultChecked" [tableHeight]="tableHeight" [checkStatusInParams]="extendTableCheckStatusInParams" [tableType]="'transform'"></app-geneTable>
+        <app-geneTable
+            #extendTable
+            [url]="extendTableUrl"
+            [pageEntity]="extendTableEntity"
+            [tableId]="extendTableId"
+            [defaultChecked]="extendTableDefaultChecked"
+            [tableHeight]="tableHeight"
+            [tableType]="'transform'"
+            [(emitBaseThead)]="extendEmitBaseThead"
+            (emitBaseTheadChange)="handlerExtendEmitChange($event)"
+            (baseTheadChange)="handlerExtendBaseTheadChange($event)"
+            [showMatchAll]="showMatchAll"
+            [checkStatusInParams]="extendTableCheckStatusInParams"
+        ></app-geneTable>
     </div>
 </div>

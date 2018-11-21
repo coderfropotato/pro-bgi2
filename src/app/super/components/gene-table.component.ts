@@ -44,7 +44,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() tableType:string = 'common'; // 表的类型  普通 还是 transform
     @Input() emitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
     @Output() emitBaseTheadChange:EventEmitter<any> = new EventEmitter();
-
+    @Input() showMatchAll:boolean = false;
     @Output() baseTheadChange:EventEmitter<any> = new EventEmitter();
 
     mongoId:any = null;
@@ -115,7 +115,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
     rootHtmlString: object[] = [];
 
     isFirst = true;
-
+    firstColumnGene = [];
     constructor(
         private translate: TranslateService,
         private globalService: GlobalService,
@@ -203,8 +203,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
     // 获取表格数据
     getRemoteData(reset: boolean = false): void {
         // this.loadingService.open(`#${this.parentId}`);
-        console.log(this.checked);
-        console.log(this.unChecked);
         this.isLoading = true;
 
         if (reset) {
@@ -235,7 +233,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                         this.tableEntity['transform'] = false;
                         this.tableEntity['chartType'] = "matrix";
                         this.mongoId = responseData['data']['mongoId'];
-                        if(this.isFirst) this.applyOnceBeforeStatusThenReset();
+                        // if(this.isFirst) this.applyOnceBeforeStatusThenReset();
                     }
                     if (!responseData.data["rows"].length) {
                         this.total = 0;
@@ -285,6 +283,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                             this.unCheckedMap[val[this.key]] = val;
                         }
 
+
                         if (
                             !$.isEmptyObject(this.checkedMap) ||
                             !$.isEmptyObject(this.unCheckedMap)
@@ -315,9 +314,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
                                 }
                             }
                         }
-                        this.computedStatus();
-                        this.getCollection();
                     });
+                    this.computedStatus();
+                    this.getCollection();
                     this.isFirst = false;
                 } else {
                     // this.loadingService.close(`#${this.parentId}`);
@@ -333,6 +332,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 // this.loadingService.close(`#${this.parentId}`);
                 this.isLoading = false;
                 this.total = 0;
+            },
+            ()=>{
+                if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
             }
         );
     }
@@ -368,6 +370,18 @@ export class GeneTableComponent implements OnInit, OnChanges {
             this.tableEntity['transform'] = true;
             this.tableEntity['chartType'] = 'matrix';
             this.tableEntity['mongoId'] = this.mongoId;
+
+        }
+        if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
+    }
+
+    matchAll(){
+        if(this.tableType==='transform'){
+            if('matchAll' in this.tableEntity){
+                this.tableEntity['matchAll'] = true;
+                this.showMatchAll = false;
+                this.getRemoteData();
+            }
         }
     }
 
@@ -451,15 +465,13 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.unChecked = Object.keys(this.unCheckedMap);
     }
 
-    applyOnceBeforeStatusThenReset(){
-        this.checkedMap = {};
-        this.unCheckedMap = {};
-        this.checked = [];
-        this.unChecked = [];
-        if('checkStatus' in this.tableEntity) this.tableEntity['checkStatus'] = this.defaultChecked;
-        if('checked' in this.tableEntity) this.tableEntity['checked'] = [];
-        if('unChecked' in this.tableEntity) this.tableEntity['unChecked'] = [];
-    }
+    // applyOnceBeforeStatusThenReset(){
+    //     console.log('use itself');
+    //     console.log(this.checked);
+    //     if('checkStatus' in this.tableEntity) this.tableEntity['checkStatus'] = this.defaultChecked;
+    //     if('checked' in this.tableEntity) this.tableEntity['checked'] = this.checked;
+    //     if('unChecked' in this.tableEntity) this.tableEntity['unChecked'] = this.unChecked;
+    // }
 
     // 重置排序状态
     initSortMap() {
@@ -745,7 +757,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
             let filter = $(`#${this.tableId} .table-filter`).outerHeight();
             // 表头工具栏的高度
             let tools = $(`#${this.tableId} .table-thead`).outerHeight();
-            let res = tableHeight - head - bottom - filter - tools - 2;
+            // 首列gene的高度
+            let res = tableHeight - head - bottom - filter - tools  - 2;
             $(`#${this.tableId} .ant-table-body`).css("height", `${res}px`);
             this.scroll["y"] = `${res}px`;
         }

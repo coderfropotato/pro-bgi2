@@ -3,7 +3,6 @@ import { StoreService } from './../../super/service/storeService';
 import { MessageService } from "./../../super/service/messageService";
 import { Component, OnInit, ViewChild, AfterViewInit,OnChanges,SimpleChange,OnDestroy,ViewContainerRef } from "@angular/core";
 import { fromEvent } from "rxjs";
-import { ResizedEvent } from 'angular-resize-event/resized-event';
 
 declare const $: any;
 declare const d4: any;
@@ -89,7 +88,7 @@ export class Layout1Component implements OnInit,AfterViewInit {
     }
 
     // 表格上方功能区 resize重新计算表格高度
-    resize(event:ResizedEvent){
+    resize(event){
         this.computedTableHeight();
     }
 

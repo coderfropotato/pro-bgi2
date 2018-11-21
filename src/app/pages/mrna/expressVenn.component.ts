@@ -22,8 +22,9 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     switch: boolean = false;
     tableUrl: string;
     chartUrl: string;
-
-    
+                   
+    venSelectAllData:string [] = []; //1111111111
+    selectConfirmData:string [] = [];
 
     tableEntity: object = {};
 
@@ -31,12 +32,16 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     venn_or_upsetR:boolean;
 
     p_show:boolean;//设置里面的PossionDis
-    p_log2FC:string;
-    p_FDR:string;
-    
+    PessionDis:object = {
+        log2FC:'',
+        FDR:''
+    }
+
     n_show:boolean;//设置里面的NOIseq
-    n_log2FC:string;
-    n_proba:string;
+    NOIseq:object={
+        log2FC:'',
+        probability:''
+    }
 
     //单选
     singleMultiSelect: object = {
@@ -70,12 +75,16 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
 
         this.p_show=this.store.getStore("diff_threshold").hasOwnProperty('PossionDis'); //设置里面的PossionDis
-        this.p_log2FC=this.p_show?this.store.getStore("diff_threshold").PossionDis.log2FC:'';
-        this.p_FDR=this.p_show?this.store.getStore("diff_threshold").PossionDis.FDR:'';
+        this.PessionDis={
+            log2FC:this.p_show?this.store.getStore("diff_threshold").PossionDis.log2FC:'',
+            FDR:this.p_show?this.store.getStore("diff_threshold").PossionDis.FDR:''
+        }
         
         this.n_show=this.store.getStore("diff_threshold").hasOwnProperty('NOIseq');//设置里面的NOIseq
-        this.n_log2FC=this.n_show?this.store.getStore("diff_threshold").NOIseq.log2FC:'';
-        this.n_proba=this.n_show?this.store.getStore("diff_threshold").NOIseq.probability:'';
+        this.NOIseq={
+            log2FC:this.n_show?this.store.getStore("diff_threshold").NOIseq.log2FC:'',
+            probability:this.n_show?this.store.getStore("diff_threshold").NOIseq.probability:''
+        }
         
         this.selectPanelData=[//差异面板的数据
             {
@@ -153,46 +162,68 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
 
 
     OnChange(value: string): void{//设置里面的PossionDis的log2FC
-        this.p_log2FC=value;
+        this.PessionDis['log2FC']=value;
     }
     OnChange2(value: string): void{//设置里面的PossionDis的FDR
-        this.p_FDR=value;
+        this.PessionDis['FDR']=value;
+    }
+
+    OnChange3(value: string): void{//设置里面的NOIseq的log2FC
+        this.NOIseq['log2FC']=value;
+    }
+    OnChange4(value: string): void{//设置里面的NOIseq的FDR
+        this.NOIseq['probability']=value;
     }
 
     setConfirm(){ //设置下拉面板点击确定时候的两个参数
-        this.tableEntity['diff_threshold'].log2FC=this.p_log2FC;
-        this.tableEntity['diff_threshold'].FDR=this.p_FDR;
+        if(this.p_show){
+            this.tableEntity['diff_threshold']={
+                PessionDis:this.PessionDis
+            }
+        }
+        if(this.n_show){
+            this.tableEntity['diff_threshold']={
+                NOIseq:this.NOIseq
+            }
+        }
+        console.log(this.tableEntity['diff_threshold'])
+        
     }
 
     //单、多选change
     multiSelectChange() {
-        
+        if(!this.venn_or_upsetR){//1111111111
+            this.updateVenn()
+        }                    
     }
 
-    //多选确定,可以选多个柱子
-    multipleConfirm() { 
-        if(this.venn_or_upsetR){//upsetR确定
-            if (this.isMultiSelect) {//多选
-                console.log(this.doubleMultiSelect);
-            } else {
-                console.log(this.singleMultiSelect);
-            }
-        }else{//venn确定
+    //venn和upsetR只选择一项时候
+    doSingleData(data){         //1111111111
+        console.log(data)
+    }
 
-        }
-        
+    updateVenn(){                            //1111111111
+        this.tableEntity['compareGroup'] = this.selectConfirmData;
+        this.getVennOrUpsetR();
+    }
+
+
+    //多选确定,可以选多个柱子,维恩               //1111111111
+    multipleConfirm() { 
+        let tempData = this.venn_or_upsetR?this.doubleMultiSelect:this.venSelectAllData;
+        console.log(tempData);
     }
 
     //选择面板，默认选中数据
     defaultSelectList(data) {
-        console.log(data)
+        this.selectConfirmData = data;
+        //console.log(data)
     }
 
     //选择面板 确定筛选的数据
-    selectConfirm(data) {
-        //console.log(data)
-        this.tableEntity['compareGroup'] = data;
-        this.getVennOrUpsetR();
+    selectConfirm(data) {                      //1111111111
+        this.selectConfirmData = data;
+        this.updateVenn();
     }
 
     redrawChart(width, height?) {
@@ -201,6 +232,9 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
 
     //显示venn图
     showVenn(data) {
+        let _selfV = this;
+
+        console.log(_selfV.isMultiSelect);
         let tempA = data.rows.map(o => {
             return { CompareGroup: o.name, Count: o.value };
         });
@@ -216,11 +250,25 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         let oVenn = new Venn({ id: "chartId22122" })
             .config({
                 data: tempR,
-                compareGroup: this.tableEntity['compareGroup']
+                compareGroup: _selfV.tableEntity['compareGroup'],//1111111111
+                isMultipleSelect: _selfV.isMultiSelect
             })
             .drawVenn()
-            .on('click', function (d) {
-                console.log(d);
+            .hover(function () {
+                this.$select.$el.setAttribute('opacity', '0.5')
+            }, function () {
+                this.$select.$el.setAttribute('opacity', '0')
+            })
+            .on('click', function () {
+                if(!_selfV.isMultiSelect){
+                    _selfV.doSingleData(this.$select.$data.result.CompareGroup); //1111111111
+                }else{
+                    let tempVenn=[];
+                    this.selectCollection.forEach(element => {
+                        tempVenn.push(element.result.CompareGroup)
+                    });
+                    _selfV.venSelectAllData=tempVenn;
+                }
             });
     }
     //显示upsetR图
@@ -439,6 +487,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                         _self.doubleMultiSelect["bar_name"] = bar_name[i];
                         //console.log(_self.singleMultiSelect);
                         //console.log(_self.doubleMultiSelect);
+                        _self.doSingleData(bar_name[i]);
                     } else {
                         d3.select(".svg1")
                             .selectAll(".MyRect")
@@ -530,6 +579,7 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                             .attr("fill", "steelblue");
                         _self.singleMultiSelect["name"] = total_name[i];
                         _self.doubleMultiSelect["total_name"] = total_name[i];
+                        _self.doSingleData(total_name[i]);
                         //console.log(_self.singleMultiSelect);
                         //console.log(_self.doubleMultiSelect);
                     } else {

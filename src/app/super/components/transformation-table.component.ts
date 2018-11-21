@@ -1,6 +1,6 @@
 import { StoreService } from "./../service/storeService";
 import { AjaxService } from "./../service/ajaxService";
-import { Component, OnInit, ViewChild, Input } from "@angular/core";
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter,OnChanges,SimpleChanges } from "@angular/core";
 /**
  * @description 表格转换
  * @author Yangwd<277637411@qq.com>
@@ -36,6 +36,15 @@ export class TransformationTableComponent implements OnInit {
     @Input() extendTableCheckStatusInParams;
     @Input() tableHeight;
     @Input() isFirst;
+    @Input() showMatchAll:boolean = false;
+
+    @Input() defaultEmitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
+    @Output() defaultEmitBaseTheadChange:EventEmitter<any> = new EventEmitter();
+    @Input() extendEmitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
+    @Output() extendEmitBaseTheadChange:EventEmitter<any> = new EventEmitter();
+
+    @Output() defaultBaseTheadChange:EventEmitter<any> = new EventEmitter();
+    @Output() extendBaseTheadChange:EventEmitter<any> = new EventEmitter();
 
     @ViewChild("defaultTable") defaultTable;
     @ViewChild("extendTable") extendTable;
@@ -58,6 +67,26 @@ export class TransformationTableComponent implements OnInit {
     }
 
     ngOnInit() {}
+
+    // emit default
+    handlerDefaultEmitChange(status){
+        this.defaultEmitBaseTheadChange.emit(status);
+    }
+
+    // emit extend
+    handlerExtendEmitChange(status){
+        this.extendEmitBaseTheadChange.emit(status);
+    }
+
+    // default thead change
+    handlerDefaultBaseTheadChange(thead){
+        this.defaultBaseTheadChange.emit(thead);
+    }
+
+    // extend thead change
+    handlerExtendBaseTheadChange(thead){
+        this.extendBaseTheadChange.emit(thead);
+    }
 
     /**
      * @description 外部更新addThead查询条件并发请求
@@ -87,6 +116,10 @@ export class TransformationTableComponent implements OnInit {
     }
     _setDefaultParams(key,value){
         this.defaultTable._setParamsOfEntity(key,value);
+    }
+
+    _setParamsNoRequest(key,value){
+        this.isFirst? this.defaultTable._setParamsOfEntityWithoutRequest(key,value):this.extendTable._setParamsOfEntityWithoutRequest(key,value);
     }
 
     _initTableStatus(){
