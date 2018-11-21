@@ -33,6 +33,7 @@ export class TopComponent implements OnInit {
         this.translate.use(
             this.browserLang.match(/zh|en/) ? this.browserLang : "zh"
         );
+        sessionStorage.setItem('lang',this.browserLang);
         this.storeService.setLang(this.browserLang);
     }
 
@@ -44,6 +45,7 @@ export class TopComponent implements OnInit {
             this.translate.use("zh");
             this.browserLang = "zh";
         }
+        sessionStorage.setItem('lang',this.browserLang);
         this.storeService.setLang(this.browserLang);
     }
 
@@ -140,10 +142,10 @@ export class TopComponent implements OnInit {
     }
 
     analysis() {
-        // let url = `${location.href.substring(
-        //     0,
-        //     location.href.indexOf("/report")
-        // )}/report/reanalysis/index`;
-        // window.open(url);
+        let url = `${location.href.substring(
+            0,
+            location.href.indexOf("/report")
+        )}/report/reanalysis/index`;
+        window.open(url);
     }
 }
