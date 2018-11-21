@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AjaxService } from '../service/ajaxService';
 import config from '../../../config';
 import { StoreService } from '../service/storeService';
+import { NzNotificationService } from 'ng-zorro-antd'
 
 @Component({
     selector: 'app-multiOmicsSet',
@@ -100,7 +101,8 @@ export class MultiOmicsSetComponent implements OnInit {
 
     constructor(
         private ajaxService: AjaxService,
-        private storeService: StoreService
+        private storeService: StoreService,
+        private notification: NzNotificationService
     ) { }
 
     ngOnInit() {
@@ -221,6 +223,8 @@ export class MultiOmicsSetComponent implements OnInit {
 
         if (!this.isInArray(this.curRationCol, this.infoList, 'key')['status'] && this.infoList.length < 5 && this.curRationCol) {
             this.infoList.push(infoObj);
+        } else {
+            this.notification.warning('添加定量信息', '不能重复添加');
         }
 
         this.isShowAddPanel = false;
