@@ -141,7 +141,7 @@ export class DiffVennComponent implements OnInit {
         this.tableEntity = {//查询参数
             LCID: this.store.getStore("LCID"),
             compareGroup: this.store.getStore("diff_plan"),
-            geneType: "gene",
+            geneType: this.pageModuleService['defaultModule'],
             species: this.store.getStore("genome"),
             diffThreshold: this.store.getStore("diff_threshold")
         };

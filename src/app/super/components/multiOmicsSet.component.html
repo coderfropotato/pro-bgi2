@@ -10,7 +10,7 @@
             <span class="infoTitle center">定量列</span>
             <div class="infoContent" *ngFor="let info of infoList;let i=index">
                 <div class="infoCol">
-                    <nz-select style="width: 100px;margin-left: 10px" [(ngModel)]="info.relation" [nzSize]="'small'" (ngModelChange)="relationChange()" nzShowSearch>
+                    <nz-select style="width: 100px;margin-left: 10px" [(ngModel)]="info.relation" [nzSize]="'small'" (ngModelChange)="relationChange(info)" nzShowSearch>
                         <nz-option [nzDisabled]='relation.isDisabled' *ngFor="let relation of relationList" [nzLabel]="relation.name" [nzValue]="relation.key"></nz-option>
                     </nz-select>
                 </div>
