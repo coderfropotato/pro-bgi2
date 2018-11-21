@@ -26,11 +26,11 @@
                             </div>
                             <div style="height:30px;width:200px;margin-left:40px;">
                                 <div style="height:30px;width:40px;float:left;line-height:30px;">log2FC:</div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange($event)" nz-input placeholder="" nzSize="small" [ngModel]="p_log2FC"></div>
+                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange($event)" nz-input placeholder="" nzSize="small" [ngModel]="PessionDis.log2FC"></div>
                             </div>
                             <div style="height:30px;width:200px;margin-left:40px;">
                                 <div style="height:30px;width:40px;float:left;line-height:30px;">FDR:</div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange2($event)" nz-input placeholder="" nzSize="small" [ngModel]="p_FDR"></div>
+                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange2($event)" nz-input placeholder="" nzSize="small" [ngModel]="PessionDis.FDR"></div>
                             </div>
                         </div>
 
@@ -40,11 +40,11 @@
                             </div>
                             <div style="height:30px;width:200px;margin-left:40px;">
                                 <div style="height:30px;width:40px;float:left;line-height:30px;">log2FC:</div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input nz-input placeholder="" nzSize="small" [ngModel]="'1'"></div>
+                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange3($event)" nz-input placeholder="" nzSize="small" [ngModel]="NOIseq.log2FC"></div>
                             </div>
                             <div style="height:30px;width:200px;margin-left:40px;">
                                 <div style="height:30px;width:40px;float:left;line-height:30px;">probability:</div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input nz-input placeholder="" nzSize="small" [ngModel]="'0.8'"></div>
+                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange4($event)" nz-input placeholder="" nzSize="small" [ngModel]="NOIseq.probability"></div>
                             </div>
                         </div>
 
