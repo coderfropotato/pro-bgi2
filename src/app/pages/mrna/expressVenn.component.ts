@@ -32,12 +32,16 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
     venn_or_upsetR:boolean;
 
     p_show:boolean;//设置里面的PossionDis
-    p_log2FC:string;
-    p_FDR:string;
-    
+    PessionDis:object = {
+        log2FC:'',
+        FDR:''
+    }
+
     n_show:boolean;//设置里面的NOIseq
-    n_log2FC:string;
-    n_proba:string;
+    NOIseq:object={
+        log2FC:'',
+        probability:''
+    }
 
     //单选
     singleMultiSelect: object = {
@@ -71,12 +75,16 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         this.chartUrl = `${config["javaPath"]}/Venn/diffGeneGraph`;
 
         this.p_show=this.store.getStore("diff_threshold").hasOwnProperty('PossionDis'); //设置里面的PossionDis
-        this.p_log2FC=this.p_show?this.store.getStore("diff_threshold").PossionDis.log2FC:'';
-        this.p_FDR=this.p_show?this.store.getStore("diff_threshold").PossionDis.FDR:'';
+        this.PessionDis={
+            log2FC:this.p_show?this.store.getStore("diff_threshold").PossionDis.log2FC:'',
+            FDR:this.p_show?this.store.getStore("diff_threshold").PossionDis.FDR:''
+        }
         
         this.n_show=this.store.getStore("diff_threshold").hasOwnProperty('NOIseq');//设置里面的NOIseq
-        this.n_log2FC=this.n_show?this.store.getStore("diff_threshold").NOIseq.log2FC:'';
-        this.n_proba=this.n_show?this.store.getStore("diff_threshold").NOIseq.probability:'';
+        this.NOIseq={
+            log2FC:this.n_show?this.store.getStore("diff_threshold").NOIseq.log2FC:'',
+            probability:this.n_show?this.store.getStore("diff_threshold").NOIseq.probability:''
+        }
         
         this.selectPanelData=[//差异面板的数据
             {
@@ -154,15 +162,32 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
 
 
     OnChange(value: string): void{//设置里面的PossionDis的log2FC
-        this.p_log2FC=value;
+        this.PessionDis['log2FC']=value;
     }
     OnChange2(value: string): void{//设置里面的PossionDis的FDR
-        this.p_FDR=value;
+        this.PessionDis['FDR']=value;
+    }
+
+    OnChange3(value: string): void{//设置里面的NOIseq的log2FC
+        this.NOIseq['log2FC']=value;
+    }
+    OnChange4(value: string): void{//设置里面的NOIseq的FDR
+        this.NOIseq['probability']=value;
     }
 
     setConfirm(){ //设置下拉面板点击确定时候的两个参数
-        this.tableEntity['diff_threshold'].log2FC=this.p_log2FC;
-        this.tableEntity['diff_threshold'].FDR=this.p_FDR;
+        if(this.p_show){
+            this.tableEntity['diff_threshold']={
+                PessionDis:this.PessionDis
+            }
+        }
+        if(this.n_show){
+            this.tableEntity['diff_threshold']={
+                NOIseq:this.NOIseq
+            }
+        }
+        console.log(this.tableEntity['diff_threshold'])
+        
     }
 
     //单、多选change
