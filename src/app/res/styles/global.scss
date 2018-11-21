@@ -200,6 +200,12 @@ tbody>tr:nth-child(even) {
 .full-height {
     height: 100%;
 }
+.first-column-gene{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding:4px $padding;
+}
 
 button.btnActive {
     border: 1px solid $btn_active_color !important;

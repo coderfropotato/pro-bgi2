@@ -95,7 +95,7 @@
         </div>
         <div class="func" #func>
             <!-- 增删列 -->
-            <app-add-column [thead]="allThead" (addThead)="addThead($event)"></app-add-column>
+            <app-add-column [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)"></app-add-column>
             <!-- 关系 -->
             <!--
                 <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()"></app-gene-relative>
@@ -111,16 +111,25 @@
         <app-table-transformation
             class="no-outside-border"
             #transformTable
-            [(isFirst)]="first"
+            [isFirst]="first"
+            [tableHeight]="tableHeight"
+
             [defaultTableEntity]="defaultEntity"
             [defaultTableUrl]="defaultUrl"
             [defaultTableId]="defaultTableId"
             [defaultTableDefaultChecked]="defaultDefaultChecked"
+            [(defaultEmitBaseThead)] = "defaultEmitBaseThead"
+            (defaultBaseTheadChange)="baseTheadChange($event)"
+            [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
+
             [extendTableEntity]="extendEntity"
             [extendTableUrl]="extendUrl"
             [extendTableId]="extendTableId"
             [extendTableDefaultChecked]="extendDefaultChecked"
-            [tableHeight]="tableHeight"
+            [(extendEmitBaseThead)]="extendEmitBaseThead"
+            (extendBaseTheadChange)="baseTheadChange($event)"
+            [extendTableCheckStatusInParams]="extendCheckStatusInParams"
+            [showMatchAll]="showMatchAll"
         ></app-table-transformation>
     </div>
 </div>

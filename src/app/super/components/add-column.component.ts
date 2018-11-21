@@ -1,6 +1,14 @@
 import { TranslateService } from "@ngx-translate/core";
 import { StoreService } from "./../service/storeService";
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter,
+    OnChanges,
+    SimpleChanges
+} from "@angular/core";
 /**
  * @description 增删列
  * @author Yangwd<277637411@qq.com>
@@ -14,13 +22,16 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
     styles: []
 })
 export class AddColumnComponent implements OnInit {
-    @Input() thead: Array<object>;  // 默认显示的表头
-    @Output() toggle:EventEmitter<any> = new EventEmitter(); // 显示隐藏
+    @Input() thead: Array<object>; // 默认显示的表头
+    @Output() toggle: EventEmitter<any> = new EventEmitter(); // 显示隐藏
+    @Input() baseThead: Array<string>; // 基础的表头  （需要默认激活)
 
-    show:boolean = false;
+    show: boolean = false;
     selected: Array<object> = [];
     beforeSelected: Array<object> = [];
     selectCount: Array<number> = [];
+    theadInBase:string[] = []; // 哪些基础表头在增删列的数据里面
+
     @Output() addThead: EventEmitter<any> = new EventEmitter(); // 添加头的时候发出的事件
     @Output() clearThead: EventEmitter<any> = new EventEmitter(); // 清除头的时候发出的事件
 
@@ -39,11 +50,32 @@ export class AddColumnComponent implements OnInit {
         this.applyCheckedStatus();
     }
 
-    toggleShow(){
+    ngOnChanges(changes: SimpleChanges) {
+        if (
+            "baseThead" in changes &&
+            !changes["baseThead"].firstChange &&
+            changes["baseThead"].currentValue.length
+        ) {
+            this.theadInBase = [];
+            this.thead.forEach(v => {
+                v["children"].forEach(val => {
+                    if (this.baseThead.includes(val["key"])) {
+                        val["checked"] = true;
+                        this.theadInBase.push(val['key']);
+                    }
+                });
+            });
+            this.computedStatus();
+            this.getCheckCount();
+            this.beforeSelected = this.selected.concat([]);
+        }
+    }
+
+    toggleShow() {
         this.show = !this.show;
-        setTimeout(()=>{
+        setTimeout(() => {
             this.toggle.emit(this.show);
-        },0)
+        }, 0);
     }
 
     toggleSelect(item): void {
@@ -110,14 +142,32 @@ export class AddColumnComponent implements OnInit {
         this.thead.forEach(val => {
             val["children"].forEach(v => {
                 v.checked = false;
-                v['category'] = val['category'];
+                v["category"] = val["category"];
             });
         });
     }
 
     confirm() {
         this.beforeSelected = this.selected.concat([]);
-        this.addThead.emit(this.selected);
+        // 记录基础表头 过滤掉基础表头的信息 才是正确的增加的列
+        let add = [];
+        let remove = [];
+
+        let tempTheadInBase = this.theadInBase.concat([]);
+        this.selected.forEach(v=>{
+            if(!this.baseThead.includes(v['key'])){
+                add.push(v);
+            }
+
+            let index = tempTheadInBase.findIndex((val,index)=>{
+                return val===v['key'];
+            })
+            if(index!=-1) tempTheadInBase.splice(index,1);
+        })
+
+        // 有删除的就放在remove里面
+        if(tempTheadInBase.length) tempTheadInBase.forEach(v=>remove.push({ category:null, key:v }))
+        this.addThead.emit({add,remove});
     }
 
     clear() {

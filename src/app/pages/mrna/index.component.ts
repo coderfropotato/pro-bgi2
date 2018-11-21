@@ -265,6 +265,14 @@ export class IndexComponent implements OnInit {
                                     { key: "fpkm_A2" },
                                     { key: "fpkm_B1 Type" }
                                 ]
+                            },
+                            {
+                                category:"other",
+                                children:[
+                                    {key:"gene_id"},
+                                    {key:"gene_type"},
+                                    {key:"symbol"},
+                                ]
                             }
                         ];
 

@@ -1,6 +1,5 @@
 import { StoreService } from "./../../super/service/storeService";
 import { PageModuleService } from "./../../super/service/pageModuleService";
-import { StoreService } from "./../../super/service/storeService";
 import { MessageService } from "./../../super/service/messageService";
 import { AjaxService } from "src/app/super/service/ajaxService";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
@@ -46,12 +45,16 @@ export class DiffVennComponent implements OnInit {
     defaultTableId:string;
     defaultDefaultChecked:boolean;
     defaultCheckStatusInParams:boolean;
+    defaultEmitBaseThead:boolean;
 
     extendEntity: object;
     extendUrl: string;
     extendTableId:string;
     extendDefaultChecked:boolean;
     extendCheckStatusInParams:boolean;
+    extendEmitBaseThead:boolean;
+    baseThead:[] = [];
+    showMatchAll:boolean;
 
     tableEntity: object = {};
     selectPanelData: object[] = [];
@@ -136,7 +139,7 @@ export class DiffVennComponent implements OnInit {
             LCID: sessionStorage.getItem("LCID"),
             compareGroup: this.activedCompareGroup,
             geneType: this.pageModuleService.defaultModule,
-            species: "aisdb",
+            species: this.storeService.getStore("genome"),
             version: this.storeService.getStore("reference"),
             diffThreshold: {
                 PossionDis: {
@@ -146,11 +149,12 @@ export class DiffVennComponent implements OnInit {
             }
         };
 
+        this.showMatchAll = true;
         this.defaultUrl = `${config["javaPath"]}/Venn/diffGeneTable`;
         this.defaultEntity = {
             pageIndex: 1, //分页
             pageSize: 20,
-            LCID: sessionStorage.getItem('LCID'), //流程id
+            LCID: sessionStorage.getItem('LCID'),
             leftChooseList: [], //upsetR参数
             upChooseList: [], //胜利n图选中部分参数
             compareGroup: this.activedCompareGroup, //比较组
@@ -159,10 +163,11 @@ export class DiffVennComponent implements OnInit {
             mongoId: null,
             sortKey: null, //排序
             sortValue: null,
+            matchAll:false,
             chartType: null, //是否转化。矩阵为matrix
             relations: ["ppi", "rbp", "cerna"], //关系组（简写，索引最后一个字段）
             geneType: this.pageModuleService.defaultModule, //基因类型gene和transcript
-            species: "aisdb", //物种
+            species:this.storeService.getStore("genome"), //物种
             diffThreshold: {
                 PossionDis: { log2FC: 1, FDR: 0.001 }
             },
@@ -171,6 +176,8 @@ export class DiffVennComponent implements OnInit {
         };
         this.defaultTableId = 'diff_venn_default_gene';
         this.defaultDefaultChecked =true;
+        this.defaultEmitBaseThead = true;
+        this.defaultCheckStatusInParams = true;
 
         this.extendUrl = `${config["javaPath"]}/Venn/diffGeneTable`;
         this.extendEntity = {
@@ -185,10 +192,11 @@ export class DiffVennComponent implements OnInit {
             mongoId: null,
             sortKey: null, //排序
             sortValue: null,
+            matchAll:false,
             chartType: "matrix", //是否转化。矩阵为matrix
             relations: ["ppi", "rbp", "cerna"], //关系组（简写，索引最后一个字段）
             geneType: this.pageModuleService.defaultModule, //基因类型gene和transcript
-            species: "aisdb", //物种
+            species: this.storeService.getStore("genome"), //物种
             diffThreshold: {
                 PossionDis: { log2FC: 1, FDR: 0.001 }
             },
@@ -197,6 +205,8 @@ export class DiffVennComponent implements OnInit {
         };
         this.extendTableId = 'diff_venn_extend_gene';
         this.extendDefaultChecked =true;
+        this.extendEmitBaseThead = true;
+        this.extendCheckStatusInParams = false;
     }
 
     ngAfterViewInit() {
@@ -205,33 +215,51 @@ export class DiffVennComponent implements OnInit {
         },30)
     }
 
-    addThead(select){
-        this.transformTable._addThead(select);
+    // {add:[],remove:[{}]}
+    addThead(thead){
+        this.transformTable._setParamsNoRequest('removeColumns',thead['remove']);
+        this.transformTable._addThead(thead['add']);
     }
+
+   /*-------- 表格转换开始 ----------*/
 
     // 表格转换 确定
     confirm(){
         let checkParams = this.transformTable._getInnerParams();
+        this.showMatchAll = true;
         if(this.first){
             this.extendEntity['checkStatus']=checkParams['others']['checkStatus'];
             this.extendEntity['unChecked']=checkParams['others']['excludeGeneList']['unChecked'];
             this.extendEntity['checked']=checkParams['others']['excludeGeneList']['checked'];
             this.extendEntity['mongoId'] = checkParams['mongoId'];
+            this.extendCheckStatusInParams = false;
             this.first = false;
         }else{
-            console.log(checkParams);
             this.transformTable._initTableStatus();
             this.transformTable._setExtendParamsWithoutRequest('checkStatus',checkParams['others']['checkStatus']);
             this.transformTable._setExtendParamsWithoutRequest('checked',checkParams['others']['excludeGeneList']['checked']);
             this.transformTable._setExtendParamsWithoutRequest('unChecked',checkParams['others']['excludeGeneList']['unChecked']);
+            this.extendCheckStatusInParams = false;
             this.transformTable._getData();
         }
+        setTimeout(()=>{
+            this.extendCheckStatusInParams = true;
+        },30)
     }
+
+
 
     // 表格转换返回
     back(){
         this.first = true;
     }
+
+    // 在认为是基础头的时候发出基础头 双向绑定到增删列
+    baseTheadChange(thead){
+        this.baseThead = thead['baseThead'].map(v=>v['true_key']);
+    }
+
+    /*----------- 表格转换结束 -----------------*/
 
     // 表格上方功能区 resize重新计算表格高度
     resize(event: ResizedEvent) {
