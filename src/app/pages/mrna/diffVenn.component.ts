@@ -60,6 +60,7 @@ export class DiffVennComponent implements OnInit {
     venSelectAllData:string [] = []; //新增11.21号，11：16
     selectConfirmData:string [] = [];//新增11.21号，11：16
 
+    panelShow:boolean=false;
 
     tableEntity: object = {};
     selectPanelData: object[] = [];
@@ -333,6 +334,13 @@ export class DiffVennComponent implements OnInit {
         this.NOIseq['probability']=value;
     }
 
+    panelChange(){
+        console.log(this.panelShow)
+        this.panelShow=!this.panelShow
+    }
+    setCancle(){
+        this.panelShow=false;
+    }
     setConfirm(){ //设置下拉面板点击确定时候的两个参数
         if(this.p_show){
             this.tableEntity['diff_threshold']={
@@ -344,7 +352,9 @@ export class DiffVennComponent implements OnInit {
                 NOIseq:this.NOIseq
             }
         }
+        this.panelShow=false;
         console.log(this.tableEntity['diff_threshold'])
+
     }
 
     //单、多选change
