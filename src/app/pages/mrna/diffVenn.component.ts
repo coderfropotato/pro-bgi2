@@ -5,8 +5,6 @@ import { AjaxService } from "src/app/super/service/ajaxService";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { GlobalService } from "src/app/super/service/globalService";
 import config from "../../../config";
-import { ResizedEvent } from "angular-resize-event/resized-event";
-import { truncateSync } from "fs";
 declare const d3: any;
 declare const Venn: any;
 
@@ -53,7 +51,7 @@ export class DiffVennComponent implements OnInit {
     extendDefaultChecked:boolean;
     extendCheckStatusInParams:boolean;
     extendEmitBaseThead:boolean;
-    baseThead:[] = [];
+    baseThead:any[] = [];
     showMatchAll:boolean;
 
 
@@ -154,7 +152,7 @@ export class DiffVennComponent implements OnInit {
             }
         };
 
-        this.showMatchAll = true;
+        this.showMatchAll = false;
         this.defaultUrl = `${config["javaPath"]}/Venn/diffGeneTable`;
         this.defaultEntity = {
             pageIndex: 1, //分页
@@ -162,7 +160,7 @@ export class DiffVennComponent implements OnInit {
             LCID: sessionStorage.getItem('LCID'),
             leftChooseList: [], //upsetR参数
             upChooseList: [], //胜利n图选中部分参数
-            compareGroup: this.activedCompareGroup, //比较组
+            compareGroup: this.store.getStore("diff_plan"), //比较组
             addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             mongoId: null,
@@ -191,7 +189,7 @@ export class DiffVennComponent implements OnInit {
             LCID: sessionStorage.getItem('LCID'), //流程id
             leftChooseList: [], //upsetR参数
             upChooseList: [], //胜利n图选中部分参数
-            compareGroup: this.activedCompareGroup, //比较组
+            compareGroup: this.store.getStore("diff_plan"), //比较组
             addThead: [], //扩展列
             transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             mongoId: null,
@@ -237,6 +235,7 @@ export class DiffVennComponent implements OnInit {
             this.extendEntity['unChecked']=checkParams['others']['excludeGeneList']['unChecked'];
             this.extendEntity['checked']=checkParams['others']['excludeGeneList']['checked'];
             this.extendEntity['mongoId'] = checkParams['mongoId'];
+            this.extendEntity['compareGroup']=this.selectConfirmData;
             this.extendCheckStatusInParams = false;
             this.first = false;
         }else{
@@ -244,6 +243,7 @@ export class DiffVennComponent implements OnInit {
             this.transformTable._setExtendParamsWithoutRequest('checkStatus',checkParams['others']['checkStatus']);
             this.transformTable._setExtendParamsWithoutRequest('checked',checkParams['others']['excludeGeneList']['checked']);
             this.transformTable._setExtendParamsWithoutRequest('unChecked',checkParams['others']['excludeGeneList']['unChecked']);
+            this.transformTable._setExtendParamsWithoutRequest('compareGroup',this.selectConfirmData);
             this.extendCheckStatusInParams = false;
             this.transformTable._getData();
         }
@@ -252,10 +252,9 @@ export class DiffVennComponent implements OnInit {
         },30)
     }
 
-
-
     // 表格转换返回
     back(){
+        this.defaultEntity['comporeGroup'] = this.selectConfirmData;
         this.first = true;
     }
 
@@ -267,7 +266,7 @@ export class DiffVennComponent implements OnInit {
     /*----------- 表格转换结束 -----------------*/
 
     // 表格上方功能区 resize重新计算表格高度
-    resize(event: ResizedEvent) {
+    resize(event) {
         this.computedTableHeight();
     }
 
@@ -327,12 +326,7 @@ export class DiffVennComponent implements OnInit {
     multiSelectChange() {
         if(!this.venn_or_upsetR){//新增11.21号，11：16
             this.updateVenn()
-        }   
-    }
-
-    //venn和upsetR只能单选时候
-    doSingleData(data){         //新增11.21号，11：16
-        console.log(data)
+        }
     }
 
     //韦恩图二次更新
@@ -340,6 +334,12 @@ export class DiffVennComponent implements OnInit {
         this.tableEntity['compareGroup'] = this.selectConfirmData;
         this.getVennOrUpsetR();
     }
+
+     //venn和upsetR只能单选时候
+    doSingleData(data){         //新增11.21号，11：16
+        console.log(data)
+    }
+
 
     //多选确定时候,提交的数据
     multipleConfirm() {
@@ -356,6 +356,8 @@ export class DiffVennComponent implements OnInit {
     //选择面板 确定筛选的数据
     selectConfirm(data) {
         this.selectConfirmData = data; //新增11.21号，11：16
+        this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData)
+        this.transformTable._getData();
         this.updateVenn();
     }
 

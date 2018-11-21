@@ -8,25 +8,82 @@
         <div class="left-bottom-layout">
             <ng-template #setTemplate>
                 <nz-dropdown [nzPlacement]="'bottomRight'">
-                    <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown></i>
-                    <div style="height:250px;width:300px;background:#f5f5f5;position:relative" [hidden]="!p_show">
-                        <div style="height:90px;width:300px;background:#f5f5f5;position:relative;margin-top:10px;">
-                            <div style="height:30px;width:300px;line-height:30px;">
-                                <div style="height:30px;width:40px;float:left;line-height:30px;margin-left:20px;">PessionDis</div>
+                    <i
+                        class="anticon anticon-setting"
+                        nz-tooltip
+                        nzTitle="设置"
+                        nz-dropdown
+                    ></i>
+                    <div
+                        style="height:250px;width:300px;background:#f5f5f5;position:relative"
+                        [hidden]="!p_show"
+                    >
+                        <div
+                            style="height:90px;width:300px;background:#f5f5f5;position:relative;margin-top:10px;"
+                        >
+                            <div
+                                style="height:30px;width:300px;line-height:30px;"
+                            >
+                                <div
+                                    style="height:30px;width:40px;float:left;line-height:30px;margin-left:20px;"
+                                >
+                                    PessionDis
+                                </div>
                             </div>
-                            <div style="height:30px;width:200px;margin-left:40px;">
-                                <div style="height:30px;width:40px;float:left;line-height:30px;">log2FC:</div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange($event)" nz-input placeholder="" nzSize="small" [ngModel]="p_log2FC"></div>
+                            <div
+                                style="height:30px;width:200px;margin-left:40px;"
+                            >
+                                <div
+                                    style="height:30px;width:40px;float:left;line-height:30px;"
+                                >
+                                    log2FC:
+                                </div>
+                                <div
+                                    style="height:30px;width:60px;float:left;margin-left:36px;"
+                                >
+                                    <input
+                                        (ngModelChange)="OnChange($event)"
+                                        nz-input
+                                        placeholder=""
+                                        nzSize="small"
+                                        [ngModel]="p_log2FC"
+                                    />
+                                </div>
                             </div>
-                            <div style="height:30px;width:200px;margin-left:40px;">
-                                <div style="height:30px;width:40px;float:left;line-height:30px;">FDR:</div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange2($event)" nz-input placeholder="" nzSize="small" [ngModel]="p_FDR"></div>
+                            <div
+                                style="height:30px;width:200px;margin-left:40px;"
+                            >
+                                <div
+                                    style="height:30px;width:40px;float:left;line-height:30px;"
+                                >
+                                    FDR:
+                                </div>
+                                <div
+                                    style="height:30px;width:60px;float:left;margin-left:36px;"
+                                >
+                                    <input
+                                        (ngModelChange)="OnChange2($event)"
+                                        nz-input
+                                        placeholder=""
+                                        nzSize="small"
+                                        [ngModel]="p_FDR"
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        <div style="height:90px;width:300px;background:#f5f5f5;position:relative;margin-top:10px;" [hidden]="!n_show">
-                            <div style="height:30px;width:300px;line-height:30px;">
-                                <div style="height:30px;width:40px;float:left;line-height:30px;margin-left:20px;">NOIseq</div>
+                        <div
+                            style="height:90px;width:300px;background:#f5f5f5;position:relative;margin-top:10px;"
+                            [hidden]="!n_show"
+                        >
+                            <div
+                                style="height:30px;width:300px;line-height:30px;"
+                            >
+                                <div
+                                    style="height:30px;width:40px;float:left;line-height:30px;margin-left:20px;"
+                                >
+                                    NOIseq
+                                </div>
                             </div>
                             <div
                                 style="height:30px;width:200px;margin-left:40px;"
@@ -68,60 +125,73 @@
                             </div>
                         </div>
 
-                            <button style="position:absolute;bottom:10px;right:10px" [nzSize]="small" nz-button nzType="Default">取消</button>
-                            <button style="position:absolute;bottom:10px;right:90px" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">确定</button>
+                        <button
+                            style="position:absolute;bottom:10px;right:10px"
+                            [nzSize]="small"
+                            nz-button
+                            nzType="Default"
+                        >
+                            取消
+                        </button>
+                        <button
+                            style="position:absolute;bottom:10px;right:90px"
+                            [nzSize]="small"
+                            nz-button
+                            nzType="primary"
+                            (click)="setConfirm()"
+                        >
+                            确定
+                        </button>
                     </div>
                 </nz-dropdown>
             </ng-template>
-            <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
-                (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
-                [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawVenn($event)"
-                [selectPanelData]="selectPanelData" (selectConfirmEmit)="selectConfirm($event)"
-                [defaultSelectNum]="-1" (defaultSelectList)="defaultSelectList($event)" [flex]="true" [chartId]="'chartId22122'" [chartName]="'韦恩图'">
+            <app-table-switch-chart
+                #tableSwitchChart
+                [id]="'tableSwitchChart'"
+                [isHasMultiSelect]="true"
+                [(isMultiSelect)]="isMultiSelect"
+                (isMultiSelectChange)="multiSelectChange()"
+                (multipleConfirmEmit)="multipleConfirm()"
+                [tableUrl]="tableUrl"
+                [chartUrl]="chartUrl"
+                [apiEntity]="tableEntity"
+                [isShowAccuracy]="true"
+                [selectTemplate]="selectTemplate"
+                [setTemplate]="setTemplate"
+                (drawChartEmit)="drawVenn($event)"
+                [selectPanelData]="selectPanelData"
+                (selectConfirmEmit)="selectConfirm($event)"
+                [defaultSelectNum]="-1"
+                (defaultSelectList)="defaultSelectList($event)"
+                [flex]="true"
+                [chartId]="'chartId22122'"
+                [chartName]="'韦恩图'"
+            >
             </app-table-switch-chart>
         </div>
     </div>
-    <div
-        #right
-        class="right-layout"
-        [class.expand]="switch"
-        (click)="resize($event)"
-    >
+    <div #right class="right-layout" [class.expand]="switch" (click)="resize($event)" >
         <div class="switch">
-            <nz-switch
-                [ngModel]="switch"
-                (ngModelChange)="switchChange($event)"
-            ></nz-switch>
+            <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" ></nz-switch>
         </div>
         <div class="func" #func>
             <!-- 增删列 -->
-            <app-add-column [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)"></app-add-column>
+            <app-add-column [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)" ></app-add-column>
             <!-- 关系 -->
-            <!--
-                <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()"></app-gene-relative>
-            -->
-            <app-gene-relative
-                #relative
-                (confirmEvent)="confirm()"
-                (backEvent)="back()"
-            ></app-gene-relative>
-        </div>
-
+            <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()" ></app-gene-relative> </div>
         <!-- 表格转换 -->
         <app-table-transformation
             class="no-outside-border"
             #transformTable
             [isFirst]="first"
             [tableHeight]="tableHeight"
-
             [defaultTableEntity]="defaultEntity"
             [defaultTableUrl]="defaultUrl"
             [defaultTableId]="defaultTableId"
             [defaultTableDefaultChecked]="defaultDefaultChecked"
-            [(defaultEmitBaseThead)] = "defaultEmitBaseThead"
+            [(defaultEmitBaseThead)]="defaultEmitBaseThead"
             (defaultBaseTheadChange)="baseTheadChange($event)"
             [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
-
             [extendTableEntity]="extendEntity"
             [extendTableUrl]="extendUrl"
             [extendTableId]="extendTableId"

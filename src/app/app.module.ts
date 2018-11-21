@@ -6,7 +6,6 @@ import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { NgZorroAntdModule, NZ_MESSAGE_CONFIG } from "ng-zorro-antd";
 import { SimpleReuseStrategy } from "./super/service/simpleReuseStrategy";
-import { AngularResizedEventModule } from 'angular-resize-event';
 
 // 组件
 import { AppComponent } from "./app.component";
@@ -360,7 +359,6 @@ export function createTranslateLoader(http: HttpClient) {
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        AngularResizedEventModule,
         NgxSpinnerModule,
         ColorPickerModule,
         NgZorroAntdModule,
