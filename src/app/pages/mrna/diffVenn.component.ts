@@ -1,6 +1,5 @@
 import { StoreService } from "./../../super/service/storeService";
 import { PageModuleService } from "./../../super/service/pageModuleService";
-import { StoreService } from "./../../super/service/storeService";
 import { MessageService } from "./../../super/service/messageService";
 import { AjaxService } from "src/app/super/service/ajaxService";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
@@ -52,6 +51,11 @@ export class DiffVennComponent implements OnInit {
     extendTableId:string;
     extendDefaultChecked:boolean;
     extendCheckStatusInParams:boolean;
+
+
+    venSelectAllData:string [] = []; //新增11.21号，11：16
+    selectConfirmData:string [] = [];//新增11.21号，11：16
+
 
     tableEntity: object = {};
     selectPanelData: object[] = [];
@@ -292,33 +296,38 @@ export class DiffVennComponent implements OnInit {
 
     //单、多选change
     multiSelectChange() {
-
+        if(!this.venn_or_upsetR){//新增11.21号，11：16
+            this.updateVenn()
+        }   
     }
 
-    //多选确定,可以选多个柱子
+    //venn和upsetR只能单选时候
+    doSingleData(data){         //新增11.21号，11：16
+        console.log(data)
+    }
+
+    //韦恩图二次更新
+    updateVenn(){                            //新增11.21号，11：16
+        this.tableEntity['compareGroup'] = this.selectConfirmData;
+        this.getVennOrUpsetR();
+    }
+
+    //多选确定时候,提交的数据
     multipleConfirm() {
-        if(this.venn_or_upsetR){//upsetR确定
-            if (this.isMultiSelect) {//多选
-                console.log(this.doubleMultiSelect);
-            } else {
-                console.log(this.singleMultiSelect);
-            }
-        }else{//venn确定
-
-        }
-
+        let tempData = this.venn_or_upsetR?this.doubleMultiSelect:this.venSelectAllData;  //新增11.21号，11：16
+        console.log(tempData);
     }
 
     //选择面板，默认选中数据
     defaultSelectList(data) {
+        this.selectConfirmData = data; //新增11.21号，11：16
         console.log(data)
     }
 
     //选择面板 确定筛选的数据
     selectConfirm(data) {
-        //console.log(data)
-        this.tableEntity['compareGroup'] = data;
-        this.getVennOrUpsetR();
+        this.selectConfirmData = data; //新增11.21号，11：16
+        this.updateVenn();
     }
 
     redrawChart(width, height?) {
@@ -327,6 +336,9 @@ export class DiffVennComponent implements OnInit {
 
     //显示venn图
     showVenn(data) {
+        let _selfV = this;
+
+        console.log(_selfV.isMultiSelect);
         let tempA = data.rows.map(o => {
             return { CompareGroup: o.name, Count: o.value };
         });
@@ -342,11 +354,25 @@ export class DiffVennComponent implements OnInit {
         let oVenn = new Venn({ id: "chartId22122" })
             .config({
                 data: tempR,
-                compareGroup: this.tableEntity['compareGroup']
+                compareGroup: _selfV.tableEntity['compareGroup'],//新增11.21号，11：16
+                isMultipleSelect: _selfV.isMultiSelect
             })
             .drawVenn()
-            .on('click', function (d) {
-                console.log(d);
+            .hover(function () {
+                this.$select.$el.setAttribute('opacity', '0.5')
+            }, function () {
+                this.$select.$el.setAttribute('opacity', '0')
+            })
+            .on('click', function () {
+                if(!_selfV.isMultiSelect){
+                    _selfV.doSingleData(this.$select.$data.result.CompareGroup); //新增11.21号，11：16
+                }else{
+                    let tempVenn=[];
+                    this.selectCollection.forEach(element => {
+                        tempVenn.push(element.result.CompareGroup)
+                    });
+                    _selfV.venSelectAllData=tempVenn;
+                }
             });
     }
     //显示upsetR图
