@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { GlobalService } from 'src/app/super/service/globalService';
+import config from '../../../config';
 
 declare const d3: any;
 declare const $: any;
@@ -33,10 +34,22 @@ export class multiOmicsComponent implements OnInit {
     ngOnInit() {
         this.colors = ["#3195BC", "#FF6666", "#009e71", "#FF9896", "#F4CA60", "#6F74A5", "#C49C94", "#3b9b99", "#FACA0C", "#F3C9DD"];
         this.chartEntity = {
-            "LCID": sessionStorage.getItem('LCID'),
-            "setArr": []
-        }
-        this.chartUrl = "http://localhost:8086/multiOmicsY";
+                "id": "58beccbe6d4049b9bc881868f0cb1516",
+                "quantity": [
+                    // {
+                    //     "relation": "ppi",
+                    //     "key": "fpkm_A1",
+                    //     "category": "aisdb.gene_expression"
+                    // },
+                    // {
+                    //     "relation": "rbp",
+                    //     "key": "diffexp_log2fc_A1-vs-B1",
+                    //     "category": "aisdb.gene_diff"
+                    // }
+                ]
+            }
+            this.chartUrl = "http://localhost:8086/multiOmicsY";
+        // this.chartUrl = `${config["javaPath"]}/multiOmics/graph`;
     }
 
     drawChart(data) {
@@ -494,8 +507,9 @@ export class multiOmicsComponent implements OnInit {
 
     //设置 确定
     setConfirm(setArr) {
-        this.chartEntity['setArr'] = setArr;
+        this.chartEntity['quantity'] = setArr;
         this.multiOmicsChart.reGetData();
+        console.log(setArr)
     }
 
     //demo

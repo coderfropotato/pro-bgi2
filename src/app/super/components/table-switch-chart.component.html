@@ -34,17 +34,19 @@
     </div>
 </ng-template>
 
-<ng-template #selectPanel>
-    <div class="selectPanel">
-        <div *ngFor="let selected of selectPanelList">
-            <span>{{selected.type}}</span>&nbsp;
-            <button nz-button nzType="default" [nzSize]="'small'" *ngFor="let item of selected.data" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
+<!-- <ng-template #selectPanel>
+    <div #selectedPanel class="selectPanel">
+        <div class="selectContent">
+            <div *ngFor="let selected of selectPanelList">
+                <span>{{selected.type}}</span>&nbsp;
+                <button nz-button nzType="default" [nzSize]="'small'" *ngFor="let item of selected.data" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
+            </div>
         </div>
         <div class="right">
             <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length">确定</button>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <div class="tableSwitchChart" [class.table-switch-chart-flex]="flex" [class.full-height]="flex" [attr.id]="id">
     <nz-spin [nzSpinning]="isLoading" nzTip='Loading...' [class.extend-height]="flex">
@@ -52,7 +54,18 @@
             <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
 
             <div #tableContent class="table-content" style="flex:1" [ngStyle]="{'overflow-x':!isShowTable?'auto':'unset'}">
-                <ng-container *ngTemplateOutlet="(selectPanel && isHasSelectPanel) ? selectPanel :''"></ng-container>
+                <!-- <ng-container *ngTemplateOutlet="(selectPanel && isHasSelectPanel) ? selectPanel :''"></ng-container> -->
+                <div #selectPanel class="selectPanel" *ngIf="isHasSelectPanel && selectPanelList.length">
+                    <div class="selectContent">
+                        <div *ngFor="let selected of selectPanelList">
+                            <span>{{selected.type}}</span>&nbsp;
+                            <button nz-button nzType="default" [nzSize]="'small'" *ngFor="let item of selected.data" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length">确定</button>
+                    </div>
+                </div>
 
                 <!-- table：固定表头-->
                 <nz-table nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">

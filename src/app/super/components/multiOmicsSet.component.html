@@ -11,11 +11,11 @@
             <div class="infoContent" *ngFor="let info of infoList;let i=index">
                 <div class="infoCol">
                     <nz-select style="width: 100px;margin-left: 10px" [(ngModel)]="info.relation" [nzSize]="'small'" (ngModelChange)="relationChange()" nzShowSearch>
-                        <nz-option [nzDisabled]='relation.isDisabled' *ngFor="let relation of relationList" [nzLabel]="relation.name" [nzValue]="relation.name"></nz-option>
+                        <nz-option [nzDisabled]='relation.isDisabled' *ngFor="let relation of relationList" [nzLabel]="relation.name" [nzValue]="relation.key"></nz-option>
                     </nz-select>
                 </div>
-                <div class="infoCol">
-                    <span>{{info.rationCol}}</span>
+                <div class="infoCol rationColInfo" nz-tooltip [nzTitle]="info.key">
+                    <span>{{info.key}}</span>
                 </div>
                 <div class="infoCol">
                     <i nz-icon class="anticon anticon-form" theme="outline" nz-tooltip nzTitle="修改" (click)="updateInfo(info)"></i>
@@ -46,7 +46,7 @@
         </div>
         <div class="rationClassifyRow">
             <span>定量列：</span>
-            <button (click)="rationColSelect(item)" style="margin-right:5px;margin-bottom:5px " nz-button nzType="default" *ngFor="let item of rations">{{item}}</button>&nbsp;
+            <button (click)="rationColSelect(item)" style="margin-right:5px;margin-bottom:5px " nz-button nzType="default" *ngFor="let item of rations">{{item.name}}</button>&nbsp;
         </div>
         <div class="setBtns right">
             <button nz-button nzType="primary" (click)="addConfirm()">确定</button>&nbsp;
@@ -64,7 +64,7 @@
         </div>
         <div class="rationClassifyRow">
             <span>定量列：</span>
-            <button (click)="updateRationColSelect(item)" style="margin-right:5px;margin-bottom:5px " nz-button nzType="default" *ngFor="let item of rationList">{{item}}</button>&nbsp;
+            <button (click)="updateRationColSelect(item)" style="margin-right:5px;margin-bottom:5px " nz-button nzType="default" *ngFor="let item of rationList">{{item.name}}</button>&nbsp;
         </div>
     </div>
 

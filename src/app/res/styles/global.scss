@@ -4,15 +4,21 @@
 }
 
 .selectPanel {
-    max-height: 400px;
-    overflow: auto;
     padding: 10px 20px;
     border-bottom: $border;
 }
 
-.selectPanel button {
+.selectPanel .selectContent button {
     margin-right: 10px;
+}
+
+.selectPanel .selectContent div {
     margin-bottom: 10px;
+}
+
+.selectPanel .selectContent {
+    max-height: 200px;
+    overflow: auto;
 }
 
 .table-content {
