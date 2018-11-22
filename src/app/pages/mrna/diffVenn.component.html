@@ -7,7 +7,7 @@
         </div>
         <div class="left-bottom-layout">
             <ng-template #setTemplate>
-                <nz-dropdown [nzPlacement]="'bottomRight'" [nzVisible]="panelShow" (nzVisibleChange)="panelChange()">
+                <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow" (nzVisibleChange)="panelChange()">
                     <i
                         class="anticon anticon-setting"
                         nz-tooltip
