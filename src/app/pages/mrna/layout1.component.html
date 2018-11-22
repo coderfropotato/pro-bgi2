@@ -3,14 +3,14 @@
     <div #left class="left-layout column" [class.unexpand]="switch">
       <!-- 模块描述 -->
         <div class="left-top-layout">
-            <h4>{{title}}</h4>
+            <h4>title</h4>
             <p>descdesc</p>
         </div>
         <div class="left-bottom-layout">
             <!-- 图表切换 -->
             <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect"
                 (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [chartUrl]="chartUrl"
-                [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate"
+                [apiEntity]="tableEntity" [isShowAccuracy]="true" [selectTemplate]="" [setTemplate]=""
                 (drawChartEmit)="drawChart($event)" [flex]="true" [chartId]="'chartId222'" [chartName]="'散点图'"></app-table-switch-chart>
                 <!-- 颜色选择器 -->
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
@@ -26,7 +26,7 @@
             <app-add-column [thead]="allThead"></app-add-column>
         </div>
         <!-- 基因表 -->
-        <app-geneTable class="no-outside-border" tableId="layout_table_test" [selectItems]="selectTemplate" [pageEntity]="pageEntity" [checkStatusInParams]="false"
+        <app-geneTable class="no-outside-border" tableId="layout_table_test" [selectItems]="" [pageEntity]="pageEntity" [checkStatusInParams]="false"
             url="http://localhost:8086/filter" [tableHeight]="tableHeight" [defaultChecked]="false"></app-geneTable>
     </div>
 </div>

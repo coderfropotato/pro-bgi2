@@ -348,6 +348,7 @@ button.btnActive {
             @include module-style;
             padding: 12px;
             flex: 1;
+            overflow: hidden;
         }
     }
     .right-layout {

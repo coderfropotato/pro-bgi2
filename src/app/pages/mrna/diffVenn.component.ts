@@ -15,7 +15,7 @@ declare const Venn: any;
 })
 export class DiffVennPage {
     constructor(
-        private pageModuleService:PageModuleService
+        public pageModuleService:PageModuleService
     ){}
 }
 
@@ -103,8 +103,8 @@ export class DiffVennComponent implements OnInit {
         private store:StoreService,
         private ajaxService: AjaxService,
         private globalService: GlobalService,
-        private pageModuleService: PageModuleService,
-        private storeService: StoreService
+        private storeService: StoreService,
+        public pageModuleService:PageModuleService
     ) {
         // 订阅windowResize 重新计算表格滚动高度
         this.message.getResize().subscribe(res => {
@@ -124,7 +124,7 @@ export class DiffVennComponent implements OnInit {
             log2FC:this.p_show?this.store.getStore("diff_threshold").PossionDis.log2FC:'',
             FDR:this.p_show?this.store.getStore("diff_threshold").PossionDis.FDR:''
         }
-        
+
         this.n_show=this.store.getStore("diff_threshold").hasOwnProperty('NOIseq');//设置里面的NOIseq
         this.NOIseq={
             log2FC:this.n_show?this.store.getStore("diff_threshold").NOIseq.log2FC:'',
@@ -150,7 +150,7 @@ export class DiffVennComponent implements OnInit {
         this.vennEntity = {
             LCID: sessionStorage.getItem("LCID"),
             compareGroup: this.activedCompareGroup,
-            geneType: this.pageModuleService.defaultModule,
+            geneType: this.pageModuleService['defaultModule'],
             species: this.storeService.getStore("genome"),
             version: this.storeService.getStore("reference"),
             diffThreshold: {
@@ -176,9 +176,10 @@ export class DiffVennComponent implements OnInit {
             sortKey: null, //排序
             sortValue: null,
             matchAll:false,
+            reAnaly:false,
             chartType: null, //是否转化。矩阵为matrix
             relations: ["ppi", "rbp", "cerna"], //关系组（简写，索引最后一个字段）
-            geneType: this.pageModuleService.defaultModule, //基因类型gene和transcript
+            geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
             species:this.storeService.getStore("genome"), //物种
             diffThreshold: {
                 PossionDis: { log2FC: 1, FDR: 0.001 }
@@ -195,6 +196,7 @@ export class DiffVennComponent implements OnInit {
         this.extendEntity = {
             pageIndex: 1, //分页
             pageSize: 20,
+            reAnaly:false,
             LCID: sessionStorage.getItem('LCID'), //流程id
             leftChooseList: [], //upsetR参数
             upChooseList: [], //胜利n图选中部分参数
@@ -207,7 +209,7 @@ export class DiffVennComponent implements OnInit {
             matchAll:false,
             chartType: "matrix", //是否转化。矩阵为matrix
             relations: ["ppi", "rbp", "cerna"], //关系组（简写，索引最后一个字段）
-            geneType: this.pageModuleService.defaultModule, //基因类型gene和transcript
+            geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
             species: this.storeService.getStore("genome"), //物种
             diffThreshold: {
                 PossionDis: { log2FC: 1, FDR: 0.001 }

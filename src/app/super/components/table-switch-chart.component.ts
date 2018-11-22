@@ -12,6 +12,7 @@ declare const $: any;
 export class TableSwitchChartComponent implements OnInit {
     @ViewChild("tableContent") tableContent;
     @ViewChild('selectPanel') selectPanel;
+    @ViewChild('tableChartContent') tableChartContent;
 
     @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
     @Input() tableUrl: string;  //表格api地址；isOnlyChart=true时可不传
@@ -136,13 +137,17 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     scrollHeight() {
-        let tableContentH = this.tableContent.nativeElement.offsetHeight;
-        let selectPanelH = 0;
-        if (this.isHasSelectPanel && this.selectPanelList.length) {
-            selectPanelH = this.selectPanel.nativeElement.offsetHeight;
+        try {
+            let tableContentH = this.tableContent.nativeElement.offsetHeight;
+            let selectPanelH = 0;
+            if (this.isHasSelectPanel && this.selectPanelList.length) {
+                selectPanelH = this.selectPanel.nativeElement.offsetHeight;
+            }
+            let scrollH = (tableContentH - selectPanelH - 38) + 'px';
+            console.log(scrollH)
+            this.scroll['y'] = scrollH;
+        } catch (error) {
         }
-        let scrollH = (tableContentH - selectPanelH - 38) + 'px';
-        this.scroll['y'] = scrollH;
     }
 
     //获取选择面板数据

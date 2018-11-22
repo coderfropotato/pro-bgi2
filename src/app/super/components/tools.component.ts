@@ -53,7 +53,7 @@ export class ToolsComponent implements OnInit {
 
     // 子模块参数
     childVisible = false;
-    constructor(private toolsService: ToolsService) {}
+    constructor(public toolsService: ToolsService) {}
 
     ngOnInit() {}
 

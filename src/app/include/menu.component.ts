@@ -20,7 +20,7 @@ export class MenuComponent implements OnChanges {
     constructor(
         private router: Router,
         private globalService: GlobalService,
-        private pageModuleService:PageModuleService
+        public pageModuleService:PageModuleService
         ) {}
 
     ngOnChanges(changes: SimpleChanges) {
@@ -76,5 +76,13 @@ export class MenuComponent implements OnChanges {
         this.menu[this.index]["active"] = true;
         this.router.navigateByUrl(`/report/mrna/${submenu["url"]}`);
         this.expand = false;
+    }
+
+    analysis() {
+        let url = `${location.href.substring(
+            0,
+            location.href.indexOf("/report")
+        )}/report/reanalysis/index`;
+        window.open(url);
     }
 }

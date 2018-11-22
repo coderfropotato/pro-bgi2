@@ -53,7 +53,7 @@
         <div class="flex column" [class.extend-height]="flex">
             <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
 
-            <div #tableContent class="table-content" style="flex:1" [ngStyle]="{'overflow-x':!isShowTable?'auto':'unset'}">
+            <div #tableContent class="table-content" style="flex:1;" [ngStyle]="{'overflow-x':!isShowTable?'auto':'unset'}">
                 <!-- <ng-container *ngTemplateOutlet="(selectPanel && isHasSelectPanel) ? selectPanel :''"></ng-container> -->
                 <div #selectPanel class="selectPanel" *ngIf="isHasSelectPanel && selectPanelList.length">
                     <div class="selectContent">
@@ -66,26 +66,27 @@
                         <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length">确定</button>
                     </div>
                 </div>
+                <div #tableChartContent class="table-chart-content">
+                    <!-- table：固定表头-->
+                    <nz-table nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
+                        <thead>
+                            <tr>
+                                <th class="center" nzWidth="120px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of tableData.rows">
+                                <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
 
-                <!-- table：固定表头-->
-                <nz-table nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
-                    <thead>
-                        <tr>
-                            <th class="center" nzWidth="120px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let row of tableData.rows">
-                            <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
-                        </tr>
-                    </tbody>
-                </nz-table>
+                    <!-- chart -->
+                    <div class="center chart" [attr.id]="chartId" [hidden]="isShowTable || error"></div>
 
-                <!-- chart -->
-                <div class="center" [attr.id]="chartId" [hidden]="isShowTable || error"></div>
-
-                <!-- error -->
-                <app-error [error]="error"></app-error>
+                    <!-- error -->
+                    <app-error [error]="error"></app-error>
+                </div>
             </div>
         </div>
     </nz-spin>
