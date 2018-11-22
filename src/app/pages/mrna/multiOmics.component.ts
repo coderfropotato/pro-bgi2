@@ -34,9 +34,9 @@ export class multiOmicsComponent implements OnInit {
     ngOnInit() {
         this.colors = ["#3195BC", "#FF6666", "#009e71", "#FF9896", "#F4CA60", "#6F74A5", "#C49C94", "#3b9b99", "#FACA0C", "#F3C9DD"];
         this.chartEntity = {
-                "id": "58beccbe6d4049b9bc881868f0cb1516",
-                "quantity": []
-            }
+            "id": "58beccbe6d4049b9bc881868f0cb1516",
+            "quantity": []
+        }
         this.chartUrl = `${config["javaPath"]}/multiOmics/graph`;
     }
 
@@ -104,18 +104,17 @@ export class multiOmicsComponent implements OnInit {
 
         height = width;
 
+        eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
         //判断极值
-        if (!boxplotLength) {
-            if (height >= 600) {
-                height = 600;
-            }
-        } else {
-            if (height >= 1200) {
-                height = 1200;
-            }
+        if (eachChartHeight <= 200) {
+            eachChartHeight = 200;
+            height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
         }
 
-        eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
+        if (eachChartHeight >= 400) {
+            eachChartHeight = 400;
+            height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
+        }
 
         //计算max
         let typeTextMax = d3.max(column, d => d.type.length);
@@ -125,7 +124,7 @@ export class multiOmicsComponent implements OnInit {
         let yColumnMax = d3.max(allYColumn, d => Math.ceil(d));
 
         let margin = {
-            left: 50,
+            left: 100,
             right: 50,
             top: 50,
             bottom: xmaxLength * 4 + 20
@@ -174,7 +173,7 @@ export class multiOmicsComponent implements OnInit {
 
         // column y title
         column_g.append("g").attr("class", "yText-column")
-            .attr("transform", `translate(-40,${eachChartHeight / 2})`)
+            .attr("transform", `translate(${-(margin.left - 10)},${eachChartHeight / 2})`)
             .append("text").attr("font-size", "14px")
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
@@ -287,15 +286,21 @@ export class multiOmicsComponent implements OnInit {
                     .append("g").attr("class", "boxplot")
                     .attr("transform", `translate(${margin.left},${margin.top + (boxplotLength - 1 - i) * (eachChartHeight + chartSpace)})`);
 
-                let yScaleBox = d3.scaleLinear().domain([d.yMin, d.yMax]).range([eachChartHeight, 0]).nice();
-                let yAxisBox = d3.axisLeft(yScaleBox).ticks(2).tickFormat(d3.format("1"));
+                let yScaleBox;
+                if (d.yMin === d.yMax) {
+                    yScaleBox = d3.scaleLinear().domain([0, d.yMax]).range([eachChartHeight, 0]).nice();
+                } else {
+                    yScaleBox = d3.scaleLinear().domain([d.yMin, d.yMax]).range([eachChartHeight, 0]).nice();
+                }
+
+                let yAxisBox = d3.axisLeft(yScaleBox).ticks(5).tickFormat(d3.format("1"));
 
                 // boxplot y
                 boxplot_g.append("g").attr("class", "yAxis-boxplot").call(yAxisBox);
 
                 // boxplot y title
                 boxplot_g.append("g").attr("class", "yText-boxplot")
-                    .attr("transform", `translate(-40,${eachChartHeight / 2})`)
+                    .attr("transform", `translate(${-(margin.left - 10)},${eachChartHeight / 2})`)
                     .append("text").attr("font-size", "14px")
                     .attr("text-anchor", "middle")
                     .attr("dominant-baseline", "middle")
