@@ -46,6 +46,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Output() emitBaseTheadChange:EventEmitter<any> = new EventEmitter();
     @Input() showMatchAll:boolean = false;
     @Output() baseTheadChange:EventEmitter<any> = new EventEmitter();
+    @Input() applyOnceSearchParams:boolean = false;
+    // TODO 双向绑定applyOnceSearchParams 下次再次触发
+    @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
 
     mongoId:any = null;
     scroll: any = { x: "0", y: "0" };
@@ -168,8 +171,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.tableEntity["pageSize"] = this.pageEntity["pageSize"] || 20;
         this.tableEntity["sortValue"] = null;
         this.tableEntity["sortKey"] = null;
-        this.tableEntity["searchList"] = [];
-        this.tableEntity["rootSearchContentList"] = [];
+        this.tableEntity["searchList"] = this.pageEntity["searchList"] || [];
+        this.tableEntity["rootSearchContentList"] = this.pageEntity["rootSearchContentList"] || [];
         this.tableEntity["addThead"] = [];
 
         // 把其他的查询参数也放进去
@@ -335,6 +338,13 @@ export class GeneTableComponent implements OnInit, OnChanges {
             },
             ()=>{
                 if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
+                if(this.applyOnceSearchParams){
+                    // 每次应用一次设置的查询参数 然后清空恢复默认，用自己的查询参数；
+                    this.tableEntity['searchList'] = [];
+                    this.tableEntity['rootSearchContentList'] = [];
+                    this.applyOnceSearchParams = false;
+                    this.applyOnceSearchParamsChange.emit(this.applyOnceSearchParams);
+                }
             }
         );
     }
@@ -700,7 +710,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof BigTableComponent
      */
     computedTheadWidth(head): object {
-        let defaultWidth = 20;
+        let defaultWidth =10;
         let widthConfig = [];
         let twoLevelHead = [];
         let totalWidth: string;
@@ -722,7 +732,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 widthConfig.push(singleWidth);
             }
         });
-        widthConfig.unshift(61);
+        widthConfig.unshift(60);
         let colLeftConfig: any[] = [];
         // 计算首列的left
         if (head[0]["children"].length) {
@@ -744,6 +754,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         });
         colLeftConfig.map((v, i) => (colLeftConfig[i] += "px"));
         totalWidth = tempTotalWidth + "px";
+
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
     }
 
@@ -985,6 +996,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
     _getInnerStatusParams() {
+        // if('checked' in this.tableEntity) this.tableEntity['checked'] = this.checked;
+        // if('unChecked' in this.tableEntity) this.tableEntity['unChecked'] = this.unChecked;
+        // if('checkStatus' in this.tableEntity) this.tableEntity['checkStatus'] = this.checkStatus;
         return {
             tableEntity: this.tableEntity,
             url: this.url,

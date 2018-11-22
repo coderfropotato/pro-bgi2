@@ -37,7 +37,8 @@ export class TransformationTableComponent implements OnInit {
     @Input() tableHeight;
     @Input() isFirst;
     @Input() showMatchAll:boolean = false;
-
+    @Input() applyOnceSearchParams:boolean = false;
+    @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
     @Input() defaultEmitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
     @Output() defaultEmitBaseTheadChange:EventEmitter<any> = new EventEmitter();
     @Input() extendEmitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
@@ -86,6 +87,10 @@ export class TransformationTableComponent implements OnInit {
     // extend thead change
     handlerExtendBaseTheadChange(thead){
         this.extendBaseTheadChange.emit(thead);
+    }
+
+    handlerApplyOnceSearchParamsChange(status){
+        this.applyOnceSearchParamsChange.emit(status);
     }
 
     /**
