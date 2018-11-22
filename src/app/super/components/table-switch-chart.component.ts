@@ -138,13 +138,8 @@ export class TableSwitchChartComponent implements OnInit {
 
     scrollHeight() {
         try {
-            let tableContentH = this.tableContent.nativeElement.offsetHeight;
-            let selectPanelH = 0;
-            if (this.isHasSelectPanel && this.selectPanelList.length) {
-                selectPanelH = this.selectPanel.nativeElement.offsetHeight;
-            }
-            let scrollH = (tableContentH - selectPanelH - 38) + 'px';
-            console.log(scrollH)
+            let tableChartContentH = this.tableChartContent.nativeElement.offsetHeight;
+            let scrollH = (tableChartContentH - 38) + 'px';
             this.scroll['y'] = scrollH;
         } catch (error) {
         }
