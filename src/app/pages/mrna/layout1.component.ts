@@ -12,7 +12,7 @@ declare const d4: any;
     styles: []
 })
 export class Layout1Page{
-    constructor( private pageModuleService:PageModuleService){
+    constructor( public pageModuleService:PageModuleService){
     }
 }
 
@@ -58,7 +58,7 @@ export class Layout1Component implements OnInit,AfterViewInit {
     constructor(
         private message: MessageService,
         private storeService:StoreService,
-        private pageModuleService:PageModuleService
+        public pageModuleService:PageModuleService
         ) {
             // 订阅windowResize 重新计算表格滚动高度
             this.message.getResize().subscribe(res => {
@@ -225,24 +225,4 @@ export class Layout1Component implements OnInit,AfterViewInit {
     multipleConfirm() {
         console.log(this.selectedData);
     }
-}
-
-
-/**
- * @description page
- * @author Yangwd<277637411@qq.com>
- * @date 2018-11-19
- * @export
- * @class AppLayoutPage
- */
-@Component({
-    selector: 'app-layout-page',
-    template: `<app-layout1 *ngIf="pageModuleService['renderModule']"></app-layout1>`
-})
-
-export class AppLayoutPage  {
-    constructor(
-        private pageModuleService:PageModuleService
-    ) { }
-
 }

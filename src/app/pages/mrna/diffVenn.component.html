@@ -84,6 +84,7 @@
                     </div>
                 </nz-dropdown>
             </ng-template>
+            <!-- [selectTemplate]="selectTemplate" -->
             <app-table-switch-chart
                 #tableSwitchChart
                 [id]="'tableSwitchChart'"
@@ -95,7 +96,6 @@
                 [chartUrl]="chartUrl"
                 [apiEntity]="tableEntity"
                 [isShowAccuracy]="true"
-                [selectTemplate]="selectTemplate"
                 [setTemplate]="setTemplate"
                 (drawChartEmit)="drawVenn($event)"
                 [selectPanelData]="selectPanelData"
