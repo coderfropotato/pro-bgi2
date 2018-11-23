@@ -7,80 +7,144 @@
         </div>
         <div class="left-bottom-layout">
             <ng-template #setTemplate>
-                <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow" (nzVisibleChange)="panelChange()">
-                    <i
-                        class="anticon anticon-setting"
-                        nz-tooltip
-                        nzTitle="设置"
-                        nz-dropdown
-                    ></i>
-                    <div
-                        style="height:250px;width:300px;background:#f5f5f5;position:relative"
-                        [hidden]="!p_show"
-                    >
-                        <div
-                            style="height:90px;width:300px;background:#f5f5f5;position:relative;margin-top:10px;"
-                        >
-                            <div
-                                style="height:30px;width:300px;line-height:30px;"
-                            >
-                                <div
-                                    style="height:30px;width:40px;float:left;line-height:30px;margin-left:20px;"
-                                >
-                                    PessionDis
-                                </div>
+                    <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow"
+                    (nzVisibleChange)="panelChange()">
+                    <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown></i>
+                    <style>
+                        .ex_container {
+                            height: 360px;
+                            width: 320px;
+                            background: #FFFFFF;
+                            position: relative;
+                            background: #FFFFFF;
+                            box-shadow: 0 4px 8px 0 rgba(57, 65, 79, 0.16);
+                            border-radius: 4px;
+                        }
+
+                        .con_PessionDis {
+                            height: auto;
+                            width: 92%;
+                            margin: 0 auto;
+                            background: #ffffff;
+                            position: relative;
+                        }
+
+                        .con_PessionDis_title {
+                            height: 48px;
+                            width: 100%;
+                            line-height: 48px;
+                            margin: 0 auto;
+                        }
+
+                        .con_PessionDis_in {
+                            margin-top: 6px;
+                            height: 80px;
+                            width: 100%;
+                        }
+
+                        .con_PessionDis_row {
+                            width: 100%;
+                            height: 40px;
+                        }
+
+                        .con_PessionDis_left {
+                            height: 40px;
+                            width: 60px;
+                            float: left;
+                            margin-left: 18px;
+                            line-height: 40px;
+                        }
+
+                        .con_PessionDis_right {
+                            height: 40px;
+                            width: 80px;
+                            float: left;
+                            margin-left: 15px;
+                        }
+
+                        .ex_button1 {
+                            width: 80px;
+                            height: 32px;
+                            border: 1px solid #E1E2E6;
+                            border-radius: 4px;
+                            position: absolute;
+                            bottom: 20px;
+                            right: 110px;
+                            font-size: 14px;
+                            color: #262629;
+
+                        }
+                        .ex_button2 {
+                            width: 80px;
+                            height: 32px;
+                            background: #5378F8;
+                            border-radius: 4px;
+                            position: absolute;
+                            bottom: 20px;
+                            right: 10px;
+                            font-size: 14px;
+                            color: #FFFFFF;
+                        }
+                    </style>
+                    <div class="ex_container">
+                        <div class="con_PessionDis" [hidden]="!p_show">
+                            <div class="con_PessionDis_title">
+                                PessionDis
                             </div>
-                            <div
-                                style="height:30px;width:200px;margin-left:40px;"
-                            >
-                                <div
-                                    style="height:30px;width:40px;float:left;line-height:30px;"
-                                >
-                                    log2FC:
+                            <div class="con_PessionDis_in">
+                                <div class="con_PessionDis_row">
+                                    <div class="con_PessionDis_left">
+                                        log2FC
+                                    </div>
+                                    <div class="con_PessionDis_right">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange($event)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="PessionDis.log2FC" />
+                                    </div>
                                 </div>
-                                <div
-                                    style="height:30px;width:60px;float:left;margin-left:36px;"
-                                >
-                                    <input
-                                        (ngModelChange)="OnChange($event)"
-                                        nz-input
-                                        placeholder=""
-                                        nzSize="small"
-                                        [ngModel]="PessionDis.log2FC"
-                                    />
+                                <div class="con_PessionDis_row">
+                                    <div class="con_PessionDis_left">
+                                        FDR
+                                    </div>
+                                    <div class="con_PessionDis_right">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange2($event)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="PessionDis.FDR" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="height:30px;width:200px;margin-left:40px;">
-                                <div style="height:30px;width:40px;float:left;line-height:30px;">FDR: </div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange2($event)" nz-input placeholder="" nzSize="small" [ngModel]="PessionDis.FDR"></div>
+
                             </div>
                         </div>
 
-                        <div
-                            style="height:90px;width:300px;background:#f5f5f5;position:relative;margin-top:10px;"
-                            [hidden]="!n_show"
-                        >
-                            <div
-                                style="height:30px;width:300px;line-height:30px;"
-                            >
-                                <div
-                                    style="height:30px;width:40px;float:left;line-height:30px;margin-left:20px;"
-                                >
-                                    NOIseq
+                        <div class="con_PessionDis" [hidden]="!n_show">
+                            <div class="con_PessionDis_title">
+                                NOIseq
+                            </div>
+                            <div class="con_PessionDis_in">
+                                <div class="con_PessionDis_row">
+                                    <div class="con_PessionDis_left">
+                                        log2FC
+                                    </div>
+                                    <div class="con_PessionDis_right">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange3($event)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="NOIseq.log2FC" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="height:30px;width:200px;margin-left:40px;">
-                                <div style="height:30px;width:40px;float:left;line-height:30px;">log2FC:</div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange3($event)" nz-input placeholder="" nzSize="small" [ngModel]="NOIseq.log2FC"></div>
-                            </div>
-                            <div style="height:30px;width:200px;margin-left:40px;">
-                                <div style="height:30px;width:40px;float:left;line-height:30px;">probability:</div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;"><input (ngModelChange)="OnChange4($event)" nz-input placeholder="" nzSize="small" [ngModel]="NOIseq.probability"></div>
+                                <div class="con_PessionDis_row">
+                                    <div class="con_PessionDis_left">
+                                        probability
+                                    </div>
+                                    <div class="con_PessionDis_right">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange4($event)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="NOIseq.probability" />
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 
-                        <button style="position:absolute;bottom:10px;right:10px" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()"> 取消 </button>
-                        <button style="position:absolute;bottom:10px;right:90px" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()" > 确定 </button>
+                        <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
+                            取消 </button>
+                        <button class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">
+                            确定 </button>
                     </div>
                 </nz-dropdown>
             </ng-template>
@@ -139,6 +203,7 @@
             (extendBaseTheadChange)="baseTheadChange($event)"
             [extendTableCheckStatusInParams]="extendCheckStatusInParams"
             [showMatchAll]="showMatchAll"
+            [(applyOnceSearchParams)]="applyOnceSearchParams"
         ></app-table-transformation>
     </div>
 </div>

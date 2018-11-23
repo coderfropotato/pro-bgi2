@@ -32,6 +32,8 @@
             (baseTheadChange)="handlerExtendBaseTheadChange($event)"
             [showMatchAll]="showMatchAll"
             [checkStatusInParams]="extendTableCheckStatusInParams"
+            [(applyOnceSearchParams)]="applyOnceSearchParams"
+            (applyOnceSearchParamsChange)="handlerApplyOnceSearchParamsChange($event)"
         ></app-geneTable>
     </div>
 </div>
