@@ -7,21 +7,6 @@
         </div>
         <div class="left-bottom-layout">
             <ng-template #setTemplate>
-<<<<<<< HEAD
-                <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow" (nzVisibleChange)="panelChange()">
-                    <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown ></i>
-                    <div style="height:250px;width:300px;background:#f5f5f5;position:relative" [hidden]="!p_show" >
-                        <div style="height:90px;width:300px;background:#f5f5f5;position:relative;margin-top:10px;" >
-                            <div style="height:30px;width:300px;line-height:30px;" >
-                                <div style="height:30px;width:40px;float:left;line-height:30px;margin-left:20px;" > PessionDis </div>
-                            </div>
-                            <div style="height:30px;width:200px;margin-left:40px;" >
-                                <div style="height:30px;width:40px;float:left;line-height:30px;" >
-                                    log2FC:
-                                </div>
-                                <div style="height:30px;width:60px;float:left;margin-left:36px;" >
-                                    <input (ngModelChange)="OnChange($event)" nz-input placeholder="" nzSize="small" [ngModel]="PessionDis.log2FC" />
-=======
                     <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow"
                     (nzVisibleChange)="panelChange()">
                     <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown></i>
@@ -124,23 +109,14 @@
                                         <input style="margin-top: 8px;" (ngModelChange)="OnChange2($event)" nz-input
                                             placeholder="" nzSize="small" [ngModel]="PessionDis.FDR" />
                                     </div>
->>>>>>> 13b3b9a344154ff56b1faa30fc2dda108cdf272a
                                 </div>
 
                             </div>
                         </div>
 
-<<<<<<< HEAD
-                        <div style="height:90px;width:300px;background:#f5f5f5;position:relative;margin-top:10px;" [hidden]="!n_show" >
-                            <div style="height:30px;width:300px;line-height:30px;" >
-                                <div style="height:30px;width:40px;float:left;line-height:30px;margin-left:20px;" >
-                                    NOIseq
-                                </div>
-=======
                         <div class="con_PessionDis" [hidden]="!n_show">
                             <div class="con_PessionDis_title">
                                 NOIseq
->>>>>>> 13b3b9a344154ff56b1faa30fc2dda108cdf272a
                             </div>
                             <div class="con_PessionDis_in">
                                 <div class="con_PessionDis_row">
