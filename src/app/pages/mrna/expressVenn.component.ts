@@ -28,6 +28,8 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
 
     tableEntity: object = {};
 
+    panelShow:boolean=false;
+
     selectPanelData: object[] = [];
     venn_or_upsetR:boolean;
 
@@ -175,6 +177,14 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
         this.NOIseq['probability']=value;
     }
 
+    panelChange(){
+        console.log(this.panelShow)
+        this.panelShow=!this.panelShow
+    }
+    setCancle(){
+        this.panelShow=false;
+    }
+
     setConfirm(){ //设置下拉面板点击确定时候的两个参数
         if(this.p_show){
             this.tableEntity['diff_threshold']={
@@ -186,6 +196,8 @@ export class ExpressVennComponent implements OnInit, AfterViewInit {
                 NOIseq:this.NOIseq
             }
         }
+
+        this.panelShow=false;
         console.log(this.tableEntity['diff_threshold'])
     }
 
