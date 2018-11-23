@@ -2,6 +2,7 @@ import { StoreService } from "./../../super/service/storeService";
 import { PageModuleService } from "./../../super/service/pageModuleService";
 import { MessageService } from "./../../super/service/messageService";
 import { AjaxService } from "src/app/super/service/ajaxService";
+import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { GlobalService } from "src/app/super/service/globalService";
 import config from "../../../config";
@@ -53,6 +54,7 @@ export class DiffVennComponent implements OnInit {
     extendEmitBaseThead:boolean;
     baseThead:any[] = [];
     showMatchAll:boolean;
+    applyOnceSearchParams:boolean;
 
 
     venSelectAllData:string [] = []; //新增11.21号，11：16
@@ -104,11 +106,17 @@ export class DiffVennComponent implements OnInit {
         private ajaxService: AjaxService,
         private globalService: GlobalService,
         private storeService: StoreService,
-        public pageModuleService:PageModuleService
+        public pageModuleService:PageModuleService,
+        private router:Router
     ) {
         // 订阅windowResize 重新计算表格滚动高度
         this.message.getResize().subscribe(res => {
             if (res["message"] === "resize") this.computedTableHeight();
+        });
+
+        // 每次切换路由计算表格高度
+        this.router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) this.computedTableHeight();
         });
     }
 
@@ -162,6 +170,7 @@ export class DiffVennComponent implements OnInit {
         };
 
         this.showMatchAll = false;
+        this.applyOnceSearchParams = true;
         this.defaultUrl = `${config["javaPath"]}/Venn/diffGeneTable`;
         this.defaultEntity = {
             pageIndex: 1, //分页
@@ -241,22 +250,29 @@ export class DiffVennComponent implements OnInit {
     confirm(){
         let checkParams = this.transformTable._getInnerParams();
         this.showMatchAll = true;
+        // 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
+        this.applyOnceSearchParams = true;
         if(this.first){
+            this.extendCheckStatusInParams = false;
             this.extendEntity['checkStatus']=checkParams['others']['checkStatus'];
             this.extendEntity['unChecked']=checkParams['others']['excludeGeneList']['unChecked'];
             this.extendEntity['checked']=checkParams['others']['excludeGeneList']['checked'];
             this.extendEntity['mongoId'] = checkParams['mongoId'];
+            this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
+            this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
             this.extendEntity['compareGroup']=this.selectConfirmData;
-            this.extendCheckStatusInParams = false;
             this.first = false;
         }else{
             this.transformTable._initTableStatus();
-            this.transformTable._setExtendParamsWithoutRequest('checkStatus',checkParams['others']['checkStatus']);
-            this.transformTable._setExtendParamsWithoutRequest('checked',checkParams['others']['excludeGeneList']['checked']);
-            this.transformTable._setExtendParamsWithoutRequest('unChecked',checkParams['others']['excludeGeneList']['unChecked']);
-            this.transformTable._setExtendParamsWithoutRequest('compareGroup',this.selectConfirmData);
             this.extendCheckStatusInParams = false;
-            this.transformTable._getData();
+            this.transformTable._setExtendParamsWithoutRequest('checkStatus',checkParams['others']['checkStatus']);
+            this.transformTable._setExtendParamsWithoutRequest('checked',checkParams['others']['excludeGeneList']['checked'].concat());
+            this.transformTable._setExtendParamsWithoutRequest('unChecked',checkParams['others']['excludeGeneList']['unChecked'].concat());
+            this.transformTable._setExtendParamsWithoutRequest('searchList',checkParams['tableEntity']['searchList']);
+            this.transformTable._setExtendParamsWithoutRequest('rootSearchContentList',checkParams['tableEntity']['rootSearchContentList']);
+            this.transformTable._setExtendParamsWithoutRequest('compareGroup',this.selectConfirmData);
+            // 每次checkStatusInParams状态变完  再去获取数据
+            setTimeout(()=>{this.transformTable._getData();},30)
         }
         setTimeout(()=>{
             this.extendCheckStatusInParams = true;
@@ -265,7 +281,9 @@ export class DiffVennComponent implements OnInit {
 
     // 表格转换返回
     back(){
-        this.defaultEntity['comporeGroup'] = this.selectConfirmData;
+        this.defaultEntity['compareGroup'] = this.selectConfirmData;
+        this.defaultEntity['searchList'] = [];
+        this.defaultEntity['rootSearchContentList'] = [];
         this.first = true;
     }
 
@@ -336,7 +354,6 @@ export class DiffVennComponent implements OnInit {
     }
 
     panelChange(){
-        console.log(this.panelShow)
         this.panelShow=!this.panelShow
     }
     setCancle(){
@@ -404,8 +421,6 @@ export class DiffVennComponent implements OnInit {
     //显示venn图
     showVenn(data) {
         let _selfV = this;
-
-        console.log(_selfV.isMultiSelect);
         let tempA = data.rows.map(o => {
             return { CompareGroup: o.name, Count: o.value };
         });

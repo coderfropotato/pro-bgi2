@@ -13,14 +13,8 @@
         gene:{{ toolsService["geneCount"] }}
 
         <ul class="clearfix">
-            <li
-                *ngFor="let tool of toolList; index as i"
-                (click)="selectParams()"
-            >
-                <img
-                    src="http://temp.im/68x82"
-                    (mouseover)="handlerMouseOver(tool)"
-                />
+            <li *ngFor="let tool of toolList; index as i" (click)="selectParams(tool['type'])" >
+                <img src="http://temp.im/68x82" (mouseover)="handlerMouseOver(tool)" />
                 <p style="margin-top:12px;">{{ tool["name"] }}</p>
             </li>
         </ul>
@@ -41,11 +35,11 @@
             [nzWidth]="376"
             nzPlacement="right"
             (nzOnClose)="handlerChildClose()"
-        >
-                <nz-tabset>
-                    <nz-tab nzTitle="Tab 1"> Content of Tab Pane 1 </nz-tab>
-                    <nz-tab nzTitle="Tab 2"> Content of Tab Pane 2 </nz-tab>
-                    <nz-tab nzTitle="Tab 3"> Content of Tab Pane 3 </nz-tab>
+            >
+            <nz-tabset [nzSize]="'small'">
+                    <nz-tab nzTitle="表达量聚类"> 表达量聚类 </nz-tab>
+                    <nz-tab nzTitle="差异聚类">差异聚类</nz-tab>
+                    <nz-tab nzTitle="自定义数据聚类"> 自定义数据聚类 </nz-tab>
                 </nz-tabset>
         </nz-drawer>
     </nz-drawer>

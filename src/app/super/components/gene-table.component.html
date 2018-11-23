@@ -61,19 +61,19 @@
 
             <!-- root filter items -->
             <div #tableFilter class="table-filter">
-                <div class="table-top" [hidden]="!rootHtmlString.length">
+                <div class="table-top" *ngIf="rootHtmlString.length">
                     <span class="filter-head">{{'rootFilterTitle'| translate}}：</span>
                     <span class="filter-item" (click)="deleteRootFilterItem(item)" *ngFor="let item of rootHtmlString"
                         [innerHTML]="item['html']"></span>
                 </div>
                 <!-- 交集 interSearchConditionList -->
-                <div class="table-top" [hidden]="!interConditionHtmlString.length">
+                <div class="table-top" *ngIf="interConditionHtmlString.length">
                     <span class="filter-head">{{'interFilterTitle' | translate}}：</span>
                     <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of interConditionHtmlString"
                         [innerHTML]="item['html']"></span>
                 </div>
                 <!-- 并集 unionSearchConditionList  -->
-                <div class="table-top" [hidden]="!unionConditionHtmlStirng.length">
+                <div class="table-top" *ngIf="unionConditionHtmlStirng.length">
                     <span class="filter-head">{{'unionFilterTitle' | translate}}：</span>
                     <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of unionConditionHtmlStirng"
                         [innerHTML]="item['html']"></span>
@@ -87,7 +87,7 @@
                     <thead #thead>
                         <tr>
                             <!-- checkbox -->
-                            <th nzLeft="0px" [attr.rowspan]="twoLevelHead.length?2:1" nzShowCheckbox nzShowRowSelection
+                            <th nzLeft="0px" style="min-width:60px;" [attr.rowspan]="twoLevelHead.length?2:1" nzShowCheckbox nzShowRowSelection
                                 [nzSelections]="selectMenu" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
                                 (nzCheckedChange)="checkAll($event)"></th>
                             <!-- 首列 -->
@@ -134,7 +134,7 @@
                     <tbody>
                         <tr *ngFor="let d of dataSet" style="text-align: center;">
                             <!-- checkbox -->
-                            <td nzLeft="0px" nzShowCheckbox [(nzChecked)]="d.checked" (nzCheckedChange)="refreshStatus($event,d)"></td>
+                            <td nzLeft="0px" style="min-width:60px;" nzShowCheckbox [(nzChecked)]="d.checked" (nzCheckedChange)="refreshStatus($event,d)"></td>
                             <!-- 首列的二级头表格数据 -->
                             <td *ngFor="let two of (head[0].children.length?head[0].children:[head[0]]);index as i;trackBy:identity"
                                 [nzLeft]="colLeftConfig[i]" (mouseover)="setPopoverText(d[two['true_key']],two['searchType'])"
@@ -144,7 +144,7 @@
                             <!-- 其他列 -->
                             <td *ngFor="let h of tbodyOutFirstCol" (mouseover)="setPopoverText(d[h['true_key']],h['searchType'])"
                                 [nzContent]="popoverTpl" nzPlacement="right" nz-popover>
-                                {{d[h['true_key']] | accuracyPipe : accuracy : h['searchType'] }}
+                                {{d[h['true_key']]?(d[h['true_key']] | accuracyPipe : accuracy : h['searchType']):'NA' }}
                             </td>
                         </tr>
                     </tbody>
