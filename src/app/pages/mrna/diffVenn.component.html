@@ -171,6 +171,7 @@
                 [chartName]="'韦恩图'"
             >
             </app-table-switch-chart>
+            <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
     </div>
     <div #right class="right-layout" [class.expand]="switch" (click)="resize($event)" >

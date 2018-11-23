@@ -53,7 +53,7 @@
         <div class="flex column" [class.extend-height]="flex">
             <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
 
-            <div #tableContent class="table-content" style="flex:1;display: flex;flex-direction: column;">
+            <div #tableContent class="table-content" style="flex:1;display: flex;flex-direction: column;padding: 0 1px;">
                 <!-- <ng-container *ngTemplateOutlet="(selectPanel && isHasSelectPanel) ? selectPanel :''"></ng-container> -->
                 <div #selectPanel class="selectPanel" *ngIf="isHasSelectPanel && selectPanelList.length">
                     <div class="selectContent">
@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <!-- 图和表的容器 -->
-                <div #tableChartContent class="table-chart-content" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);"[ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
+                <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
                     <!-- table：固定表头-->
                     <nz-table nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
                         <thead>
@@ -83,7 +83,7 @@
                     </nz-table>
 
                     <!-- chart -->
-                    <div class="center chart" [attr.id]="chartId" [hidden]="isShowTable || error"></div>
+                    <div class="center chart" style="margin: 0 auto;"  [attr.id]="chartId" [hidden]="isShowTable || error"></div>
 
                     <!-- error -->
                     <app-error [error]="error"></app-error>
