@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <!-- 图和表的容器 -->
-                <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
+                <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable && !error" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
                     <!-- table：固定表头-->
                     <nz-table nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
                         <thead>

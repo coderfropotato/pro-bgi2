@@ -234,7 +234,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 if (responseData.status == "0") {
                     if(this.tableType === 'transform'){
                         this.tableEntity['transform'] = false;
-                        this.tableEntity['chartType'] = "matrix";
+                        this.tableEntity['matrix'] = true;
                         this.mongoId = responseData['data']['mongoId'];
                         // if(this.isFirst) this.applyOnceBeforeStatusThenReset();
                     }
@@ -378,7 +378,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
         if(this.tableType==='transform'){
             this.tableEntity['transform'] = true;
-            this.tableEntity['chartType'] = 'matrix';
+            this.tableEntity['matrix'] = true;
             this.tableEntity['mongoId'] = this.mongoId;
 
         }
@@ -677,7 +677,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         if(this.tableType==='transform'){
             this.tableEntity['mongoId'] = this.mongoId;
             this.tableEntity['transform'] = false;
-            this.tableEntity['chartType'] = 'matrix'
+            this.tableEntity['matrix'] = true;
         }
         this.getRemoteData();
     }

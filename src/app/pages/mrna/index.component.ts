@@ -68,10 +68,10 @@ export class IndexComponent implements OnInit {
                 .subscribe(
                     data => {
                         if (data["status"] === "0") {
-                            for (let key in data["data"]) {
+                            for (let key in data["data"][0]) {
                                 this.storeService.setStore(
                                     key,
-                                    data["data"][key]
+                                    data["data"][0][key]
                                 );
                             }
                         }
