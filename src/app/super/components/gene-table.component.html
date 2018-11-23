@@ -55,7 +55,7 @@
                     </nz-select>
                     <!-- 刷新、下载 -->
                     <i class="anticon anticon-reload" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="refresh()"></i>
-                    <app-grid-export [url]="url" [tableEntity]="tableEntity" [fileName]="fileName"></app-grid-export>
+                    <app-grid-export *ngIf="!error" [url]="url" [tableEntity]="tableEntity" [fileName]="fileName"></app-grid-export>
                 </div>
             </div>
 

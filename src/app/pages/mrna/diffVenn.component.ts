@@ -100,6 +100,11 @@ export class DiffVennComponent implements OnInit {
     defaultTableHeight = 0;
     allThead = [];
     first = true;
+
+    color = "#fff"; // 默认颜色
+    show = false; // 是否显示颜色选择器
+    venn:any; // 韦恩图对象实例
+
     constructor(
         private message: MessageService,
         private store:StoreService,
@@ -141,7 +146,7 @@ export class DiffVennComponent implements OnInit {
 
         this.selectPanelData=[//差异面板的数据
             {
-                type: "compareGroup",
+                type: "比较组",
                 data: this.store.getStore("diff_plan")
             }
         ];
@@ -190,8 +195,8 @@ export class DiffVennComponent implements OnInit {
             relations: ["ppi", "rbp", "cerna"], //关系组（简写，索引最后一个字段）
             geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
             species:this.storeService.getStore("genome"), //物种
-            diffThreshold: {
-                PossionDis: { log2FC: 1, FDR: 0.001 }
+            diffThreshold:{
+                PossionDis:this.PessionDis
             },
             version: this.storeService.getStore("reference"),
             searchList: []
@@ -220,8 +225,8 @@ export class DiffVennComponent implements OnInit {
             relations: ["ppi", "rbp", "cerna"], //关系组（简写，索引最后一个字段）
             geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
             species: this.storeService.getStore("genome"), //物种
-            diffThreshold: {
-                PossionDis: { log2FC: 1, FDR: 0.001 }
+            diffThreshold:{
+                PossionDis:this.PessionDis
             },
             version: this.storeService.getStore("reference"),
             searchList: []
@@ -236,6 +241,11 @@ export class DiffVennComponent implements OnInit {
         setTimeout(()=>{
             this.computedTableHeight();
         },30)
+    }
+
+    handlerColorChange(color){
+        this.venn.setColor(color);
+        this.venn.update();
     }
 
     // {add:[],remove:[{}]}
@@ -372,7 +382,7 @@ export class DiffVennComponent implements OnInit {
         }
         this.panelShow=false;
         console.log(this.tableEntity['diff_threshold'])
-
+        this.transformTable._getData();
     }
 
     //单、多选change
@@ -433,7 +443,7 @@ export class DiffVennComponent implements OnInit {
             tempR.push(tempO);
         }
 
-        let oVenn = new Venn({ id: "chartId22122" })
+        this.venn = new Venn({ id: "chartId22122" })
             .config({
                 data: tempR,
                 compareGroup: _selfV.tableEntity['compareGroup'],//新增11.21号，11：16
@@ -455,7 +465,11 @@ export class DiffVennComponent implements OnInit {
                     });
                     _selfV.venSelectAllData=tempVenn;
                 }
-            });
+            })
+            .legendDblclick(function(ev,el){
+                _selfV.color = el['$el'].getAttribute('fill');
+                _selfV.show = true;
+            })
     }
     //显示upsetR图
     showUpSetR(data) {
@@ -476,7 +490,7 @@ export class DiffVennComponent implements OnInit {
              .MyRect {
                  cursor: pointer;
              }
-             
+
              .noactive{
                  fill:#333;
              }
@@ -500,7 +514,7 @@ export class DiffVennComponent implements OnInit {
                    display: none;
              }
              .axis_xk{
-                
+
              }
              .axis_yk{
                 display: none;
@@ -524,7 +538,7 @@ export class DiffVennComponent implements OnInit {
                 text-overflow:ellipsis;
                 white-space: nowrap;
              }
-         
+
              .MyRect3{
                  cursor: pointer;
              }
@@ -561,13 +575,14 @@ export class DiffVennComponent implements OnInit {
             }
         }
 
-        let mText = d3.select("#chartId22122").append('svg').append('text').text(target_name).attr('class','mText');
+        let oSvg  = d3.select("#chartId22122").append('svg');
+        let mText = oSvg.append('text').text(target_name).attr('class','mText');
         let left_name_length = mText.nodes()[0].getBBox().width;
         //let left_name_length = document.querySelector(".mText").getBBox().width;
         if(left_name_length>100){
             left_name_length=100;
         }
-        mText.remove();
+        oSvg.remove();
         let kong_name_right=10;
         //console.log(left_name_length)
 
@@ -597,7 +612,7 @@ export class DiffVennComponent implements OnInit {
         let tempThat;
         let tempP;
         let tempCricle; //圆
-        let tempThatTwo; 
+        let tempThatTwo;
 
         let padding1 = { left: 60, right: 30, top: 20, bottom: 10 };
         let padding2 = { left: 0, right: 10, top: 0, bottom: 30 };
@@ -824,7 +839,7 @@ export class DiffVennComponent implements OnInit {
                 .attr("transform","translate(" +(width2-padding2.right) +"," +padding2.top +")")
                 .call(yAxis2);
         }
-        
+
         function drawSvgName(){
             let widthk = left_name_length+kong_name_right;
             let heightk = d3_height + padding2.top + padding2.bottom;
@@ -837,14 +852,14 @@ export class DiffVennComponent implements OnInit {
                 .attr("width", widthk)
                 .attr("height", heightk)
                 .attr("class","svgk");
-            
+
             let yScalek = d3
                 .scaleBand()
                 .domain(total_name)
                 .range([d3_height, 0]);
 
             let yAxisk = d3.axisLeft(yScalek);
-            
+
             let textsk = svgk
                 .selectAll("text")
                 .data(total_name)
@@ -1052,8 +1067,8 @@ export class DiffVennComponent implements OnInit {
                 .attr('r', function (d, i) {
                     return d["r"];
                 })
-                .style("fill", function (d) { 
-                    return d.color; 
+                .style("fill", function (d) {
+                    return d.color;
                 });
         }
 
@@ -1099,7 +1114,7 @@ export class DiffVennComponent implements OnInit {
                 for (let index = 0; index < lis2.length; index++) {
                     if (lis2[index] == lis1) m_flag = true;
                 }
-                
+
             }else{
                 if(lis1==lis2){
                     m_flag = true;

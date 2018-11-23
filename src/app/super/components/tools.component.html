@@ -1,17 +1,6 @@
 <div class="tool-component">
-    <nz-drawer
-        [nzClosable]="true"
-        [nzVisible]="toolsService['visible']"
-        [nzMaskClosable]="true"
-        [nzBodyStyle]="{ padding: '12px' }"
-        [nzWrapClassName]="'tools-wrap'"
-        [nzWidth]="376"
-        nzPlacement="right"
-        nzTitle="请选择一个分析方案"
-        (nzOnClose)="close()"
-    >
+    <nz-drawer [nzClosable]="true" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="请选择一个分析方案" (nzOnClose)="close()" >
         gene:{{ toolsService["geneCount"] }}
-
         <ul class="clearfix">
             <li *ngFor="let tool of toolList; index as i" (click)="selectParams(tool['type'])" >
                 <img src="http://temp.im/68x82" (mouseover)="handlerMouseOver(tool)" />
@@ -24,23 +13,25 @@
         </div>
 
         <!-- 聚类 -->
-        <nz-drawer
-            nzTitle="聚类热图"
-            [nzVisible]="childVisible"
-            [nzClosable]="true"
-            [nzMaskStyle]="{ 'background-color': 'transparent' }"
-            [nzMaskClosable]="true"
-            [nzBodyStyle]="{ padding: '12px' }"
-            [nzWrapClassName]="'tools-wrap'"
-            [nzWidth]="376"
-            nzPlacement="right"
-            (nzOnClose)="handlerChildClose()"
-            >
+        <nz-drawer nzTitle="聚类热图" [nzVisible]="childVisible" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+            <ng-template>
+                <div>
+                    <p>数据选择</p>
+                    <span>原始数据</span>
+                    <div>
+                        <button nz-button nzType="default" nzSize="middle">123</button>
+                    </div>
+                    <span>上传数据</span>
+                    <p>基因分类</p>
+                </div>
+            </ng-template>
             <nz-tabset [nzSize]="'small'">
-                    <nz-tab nzTitle="表达量聚类"> 表达量聚类 </nz-tab>
-                    <nz-tab nzTitle="差异聚类">差异聚类</nz-tab>
-                    <nz-tab nzTitle="自定义数据聚类"> 自定义数据聚类 </nz-tab>
-                </nz-tabset>
+                <nz-tab nzTitle="表达量聚类">
+                    <ng-container></ng-container>
+                </nz-tab>
+                <nz-tab nzTitle="差异聚类">差异聚类</nz-tab>
+                <nz-tab nzTitle="自定义数据聚类"> 自定义数据聚类 </nz-tab>
+            </nz-tabset>
         </nz-drawer>
     </nz-drawer>
 </div>

@@ -710,7 +710,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof BigTableComponent
      */
     computedTheadWidth(head): object {
-        let defaultWidth =10;
+        let defaultWidth =15;
         let widthConfig = [];
         let twoLevelHead = [];
         let totalWidth: string;

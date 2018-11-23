@@ -195,6 +195,10 @@ tbody>tr:nth-child(even) {
     border: 0 !important;
 }
 
+.center-flex{
+    display: flex;
+    align-items: center;
+}
 .clearfix {
     display: block;
     clear: both;
