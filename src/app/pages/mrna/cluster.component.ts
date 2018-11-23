@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { GlobalService } from 'src/app/super/service/globalService';
+import config from '../../../config';
 
 declare const d3: any;
 declare const $: any;
@@ -34,8 +35,20 @@ export class clusterComponent implements OnInit {
     ngOnInit() {
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
         this.chartUrl = 'http://localhost:8086/cluster';
+        // this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
         this.chartEntity = {
-            "LCID": sessionStorage.getItem('LCID')
+            "LCID": sessionStorage.getItem('LCID'),
+            "tid": "20783e1576b84867aee1a63e22716fed",
+            "isHorizontal": false,
+            "verticalClassification": {
+                "gene_type": "gene",
+                "Blood": "gene_exp_tcga_3.0"
+            },
+            "horizontalClassification": [
+                "cellType",
+                "time"
+            ],
+            "genome": "aisdb"
         }
     }
 
@@ -119,6 +132,18 @@ export class clusterComponent implements OnInit {
         let totalWidth = margin.left + cluster_width + space + heatmap_width + space + YtextWidth + legend_space + legend_width + margin.right,
             totalHeight = margin.top + topCluster_height + heatmap_height + margin.bottom;
 
+        //x、y比例尺
+        let xScale = d3.scaleBand()
+            .range([0, heatmap_width])
+            .domain(heatmapData.map(function (d) { return d.name; }));
+
+        let yScale = d3.scaleBand()
+            .range([0, heatmap_height])
+            .domain(heatmapData[0].heatmap.map(function (d) { return d.x }));
+
+            console.log(xScale('test1'),xScale('test2'),xScale('test3'));
+            console.log(yScale('gene01'),yScale('gene02'),yScale('gene03'))
+
         //定义图例比例尺
         let legend_yScale = d3.scaleLinear().range([legend_height, 0])
             .domain([valuemin, valuemax]).clamp(true);
@@ -141,7 +166,7 @@ export class clusterComponent implements OnInit {
         let legend_g = svg.append("g").attr("class", "heatmapLegend") //定义图例g
             .attr("transform", "translate(" + legendTrans_x + "," + legendTrans_y + ")");
 
-        //画标题
+        //title
         let title_y = margin.top / 2;
         svg.append("g")
             .attr("class", "heatmapTitle")
@@ -163,30 +188,30 @@ export class clusterComponent implements OnInit {
                 d3.select(this).select("title").remove();
             });
 
+        //top line
         if (this.isShowTopLine && isTopCluster) {
             let topLine_x = margin.left + cluster_width + heatmap_width;
             this._drawLine("topLine", topCluster_width, topCluster_height, body_g, topLine_x, 0, topLineData);
         }
+
+        //left line
         if (isLeftCluster) {
             this._drawLine("leftLine", cluster_height, cluster_width, body_g, space, topCluster_height, leftLineData);
         }
 
+        //heatmap
         drawHeatmap(colors);
 
+        // y text
         if (this.isShowName) {
             drawYText();
         }
 
+        //legend
         drawLegend(colors);
 
-        //热图交互时所需比例尺
-        let xScale = d3.scaleBand()
-            .range([0, heatmap_width])
-            .domain(heatmapData.map(function (d) { return d.name; }));
-
-        let yScale = d3.scaleBand()
-            .range([0, heatmap_height])
-            .domain(heatmapData[0].heatmap.map(function (d) { return d.x }));
+        //交互
+        heatmapInteract();
 
         //画热图
         function drawHeatmap(colors) {
@@ -217,8 +242,6 @@ export class clusterComponent implements OnInit {
                     })
             }
         }
-
-        heatmapInteract();
 
         //热图交互
         function heatmapInteract() {
