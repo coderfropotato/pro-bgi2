@@ -1,7 +1,11 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ColorPickerModule, ColorPickerDirective } from "ngx-color-picker";
 import { NgxSpinnerModule } from "ngx-spinner";
-import { HashLocationStrategy, LocationStrategy, registerLocaleData } from "@angular/common";
+import {
+    HashLocationStrategy,
+    LocationStrategy,
+    registerLocaleData
+} from "@angular/common";
 import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { NgZorroAntdModule, NZ_MESSAGE_CONFIG } from "ng-zorro-antd";
@@ -33,7 +37,8 @@ import { LittleTableComponent } from "./super/components/little-table.component"
 import { BigTableComponent } from "./super/components/big-table.component";
 import { TableSwitchChartComponent } from "./super/components/table-switch-chart.component";
 import { LittleTableTestComponent } from "./pages/mrna/little-table-test.component";
-import { MultiOmicsSetComponent } from './super/components/multiOmicsSet.component';
+import { MultiOmicsSetComponent } from "./super/components/multiOmicsSet.component";
+import { ClusterSetComponent } from "./super/components/clusterSet.component";
 import { ReanalysisIndexComponent } from "./pages/reanalysis/index.component";
 import { TransformationTableComponent } from "./super/components/transformation-table.component";
 import { GeneRelativeComponent } from "./super/components/gene-relative.component";
@@ -45,11 +50,14 @@ import { TreeComponent } from "./super/components/tree.component";
 import { TreeItemComponent } from "./super/components/tree-item.component";
 import { ColorPickerComponent } from "./super/components/color-picker.component";
 import { ExpressVennComponent } from "./pages/mrna/expressVenn.component";
-import { DiffVennComponent,DiffVennPage } from "./pages/mrna/diffVenn.component";
-import { Layout1Component,Layout1Page } from './pages/mrna/layout1.component';
-import { Layout2Component } from './pages/mrna/layout2.component';
-import { ToolsComponent } from './super/components/tools.component';
-import {SysDefendComponent} from './pages/sysDefend.component';
+import {
+    DiffVennComponent,
+    DiffVennPage
+} from "./pages/mrna/diffVenn.component";
+import { Layout1Component, Layout1Page } from "./pages/mrna/layout1.component";
+import { Layout2Component } from "./pages/mrna/layout2.component";
+import { ToolsComponent } from "./super/components/tools.component";
+import { SysDefendComponent } from "./pages/sysDefend.component";
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -61,9 +69,13 @@ import { StoreService } from "./super/service/storeService";
 import { TooltipDirective } from "./super/directive/tooltip.directive";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { SysDefendService } from './super/service/sysDefendService';
-import { PageModuleService } from './super/service/pageModuleService';
+import {
+    HttpClientModule,
+    HttpClient,
+    HTTP_INTERCEPTORS
+} from "@angular/common/http";
+import { SysDefendService } from "./super/service/sysDefendService";
+import { PageModuleService } from "./super/service/pageModuleService";
 
 // 国际化
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
@@ -128,22 +140,6 @@ const ROUTES: Routes = [
                 data: {
                     keep: true,
                     module: "bigTable"
-                }
-            },
-            {
-                path: "tableSwitchChart",
-                component: TableSwitchChartComponent,
-                data: {
-                    keep: true,
-                    module: "tableSwitchChart"
-                }
-            },
-            {
-                path: "MultiOmicsSet",
-                component: MultiOmicsSetComponent,
-                data: {
-                    keep: true,
-                    module: "MultiOmicsSet"
                 }
             },
             // page
@@ -258,7 +254,7 @@ const ROUTES: Routes = [
         canActivate: [SysDefendService],
         data: {
             keep: false,
-            module: "login",
+            module: "login"
         }
     },
     {
@@ -280,8 +276,8 @@ const ROUTES: Routes = [
         }
     },
     {
-        path:"report/sysDefend",
-        component:SysDefendComponent,
+        path: "report/sysDefend",
+        component: SysDefendComponent,
         data: {
             keep: false,
             module: "sysDefend"
@@ -338,6 +334,7 @@ export function createTranslateLoader(http: HttpClient) {
         TableSwitchChartComponent,
         LittleTableTestComponent,
         MultiOmicsSetComponent,
+        ClusterSetComponent,
         AccuracyPipe,
         TransformationTableComponent,
         GeneRelativeComponent,
@@ -398,7 +395,7 @@ export function createTranslateLoader(http: HttpClient) {
         // enable route alive
         { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy },
         // enable hash module
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: LocationStrategy, useClass: HashLocationStrategy }
     ],
     bootstrap: [AppComponent]
 })
