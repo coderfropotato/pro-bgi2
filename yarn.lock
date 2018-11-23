@@ -558,12 +558,6 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angular-resize-event@^0.4.4:
-  version "0.4.4"
-  resolved "http://registry.npm.taobao.org/angular-resize-event/download/angular-resize-event-0.4.4.tgz#8bcc5c7f91ec2c5b4512522cef17d4392a83be99"
-  dependencies:
-    css-element-queries "^1.0.1"
-
 ansi-colors@^3.0.0:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.0.5.tgz#cb9dc64993b64fd6945485f797fc3853137d9a7b"
@@ -1587,10 +1581,6 @@ crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
-
-css-element-queries@^1.0.1:
-  version "1.1.1"
-  resolved "http://registry.npm.taobao.org/css-element-queries/download/css-element-queries-1.1.1.tgz#129e104ecb277aa6337b7302cbb6d511c2d1633a"
 
 css-parse@1.7.x:
   version "1.7.0"
