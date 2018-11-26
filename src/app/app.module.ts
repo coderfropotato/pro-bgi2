@@ -50,10 +50,7 @@ import { TreeComponent } from "./super/components/tree.component";
 import { TreeItemComponent } from "./super/components/tree-item.component";
 import { ColorPickerComponent } from "./super/components/color-picker.component";
 import { ExpressVennComponent } from "./pages/mrna/expressVenn.component";
-import {
-    DiffVennComponent,
-    DiffVennPage
-} from "./pages/mrna/diffVenn.component";
+import { DiffVennComponent, DiffVennPage } from "./pages/mrna/diffVenn.component";
 import { Layout1Component, Layout1Page } from "./pages/mrna/layout1.component";
 import { Layout2Component } from "./pages/mrna/layout2.component";
 import { ToolsComponent } from "./super/components/tools.component";
@@ -397,6 +394,6 @@ export function createTranslateLoader(http: HttpClient) {
         // enable hash module
         { provide: LocationStrategy, useClass: HashLocationStrategy }
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

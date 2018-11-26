@@ -218,7 +218,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
             this.tableEntity["unChecked"] = this.unChecked;
         }
 
-
         let ajaxConfig = {
             url: this.url,
             data: this.tableEntity

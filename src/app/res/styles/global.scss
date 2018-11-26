@@ -27,6 +27,7 @@
     overflow: auto;
 }
 
+
 .table-content {
     width: 100%;
     // min-height: 400px;
@@ -659,4 +660,34 @@ button.btnActive {
 }
 .analysis-list{
     padding:100px;
+}
+
+
+// 重分析参数选择面板
+.tool-params-tab {
+    p{
+        font-size:14px;
+        color:#333;
+    }
+    button{
+        margin-bottom:12px;
+        margin-right:12px;
+    }
+    div{
+        padding:12px;
+    }
+    &>span{
+        padding-left:12px;
+        font-size:12px;
+        color:#999;
+    }
+}
+
+.tool-params-button-group{
+    display:flex;
+    flex-direction:row;
+    justify-content:flex-end;
+    button{
+        margin-left:12px;
+    }
 }
