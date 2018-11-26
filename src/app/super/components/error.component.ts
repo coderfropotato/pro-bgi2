@@ -1,19 +1,28 @@
 import { Component,OnInit, Input} from '@angular/core';
+import { TranslateService } from "@ngx-translate/core";
+import { StoreService } from "./../service/storeService";
 
 @Component({
   selector: 'app-error',
   template:  `<div class="error-component">
                     <div *ngIf="error" class="table-error">
-                        <p *ngIf="error=='nodata'">对不起，没有可显示的数据！</p>
-                        <p *ngIf="error=='dataOver'">对不起，数据量过大，无法正常显示！</p>
-                        <p *ngIf="error=='error'">对不起，系统错误！</p>
+                        <p *ngIf="error=='nodata'">{{'errorTips.nodata' | translate}}</p>
+                        <p *ngIf="error=='dataOver'">{{'errorTips.maxOver' | translate}}</p>
+                        <p *ngIf="error=='error'">{{'errorTips.error' | translate}}</p>
                     </div>
                 </div>`
 })
+
 export class ErrorComponent implements OnInit {
   @Input() error:any;
 
-  constructor() { }
+  constructor(
+      private translate: TranslateService,
+      private storeService: StoreService
+    ) {
+        let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
+    }
 
   ngOnInit() {}
 
