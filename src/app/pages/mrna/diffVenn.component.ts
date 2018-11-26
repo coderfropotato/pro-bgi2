@@ -105,6 +105,9 @@ export class DiffVennComponent implements OnInit {
     show = false; // 是否显示颜色选择器
     venn:any; // 韦恩图对象实例
 
+    leftSelect:any[] = [];
+    upSelect:any[] = [];
+
     constructor(
         private message: MessageService,
         private store:StoreService,
@@ -181,8 +184,8 @@ export class DiffVennComponent implements OnInit {
             pageIndex: 1, //分页
             pageSize: 20,
             LCID: sessionStorage.getItem('LCID'),
-            leftChooseList: [], //upsetR参数
-            upChooseList: [], //胜利n图选中部分参数
+            leftChooseList: this.leftSelect, //upsetR参数
+            upChooseList: this.upSelect, //胜利n图选中部分参数
             compareGroup: this.store.getStore("diff_plan"), //比较组
             addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
@@ -381,8 +384,12 @@ export class DiffVennComponent implements OnInit {
             }
         }
         this.panelShow=false;
-        console.log(this.tableEntity['diff_threshold'])
-        this.transformTable._getData();
+        console.log(this.tableEntity['diff_threshold']);
+        if(this.first){
+            this.transformTable._getData();
+        }else{
+            this.first = true;
+        }
     }
 
     //单、多选change
@@ -400,27 +407,57 @@ export class DiffVennComponent implements OnInit {
 
      //venn和upsetR只能单选时候
     doSingleData(data){         //新增11.21号，11：16
-        console.log(data)
+        this.leftSelect.length = 0;
+        this.upSelect.length = 0;
+        if(this.selectConfirmData.length>5){
+            // upset
+            data['bar_name']?this.upSelect.push(data['bar_name']):this.leftSelect.push(data['total_name']);
+        }else{
+            this.upSelect.push(data['venn_name']);
+        }
+
+        if(this.first){
+            setTimeout(()=>{
+                this.transformTable._getData();
+            },30)
+        }else{
+            this.first = true;
+        }
     }
 
 
     //多选确定时候,提交的数据
     multipleConfirm() {
         let tempData = this.venn_or_upsetR?this.doubleMultiSelect:this.venSelectAllData;  //新增11.21号，11：16
-        console.log(tempData);
+        this.leftSelect.length = 0;
+        this.upSelect.length = 0;
+
+        if(tempData instanceof Array){
+            this.upSelect.push(...tempData);
+        }else{
+            this.upSelect.push(tempData['bar_name']);
+            this.leftSelect.push(tempData['total_name']);
+        }
+
+        if(this.first){
+            setTimeout(()=>{
+                this.transformTable._getData();
+            },30)
+        }else{
+            this.first = true;
+        }
     }
 
     //选择面板，默认选中数据
     defaultSelectList(data) {
         this.selectConfirmData = data; //新增11.21号，11：16
-        console.log(data)
     }
 
     //选择面板 确定筛选的数据
     selectConfirm(data) {
         this.selectConfirmData = data; //新增11.21号，11：16
-        this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData)
-        this.transformTable._getData();
+        this.defaultEntity['compareGroup'] = this.selectConfirmData;
+        this.first?this.transformTable._getData():this.first = true;
         this.updateVenn();
     }
 
