@@ -53,7 +53,6 @@ export class clusterComponent implements OnInit {
     }
 
     drawChart(data) {
-        console.log(data);
         let that=this;
 
         d3.selectAll("#clusterChartDiv svg").remove();
@@ -92,7 +91,7 @@ export class clusterComponent implements OnInit {
         let legend_height = 180;
 
         let space = 10;  //heatmap与周边的间距
-        let legend_space = 5;  //图例与右边文字间距
+        let small_space = 3;  //图例与热图右边文字间距
 
         //文字最长
         let max_x_textLength = d3.max(heatmapData, d=>d.name.length);
@@ -103,8 +102,8 @@ export class clusterComponent implements OnInit {
         }
 
         //下边文字高度、右边文字的宽度
-        let XtextHeight = max_x_textLength * 8;
-        let YtextWidth = max_y_textLength * 8;
+        let XtextHeight = max_x_textLength * 7;
+        let YtextWidth = max_y_textLength * 7;
 
         //预留间距
         let margin = { top: 40, bottom: 20, left: 10, right: 40 };
@@ -127,7 +126,6 @@ export class clusterComponent implements OnInit {
             heatmap_width = this.width;
         }
 
-        
         heatmap_height = this.height;
         single_rect_height = heatmap_height / YgeneDataLen;
 
@@ -143,16 +141,25 @@ export class clusterComponent implements OnInit {
         }
 
         //top left rect width height
-        let simpleRect=20,complexRect=10;
-        let topHeight=0;
-
+        let simpleRectWH=20,complexRectWH=10;
+        let topSimpleHeight=topSimples.length*(simpleRectWH+small_space);
+        let topComplexHeight=0;
+        if(topComplexes.length){
+            topComplexes.forEach(d=>{
+                let curHeight=d.data.length*(complexRectWH+small_space);
+                d.h=curHeight;
+                topComplexHeight+=curHeight;
+            });
+        }
+        let topColumnHeight=topSimpleHeight+topComplexHeight;
+        
         //热图区偏移
         let heatmap_x=margin.left+cluster_width;
-        let heatmap_y=margin.top+topCluster_height;
+        let heatmap_y=margin.top+topCluster_height+topColumnHeight;
 
         //svg总宽高
-        let totalWidth = margin.left + cluster_width + heatmap_width + space + YtextWidth + legend_space + legend_width + margin.right,
-            totalHeight = margin.top + topCluster_height + heatmap_height + XtextHeight + margin.bottom;
+        let totalWidth = heatmap_x + heatmap_width + space + YtextWidth + space + legend_width + margin.right,
+            totalHeight = heatmap_y + heatmap_height + XtextHeight + margin.bottom;
 
         //x、y比例尺
         let xScale = d3.scaleBand()
@@ -170,11 +177,11 @@ export class clusterComponent implements OnInit {
         let legend_yAxis = d3.axisRight(legend_yScale).tickSizeOuter(0).ticks(5); //设置Y轴
 
         //定义图例位置偏移
-        let legendTrans_x = margin.left + cluster_width + heatmap_width + space + YtextWidth + legend_space,
-            legendTrans_y = margin.top + topCluster_height;
+        let legendTrans_x = heatmap_x + heatmap_width + space + YtextWidth + space,
+            legendTrans_y = heatmap_y;
 
         // left translate
-        let topLine_x = margin.left + cluster_width + heatmap_width;
+        let topLine_x = heatmap_x + heatmap_width;
 
         //定义容器
         let svg = d3.select("#clusterChartDiv").append("svg").attr("width", totalWidth).attr("height", totalHeight);
@@ -183,7 +190,7 @@ export class clusterComponent implements OnInit {
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         let heatmap_g = body_g.append("g").attr("class", "heatmap")
-            .attr("transform", "translate(" + cluster_width + "," + topCluster_height + ")");
+            .attr("transform", "translate(" + (heatmap_x-margin.left) + "," + (heatmap_y-margin.top) + ")");
 
         let legend_g = svg.append("g").attr("class", "heatmapLegend") //定义图例g
             .attr("transform", "translate(" + legendTrans_x + "," + legendTrans_y + ")");
@@ -216,21 +223,70 @@ export class clusterComponent implements OnInit {
         }
 
         //top simple rect
-        // let simple_g = body_g.append('g').attr('class','simpleRects').attr("transform",`translate(${topLine_x},${topCluster_height})`);
-        // simple_g.selectAll(".simplerects")
-        // .data(topSimples).enter()
-        // .append("g")
-        // .selectAll(".rects")
-        // .data(d=>d.data).enter()
-        // .append("rect")
-        // .attr('fill','red')
-        // .attr('x',m=>xScale(m.name))
-        // .attr("width",single_rect_width)
-        // .attr("height",simpleRect)
+        if(topSimples.length){
+            let simple_g = body_g.append('g').attr('class','simpleRects').attr("transform",`translate(${heatmap_x-margin.left},${topCluster_height})`);
+            for(let i=0;i<topSimples.length;i++){
+                let d=topSimples[i];
+                let simplePath_g=  simple_g.append("g");
+                
+                simplePath_g.selectAll(".rects")
+                    .data(d.data).enter()
+                    .append("rect")
+                    .attr('fill','red')
+                    .attr('x',(d,j)=>j*single_rect_width)
+                    .attr('y',i*(simpleRectWH+small_space))
+                    .attr("width",single_rect_width)
+                    .attr("height",simpleRectWH)
+                    .on('mouseover',d=>{
+                        let tipText = `type: ${d.type}<br> name:  ${d.name}`;
+                        that.globalService.showPopOver(d3.event, tipText);
+                    })
+                    .on('mouseout',()=>{
+                        that.globalService.hidePopOver();
+                    });
+
+                simplePath_g.append('text')
+                    .style('font-size','14px')
+                    .style('text-anchor','start')
+                    .style('dominant-baseline','middle')
+                    .attr('x',heatmap_width+space)
+                    .attr('y',i*(simpleRectWH+small_space)+simpleRectWH/2)
+                    .text(d.title)
+            }
+        }
+
+        //top complex rect
+        if(topComplexes.length){
+            let complex_g=body_g.append('g').attr('class','complexRects').attr('transform',`translate(${heatmap_x-margin.left},${topCluster_height+topSimpleHeight})`);
+            
+            let complexPath_g =complex_g.selectAll('g')
+                .data(topComplexes).enter()
+                .append('g');
+
+            complexPath_g.selectAll('g')
+                .data(d=>d.data).enter()
+                .append('g')
+                .attr('transform',(d,i)=>`translate(0,${i*(complexRectWH+small_space)})`)
+                .selectAll('rect')
+                .data(m=>m.data).enter()
+                .append('rect')
+                .attr('x',k=>xScale(k.name))
+                .attr('fill','red')
+                .attr('width',single_rect_width)
+                .attr('height',complexRectWH)
+
+            complexPath_g.append('text')
+                .style('text-anchor','start')
+                .style('dominant-baseline','middle')
+                .attr('x',heatmap_width+space)
+                .attr('y',(d)=>d.h/2)
+                .text(d=>d.title)
+
+        }
 
         //left line
         if (isLeftCluster) {
-            this._drawLine("leftLine", cluster_height, cluster_width, body_g, 0, topCluster_height, leftLineData);
+            this._drawLine("leftLine", cluster_height, cluster_width, body_g, 0, heatmap_y-margin.top, leftLineData);
         }
 
         //heatmap
