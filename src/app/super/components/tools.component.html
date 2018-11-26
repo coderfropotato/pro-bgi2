@@ -26,6 +26,7 @@
                         <div *ngIf="expressUpload.length">
                             <button (click)="handlerExpressSelect(exup)" [class.active]="exup['checked']" *ngFor="let exup of expressUpload;index as i;" nz-button nzType="default" nzSize="middle">{{exup['name']}}</button>
                         </div>
+                        <nz-alert *ngIf="expressError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
                         <p *ngIf="geneType.length">基因分类</p>
                         <div *ngIf="geneType.length">
                             <button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
@@ -49,6 +50,7 @@
                         <div *ngIf="diffUpload.length">
                             <button (click)="exup['checked'] = !exup['checked']" [class.active]="exup['checked']" *ngFor="let exup of diffUpload;index as i;" nz-button nzType="default" nzSize="middle">{{exup['name']}}</button>
                         </div>
+                        <nz-alert *ngIf="diffError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
                         <p *ngIf="geneType.length">基因分类</p>
                         <div *ngIf="geneType.length">
                             <button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
@@ -72,6 +74,7 @@
                         <div *ngIf="customUpload.length">
                             <button (click)="exup['checked'] = !exup['checked']" [class.active]="exup['checked']" *ngFor="let exup of customUpload;index as i;" nz-button nzType="default" nzSize="middle">{{exup['name']}}</button>
                         </div>
+                        <nz-alert *ngIf="customError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
                         <p *ngIf="geneType.length">基因分类</p>
                         <div *ngIf="geneType.length">
                             <button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>

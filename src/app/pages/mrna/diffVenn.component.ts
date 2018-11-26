@@ -50,7 +50,6 @@ export class DiffVennComponent implements OnInit {
 	extendCheckStatusInParams: boolean;
 	extendEmitBaseThead: boolean;
 	baseThead: any[] = [];
-	showMatchAll: boolean;
 	applyOnceSearchParams: boolean;
 
 	venSelectAllData: string[] = []; //新增11.21号，11：16
@@ -176,7 +175,6 @@ export class DiffVennComponent implements OnInit {
 			}
 		};
 
-		this.showMatchAll = false;
 		this.applyOnceSearchParams = true;
 		this.defaultUrl = `${config['javaPath']}/Venn/diffGeneTable`;
 		this.defaultEntity = {
@@ -261,7 +259,6 @@ export class DiffVennComponent implements OnInit {
 	// 表格转换 确定
 	confirm() {
 		let checkParams = this.transformTable._getInnerParams();
-		this.showMatchAll = true;
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
 		if (this.first) {
@@ -273,25 +270,20 @@ export class DiffVennComponent implements OnInit {
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
 			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
 			this.extendEntity['compareGroup'] = this.selectConfirmData;
+			this.extendEntity['leftChooseList'] = checkParams['tableEntity']['leftChooseList'];
+			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
+			this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
 			this.extendCheckStatusInParams = false;
 			this.transformTable._setExtendParamsWithoutRequest('checkStatus', checkParams['others']['checkStatus']);
-			this.transformTable._setExtendParamsWithoutRequest(
-				'checked',
-				checkParams['others']['excludeGeneList']['checked'].concat()
-			);
-			this.transformTable._setExtendParamsWithoutRequest(
-				'unChecked',
-				checkParams['others']['excludeGeneList']['unChecked'].concat()
-			);
+			this.transformTable._setExtendParamsWithoutRequest( 'checked', checkParams['others']['excludeGeneList']['checked'].concat() );
+			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
-			this.transformTable._setExtendParamsWithoutRequest(
-				'rootSearchContentList',
-				checkParams['tableEntity']['rootSearchContentList']
-			);
-			this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
+			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
+			// this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
+			this.transformTable._setExtendParamsWithoutRequest('compareGroup',[]);
 			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {
 				this.transformTable._getData();
@@ -304,9 +296,10 @@ export class DiffVennComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-		this.defaultEntity['compareGroup'] = this.selectConfirmData;
+        // 应用初始状态的 比较组 图选择的数据 设置参数
+        this.defaultEntity['compareGroup'] = this.selectConfirmData;
 		this.defaultEntity['searchList'] = [];
-		this.defaultEntity['rootSearchContentList'] = [];
+        this.defaultEntity['rootSearchContentList'] = [];
 		this.first = true;
 	}
 
@@ -396,12 +389,11 @@ export class DiffVennComponent implements OnInit {
 				NOIseq: this.NOIseq
 			};
 		}
-		this.panelShow = false;
-		console.log(this.tableEntity['diff_threshold']);
+        this.panelShow = false;
 		if (this.first) {
 			this.transformTable._getData();
 		} else {
-			this.first = true;
+            this.first = true;
 		}
 	}
 
@@ -473,8 +465,8 @@ export class DiffVennComponent implements OnInit {
 	selectConfirm(data) {
         this.selectConfirmData = data; //新增11.21号，11：16
 		this.upSelect.length = 0;
-		this.leftSelect.length = 0;
-		this.defaultEntity['compareGroup'] = this.selectConfirmData;
+        this.leftSelect.length = 0;
+		this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
 		this.first ? this.transformTable._getData() : (this.first = true);
 		this.updateVenn();
 	}

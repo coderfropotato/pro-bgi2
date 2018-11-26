@@ -53,15 +53,18 @@ export class ToolsComponent implements OnInit {
     // 聚类参数
 	expressData: any[] = [];
 	expressUpload: any = [];
-	expressSelect: any[] = [];
+    expressSelect: any[] = [];
+    expressError:boolean  = false;
 
 	diffData: any[] = [];
 	diffUpload: any = [];
-	diffSelect: any[] = [];
+    diffSelect: any[] = [];
+    diffError:boolean = false;
 
 	customData: any[] = [];
 	customUpload: any[] = [];
-	customSelect: any[] = [];
+    customSelect: any[] = [];
+    customError:boolean= false;
 
 	geneType: any[] = [];
     selectGeneType: any;
@@ -98,7 +101,7 @@ export class ToolsComponent implements OnInit {
         this.childVisible = true;
     }
 
-    // 数据选择
+    // 表达量数据选择
 	handlerExpressSelect(data) {
 		// 选中变为不选中
 		if (data['checked']) {
@@ -111,7 +114,8 @@ export class ToolsComponent implements OnInit {
 			if (this.expressSelect.length > 20) return;
 			data['checked'] = true;
 			this.expressSelect.push(data);
-		}
+        }
+        this.expressError = !this.expressSelect.length;
     }
 
 	// 基因分类选择
@@ -144,13 +148,20 @@ export class ToolsComponent implements OnInit {
 							...res['expression']['sample']
 						].map((val) => {
 							return { name: val, checked: false };
-						});
+                        });
+                        if(this.expressData.length) this.expressData[0]['checked'] = true;
+                        this.expressSelect.push(this.expressData[0]);
+
 						this.diffData = res['diff']['diff_plan'].map((val) => {
 							return { name: val, checked: false };
-						});
+                        });
+                        if(this.diffData.length) this.diffData[0]['checked'] = true;
+                        this.diffSelect.push(this.diffData[0]);
+
 						this.geneType = res['horizontalType'].map((val) => {
 							return { name: val, checked: false };
                         });
+                        // TODO custom data
 					}
 				},
 				(err) => console.log(err)

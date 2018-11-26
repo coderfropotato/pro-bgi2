@@ -174,15 +174,16 @@
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
     </div>
-    <div #right class="right-layout" [class.expand]="switch" (click)="resize($event)" >
+    <div #right class="right-layout" [class.expand]="switch" >
         <div class="switch">
             <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" ></nz-switch>
         </div>
-        <div class="func" #func>
+        <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
             <app-add-column [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)" ></app-add-column>
             <!-- 关系 -->
-            <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()" ></app-gene-relative> </div>
+            <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()" ></app-gene-relative>
+        </div>
         <!-- 表格转换 -->
         <app-table-transformation
             class="no-outside-border"
@@ -203,7 +204,6 @@
             [(extendEmitBaseThead)]="extendEmitBaseThead"
             (extendBaseTheadChange)="baseTheadChange($event)"
             [extendTableCheckStatusInParams]="extendCheckStatusInParams"
-            [showMatchAll]="showMatchAll"
             [(applyOnceSearchParams)]="applyOnceSearchParams"
         ></app-table-transformation>
     </div>
