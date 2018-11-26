@@ -62,7 +62,7 @@ export class DiffVennComponent implements OnInit {
 	venn_or_upsetR: boolean;
 
 	p_show: boolean; //设置里面的PossionDis
-	PessionDis: object = {
+	PossionDis: object = {
 		log2FC: '',
 		FDR: ''
 	};
@@ -133,7 +133,7 @@ export class DiffVennComponent implements OnInit {
 		this.chartUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 
 		this.p_show = this.store.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
-		this.PessionDis = {
+		this.PossionDis = {
 			log2FC: this.p_show ? this.store.getStore('diff_threshold').PossionDis.log2FC : '',
 			FDR: this.p_show ? this.store.getStore('diff_threshold').PossionDis.FDR : ''
 		};
@@ -196,7 +196,7 @@ export class DiffVennComponent implements OnInit {
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			diffThreshold: {
-				PossionDis: this.PessionDis
+				PossionDis: this.PossionDis
 			},
 			version: this.storeService.getStore('reference'),
 			searchList: []
@@ -226,7 +226,7 @@ export class DiffVennComponent implements OnInit {
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			diffThreshold: {
-				PossionDis: this.PessionDis
+				PossionDis: this.PossionDis
 			},
 			version: this.storeService.getStore('reference'),
 			searchList: []
@@ -322,7 +322,17 @@ export class DiffVennComponent implements OnInit {
             })
             .subscribe(
                 data => {
-                    this.drawVenn(data['data']);
+					// if(data["status"]==0&&data["data"].length>0){
+					// 	this.drawVenn(data['data']);
+					// }
+
+					if (data["status"] === "0" && (data["data"].length == 0 || $.isEmptyObject(data["data"]))) {
+                        
+                    } else if (data["status"] != "0") {
+                        
+                    } else {
+                        this.drawVenn(data['data']);
+                    }
                 },
                 error => {
                     console.log(error);
@@ -354,11 +364,11 @@ export class DiffVennComponent implements OnInit {
 
 	OnChange(value: string): void {
 		//设置里面的PossionDis的log2FC
-		this.PessionDis['log2FC'] = value;
+		this.PossionDis['log2FC'] = value;
 	}
 	OnChange2(value: string): void {
 		//设置里面的PossionDis的FDR
-		this.PessionDis['FDR'] = value;
+		this.PossionDis['FDR'] = value;
 	}
 
 	OnChange3(value: string): void {
@@ -374,24 +384,45 @@ export class DiffVennComponent implements OnInit {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
+		this.PossionDis = {
+			log2FC: this.p_show ? this.store.getStore('diff_threshold').PossionDis.log2FC : '',
+			FDR: this.p_show ? this.store.getStore('diff_threshold').PossionDis.FDR : ''
+		};
+
+		this.NOIseq = {
+			log2FC: this.n_show ? this.store.getStore('diff_threshold').NOIseq.log2FC : '',
+			probability: this.n_show ? this.store.getStore('diff_threshold').NOIseq.probability : ''
+		};
 		this.panelShow = false;
 	}
 	setConfirm() {
 		//设置下拉面板点击确定时候的两个参数
 		if (this.p_show) {
-			this.tableEntity['diff_threshold'] = {
-				PessionDis: this.PessionDis
+			this.tableEntity['diffThreshold'] = {
+				PossionDis: this.PossionDis
 			};
 		}
 		if (this.n_show) {
-			this.tableEntity['diff_threshold'] = {
+			this.tableEntity['diffThreshold'] = {
 				NOIseq: this.NOIseq
 			};
 		}
+
+		this.singleMultiSelect={
+			bar_name: '',
+			total_name: '',
+			venn_name: ''
+		};
+
+		this.doubleMultiSelect= {
+			bar_name: '',
+			total_name: ''
+		};
+
         this.panelShow = false;
         this.upSelect.length = 0;
         this.leftSelect.length = 0 ;
-        this.getVennOrUpsetR();
+		this.getVennOrUpsetR();
 
 		if (this.first) {
 			this.transformTable._getData();
