@@ -34,8 +34,8 @@ export class clusterComponent implements OnInit {
 
     ngOnInit() {
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
-        this.chartUrl = 'http://localhost:8086/cluster';
-        // this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
+        // this.chartUrl = 'http://localhost:8086/cluster';
+        this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
         this.chartEntity = {
             "LCID": sessionStorage.getItem('LCID'),
             "tid": "20783e1576b84867aee1a63e22716fed",
@@ -81,6 +81,11 @@ export class clusterComponent implements OnInit {
         }
         if(data.left.complex && data.left.complex.length){
             leftComplexes=data.left.complex;
+        }
+
+        let legends=[];
+        if(data.gauge.legends && data.gauge.legends.length){
+            legends=data.gauge.legends;
         }
 
         let isTopCluster = true;
@@ -180,8 +185,11 @@ export class clusterComponent implements OnInit {
         let heatmap_x=margin.left+cluster_width+leftColumnWidth;
         let heatmap_y=margin.top+topCluster_height+topColumnHeight;
 
+        //图例
+        let gradientLegendWidth=legend_width+valuemax.toString().length*7;
+
         //svg总宽高
-        let totalWidth = heatmap_x + heatmap_width + space + YtextWidth + space + legend_width + margin.right,
+        let totalWidth = heatmap_x + heatmap_width + space + YtextWidth + space + gradientLegendWidth + margin.right,
             totalHeight = heatmap_y + heatmap_height + XtextHeight + margin.bottom;
 
         //x、y比例尺
@@ -215,7 +223,7 @@ export class clusterComponent implements OnInit {
         let heatmap_g = body_g.append("g").attr("class", "heatmap")
             .attr("transform", "translate(" + (heatmap_x-margin.left) + "," + (heatmap_y-margin.top) + ")");
 
-        let legend_g = svg.append("g").attr("class", "heatmapLegend") //定义图例g
+        let legend_g = svg.append("g").attr("class", "gradientLegend") //定义图例g
             .attr("transform", "translate(" + legendTrans_x + "," + legendTrans_y + ")");
 
         //title
@@ -257,7 +265,6 @@ export class clusterComponent implements OnInit {
         if(topComplexes.length){
             let complex_g=body_g.append('g').attr('class','complexRects').attr('transform',`translate(${heatmap_x-margin.left},${topCluster_height+topSimpleHeight})`);
             drawComplex(topComplexes,complex_g,k=>xScale(k.name),0,single_rect_width,complexRectWH,(d,i)=>`translate(0,${i*(complexRectWH+small_space)})`,d=>`translate(${heatmap_width+space},${d.h/2}) rotate(0)`);
-
         }
 
         //left line
@@ -270,7 +277,7 @@ export class clusterComponent implements OnInit {
             let simple_g = body_g.append('g').attr('class','simpleRects').attr("transform",`translate(${cluster_width},${heatmap_y-margin.top})`);
             
             for(let i=0;i<leftSimples.length;i++){
-                drawSimple(leftSimples,i,simple_g,i*(simpleRectWH+small_space),(d,j)=>j*single_rect_width,simpleRectWH,single_rect_height,`translate(${i*(simpleRectWH+small_space)+simpleRectWH/2},${heatmap_height+space}) rotate(90)`);
+                drawSimple(leftSimples,i,simple_g,i*(simpleRectWH+small_space),d=>yScale(d.name),simpleRectWH,single_rect_height,`translate(${i*(simpleRectWH+small_space)+simpleRectWH/2},${heatmap_height+space}) rotate(90)`);
             }
         }
 
@@ -289,7 +296,7 @@ export class clusterComponent implements OnInit {
         }
 
         //legend
-        drawLegend(colors);
+        drawGradientLegend(colors);
 
         //交互
         heatmapInteract();
@@ -333,6 +340,13 @@ export class clusterComponent implements OnInit {
                 .data(d=>d.data).enter()
                 .append('g')
                 .attr('transform',transform)
+                .on('mouseover',d=>{
+                    let tipText = `type: ${d.type}`;
+                    that.globalService.showPopOver(d3.event, tipText);
+                })
+                .on('mouseout',()=>{
+                    that.globalService.hidePopOver();
+                })
                 .selectAll('rect')
                 .data(m=>m.data).enter()
                 .append('rect')
@@ -582,10 +596,10 @@ export class clusterComponent implements OnInit {
                 })
         }
 
-        //画图例
-        function drawLegend(colors) {
-            d3.selectAll(".heatmapLegend defs").remove();
-            d3.selectAll(".heatmapLegend rect").remove();
+        //画渐变式图例
+        function drawGradientLegend(colors) {
+            d3.selectAll(".gradientLegend defs").remove();
+            d3.selectAll(".gradientLegend rect").remove();
             //线性填充
             let linearGradient = legend_g.append("defs")
                 .append("linearGradient")
