@@ -249,60 +249,14 @@ export class clusterComponent implements OnInit {
         if(topSimples.length){
             let simple_g = body_g.append('g').attr('class','simpleRects').attr("transform",`translate(${heatmap_x-margin.left},${topCluster_height})`);
             for(let i=0;i<topSimples.length;i++){
-                let d=topSimples[i];
-                let simplePath_g=  simple_g.append("g");
-                
-                simplePath_g.selectAll(".rects")
-                    .data(d.data).enter()
-                    .append("rect")
-                    .attr('fill','red')
-                    .attr('x',(d,j)=>j*single_rect_width)
-                    .attr('y',i*(simpleRectWH+small_space))
-                    .attr("width",single_rect_width)
-                    .attr("height",simpleRectWH)
-                    .on('mouseover',d=>{
-                        let tipText = `type: ${d.type}<br> name:  ${d.name}`;
-                        that.globalService.showPopOver(d3.event, tipText);
-                    })
-                    .on('mouseout',()=>{
-                        that.globalService.hidePopOver();
-                    });
-
-                simplePath_g.append('text')
-                    .style('font-size','14px')
-                    .style('text-anchor','start')
-                    .style('dominant-baseline','middle')
-                    .attr('transform',`translate(${heatmap_width+space},${i*(simpleRectWH+small_space)+simpleRectWH/2}) rotate(0)`)
-                    .text(d.title)
+                drawSimple(topSimples,i,simple_g,(d,j)=>j*single_rect_width,i*(simpleRectWH+small_space),single_rect_width,simpleRectWH,`translate(${heatmap_width+space},${i*(simpleRectWH+small_space)+simpleRectWH/2}) rotate(0)`);
             }
         }
 
         //top complex rect
         if(topComplexes.length){
             let complex_g=body_g.append('g').attr('class','complexRects').attr('transform',`translate(${heatmap_x-margin.left},${topCluster_height+topSimpleHeight})`);
-            
-            let complexPath_g =complex_g.selectAll('g')
-                .data(topComplexes).enter()
-                .append('g').attr('transform',(d,i)=>`translate(${i*d.h},0)`);
-
-            complexPath_g.selectAll('g')
-                .data(d=>d.data).enter()
-                .append('g')
-                .attr('transform',(d,i)=>`translate(0,${i*(complexRectWH+small_space)})`)
-                .selectAll('rect')
-                .data(m=>m.data).enter()
-                .append('rect')
-                .attr('x',k=>xScale(k.name))
-                .attr('y',0)
-                .attr('fill','red')
-                .attr('width',single_rect_width)
-                .attr('height',complexRectWH)
-
-            complexPath_g.append('text')
-                .style('text-anchor','start')
-                .style('dominant-baseline','middle')
-                .attr('transform',d=>`translate(${heatmap_width+space},${d.h/2}) rotate(0)`)
-                .text(d=>d.title)
+            drawComplex(topComplexes,complex_g,k=>xScale(k.name),0,single_rect_width,complexRectWH,(d,i)=>`translate(0,${i*(complexRectWH+small_space)})`,d=>`translate(${heatmap_width+space},${d.h/2}) rotate(0)`);
 
         }
 
@@ -314,62 +268,16 @@ export class clusterComponent implements OnInit {
         //left simple rect
         if(leftSimples.length){
             let simple_g = body_g.append('g').attr('class','simpleRects').attr("transform",`translate(${cluster_width},${heatmap_y-margin.top})`);
+            
             for(let i=0;i<leftSimples.length;i++){
-                let d=leftSimples[i];
-                let simplePath_g = simple_g.append("g");
-                
-                simplePath_g.selectAll(".rects")
-                    .data(d.data).enter()
-                    .append("rect")
-                    .attr('fill','red')
-                    .attr('y',(d,j)=>j*single_rect_width)
-                    .attr('x',i*(simpleRectWH+small_space))
-                    .attr("width",simpleRectWH)
-                    .attr("height",single_rect_height)
-                    .on('mouseover',d=>{
-                        let tipText = `type: ${d.type}<br> name:  ${d.name}`;
-                        that.globalService.showPopOver(d3.event, tipText);
-                    })
-                    .on('mouseout',()=>{
-                        that.globalService.hidePopOver();
-                    });
-
-                simplePath_g.append('text')
-                    .style('font-size','14px')
-                    .style('text-anchor','start')
-                    .style('dominant-baseline','middle')
-                    .attr('transform',`translate(${i*(simpleRectWH+small_space)+simpleRectWH/2},${heatmap_height+space}) rotate(90)`)
-                    .text(d.title)
+                drawSimple(leftSimples,i,simple_g,i*(simpleRectWH+small_space),(d,j)=>j*single_rect_width,simpleRectWH,single_rect_height,`translate(${i*(simpleRectWH+small_space)+simpleRectWH/2},${heatmap_height+space}) rotate(90)`);
             }
         }
 
         //left complex rect
         if(leftComplexes.length){
             let complex_g=body_g.append('g').attr('class','complexRects').attr('transform',`translate(${cluster_width+leftSimpleWidth},${heatmap_y-margin.top})`);
-            
-            let complexPath_g =complex_g.selectAll('g')
-                .data(leftComplexes).enter()
-                .append('g').attr('transform',(d,i)=>`translate(${i*d.h},0)`);
-
-            complexPath_g.selectAll('g')
-                .data(d=>d.data).enter()
-                .append('g')
-                .attr('transform',(d,i)=>`translate(${i*(complexRectWH+small_space)},0)`)
-                .selectAll('rect')
-                .data(m=>m.data).enter()
-                .append('rect')
-                .attr('x',0)
-                .attr('y',k=>yScale(k.name))
-                .attr('fill','red')
-                .attr('width',complexRectWH)
-                .attr('height',single_rect_height)
-
-            complexPath_g.append('text')
-                .style('text-anchor','start')
-                .style('dominant-baseline','middle')
-                .attr("transform",d=>`translate(${d.h/2},${heatmap_height+space}) rotate(90)`)
-                .text(d=>d.title)
-
+            drawComplex(leftComplexes,complex_g,0,k=>yScale(k.name),complexRectWH,single_rect_height,(d,i)=>`translate(${i*(complexRectWH+small_space)},0)`,d=>`translate(${d.h/2},${heatmap_height+space}) rotate(90)`);
         }
 
         //heatmap
@@ -385,6 +293,61 @@ export class clusterComponent implements OnInit {
 
         //交互
         heatmapInteract();
+
+        //画top left simple column
+        function drawSimple(data,i,g,x,y,width,height,transform){
+            let d=data[i];
+            let simplePath_g = g.append("g");
+            
+            simplePath_g.selectAll(".rects")
+                .data(d.data).enter()
+                .append("rect")
+                .attr('fill','red')
+                .attr('x',x)
+                .attr('y',y)
+                .attr("width",width)
+                .attr("height",height)
+                .on('mouseover',d=>{
+                    let tipText = `type: ${d.type}<br> name:  ${d.name}`;
+                    that.globalService.showPopOver(d3.event, tipText);
+                })
+                .on('mouseout',()=>{
+                    that.globalService.hidePopOver();
+                });
+
+            simplePath_g.append('text')
+                .style('font-size','14px')
+                .style('text-anchor','start')
+                .style('dominant-baseline','middle')
+                .attr('transform',transform)
+                .text(d.title)
+        }
+
+        //画top left complex column
+        function drawComplex(data,g,x,y,width,height,transform,textTransform){
+            let complexPath_g =g.selectAll('g')
+            .data(data).enter()
+            .append('g').attr('transform',(d,i)=>`translate(${i*d.h},0)`);
+
+            complexPath_g.selectAll('g')
+                .data(d=>d.data).enter()
+                .append('g')
+                .attr('transform',transform)
+                .selectAll('rect')
+                .data(m=>m.data).enter()
+                .append('rect')
+                .attr('x',x)
+                .attr('y',y)
+                .attr('fill','red')
+                .attr('width',width)
+                .attr('height',height)
+
+            complexPath_g.append('text')
+                .style('text-anchor','start')
+                .style('dominant-baseline','middle')
+                .attr("transform",textTransform)
+                .text(d=>d.title)
+        }
 
         //画热图
         function drawHeatmap(colors) {
