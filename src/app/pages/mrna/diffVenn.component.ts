@@ -80,13 +80,15 @@ export class DiffVennComponent implements OnInit {
 
     activedCompareGroup:any[] = [];
     singleMultiSelect: object = {
-        name: ""
+        bar_name: "",
+        total_name: ""
     };
 
     //多选
     doubleMultiSelect: object = {
         bar_name: "",
-        total_name: ""
+        total_name: "",
+        venn_name:""
     };
     pageEntity: object = {
         pageSize: 20
@@ -399,8 +401,8 @@ export class DiffVennComponent implements OnInit {
     }
 
      //venn和upsetR只能单选时候
-    doSingleData(data){         //新增11.21号，11：16
-        console.log(data)
+    doSingleData(){         //新增11.21号，11：16
+        console.log(this.singleMultiSelect)
     }
 
 
@@ -457,7 +459,10 @@ export class DiffVennComponent implements OnInit {
             })
             .on('click', function () {
                 if(!_selfV.isMultiSelect){
-                    _selfV.doSingleData(this.$select.$data.result.CompareGroup); //新增11.21号，11：16
+                    _selfV.singleMultiSelect["bar_name"] = ""; 
+                    _selfV.singleMultiSelect["total_name"] = ""; 
+                    _selfV.singleMultiSelect["venn_name"] = this.$select.$data.result.CompareGroup; 
+                    _selfV.doSingleData();
                 }else{
                     let tempVenn=[];
                     this.selectCollection.forEach(element => {
@@ -685,15 +690,17 @@ export class DiffVennComponent implements OnInit {
                         if(d3.select(this).select(".MyRect").attr("fill")=="#333"){
                             d3.selectAll(".MyRect").attr("fill", "#333");
                             d3.select(this).select(".MyRect").attr("fill", "steelblue");
-                            _self.singleMultiSelect["name"] = bar_name[i];
+                            _self.singleMultiSelect["bar_name"] = bar_name[i];       ///222
+                            _self.singleMultiSelect["total_name"] = '';
                             _self.doubleMultiSelect["bar_name"] = bar_name[i];
-                            _self.doSingleData(bar_name[i]);
+                            _self.doSingleData();
                         }else if(d3.select(this).select(".MyRect").attr("fill")=="steelblue"){
                             d3.selectAll(".MyRect").attr("fill", "#333");
                             d3.select(this).select(".MyRect").attr("fill", "#333");
-                            _self.singleMultiSelect["name"] = "";
+                            _self.singleMultiSelect["bar_name"] = "";               ///222
+                            _self.singleMultiSelect["total_name"] = "";
                             _self.doubleMultiSelect["bar_name"] = "";
-                            _self.doSingleData('');
+                            _self.doSingleData();
                         }
                     } else {
                         if(d3.select(this).select(".MyRect").attr("fill")=="#333"){
@@ -705,7 +712,7 @@ export class DiffVennComponent implements OnInit {
                             d3.select(this).select(".MyRect").attr("fill", "#333");
                             _self.doubleMultiSelect["bar_name"] = '';
                         }
-                        console.log(_self.doubleMultiSelect)
+                        //console.log(_self.doubleMultiSelect)
                     }
                 });
 
@@ -785,15 +792,17 @@ export class DiffVennComponent implements OnInit {
                         if(d3.select(this).select(".MyRect").attr("fill")=="#333"){
                             d3.selectAll(".MyRect").attr("fill", "#333");
                             d3.select(this).select(".MyRect").attr("fill", "steelblue");
-                            _self.singleMultiSelect["name"] = total_name[i];
+                            _self.singleMultiSelect["total_name"] = total_name[i];     ///222
+                            _self.singleMultiSelect["bar_name"] = "";
                             _self.doubleMultiSelect["total_name"] = total_name[i];
-                            _self.doSingleData(total_name[i]);
+                            _self.doSingleData();
                         }else if(d3.select(this).select(".MyRect").attr("fill")=="steelblue"){
                             d3.selectAll(".MyRect").attr("fill", "#333");
                             d3.select(this).select(".MyRect").attr("fill", "#333");
-                            _self.singleMultiSelect["name"] = "";
+                            _self.singleMultiSelect["total_name"] = "";                 ///222
+                            _self.singleMultiSelect["bar_name"] = "";
                             _self.doubleMultiSelect["total_name"] = "";
-                            _self.doSingleData('');
+                            _self.doSingleData();
                         }
                     } else {
                         if(d3.select(this).select(".MyRect").attr("fill")=="#333"){
