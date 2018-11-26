@@ -44,7 +44,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() tableType:string = 'common'; // 表的类型  普通 还是 transform
     @Input() emitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
     @Output() emitBaseTheadChange:EventEmitter<any> = new EventEmitter();
-    @Input() showMatchAll:boolean = false;
     @Output() baseTheadChange:EventEmitter<any> = new EventEmitter();
     @Input() applyOnceSearchParams:boolean = false;
     // TODO 双向绑定applyOnceSearchParams 下次再次触发
@@ -140,12 +139,15 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
     // 页面加载完成的时候会把算好的 tableHeight传进来，触发changes 然后组件内部计算表格滚动区域的高度；
     ngOnChanges(change: SimpleChanges) {
-        if ("tableHeight" in change && change["tableHeight"]["currentValue"]) {
-            this.computedTbody(change["tableHeight"]["currentValue"]);
-        } else {
+        if(!("tableHeight" in change) && !this.tableHeight) {
             // 不传高度默认显示十条数据的高度 默认滚动高度388px
             this.scroll["y"] = "388px";
         }
+
+        if ("tableHeight" in change && change["tableHeight"]["currentValue"]) {
+            this.computedTbody(change["tableHeight"]["currentValue"]);
+        }
+
     }
 
     init() {
@@ -217,7 +219,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
             this.tableEntity["checked"] = this.checked;
             this.tableEntity["unChecked"] = this.unChecked;
         }
-
 
         let ajaxConfig = {
             url: this.url,
@@ -322,7 +323,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     this.getCollection();
                     this.isFirst = false;
                 } else {
-                    // this.loadingService.close(`#${this.parentId}`);
                     this.total = 0;
                     this.error = "error";
                 }
@@ -332,7 +332,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 }, 30);
             },
             err => {
-                // this.loadingService.close(`#${this.parentId}`);
                 this.isLoading = false;
                 this.total = 0;
             },
@@ -342,6 +341,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     // 每次应用一次设置的查询参数 然后清空恢复默认，用自己的查询参数；
                     this.tableEntity['searchList'] = [];
                     this.tableEntity['rootSearchContentList'] = [];
+                    if('leftChooseList' in this.tableEntity) this.tableEntity['leftChooseList'] = [];
+                    if('upChooseLIst' in this.tableEntity) this.tableEntity['upChooseList'] = [];
+                    if('compareGroup' in this.tableEntity) this.tableEntity['compareGroup'] = [];
+                    if('diffThreshold' in this.tableEntity) this.tableEntity['diffThreshold'] = {};
                     this.applyOnceSearchParams = false;
                     this.applyOnceSearchParamsChange.emit(this.applyOnceSearchParams);
                 }
@@ -361,15 +364,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.tableEntity["sortValue"] = null;
         this.accuracy = -1;
         this.beginFilterStatus = false;
-        this.interConditionHtmlString = this.globalService.transformFilter(
-            this.interSearchConditionList
-        );
-        this.unionConditionHtmlStirng = this.globalService.transformFilter(
-            this.unionSearchConditionList
-        );
-        this.rootHtmlString = this.globalService.transformRootFilter(
-            this.tableEntity["rootSearchContentList"]
-        );
+        this.interConditionHtmlString = this.globalService.transformFilter( this.interSearchConditionList );
+        this.unionConditionHtmlStirng = this.globalService.transformFilter( this.unionSearchConditionList );
+        this.rootHtmlString = this.globalService.transformRootFilter( this.tableEntity["rootSearchContentList"] );
         this.checkedMap = {};
         this.unCheckedMap = {};
         this.checked = [];
@@ -389,7 +386,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
         if(this.tableType==='transform'){
             if('matchAll' in this.tableEntity){
                 this.tableEntity['matchAll'] = true;
-                this.showMatchAll = false;
                 this.getRemoteData();
             }
         }

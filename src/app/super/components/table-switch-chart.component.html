@@ -69,17 +69,34 @@
                 <!-- 图和表的容器 -->
                 <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable && !error" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
                     <!-- table：固定表头-->
-                    <nz-table nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
-                        <thead>
+                    <nz-table nzShowPagination="false" [nzData]="isVennTable?chartData.rows:tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
+                        
+                        <!-- 普通表 -->
+                        <thead  *ngIf="!isVennTable">
                             <tr>
                                 <th class="center" nzWidth="120px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody  *ngIf="!isVennTable">
                             <tr *ngFor="let row of tableData.rows">
                                 <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
                             </tr>
                         </tbody>
+
+                        <!-- veen/upsetR表 -->
+                        <thead  *ngIf="isVennTable">
+                            <tr>
+                                <th class="center" nzWidth="120px" nz-tooltip>name</th>
+                                <th class="center" nzWidth="120px" nz-tooltip>value</th>
+                            </tr>
+                        </thead>
+                        <tbody  *ngIf="isVennTable">
+                            <tr *ngFor="let row of chartData['rows']">
+                                <td class="center">{{row['name']}}</td>
+                                <td class="center">{{row['value']}}</td>
+                            </tr>
+                        </tbody>
+
                     </nz-table>
 
                     <!-- chart -->
