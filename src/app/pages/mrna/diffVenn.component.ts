@@ -322,7 +322,17 @@ export class DiffVennComponent implements OnInit {
             })
             .subscribe(
                 data => {
-                    this.drawVenn(data['data']);
+					// if(data["status"]==0&&data["data"].length>0){
+					// 	this.drawVenn(data['data']);
+					// }
+
+					if (data["status"] === "0" && (data["data"].length == 0 || $.isEmptyObject(data["data"]))) {
+                        
+                    } else if (data["status"] != "0") {
+                        
+                    } else {
+                        this.drawVenn(data['data']);
+                    }
                 },
                 error => {
                     console.log(error);
@@ -374,24 +384,45 @@ export class DiffVennComponent implements OnInit {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
+		this.PessionDis = {
+			log2FC: this.p_show ? this.store.getStore('diff_threshold').PossionDis.log2FC : '',
+			FDR: this.p_show ? this.store.getStore('diff_threshold').PossionDis.FDR : ''
+		};
+
+		this.NOIseq = {
+			log2FC: this.n_show ? this.store.getStore('diff_threshold').NOIseq.log2FC : '',
+			probability: this.n_show ? this.store.getStore('diff_threshold').NOIseq.probability : ''
+		};
 		this.panelShow = false;
 	}
 	setConfirm() {
 		//设置下拉面板点击确定时候的两个参数
 		if (this.p_show) {
-			this.tableEntity['diff_threshold'] = {
+			this.tableEntity['diffThreshold'] = {
 				PessionDis: this.PessionDis
 			};
 		}
 		if (this.n_show) {
-			this.tableEntity['diff_threshold'] = {
+			this.tableEntity['diffThreshold'] = {
 				NOIseq: this.NOIseq
 			};
 		}
+
+		this.singleMultiSelect={
+			bar_name: '',
+			total_name: '',
+			venn_name: ''
+		};
+
+		this.doubleMultiSelect= {
+			bar_name: '',
+			total_name: ''
+		};
+
         this.panelShow = false;
         this.upSelect.length = 0;
         this.leftSelect.length = 0 ;
-        this.getVennOrUpsetR();
+		this.getVennOrUpsetR();
 
 		if (this.first) {
 			this.transformTable._getData();
