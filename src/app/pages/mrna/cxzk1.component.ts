@@ -33,12 +33,13 @@ export class cxzk1Component implements OnInit {
 
     // tree test
     selectData = [];
+
     // 所有表格的头 带可组合字段
     theadMap: object = {
-        category1: [],
-        category2: [],
-        category3: [],
-        category4: [],
+        "category1": [],
+        "category2": [],
+        "category3": [],
+        "category4": [],
         "category1-compose1": ["category1", "compose1"],
         "category1-compose1-one": ["category1", "compose1", "one"],
         "category2-compose2": ["category2", "compose2"],

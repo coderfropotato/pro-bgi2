@@ -149,7 +149,7 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "cxzk2",
+                path: "cxzk1",
                 component: cxzk2Component,
                 data: {
                     keep: true,

@@ -252,30 +252,12 @@ export class IndexComponent implements OnInit {
             let LCID = sessionStorage.getItem("LCID");
             this.ajaxService
                 .getDeferData({
-                    data: { LCID },
-                    url: "http://localhost:8086/addThead" // `${config['javaPath']}/addColumn`
+                    data: {},
+                    url: `${config['javaPath']}/addColumn/${LCID}`
                 })
                 .subscribe(
                     data => {
-                        this.allThead = [
-                            {
-                                category: "expression",
-                                children: [
-                                    { key: "fpkm_A1" },
-                                    { key: "fpkm_A2" },
-                                    { key: "fpkm_B1 Type" }
-                                ]
-                            },
-                            {
-                                category:"other",
-                                children:[
-                                    {key:"gene_id"},
-                                    {key:"gene_type"},
-                                    {key:"symbol"},
-                                ]
-                            }
-                        ];
-
+                        this.allThead = data['data'];
                         this.storeService.setThead(this.allThead);
                         resolve("success");
                     },
