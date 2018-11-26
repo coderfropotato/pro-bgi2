@@ -42,7 +42,7 @@ export class clusterComponent implements OnInit {
             "isHorizontal": false,
             "verticalClassification": {
                 "gene_type": "gene",
-                "Blood": "gene_exp_tcga_3.0"
+                "Blood": "gene_exp_tcga"
             },
             "horizontalClassification": [
                 "cellType",
@@ -66,6 +66,15 @@ export class clusterComponent implements OnInit {
             valuemax = data.max,
             valuemin = data.min;
 
+        let topSimples=[];
+        let topComplexes=[];
+        if(data.top.simple && data.top.simple.length){
+            topSimples=data.top.simple;
+        }
+        if(data.top.complex && data.top.complex.length){
+            topComplexes=data.top.complex;
+        }
+
         let isTopCluster = true;
         let isLeftCluster = true;
         if ($.isEmptyObject(leftLineData)) {
@@ -82,9 +91,8 @@ export class clusterComponent implements OnInit {
         let legend_width = 20;
         let legend_height = 180;
 
-        //heatmap与右边文字的间距、图例与右边文字间距
-        let space = 10;
-        let legend_space = 5;
+        let space = 10;  //heatmap与周边的间距
+        let legend_space = 5;  //图例与右边文字间距
 
         //文字最长
         let max_x_textLength = d3.max(heatmapData, d=>d.name.length);
@@ -92,8 +100,6 @@ export class clusterComponent implements OnInit {
         let max_y_textLength = 0;
         if (this.isShowName) {
             max_y_textLength = d3.max(heatmapData[0].heatmap, d=>d.x.length);
-        } else {
-            max_y_textLength = space / 8;
         }
 
         //下边文字高度、右边文字的宽度
@@ -101,7 +107,7 @@ export class clusterComponent implements OnInit {
         let YtextWidth = max_y_textLength * 8;
 
         //预留间距
-        let margin = { top: 40, bottom: XtextHeight, left: 10, right: 40 };
+        let margin = { top: 40, bottom: 20, left: 10, right: 40 };
 
         //定义热图宽高
         let heatmap_width = 0,
@@ -111,9 +117,17 @@ export class clusterComponent implements OnInit {
         let single_rect_width = 0;
         let single_rect_height = 0;
 
-        heatmap_width = this.width;
-        single_rect_width = heatmap_width / heatmapData_len;
+        if (heatmapData_len <= 8) {
+            this.width = 480;
+            heatmap_width = this.width;
+            single_rect_width = heatmap_width / heatmapData_len;
+        } else {
+            single_rect_width = 60;
+            this.width = single_rect_width * heatmapData_len;
+            heatmap_width = this.width;
+        }
 
+        
         heatmap_height = this.height;
         single_rect_height = heatmap_height / YgeneDataLen;
 
@@ -128,9 +142,17 @@ export class clusterComponent implements OnInit {
             topCluster_height = 60;
         }
 
+        //top left rect width height
+        let simpleRect=20,complexRect=10;
+        let topHeight=0;
+
+        //热图区偏移
+        let heatmap_x=margin.left+cluster_width;
+        let heatmap_y=margin.top+topCluster_height;
+
         //svg总宽高
-        let totalWidth = margin.left + cluster_width + space + heatmap_width + space + YtextWidth + legend_space + legend_width + margin.right,
-            totalHeight = margin.top + topCluster_height + heatmap_height + margin.bottom;
+        let totalWidth = margin.left + cluster_width + heatmap_width + space + YtextWidth + legend_space + legend_width + margin.right,
+            totalHeight = margin.top + topCluster_height + heatmap_height + XtextHeight + margin.bottom;
 
         //x、y比例尺
         let xScale = d3.scaleBand()
@@ -141,9 +163,6 @@ export class clusterComponent implements OnInit {
             .range([0, heatmap_height])
             .domain(heatmapData[0].heatmap.map(function (d) { return d.x }));
 
-            console.log(xScale('test1'),xScale('test2'),xScale('test3'));
-            console.log(yScale('gene01'),yScale('gene02'),yScale('gene03'))
-
         //定义图例比例尺
         let legend_yScale = d3.scaleLinear().range([legend_height, 0])
             .domain([valuemin, valuemax]).clamp(true);
@@ -151,8 +170,11 @@ export class clusterComponent implements OnInit {
         let legend_yAxis = d3.axisRight(legend_yScale).tickSizeOuter(0).ticks(5); //设置Y轴
 
         //定义图例位置偏移
-        let legendTrans_x = totalWidth - legend_width - margin.right,
+        let legendTrans_x = margin.left + cluster_width + heatmap_width + space + YtextWidth + legend_space,
             legendTrans_y = margin.top + topCluster_height;
+
+        // left translate
+        let topLine_x = margin.left + cluster_width + heatmap_width;
 
         //定义容器
         let svg = d3.select("#clusterChartDiv").append("svg").attr("width", totalWidth).attr("height", totalHeight);
@@ -161,7 +183,7 @@ export class clusterComponent implements OnInit {
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         let heatmap_g = body_g.append("g").attr("class", "heatmap")
-            .attr("transform", "translate(" + (cluster_width + space) + "," + topCluster_height + ")");
+            .attr("transform", "translate(" + cluster_width + "," + topCluster_height + ")");
 
         let legend_g = svg.append("g").attr("class", "heatmapLegend") //定义图例g
             .attr("transform", "translate(" + legendTrans_x + "," + legendTrans_y + ")");
@@ -190,13 +212,25 @@ export class clusterComponent implements OnInit {
 
         //top line
         if (this.isShowTopLine && isTopCluster) {
-            let topLine_x = margin.left + cluster_width + heatmap_width;
             this._drawLine("topLine", topCluster_width, topCluster_height, body_g, topLine_x, 0, topLineData);
         }
 
+        //top simple rect
+        // let simple_g = body_g.append('g').attr('class','simpleRects').attr("transform",`translate(${topLine_x},${topCluster_height})`);
+        // simple_g.selectAll(".simplerects")
+        // .data(topSimples).enter()
+        // .append("g")
+        // .selectAll(".rects")
+        // .data(d=>d.data).enter()
+        // .append("rect")
+        // .attr('fill','red')
+        // .attr('x',m=>xScale(m.name))
+        // .attr("width",single_rect_width)
+        // .attr("height",simpleRect)
+
         //left line
         if (isLeftCluster) {
-            this._drawLine("leftLine", cluster_height, cluster_width, body_g, space, topCluster_height, leftLineData);
+            this._drawLine("leftLine", cluster_height, cluster_width, body_g, 0, topCluster_height, leftLineData);
         }
 
         //heatmap
@@ -236,9 +270,9 @@ export class clusterComponent implements OnInit {
                     .style("font-family", "Consolas, Monaco, monospace")
                     .style("font-size", "12px")
                     .text(heatmapData[i].name)
-                    .style("text-anchor", "middle")
+                    .style("text-anchor", "start")
                     .attr("transform", function () {
-                        return "translate(" + (i * single_rect_width + single_rect_width / 2) + "," + (heatmap_height + 20) + ") rotate(90)";
+                        return "translate(" + (i * single_rect_width + single_rect_width / 2) + "," + (heatmap_height + space) + ") rotate(90)";
                     })
             }
         }
@@ -272,8 +306,8 @@ export class clusterComponent implements OnInit {
                 let downEvent = ev || d3.event;
 
                 //当前down位置
-                down_x = downEvent.offsetX - margin.left - cluster_width - space;
-                down_y = downEvent.offsetY - margin.top - topCluster_height;
+                down_x = downEvent.offsetX - heatmap_x;
+                down_y = downEvent.offsetY - heatmap_y;
                 //当前down索引
                 let downIndex = getIndex(down_x, down_y);
                 down_j = downIndex.y_index;
@@ -282,8 +316,8 @@ export class clusterComponent implements OnInit {
 
             big_rect.on("mousemove", function (ev) {
                 let moveEvent = ev || d3.event;
-                let x_dis = moveEvent.offsetX - margin.left - cluster_width - space;
-                let y_dis = moveEvent.offsetY - margin.top - topCluster_height;
+                let x_dis = moveEvent.offsetX - heatmap_x;
+                let y_dis = moveEvent.offsetY - heatmap_y;
 
                 if (isMousedown) {
                     select_rh = Math.abs(y_dis - down_y);
@@ -304,7 +338,7 @@ export class clusterComponent implements OnInit {
             select_rect.on("mousemove", function (ev) {
                 let moveSelectEvent = ev || d3.event;
                 clearEventBubble(moveSelectEvent);
-                let y_select_dis = moveSelectEvent.offsetY - margin.top - topCluster_height;
+                let y_select_dis = moveSelectEvent.offsetY - heatmap_y;
 
                 if (isMousedown) {
                     select_rh = Math.abs(y_select_dis - down_y);
@@ -317,8 +351,8 @@ export class clusterComponent implements OnInit {
                 isMousedown = false;
                 let upEvent = ev || d3.event;
                 //当前up位置
-                let up_x = upEvent.offsetX - margin.left - cluster_width - space;
-                let up_y = upEvent.offsetY - margin.top - topCluster_height;
+                let up_x = upEvent.offsetX - heatmap_x;
+                let up_y = upEvent.offsetY - heatmap_y;
 
                 //当前up索引
                 let upIndex = getIndex(up_x, up_y);
