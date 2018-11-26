@@ -62,7 +62,7 @@ export class DiffVennComponent implements OnInit {
 	venn_or_upsetR: boolean;
 
 	p_show: boolean; //设置里面的PossionDis
-	PessionDis: object = {
+	PossionDis: object = {
 		log2FC: '',
 		FDR: ''
 	};
@@ -133,7 +133,7 @@ export class DiffVennComponent implements OnInit {
 		this.chartUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 
 		this.p_show = this.store.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
-		this.PessionDis = {
+		this.PossionDis = {
 			log2FC: this.p_show ? this.store.getStore('diff_threshold').PossionDis.log2FC : '',
 			FDR: this.p_show ? this.store.getStore('diff_threshold').PossionDis.FDR : ''
 		};
@@ -196,7 +196,7 @@ export class DiffVennComponent implements OnInit {
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			diffThreshold: {
-				PossionDis: this.PessionDis
+				PossionDis: this.PossionDis
 			},
 			version: this.storeService.getStore('reference'),
 			searchList: []
@@ -226,7 +226,7 @@ export class DiffVennComponent implements OnInit {
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			diffThreshold: {
-				PossionDis: this.PessionDis
+				PossionDis: this.PossionDis
 			},
 			version: this.storeService.getStore('reference'),
 			searchList: []
@@ -364,11 +364,11 @@ export class DiffVennComponent implements OnInit {
 
 	OnChange(value: string): void {
 		//设置里面的PossionDis的log2FC
-		this.PessionDis['log2FC'] = value;
+		this.PossionDis['log2FC'] = value;
 	}
 	OnChange2(value: string): void {
 		//设置里面的PossionDis的FDR
-		this.PessionDis['FDR'] = value;
+		this.PossionDis['FDR'] = value;
 	}
 
 	OnChange3(value: string): void {
@@ -384,7 +384,7 @@ export class DiffVennComponent implements OnInit {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
-		this.PessionDis = {
+		this.PossionDis = {
 			log2FC: this.p_show ? this.store.getStore('diff_threshold').PossionDis.log2FC : '',
 			FDR: this.p_show ? this.store.getStore('diff_threshold').PossionDis.FDR : ''
 		};
@@ -399,7 +399,7 @@ export class DiffVennComponent implements OnInit {
 		//设置下拉面板点击确定时候的两个参数
 		if (this.p_show) {
 			this.tableEntity['diffThreshold'] = {
-				PessionDis: this.PessionDis
+				PossionDis: this.PossionDis
 			};
 		}
 		if (this.n_show) {
