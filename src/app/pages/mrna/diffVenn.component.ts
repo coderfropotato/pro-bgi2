@@ -397,7 +397,7 @@ export class DiffVennComponent implements OnInit {
 			};
 		}
 		this.panelShow = false;
-		console.log(this.tableEntity['diff_threshold']);
+		//console.log(this.tableEntity['diff_threshold']);
 		if (this.first) {
 			this.transformTable._getData();
 		} else {
@@ -410,13 +410,13 @@ export class DiffVennComponent implements OnInit {
         this.upSelect.length = 0;
         this.leftSelect.length = 0;
         this.first?this.transformTable._getData():this.first = true;
-		if (!this.venn_or_upsetR) {
-			//新增11.21号，11：16
-			this.updateVenn();
-		}
+		// if (!this.venn_or_upsetR) {
+		// 	this.updateVenn();
+        // }
+        this.updateVenn();
 	}
 
-	//韦恩图二次更新
+	//韦恩,upsetR图二次更新
 	updateVenn() {
 		//新增11.21号，11：16
 		this.tableEntity['compareGroup'] = this.selectConfirmData;
