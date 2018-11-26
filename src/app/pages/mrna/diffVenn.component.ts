@@ -35,7 +35,7 @@ export class DiffVennComponent implements OnInit {
 	tableUrl: string;
 	chartUrl: string;
 
-	vennEntity: object;
+	// vennEntity: object;
 	defaultEntity: object;
 	defaultUrl: string;
 	defaultTableId: string;
@@ -162,19 +162,19 @@ export class DiffVennComponent implements OnInit {
 			diffThreshold: this.store.getStore('diff_threshold')
 		};
 
-		this.vennEntity = {
-			LCID: sessionStorage.getItem('LCID'),
-			compareGroup: this.activedCompareGroup,
-			geneType: this.pageModuleService['defaultModule'],
-			species: this.storeService.getStore('genome'),
-			version: this.storeService.getStore('reference'),
-			diffThreshold: {
-				PossionDis: {
-					log2FC: 1,
-					FDR: 0.001
-				}
-			}
-		};
+		// this.vennEntity = {
+		// 	LCID: sessionStorage.getItem('LCID'),
+		// 	compareGroup: this.activedCompareGroup,
+		// 	geneType: this.pageModuleService['defaultModule'],
+		// 	species: this.storeService.getStore('genome'),
+		// 	version: this.storeService.getStore('reference'),
+		// 	diffThreshold: {
+		// 		PossionDis: {
+		// 			log2FC: 1,
+		// 			FDR: 0.001
+		// 		}
+		// 	}
+		// };
 
 		this.showMatchAll = false;
 		this.applyOnceSearchParams = true;
@@ -322,23 +322,6 @@ export class DiffVennComponent implements OnInit {
 		this.computedTableHeight();
 	}
 
-	getVennOrUpsetR() {
-		//二次查询
-		this.ajaxService
-			.getDeferData({
-				url: `${config['javaPath']}/Venn/diffGeneGraph`,
-				data: this.tableEntity
-			})
-			.subscribe(
-				(data) => {
-					this.drawVenn(data['data']);
-				},
-				(error) => {
-					console.log(error);
-				}
-			);
-	}
-
 	drawVenn(data) {
 		//封装组件事件返回调用函数+二次调用显示数据
 		if (data['total'].length > 5) {
@@ -418,9 +401,8 @@ export class DiffVennComponent implements OnInit {
 
 	//韦恩,upsetR图二次更新
 	updateVenn() {
-		//新增11.21号，11：16
 		this.tableEntity['compareGroup'] = this.selectConfirmData;
-		this.getVennOrUpsetR();
+		//this.getVennOrUpsetR();
 	}
 
 	//venn和upsetR只能单选时候
