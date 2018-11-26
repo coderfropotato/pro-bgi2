@@ -240,7 +240,6 @@ export class TableSwitchChartComponent implements OnInit {
     //选择面板 确定
     selectConfirm() {
         this.selectConfirmEmit.emit(this.selectedList);
-        this.reGetData();
     }
 
     /**

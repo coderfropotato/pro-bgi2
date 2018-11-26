@@ -314,33 +314,6 @@ export class DiffVennComponent implements OnInit {
 		this.computedTableHeight();
     }
 
-    getVennOrUpsetR() { //二次查询
-        this.ajaxService
-            .getDeferData({
-                url: `${config["javaPath"]}/Venn/diffGeneGraph`,
-                data: this.tableEntity
-            })
-            .subscribe(
-                data => {
-					// if(data["status"]==0&&data["data"].length>0){
-					// 	this.drawVenn(data['data']);
-					// }
-
-					if (data["status"] === "0" && (data["data"].length == 0 || $.isEmptyObject(data["data"]))) {
-                        
-                    } else if (data["status"] != "0") {
-                        
-                    } else {
-                        this.drawVenn(data['data']);
-                    }
-                },
-                error => {
-                    console.log(error);
-                }
-
-            );
-    }
-
 	drawVenn(data) {
 		//封装组件事件返回调用函数+二次调用显示数据
 		if (data['total'].length > 5) {
@@ -422,7 +395,7 @@ export class DiffVennComponent implements OnInit {
         this.panelShow = false;
         this.upSelect.length = 0;
         this.leftSelect.length = 0 ;
-		this.getVennOrUpsetR();
+		this.tableSwitchChart.reGetData();
 
 		if (this.first) {
 			this.transformTable._getData();
@@ -436,6 +409,7 @@ export class DiffVennComponent implements OnInit {
         this.upSelect.length = 0;
         this.leftSelect.length = 0;
         this.first?this.transformTable._getData():this.first = true;
+
 		// if (!this.venn_or_upsetR) {
 		// 	this.updateVenn();
         // }
@@ -444,8 +418,8 @@ export class DiffVennComponent implements OnInit {
 
 	//韦恩,upsetR图二次更新
 	updateVenn() {
-		this.tableEntity['compareGroup'] = this.selectConfirmData;
-		//this.getVennOrUpsetR();
+        this.tableEntity['compareGroup'] = this.selectConfirmData;
+        this.tableSwitchChart.reGetData();
 	}
 
 	//venn和upsetR只能单选时候
