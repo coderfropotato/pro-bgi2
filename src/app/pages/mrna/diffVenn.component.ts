@@ -312,7 +312,24 @@ export class DiffVennComponent implements OnInit {
 	// 表格上方功能区 resize重新计算表格高度
 	resize(event) {
 		this.computedTableHeight();
-	}
+    }
+
+    getVennOrUpsetR() { //二次查询
+        this.ajaxService
+            .getDeferData({
+                url: `${config["javaPath"]}/Venn/diffGeneGraph`,
+                data: this.tableEntity
+            })
+            .subscribe(
+                data => {
+                    this.drawVenn(data['data']);
+                },
+                error => {
+                    console.log(error);
+                }
+
+            );
+    }
 
 	drawVenn(data) {
 		//封装组件事件返回调用函数+二次调用显示数据
@@ -373,7 +390,8 @@ export class DiffVennComponent implements OnInit {
 		}
         this.panelShow = false;
         this.upSelect.length = 0;
-        this.leftSelect.length = 0;
+        this.leftSelect.length = 0 ;
+        this.getVennOrUpsetR();
 
 		if (this.first) {
 			this.transformTable._getData();
