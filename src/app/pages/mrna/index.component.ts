@@ -253,7 +253,7 @@ export class IndexComponent implements OnInit {
             this.ajaxService
                 .getDeferData({
                     data: { LCID },
-                    url: "http://localhost:8086/addThead"
+                    url: "http://localhost:8086/addThead" // `${config['javaPath']}/addColumn`
                 })
                 .subscribe(
                     data => {

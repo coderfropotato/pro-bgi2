@@ -42,7 +42,7 @@
             <input *ngIf="searchType!=='string' && selectType==='$gtabs'" type="number" nz-input placeholder="gtabs" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gtabs">
         </div>
-        <p *ngIf="nodata">输入值不能为空！</p>
+        <nz-alert *ngIf="nodata" nzType="error" [nzMessage]="'filterPanel.error' | translate"></nz-alert>
         <!-- 交并集选择 -->
         <div>
             <nz-radio-group [(ngModel)]="radioValue">

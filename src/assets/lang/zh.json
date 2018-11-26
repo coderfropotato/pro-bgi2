@@ -23,7 +23,8 @@
         "gte": "大于等于",
         "lte": "小于等于",
         "gteabs":"绝对值大于等于",
-        "gtabs":"绝对值大于"
+        "gtabs":"绝对值大于",
+        "error":"输入值不能为空"
     },
     "addThead": {
         "addButton": "扩展列",
@@ -56,5 +57,10 @@
         "pageSizeSelectTen":"10条/页",
         "pageSizeSelectTwenty":"20条/页",
         "pageSizeSelectForty":"40条/页"
+    },
+    "errorTips":{
+        "nodata":"对不起，没有可显示的数据 !",
+        "error":"对不起，系统错误 !",
+        "maxOver":"对不起，数据量过大，无法正常显示 !"
     }
 }

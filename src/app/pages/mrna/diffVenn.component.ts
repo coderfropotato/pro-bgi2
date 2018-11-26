@@ -282,8 +282,7 @@ export class DiffVennComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
-			// this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
-			this.transformTable._setExtendParamsWithoutRequest('compareGroup',[]);
+			this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
 			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {
 				this.transformTable._getData();
@@ -373,6 +372,9 @@ export class DiffVennComponent implements OnInit {
 			};
 		}
         this.panelShow = false;
+        this.upSelect.length = 0;
+        this.leftSelect.length = 0;
+
 		if (this.first) {
 			this.transformTable._getData();
 		} else {

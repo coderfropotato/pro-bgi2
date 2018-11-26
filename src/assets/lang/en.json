@@ -23,8 +23,8 @@
         "gte":"gt && equal",
         "lte":"lt && equal",
         "gteabs":"abs gt && equal",
-        "gtabs":"abs gt"
-
+        "gtabs":"abs gt",
+        "error":"Input value cannot be empty"
     },
     "addThead":{
         "addButton":"add",
@@ -57,5 +57,10 @@
         "pageSizeSelectTen":"10/page",
         "pageSizeSelectTwenty":"20/page",
         "pageSizeSelectForty":"40/page"
+    },
+    "errorTips":{
+        "nodata":"Sorry, there is no data to display ！",
+        "error":"Sorry, the system is wrong !",
+        "maxOver":"Sorry, the amount of data is too large to display properly !"
     }
 }

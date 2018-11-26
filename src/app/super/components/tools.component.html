@@ -13,7 +13,7 @@
         </div>
 
         <!-- 聚类 -->
-        <nz-drawer nzTitle="聚类热图" [nzVisible]="childVisible" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+        <nz-drawer nzTitle="聚类热图" [nzVisible]="childVisible && selectType=='heatmap'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
             <nz-tabset [nzSize]="'small'">
                 <nz-tab nzTitle="表达量聚类">
                     <div class="tool-params-tab">
