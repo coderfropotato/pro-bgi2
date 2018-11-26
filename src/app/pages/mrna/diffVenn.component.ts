@@ -372,12 +372,7 @@ export class DiffVennComponent implements OnInit {
 				NOIseq: this.NOIseq
 			};
 		}
-<<<<<<< HEAD
         this.panelShow = false;
-=======
-		this.panelShow = false;
-		//console.log(this.tableEntity['diff_threshold']);
->>>>>>> ad09a9988f3ed5acfc180323fda27e8ad20fd95e
 		if (this.first) {
 			this.transformTable._getData();
 		} else {
