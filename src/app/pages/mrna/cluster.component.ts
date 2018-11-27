@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { GlobalService } from 'src/app/super/service/globalService';
 import config from '../../../config';
+import { StoreService } from 'src/app/super/service/storeService';
 
 declare const d3: any;
 declare const $: any;
@@ -27,29 +28,23 @@ export class clusterComponent implements OnInit {
     color: string; //当前选中的color
     colors: string[];
 
+    gaugeColors:string[]=[];
+    oLegendIndex:number=0;
+    oColor:string;
+
     constructor(
         private ajaxService: AjaxService,
-        private globalService: GlobalService
+        private globalService: GlobalService,
+        private storeService:StoreService
     ) { }
 
     ngOnInit() {
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
         // this.chartUrl = 'http://localhost:8086/cluster';
         this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
-        this.chartEntity = {
-            "LCID": sessionStorage.getItem('LCID'),
-            "tid": "20783e1576b84867aee1a63e22716fed",
-            "isHorizontal": false,
-            "verticalClassification": {
-                "gene_type": "gene",
-                "Blood": "gene_exp_tcga"
-            },
-            "horizontalClassification": [
-                "cellType",
-                "time"
-            ],
-            "genome": "aisdb"
-        }
+        this.chartEntity = {"LCID": "demo", "tid": "20783e1576b84867aee1a63e22716fed", "isHorizontal": false, "verticalClassification": {"Blood": "aisdb.gene_exp_tcga_3.0", "GO Term": "aisdb.gene_go_3.0"}, "horizontalClassification": ["cellType", "time"]};
+
+        this.gaugeColors=this.storeService.getColors();
     }
 
     drawChart(data) {
@@ -84,8 +79,8 @@ export class clusterComponent implements OnInit {
         }
 
         let legends=[];
-        if(data.gauge.legends && data.gauge.legends.length){
-            legends=data.gauge.legends;
+        if(data.gauge && data.gauge.length){
+            legends=data.gauge;
         }
 
         let isTopCluster = true;
@@ -155,7 +150,7 @@ export class clusterComponent implements OnInit {
         }
 
         //top left rect width height
-        let simpleRectWH=20,complexRectWH=10;
+        let simpleRectWH=16,complexRectWH=6;
         
         // top
         let topSimpleHeight=topSimples.length*(simpleRectWH+small_space);
@@ -187,9 +182,42 @@ export class clusterComponent implements OnInit {
 
         //图例
         let gradientLegendWidth=legend_width+valuemax.toString().length*7;
+        
+        let legendColNumScale=d3.scaleLinear().domain([200, 2000]).range([8,80]);
+
+        let OrdinalRectW=16,OrdinalRectH=16, // rect width height
+        legend_chart_space = 24, //图例与图的距离
+        legend_col_space = 30, //图例之间每列的距离
+        text_space=5, //rect text space
+        bottom_space=6; //rect 上下 space
+        let legend_col_num = Math.floor(legendColNumScale(heatmap_height)); //每列个数
+        let showMaxFontLenght=20; //图例最多显示20个字符
+        let OrdinalLegendWidth=0;
+
+        if(legends.length){
+            let curTotalLen=0;
+            let preLen=0;
+            let legendTotalColNum=0; //图例总列数
+            legends.forEach((d,i)=>{
+                d.data.forEach((m,j)=>{
+                    if(m===null){
+                        d.data.splice(j,1);
+                    }
+                })
+                let curLen=d.data.length;
+                curTotalLen+=curLen;
+                preLen=curTotalLen-curLen;
+                d.colors=this.gaugeColors.slice(preLen,curTotalLen);
+                d.scale=d3.scaleOrdinal().range(d.colors.map(m=>m)).domain(d.data.map(m=>m));
+
+                d.chunks=this.chunk(d.data,legend_col_num);
+                legendTotalColNum+=d.chunks.length;
+            })
+            OrdinalLegendWidth=legendTotalColNum*(OrdinalRectW+text_space+showMaxFontLenght*3+legend_col_space);
+        }
 
         //svg总宽高
-        let totalWidth = heatmap_x + heatmap_width + space + YtextWidth + space + gradientLegendWidth + margin.right,
+        let totalWidth = heatmap_x + heatmap_width + space + YtextWidth + space + gradientLegendWidth+legend_chart_space+ OrdinalLegendWidth+ margin.right,
             totalHeight = heatmap_y + heatmap_height + XtextHeight + margin.bottom;
 
         //x、y比例尺
@@ -231,8 +259,7 @@ export class clusterComponent implements OnInit {
         svg.append("g")
             .attr("class", "heatmapTitle")
             .append("text")
-            .attr("transform", "translate(" + (totalWidth / 2) + ", " + title_y + ")")
-            .text("差异基因表达量聚类热图")
+            .attr("transform", "translate(" + ((heatmap_x+heatmap_width)-heatmap_width/2) + ", " + title_y + ")")
             .attr("font-size", "18px")
             .attr("text-anchor", "middle")
             .style("cursor", "pointer")
@@ -246,7 +273,8 @@ export class clusterComponent implements OnInit {
             .on("mouseout", function () {
                 d3.select(this).attr("fill", "#000");
                 d3.select(this).select("title").remove();
-            });
+            })
+            .text("差异基因表达量聚类热图");
 
         //top line
         if (this.isShowTopLine && isTopCluster) {
@@ -295,21 +323,32 @@ export class clusterComponent implements OnInit {
             drawYText();
         }
 
-        //legend
+        //Gradient legend
         drawGradientLegend(colors);
+
+        //Ordinal legend
+        drawOrdinalLegend();
 
         //交互
         heatmapInteract();
 
         //画top left simple column
         function drawSimple(data,i,g,x,y,width,height,transform){
+            data.forEach(d=>{
+                legends.forEach(m=>{
+                    if(d.title===m.title){
+                        d.scale=m.scale;
+                    }
+                })
+            })
+
             let d=data[i];
             let simplePath_g = g.append("g");
             
             simplePath_g.selectAll(".rects")
                 .data(d.data).enter()
                 .append("rect")
-                .attr('fill','red')
+                .attr('fill',m=> m.type===null ? "#000000" : d.scale(m.type))
                 .attr('x',x)
                 .attr('y',y)
                 .attr("width",width)
@@ -361,6 +400,89 @@ export class clusterComponent implements OnInit {
                 .style('dominant-baseline','middle')
                 .attr("transform",textTransform)
                 .text(d=>d.title)
+        }
+
+        //画离散型图例
+        function drawOrdinalLegend(){
+            let olegend_x=heatmap_x + heatmap_width + space + YtextWidth + space + gradientLegendWidth+legend_chart_space;
+            let olegend_y=margin.top+topCluster_height;
+            let title_space=10;
+
+            let legendWrap = svg.append("g").attr('class',"OrdinalLegend").attr('transform',`translate(${olegend_x},${olegend_y})`);
+            legends.forEach(d=>{
+
+                let curLegend= legendWrap.append('g').attr('class','oLegend');
+
+                curLegend.append('text').attr('class','oLegendTitle')
+                .style('font-size','14px')
+                .style('text-anchor','start')
+                .text(d.title);
+                
+                let sumWidth = 0,
+                    sumBeforeWidth = 0;
+                let widthArr = [];
+
+                let legendGroup = curLegend.append('g').attr('transform',`translate(0,${title_space})`)
+                    .selectAll(".legendGroup")
+                    .data(d.chunks)
+                    .enter()
+                    .append("g")
+                    .attr("class", "legendGroup")
+                    .attr("index", function(d, i) {
+                        return i;
+                    })
+
+                let series = legendGroup.selectAll(".boxSeries")
+                    .data(m=>m)
+                    .enter()
+                    .append("g")
+                    .attr("class", "boxSeries")
+
+                series.append("rect")
+                    .attr("fill",m=> m===null ? '#000000' : d.scale(m))
+                    .attr("width", OrdinalRectW)
+                    .attr("height", OrdinalRectH)
+                    .style("cursor", "pointer")
+                    .on("mouseover", function() {
+                        d3.select(this).append("title").text("单击修改颜色");
+                    })
+                    .on("mouseout", function() {
+                        d3.select(this).select("title").remove();
+                    })
+                    .on("click", function(m, i) {
+                        let oEvent = d3.event || event;
+                        clearEventBubble(oEvent);
+
+                        let select_index = Number($(this).parents('.legendGroup').attr("index"));
+                        that.oLegendIndex = select_index * legend_col_num + i;
+                        that.isShowColorPanel = true;
+                    });
+
+                series.append("text")
+                    .attr("font-size", "12px")
+                    .attr("font-family", "Consolas, Monaco, monospace")
+                    .attr("text-anchor", "right")
+                    .attr("dominant-baseline", "middle")
+                    .attr("transform", "translate(" + (OrdinalRectW + text_space) + "," + OrdinalRectH / 2 + ")")
+                    .text(m=>(m.length<=showMaxFontLenght) ? m : m.substring(0,showMaxFontLenght)+'..')
+                    .append('title').text(m=>m);
+
+                d3.selectAll("g.oLegend")
+                    .attr("transform", function(d, i) {
+                        let colWidth = d3.select(this).node().getBBox().width;
+                        widthArr[i] = colWidth;
+                        sumWidth += widthArr[i];
+                        sumBeforeWidth = sumWidth - widthArr[widthArr.length - 1];
+                        let x = sumBeforeWidth + i * legend_col_space;
+                        return "translate(" + x + ",0)";
+                    })
+                    .selectAll("g.boxSeries")
+                    .attr("transform", function(d, j) {
+                        return "translate(0," + j * (OrdinalRectH + bottom_space) + ")";
+                    })
+
+            })
+            
         }
 
         //画热图
@@ -620,7 +742,7 @@ export class clusterComponent implements OnInit {
                 .attr("fill", "url(#" + linearGradient.attr("id") + ")");
         }
 
-        //点击图例改图颜色
+        //点击渐变式图例改图颜色
         let legendClickRect_h = legend_height / colors.length;
         let legendClick_g = svg.append("g")
             .attr("transform", "translate(" + legendTrans_x + "," + legendTrans_y + ")")
@@ -643,7 +765,7 @@ export class clusterComponent implements OnInit {
             .attr("fill", "transparent")
             .on("click", (d, i) => {
                 let oEvent = d3.event || event;
-                oEvent.stopPropagation();
+                clearEventBubble(oEvent);
 
                 this.legendIndex = i;
                 this.isShowColorPanel = true;
@@ -660,11 +782,11 @@ export class clusterComponent implements OnInit {
 
     //画聚类折线图
     _drawLine(type, size1, size2, gContainer, translateX, translateY, data) {
-        var cluster = d3.cluster()
+        let cluster = d3.cluster()
             .size([size1, size2])
             .separation(function () { return 1; });
 
-        var cluster_g = gContainer.append("g").attr("class", type);
+        let cluster_g = gContainer.append("g").attr("class", type);
         if (type == "leftLine") {
             cluster_g.attr("transform", "translate(" + translateX + "," + translateY + ")");
         }
@@ -674,7 +796,7 @@ export class clusterComponent implements OnInit {
         }
 
         //根据数据建立模型
-        var root = d3.hierarchy(data);
+        let root = d3.hierarchy(data);
         cluster(root);
 
         cluster_g.selectAll("path")
@@ -701,4 +823,30 @@ export class clusterComponent implements OnInit {
     setGeneList(geneList) {
         console.log(geneList);
     }
+
+     // 数组分组
+    chunk(array, size) {
+        let length = array.length;
+
+        //判断不是数组，或者size没有设置，size小于1，就返回空数组
+        if (!length || !size || size < 1) {
+            return [];
+        }
+
+        let index = 0; //用来表示切割元素的范围start
+        let resIndex = 0; //用来递增表示输出数组的下标
+
+        //根据length和size算出输出数组的长度，并且创建它。
+        let result = new Array(Math.ceil(length / size));
+
+        //循环
+        while (index < length) {
+            //循环过程中设置result[0]和result[1]的值。该值根据array.slice切割得到。
+            result[resIndex++] = array.slice(index, (index += size))
+        }
+
+        //输出新数组
+        return result;
+    }
+
 }
