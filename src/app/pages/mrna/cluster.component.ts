@@ -371,6 +371,21 @@ export class clusterComponent implements OnInit {
 
         //画top left complex column
         function drawComplex(data,g,x,y,width,height,transform,textTransform){
+            data.forEach(d=>{
+                legends.forEach(n=>{
+                    if(d.title===n.title){
+                        d.scale=n.scale;
+                    }
+                })
+
+                d.data.forEach(m=>{
+                    m.data.forEach(k=>{
+                        k.type=m.type;
+                        k.scale=d.scale;
+                    })
+                })
+            })
+
             let complexPath_g =g.selectAll('g')
             .data(data).enter()
             .append('g').attr('transform',(d,i)=>`translate(${i*d.h},0)`);
@@ -391,7 +406,7 @@ export class clusterComponent implements OnInit {
                 .append('rect')
                 .attr('x',x)
                 .attr('y',y)
-                .attr('fill','red')
+                .attr('fill',k=>k.type===null ? '#000000' : k.scale(k.type))
                 .attr('width',width)
                 .attr('height',height)
 
