@@ -1,6 +1,6 @@
 <div class="menu clearfix">
     <div style="display:inline-block" class="fLeft">
-        <ul *ngIf="menu.length" (mouseenter)="expand = true" (mouseleave)="menuMouseLeave()">
+        <ul *ngIf="menu.length" (mouseenter)="rootMenuMouseEnter()" (mouseleave)="rootMenuMouseLeave()">
             <li *ngFor="let item of menu;let i = index" (mouseover)="menuMouseOver(item,i)">
                 <span [class.active]="item['active']">{{item.category}}</span>
             </li>

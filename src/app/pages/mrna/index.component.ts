@@ -68,11 +68,16 @@ export class IndexComponent implements OnInit {
                 .subscribe(
                     data => {
                         if (data["status"] === "0") {
-                            for (let key in data["data"][0]) {
+                            for (let key in data["data"]) {
                                 this.storeService.setStore(
                                     key,
-                                    data["data"][0][key]
+                                    data["data"][key]
                                 );
+                                if(typeof data["data"][key]!=='object'){
+                                    sessionStorage.setItem(key,data["data"][key]);
+                                }else{
+                                    sessionStorage.setItem(key,JSON.stringify(data["data"][key]));
+                                }
                             }
                         }
                         resolve("success");

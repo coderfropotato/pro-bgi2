@@ -55,6 +55,7 @@ import { Layout1Component, Layout1Page } from "./pages/mrna/layout1.component";
 import { Layout2Component } from "./pages/mrna/layout2.component";
 import { ToolsComponent } from "./super/components/tools.component";
 import { SysDefendComponent } from "./pages/sysDefend.component";
+import { UploadComponent } from './pages/mrna/upload.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -81,6 +82,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 // 管道
 import { AccuracyPipe } from "./super/filter/accuracy.pipe";
 import config from "../config";
+
 
 const ROUTES: Routes = [
     // mrna
@@ -210,6 +212,14 @@ const ROUTES: Routes = [
                 data: {
                     keep: true,
                     module: "cluster"
+                }
+            },
+            {
+                path:"upload",
+                component:UploadComponent,
+                data:{
+                    keep:false,
+                    module:"upload"
                 }
             }
         ]
@@ -346,6 +356,7 @@ export function createTranslateLoader(http: HttpClient) {
         Layout2Component,
         TreeComponent,
         ToolsComponent,
+        UploadComponent,
         ColorPickerComponent,
         TooltipDirective
     ],

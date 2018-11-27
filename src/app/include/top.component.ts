@@ -148,4 +148,8 @@ export class TopComponent implements OnInit {
         )}/report/reanalysis/index`;
         window.open(url);
     }
+
+    upload(){
+        this.router.navigateByUrl('/report/mrna/upload')
+    }
 }

@@ -11,6 +11,7 @@ export class MenuComponent implements OnChanges {
     expandItem: any = [];
     expand: boolean = false;
     timer: any = null;
+    delayTimer:any = null;
     index: number = 0;
 
     moduleSwitch:true;
@@ -49,17 +50,33 @@ export class MenuComponent implements OnChanges {
         this.pageModuleService.setModule(status?'gene':'iso');
     }
 
-    menuMouseOver(menu, index) {
-        if (this.timer) clearTimeout(this.timer);
-        this.index = index;
-        this.expandItem = menu["children"];
+    rootMenuMouseEnter(){
+        if(this.delayTimer) clearTimeout(this.delayTimer);
+        this.delayTimer = setTimeout(()=>{
+            this.expand = true
+        },200)
     }
 
-    menuMouseLeave() {
+    rootMenuMouseLeave() {
+        if(this.delayTimer) {
+            clearTimeout(this.delayTimer);
+            this.delayTimer = null;
+        }
+        clearTimeout(this.timer);
         this.timer = null;
         this.timer = setTimeout(() => {
             this.expand = false;
         }, 300);
+    }
+
+    menuMouseOver(menu, index) {
+        if(this.delayTimer) return;
+        if (this.timer) {
+            clearTimeout(this.timer)
+            this.timer = null;
+        }
+        this.index = index;
+        this.expandItem = menu["children"];
     }
 
     subMenuMouseEnter() {
