@@ -118,7 +118,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
     isFirst = true;
     firstColumnGene = [];
-    matchAll:true;
+    matchAll:boolean = true;
+
     constructor(
         private translate: TranslateService,
         private globalService: GlobalService,
@@ -383,7 +384,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
     }
 
-    matchAll(){
+    matchAllFn(){
         if(this.tableType==='transform'){
             if('matchAll' in this.tableEntity){
                 this.tableEntity['matchAll'] = true;

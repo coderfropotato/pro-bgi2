@@ -31,7 +31,7 @@
                     <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate"
                         nz-tooltip (click)="beginFilter()"></i>
                         <!-- 匹配所有基因 按钮 -->
-                    <button *ngIf="!tableEntity['matchAll'] && tableType=='transform' && !error && matchAll " (click)="matchAll()" nz-button nzType="primary" nzSize="small">关联所有基因</button>
+                    <button *ngIf="!tableEntity['matchAll'] && tableType=='transform' && !error && matchAll " (click)="matchAllFn()" nz-button nzType="primary" nzSize="small">关联所有基因</button>
                     <!-- 下拉框 -->
                     <!-- <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
                         <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
@@ -134,12 +134,12 @@
                             <td nzLeft="0px" style="min-width:60px;" nzShowCheckbox [(nzChecked)]="d.checked" (nzCheckedChange)="refreshStatus($event,d)"></td>
                             <!-- 首列的二级头表格数据 -->
                             <td *ngFor="let two of (head[0].children.length?head[0].children:[head[0]]);index as i;trackBy:identity"
-                                [nzLeft]="colLeftConfig[i]" 
+                                [nzLeft]="colLeftConfig[i]"
                                 [nzContent]="(d[two['true_key']]+'')?(d[two['true_key']]| accuracyPipe : accuracy : two['searchType']):'NA'" nzPlacement="right" nz-popover>
                                 {{d[two['true_key']] | accuracyPipe : accuracy : two['searchType']}}
                             </td>
                             <!-- 其他列 -->
-                            <td *ngFor="let h of tbodyOutFirstCol" 
+                            <td *ngFor="let h of tbodyOutFirstCol"
                             [nzContent]="d[h['true_key']]?(d[h['true_key']] | accuracyPipe : accuracy : h['searchType']):'NA' " nzPlacement="right" nz-popover>
                                 {{d[h['true_key']]?(d[h['true_key']] | accuracyPipe : accuracy : h['searchType']):'NA' }}
                             </td>
