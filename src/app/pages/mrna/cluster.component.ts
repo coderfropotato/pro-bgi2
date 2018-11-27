@@ -451,7 +451,7 @@ export class clusterComponent implements OnInit {
                     })
                     .on("click", function(m, i) {
                         let oEvent = d3.event || event;
-                        oEvent.stopPropagation();
+                        clearEventBubble(oEvent);
 
                         let select_index = Number($(this).parents('.legendGroup').attr("index"));
                         that.oLegendIndex = select_index * legend_col_num + i;
@@ -765,7 +765,7 @@ export class clusterComponent implements OnInit {
             .attr("fill", "transparent")
             .on("click", (d, i) => {
                 let oEvent = d3.event || event;
-                oEvent.stopPropagation();
+                clearEventBubble(oEvent);
 
                 this.legendIndex = i;
                 this.isShowColorPanel = true;
