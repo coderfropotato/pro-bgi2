@@ -213,7 +213,7 @@ export class clusterComponent implements OnInit {
                 d.chunks=this.chunk(d.data,legend_col_num);
                 legendTotalColNum+=d.chunks.length;
             })
-            OrdinalLegendWidth=legendTotalColNum*(OrdinalRectW+text_space+showMaxFontLenght*3+legend_col_space);
+            OrdinalLegendWidth=legendTotalColNum*(OrdinalRectW+text_space+showMaxFontLenght*6+legend_col_space);
         }
 
         //svg总宽高
@@ -482,7 +482,7 @@ export class clusterComponent implements OnInit {
                     .text(m=>(m.length<=showMaxFontLenght) ? m : m.substring(0,showMaxFontLenght)+'..')
                     .append('title').text(m=>m);
 
-                d3.selectAll("g.oLegend")
+                d3.selectAll("g.legendGroup")
                     .attr("transform", function(d, i) {
                         let colWidth = d3.select(this).node().getBBox().width;
                         widthArr[i] = colWidth;
@@ -496,6 +496,12 @@ export class clusterComponent implements OnInit {
                         return "translate(0," + j * (OrdinalRectH + bottom_space) + ")";
                     })
 
+            })
+
+            d3.selectAll('.oLegend text.oLegendTitle')
+            .attr('transform',function(){
+                let x = d3.select(this.parentNode).select('.legendGroup').attr('transform');
+                return x;
             })
             
         }
