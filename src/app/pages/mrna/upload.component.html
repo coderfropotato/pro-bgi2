@@ -1,3 +1,201 @@
-<p>
-  upload component works!
-</p>
+<div class="m_div">
+    <div class="m_top">自定义数据</div>
+    <div class="m_content">
+        <h4>上传数据</h4>
+        <div class="m_content_1" *ngIf="isShowTab">
+            <nz-tabset [nzSelectedIndex]="index" (nzSelectedIndexChange)="SelectedIndexChange($event)">
+                <nz-tab [nzTitle]="'基因信息'" >
+                    <div class="tab_content" [hidden]="fileList.length !=0">
+                        <span>基因信息数据上传说明...</span>
+                        <a>数据模板下载</a>
+                    </div>
+                    <div class="tab_div" [hidden]="fileList.length ==0">
+                      <div *ngFor="let item of fileList; let i = index" class="tab_div_item">
+                          {{i+1}} - {{item.name}}
+                      </div>
+                    </div>
+                    <div class="tab_bottom">
+                        <button nz-button nzType="default" (click)="updateLoad()">上传</button>
+                        <nz-upload nzAction="" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
+                            <button nz-button>
+                                <span>选择文件</span>
+                            </button>
+                        </nz-upload>
+                    </div>
+                </nz-tab>
+                <nz-tab [nzTitle]="'转录本信息'">
+                    <div class="tab_content" [hidden]="fileList2.length !=0">
+                        <span>转录本信息数据上传说明...</span>
+                        <a>数据模板下载</a>
+                    </div>
+                    <div class="tab_div" [hidden]="fileList2.length ==0">
+                        <div *ngFor="let item of fileList2; let i = index" class="tab_div_item">
+                            {{i+1}} - {{item.name}}
+                        </div>
+                    </div>
+                    <div class="tab_bottom">
+                        <button nz-button nzType="default" (click)="updateLoad()">上传</button>
+                        <nz-upload nzAction="" [(nzFileList)]="fileList2" [nzBeforeUpload]="beforeUpload2">
+                            <button nz-button>
+                                <span>选择文件</span>
+                            </button>
+                        </nz-upload>
+                    </div>
+                </nz-tab>
+
+                <nz-tab [nzTitle]="'样本信息'">
+                    <div class="tab_content" [hidden]="fileList3.length !=0">
+                        <span>样本信息数据上传说明...</span>
+                        <a>数据模板下载</a>
+                    </div>
+                    <div class="tab_div" [hidden]="fileList3.length ==0">
+                        <div *ngFor="let item of fileList3; let i = index" class="tab_div_item">
+                            {{i+1}} - {{item.name}}
+                        </div>
+                    </div>
+                    <div class="tab_bottom">
+                        <button nz-button nzType="default" (click)="updateLoad()">上传</button>
+                        <nz-upload nzAction="" [(nzFileList)]="fileList3" [nzBeforeUpload]="beforeUpload3">
+                            <button nz-button>
+                                <span>选择文件</span>
+                            </button>
+                        </nz-upload>
+                    </div>
+                </nz-tab>
+
+            </nz-tabset>
+            
+        </div>
+
+        <div class="m_content_2" *ngIf="!isShowTab">
+            <div class="m_content_item">上传数据类型、上传时间、文件大小</div>
+
+            <div class="m_content_progress">
+                <div class="m_content_progress_left">
+                    <nz-progress [nzPercent]="100" [nzStrokeWidth]=18 nzStatus="active"></nz-progress>
+                </div>
+                <button nz-button [nzSize]="small" (click)="goResult()">
+                    <span>查看结果</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<style>
+    .m_top {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    .m_content {
+        width: 90%;
+        height: auto;
+        margin: 30px auto;
+    }
+
+    .m_content_1 {
+        width: 100%;
+        height: 300px;
+        border: 1px solid #ccc;
+    }
+    
+    .tab_content {
+        width: 96%;
+        height: 180px;
+        margin: 20px auto 0 auto;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #ccc;
+    }
+
+    .tab_div {
+        width: 96%;
+        height: 180px;
+        margin: 20px auto 0 auto;
+        border: 1px solid #ccc;
+    }
+
+    .tab_div_item{
+      width: 96%;
+      margin: 0 auto;
+      height: 40px;
+      line-height: 40px;
+      text-align: left;
+    }
+
+    .tab_content a {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        text-decoration: underline;
+    }
+
+    .tab_bottom {
+        width: 96%;
+        height: 40px;
+        margin: 10px auto 0 auto;
+    }
+
+    .tab_bottom nz-upload {
+        float: right;
+        margin-right: 20px;
+    }
+
+    .tab_bottom>button {
+        float: right;
+    }
+
+    .m_content_2 {
+        width: 100%;
+        height: 300px;
+        border: 1px solid #ccc;
+    }
+
+    .m_content_item {
+        width: 96%;
+        height: 40px;
+        margin: 20px auto 10px auto;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .m_content_progress {
+        width: 96%;
+        height: 40px;
+        margin: 20px auto 10px auto;
+    }
+
+    .m_content_progress_left {
+        width: 90%;
+        height: 40px;
+        float: left;
+    }
+
+    .m_content_progress button {
+        width: 80px;
+        height: 30px;
+        float: right;
+    }
+
+    h4 {
+        margin-top: 30px;
+    }
+
+    :host ::ng-deep .m_div .ant-tabs-bar {
+        margin: 0;
+    }
+
+
+    :host ::ng-deep .m_div .ant-upload-list-item-info>span {
+
+        display: none;
+    }
+
+</style>
