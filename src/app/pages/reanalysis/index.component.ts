@@ -11,7 +11,7 @@ import config from '../../../config';
 })
 export class ReanalysisIndexComponent implements OnInit {
 	analysisList: any[] = [];
-	loading: boolean = true;
+	loading: boolean = false;
 	constructor(
 		private routes: ActivatedRoute,
 		private router: Router,
@@ -24,23 +24,36 @@ export class ReanalysisIndexComponent implements OnInit {
 		this.translate.setDefaultLang('zh');
 		let curLang = sessionStorage.getItem('lang');
 		langs.includes(curLang) ? this.translate.use(curLang) : this.translate.use('zh');
-
-		this.getAnalysisList();
 	}
 
 	ngOnInit() {
-		console.log();
+        this.getAnalysisList();
 	}
 
 	getAnalysisList() {
+        this.loading = true;
 		this.ajaxService
 			.getDeferData({
-				url: 'http://localhost:8086/analysis',
-				data: {}
+				url: `${config['javaPath']}/reAnalysis/getReanalysisList`,
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					pageIndex: 1,
+					pageSize: 10,
+					label: '',
+					searchContent: {
+						timeStart: '',
+						timeEnd: '',
+						reanalysisType: [],
+						status: []
+					}
+				}
 			})
 			.subscribe(
 				(data) => {
-					this.analysisList = data['data']['rows'];
+                    if(data['status']==='0'){
+                        this.analysisList = data['data']['list'];
+                        console.log(this.analysisList)
+                    }
 				},
 				(err) => {
 					console.log(err);

@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
  * @author Yangwd<277637411@qq.com>
  * @date 2018-11-13 10:47:55
  * @export
- * @class StoreService
+ * @class ToolsService
  */
 @Injectable({
     providedIn: "root"
@@ -12,25 +12,36 @@ import { Injectable } from "@angular/core";
 export class ToolsService {
     visible:boolean = false;
     geneCount:number = 0;
+    tableEntity:object = {};
+    tableUrl:string = '';
 
     constructor() {}
 
     init(){
         this.geneCount = 0;
+        this.tableEntity = {};
+        this.tableUrl = '';
     }
 
-    showTools(total,tableEntity){
-        if(tableEntity['others']['checkStatus']){
-            this.geneCount = total - tableEntity['others']['excludeGeneList']['unChecked'].length;
+    showTools(total,entity){
+        if(entity['others']['checkStatus']){
+            this.geneCount = total - entity['others']['excludeGeneList']['unChecked'].length;
         }else{
-            this.geneCount = tableEntity['others']['excludeGeneList']['checked'].length;
+            this.geneCount = entity['others']['excludeGeneList']['checked'].length;
         }
+        this.tableUrl = entity['url'];
+        this.tableEntity = entity['tableEntity'];
+        this.tableEntity['reAnaly'] = true;
         this.visible = true;
     }
 
-    hide(){
+    hide():void{
         this.init();
         this.visible = false;
+    }
+
+    get(key){
+        return this[key];
     }
 
 }
