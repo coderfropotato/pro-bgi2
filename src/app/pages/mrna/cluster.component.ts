@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { GlobalService } from 'src/app/super/service/globalService';
 import config from '../../../config';
+import { StoreService } from 'src/app/super/service/storeService';
 
 declare const d3: any;
 declare const $: any;
@@ -27,9 +28,12 @@ export class clusterComponent implements OnInit {
     color: string; //当前选中的color
     colors: string[];
 
+    gaugeColors:string[]=[];
+
     constructor(
         private ajaxService: AjaxService,
-        private globalService: GlobalService
+        private globalService: GlobalService,
+        private storeService:StoreService
     ) { }
 
     ngOnInit() {
@@ -49,7 +53,9 @@ export class clusterComponent implements OnInit {
                 "time"
             ],
             "genome": "aisdb"
-        }
+        };
+
+        this.gaugeColors=this.storeService.getColors();
     }
 
     drawChart(data) {
@@ -84,8 +90,8 @@ export class clusterComponent implements OnInit {
         }
 
         let legends=[];
-        if(data.gauge.legends && data.gauge.legends.length){
-            legends=data.gauge.legends;
+        if(data.gauge && data.gauge.length){
+            legends=data.gauge;
         }
 
         let isTopCluster = true;
@@ -187,6 +193,18 @@ export class clusterComponent implements OnInit {
 
         //图例
         let gradientLegendWidth=legend_width+valuemax.toString().length*7;
+        
+        if(legends.length){
+            let curTotalLen=0;
+            let preLen=0;
+            legends.forEach((d,i)=>{
+                let curLen=d.data.length;
+                curTotalLen+=curLen;
+                preLen=curTotalLen-curLen;
+                d.colors=this.gaugeColors.slice(preLen,curTotalLen);
+                d.scale=d3.scaleOrdinal().range(d.colors.map(m=>m)).domain(d.data.map(m=>m));
+            })
+        }
 
         //svg总宽高
         let totalWidth = heatmap_x + heatmap_width + space + YtextWidth + space + gradientLegendWidth + margin.right,
@@ -303,13 +321,21 @@ export class clusterComponent implements OnInit {
 
         //画top left simple column
         function drawSimple(data,i,g,x,y,width,height,transform){
+            data.forEach(d=>{
+                legends.forEach(m=>{
+                    if(d.title===m.title){
+                        d.scale=m.scale;
+                    }
+                })
+            })
+
             let d=data[i];
             let simplePath_g = g.append("g");
             
             simplePath_g.selectAll(".rects")
                 .data(d.data).enter()
                 .append("rect")
-                .attr('fill','red')
+                .attr('fill',m=> m.type===null ? "#000000" : d.scale(m.type))
                 .attr('x',x)
                 .attr('y',y)
                 .attr("width",width)
@@ -620,7 +646,7 @@ export class clusterComponent implements OnInit {
                 .attr("fill", "url(#" + linearGradient.attr("id") + ")");
         }
 
-        //点击图例改图颜色
+        //点击渐变式图例改图颜色
         let legendClickRect_h = legend_height / colors.length;
         let legendClick_g = svg.append("g")
             .attr("transform", "translate(" + legendTrans_x + "," + legendTrans_y + ")")
