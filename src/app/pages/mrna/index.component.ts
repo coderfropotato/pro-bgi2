@@ -242,7 +242,7 @@ export class IndexComponent implements OnInit {
 
                         //动态跳第一个页面
                         // let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
-                        // window.location.replace(url)
+                        // window.location.replace(url);
                         resolve("success");
                     },
                     () => {

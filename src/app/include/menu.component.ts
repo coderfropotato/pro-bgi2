@@ -53,7 +53,9 @@ export class MenuComponent implements OnChanges {
     rootMenuMouseEnter(){
         if(this.delayTimer) clearTimeout(this.delayTimer);
         this.delayTimer = setTimeout(()=>{
-            this.expand = true
+            this.expand = true;
+            clearTimeout(this.delayTimer);
+            this.delayTimer = null;
         },200)
     }
 
@@ -101,5 +103,15 @@ export class MenuComponent implements OnChanges {
             location.href.indexOf("/report")
         )}/report/reanalysis/index`;
         window.open(url);
+    }
+
+    /**
+     * @description 外部重置路由激活状态
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-11-27
+     * @memberof MenuComponent
+     */
+    public _initRouteActiveStatus(){
+        this.initMenuStatus();
     }
 }
