@@ -326,8 +326,8 @@ export class DiffVennComponent implements OnInit {
 			this.showVenn(data);
 		}else{
 			this.venn_or_upsetR = false;
-			this.showVenn(data);
 			this.tableSwitchChart.isShowTable=true;
+			this.showVenn(data);
 		}
 	}
 
