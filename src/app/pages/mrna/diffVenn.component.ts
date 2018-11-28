@@ -315,13 +315,19 @@ export class DiffVennComponent implements OnInit {
     }
 
 	drawVenn(data) {
-		//封装组件事件返回调用函数+二次调用显示数据
-		if (data['total'].length > 5) {
+		let d_length=data['total'].length;
+		if (d_length > 5) {
 			this.venn_or_upsetR = true;
+			this.tableSwitchChart.isShowTable=false;
 			this.showUpSetR(data);
-		} else {
+		} else if(d_length<=5&&d_length>=2){
+			this.venn_or_upsetR = false;
+			this.tableSwitchChart.isShowTable=false;
+			this.showVenn(data);
+		}else{
 			this.venn_or_upsetR = false;
 			this.showVenn(data);
+			this.tableSwitchChart.isShowTable=true;
 		}
 	}
 
