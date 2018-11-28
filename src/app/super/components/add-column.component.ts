@@ -24,6 +24,7 @@ export class AddColumnComponent implements OnInit {
 
     show: boolean = false;
     selected: Array<any> = [];
+    selectCount:Array<any> = [];
     beforeSelected: Array<any> = [];
     theadInBase:string[] = []; // 哪些基础表头在增删列的数据里面
     outerIndex:number = 0; // 当前的外部数据库索引
@@ -76,7 +77,7 @@ export class AddColumnComponent implements OnInit {
                     item['checked'] = false;
                 }
             })
-            
+
             this.getCheckCount();
             this.beforeSelected = this.copy(this.selected);
         }
@@ -327,7 +328,7 @@ export class AddColumnComponent implements OnInit {
         for (var i = 0, len = data.length; i < len; i++) {
             stack.push(data[i]);
         }
-        
+
         let item;
         while (stack.length) {
             item = stack.shift();
