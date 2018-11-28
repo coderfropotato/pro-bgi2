@@ -24,7 +24,10 @@
                 </div>
             </nz-tab>
             <!-- 外部数据库 -->
-            <nz-tab class="outer-tab" *ngIf="outerDataBaseService['outerDataBase'] && outerDataBaseService['outerDataBase']['children'].length " [nzTitle]="outerDataBaseService['outerDataBase']['category'] | translate">
+            <nz-tab class="outer-tab" *ngIf="outerDataBaseService['outerDataBase'] && outerDataBaseService['outerDataBase']['children'].length " [nzTitle]="titleTemplate">
+                <ng-template #titleTemplate>
+                        <span class="add-thead-head-item">{{ outerDataBaseService['outerDataBase']['category'] | translate }}<b *ngIf="outerSelected.length">{{outerSelected.length}}</b></span>
+                </ng-template>
                 <div class="outer-select-wrap tag-wrap">
                     <ng-container *ngFor="let s of outerSelected;index as i;">
                         <nz-tag class="tag" [nzColor]="'rgb(82, 120, 248)'" nzMode="closeable" (nzOnClose)="outerClose(s)">{{s['name']}}</nz-tag>
@@ -36,7 +39,7 @@
                         <i class="anticon anticon-pluse"></i>
                     </div>
                     <ng-container *ngFor="let it of outer['children'];index as m;">
-                        <span class="head-item"  *ngFor="let head of it['generatedThead'];index as o;" (click)="outerClick(head,thead.length)">{{head['name']}}    
+                        <span class="head-item"  *ngFor="let head of it['generatedThead'];index as o;" (click)="outerClick(head,thead.length)">{{head['name']}}
                         </span>
                         <nz-modal [(nzVisible)]="modalVisibleList[i]"  (nzOnCancel)="handleCancel(i)" (nzOnOk)="handleOk(i,it)">
                             <app-tree (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']" [theadMap]="it['theadMap']"></app-tree>
