@@ -62,5 +62,26 @@
         "nodata":"Sorry, there is no data to display ！",
         "error":"Sorry, the system is wrong !",
         "maxOver":"Sorry, the amount of data is too large to display properly !"
-    }
+    },
+    "001":"Gene Attr",
+    "001001":"",
+    "002":"Exp Info",
+    "002001":"FPKM",
+    "002002":"Read Count",
+    "003":"Sample Diff",
+    "003001":"Log2FC",
+    "003002":"Pvalue",
+    "003003":"FDR",
+    "004":"Group Diff",
+    "004001":"Group Log2FC",
+    "004002":"Group Pvalue",
+    "004003":"Qvalue",
+    "004004":"Probability",
+    "005":"Annotation",
+    "005001":"",
+    "006":"Public Data",
+    "006001":"TCGA",
+    "006002":"ARCHS4",
+    "007":"Upload",
+    "007001":""
 }
