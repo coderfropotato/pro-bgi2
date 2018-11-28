@@ -33,7 +33,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
 
-    @Input() isVennTable:boolean;//为true时候venn/unsetR图的表，false时候是普通表
+    @Input() isVennTable:boolean=false;//为true时候venn/unsetR图的表，false时候是普通表
     // 双向绑定:变量名x，fn命名规范xChange
     @Input() isMultiSelect: boolean; //是否是多选
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
