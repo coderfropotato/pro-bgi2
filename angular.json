@@ -30,7 +30,8 @@
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js",
                             "src/app/libs/d4/d4.js",
-                            "src/app/libs/venn/venn.js"
+                            "src/app/libs/venn/venn.js",
+                            "src/app/libs/localforage/localforage.min.js"
                         ]
                     },
                     "configurations": {

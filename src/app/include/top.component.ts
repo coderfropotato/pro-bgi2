@@ -1,6 +1,6 @@
 import { ToolsService } from './../super/service/toolsService';
 import { StoreService } from "../super/service/storeService";
-import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 declare const $: any;
@@ -18,6 +18,11 @@ export class TopComponent implements OnInit {
     exportPdfFlag: any = false;
     browserLang: string;
     navigatedRoutes: Array<string> = [];
+
+    @Input() pdf:boolean = true;
+    @Input() analysis:boolean = true;
+    @Input() upload:boolean = true;
+    @Input() lang:boolean = true;
 
     constructor(
         private el: ElementRef,
@@ -141,7 +146,7 @@ export class TopComponent implements OnInit {
         window.location.reload();
     }
 
-    analysis() {
+    analysisFn() {
         let url = `${location.href.substring(
             0,
             location.href.indexOf("/report")
@@ -149,7 +154,7 @@ export class TopComponent implements OnInit {
         window.open(url);
     }
 
-    upload(){
+    uploadFn(){
         this.router.navigateByUrl('/report/mrna/upload')
     }
 }

@@ -15,13 +15,14 @@
         </li>
     </ol>
 
-    <div class="table-analysis-button  blue fRight" (click)="analysis()" style="margin-top: 4px;">
+    <div class="table-analysis-button  blue fRight" (click)="analysisFn()" style="margin-top: 4px;">
         <b>我的分析</b>
         <span><i class="anticon anticon-appstore"></i></span>
     </div>
     <!-- gene isoform -->
-    <div class="fRight" style="margin-top: 7px;margin-right: 12px;">
-        <nz-switch [ngModel]="pageModuleService['defaultModule']==='gene'" (ngModelChange)="moduleSwitchChange($event)" nzCheckedChildren="gene" nzUnCheckedChildren="iso"></nz-switch>
+    <div *ngIf="geneSwitch" class="fRight" style="margin-top: 7px;margin-right: 12px;">
+        <nz-switch [ngModel]="pageModuleService['defaultModule']==='gene'" (ngModelChange)="moduleSwitchChange($event)" nzCheckedChildren="gene" nzUnCheckedChildren="transform"></nz-switch>
     </div>
 
+    <ng-content></ng-content>
 </div>

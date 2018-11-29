@@ -83,7 +83,7 @@ export class ToolsComponent implements OnInit {
 	geneType: any[] = [];
 	geneTypeError: any = false;
     selectGeneType: any[] = [];
-    
+
     // 多组学参数
     multiOmicsData:any[] = [];
     multiOmicsSelect:any[] = [];
@@ -131,7 +131,7 @@ export class ToolsComponent implements OnInit {
         this.multiOmicsData = [];
         this.multiOmicsSelect = [];
         this.multiOmicsError = false;
-        
+
 		// 页面参数
 		this.selectType = '';
 		this.childVisible = false;
@@ -303,7 +303,7 @@ export class ToolsComponent implements OnInit {
 				}
 			);
     }
-    
+
     // 获取多组学参数
     getmultiOmicsParams(){
         this.ajaxService.getDeferData({
@@ -345,10 +345,10 @@ export class ToolsComponent implements OnInit {
 		this.ajaxService
 			.getDeferData({
 				data: {
+                    LCID:sessionStorage.getItem('LCID'),
 					reanalysisType: type,
-					needReanalysis: 1,
-					chooseType: [],
-					chooseList: this.multiOmicsSelect,
+					needReanalysis: 2,
+					classInfo: this.multiOmicsSelect,
 					...this.toolsService.get('tableEntity')
 				},
 				url: this.toolsService.get('tableUrl')

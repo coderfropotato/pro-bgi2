@@ -1,0 +1,57 @@
+
+<div class="report-analysis multi-omics">
+    <app-menu [menu]="[]" [geneSwitch]="false">
+        <p class="menu-slot-text">重分析id：{{tid}}</p>
+    </app-menu>
+    <div class="content reanalysis-content row">
+    <div #left class="left-layout column" [class.unexpand]="switch">
+        <div class="left-top-layout">
+            <h4>title</h4>
+            <p>多组学</p>
+        </div>
+        <div class="left-bottom-layout">
+                <ng-template #setTemplate>
+                        <app-multiOmicsSet (confirm)="setConfirm($event)"></app-multiOmicsSet>
+                </ng-template>
+                <!-- [selectTemplate]="selectTemplate" -->
+                <app-table-switch-chart #multiOmicsChart [id]="'multiOmics'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect" (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [isOnlyChart]="true" [chartUrl]="chartUrl" [apiEntity]="chartEntity"
+                [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'multiOmicsChartDiv'" [chartName]="'多组学关联图'" [flex]="true">
+                </app-table-switch-chart>
+                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
+            </div>
+        </div>
+        <div #right class="right-layout" [class.expand]="switch" >
+            <div class="switch">
+                <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" ></nz-switch>
+            </div>
+            <div class="func" #func (click)="resize($event)">
+                <!-- 增删列 -->
+                <app-add-column #addColumn [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)" ></app-add-column>
+                <!-- 关系 -->
+                <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()" ></app-gene-relative>
+            </div>
+            <!-- 表格转换 -->
+            <app-table-transformation
+                class="no-outside-border"
+                #transformTable
+                [isFirst]="first"
+                [tableHeight]="tableHeight"
+                [defaultTableEntity]="defaultEntity"
+                [defaultTableUrl]="defaultUrl"
+                [defaultTableId]="defaultTableId"
+                [defaultTableDefaultChecked]="defaultDefaultChecked"
+                [(defaultEmitBaseThead)]="defaultEmitBaseThead"
+                (defaultBaseTheadChange)="baseTheadChange($event)"
+                [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
+                [extendTableEntity]="extendEntity"
+                [extendTableUrl]="extendUrl"
+                [extendTableId]="extendTableId"
+                [extendTableDefaultChecked]="extendDefaultChecked"
+                [(extendEmitBaseThead)]="extendEmitBaseThead"
+                (extendBaseTheadChange)="baseTheadChange($event)"
+                [extendTableCheckStatusInParams]="extendCheckStatusInParams"
+                [(applyOnceSearchParams)]="applyOnceSearchParams"
+            ></app-table-transformation>
+        </div>
+    </div>
+</div>
