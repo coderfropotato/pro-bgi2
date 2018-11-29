@@ -283,7 +283,11 @@ button.btnActive {
 }
 
 .center {
-    text-align: center !important;
+    text-align: center;
+}
+
+.left{
+    text-align: left;
 }
 
 .right {
@@ -744,7 +748,15 @@ button.btnActive {
     }
 }
 
+.textEllipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap
+}
+
+// 设置面板
 .setPanel {
+    position: relative;
     top: 11px;
     right: 0;
     width: 300px;
@@ -755,12 +767,24 @@ button.btnActive {
     padding: 10px;
     border-top: 1px solid rgba(234, 234, 235, 0.95);
 }
-.right{
-    text-align:right;
+.addPanel{
+    position: absolute;
+    width: 300px;
+    background: #fff;
+    border: 1px solid #ddd;
+    top: 36px;
+    left: -300px;
+    padding: 10px;
 }
 
-.textEllipsis{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space:nowrap
+.rationClassifyRow{
+    margin-bottom:10px;
+    max-height: 400px;
+    overflow: auto;
 }
+
+.rationClassifyRow button{
+    margin-right:5px;
+    margin-bottom:5px;
+}
+

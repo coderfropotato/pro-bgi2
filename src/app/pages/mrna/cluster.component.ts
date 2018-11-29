@@ -42,7 +42,7 @@ export class clusterComponent implements OnInit {
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
         // this.chartUrl = 'http://localhost:8086/cluster';
         this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
-        this.chartEntity = {"LCID": "demo", "tid": "20783e1576b84867aee1a63e22716fed", "isHorizontal": false, "verticalClassification": {"Blood": "aisdb.gene_exp_tcga_3.0", "GO Term": "aisdb.gene_go_3.0"}, "horizontalClassification": ["cellType", "time"]};
+        this.chartEntity = {"LCID": "demo", "tid": "20783e1576b84867aee1a63e22716fed", "isHorizontal": false, "verticalClassification": {"Blood": "aisdb.gene_exp_tcga_3.0", "GO Term": "aisdb.go_3.0"}, "horizontalClassification": ["cellType", "time"]}
 
         this.gaugeColors=this.storeService.getColors();
     }

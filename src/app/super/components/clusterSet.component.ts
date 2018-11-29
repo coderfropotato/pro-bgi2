@@ -3,6 +3,7 @@ import { AjaxService } from "../service/ajaxService";
 import config from "../../../config";
 import { StoreService } from "../service/storeService";
 import { NzNotificationService } from "ng-zorro-antd";
+import { PageModuleService } from "../service/pageModuleService";
 
 declare const $: any;
 
@@ -19,17 +20,20 @@ declare const $: any;
             margin-top:8px;
         }
 
-        .rangeSet,.dataSet{
+        .rangeSet{
             border-bottom:1px solid #eeeeee;
             padding:10px 0;
         }
         .dataSet{
             margin:10px 0;
-            margin-top:0px;
         }
 
         .dataSet nz-row{
             margin-top:10px;
+        }
+
+        .addTitle{
+            margin:10px 0;
         }
         `
     ]
@@ -60,19 +64,34 @@ export class ClusterSetComponent implements OnInit {
     horizontalInfos:string[]=[];
     verticalInfos:object[]=[];
 
+    //添加面板 显示
+    isShowAddVertical:boolean=false;  
+    isShowAddHorizontal:boolean=false;  
+
+    //修改面板 显示
+    isShowEditVertical:boolean=false;
+    isShowEditHorizontal:boolean=false;
+
     constructor(
         private ajaxservice: AjaxService,
         private storeService: StoreService,
-        private notification: NzNotificationService
+        private notification: NzNotificationService,
+        private pageModuleService:PageModuleService
     ) {}
 
     ngOnInit() {
         this.getDefaultSet();
+        this.getClassification();
+        console.log(this.pageModuleService['defaultModule']);
     }
 
     //设置、空白区点击
     setClick(){
-
+        this.isShowAddVertical=false;  
+        this.isShowAddHorizontal=false;  
+    
+        this.isShowEditVertical=false;
+        this.isShowEditHorizontal=false;
     }
 
     //width change
@@ -93,33 +112,22 @@ export class ClusterSetComponent implements OnInit {
 
     //获取默认值
     getDefaultSet(){
-        // this.ajaxservice
-        // .getDeferData({
-        //     url:`${config['javaPath']}/Cluster/defaultSet`,
-        //     data:{
-        //         "tid": "20783e1576b84867aee1a63e22716fed"
-        //     }
-        // })
-        // .subscribe(
-        //     (data:any)=>{
-        //         if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-        //             return;
-        //         } else if (data.status === "-1") {
-        //             return;
-        //         } else if (data.status === "-2") {
-        //             return;
-        //         } else {
-                  let data={
-                        data:{
-                           "horizontalDefault": ["cellType","time"],
-                           "min": 0,
-                           "max": 18662,
-                           "xNum": 2,
-                           "geneType": "gene"
-                       },
-                       "message": "成功",
-                       "status": "0"
-                    }
+        this.ajaxservice
+        .getDeferData({
+            url:`${config['javaPath']}/Cluster/defaultSet`,
+            data:{
+                "tid": "20783e1576b84867aee1a63e22716fed"
+            }
+        })
+        .subscribe(
+            (data:any)=>{
+                if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                    return;
+                } else if (data.status === "-1") {
+                    return;
+                } else if (data.status === "-2") {
+                    return;
+                } else {
                     let trueData=data.data;
 
                     let xNum=trueData.xNum;
@@ -160,9 +168,9 @@ export class ClusterSetComponent implements OnInit {
 
                     this.horizontalInfos=trueData.horizontalDefault;
 
-    //             }
-    //         }
-    //     )
+                }
+            }
+        )
     }
 
     //行名称 change
@@ -177,111 +185,109 @@ export class ClusterSetComponent implements OnInit {
 
     //获取分类
     getClassification(){    
-        let data={
-            "data": {
-                "vertical": [
-                    {
-                        "key": "gene_type",
-                        "name": "gene_type",
-                        "category": "aisdb.gene"
-                    },
-                    {
-                        "key": "gene_coding_type",
-                        "name": "gene_coding_type",
-                        "category": "aisdb.gene"
-                    },
-                    {
-                        "key": "gene_source",
-                        "name": "gene_source",
-                        "category": "aisdb.gene"
-                    },
-                    {
-                        "key": "Blood",
-                        "name": "Blood",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Lung",
-                        "name": "Lung",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Skin",
-                        "name": "Skin",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Prostate",
-                        "name": "Prostate",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Bone",
-                        "name": "Bone",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Cervix",
-                        "name": "Cervix",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Rectum",
-                        "name": "Rectum",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Testis",
-                        "name": "Testis",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Eye",
-                        "name": "Eye",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Eye and adnexa",
-                        "name": "Eye and adnexa",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Vulva",
-                        "name": "Vulva",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Gliomas",
-                        "name": "Gliomas",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "Nevi and Melanomas",
-                        "name": "Nevi and Melanomas",
-                        "category": "aisdb.gene_exp_tcga_3.0"
-                    },
-                    {
-                        "key": "GO Term",
-                        "name": "GO Term",
-                        "category": "aisdb.gene_go_3.0"
+        this.ajaxservice
+        .getDeferData({
+            url:`${config['javaPath']}/Cluster/classification`,
+            data:{
+                    "geneType": "gene",
+                    "LCID": "demo"
+            }
+        })
+        .subscribe(
+            (data:any)=>{
+                if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                    return;
+                } else if (data.status === "-1") {
+                    return;
+                } else if (data.status === "-2") {
+                    return;
+                } else {
+                    let trueData=data.data;
+                    this.horizontalClassList=trueData.horizontal;
+
+                    this.verticalClassList=trueData.vertical;
+                    this.verticalClassList.forEach(d=>{
+                        d['isChecked']=false;
+                    })
+                }
+            }
+        )
+
+    }
+
+    //纵向分类 添加
+    addVclass(){
+        this.isShowAddVertical=true;
+        this.isShowAddHorizontal=false;
+        this.isShowEditHorizontal=false;
+        this.isShowEditVertical=false;
+        
+        this.verticalClassList.forEach(d=>{
+            d['isChecked']=false;
+            if(this.verticalInfos.length){
+                this.verticalInfos.forEach(m=>{
+                    if(d['key']===m['key']){
+                        d['isChecked']=true;
                     }
-                ],
-                "horizontal": ["cellType","time","geneClass","geneType"]
-            },
-            "message": "成功",
-            "status": "0"
+                })
+            }
+        })
+    }
+
+    addVBtnClick(item){
+        item['isChecked'] = !item['isChecked'];
+    }
+
+    addVConfirm(){
+        let count=0;
+        this.verticalClassList.forEach(d => {
+            if (d['isChecked']) {
+                count++;
+            }
+        })
+
+        if(count>2){
+            this.notification.warning('添加纵向分类','最多允许添加2个'); 
+        }else{
+            this.verticalInfos=[];
+            this.verticalClassList.forEach(d => {
+                if (d['isChecked']) {
+                    this.verticalInfos.push(d);
+                }
+            })
+            this.isShowAddVertical=false;   
         }
 
-        let trueData=data.data;
-        this.horizontalClassList=trueData.horizontal;
-        this.verticalClassList=trueData.vertical;
     }
 
-    addVclass(){
-        console.log('add v')
+    addVCance(){
+        this.isShowAddVertical=false;
     }
 
+    // 横向分类 添加
     addHclass(){
-        console.log('add h')
+        this.isShowAddHorizontal=true;
+        this.isShowAddVertical=false;
+        this.isShowEditHorizontal=false;
+        this.isShowEditVertical=false;
+    }
+
+     //判断item是否在数组中
+     isInArray(item, arr, key) {
+        if (key) {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i][key] === item) {
+                    return true;
+                }
+            }
+
+        } else {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] === item) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
