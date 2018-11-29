@@ -49,7 +49,7 @@ import { PaginationComponent } from "./super/components/pagination.component";
 import { TreeComponent } from "./super/components/tree.component";
 import { TreeItemComponent } from "./super/components/tree-item.component";
 import { ColorPickerComponent } from "./super/components/color-picker.component";
-import { ExpressVennComponent } from "./pages/mrna/expressVenn.component";
+import { ExpressVennComponent, ExpressVennPage } from "./pages/mrna/expressVenn.component";
 import { DiffVennComponent, DiffVennPage } from "./pages/mrna/diffVenn.component";
 import { Layout1Component, Layout1Page } from "./pages/mrna/layout1.component";
 import { Layout2Component } from "./pages/mrna/layout2.component";
@@ -176,7 +176,7 @@ const ROUTES: Routes = [
             },
             {
                 path: "express-venn",
-                component: ExpressVennComponent,
+                component: ExpressVennPage,
                 data: {
                     keep: true,
                     module: "expressVenn"
@@ -312,6 +312,7 @@ export function createTranslateLoader(http: HttpClient) {
     // 组件，指令，过滤器（管道） 申明在declarations 里
     declarations: [
         DiffVennPage,
+        ExpressVennPage,
         Layout1Page,
         SysDefendComponent,
         LoginComponent,
