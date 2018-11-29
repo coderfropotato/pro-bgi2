@@ -425,7 +425,7 @@ export class DiffVennComponent implements OnInit {
 	updateVenn() {
         this.tableEntity['compareGroup'] = this.selectConfirmData;
 		this.tableSwitchChart.reGetData();
-		
+
 		this.singleMultiSelect={
 			bar_name: '',
 			total_name: '',
@@ -543,11 +543,27 @@ export class DiffVennComponent implements OnInit {
 					});
 					_selfV.venSelectAllData = tempVenn;
 				}
-			})
+            })
+            .legendClick(function(ev){
+                ev.stopPropagation();
+            })
 			.legendDblclick(function(ev, el) {
 				_selfV.color = el['$el'].getAttribute('fill');
-				_selfV.show = true;
-			});
+                _selfV.show = true;
+                ev.stopPropagation();
+            })
+            .svgClick(function(){
+                if(_selfV.isMultiSelect){
+                    _selfV.venSelectAllData = [];
+                }else{
+                    _selfV.singleMultiSelect['bar_name'] = '';
+					_selfV.singleMultiSelect['total_name'] = '';
+					_selfV.singleMultiSelect['venn_name'] = '';
+                }
+                _selfV.upSelect.length = 0;
+                _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
+
+            })
 	}
 
 	//显示upsetR图
@@ -698,10 +714,10 @@ export class DiffVennComponent implements OnInit {
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
 
 		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on('click', function(d) {
-            //alert(111)
-            // var event = d3.event;
-            // event.stopPropagation();
             _self.updateVenn();
+            _self.leftSelect.length = 0;
+            _self.upSelect.length = 0;
+            _self.first ? _self.transformTable._getData() : (_self.first = true);
         },false);
 
 		drawSvg();
