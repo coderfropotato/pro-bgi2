@@ -425,7 +425,20 @@ export class DiffVennComponent implements OnInit {
 	//韦恩,upsetR图二次更新
 	updateVenn() {
         this.tableEntity['compareGroup'] = this.selectConfirmData;
-        this.tableSwitchChart.reGetData();
+		this.tableSwitchChart.reGetData();
+		
+		this.singleMultiSelect={
+			bar_name: '',
+			total_name: '',
+			venn_name: ''
+		};
+
+		this.doubleMultiSelect= {
+			bar_name: '',
+			total_name: ''
+        };
+        console.log(this.singleMultiSelect)
+        console.log(this.doubleMultiSelect)
 	}
 
 	//venn和upsetR只能单选时候
@@ -685,7 +698,12 @@ export class DiffVennComponent implements OnInit {
 		let svg_height = 300 + d3_height + padding1.top + padding1.bottom + padding2.top + padding2.bottom; //计算最外层svg高度
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
 
-		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height);
+		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on('click', function(d) {
+            //alert(111)
+            // var event = d3.event;
+            // event.stopPropagation();
+            _self.updateVenn();
+        },false);
 
 		drawSvg();
 		drawSvg2();
@@ -727,6 +745,8 @@ export class DiffVennComponent implements OnInit {
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
+                    var event = d3.event;
+                    event.stopPropagation();
 					if (!_self.isMultiSelect) {
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
@@ -823,6 +843,8 @@ export class DiffVennComponent implements OnInit {
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
+                    var event = d3.event;
+                    event.stopPropagation();
 					if (!_self.isMultiSelect) {
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
@@ -921,6 +943,8 @@ export class DiffVennComponent implements OnInit {
 					return d;
 				})
 				.on('click', function(d, i) {
+                    var event = d3.event;
+                    event.stopPropagation();
 					sortName(d, d3.select(this));
 				});
 			svgk

@@ -164,7 +164,6 @@ export class ExpressVennComponent implements OnInit {
             low:this.expression_threshold['min'],
             high:this.expression_threshold['max']
         };
-        console.log(this.selectConfirmData)
 
 		this.applyOnceSearchParams = true;
 		this.defaultUrl = `${config['javaPath']}/Venn/expGeneTable`;
@@ -186,11 +185,12 @@ export class ExpressVennComponent implements OnInit {
 			relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-            low:this.expression_threshold['min'],
-            high:this.expression_threshold['max'],
+            low:this.store.getStore('expression_threshold').min,
+            high:this.store.getStore('expression_threshold').max,
 			version: this.storeService.getStore('reference'),
 			searchList: []
-		};
+        };
+        //console.log(this.defaultEntity)
 		this.defaultTableId = 'diff_venn_default_gene';
 		this.defaultDefaultChecked = true;
 		this.defaultEmitBaseThead = true;
@@ -215,8 +215,8 @@ export class ExpressVennComponent implements OnInit {
 			relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			low:this.expression_threshold['min'],
-            high:this.expression_threshold['max'],
+			low:this.store.getStore('expression_threshold').min,
+            high:this.store.getStore('expression_threshold').max,
 			version: this.storeService.getStore('reference'),
 			searchList: []
 		};
@@ -261,9 +261,8 @@ export class ExpressVennComponent implements OnInit {
 			this.extendEntity['sample'] = this.selectConfirmData;
 			this.extendEntity['leftChooseList'] = checkParams['tableEntity']['leftChooseList'];
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
-            this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
-            this.extendEntity['low'] = checkParams['tableEntity']['low'];
-            this.extendEntity['high'] = checkParams['tableEntity']['high'];
+            this.extendEntity['low'] = this.expression_threshold['min'];
+            this.extendEntity['high'] = this.expression_threshold['max'];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -273,7 +272,6 @@ export class ExpressVennComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
-			this.transformTable._setExtendParamsWithoutRequest('sample', this.selectConfirmData);
 			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {
 				this.transformTable._getData();
@@ -392,6 +390,18 @@ export class ExpressVennComponent implements OnInit {
 	updateVenn() {
         this.tableEntity['sample'] = this.selectConfirmData;
         this.tableSwitchChart.reGetData();
+        this.singleMultiSelect={
+			bar_name: '',
+			total_name: '',
+			venn_name: ''
+		};
+
+		this.doubleMultiSelect= {
+			bar_name: '',
+			total_name: ''
+        };
+        console.log(this.singleMultiSelect)
+        console.log(this.doubleMultiSelect)
 	}
 
 	//venn和upsetR只能单选时候
@@ -486,6 +496,8 @@ export class ExpressVennComponent implements OnInit {
 				}
 			)
 			.on('click', function() {
+                var event = d3.event;
+                event.stopPropagation();
 				if (!_selfV.isMultiSelect) {
 					_selfV.singleMultiSelect['bar_name'] = '';
 					_selfV.singleMultiSelect['total_name'] = '';
@@ -652,7 +664,12 @@ export class ExpressVennComponent implements OnInit {
 		let svg_height = 300 + d3_height + padding1.top + padding1.bottom + padding2.top + padding2.bottom; //计算最外层svg高度
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
 
-		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height);
+		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on('click', function(d) {
+            //alert(111)
+            // var event = d3.event;
+            // event.stopPropagation();
+            _self.updateVenn();
+        },false);
 
 		drawSvg();
 		drawSvg2();
@@ -694,6 +711,8 @@ export class ExpressVennComponent implements OnInit {
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
+                    var event = d3.event;
+                    event.stopPropagation();
 					if (!_self.isMultiSelect) {
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
@@ -790,6 +809,8 @@ export class ExpressVennComponent implements OnInit {
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
+                    var event = d3.event;
+                    event.stopPropagation();
 					if (!_self.isMultiSelect) {
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
@@ -888,6 +909,8 @@ export class ExpressVennComponent implements OnInit {
 					return d;
 				})
 				.on('click', function(d, i) {
+                    var event = d3.event;
+                    event.stopPropagation();
 					sortName(d, d3.select(this));
 				});
 			svgk
