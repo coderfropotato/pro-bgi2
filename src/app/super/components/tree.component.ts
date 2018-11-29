@@ -1,17 +1,9 @@
-import {
-    Component,
-    OnInit,
-    Input,
-    Output,
-    OnChanges,
-    SimpleChanges,
-    EventEmitter
-} from "@angular/core";
+import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from "@angular/core";
 declare const $: any;
 @Component({
     selector: "app-tree",
     template: `<div class="tree-component">
-    {{ selectComposeThead | json}}
+                    <b style="padding:12px 0;">当前匹配的头:{{selectComposeThead.length?selectComposeThead[0]:"暂无"}}</b>
                     <ul *ngFor="let root of treeData;index as i">
                         <app-tree-item [floder]="root" (treeItemCheckedChange)="checkedChange($event)" (treeItemExpandChange)="expandChange($event)"></app-tree-item>
                     </ul>
@@ -55,7 +47,7 @@ export class TreeComponent implements OnInit, OnChanges {
      * }
      *
      */
-    @Input() theadReflactMap: object;
+    // @Input() theadReflactMap: object;
     // 选中的数据
     @Input() selectData: any = [];
     // 选中的数据变化的时候  发出的事件
@@ -69,9 +61,23 @@ export class TreeComponent implements OnInit, OnChanges {
 
     selectComposeThead = [];
     beforeComposeThead = [];
+    theadReflactMap:object = {};
     constructor() {}
 
     ngOnInit() {
+        
+        for (let key in this.theadMap) {
+            if (this.theadMap[key].length) {
+                this.theadMap[key].forEach((val, index) => {
+                    if (val in this.theadReflactMap) {
+                        this.theadReflactMap[val].push(key);
+                    } else {
+                        this.theadReflactMap[val] = [key];
+                    }
+                });
+            }
+        }
+
         this.treeApplySelectData(this.treeData, this.selectData);
     }
 

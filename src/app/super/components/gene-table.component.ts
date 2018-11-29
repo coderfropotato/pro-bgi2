@@ -1001,6 +1001,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         return {
             tableEntity: this.tableEntity,
             url: this.url,
+            baseThead:this.head,
             others: {
                 checkStatus: this.checkStatus,
                 excludeGeneList: {

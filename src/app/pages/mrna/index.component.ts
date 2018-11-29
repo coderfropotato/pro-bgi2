@@ -8,6 +8,8 @@ import { MessageService } from "../../super/service/messageService";
 import { NgxSpinnerService } from "ngx-spinner";
 import config from "../../../config";
 import { routeAnimation } from "../../super/animation/animation";
+import {OuterDataBaseService} from './../../super/service/outerDataBaseService';
+
 declare const window: any;
 declare const $: any;
 @Component({
@@ -30,7 +32,8 @@ export class IndexComponent implements OnInit {
         private message: MessageService,
         private ajaxService: AjaxService,
         private storeService: StoreService,
-        private ngxSpinnerService: NgxSpinnerService
+        private ngxSpinnerService: NgxSpinnerService,
+        private outerDataBaseService:OuterDataBaseService
     ) {
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
@@ -262,12 +265,54 @@ export class IndexComponent implements OnInit {
                 })
                 .subscribe(
                     data => {
-                        this.allThead = data['data'];
-                        this.storeService.setThead(this.allThead);
-                        resolve("success");
+                        if(data['status']==='0'){
+                            let d = data['data'];
+                            let outerFlag = "006";
+                            let outerDataBase;
+
+                            d.forEach((val,index)=>{
+                                if(val['category']==='006'){
+                                    outerDataBase = d.splice(index,1)[0];
+                                }
+                            })
+
+                            this.storeService.setThead(d);
+                            outerDataBase['children'].forEach(v=>{
+                                v['children'].forEach((val,index)=>{
+                                    val['generatedThead'] = [];
+                                    this.initTreeData(val['treeData']);
+                                })
+                            });
+                            this.outerDataBaseService.set(outerDataBase);
+                            resolve("success");
+                        }else{
+                            reject('error');
+                        }
                     },
                     () => reject("error")
                 );
         });
+    }
+    
+    // 初始化 增删列树节点数据
+    initTreeData(treeData){
+        if (!treeData || !treeData.length) return;
+        let stack = [];
+        for (var i = 0, len = treeData.length; i < len; i++) {
+            stack.push(treeData[i]);
+        }
+        let item;
+        while (stack.length) {
+            item = stack.shift();
+
+            if(item['isRoot']) item['isExpand'] = true;
+            item['isExpand'] = true;
+            item['isChecked'] = false;
+            item['disabled'] = false;
+
+            if (item.children && item.children.length) {
+                stack = stack.concat(item.children);
+            }
+        }
     }
 }

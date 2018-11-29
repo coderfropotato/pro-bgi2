@@ -22,7 +22,8 @@ export class StoreService {
     }
 
     getThead() {
-        return this.thead;
+        // 每次都获取一个实例
+        return JSON.parse(JSON.stringify(this.thead));
     }
 
     setLang(lang){

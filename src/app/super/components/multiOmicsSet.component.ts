@@ -11,13 +11,6 @@ declare const $: any;
     templateUrl: './multiOmicsSet.component.html',
     styles: [
         `
-        .setPanel {
-            top: 11px;
-            right: 0;
-            width: 300px;
-            padding:10px;
-        }
-
         .setPanelTitle {
             border-bottom: 1px solid rgba(234, 234, 235, 0.95);
         }
@@ -25,13 +18,7 @@ declare const $: any;
         .addInfo {
             padding: 10px;
         }
-        .setBtns{
-            padding: 10px;
-            border-top: 1px solid rgba(234, 234, 235, 0.95);
-        }
-        .right{
-            text-align:right;
-        }
+       
         .rationClassify{
             position: absolute;
             width: 300px;
