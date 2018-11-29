@@ -694,3 +694,24 @@ button.btnActive {
         margin-left:12px;
     }
 }
+
+.setPanel {
+    top: 11px;
+    right: 0;
+    width: 300px;
+    padding:10px;
+}
+
+.setBtns{
+    padding: 10px;
+    border-top: 1px solid rgba(234, 234, 235, 0.95);
+}
+.right{
+    text-align:right;
+}
+
+.textEllipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap
+}

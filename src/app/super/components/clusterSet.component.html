@@ -2,6 +2,115 @@
         <i class="anticon anticon-setting" nz-tooltip nzTitle="设置" nz-dropdown></i>
 
         <div class="setPanel" nz-menu>
-            cluster set
-        </div>
+           <div class='rangeSet'>
+               <nz-row>
+                   <nz-col nzSpan='4' class="textCol">
+                       <span>宽度</span>
+                   </nz-col>
+                    <nz-col nzSpan="10">
+                        <nz-slider [nzMin]="200" [nzMax]="2000" [(ngModel)]="width" (nzOnAfterChange)="onAfterChangeWidth($event)"></nz-slider>
+                    </nz-col>
+                    <nz-col nzSpan="7">
+                        <nz-input-number [nzMin]="200" [nzMax]="2000" [(ngModel)]="width"></nz-input-number>
+                    </nz-col>
+                    <nz-col nzSpan='3' class="textCol">
+                        <span>像素</span>
+                    </nz-col>
+                </nz-row>
+      
+                <nz-row>
+                    <nz-col nzSpan="4" class="textCol">
+                        <span>高度</span>
+                    </nz-col>
+                    <nz-col nzSpan="10">
+                        <nz-slider [nzMin]="200" [nzMax]="2000" [(ngModel)]="height" (nzOnAfterChange)="onAfterChangeHeight($event)"></nz-slider>
+                    </nz-col>
+                    <nz-col nzSpan="7">
+                        <nz-input-number [nzMin]="200" [nzMax]="2000" [(ngModel)]="height"></nz-input-number>
+                    </nz-col>
+                    <nz-col nzSpan="3" class="textCol">
+                        <span>像素</span>
+                    </nz-col>
+                </nz-row>
+
+                <nz-row>
+                        <nz-col nzSpan="4" class="textCol">
+                            <span>值域</span>
+                        </nz-col>
+                        <nz-col nzSpan="18">
+                            <nz-slider nzRange [nzMin]="min" [nzMax]="max" [(ngModel)]="rangeValue" (nzOnAfterChange)="onAfterChangeDomain($event)"></nz-slider>
+                        </nz-col>
+                    </nz-row>
+            </div>
+
+            <div class="dataSet">
+                <nz-row>
+                    <nz-col nzSpan="5" style="margin-top:5px">行名称</nz-col>
+                    <nz-col nzSpan="16">
+                        <nz-select style="width: 216px;" [(ngModel)]="selectedGene" (ngModelChange)="onChangeGene($event)">
+                            <nz-option *ngFor="let gene of geneList" [nzLabel]="gene.name" [nzValue]="gene.key"></nz-option>
+                        </nz-select>
+                    </nz-col>
+                </nz-row>
+
+                <nz-row>
+                    <nz-col nzSpan="5" style="margin-top:3px">列聚类</nz-col>
+                    <nz-col nzSpan="10">
+                        <nz-switch [ngModel]="isHorizontalCluster" (ngModelChange)="onChangeCluster($event)"></nz-switch>
+                    </nz-col>
+                </nz-row>
+                
+                <nz-row>
+                    <nz-col nzSpan="6">分类设置</nz-col>
+                </nz-row>
+
+                <nz-row>
+                    <nz-col nzSpan="6" nzOffset="2">纵向分类</nz-col>
+                    <nz-col class="center" nzSpan="2" nzOffset="2" nz-tooltip nzTitle="添加" (click)="addVclass()">
+                            <i nz-icon class="anticon anticon-plus-circle" theme="outline"></i>
+                    </nz-col>
+                </nz-row>
+                    
+                <div *ngIf="verticalInfos.length">
+                    <nz-row class="center" *ngFor="let vertical of verticalInfos">
+                        <nz-col nzSpan="12" nzOffset="4" class="textEllipsis" nz-tooltip [nzTitle]="vertical">
+                            <span>{{vertical}}</span>
+                        </nz-col>
+                        <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="修改" (click)="editVclass()">
+                            <i nz-icon class="anticon anticon-edit" theme="outline"></i>
+                        </nz-col>
+                        <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteVclass()">
+                            <i nz-icon class="anticon anticon-close-circle" theme="outline"></i>
+                        </nz-col>
+                    </nz-row>
+                </div>
+
+                <nz-row>
+                    <nz-col nzSpan="6" nzOffset="2">横向分类</nz-col>
+                    <nz-col class="center" nzSpan="2" nzOffset="2" nz-tooltip nzTitle="添加" (click)="addHclass()">
+                            <i nz-icon class="anticon anticon-plus-circle" theme="outline"></i>
+                    </nz-col>
+                </nz-row>
+
+                <div *ngIf="horizontalInfos.length">
+                    <nz-row class="center" *ngFor="let horizon of horizontalInfos">
+                        <nz-col nzSpan="12" nzOffset="4" class="textEllipsis" nz-tooltip [nzTitle]="horizon">
+                            <span>{{horizon}}</span>
+                        </nz-col>
+                        <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="修改" (click)="editHclass()">
+                            <i nz-icon class="anticon anticon-edit" theme="outline"></i>
+                        </nz-col>
+                        <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteHclass()">
+                            <i nz-icon class="anticon anticon-close-circle" theme="outline"></i>
+                        </nz-col>
+                    </nz-row>
+                </div>
+
+            </div>
+
+            <div class="setBtns right">
+                <button nz-button nzType="default" (click)="setCance()">取消</button>&nbsp;
+                <button nz-button nzType="primary" (click)="setConfirm()">确定</button>
+            </div>
+     </div>
 </nz-dropdown>
