@@ -14,14 +14,14 @@
                           {{i+1}} - {{item.name}}
                       </div>
                     </div>
-                    <div class="tab_bottom">
+                    <!-- <div class="tab_bottom">
                         <button nz-button nzType="default" (click)="updateLoad()">上传</button>
                         <nz-upload nzAction="" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
                             <button nz-button>
                                 <span>选择文件</span>
                             </button>
                         </nz-upload>
-                    </div>
+                    </div> -->
                 </nz-tab>
                 <nz-tab [nzTitle]="'转录本信息'">
                     <div class="tab_content" [hidden]="fileList2.length !=0">
@@ -33,14 +33,14 @@
                             {{i+1}} - {{item.name}}
                         </div>
                     </div>
-                    <div class="tab_bottom">
+                    <!-- <div class="tab_bottom">
                         <button nz-button nzType="default" (click)="updateLoad()">上传</button>
                         <nz-upload nzAction="" [(nzFileList)]="fileList2" [nzBeforeUpload]="beforeUpload2">
                             <button nz-button>
                                 <span>选择文件</span>
                             </button>
                         </nz-upload>
-                    </div>
+                    </div> -->
                 </nz-tab>
 
                 <nz-tab [nzTitle]="'样本信息'">
@@ -53,18 +53,24 @@
                             {{i+1}} - {{item.name}}
                         </div>
                     </div>
-                    <div class="tab_bottom">
+                    <!-- <div class="tab_bottom">
                         <button nz-button nzType="default" (click)="updateLoad()">上传</button>
                         <nz-upload nzAction="" [(nzFileList)]="fileList3" [nzBeforeUpload]="beforeUpload3">
                             <button nz-button>
                                 <span>选择文件</span>
                             </button>
                         </nz-upload>
-                    </div>
+                    </div> -->
                 </nz-tab>
-
             </nz-tabset>
-            
+            <div class="tab_bottom">
+                <button nz-button nzType="default" (click)="updateLoad()">上传</button>
+                <nz-upload nzAction="" [(nzFileList)]="nfileList" [nzBeforeUpload]="beforeUpload">
+                    <button nz-button>
+                        <span>选择文件</span>
+                    </button>
+                </nz-upload>
+            </div>
         </div>
 
         <div class="m_content_2" *ngIf="!isShowTab">

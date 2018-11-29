@@ -8,57 +8,50 @@ import { NzModalService,UploadFile } from 'ng-zorro-antd';
 })
 export class UploadComponent implements OnInit {
 
-  tabs: object;
   resultList:object;
   isShowTab: boolean = true;
   isVisible: boolean = false;
   fileList: UploadFile[] = [];
   fileList2: UploadFile[] = [];
   fileList3: UploadFile[] = [];
+  nfileList: UploadFile[] = [];
   index:number=0;
   tab1:object;
 
   constructor(private modalService: NzModalService) {}
 
   ngOnInit() {
-    this.tabs = [
-      {
-        name : '基因信息',
-        disabled: false
-      },
-      {
-        name : '转录本信息',
-        disabled: false
-      },
-      {
-        name : '样本信息',
-        disabled: false
-      }
-    ];
-
-    this.tab1={
-
-    }
       
   }
 
 
   beforeUpload = (file: UploadFile): boolean => {
-    this.fileList.push(file);
-    console.log(this.fileList)
-    
+    // this.fileList.push(file);
+    // console.log(this.fileList)
+    // return false;
+    if(this.index==0){
+      this.fileList.push(file);
+      this.nfileList = this.fileList;
+    }else if(this.index==1){
+      this.fileList2.push(file);
+      this.nfileList = this.fileList2;
+    }else if(this.index==2){
+      this.fileList3.push(file);
+      this.nfileList = this.fileList3;
+    }
+    //console.log(this.nfileList);
     return false;
   }
-  beforeUpload2 = (file: UploadFile): boolean => {
-    this.fileList2.push(file);
-    console.log(this.fileList2[0]['name'])
-    return false;
-  }
-  beforeUpload3 = (file: UploadFile): boolean => {
-    this.fileList3.push(file);
-    console.log(this.fileList3[0]['name'])
-    return false;
-  }
+  // beforeUpload2 = (file: UploadFile): boolean => {
+  //   this.fileList2.push(file);
+  //   console.log(this.fileList2[0]['name'])
+  //   return false;
+  // }
+  // beforeUpload3 = (file: UploadFile): boolean => {
+  //   this.fileList3.push(file);
+  //   console.log(this.fileList3[0]['name'])
+  //   return false;
+  // }
 
   fileListChange(){
 
@@ -66,9 +59,7 @@ export class UploadComponent implements OnInit {
 
   SelectedIndexChange(num){
     this.index=num;
-    //console.log(num)
   }
-
 
   goResult() {
     let temp = '';

@@ -69,6 +69,7 @@
     border: $border;
     color: #386cca;
     margin-right: 10px;
+    margin-bottom:10px;
     cursor: pointer;
 }
 
@@ -125,6 +126,53 @@
 
 .tag-wrap {
     overflow-x: auto;
+    white-space:nowrap;
+    &::-webkit-scrollbar{
+        width:8px;
+        height:8px;
+        background-color: #ccc;
+    }
+    &::-webkit-scrollbar-track{
+        background: #fff;
+        border-radius:2px;
+    }
+    &::-webkit-scrollbar-thumb{
+        background: #ccc;
+        border-radius:2px;
+    }
+    &::-webkit-scrollbar-thumb:hover{
+        background: #ccc;
+    }
+    &::-webkit-scrollbar-corner{
+        background: #ccc;
+    }
+}
+.outer-tab{
+    .outer-select-wrap.tag-wrap{
+        display:flex;
+        flex:1;
+        overflow:auto;
+        white-space:nowrap;
+        &::-webkit-scrollbar{
+            width:8px;
+            height:8px;
+            background-color: #ccc;
+        }
+        &::-webkit-scrollbar-track{
+            background: #fff;
+            border-radius:2px;
+        }
+        &::-webkit-scrollbar-thumb{
+            background: #ccc;
+            border-radius:2px;
+        }
+        &::-webkit-scrollbar-thumb:hover{
+            background: #ccc;
+        }
+        &::-webkit-scrollbar-corner{
+            background: #ccc;
+        }
+    }
 }
 
 .tag-wrap .ant-tag {
@@ -484,6 +532,7 @@ button.btnActive {
         }
     }
 }
+
 
 // 表格border
 .no-outside-border {
