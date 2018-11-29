@@ -1,0 +1,27 @@
+<div class="analysis-list">
+    <button nz-button nzType="primary" nzSize="small" (click)="getAnalysisList()">刷新</button>
+    <nz-table #basicTable nzSize="middle" [nzData]="analysisList">
+        <thead>
+            <tr>
+            <th>名称</th>
+            <th>类型</th>
+            <th>创建时间</th>
+            <th>备注</th>
+            <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+            <td>{{data['nickname']}}</td>
+            <td>{{data['reanalysisType']}}</td>
+            <td>{{data['date']}}</td>
+            <td>{{data['remark']?data['remark']:'-'}}</td>
+            <td>
+                <a (click)="toDetail(data)">Check</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a>Delete</a>
+            </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>

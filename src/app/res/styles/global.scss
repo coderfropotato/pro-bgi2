@@ -174,6 +174,10 @@
         }
     }
 }
+.relative{
+    position: relative;
+}
+
 
 .tag-wrap .ant-tag {
     margin: 6px;
@@ -283,7 +287,11 @@ button.btnActive {
 }
 
 .center {
-    text-align: center !important;
+    text-align: center;
+}
+
+.left{
+    text-align: left;
 }
 
 .right {
@@ -359,6 +367,9 @@ button.btnActive {
     page-break-before: always;
     display: flex;
     flex-direction: row;
+    &.reanalysis-content{
+        height:calc(100% - 80px);
+    }
     .left-layout {
         overflow: hidden;
         flex: 3;
@@ -417,6 +428,10 @@ button.btnActive {
     border-bottom: $border;
     background-color: #fff;
     position: relative;
+    .menu-slot-text{
+        line-height:40px;
+        font-weight: bold;
+    }
     ul {
         margin: 0;
         box-sizing: border-box;
@@ -706,6 +721,21 @@ button.btnActive {
     width: 100%;
     height: 100%;
     background-color: #fff;
+    .reanalysis-top{
+        height:40px;
+        line-height: 16px;
+        color: #fff;
+        font-size: 14px;
+        padding:12px 24px;
+        background-color: $them_color;
+    }
+    .reanalysis-content{
+        padding:$padding;
+        background-color: $background_color;
+        .switch{
+            right:144px;
+        }
+    }
 }
 .analysis-list{
     padding:100px;
@@ -744,7 +774,15 @@ button.btnActive {
     }
 }
 
+.textEllipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap
+}
+
+// 设置面板
 .setPanel {
+    position: relative;
     top: 11px;
     right: 0;
     width: 300px;
@@ -755,12 +793,24 @@ button.btnActive {
     padding: 10px;
     border-top: 1px solid rgba(234, 234, 235, 0.95);
 }
-.right{
-    text-align:right;
+.addPanel{
+    position: absolute;
+    width: 300px;
+    background: #fff;
+    border: 1px solid #ddd;
+    top: 36px;
+    left: -300px;
+    padding: 10px;
 }
 
-.textEllipsis{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space:nowrap
+.rationClassifyRow{
+    margin-bottom:10px;
+    max-height: 400px;
+    overflow: auto;
 }
+
+.rationClassifyRow button{
+    margin-right:5px;
+    margin-bottom:5px;
+}
+

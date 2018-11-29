@@ -363,4 +363,31 @@ export class AddColumnComponent implements OnInit {
         this.initTheadStatus();
         this.getCheckCount();
     }
+
+    _addThead(head){
+        if(head instanceof Array){
+            head.forEach(val=>{
+                this.forLeaves(this.thead,item=>{
+                    if(item['key']===val['key']){
+                        item['checked'] = true;
+                        let index = item['index'];
+                        if(this.isInArr(item,this.selected[index],'key')) return;
+                        this.selected[index].push(item);
+                        this.beforeSelected = this.copy(this.selected);
+                    }
+                })
+            })
+        }else{
+            this.forLeaves(this.thead,item=>{
+                if(item['key']===head['key']){
+                    item['checked'] = true;
+                    let index = item['index'];
+                    if(this.isInArr(item,this.selected[index],'key')) return;
+                    this.selected[index].push(item);
+                    this.beforeSelected = this.copy(this.selected);
+                }
+            })
+        }
+        this.getCheckCount();
+    }
 }

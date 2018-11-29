@@ -293,7 +293,7 @@ export class IndexComponent implements OnInit {
                 );
         });
     }
-    
+
     // 初始化 增删列树节点数据
     initTreeData(treeData){
         if (!treeData || !treeData.length) return;

@@ -17,6 +17,9 @@ export class MenuComponent implements OnChanges {
     moduleSwitch:true;
 
     @Input() menu: object[];
+    @Input() geneSwitch:boolean = true;
+
+
 
     constructor(
         private router: Router,
@@ -97,7 +100,7 @@ export class MenuComponent implements OnChanges {
         this.expand = false;
     }
 
-    analysis() {
+    analysisFn() {
         let url = `${location.href.substring(
             0,
             location.href.indexOf("/report")

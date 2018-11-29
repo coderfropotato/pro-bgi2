@@ -94,7 +94,6 @@ export class DiffVennComponent implements OnInit {
 	selectedData: object[] = [];
 
 	tableHeight = 0;
-	defaultTableHeight = 0;
 	allThead = [];
 	first = true;
 
@@ -128,8 +127,8 @@ export class DiffVennComponent implements OnInit {
 	ngOnInit() {
 		this.isMultiSelect = false;
 		this.first = true;
-		this.selectedData = [];
 		this.allThead = this.storeService.getThead();
+		this.selectedData = [];
 		this.chartUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 
 		this.p_show = this.store.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis

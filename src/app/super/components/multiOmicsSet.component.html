@@ -37,7 +37,7 @@
     </div>
 
     <!-- 添加面板 -->
-    <div class="rationClassify" *ngIf="isShowAddPanel && rationClassifyList.length">
+    <div class="addPanel" *ngIf="isShowAddPanel && rationClassifyList.length">
         <div class="rationClassifyRow">
             <span>定量类型：</span>
             <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curRationClassify" [nzSize]="'small'" (ngModelChange)="rationClassifyChange()" nzShowSearch>
@@ -46,7 +46,7 @@
         </div>
         <div class="rationClassifyRow">
             <span>定量列：</span>
-            <button (click)="rationColSelect(item)" style="margin-right:5px;margin-bottom:5px " nz-button nzType="default" *ngFor="let item of rations">{{item.name}}</button>&nbsp;
+            <button (click)="rationColSelect(item)" nz-button nzType="default" *ngFor="let item of rations">{{item.name}}</button>&nbsp;
         </div>
         <div class="setBtns right">
             <button nz-button nzType="primary" (click)="addConfirm()">确定</button>&nbsp;
@@ -55,7 +55,7 @@
     </div>
 
     <!-- 修改面板 -->
-    <div class="rationClassify" *ngIf="isShowUpdatePanel && rationClassifyList.length">
+    <div class="addPanel" *ngIf="isShowUpdatePanel && rationClassifyList.length">
         <div class="rationClassifyRow">
             <span>定量类型：</span>
             <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curUpdateClassify" [nzSize]="'small'" (ngModelChange)="updateClassifyChange()" nzShowSearch>
@@ -64,7 +64,7 @@
         </div>
         <div class="rationClassifyRow">
             <span>定量列：</span>
-            <button (click)="updateRationColSelect(item)" style="margin-right:5px;margin-bottom:5px " nz-button nzType="default" *ngFor="let item of rationList">{{item.name}}</button>&nbsp;
+            <button (click)="updateRationColSelect(item)" nz-button nzType="default" *ngFor="let item of rationList">{{item.name}}</button>&nbsp;
         </div>
     </div>
 

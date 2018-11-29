@@ -56,6 +56,8 @@ import { Layout2Component } from "./pages/mrna/layout2.component";
 import { ToolsComponent } from "./super/components/tools.component";
 import { SysDefendComponent } from "./pages/sysDefend.component";
 import { UploadComponent } from './pages/mrna/upload.component';
+import { ReListComponent } from './pages/reanalysis/re-list.component';
+import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -148,7 +150,7 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "cxzk1",
+                path: "cxzk2",
                 component: cxzk2Component,
                 data: {
                     keep: true,
@@ -243,13 +245,37 @@ const ROUTES: Routes = [
     },
     // 重分析
     {
-        path: "report/reanalysis/index",
+        path: "report/reanalysis",
         component: ReanalysisIndexComponent,
-        canActivate: [SysDefendService],
+        canActivateChild: [SysDefendService],
         data: {
             keep: true,
             module: "reanalysisIndex"
-        }
+        },
+        children:[
+            {
+                path:"index",
+                component:ReListComponent,
+                data:{
+                    keep:true,
+                    module:"reList"
+                }
+            },
+            {
+                path: "re-multiOmics/:geneType/:tid",
+                component: ReMultiOmicsComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: true,
+                    module: "reMutiOmics"
+                }
+            },
+            {
+                path: "",
+                redirectTo: "index",
+                pathMatch: "full"
+            },
+        ]
     },
     // common
     {
@@ -356,7 +382,9 @@ export function createTranslateLoader(http: HttpClient) {
         ToolsComponent,
         UploadComponent,
         ColorPickerComponent,
-        TooltipDirective
+        ReListComponent,
+        TooltipDirective,
+        ReMultiOmicsComponent
     ],
     // 路由模块在imports 导入
     imports: [

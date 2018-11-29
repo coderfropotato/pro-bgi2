@@ -19,23 +19,10 @@ declare const $: any;
             padding: 10px;
         }
        
-        .rationClassify{
-            position: absolute;
-            width: 300px;
-            background: #fff;
-            border: 1px solid #ddd;
-            top: 36px;
-            left: -300px;
-            padding: 10px;
-        }
         .infoTitle{
             margin-left: 32px;
         }
-        .rationClassifyRow{
-            margin-bottom:10px;
-            max-height: 400px;
-            overflow: auto;
-        }
+        
         .infoCol.rationColInfo{
             width: 100px;
             overflow: hidden;

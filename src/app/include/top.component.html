@@ -1,6 +1,6 @@
 <div class="top">
-    <button nz-button (click)="changeLan()">切换语言 {{browserLang}}</button>
-    <button nz-button (click)="exportPdf()"> export as pdf</button>
-    <button nz-button (click)="analysis()"> 我的分析</button>
-    <button nz-button (click)="upload()"> 上传数据</button>
+    <button *ngIf="lang" nz-button (click)="changeLan()">切换语言 {{browserLang}}</button>
+    <button *ngIf="pdf" nz-button (click)="exportPdf()"> export as pdf</button>
+    <button *ngIf="analysis" nz-button (click)="analysisFn()"> 我的分析</button>
+    <button *ngIf="upload" nz-button (click)="uploadFn()"> 上传数据</button>
 </div>
