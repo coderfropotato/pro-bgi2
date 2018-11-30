@@ -35,6 +35,10 @@ export class clusterComponent implements OnInit {
     oLegendIndex:number=0;
     oColor:string;
 
+    defaultSetUrl:string;
+    defaultSetEntity:object;
+    defaultSetData:any;
+
     constructor(
         private ajaxService: AjaxService,
         private globalService: GlobalService,
@@ -45,14 +49,39 @@ export class clusterComponent implements OnInit {
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
         this.gaugeColors=this.storeService.getColors();
 
+        this.defaultSetUrl=`${config['javaPath']}/Cluster/defaultSet`;
+        this.defaultSetEntity={
+            "tid": "20783e1576b84867aee1a63e22716fed"
+        }
+
         this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
         this.chartEntity = {
             "LCID": this.storeService.getStore('LCID'), 
             "tid": "20783e1576b84867aee1a63e22716fed", 
             "isHorizontal": true,
             "verticalClassification": {},
-            "horizontalClassification": ["cellType", "time"]
-            };
+            "horizontalClassification": []
+        };
+    }
+
+    //设置 默认 
+    apiEntityChange(data){
+        let xNum=data.xNum;
+        if (xNum <= 8) {
+            this.width = 480;
+        } else {
+            let single_width = 60;
+            this.width = single_width * xNum;
+        }
+        this.height=480;
+        this.domainRange=[data.min,data.max];
+        this.yName='hidden';
+        this.isCluster=true;
+
+        this.chartEntity['isHorizontal']=this.isCluster;
+        this.chartEntity['horizontalClassification']=data.horizontalDefault;
+
+        this.defaultSetData=data;
     }
 
     //设置 确定

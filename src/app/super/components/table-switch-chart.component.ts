@@ -59,6 +59,10 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Output() selectConfirmEmit: EventEmitter<any> = new EventEmitter(); // 选择面板 确定
 
+    @Input() defaultSetUrl:string;
+    @Input() defaultSetEntity:object;
+    @Output() apiEntityChange:EventEmitter<any> = new EventEmitter();
+
     scroll: object = { y: '400px' };
     isShowTable: boolean = false;
     tableData: any;
@@ -127,9 +131,40 @@ export class TableSwitchChartComponent implements OnInit {
             this.getSelectPanelList();
         } else {
             this.isHasSelectPanel = false;
-            this.reGetData();
+            if(this.defaultSetUrl && this.defaultSetEntity){
+                this.getDefaultSet();
+            }else{
+                this.reGetData();
+            }
         }
+        
+       
     }
+
+    //获取默认值
+    getDefaultSet(){
+        this.ajaxService
+        .getDeferData({
+            url:this.defaultSetUrl,
+            data:this.defaultSetEntity
+        })
+        .subscribe(
+            (data:any)=>{
+                if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                    return;
+                } else if (data.status === "-1") {
+                    return;
+                } else if (data.status === "-2") {
+                    return;
+                } else {
+                    let defaultSetData=data.data;
+                    this.apiEntityChange.emit(defaultSetData);
+                    this.reGetData();
+                }
+            }
+        )
+    }
+
 
     // 初始化计算表滚动的高度
     ngAfterViewInit() {
