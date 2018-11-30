@@ -8,7 +8,7 @@
                        <span>宽度</span>
                    </nz-col>
                     <nz-col nzSpan="10">
-                        <nz-slider [nzMin]="200" [nzMax]="2000" [(ngModel)]="width" (nzOnAfterChange)="onAfterChangeWidth($event)"></nz-slider>
+                        <nz-slider [nzMin]="200" [nzMax]="2000" [(ngModel)]="width"></nz-slider>
                     </nz-col>
                     <nz-col nzSpan="7">
                         <nz-input-number [nzMin]="200" [nzMax]="2000" [(ngModel)]="width"></nz-input-number>
@@ -23,7 +23,7 @@
                         <span>高度</span>
                     </nz-col>
                     <nz-col nzSpan="10">
-                        <nz-slider [nzMin]="200" [nzMax]="2000" [(ngModel)]="height" (nzOnAfterChange)="onAfterChangeHeight($event)"></nz-slider>
+                        <nz-slider [nzMin]="200" [nzMax]="2000" [(ngModel)]="height"></nz-slider>
                     </nz-col>
                     <nz-col nzSpan="7">
                         <nz-input-number [nzMin]="200" [nzMax]="2000" [(ngModel)]="height"></nz-input-number>
@@ -38,7 +38,7 @@
                             <span>值域</span>
                         </nz-col>
                         <nz-col nzSpan="18">
-                            <nz-slider nzRange [nzMin]="min" [nzMax]="max" [(ngModel)]="rangeValue" (nzOnAfterChange)="onAfterChangeDomain($event)"></nz-slider>
+                            <nz-slider nzRange [nzMin]="min" [nzMax]="max" [(ngModel)]="rangeValue"></nz-slider>
                         </nz-col>
                     </nz-row>
         </div>
@@ -47,7 +47,7 @@
             <nz-row>
                 <nz-col nzSpan="5" style="margin-top:5px">行名称</nz-col>
                 <nz-col nzSpan="16">
-                    <nz-select style="width: 216px;" [(ngModel)]="selectedGene" (ngModelChange)="onChangeGene($event)">
+                    <nz-select style="width: 216px;" [(ngModel)]="selectedGene">
                         <nz-option *ngFor="let gene of geneList" [nzLabel]="gene.name" [nzValue]="gene.key"></nz-option>
                     </nz-select>
                 </nz-col>
@@ -56,7 +56,7 @@
             <nz-row>
                 <nz-col nzSpan="5" style="margin-top:3px">列聚类</nz-col>
                 <nz-col nzSpan="10">
-                    <nz-switch [ngModel]="isHorizontalCluster" (ngModelChange)="onChangeCluster($event)"></nz-switch>
+                    <nz-switch [(ngModel)]="isHorizontalCluster"></nz-switch>
                 </nz-col>
             </nz-row>
             

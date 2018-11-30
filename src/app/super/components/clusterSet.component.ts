@@ -58,7 +58,7 @@ export class ClusterSetComponent implements OnInit {
     geneList:object[]=[];
 
     //列聚类
-    isHorizontalCluster:boolean=true;
+    isHorizontalCluster:boolean;
 
     //横纵向分类数据
     horizontalClassList:object[]=[];
@@ -92,7 +92,7 @@ export class ClusterSetComponent implements OnInit {
     ngOnInit() {
         this.getDefaultSet();
         this.getClassification();
-        console.log(this.pageModuleService['defaultModule']);
+        // console.log(this.pageModuleService['defaultModule']);
     }
 
     //设置、空白区点击
@@ -111,22 +111,6 @@ export class ClusterSetComponent implements OnInit {
         this.horizontalInfos=[...this.confirmData['horizontalList']];
         this.verticalInfos=[...this.confirmData['verticalList']];
 
-    }
-
-    //width change
-    onAfterChangeWidth(width){
-        console.log(width);
-        console.log(this.width)
-    }
-
-    //height change
-    onAfterChangeHeight(height){
-        console.log(height);
-    }
-
-    //值域 change
-    onAfterChangeDomain(domain){
-        console.log(domain);
     }
 
     //获取默认值
@@ -157,6 +141,8 @@ export class ClusterSetComponent implements OnInit {
                         this.width = single_width * xNum;
                     }
                     this.height=480;
+
+                    this.isHorizontalCluster=true;
 
                     this.min=trueData.min;
                     this.max=trueData.max;
@@ -201,16 +187,6 @@ export class ClusterSetComponent implements OnInit {
                 }
             }
         )
-    }
-
-    //行名称 change
-    onChangeGene(gene){
-        console.log(gene);
-    }
-
-    //列聚类 change
-    onChangeCluster(isCluster){
-        console.log(isCluster);
     }
 
     //获取分类
