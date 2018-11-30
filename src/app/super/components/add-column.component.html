@@ -1,4 +1,4 @@
-<div class="add-column">
+<div class="add-column" [ngStyle]="{'display': show?'block':'inline-block'}">
     <div class="add-head" *ngIf="thead.length">
         <button nz-button nzType="primary" (click)="toggleShow()"><i class="anticon" [ngClass]="show?' anticon-minus':' anticon-plus'"></i>
             <span *ngIf="!show">{{'addThead.addButton' | translate}}</span>

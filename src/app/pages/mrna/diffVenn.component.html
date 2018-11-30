@@ -181,9 +181,12 @@
         </div>
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
-            <app-add-column [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)" ></app-add-column>
+            <app-add-column (toggle)="toggle($event)" [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)" ></app-add-column>
             <!-- 关系 -->
-            <app-gene-relative #relative (confirmEvent)="confirm()" (backEvent)="back()" ></app-gene-relative>
+            <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm()"></app-gene-relative>
+
+            <button class="ml12" *ngIf="!addColumnShow" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
+
         </div>
         <!-- 表格转换 -->
         <app-table-transformation
