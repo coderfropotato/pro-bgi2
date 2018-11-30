@@ -42,6 +42,7 @@ export class ClusterSetComponent implements OnInit {
     @Output() confirm: EventEmitter<any> = new EventEmitter();
 
     confirmData:object;
+    defaultSetData:object;
 
     isShowSetPanel:boolean=false;
 
@@ -173,6 +174,16 @@ export class ClusterSetComponent implements OnInit {
                     this.selectedGene=this.geneList[0]['key'];
 
                     this.horizontalInfos=trueData.horizontalDefault;
+
+                    this.defaultSetData={
+                        width:this.width,
+                        height:this.height,
+                        domainRange:[...this.rangeValue],
+                        yName:this.selectedGene,
+                        isCluster:this.isHorizontalCluster,
+                        verticalList:[...this.verticalInfos],
+                        horizontalList:[...this.horizontalInfos]
+                    }
 
                     this.confirmData={
                         width:this.width,
