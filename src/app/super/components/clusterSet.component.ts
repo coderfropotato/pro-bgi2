@@ -72,6 +72,10 @@ export class ClusterSetComponent implements OnInit {
     isShowEditVertical:boolean=false;
     isShowEditHorizontal:boolean=false;
 
+    //修改面板数据
+    verticalEditList:object[]=[];
+    curVEditItem_i:number;
+
     constructor(
         private ajaxservice: AjaxService,
         private storeService: StoreService,
@@ -206,6 +210,7 @@ export class ClusterSetComponent implements OnInit {
                     this.horizontalClassList=trueData.horizontal;
 
                     this.verticalClassList=trueData.vertical;
+                    this.verticalEditList=trueData.vertical;
                     this.verticalClassList.forEach(d=>{
                         d['isChecked']=false;
                     })
@@ -262,6 +267,25 @@ export class ClusterSetComponent implements OnInit {
 
     addVCance(){
         this.isShowAddVertical=false;
+    }
+
+    // 纵向分类 修改
+    editVclass(index){
+        this.isShowEditVertical=true;
+        this.isShowEditHorizontal=false;
+        this.isShowAddHorizontal=false;
+        this.isShowAddVertical=false;
+        this.curVEditItem_i=index;
+    }
+
+    editVBtnClick(item){
+        this.verticalInfos.splice(this.curVEditItem_i,1,item);
+        this.isShowEditVertical=false;
+    }
+
+    //纵向分类 删除
+    deleteVclass(i){
+        this.verticalInfos.splice(i,1);
     }
 
     // 横向分类 添加

@@ -72,14 +72,14 @@
             </nz-row>
                 
             <div *ngIf="verticalInfos.length">
-                <nz-row class="center" *ngFor="let vertical of verticalInfos">
+                <nz-row class="center" *ngFor="let vertical of verticalInfos;let i=index">
                     <nz-col class="left textEllipsis" nzSpan="12" nzOffset="4" nz-tooltip [nzTitle]="vertical.name">
                         <span>{{vertical.name}}</span>
                     </nz-col>
-                    <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="修改" (click)="editVclass()">
+                    <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="修改" (click)="editVclass(i)">
                         <i nz-icon class="anticon anticon-edit" theme="outline"></i>
                     </nz-col>
-                    <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteVclass()">
+                    <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteVclass(i)">
                         <i nz-icon class="anticon anticon-close-circle" theme="outline"></i>
                     </nz-col>
                 </nz-row>
@@ -125,6 +125,14 @@
             <button nz-button nzType="primary" (click)="addVConfirm()">确定</button>
         </div>
      </div>
+
+     <!-- 纵向修改面板 -->
+     <div class="addPanel" [hidden]='!isShowEditVertical'>
+        <div class="addTitle">修改纵向分类</div>
+        <div class="rationClassifyRow">
+            <button (click)="editVBtnClick(item)" nz-button nzType="default" *ngFor="let item of verticalEditList">{{item.name}}</button>&nbsp;
+        </div>
+    </div>
 
      <!-- 横向添加面板 -->
      <div class="addPanel" [hidden]='!isShowAddHorizontal'>
