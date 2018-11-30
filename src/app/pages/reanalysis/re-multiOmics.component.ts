@@ -296,6 +296,7 @@ export class ReMultiOmicsComponent implements OnInit {
                 m.key=d.key;
                 m.type = d.type;
                 m.category=d.category;
+                m.value=m.x;
                 m['checked'] = false;
                 allXTexts.push(m.x);
                 allYColumn.push(m.y);
@@ -475,6 +476,7 @@ export class ReMultiOmicsComponent implements OnInit {
                         t.key=d.key;
                         t.type = m.type;
                         t.category=m.category;
+                        t.value=t.x;
                         t['checked'] = false;
                         t.relation = d.relation;
                         column.forEach(b => {
