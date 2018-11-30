@@ -39,10 +39,14 @@ declare const $: any;
     ]
 })
 export class ClusterSetComponent implements OnInit {
+    @Output() confirm: EventEmitter<any> = new EventEmitter();
+
+    confirmData:object;
+
     isShowSetPanel:boolean=false;
 
     width:number=0;
-    height:number=480;
+    height:number=0;
 
     //值域 domain
     min:number=0;
@@ -75,7 +79,6 @@ export class ClusterSetComponent implements OnInit {
     //修改面板数据
     verticalEditList:object[]=[];
     curVEditItem_i:number;
-
     horizontalEditList:string[]=[];
     curHEditItem_i:number;
 
@@ -99,6 +102,15 @@ export class ClusterSetComponent implements OnInit {
     
         this.isShowEditVertical=false;
         this.isShowEditHorizontal=false;
+
+        this.width=this.confirmData['width'];
+        this.height=this.confirmData['height'];
+        this.rangeValue=[...this.confirmData['domainRange']];
+        this.selectedGene=this.confirmData['yName'];
+        this.isHorizontalCluster=this.confirmData['isCluster'];
+        this.horizontalInfos=[...this.confirmData['horizontalList']];
+        this.verticalInfos=[...this.confirmData['verticalList']];
+
     }
 
     //width change
@@ -144,6 +156,7 @@ export class ClusterSetComponent implements OnInit {
                         let single_width = 60;
                         this.width = single_width * xNum;
                     }
+                    this.height=480;
 
                     this.min=trueData.min;
                     this.max=trueData.max;
@@ -174,6 +187,16 @@ export class ClusterSetComponent implements OnInit {
                     this.selectedGene=this.geneList[0]['key'];
 
                     this.horizontalInfos=trueData.horizontalDefault;
+
+                    this.confirmData={
+                        width:this.width,
+                        height:this.height,
+                        domainRange:[...this.rangeValue],
+                        yName:this.selectedGene,
+                        isCluster:this.isHorizontalCluster,
+                        verticalList:[...this.verticalInfos],
+                        horizontalList:[...this.horizontalInfos]
+                    }
 
                 }
             }
@@ -379,12 +402,40 @@ export class ClusterSetComponent implements OnInit {
 
     //设置 确定
     setConfirm(){
+        this.isShowSetPanel=false;
 
+        this.isShowEditHorizontal=false;
+        this.isShowEditVertical=false;
+        this.isShowAddHorizontal=false;
+        this.isShowAddVertical=false;
+
+        this.confirmData['width']=this.width;
+        this.confirmData['height']=this.height;
+        this.confirmData['domainRange']=[...this.rangeValue];
+        this.confirmData['yName']=this.selectedGene;
+        this.confirmData['isCluster']=this.isHorizontalCluster;
+        this.confirmData['verticalList']=[...this.verticalInfos];
+        this.confirmData['horizontalList']=[...this.horizontalInfos];
+
+        this.confirm.emit(this.confirmData);
     }
 
     //设置 取消
     setCance(){
-        
+        this.isShowSetPanel=false;
+
+        this.isShowEditHorizontal=false;
+        this.isShowEditVertical=false;
+        this.isShowAddHorizontal=false;
+        this.isShowAddVertical=false;
+
+        this.width=this.confirmData['width'];
+        this.height=this.confirmData['height'];
+        this.rangeValue=[...this.confirmData['domainRange']];
+        this.selectedGene=this.confirmData['yName'];
+        this.isHorizontalCluster=this.confirmData['isCluster'];
+        this.horizontalInfos=[...this.confirmData['horizontalList']];
+        this.verticalInfos=[...this.confirmData['verticalList']];
     }
 
      //判断item是否在数组中

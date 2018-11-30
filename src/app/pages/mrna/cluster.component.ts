@@ -47,6 +47,10 @@ export class clusterComponent implements OnInit {
         this.gaugeColors=this.storeService.getColors();
     }
 
+    setConfirm(data){
+        console.log(data)
+    }
+
     drawChart(data) {
         let that=this;
 

@@ -105,11 +105,11 @@ export class MultiOmicsSetComponent implements OnInit {
             .subscribe(
                 (data: any) => {
                     if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-                        this.rationClassifyList = [];
+                        return;
                     } else if (data.status === "-1") {
-                        this.rationClassifyList = [];
+                        return;
                     } else if (data.status === "-2") {
-                        this.rationClassifyList = [];
+                        return;
                     } else {
                         this.rationClassifyList = data.data;
 
@@ -129,7 +129,7 @@ export class MultiOmicsSetComponent implements OnInit {
                     }
                 },
                 error => {
-                    this.rationClassifyList = [];
+                    console.log(error);
                 }
             )
     }
@@ -183,7 +183,7 @@ export class MultiOmicsSetComponent implements OnInit {
 
     //添加面板，定量分类change
     rationClassifyChange() {
-        this.rations = [];
+        this.rations.length=0;
         this.rationClassifyList.forEach((d) => {
             if (d['name'] === this.curRationClassify) {
                 this.rations = d['data'];
@@ -250,7 +250,7 @@ export class MultiOmicsSetComponent implements OnInit {
 
     //修改面板，定量分类change
     updateClassifyChange() {
-        this.rationList = [];
+        this.rationList.length=0;
         this.rationClassifyList.forEach((d) => {
             if (d['name'] === this.curUpdateClassify) {
                 this.rationList = d['data'];
