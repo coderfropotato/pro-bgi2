@@ -64,9 +64,7 @@ export class ReMultiOmicsComponent implements OnInit {
     tid:string = null;
     geneType:string = '';
     addColumnShow:boolean = false;
-
     // 图的设置
-
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -113,7 +111,7 @@ export class ReMultiOmicsComponent implements OnInit {
             tid:this.tid,
 			pageIndex: 1, //分页
             pageSize: 20,
-            quantity:this.serializationParams(this.selectedColumn),
+            quantity:this.selectedColumn,
 			LCID: sessionStorage.getItem('LCID'),
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
@@ -139,7 +137,7 @@ export class ReMultiOmicsComponent implements OnInit {
             tid:this.tid,
 			pageIndex: 1, //分页
             pageSize: 20,
-            quantity:this.serializationParams(this.selectedColumn),
+            quantity:this.selectedColumn,
 			LCID: sessionStorage.getItem('LCID'), //流程id
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
@@ -237,19 +235,6 @@ export class ReMultiOmicsComponent implements OnInit {
 			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
 		} catch (error) {}
     }
-
-    serializationParams(arr){
-        let paramsList = [];
-        arr.forEach(v=>{
-            let relation = v['relation'];
-            let key = v['key'];
-            let category = v['category'];
-            let value = v['x'];
-            paramsList.push({relation,key,category,value});
-        })
-        return paramsList;
-    }
-
 
     // 图
     drawChart(data) {
@@ -459,7 +444,6 @@ export class ReMultiOmicsComponent implements OnInit {
 
                     d['checked'] = true;
                     that.selectedColumn.push(d);
-                    console.log(that.selectedColumn);
                     that.transformTable._getData();
                 }
             })
