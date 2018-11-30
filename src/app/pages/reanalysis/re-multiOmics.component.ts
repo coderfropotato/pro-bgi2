@@ -37,6 +37,7 @@ export class ReMultiOmicsComponent implements OnInit {
     chartUrl: string;
 
     // table
+    setAddedThead :any= [];
     defaultEntity: object;
 	defaultUrl: string;
 	defaultTableId: string;
@@ -694,8 +695,15 @@ export class ReMultiOmicsComponent implements OnInit {
     setConfirm(setArr) {
         this.chartEntity['quantity'] = setArr;
         this.multiOmicsChart.reGetData();
-        this.addColumn._addThead(setArr);
-        this.transformTable._addThead(setArr)
+        if(this.setAddedThead.length) this.addColumn._deleteThead(this.setAddedThead);
+        if(setArr.length){
+            this.setAddedThead = setArr;
+            this.addColumn._addThead(setArr);
+            this.transformTable._addThead(setArr);
+        }else{
+            this.setAddedThead = [];
+            this.transformTable._addThead([]);
+        }
     }
 
 }
