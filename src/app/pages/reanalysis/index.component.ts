@@ -135,4 +135,8 @@ export class ReanalysisIndexComponent implements OnInit {
     toAnalysisList(){
         this.router.navigateByUrl('/report/reanalysis/index');
     }
+
+    toReport(){
+        this.router.navigateByUrl('/report/mrna');
+    }
 }

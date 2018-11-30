@@ -113,7 +113,7 @@ export class ReMultiOmicsComponent implements OnInit {
             tid:this.tid,
 			pageIndex: 1, //分页
             pageSize: 20,
-            quantity:this.selectedColumn,
+            quantity:this.serializationParams(this.selectedColumn),
 			LCID: sessionStorage.getItem('LCID'),
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
@@ -139,7 +139,7 @@ export class ReMultiOmicsComponent implements OnInit {
             tid:this.tid,
 			pageIndex: 1, //分页
             pageSize: 20,
-            quantity:this.selectedColumn,
+            quantity:this.serializationParams(this.selectedColumn),
 			LCID: sessionStorage.getItem('LCID'), //流程id
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
@@ -236,7 +236,19 @@ export class ReMultiOmicsComponent implements OnInit {
 		try {
 			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
 		} catch (error) {}
-	}
+    }
+
+    serializationParams(arr){
+        let paramsList = [];
+        arr.forEach(v=>{
+            let relation = v['relation'];
+            let key = v['key'];
+            let category = v['category'];
+            let value = v['x'];
+            paramsList.push({relation,key,category,value});
+        })
+        return paramsList;
+    }
 
 
     // 图
@@ -295,7 +307,10 @@ export class ReMultiOmicsComponent implements OnInit {
 
             d.data.forEach(m => {
                 m.w = rectWidth;
+                m.relation="false";
+                m.key=d.key;
                 m.type = d.type;
+                m.category=d.category;
                 m['checked'] = false;
                 allXTexts.push(m.x);
                 allYColumn.push(m.y);
@@ -401,6 +416,7 @@ export class ReMultiOmicsComponent implements OnInit {
                 this.globalService.hidePopOver();
             })
             .on("click", function (d) {
+                that.clearEventBubble(d3.event);
                 if (that.isMultiSelect) { //多选
                     d['checked'] = !d['checked'];
                     if (d['checked']) {
@@ -417,7 +433,7 @@ export class ReMultiOmicsComponent implements OnInit {
                     })
 
                 } else {  //单选
-                    that.selectedColumn = [];
+                    that.selectedColumn.length = 0;
 
                     d3.select("#multiOmicsChartDiv svg").selectAll(".columnRect").nodes().forEach(v => {
                         $(v).css("fill", $(v).attr("fill"));
@@ -444,6 +460,7 @@ export class ReMultiOmicsComponent implements OnInit {
                     d['checked'] = true;
                     that.selectedColumn.push(d);
                     console.log(that.selectedColumn);
+                    that.transformTable._getData();
                 }
             })
 
@@ -470,7 +487,10 @@ export class ReMultiOmicsComponent implements OnInit {
                     })
 
                     m.boxList.forEach(t => {
+                        t.relation=d.relation;
+                        t.key=d.key;
                         t.type = m.type;
+                        t.category=m.category;
                         t['checked'] = false;
                         t.relation = d.relation;
                         column.forEach(b => {
@@ -554,6 +574,7 @@ export class ReMultiOmicsComponent implements OnInit {
                         this.globalService.hidePopOver();
                     })
                     .on("click", function (m) {
+                        that.clearEventBubble(d3.event);
                         if (that.isMultiSelect) { //多选
                             m['checked'] = !m['checked'];
                             if (m['checked']) {
@@ -570,7 +591,7 @@ export class ReMultiOmicsComponent implements OnInit {
                             })
 
                         } else {  //单选
-                            that.selectedBox = [];
+                            that.selectedBox.length = 0;
 
                             d3.select("#multiOmicsChartDiv svg").selectAll(".columnRect").nodes().forEach(v => {
                                 $(v).css("fill", $(v).attr("fill"));
@@ -594,7 +615,7 @@ export class ReMultiOmicsComponent implements OnInit {
                             })
                             m['checked'] = true;
                             that.selectedBox.push(m);
-                            console.log(that.selectedBox);
+                            that.transformTable._get();
                         }
                     })
 
@@ -636,6 +657,7 @@ export class ReMultiOmicsComponent implements OnInit {
             .attr("fill", d => colorScale(d.type))
             .style("cursor", "pointer")
             .on("click", (d, i) => {
+                that.clearEventBubble(d3.event);
                 this.color = colorScale(d.type);
                 this.isShowColorPanel = true;
                 this.legendIndex = i;
@@ -652,7 +674,18 @@ export class ReMultiOmicsComponent implements OnInit {
             .style("font-size", "12px")
             .attr("x", legend_text_space + legendRectW)
             .attr("y", (d, i) => i * (legendBottom + legendRectH) + legendRectH / 2)
-            .text(d => d.type)
+            .text(d => d.type);
+
+        d3.select("#multiOmicsChartDiv svg").on("click",function(){
+            that.selectedColumn.length=0;
+            that.selectedBox.length=0;
+            d3.select("#multiOmicsChartDiv svg").selectAll(".columnRect").nodes().forEach(v => {
+                $(v).css("fill", $(v).attr("fill"));
+            })
+            d3.select("#multiOmicsChartDiv svg").selectAll(".boxplotRect").nodes().forEach(v => {
+                $(v).css("fill", $(v).attr("fill"));
+            })
+        });
     }
 
     //画线
@@ -668,22 +701,22 @@ export class ReMultiOmicsComponent implements OnInit {
 
     // single() {
     //     this.isMultiSelect = false;
-    //     this.selectedColumn = [];
-    //     this.selectedBox = [];
+    //     this.selectedColumn.length = 0;
+    //     this.selectedBox.length = 0;
     //     this.drawChart(this.chartData);
     // }
 
     // multiple() {
     //     this.isMultiSelect = true;
-    //     this.selectedColumn = [];
-    //     this.selectedBox = [];
+    //     this.selectedColumn.length = 0;
+    //     this.selectedBox.length = 0;
     //     this.drawChart(this.chartData);
     // }
 
     //单、多选change
     multiSelectChange() {
-        this.selectedColumn = [];
-        this.selectedBox = [];
+        this.selectedColumn.length = 0;
+        this.selectedBox.length = 0;
         this.multiOmicsChart.redraw();
     }
 
@@ -707,12 +740,26 @@ export class ReMultiOmicsComponent implements OnInit {
             this.setAddedThead = setArr;
             this.addColumn._addThead(setArr);
             this.addColumn._confirm();
-            // this.transformTable._addThead(setArr,'key');
         }else{
             this.setAddedThead = [];
             this.addColumn._confirm();
-            // this.transformTable._addThead([],'key');
         }
+    }
+
+    //阻止冒泡
+    clearEventBubble(evt) {
+        if (evt.stopPropagation) {
+            evt.stopPropagation();
+        } else {
+            evt.cancelBubble = true;
+        }
+
+        if (evt.preventDefault) {
+            evt.preventDefault();
+        } else {
+            evt.returnValue = false;
+        }
+
     }
 
 }

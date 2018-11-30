@@ -13,7 +13,7 @@ export class ToolsComponent implements OnInit {
 	// heatmap goRich keggRich goClass keggClass line net
 
 	// "heatmaprelation""关联聚类"
-	// "heatmapexpression""表达量聚类"
+	// "heatmapexpress""表达量聚类"  chooseType heatmapexpression
 	// "heatmapdiff" "差异聚类"
 	// "multiOmics" "多组学关联"
 
@@ -65,10 +65,10 @@ export class ToolsComponent implements OnInit {
 	title: String = '';
 
 	// 聚类参数
-	expressionData: any[] = [];
-	expressionUpload: any = [];
-	expressionSelect: any[] = [];
-	expressionError: any = false;
+	expressData: any[] = [];
+	expressUpload: any = [];
+	expressSelect: any[] = [];
+	expressError: any = false;
 
 	diffData: any[] = [];
 	diffUpload: any = [];
@@ -82,12 +82,12 @@ export class ToolsComponent implements OnInit {
 
 	geneType: any[] = [];
 	geneTypeError: any = false;
-    selectGeneType: any[] = [];
+	selectGeneType: any[] = [];
 
-    // 多组学参数
-    multiOmicsData:any[] = [];
-    multiOmicsSelect:any[] = [];
-    multiOmicsError:any = false;
+	// 多组学参数
+	multiOmicsData: any[] = [];
+	multiOmicsSelect: any[] = [];
+	multiOmicsError: any = false;
 
 	// 当前选择的重分析类型
 	selectType: string = '';
@@ -108,10 +108,10 @@ export class ToolsComponent implements OnInit {
 		this.desc = '';
 		this.title = '';
 		// 初始化聚类参数
-		this.expressionData = [];
-		this.expressionUpload = [];
-		this.expressionSelect = [];
-		this.expressionError = false;
+		this.expressData = [];
+		this.expressUpload = [];
+		this.expressSelect = [];
+		this.expressError = false;
 
 		this.diffData = [];
 		this.diffUpload = [];
@@ -127,10 +127,10 @@ export class ToolsComponent implements OnInit {
 		this.selectGeneType = [];
 		this.geneTypeError = false;
 
-        // 多组学参数
-        this.multiOmicsData = [];
-        this.multiOmicsSelect = [];
-        this.multiOmicsError = false;
+		// 多组学参数
+		this.multiOmicsData = [];
+		this.multiOmicsSelect = [];
+		this.multiOmicsError = true;
 
 		// 页面参数
 		this.selectType = '';
@@ -233,7 +233,7 @@ export class ToolsComponent implements OnInit {
 				(data) => {
 					if (data['status'] == '0') {
 						let res = data['data'];
-						this.expressionData = [
+						this.expressData = [
 							...res['expression']['group'].map((val) => {
 								return { name: val, checked: false, category: 'group' };
 							}),
@@ -242,8 +242,8 @@ export class ToolsComponent implements OnInit {
 							})
 						];
 
-						if (this.expressionData.length) this.expressionData[0]['checked'] = true;
-						this.expressionSelect = [ this.expressionData[0] ];
+						if (this.expressData.length) this.expressData[0]['checked'] = true;
+						this.expressSelect = [ this.expressData[0] ];
 
 						this.diffData = res['diff']['diff_plan'].map((val) => {
 							return { name: val, checked: false, category: 'diff_plan' };
@@ -273,7 +273,7 @@ export class ToolsComponent implements OnInit {
 				data: {
 					reanalysisType: `heatmap${type}`,
 					needReanalysis: 1,
-					chooseType: [ type ],
+					chooseType: [ this.switchType(type) ],
 					chooseList: tempChooseList,
 					geneClass: this.selectGeneType.map((v) => v['name']),
 					...this.toolsService.get('tableEntity')
@@ -290,6 +290,11 @@ export class ToolsComponent implements OnInit {
 							nzStyle: { width: '200px' },
 							nzDuration: 2000
 						});
+					} else {
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+							nzDuration: 2000
+						});
 					}
 				},
 				(err) => {
@@ -302,50 +307,67 @@ export class ToolsComponent implements OnInit {
 					this.isSubmitReanalysis = false;
 				}
 			);
-    }
+	}
 
-    // 获取多组学参数
-    getmultiOmicsParams(){
-        this.ajaxService.getDeferData({
-            data:{
-                "LCID": "demo",
-                "geneType": this.toolsService.get('tableEntity')['geneType'],
-                "species": this.toolsService.get('tableEntity')['species'],
-                "baseThead": this.toolsService.get('baseThead')
-            },
-            url:`${config['javaPath']}/reAnalysis/getQuality`
-        }).subscribe((data)=>{
-            if(data['status']==='0'){
-                if(data['data'].length){
-                    this.multiOmicsError = false;
-                    this.multiOmicsData = data['data'];
-                }else{
-                    this.multiOmicsError = 'nodata';
-                }
-            }
-        },err=>{
-            this.multiOmicsError = 'error';
-        })
-    }
+	switchType(type) {
+		switch (type) {
+			case 'express':
+				return 'expression';
+			default:
+				return type;
+		}
+	}
 
-    multiOmicsClick(item){
-        item['checked'] = !item['checked'];
-        let index = this.multiOmicsSelect.findIndex((val,index)=>{
-            return val['key']===item['key'];
-        })
-        if(item['checked']){
-            if(index==-1) this.multiOmicsSelect.push(item);
-        }else{
-            if(index!=-1) this.multiOmicsSelect.splice(index,1);
-        }
-    }
-
-    multiOmicsConfirm(type) {
-        this.isSubmitReanalysis = true;
+	// 获取多组学参数
+	getmultiOmicsParams() {
 		this.ajaxService
 			.getDeferData({
 				data: {
-                    LCID:sessionStorage.getItem('LCID'),
+					LCID: 'demo',
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.toolsService.get('tableEntity')['species'],
+					baseThead: this.toolsService.get('baseThead')
+				},
+				url: `${config['javaPath']}/reAnalysis/getQuality`
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						if (data['data'].length) {
+							this.multiOmicsData = data['data'];
+						} else {
+							this.multiOmicsData = [];
+						}
+					} else {
+						this.multiOmicsData = [];
+					}
+				},
+				(err) => {
+					this.multiOmicsData = [];
+				}
+			);
+	}
+
+	multiOmicsClick(item) {
+		item['checked'] = !item['checked'];
+		let index = this.multiOmicsSelect.findIndex((val, index) => {
+			return val['key'] === item['key'];
+		});
+		if (item['checked']) {
+			if (index == -1) this.multiOmicsSelect.push(item);
+		} else {
+			if (index != -1) this.multiOmicsSelect.splice(index, 1);
+		}
+
+		this.multiOmicsError = !this.multiOmicsSelect.length;
+	}
+
+	multiOmicsConfirm(type) {
+		this.isSubmitReanalysis = true;
+		this.ajaxService
+			.getDeferData({
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
 					reanalysisType: type,
 					needReanalysis: 2,
 					classInfo: this.multiOmicsSelect,
@@ -363,6 +385,11 @@ export class ToolsComponent implements OnInit {
 							nzStyle: { width: '200px' },
 							nzDuration: 2000
 						});
+					} else {
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+							nzDuration: 2000
+						});
 					}
 				},
 				(err) => {
@@ -375,7 +402,7 @@ export class ToolsComponent implements OnInit {
 					this.isSubmitReanalysis = false;
 				}
 			);
-    }
+	}
 
 	// go富集
 	getgoRichParams() {
