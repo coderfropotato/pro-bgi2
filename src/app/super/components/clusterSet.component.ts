@@ -57,7 +57,7 @@ export class ClusterSetComponent implements OnInit {
     isHorizontalCluster:boolean=true;
 
     //横纵向分类数据
-    horizontalClassList:string[]=[];
+    horizontalClassList:object[]=[];
     verticalClassList:object[]=[];
 
     //选择的横纵向分类信息
@@ -75,6 +75,9 @@ export class ClusterSetComponent implements OnInit {
     //修改面板数据
     verticalEditList:object[]=[];
     curVEditItem_i:number;
+
+    horizontalEditList:string[]=[];
+    curHEditItem_i:number;
 
     constructor(
         private ajaxservice: AjaxService,
@@ -207,8 +210,17 @@ export class ClusterSetComponent implements OnInit {
                     return;
                 } else {
                     let trueData=data.data;
-                    this.horizontalClassList=trueData.horizontal;
+                    //横向
+                    let horizontalClassList=trueData.horizontal;
+                    horizontalClassList.forEach(d=>{
+                        this.horizontalClassList.push({
+                            key:d,
+                            isChecked:false
+                        });
+                    })
+                    this.horizontalEditList=horizontalClassList;
 
+                    //纵向
                     this.verticalClassList=trueData.vertical;
                     this.verticalEditList=trueData.vertical;
                     this.verticalClassList.forEach(d=>{
@@ -285,6 +297,11 @@ export class ClusterSetComponent implements OnInit {
 
     //纵向分类 删除
     deleteVclass(i){
+        this.isShowEditHorizontal=false;
+        this.isShowEditVertical=false;
+        this.isShowAddHorizontal=false;
+        this.isShowAddVertical=false;
+
         this.verticalInfos.splice(i,1);
     }
 
@@ -294,6 +311,80 @@ export class ClusterSetComponent implements OnInit {
         this.isShowAddVertical=false;
         this.isShowEditHorizontal=false;
         this.isShowEditVertical=false;
+
+        this.horizontalClassList.forEach(d=>{
+            d['isChecked']=false;
+            if(this.horizontalInfos.length){
+                this.horizontalInfos.forEach(m=>{
+                    if(d['key']===m){
+                        d['isChecked']=true;
+                    }
+                })
+            }
+        })
+    }
+
+    addHBtnClick(item){
+        item['isChecked'] = !item['isChecked'];
+    }
+
+    addHConfirm(){
+        let count=0;
+        this.horizontalClassList.forEach(d => {
+            if (d['isChecked']) {
+                count++;
+            }
+        })
+
+        if(count>2){
+            this.notification.warning('添加横向分类','最多允许添加2个'); 
+        }else{
+            this.horizontalInfos=[];
+            this.horizontalClassList.forEach(d => {
+                if (d['isChecked']) {
+                    this.horizontalInfos.push(d['key']);
+                }
+            })
+            this.isShowAddHorizontal=false; 
+        }
+    }
+
+    addHCance(){
+       this.isShowAddHorizontal=false; 
+    }
+
+     // 横向分类 修改
+     editHclass(index){
+        this.isShowEditHorizontal=true;
+        this.isShowEditVertical=false;
+        this.isShowAddHorizontal=false;
+        this.isShowAddVertical=false;
+        this.curHEditItem_i=index;
+    }
+
+    editHBtnClick(item){
+        this.horizontalInfos.splice(this.curHEditItem_i,1,item);
+        this.isShowEditHorizontal=false;
+    }
+
+    //横向分类 删除
+    deleteHclass(i){
+        this.isShowEditHorizontal=false;
+        this.isShowEditVertical=false;
+        this.isShowAddHorizontal=false;
+        this.isShowAddVertical=false;
+
+        this.horizontalInfos.splice(i,1);
+    }
+
+    //设置 确定
+    setConfirm(){
+
+    }
+
+    //设置 取消
+    setCance(){
+        
     }
 
      //判断item是否在数组中

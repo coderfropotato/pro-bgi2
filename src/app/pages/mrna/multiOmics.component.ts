@@ -95,7 +95,9 @@ export class multiOmicsComponent implements OnInit {
 
             d.data.forEach(m => {
                 m.w = rectWidth;
+                m.relation="false";
                 m.type = d.type;
+                m.categroy=d.categroy;
                 m['checked'] = false;
                 allXTexts.push(m.x);
                 allYColumn.push(m.y);
@@ -270,7 +272,9 @@ export class multiOmicsComponent implements OnInit {
                     })
 
                     m.boxList.forEach(t => {
+                        t.relation=d.relation;
                         t.type = m.type;
+                        t.categroy=m.categroy;
                         t['checked'] = false;
                         t.relation = d.relation;
                         column.forEach(b => {
