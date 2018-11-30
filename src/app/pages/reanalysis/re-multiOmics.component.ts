@@ -25,8 +25,10 @@ export class ReMultiOmicsComponent implements OnInit {
     @ViewChild('multiOmicsChart') multiOmicsChart;
 
     isMultiSelect: boolean = false;
+
     selectedColumn: object[] = []; //选中的柱状图柱子
     selectedBox: object[] = [];  //选中的箱线图箱体
+    setAddedThead :any[]= [];  // 通过定量设置增加的头
 
     colors: string[] = [];
     legendIndex: number = 0; //当前点击图例的索引
@@ -37,7 +39,7 @@ export class ReMultiOmicsComponent implements OnInit {
     chartUrl: string;
 
     // table
-    setAddedThead :any= [];
+
     defaultEntity: object;
 	defaultUrl: string;
 	defaultTableId: string;
@@ -60,7 +62,10 @@ export class ReMultiOmicsComponent implements OnInit {
     switch = false;
 
     tid:string = null;
-    geneType:string = ';'
+    geneType:string = '';
+
+    // 图的设置
+
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -107,7 +112,7 @@ export class ReMultiOmicsComponent implements OnInit {
             tid:this.tid,
 			pageIndex: 1, //分页
             pageSize: 20,
-            quantity:[],
+            quantity:this.selectedColumn,
 			LCID: sessionStorage.getItem('LCID'),
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
@@ -123,7 +128,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			version: this.storeService.getStore('reference'),
 			searchList: []
 		};
-		this.defaultTableId = 'diff_venn_default_gene';
+		this.defaultTableId = 'default-multi-omics';
 		this.defaultDefaultChecked = true;
 		this.defaultEmitBaseThead = true;
 		this.defaultCheckStatusInParams = true;
@@ -150,7 +155,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			version: this.storeService.getStore('reference'),
 			searchList: []
 		};
-		this.extendTableId = 'diff_venn_extend_gene';
+		this.extendTableId = 'extend-multi-omics';
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
@@ -165,11 +170,10 @@ export class ReMultiOmicsComponent implements OnInit {
     addThead(thead) {
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
 		this.transformTable._addThead(thead['add']);
-	}
+    }
 
-	/*-------- 表格转换开始 ----------*/
-
-	// 表格转换 确定
+    // 表格转换 确定
+    // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm() {
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
@@ -203,7 +207,11 @@ export class ReMultiOmicsComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-        // 应用初始状态的 比较组 图选择的数据 设置参数
+        // 应用初始状态的 图设置参数
+        // 应用图选中的柱子  default里引用了无需设置
+        // 重新设置增删列应用转换之前的定量
+        this.addColumn._addThead(this.setAddedThead);
+
 		this.defaultEntity['searchList'] = [];
         this.defaultEntity['rootSearchContentList'] = [];
 		this.first = true;
@@ -217,8 +225,6 @@ export class ReMultiOmicsComponent implements OnInit {
     switchChange(status) {
 		this.switch = status;
 	}
-
-	/*----------- 表格转换结束 -----------------*/
 
 	// 表格上方功能区 resize重新计算表格高度
 	resize(event) {
@@ -699,10 +705,12 @@ export class ReMultiOmicsComponent implements OnInit {
         if(setArr.length){
             this.setAddedThead = setArr;
             this.addColumn._addThead(setArr);
-            this.transformTable._addThead(setArr);
+            this.addColumn._confirm();
+            // this.transformTable._addThead(setArr,'key');
         }else{
             this.setAddedThead = [];
-            this.transformTable._addThead([]);
+            this.addColumn._confirm();
+            // this.transformTable._addThead([],'key');
         }
     }
 

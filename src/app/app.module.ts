@@ -58,6 +58,7 @@ import { SysDefendComponent } from "./pages/sysDefend.component";
 import { UploadComponent } from './pages/mrna/upload.component';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
 import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component';
+import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -81,6 +82,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 // 管道
 import { AccuracyPipe } from "./super/filter/accuracy.pipe";
 import config from "../config";
+
 
 
 const ROUTES: Routes = [
@@ -249,7 +251,7 @@ const ROUTES: Routes = [
         component: ReanalysisIndexComponent,
         canActivateChild: [SysDefendService],
         data: {
-            keep: true,
+            keep: false,
             module: "reanalysisIndex"
         },
         children:[
@@ -257,7 +259,7 @@ const ROUTES: Routes = [
                 path:"index",
                 component:ReListComponent,
                 data:{
-                    keep:true,
+                    keep:false,
                     module:"reList"
                 }
             },
@@ -266,8 +268,17 @@ const ROUTES: Routes = [
                 component: ReMultiOmicsComponent,
                 canActivate: [SysDefendService],
                 data: {
-                    keep: true,
+                    keep: false,
                     module: "reMutiOmics"
+                }
+            },
+            {
+                path: "re-heatmap/:geneType/:tid",
+                component: ReHeatmapComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reHeatmap"
                 }
             },
             {
@@ -383,6 +394,7 @@ export function createTranslateLoader(http: HttpClient) {
         UploadComponent,
         ColorPickerComponent,
         ReListComponent,
+        ReHeatmapComponent,
         TooltipDirective,
         ReMultiOmicsComponent
     ],

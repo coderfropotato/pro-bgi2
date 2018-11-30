@@ -66,6 +66,12 @@ export class ReListComponent implements OnInit {
 
     toDetail(data){
         // report/reanalysis/re-multiOmics
-        this.router.navigateByUrl(`/report/reanalysis/re-${data['reanalysisType']}/${data['geneType']}/${data['tid']}`);
+        let type = null;
+        if(data['reanalysisType'].indexOf('heatmap')!=-1){
+            type = 'heatmap';
+        }else{
+            type = data['reanalysisType'];
+        }
+        this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['tid']}`);
     }
 }

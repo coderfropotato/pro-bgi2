@@ -132,4 +132,8 @@ export class ReanalysisIndexComponent implements OnInit {
             }
         }
     }
+
+    toAnalysisList(){
+        this.router.navigateByUrl('/report/reanalysis/index');
+    }
 }
