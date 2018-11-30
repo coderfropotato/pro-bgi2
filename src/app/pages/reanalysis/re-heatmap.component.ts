@@ -68,6 +68,8 @@ export class ReHeatmapComponent implements OnInit {
 
     tid:string = null;
     geneType:string = '';
+    addColumnShow:boolean = false;
+
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -119,22 +121,21 @@ export class ReHeatmapComponent implements OnInit {
         this.first = true;
         this.allThead = this.storeService.getThead();
         this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/multiOmics/table`;
+        this.defaultUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
         this.defaultEntity = {
+            LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
             pageIndex: 1, //分页
             pageSize: 20,
-            quantity:[],
-            LCID: sessionStorage.getItem('LCID'),
+            mongoId: null,
             addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-            mongoId: null,
-            sortKey: null, //排序
-            sortValue: null,
             matchAll: false,
-            reAnaly: false,
             matrix: false, //是否转化。矩阵为matrix
             relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
+            sortValue: null,
+            sortKey: null, //排序
+            reAnaly: false,
             geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.storeService.getStore('reference'),
@@ -145,23 +146,21 @@ export class ReHeatmapComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/multiOmics/table`;
+        this.extendUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
         this.extendEntity = {
+            LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
             pageIndex: 1, //分页
             pageSize: 20,
-            reAnaly: false,
-            LCID: sessionStorage.getItem('LCID'), //流程id
-            leftChooseList: [], //upsetR参数
-            upChooseList: [], //胜利n图选中部分参数
-            addThead: [], //扩展列
-            transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             mongoId: null,
-            sortKey: null, //排序
-            sortValue: null,
+            addThead: [], //扩展列
+            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             matchAll: false,
-            matrix: true, //是否转化。矩阵为matrix
+            matrix: false, //是否转化。矩阵为matrix
             relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
+            sortValue: null,
+            sortKey: null, //排序
+            reAnaly: false,
             geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.storeService.getStore('reference'),
@@ -178,6 +177,11 @@ export class ReHeatmapComponent implements OnInit {
 			this.computedTableHeight();
 		}, 30);
     }
+
+    toggle(status){
+        this.addColumnShow = status;
+    }
+
     // 表
     addThead(thead) {
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);

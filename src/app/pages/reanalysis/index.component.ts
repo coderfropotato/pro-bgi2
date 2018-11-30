@@ -23,7 +23,6 @@ export class ReanalysisIndexComponent implements OnInit {
         private ngxSpinnerService:NgxSpinnerService
     ) {
         this.routes.paramMap.subscribe((params)=>{
-            console.log(params);
             this.storeService.setTid(null);
         })
     }

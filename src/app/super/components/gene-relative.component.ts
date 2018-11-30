@@ -15,21 +15,26 @@ import { TranslateService } from "@ngx-translate/core";
 })
 
 export class GeneRelativeComponent implements OnInit {
-    @Output()
-    backEvent: EventEmitter<any> = new EventEmitter();
-    @Output()
-    confirmEvent: EventEmitter<any> = new EventEmitter();
+
+    @Output() confirmEvent: EventEmitter<any> = new EventEmitter();
+
+    isVisible:boolean = false;
 
     constructor() {}
 
     ngOnInit() {}
 
-    confirm(): void {
-        this.confirmEvent.emit();
+    showRelationModal(){
+        this.isVisible = true;
     }
 
-    back(): void {
-        this.backEvent.emit();
+    handleCancel(){
+        this.isVisible = false;
+    }
+
+    confirm(): void {
+        this.isVisible = false;
+        this.confirmEvent.emit();
     }
 
     relative(type: string): void {

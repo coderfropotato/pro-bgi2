@@ -102,7 +102,9 @@ export class DiffVennComponent implements OnInit {
 	venn: any; // 韦恩图对象实例
 
 	leftSelect: any[] = [];
-	upSelect: any[] = [];
+    upSelect: any[] = [];
+
+    addColumnShow:boolean = false;
 
 	constructor(
 		private message: MessageService,
@@ -234,7 +236,11 @@ export class DiffVennComponent implements OnInit {
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
-	}
+    }
+
+    toggle(status){
+        this.addColumnShow = status;
+    }
 
 	ngAfterViewInit() {
 		setTimeout(() => {

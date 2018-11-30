@@ -51,21 +51,21 @@ export class ExpressVennComponent implements OnInit {
 	baseThead: any[] = [];
 	applyOnceSearchParams: boolean;
 
-	venSelectAllData: string[] = []; 
-	selectConfirmData: string[] = []; 
+	venSelectAllData: string[] = [];
+	selectConfirmData: string[] = [];
 
 	panelShow: boolean = false;
 
 	tableEntity: object = {};
 	selectPanelData: object[] = [];
 	venn_or_upsetR: boolean;
-    
+
     expression_Max_min:object ={        ///sss
         min:0,
         default:0,
         max:0
     }
-    
+
     expression_threshold:object ={        ///sss
         min:0,
         default:0,
@@ -103,7 +103,7 @@ export class ExpressVennComponent implements OnInit {
 
 	leftSelect: any[] = [];
 	upSelect: any[] = [];
-
+    addColumnShow:boolean = false;
 	constructor(
 		private message: MessageService,
 		private store: StoreService,
@@ -230,7 +230,11 @@ export class ExpressVennComponent implements OnInit {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
-	}
+    }
+
+    toggle(status){
+        this.addColumnShow = status;
+    }
 
 	handlerColorChange(color) {
 		this.venn.setColor(color);
@@ -406,7 +410,7 @@ export class ExpressVennComponent implements OnInit {
 
 	//venn和upsetR只能单选时候
 	doSingleData() {
-		
+
 		this.leftSelect.length = 0;
 		this.upSelect.length = 0;
 		if (this.selectConfirmData.length > 5) {
@@ -427,7 +431,7 @@ export class ExpressVennComponent implements OnInit {
 
 	//多选确定时候,提交的数据
 	multipleConfirm() {
-		let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData; 
+		let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData;
 		this.leftSelect.length = 0;
 		this.upSelect.length = 0;
 
@@ -448,12 +452,12 @@ export class ExpressVennComponent implements OnInit {
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
         console.log(data)
-		this.selectConfirmData = data; 
+		this.selectConfirmData = data;
 	}
 
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
-        this.selectConfirmData = data; 
+        this.selectConfirmData = data;
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
 		this.transformTable._setParamsNoRequest('sample',this.selectConfirmData);

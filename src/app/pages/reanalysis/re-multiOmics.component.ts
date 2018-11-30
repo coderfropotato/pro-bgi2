@@ -63,6 +63,7 @@ export class ReMultiOmicsComponent implements OnInit {
 
     tid:string = null;
     geneType:string = '';
+    addColumnShow:boolean = false;
 
     // 图的设置
 
@@ -137,17 +138,16 @@ export class ReMultiOmicsComponent implements OnInit {
 		this.extendEntity = {
             tid:this.tid,
 			pageIndex: 1, //分页
-			pageSize: 20,
-			reAnaly: false,
+            pageSize: 20,
+            quantity:this.selectedColumn,
 			LCID: sessionStorage.getItem('LCID'), //流程id
-			leftChooseList: [], //upsetR参数
-			upChooseList: [], //胜利n图选中部分参数
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
 			sortKey: null, //排序
 			sortValue: null,
-			matchAll: false,
+            matchAll: false,
+            reAnaly: false,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
@@ -166,6 +166,10 @@ export class ReMultiOmicsComponent implements OnInit {
 			this.computedTableHeight();
 		}, 30);
     }
+    toggle(status){
+        this.addColumnShow = status;
+    }
+
     // 表
     addThead(thead) {
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
@@ -209,9 +213,6 @@ export class ReMultiOmicsComponent implements OnInit {
 	back() {
         // 应用初始状态的 图设置参数
         // 应用图选中的柱子  default里引用了无需设置
-        // 重新设置增删列应用转换之前的定量
-        this.addColumn._addThead(this.setAddedThead);
-
 		this.defaultEntity['searchList'] = [];
         this.defaultEntity['rootSearchContentList'] = [];
 		this.first = true;

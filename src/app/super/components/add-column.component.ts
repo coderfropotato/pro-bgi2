@@ -20,9 +20,9 @@ export class AddColumnComponent implements OnInit {
     @Output() toggle: EventEmitter<any> = new EventEmitter(); // 显示隐藏
     @Output() addThead: EventEmitter<any> = new EventEmitter(); // 添加头的时候发出的事件
     @Output() clearThead: EventEmitter<any> = new EventEmitter(); // 清除头的时候发出的事件 (没用  现在清除默认发出addThead事件)
+     show: boolean = false;
 
 
-    show: boolean = false;
     selected: Array<any> = [];
     selectCount:Array<any> = [];
     beforeSelected: Array<any> = [];
