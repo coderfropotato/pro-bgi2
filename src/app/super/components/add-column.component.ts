@@ -158,7 +158,7 @@ export class AddColumnComponent implements OnInit {
         this.selectCount = this.selected.map(v=>v.length);
     }
 
-    // 初始化头的状态
+    // 初始化头的选中状态
     initTheadStatus() {
         this.forLeaves(this.thead,item=>{
             item['checked'] = false;
@@ -351,16 +351,19 @@ export class AddColumnComponent implements OnInit {
         this.clear();
     }
 
+
     /**
-     * @description 外部清空不发出事件
+     * @description 外部清除表头
      * @author Yangwd<277637411@qq.com>
-     * @date 2018-10-12
+     * @date 2018-11-29
      * @memberof AddColumnComponent
      */
-    _resetStatusWithoutEmit() {
+    _clearThead(){
         this.initSelected();
         this.initBeforeSelected();
+        // 清空头的选中状态 不清空索引  需要两者清空 参考 initIndexAndChecked
         this.initTheadStatus();
+        this.initSelectCount();
         this.getCheckCount();
     }
 
@@ -420,6 +423,10 @@ export class AddColumnComponent implements OnInit {
             })
         }
         this.getCheckCount();
+    }
+
+    _confirm(){
+        this.confirm();
     }
 
 }

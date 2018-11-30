@@ -976,15 +976,24 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
     /**
      * @description 外部增删列   字段相同的列保留筛选条件
+     * 永远都是覆盖参数的增删列
      * @author Yangwd<277637411@qq.com>
-     * @date 2018-10-15
+     * @date 2018-11-29
      * @param {string[]} addThead
-     * @memberof BigTableComponent
+     * @param {string} key
+     * @memberof GeneTableComponent
      */
     _addThead(addThead: string[]) {
         this.tableEntity["addThead"] = addThead;
         this.deleteSearchListItemOrderByAddThead();
         this.beforeAddThead = this.tableEntity["addThead"].concat();
+        this.getRemoteData();
+    }
+
+    _clearThead(){
+        this.tableEntity["addThead"] = [];
+        this.deleteSearchListItemOrderByAddThead();
+        this.beforeAddThead = [];
         this.getRemoteData();
     }
 
@@ -1020,32 +1029,33 @@ export class GeneTableComponent implements OnInit, OnChanges {
     deleteSearchListItemOrderByAddThead() {
         if (this.beforeAddThead) {
             this.beforeAddThead.forEach(val => {
-                if (!this.isInArr(val, this.tableEntity["addThead"])) {
+                if (!this.isInArr(val, this.tableEntity["addThead"],'key')) {
                     // 删除搜索条件
                     this.tableEntity["searchList"].forEach((v, n) => {
-                        if (v["filterName"] === `${val}`) {
+                        if (v["filterName"] === val['key']) {
                             this.tableEntity["searchList"].splice(n, 1);
                         }
                     });
                     // 删除排序
-                    if (this.tableEntity["sortKey"] === val) {
+                    if (this.tableEntity["sortKey"] === val['key']) {
                         this.tableEntity["sortKey"] = null;
                         this.tableEntity["sortValue"] = null;
-                        if (val in this.sortMap) {
-                            this.sortMap[val] = null;
+                        if (val['key'] in this.sortMap) {
+                            this.sortMap[val['key']] = null;
                         }
                     }
                 }
             });
-
             this.classifySearchCondition();
         }
     }
 
-    isInArr(x, arr) {
+    isInArr(x, arr,key?) {
         for (let i = 0; i < arr.length; i++) {
-            if (arr[i] == x) {
-                return true;
+            if(key){
+                if (arr[i][key] === x[key])  return true;
+            }else{
+                if(arr[i]==x) return true
             }
         }
         return false;

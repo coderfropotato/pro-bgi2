@@ -1,4 +1,5 @@
 <div class="top">
+    <ng-content></ng-content>
     <button *ngIf="lang" nz-button (click)="changeLan()">切换语言 {{browserLang}}</button>
     <button *ngIf="pdf" nz-button (click)="exportPdf()"> export as pdf</button>
     <button *ngIf="analysis" nz-button (click)="analysisFn()"> 我的分析</button>
