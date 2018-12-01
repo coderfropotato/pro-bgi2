@@ -292,7 +292,7 @@ export class clusterComponent implements OnInit {
 
         //定义图例比例尺
         let legend_yScale = d3.scaleLinear().range([legend_height, 0])
-            .domain([valuemin, valuemax]).clamp(true);
+            .domain([valuemin, valuemax]).clamp(true).nice();
 
         let legend_yAxis = d3.axisRight(legend_yScale).tickSizeOuter(0).ticks(5); //设置Y轴
 
@@ -587,7 +587,7 @@ export class clusterComponent implements OnInit {
         function drawHeatmap(colors) {
             d3.selectAll(".heatmapRects").remove();
             //颜色比例尺
-            let colorScale = d3.scaleLinear().domain([valuemax, (valuemin + valuemax) / 2, valuemin]).range(colors).interpolate(d3.interpolateRgb);
+            let colorScale = d3.scaleLinear().domain([valuemax, (valuemin + valuemax) / 2, valuemin]).range(colors).interpolate(d3.interpolateRgb).clamp(true);
             for (let i = 0; i < heatmapData_len; i++) {
                 let rect_g = heatmap_g.append("g").attr("class", "heatmapRects");
                 //画矩形
