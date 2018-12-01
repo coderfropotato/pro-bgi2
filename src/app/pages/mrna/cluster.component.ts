@@ -292,7 +292,7 @@ export class clusterComponent implements OnInit {
 
         //定义图例比例尺
         let legend_yScale = d3.scaleLinear().range([legend_height, 0])
-            .domain([valuemin, valuemax]).clamp(true);
+            .domain([valuemin, valuemax]).clamp(true).nice();
 
         let legend_yAxis = d3.axisRight(legend_yScale).tickSizeOuter(0).ticks(5); //设置Y轴
 
@@ -489,10 +489,6 @@ export class clusterComponent implements OnInit {
 
                 let curLegend= legendWrap.append('g').attr('class','oLegend');
 
-                curLegend.append('text').attr('class','oLegendTitle')
-                .style('font-size','14px')
-                .style('text-anchor','start')
-                .text(d.title);
                 
                 let sumWidth = 0,
                     sumBeforeWidth = 0;
@@ -519,20 +515,20 @@ export class clusterComponent implements OnInit {
                     .attr("width", OrdinalRectW)
                     .attr("height", OrdinalRectH)
                     .style("cursor", "pointer")
-                    .on("mouseover", function() {
-                        d3.select(this).append("title").text("单击修改颜色");
-                    })
-                    .on("mouseout", function() {
-                        d3.select(this).select("title").remove();
-                    })
-                    .on("click", function(m, i) {
-                        let oEvent = d3.event || event;
-                        clearEventBubble(oEvent);
+                    // .on("mouseover", function() {
+                    //     d3.select(this).append("title").text("单击修改颜色");
+                    // })
+                    // .on("mouseout", function() {
+                    //     d3.select(this).select("title").remove();
+                    // })
+                    // .on("click", function(m, i) {
+                    //     let oEvent = d3.event || event;
+                    //     clearEventBubble(oEvent);
 
-                        let select_index = Number($(this).parents('.legendGroup').attr("index"));
-                        that.oLegendIndex = select_index * legend_col_num + i;
-                        that.isShowColorPanel = true;
-                    });
+                    //     let select_index = Number($(this).parents('.legendGroup').attr("index"));
+                    //     that.oLegendIndex = select_index * legend_col_num + i;
+                    //     that.isShowColorPanel = true;
+                    // });
 
                 series.append("text")
                     .attr("font-size", "12px")
@@ -557,6 +553,26 @@ export class clusterComponent implements OnInit {
                         return "translate(0," + j * (OrdinalRectH + bottom_space) + ")";
                     })
 
+                curLegend.append('text').attr('class','oLegendTitle')
+                .style('font-size','14px')
+                .style('text-anchor','start')
+                
+                .text(function(){
+                    let textwidth=d.title.length *7+legend_col_space/2;
+                    let colWidth=d3.select(this.parentNode).select('.legendGroup').node().getBBox().width;
+                    if(textwidth <= colWidth){
+                        return d.title;
+                    }else{
+                        let showNum=Math.ceil(colWidth/7);
+                        if(showNum<d.title.length){
+                            return d.title.substring(0,showNum) +'...';
+                        }else{
+                            return d.title;
+                        }
+                    }
+                })
+                .append('title').text(d.title)
+
             })
 
             d3.selectAll('.oLegend text.oLegendTitle')
@@ -571,7 +587,7 @@ export class clusterComponent implements OnInit {
         function drawHeatmap(colors) {
             d3.selectAll(".heatmapRects").remove();
             //颜色比例尺
-            let colorScale = d3.scaleLinear().domain([valuemax, (valuemin + valuemax) / 2, valuemin]).range(colors).interpolate(d3.interpolateRgb);
+            let colorScale = d3.scaleLinear().domain([valuemax, (valuemin + valuemax) / 2, valuemin]).range(colors).interpolate(d3.interpolateRgb).clamp(true);
             for (let i = 0; i < heatmapData_len; i++) {
                 let rect_g = heatmap_g.append("g").attr("class", "heatmapRects");
                 //画矩形
