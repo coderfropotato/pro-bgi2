@@ -60,17 +60,20 @@ export class ExpressVennComponent implements OnInit {
 	selectPanelData: object[] = [];
 	venn_or_upsetR: boolean;
 
-    expression_Max_min:object ={        ///sss
+    expression_Max_min:object ={        
         min:0,
         default:0,
         max:0
     }
 
-    expression_threshold:object ={        ///sss
+    expression_threshold:object ={        
         min:0,
         default:0,
         max:0
-    }
+	}
+	
+	expression_temp_min:string;				//111
+	expression_temp_max:string;
 
 	activedCompareGroup: any[] = [];
 	singleMultiSelect: object = {
@@ -135,7 +138,10 @@ export class ExpressVennComponent implements OnInit {
             min:this.store.getStore('expression_threshold').min,
             default:this.store.getStore('expression_threshold').default,
             max:this.store.getStore('expression_threshold').max
-        }
+		}
+		
+		this.expression_temp_min = this.store.getStore('expression_threshold').min;
+		this.expression_temp_max = this.store.getStore('expression_threshold').max;
 
         this.expression_Max_min={
             min:this.store.getStore('expression_threshold').min,
@@ -351,13 +357,21 @@ export class ExpressVennComponent implements OnInit {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
+		if(this.expression_temp_min!=this.expression_threshold['min'] || this.expression_temp_max!=this.expression_threshold['max']){
+			this.expression_threshold['max'] = this.expression_temp_max;
+			this.expression_threshold['min'] = this.expression_temp_min;
+		}
         //点击取消时需要还原滑动条
 		this.panelShow = false;
 	}
 	setConfirm() {
 
-        this.tableEntity['low'] = this.expression_threshold['min']
-        this.tableEntity['high'] = this.expression_threshold['max']
+        this.tableEntity['low'] = this.expression_threshold['min'];
+		this.tableEntity['high'] = this.expression_threshold['max'];
+
+		//this.expression_threshold_temp= this.expression_threshold;
+		this.expression_temp_min = this.expression_threshold['min'];
+		this.expression_temp_max = this.expression_threshold['max'];
 
 		this.singleMultiSelect={
 			bar_name: '',

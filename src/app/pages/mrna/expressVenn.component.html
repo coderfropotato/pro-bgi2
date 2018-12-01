@@ -84,6 +84,7 @@
                                     <nz-slider nzRange
                                     [nzMin]="expression_Max_min.min"
                                     [nzMax]="expression_Max_min.max"
+                                    [nzDefaultValue]="[expression_threshold.min, expression_threshold.max]"
                                     (nzOnAfterChange)="onAfterChange($event)"
                                     [nzTipFormatter]="formatter"
                                     ></nz-slider>
