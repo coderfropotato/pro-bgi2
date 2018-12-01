@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
 import { AjaxService } from "../service/ajaxService";
 import config from "../../../config";
 import { StoreService } from "../service/storeService";
@@ -40,6 +40,7 @@ declare const $: any;
 })
 export class ClusterSetComponent implements OnInit {
     @Output() confirm: EventEmitter<any> = new EventEmitter();
+    @Input() defaultSetData:any;
 
     confirmData:object;
 
@@ -115,78 +116,58 @@ export class ClusterSetComponent implements OnInit {
 
     //获取默认值
     getDefaultSet(){
-        this.ajaxservice
-        .getDeferData({
-            url:`${config['javaPath']}/Cluster/defaultSet`,
-            data:{
-                "tid": "20783e1576b84867aee1a63e22716fed"
-            }
-        })
-        .subscribe(
-            (data:any)=>{
-                if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-                    return;
-                } else if (data.status === "-1") {
-                    return;
-                } else if (data.status === "-2") {
-                    return;
-                } else {
-                    let trueData=data.data;
+        let trueData=this.defaultSetData;
 
-                    let xNum=trueData.xNum;
-                    if (xNum <= 8) {
-                        this.width = 480;
-                    } else {
-                        let single_width = 60;
-                        this.width = single_width * xNum;
-                    }
-                    this.height=480;
+        let xNum=trueData.xNum;
+        if (xNum <= 8) {
+            this.width = 480;
+        } else {
+            let single_width = 60;
+            this.width = single_width * xNum;
+        }
+        this.height=480;
 
-                    this.isHorizontalCluster=true;
+        this.isHorizontalCluster=true;
 
-                    this.min=trueData.min;
-                    this.max=trueData.max;
-                    this.rangeValue=[this.min,this.max];
-                    
-                    let geneType=trueData.geneType;
-                    if(geneType=="gene"){
-                        this.geneList=[{
-                            key:'hidden',
-                            name:'隐藏'
-                        },{
-                            key:'id',
-                            name:'基因ID'
-                        },{
-                            key:'symbol',
-                            name:'基因symbol'
-                        }];
-                    }else{
-                        this.geneList=[{
-                            key:'hidden',
-                            name:'隐藏'
-                        },
-                        {
-                            key:'id',
-                            name:'转录本ID'
-                        }];
-                    }
-                    this.selectedGene=this.geneList[0]['key'];
+        this.min=trueData.min;
+        this.max=trueData.max;
+        this.rangeValue=[this.min,this.max];
+        
+        let geneType=trueData.geneType;
+        if(geneType=="gene"){
+            this.geneList=[{
+                key:'hidden',
+                name:'隐藏'
+            },{
+                key:'id',
+                name:'基因ID'
+            },{
+                key:'symbol',
+                name:'基因symbol'
+            }];
+        }else{
+            this.geneList=[{
+                key:'hidden',
+                name:'隐藏'
+            },
+            {
+                key:'id',
+                name:'转录本ID'
+            }];
+        }
+        this.selectedGene=this.geneList[0]['key'];
 
-                    this.horizontalInfos=trueData.horizontalDefault;
+        this.horizontalInfos=trueData.horizontalDefault;
 
-                    this.confirmData={
-                        width:this.width,
-                        height:this.height,
-                        domainRange:[...this.rangeValue],
-                        yName:this.selectedGene,
-                        isCluster:this.isHorizontalCluster,
-                        verticalList:[...this.verticalInfos],
-                        horizontalList:[...this.horizontalInfos]
-                    }
-
-                }
-            }
-        )
+        this.confirmData={
+            width:this.width,
+            height:this.height,
+            domainRange:[...this.rangeValue],
+            yName:this.selectedGene,
+            isCluster:this.isHorizontalCluster,
+            verticalList:[...this.verticalInfos],
+            horizontalList:[...this.horizontalInfos]
+        }
     }
 
     //获取分类

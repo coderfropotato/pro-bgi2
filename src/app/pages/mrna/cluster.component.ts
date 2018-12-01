@@ -18,10 +18,13 @@ export class clusterComponent implements OnInit {
     chartUrl: string;
     chartEntity: object;
 
-    isShowName: boolean = true;
-    isShowTopLine: boolean = true;
-    width: number = 480;
-    height: number = 480;
+    width: number;
+    height: number;
+    domainRange:number[]=[];
+    yName:string;
+    isCluster:boolean;
+    verticalList:object[]=[];
+    horizontalList:string[]=[];
 
     isShowColorPanel: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
@@ -32,6 +35,10 @@ export class clusterComponent implements OnInit {
     oLegendIndex:number=0;
     oColor:string;
 
+    defaultSetUrl:string;
+    defaultSetEntity:object;
+    defaultSetData:any;
+
     constructor(
         private ajaxService: AjaxService,
         private globalService: GlobalService,
@@ -40,17 +47,68 @@ export class clusterComponent implements OnInit {
 
     ngOnInit() {
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
-        // this.chartUrl = 'http://localhost:8086/cluster';
-        this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
-        this.chartEntity = {"LCID": "demo", "tid": "20783e1576b84867aee1a63e22716fed", "isHorizontal": false, "verticalClassification": {"gene_type": "aisdb.gene_reference", "GO Term": "aisdb.go_3.0"}, "horizontalClassification": ["cellType", "time"]}
-
         this.gaugeColors=this.storeService.getColors();
+
+        this.defaultSetUrl=`${config['javaPath']}/Cluster/defaultSet`;
+        this.defaultSetEntity={
+            "tid": "20783e1576b84867aee1a63e22716fed"
+        }
+
+        this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
+        this.chartEntity = {
+            "LCID": this.storeService.getStore('LCID'), 
+            "tid": "20783e1576b84867aee1a63e22716fed", 
+            "isHorizontal": true,
+            "verticalClassification": {},
+            "horizontalClassification": []
+        };
     }
 
+    //设置 默认 
+    apiEntityChange(data){
+        let xNum=data.xNum;
+        if (xNum <= 8) {
+            this.width = 480;
+        } else {
+            let single_width = 60;
+            this.width = single_width * xNum;
+        }
+        this.height=480;
+        this.domainRange=[data.min,data.max];
+        this.yName='hidden';
+        this.isCluster=true;
+
+        this.chartEntity['isHorizontal']=this.isCluster;
+        this.chartEntity['horizontalClassification']=data.horizontalDefault;
+
+        this.defaultSetData=data;
+    }
+
+    //设置 确定
     setConfirm(data){
-        console.log(data)
+        this.setChartSetEntity(data);
+        this.clusterChart.reGetData();
     }
 
+    setChartSetEntity(data){
+        //图
+        this.width=data.width;
+        this.height=data.height;
+        this.domainRange=data.domainRange;
+        this.yName=data.yName;
+        this.isCluster=data.isCluster;
+
+        //请求参数
+        this.chartEntity['isHorizontal']=data.isCluster;
+        this.chartEntity['horizontalClassification']=data.horizontalList;
+        if(data['verticalList'].length){
+            data['verticalList'].forEach(d=>{
+                this.chartEntity['verticalClassification'][d.key]=d['category'];
+            })
+        }
+    }
+
+    //画图
     drawChart(data) {
         let that=this;
 
@@ -61,8 +119,8 @@ export class clusterComponent implements OnInit {
         let leftLineData = data.left.line,
             topLineData = data.top.line,
             heatmapData = data.heatmaps,
-            valuemax = data.max,
-            valuemin = data.min;
+            valuemax = this.domainRange[1],
+            valuemin = this.domainRange[0];
 
         let topSimples=[];
         let topComplexes=[];
@@ -110,7 +168,7 @@ export class clusterComponent implements OnInit {
         let max_x_textLength = d3.max(heatmapData, d=>d.name.length);
 
         let max_y_textLength = 0;
-        if (this.isShowName) {
+        if (this.yName !=='hidden') {
             max_y_textLength = d3.max(heatmapData[0].heatmap, d=>d.x.length);
         }
 
@@ -129,15 +187,8 @@ export class clusterComponent implements OnInit {
         let single_rect_width = 0;
         let single_rect_height = 0;
 
-        if (heatmapData_len <= 8) {
-            this.width = 480;
-            heatmap_width = this.width;
-            single_rect_width = heatmap_width / heatmapData_len;
-        } else {
-            single_rect_width = 60;
-            this.width = single_rect_width * heatmapData_len;
-            heatmap_width = this.width;
-        }
+        heatmap_width = this.width;
+        single_rect_width = heatmap_width / heatmapData_len;
 
         heatmap_height = this.height;
         single_rect_height = heatmap_height / YgeneDataLen;
@@ -148,7 +199,7 @@ export class clusterComponent implements OnInit {
         let topCluster_width = 0,
             topCluster_height = 0;
 
-        if (this.isShowTopLine && isTopCluster) {
+        if (this.isCluster && isTopCluster) {
             topCluster_width = heatmap_width;
             topCluster_height = 60;
         }
@@ -287,7 +338,7 @@ export class clusterComponent implements OnInit {
             .text("差异基因表达量聚类热图");
 
         //top line
-        if (this.isShowTopLine && isTopCluster) {
+        if (this.isCluster && isTopCluster) {
             this._drawLine("topLine", topCluster_width, topCluster_height, body_g, topLine_x, 0, topLineData);
         }
 
@@ -329,7 +380,7 @@ export class clusterComponent implements OnInit {
         drawHeatmap(colors);
 
         // y text
-        if (this.isShowName) {
+        if (this.yName !=='hidden') {
             drawYText();
         }
 
@@ -742,7 +793,7 @@ export class clusterComponent implements OnInit {
                 .style("font-size", "12px")
                 .style("dominant-baseline", "middle")
                 .text(function (d) {
-                    return d.x;
+                    return that.yName === 'symbol' ? d.symbol : d.x;
                 })
                 .attr("y", function (d, i) {
                     return i * single_rect_height + single_rect_height / 2;
