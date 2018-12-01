@@ -60,18 +60,18 @@ export class ExpressVennComponent implements OnInit {
 	selectPanelData: object[] = [];
 	venn_or_upsetR: boolean;
 
-    expression_Max_min:object ={        
+    expression_Max_min:object ={
         min:0,
         default:0,
         max:0
     }
 
-    expression_threshold:object ={        
+    expression_threshold:object ={
         min:0,
         default:0,
         max:0
 	}
-	
+
 	expression_temp_min:string;				//111
 	expression_temp_max:string;
 
@@ -139,7 +139,7 @@ export class ExpressVennComponent implements OnInit {
             default:this.store.getStore('expression_threshold').default,
             max:this.store.getStore('expression_threshold').max
 		}
-		
+
 		this.expression_temp_min = this.store.getStore('expression_threshold').min;
 		this.expression_temp_max = this.store.getStore('expression_threshold').max;
 
@@ -188,7 +188,7 @@ export class ExpressVennComponent implements OnInit {
 			matchAll: false,
 			reAnaly: false,
 			matrix: false, //是否转化。矩阵为matrix
-			relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
+			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
             low:this.store.getStore('expression_threshold').min,
@@ -218,7 +218,7 @@ export class ExpressVennComponent implements OnInit {
 			sortValue: null,
 			matchAll: false,
 			matrix: true, //是否转化。矩阵为matrix
-			relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
+			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			low:this.store.getStore('expression_threshold').min,
@@ -256,7 +256,7 @@ export class ExpressVennComponent implements OnInit {
 	/*-------- 表格转换开始 ----------*/
 
 	// 表格转换 确定
-	confirm() {
+	confirm(relations) {
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -273,6 +273,7 @@ export class ExpressVennComponent implements OnInit {
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
             this.extendEntity['low'] = this.expression_threshold['min'];
             this.extendEntity['high'] = this.expression_threshold['max'];
+            this.extendEntity['relations'] = relations;
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -282,6 +283,7 @@ export class ExpressVennComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
+			this.transformTable._setExtendParamsWithoutRequest( 'relations', relations);
 			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {
 				this.transformTable._getData();

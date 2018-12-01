@@ -133,7 +133,7 @@ export class ReHeatmapComponent implements OnInit {
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             matchAll: false,
             matrix: false, //是否转化。矩阵为matrix
-            relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
+            relations: [], //关系组（简写，索引最后一个字段）
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
@@ -158,7 +158,7 @@ export class ReHeatmapComponent implements OnInit {
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             matchAll: false,
             matrix: false, //是否转化。矩阵为matrix
-            relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
+            relations: [], //关系组（简写，索引最后一个字段）
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
@@ -190,7 +190,7 @@ export class ReHeatmapComponent implements OnInit {
 	}
 
 	// 表格转换 确定
-	confirm() {
+	confirm(relations) {
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -202,6 +202,7 @@ export class ReHeatmapComponent implements OnInit {
 			this.extendEntity['mongoId'] = checkParams['mongoId'];
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
 			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
+			this.extendEntity['relations'] = relations;
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -211,6 +212,7 @@ export class ReHeatmapComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
+			this.transformTable._setExtendParamsWithoutRequest( 'relations', relations );
 			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {
 				this.transformTable._getData();
