@@ -177,7 +177,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.tableEntity["sortKey"] = null;
         this.tableEntity["searchList"] = this.pageEntity["searchList"] || [];
         this.tableEntity["rootSearchContentList"] = this.pageEntity["rootSearchContentList"] || [];
-        this.tableEntity["addThead"] = [];
+        this.tableEntity["addThead"] = this.pageEntity["addThead"] || [];
 
         // 把其他的查询参数也放进去
         for (let name in this.pageEntity) {
@@ -229,7 +229,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
         // 如果是转换表把上次的mongoid 放在下一次的参数里面
         if(this.tableType==='transform') this.tableEntity['mongoId'] = this.mongoId;
-
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
             (responseData: any) => {
                 // 如果需要保存基因集合id 并且 返回值有id这个key （针对转换表) 就保存下来
@@ -846,6 +845,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof BigTableComponent
      */
     _deleteFilter(filterName, filterNamezh, filterType) {
+        console.log(filterName,filterNamezh,filterType);
         this.children._results.forEach(val => {
             if (
                 val.pid === this.tableId &&
