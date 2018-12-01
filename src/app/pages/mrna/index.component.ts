@@ -51,7 +51,7 @@ export class IndexComponent implements OnInit {
             try {
                 await this.getLcInfo();
                 await this.getAddThead();
-                await this.getMenuList();
+                //await this.getMenuList();
                 this.ready = true;
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
@@ -82,6 +82,7 @@ export class IndexComponent implements OnInit {
                                     sessionStorage.setItem(key,JSON.stringify(data["data"][key]));
                                 }
                             }
+                            this.menuList = data["data"].menu_list;
                         }
                         resolve("success");
                     },
@@ -96,7 +97,7 @@ export class IndexComponent implements OnInit {
             this.ajaxService
                 .getDeferData({
                     data: { LCID },
-                    url: "http://localhost:8086/menu"
+                    url:`${config['javaPath']}/menu`
                 })
                 .subscribe(
                     data => {
