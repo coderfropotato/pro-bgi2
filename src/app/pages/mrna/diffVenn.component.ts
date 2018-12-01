@@ -320,7 +320,6 @@ export class DiffVennComponent implements OnInit {
 
 	// 在认为是基础头的时候发出基础头 双向绑定到增删列
 	baseTheadChange(thead) {
-        console.log(thead);
 		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
 	}
 
