@@ -103,7 +103,7 @@
                 [(isMultiSelect)]="isMultiSelect" (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()"
                 [tableUrl]="tableUrl" [chartUrl]="chartUrl" [apiEntity]="tableEntity" [isShowAccuracy]="true"
                 [setTemplate]="setTemplate" (drawChartEmit)="drawVenn($event)" [selectPanelData]="selectPanelData"
-                (selectConfirmEmit)="selectConfirm($event)" [defaultSelectNum]="this.store.getStore('sample').length" (defaultSelectList)="defaultSelectList($event)"
+                (selectConfirmEmit)="selectConfirm($event)" [defaultSelectNum]="-1" (defaultSelectList)="defaultSelectList($event)"
                 [isVennTable]="true" [flex]="true" [chartId]="'chartId22122'" [chartName]="'韦恩图'">
             </app-table-switch-chart>
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
