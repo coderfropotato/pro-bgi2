@@ -38,7 +38,7 @@ export class ReListComponent implements OnInit {
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
 					pageIndex: 1,
-					pageSize: 10,
+					pageSize: 100,
 					label: '',
 					searchContent: {
 						timeStart: '',

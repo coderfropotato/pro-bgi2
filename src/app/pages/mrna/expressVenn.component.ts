@@ -306,11 +306,11 @@ export class ExpressVennComponent implements OnInit {
 		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
 	}
 
-	/*----------- 表格转换结束 -----------------*/
-
 	// 表格上方功能区 resize重新计算表格高度
 	resize(event) {
-		this.computedTableHeight();
+		setTimeout(()=>{
+            this.computedTableHeight();
+        },30)
     }
 
 	drawVenn(data) {

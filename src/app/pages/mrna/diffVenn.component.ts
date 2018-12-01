@@ -262,15 +262,30 @@ export class DiffVennComponent implements OnInit {
 	handlerColorChange(color) {
 		this.venn.setColor(color);
 		this.venn.update();
-	}
+    }
+
+    // 重置图 应用图转换前的设置
+    chartBackStatus(){
+        if(!this.first){
+            // 比较组  引用无需考=>虑图选中/阈值
+            // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+            this.defaultEntity['compareGroup'] = this.selectConfirmData;
+            this.defaultEntity['searchList'] = [];
+            this.defaultEntity['rootSearchContentList'] = [];
+            setTimeout(()=>{
+                this.first = true;
+            },30)
+        }else{
+            this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+            this.transformTable._getData();
+        }
+    }
 
 	// {add:[],remove:[{}]}
 	addThead(thead) {
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
 		this.transformTable._addThead(thead['add']);
 	}
-
-	/*-------- 表格转换开始 ----------*/
 
 	// 表格转换 确定
 	confirm() {
@@ -311,23 +326,19 @@ export class DiffVennComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-        // 应用初始状态的 比较组 图选择的数据 设置参数
-        this.defaultEntity['compareGroup'] = this.selectConfirmData;
-		this.defaultEntity['searchList'] = [];
-        this.defaultEntity['rootSearchContentList'] = [];
-		this.first = true;
+        this.chartBackStatus();
 	}
 
 	// 在认为是基础头的时候发出基础头 双向绑定到增删列
 	baseTheadChange(thead) {
+        console.log(thead);
 		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
 	}
 
-	/*----------- 表格转换结束 -----------------*/
-
-	// 表格上方功能区 resize重新计算表格高度
 	resize(event) {
-		this.computedTableHeight();
+		setTimeout(()=>{
+            this.computedTableHeight();
+        },30)
     }
 
 	drawVenn(data) {
@@ -424,22 +435,20 @@ export class DiffVennComponent implements OnInit {
         this.leftSelect.length = 0 ;
 		this.tableSwitchChart.reGetData();
 
-		if (this.first) {
-			this.transformTable._getData();
-		} else {
-            this.first = true;
-		}
+		// if (this.first) {
+		// 	this.transformTable._getData();
+		// } else {
+        //     this.first = true;
+        // }
+        this.chartBackStatus();
 	}
 
 	//单、多选change
 	multiSelectChange() {
         this.upSelect.length = 0;
         this.leftSelect.length = 0;
-        this.first?this.transformTable._getData():this.first = true;
-
-		// if (!this.venn_or_upsetR) {
-		// 	this.updateVenn();
-        // }
+        // this.first?this.transformTable._getData():this.first = true;
+        this.chartBackStatus()
         this.updateVenn();
 	}
 
@@ -476,11 +485,12 @@ export class DiffVennComponent implements OnInit {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
 		}
 
-		if (this.first) {
-				this.transformTable._getData();
-		} else {
-			this.first = true;
-		}
+		// if (this.first) {
+		// 		this.transformTable._getData();
+		// } else {
+		// 	this.first = true;
+        // }
+        this.chartBackStatus()
 	}
 
 	//多选确定时候,提交的数据
@@ -496,11 +506,12 @@ export class DiffVennComponent implements OnInit {
 			this.leftSelect.push(...tempData['total_name']);
 		}
 
-		if (this.first) {
-				this.transformTable._getData();
-		} else {
-			this.first = true;
-		}
+		// if (this.first) {
+		// 	this.transformTable._getData();
+		// } else {
+		// 	this.first = true;
+        // }
+        this.chartBackStatus()
 	}
 
 	//选择面板，默认选中数据
@@ -513,9 +524,14 @@ export class DiffVennComponent implements OnInit {
         this.selectConfirmData = data; //新增11.21号，11：16
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
-		this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
-		this.first ? this.transformTable._getData() : (this.first = true);
-		this.updateVenn();
+
+		// this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+        // this.first ? this.transformTable._getData() : (this.first = true);
+        // 更新当前回来的表头为基础头
+        console.log(this.selectConfirmData);
+        this.defaultEmitBaseThead = true;
+        this.chartBackStatus()
+        this.updateVenn();
 	}
 
 	redrawChart(width, height?) {
@@ -583,8 +599,8 @@ export class DiffVennComponent implements OnInit {
 					_selfV.singleMultiSelect['venn_name'] = '';
                 }
                 _selfV.upSelect.length = 0;
-                _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
-
+                // _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
+                this.chartBackStatus();
             })
 	}
 
@@ -740,7 +756,8 @@ export class DiffVennComponent implements OnInit {
             _self.updateVenn();
             _self.leftSelect.length = 0;
             _self.upSelect.length = 0;
-            _self.first ? _self.transformTable._getData() : (_self.first = true);
+            // _self.first ? _self.transformTable._getData() : (_self.first = true);
+            _self.chartBackStatus();
         },false);
 
 		drawSvg();
