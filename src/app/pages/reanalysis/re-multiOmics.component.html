@@ -30,7 +30,7 @@
                 <!-- 关系 -->
                 <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm()"></app-gene-relative>
 
-                <button class="ml12" *ngIf="!addColumnShow && !this.graphRelations.length" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
+                <button class="ml12" [hidden]="addColumnShow || this.graphRelations.length" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
             </div>
             <!-- 表格转换 -->
             <app-table-transformation

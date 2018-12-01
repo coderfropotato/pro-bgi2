@@ -267,12 +267,17 @@ export class ReMultiOmicsComponent implements OnInit {
 
 	// 表格上方功能区 resize重新计算表格高度
 	resize(event) {
-		this.computedTableHeight();
+        setTimeout(()=>{
+            this.computedTableHeight();
+        },30)
     }
 
     computedTableHeight() {
 		try {
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            console.log(this.right.nativeElement.offsetHeight);
+            console.log(this.func.nativeElement.offsetHeight);
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            console.log(this.tableHeight);
 		} catch (error) {}
     }
 
