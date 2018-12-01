@@ -1,7 +1,7 @@
-import { TranslateService } from "@ngx-translate/core";
-import { StoreService } from "./../service/storeService";
-import { OuterDataBaseService} from "./../service/outerDataBaseService";
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from "@angular/core";
+import { TranslateService } from '@ngx-translate/core';
+import { StoreService } from './../service/storeService';
+import { OuterDataBaseService } from './../service/outerDataBaseService';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 /**
  * @description 增删列
  * @author Yangwd<277637411@qq.com>
@@ -10,423 +10,448 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
  * @implements {OnInit}
  */
 @Component({
-    selector: "app-add-column",
-    templateUrl: "./add-column.component.html",
-    styles: []
+	selector: 'app-add-column',
+	templateUrl: './add-column.component.html',
+	styles: []
 })
 export class AddColumnComponent implements OnInit {
-    @Input() thead: Array<object>; // 默认显示的表头
-    @Input() baseThead: Array<string> = []; // 基础的表头  （需要默认激活)
-    @Output() toggle: EventEmitter<any> = new EventEmitter(); // 显示隐藏
-    @Output() addThead: EventEmitter<any> = new EventEmitter(); // 添加头的时候发出的事件
-    @Output() clearThead: EventEmitter<any> = new EventEmitter(); // 清除头的时候发出的事件 (没用  现在清除默认发出addThead事件)
-     show: boolean = false;
+	@Input() thead: Array<object>; // 默认显示的表头
+	@Input() baseThead: Array<string> = []; // 基础的表头  （需要默认激活)
+	@Output() toggle: EventEmitter<any> = new EventEmitter(); // 显示隐藏
+	@Output() addThead: EventEmitter<any> = new EventEmitter(); // 添加头的时候发出的事件
+	@Output() clearThead: EventEmitter<any> = new EventEmitter(); // 清除头的时候发出的事件 (没用  现在清除默认发出addThead事件)
+	show: boolean = false;
 
+	selected: Array<any> = [];
+	selectCount: Array<any> = [];
+	beforeSelected: Array<any> = [];
+	theadInBase: string[] = []; // 哪些基础表头在增删列的数据里面
+	outerIndex: number = 0; // 当前的外部数据库索引
+	modalVisible: boolean = false;
 
-    selected: Array<any> = [];
-    selectCount:Array<any> = [];
-    beforeSelected: Array<any> = [];
-    theadInBase:string[] = []; // 哪些基础表头在增删列的数据里面
-    outerIndex:number = 0; // 当前的外部数据库索引
-    modalVisible:boolean = false;
+	generatedThead: object = {};
+	modalVisibleList: boolean[] = [];
+	outerSelected: any[] = [];
+	outerBeforeSelected: any[] = [];
 
-    generatedThead:object = {};
-    modalVisibleList:boolean[] = [];
-    outerSelected:any[] = [];
-    outerBeforeSelected:any[] = [];
+	constructor(
+		private storeService: StoreService,
+		private translate: TranslateService,
+		public outerDataBaseService: OuterDataBaseService
+	) {
+		let browserLang = this.storeService.getLang();
+		this.translate.use(browserLang);
+	}
 
-    constructor(
-        private storeService: StoreService,
-        private translate: TranslateService,
-        public outerDataBaseService:OuterDataBaseService
-    ) {
-        let browserLang = this.storeService.getLang();
-        this.translate.use(browserLang);
-    }
+	ngOnInit() {
+		this.initIndexAndChecked();
+		// 生成 点击选择 容器
+		this.initSelected();
+		this.initBeforeSelected();
+		this.initSelectCount();
+		let outerTemp = this.outerDataBaseService.get();
+		if (outerTemp['children'].length) {
+			outerTemp['children'].forEach((val, index) => {
+				this.generatedThead[index] = [];
+				this.modalVisibleList[index] = false;
+			});
+		}
+	}
 
-    ngOnInit() {
-        this.initIndexAndChecked();
-        // 生成 点击选择 容器
-        this.initSelected();
-        this.initBeforeSelected();
-        this.initSelectCount();
-        let outerTemp = this.outerDataBaseService.get();
-        if(outerTemp['children'].length){
-            outerTemp['children'].forEach((val,index)=>{
-                this.generatedThead[index] = [];
-                this.modalVisibleList[index] = false;
-            })
-        }
+	ngOnChanges(changes: SimpleChanges) {
+		if ('baseThead' in changes && !changes['baseThead'].firstChange && changes['baseThead'].currentValue.length) {
+			this.theadInBase = [];
+			this.initSelected();
+			this.forLeaves(this.thead, (item) => {
+				if (this.baseThead.includes(item['key'])) {
+					item['checked'] = true;
+					this.selected[item['index']].push(item);
+					this.theadInBase.push(item);
+				} else {
+					item['checked'] = false;
+				}
+			});
 
-    }
+			this.getCheckCount();
+			this.beforeSelected = this.copy(this.selected);
+		}
+	}
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (
-            "baseThead" in changes &&
-            !changes["baseThead"].firstChange &&
-            changes["baseThead"].currentValue.length
-        ) {
-            this.theadInBase = [];
-            this.initSelected();
-            this.forLeaves(this.thead,item=>{
-                if (this.baseThead.includes(item["key"])) {
-                    item["checked"] = true;
-                    this.selected[item['index']].push(item);
-                    this.theadInBase.push(item);
-                }else{
-                    item['checked'] = false;
-                }
-            })
+	initIndexAndChecked() {
+		this.thead.forEach((val, index) => {
+			if (val['children'] && val['children'].length) {
+				val['children'].forEach((v, i) => {
+					if (v['children'] && v['children'].length) {
+						for (let m = 0; m < v['children'].length; m++) {
+							v['children'][m]['index'] = index;
+							v['children'][m]['checked'] = false;
+						}
+					}
+				});
+			}
+		});
+	}
 
-            this.getCheckCount();
-            this.beforeSelected = this.copy(this.selected);
-        }
-    }
+	// 切换显示面板
+	toggleShow() {
+		this.show = !this.show;
+		setTimeout(() => {
+			this.toggle.emit(this.show);
+		}, 0);
+	}
 
-    initIndexAndChecked(){
-        this.thead.forEach((val,index)=>{
-            if(val['children'] && val['children'].length){
-                val['children'].forEach((v,i)=>{
-                    if(v['children'] && v['children'].length){
-                        for(let m=0;m<v['children'].length;m++){
-                            v['children'][m]['index'] = index;
-                            v['children'][m]['checked'] = false;
-                        }
-                    }
-                })
-            }
-        })
-    }
+	// 点击选择或者取消选择
+	toggleSelect(item, index): void {
+		item.checked = !item.checked;
+		if (item.checked) {
+			item['index'] = index;
+			if (this.isInArr(item, this.selected[index], 'key')) return;
+			this.selected[index].push(item);
+		} else {
+			let idt = this.selected[index].findIndex((val, index) => {
+				return val['key'] === item['key'];
+			});
+			if (idt != -1) this.selected[index].splice(idt, 1);
+		}
+		this.getCheckCount();
+	}
 
-    // 切换显示面板
-    toggleShow() {
-        this.show = !this.show;
-        setTimeout(() => {
-            this.toggle.emit(this.show);
-        }, 0);
-    }
+	// 把之前选择的数据  应用在状态里
+	applyCheckedStatus() {
+		if (this.beforeSelected.every(everySuit)) {
+			this.initTheadStatus();
+		} else {
+			this.beforeSelected.forEach((v) => {
+				if (v.length) {
+					let status = false;
+					this.forLeaves(this.thead, (item) => {
+						status = this.isInArr(item, v, 'key') ? true : false;
+						item['checked'] = status;
+					});
+				}
+			});
+		}
+		this.getCheckCount();
 
-    // 点击选择或者取消选择
-    toggleSelect(item,index): void {
-        item.checked = !item.checked;
-        if(item.checked){
-            item['index'] = index;
-            if(this.isInArr(item,this.selected[index],'key')) return;
-            this.selected[index].push(item);
-        }else{
-            let idt = this.selected[index].findIndex((val,index)=>{
-                return val['key'] === item['key'];
-            })
-            if(idt!=-1) this.selected[index].splice(idt,1);
-        }
-        this.getCheckCount();
-    }
+		function everySuit(item) {
+			return item.length == 0;
+		}
+	}
 
-    // 把之前选择的数据  应用在状态里
-    applyCheckedStatus() {
-        if(this.beforeSelected.every(everySuit)){
-            this.initTheadStatus();
-        }else{
-            this.beforeSelected.forEach(v=>{
-                if(v.length){
-                    let status = false;
-                    this.forLeaves(this.thead,item=>{
-                        status = this.isInArr(item,v,'key')?true:false;
-                        item['checked'] = status;
-                    })
-                }
-            })
-        }
-        this.getCheckCount();
+	isInArr(x, arr, key): boolean {
+		for (let i = 0; i < arr.length; i++) {
+			if (x[key] === arr[i][key]) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-        function everySuit(item){
-            return item.length==0;
-        }
-    }
+	// 获取每个分类选中的个数
+	getCheckCount() {
+		this.selectCount = this.selected.map((v) => v.length);
+	}
 
-    isInArr(x, arr, key): boolean {
-        for (let i = 0; i < arr.length; i++) {
-            if (x[key] === arr[i][key]) {
-                return true;
-            }
-        }
-        return false;
-    }
+	// 初始化头的选中状态
+	initTheadStatus() {
+		this.forLeaves(this.thead, (item) => {
+			item['checked'] = false;
+		});
+	}
 
-    // 获取每个分类选中的个数
-    getCheckCount() {
-        this.selectCount = this.selected.map(v=>v.length);
-    }
+	confirm() {
+		this.beforeSelected = this.copy(this.selected);
 
-    // 初始化头的选中状态
-    initTheadStatus() {
-        this.forLeaves(this.thead,item=>{
-            item['checked'] = false;
-        })
-    }
+		let selectedCollection = this.classifyCollection(this.selected);
+		// 记录基础表头 过滤掉基础表头的信息 才是正确的增加的列
+		let add = [];
+		let remove = [];
 
-    confirm() {
-        this.beforeSelected = this.copy(this.selected);
+		let tempTheadInBase = this.theadInBase.concat([]);
 
-        let selectedCollection  = this.classifyCollection(this.selected);
-        // 记录基础表头 过滤掉基础表头的信息 才是正确的增加的列
-        let add = [];
-        let remove = [];
+		selectedCollection.forEach((v) => {
+			// 不再基础头里 就是新增的
+			if (!this.baseThead.includes(v['key'])) {
+				add.push(v);
+			}
+			// 选中的在base头里 就留下  不再base里就是删除的项
+			let index = tempTheadInBase.findIndex((val, index) => {
+				return val['key'] === v['key'];
+			});
+			if (index != -1) tempTheadInBase.splice(index, 1);
+		});
+		// 有删除的就放在remove里面
+		// tempTheadInBase.forEach(v=>remove.push({ category:null, key:v }))
+		if (tempTheadInBase.length) remove = tempTheadInBase.concat([]);
 
-        let tempTheadInBase = this.theadInBase.concat([]);
+		// 把外部数据库添加的放进add
+		if (this.outerSelected.length) {
+			add.push(...this.outerSelected);
+			this.outerBeforeSelected = this.outerSelected.concat([]);
+		}
+		console.log(add);
+		this.addThead.emit({ add, remove });
+	}
 
-        selectedCollection.forEach(v=>{
-            // 不再基础头里 就是新增的
-            if(!this.baseThead.includes(v['key'])){
-                add.push(v);
-            }
-            // 选中的在base头里 就留下  不再base里就是删除的项
-            let index = tempTheadInBase.findIndex((val,index)=>{
-                return val['key']===v['key'];
-            })
-            if(index!=-1) tempTheadInBase.splice(index,1);
-        })
-        // 有删除的就放在remove里面
-        // tempTheadInBase.forEach(v=>remove.push({ category:null, key:v }))
-        if(tempTheadInBase.length)  remove = tempTheadInBase.concat([]);
+	copy(arr) {
+		let temp = [];
+		arr.forEach((val, index) => {
+			temp.push([]);
+			if (val.length) temp[index].push(...val);
+		});
+		return temp;
+	}
 
-        // 把外部数据库添加的放进add
-        if(this.outerSelected.length){
-            add.push(...this.outerSelected);
-            this.outerBeforeSelected = this.outerSelected.concat([]);
-        }
-        console.log(add)
-        this.addThead.emit({add,remove});
-    }
+	initSelected() {
+		this.selected = this.thead.map((v) => []);
+		if (this.outerDataBaseService.get()['children'].length) this.selected.push([]);
+	}
 
-    copy(arr){
-        let temp = [];
-        arr.forEach((val,index)=>{
-            temp.push([]);
-            if(val.length) temp[index].push(...val);
-        })
-        return temp;
-    }
+	initBeforeSelected() {
+		this.beforeSelected = this.thead.map((v) => []);
+		if (this.outerDataBaseService.get()['children'].length) this.beforeSelected.push([]);
+	}
 
-    initSelected(){
-        this.selected = this.thead.map(v=>[]);
-        if(this.outerDataBaseService.get()['children'].length) this.selected.push([]);
-    }
+	initSelectCount() {
+		this.selectCount = this.thead.map((v) => 0);
+		if (this.outerDataBaseService.get()['children'].length) this.selectCount.push(0);
+	}
 
-    initBeforeSelected(){
-        this.beforeSelected = this.thead.map(v=>[]);
-        if(this.outerDataBaseService.get()['children'].length) this.beforeSelected.push([]);
-    }
+	classifyCollection(collection) {
+		let temp = [];
+		collection.forEach((v) => (temp = temp.concat(v)));
+		return temp;
+	}
 
-    initSelectCount(){
-        this.selectCount = this.thead.map(v=>0);
-        if(this.outerDataBaseService.get()['children'].length) this.selectCount.push(0);
-    }
+	clear() {
+		this.initSelected();
+		this.initBeforeSelected();
+		this.initTheadStatus();
+		this.getCheckCount();
+		// 清除外部数据库
+		this.outerSelected = [];
+		this.outerBeforeSelected = [];
+		this.confirm();
+	}
 
-    classifyCollection(collection){
-        let temp = [] ;
-        collection.forEach(v=>temp = temp.concat(v));
-        return temp;
-    }
+	cancel() {
+		this.selected = this.copy(this.beforeSelected);
+		this.applyCheckedStatus();
+		// 外部数据库取消
+		this.outerSelected = this.outerBeforeSelected.concat([]);
+	}
 
+	closeTag(d) {
+		this.toggleSelect(d, d['index']);
+	}
 
-    clear() {
-        this.initSelected();
-        this.initBeforeSelected();
-        this.initTheadStatus();
-        this.getCheckCount();
-        // 清除外部数据库
-        this.outerSelected = [];
-        this.outerBeforeSelected = [];
-        this.confirm();
-    }
+	// 外部数据库逻辑
+	// 外部数据库点击选择
+	outerClick(item, index) {
+		if (this.outerSelected.length) {
+			if (this.isInArr(item, this.outerSelected, 'key')) return;
+			this.outerSelected.push(item);
+		} else {
+			this.outerSelected.push(item);
+		}
+	}
 
-    cancel() {
-        this.selected = this.copy(this.beforeSelected);
-        this.applyCheckedStatus();
-        // 外部数据库取消
-        this.outerSelected = this.outerBeforeSelected.concat([]);
-    }
+	outerClose(item) {
+		let index = this.outerSelected.findIndex((val, i) => {
+			return val['key'] === item['key'];
+		});
+		if (index != -1) this.outerSelected.splice(index, 1);
+	}
 
-    closeTag(d) {
-        this.toggleSelect(d,d['index']);
-    }
+	addTreeThead(index) {
+		this.modalVisibleList[index] = true;
+	}
 
-    // 外部数据库逻辑
-    // 外部数据库点击选择
-    outerClick(item,index){
-        if(this.outerSelected.length){
-            if(this.isInArr(item,this.outerSelected,'key')) return;
-            this.outerSelected.push(item);
-        }else{
-            this.outerSelected.push(item);
-        }
-    }
+	// 树选择可匹配的头 改变
+	handlerSelectDataChange(thead, index) {
+		this.generatedThead[index] = thead;
+	}
 
-    outerClose(item){
-        let index = this.outerSelected.findIndex((val,i)=>{
-            return val['key']===item['key'];
-        })
-        if(index!=-1) this.outerSelected.splice(index,1);
-    }
+	handleCancel(index) {
+		this.modalVisibleList[index] = false;
+	}
 
-    addTreeThead(index){
-        this.modalVisibleList[index] = true;
-    }
+	handleOk(index, curObj) {
+		if (this.generatedThead[index][0]) {
+			curObj['generatedThead'].push({
+				category: curObj['category'],
+				checked: false,
+				key: this.generatedThead[index][0],
+				name: this.generatedThead[index][0],
+				index: this.thead.length
+			});
+		}
+		this.initGeneratedThead();
+	}
 
-    // 树选择可匹配的头 改变
-    handlerSelectDataChange(thead,index){
-        this.generatedThead[index] = thead;
-    }
+	// 初始化临时产生的组合头 generatedThead
+	initGeneratedThead() {
+		for (let name in this.generatedThead) {
+			this.generatedThead[name] = [];
+		}
+		for (let i = 0; i < this.modalVisibleList.length; i++) {
+			this.modalVisibleList[i] = false;
+		}
+	}
 
-    handleCancel(index){
-        this.modalVisibleList[index]  = false;
-    }
+	forTree(data, callback) {
+		if (!data || !data.length) return;
+		let stack = [];
+		for (var i = 0, len = data.length; i < len; i++) {
+			stack.push(data[i]);
+		}
+		let item;
+		while (stack.length) {
+			item = stack.shift();
+			callback && callback(item);
+			if (item.children && item.children.length) {
+				stack = stack.concat(item.children);
+			}
+		}
+	}
 
-    handleOk(index,curObj){
-        if(this.generatedThead[index][0]){
-            curObj['generatedThead'].push({
-                category:curObj['category'],
-                checked:false,
-                key:this.generatedThead[index][0],
-                name:this.generatedThead[index][0],
-                index:this.thead.length
-            });
-        }
-        this.initGeneratedThead();
-    }
+	forLeaves(data, callback) {
+		if (!data || !data.length) return;
+		let stack = [];
+		for (var i = 0, len = data.length; i < len; i++) {
+			stack.push(data[i]);
+		}
 
-    // 初始化临时产生的组合头 generatedThead
-    initGeneratedThead(){
-        for(let name in this.generatedThead){
-            this.generatedThead[name] = [];
-        }
-        for(let i=0;i<this.modalVisibleList.length;i++){
-            this.modalVisibleList[i] = false;
-        }
-    }
+		let item;
+		while (stack.length) {
+			item = stack.shift();
+			if (!('children' in item)) {
+				callback && callback(item);
+			}
+			if (item.children && item.children.length) {
+				stack = item.children.concat(stack);
+			}
+		}
+	}
 
-    forTree(data,callback){
-        if (!data || !data.length) return;
-        let stack = [];
-        for (var i = 0, len = data.length; i < len; i++) {
-            stack.push(data[i]);
-        }
-        let item;
-        while (stack.length) {
-            item = stack.shift();
-            callback && callback(item)
-            if (item.children && item.children.length) {
-                stack = stack.concat(item.children);
-            }
-        }
-    }
-
-    forLeaves(data,callback){
-        if (!data || !data.length) return;
-        let stack = [];
-        for (var i = 0, len = data.length; i < len; i++) {
-            stack.push(data[i]);
-        }
-
-        let item;
-        while (stack.length) {
-            item = stack.shift();
-            if(!('children' in item)) {
-                callback && callback(item)
-            }
-            if (item.children && item.children.length) {
-                stack = item.children.concat(stack);
-            }
-        }
-    }
-
-    /**
+	/**
      * @description 外部清空
      * @author Yangwd<277637411@qq.com>
      * @date 2018-10-12
      * @memberof AddColumnComponent
      */
-    _resetStatus() {
-        this.clear();
-    }
+	_resetStatus() {
+		this.clear();
+	}
 
-
-    /**
+	/**
      * @description 外部清除表头
      * @author Yangwd<277637411@qq.com>
      * @date 2018-11-29
      * @memberof AddColumnComponent
      */
-    _clearThead(){
-        this.initSelected();
-        this.initBeforeSelected();
-        // 清空头的选中状态 不清空索引  需要两者清空 参考 initIndexAndChecked
-        this.initTheadStatus();
-        this.initSelectCount();
-        this.getCheckCount();
-    }
+	_clearThead() {
+		this.initSelected();
+		this.initBeforeSelected();
+		// 清空头的选中状态 不清空索引  需要两者清空 参考 initIndexAndChecked
+		this.initTheadStatus();
+		this.initSelectCount();
+		this.getCheckCount();
+	}
 
-    _addThead(head){
-        if(head instanceof Array){
-            head.forEach(val=>{
-                this.forLeaves(this.thead,item=>{
-                    if(item['key']===val['key']){
-                        item['checked'] = true;
-                        let index = item['index'];
-                        if(this.isInArr(item,this.selected[index],'key')) return;
-                        this.selected[index].push(item);
-                        this.beforeSelected = this.copy(this.selected);
-                    }
-                })
-            })
-        }else{
-            this.forLeaves(this.thead,item=>{
-                if(item['key']===head['key']){
-                    item['checked'] = true;
-                    let index = item['index'];
-                    if(this.isInArr(item,this.selected[index],'key')) return;
-                    this.selected[index].push(item);
-                    this.beforeSelected = this.copy(this.selected);
-                }
-            })
+	_addThead(head) {
+		if (head instanceof Array) {
+			head.forEach((val) => {
+				this.forLeaves(this.thead, (item) => {
+					if (item['key'] === val['key']) {
+						item['checked'] = true;
+						let index = item['index'];
+						if (this.isInArr(item, this.selected[index], 'key')) return;
+						this.selected[index].push(item);
+						this.beforeSelected = this.copy(this.selected);
+					}
+				});
+			});
+		} else {
+			this.forLeaves(this.thead, (item) => {
+				if (item['key'] === head['key']) {
+					item['checked'] = true;
+					let index = item['index'];
+					if (this.isInArr(item, this.selected[index], 'key')) return;
+					this.selected[index].push(item);
+					this.beforeSelected = this.copy(this.selected);
+				}
+			});
+		}
+		this.getCheckCount();
+	}
+
+	_deleteThead(head) {
+		if (head instanceof Array) {
+			head.forEach((val) => {
+				this.forLeaves(this.thead, (item) => {
+					if (item['key'] === val['key']) {
+						item['checked'] = false;
+						let index = item['index'];
+						let i = this.selected[index].findIndex((v, m) => {
+							return v['key'] === val['key'];
+						});
+						if (i != -1) this.selected[index].splice(i, 1);
+						this.beforeSelected = this.copy(this.selected);
+					}
+				});
+			});
+		} else {
+			this.forLeaves(this.thead, (item) => {
+				if (item['key'] === head['key']) {
+					item['checked'] = true;
+					let index = item['index'];
+					let i = this.selected[index].findIndex((v, m) => {
+						return v['key'] === head['key'];
+					});
+					if (i != -1) this.selected[index].splice(i, 1);
+					this.beforeSelected = this.copy(this.selected);
+				}
+			});
+		}
+		this.getCheckCount();
+	}
+
+	_confirm() {
+		this.confirm();
+	}
+
+	_confirmWithoutEvent() {
+		this.beforeSelected = this.copy(this.selected);
+
+		let selectedCollection = this.classifyCollection(this.selected);
+		// 记录基础表头 过滤掉基础表头的信息 才是正确的增加的列
+		let add = [];
+		let remove = [];
+
+		let tempTheadInBase = this.theadInBase.concat([]);
+
+		selectedCollection.forEach((v) => {
+			// 不再基础头里 就是新增的
+			if (!this.baseThead.includes(v['key'])) {
+				add.push(v);
+			}
+			// 选中的在base头里 就留下  不再base里就是删除的项
+			let index = tempTheadInBase.findIndex((val, index) => {
+				return val['key'] === v['key'];
+			});
+			if (index != -1) tempTheadInBase.splice(index, 1);
+		});
+		// 有删除的就放在remove里面
+		// tempTheadInBase.forEach(v=>remove.push({ category:null, key:v }))
+		if (tempTheadInBase.length) remove = tempTheadInBase.concat([]);
+
+		// 把外部数据库添加的放进add
+		if (this.outerSelected.length) {
+			add.push(...this.outerSelected);
+			this.outerBeforeSelected = this.outerSelected.concat([]);
         }
-        this.getCheckCount();
-    }
 
-    _deleteThead(head){
-        if(head instanceof Array){
-            head.forEach(val=>{
-                this.forLeaves(this.thead,item=>{
-                    if(item['key']===val['key']){
-                        item['checked'] = false;
-                        let index = item['index'];
-                        let i = this.selected[index].findIndex((v,m)=>{
-                            return v['key']===val['key'];
-                        })
-                        if(i!=-1) this.selected[index].splice(i,1);
-                        this.beforeSelected = this.copy(this.selected);
-                    }
-                })
-            })
-        }else{
-            this.forLeaves(this.thead,item=>{
-                if(item['key']===head['key']){
-                    item['checked'] = true;
-                    let index = item['index'];
-                    let i = this.selected[index].findIndex((v,m)=>{
-                        return v['key']===head['key'];
-                    })
-                    if(i!=-1) this.selected[index].splice(i,1);
-                    this.beforeSelected = this.copy(this.selected);
-                }
-            })
-        }
-        this.getCheckCount();
-    }
-
-    _confirm(){
-        this.confirm();
-    }
-
+        return {add,remove};
+	}
 }

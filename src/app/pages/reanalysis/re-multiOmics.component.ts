@@ -10,6 +10,18 @@ import config from '../../../config';
 declare const d3: any;
 declare const $: any;
 
+/**
+ * @description
+ * 选择柱子 更新表
+ * 选择定量信息确定 - 清空图选择的数据 表变成初始表/增删列激活定量信息的头
+ *
+ *
+ * @author Yangwd<277637411@qq.com>
+ * @date 2018-11-30
+ * @export
+ * @class ReMultiOmicsComponent
+ * @implements {OnInit}
+ */
 @Component({
     selector: 'app-multiOmics',
     templateUrl: './re-multiOmics.component.html'
@@ -29,6 +41,7 @@ export class ReMultiOmicsComponent implements OnInit {
     selectedColumn: object[] = []; //选中的柱状图柱子
     selectedBox: object[] = [];  //选中的箱线图箱体
     setAddedThead :any[]= [];  // 通过定量设置增加的头
+    allSetThead:any[] = []; // 所有通过定量设置增加的头
 
     colors: string[] = [];
     legendIndex: number = 0; //当前点击图例的索引
@@ -64,6 +77,8 @@ export class ReMultiOmicsComponent implements OnInit {
     tid:string = null;
     geneType:string = '';
     addColumnShow:boolean = false;
+    graphRelations:any[] =[];
+
     // 图的设置
     constructor(
         private message: MessageService,
@@ -119,7 +134,9 @@ export class ReMultiOmicsComponent implements OnInit {
 			sortKey: null, //排序
 			sortValue: null,
 			matchAll: false,
-			reAnaly: false,
+            reAnaly: false,
+            graphRelations:this.graphRelations,
+            checkGraph:false,
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [ 'ppi', 'rbp', 'cerna' ], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
@@ -187,7 +204,11 @@ export class ReMultiOmicsComponent implements OnInit {
 			this.extendEntity['checked'] = checkParams['others']['excludeGeneList']['checked'];
 			this.extendEntity['mongoId'] = checkParams['mongoId'];
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
-			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
+            this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
+            this.extendEntity['checkGraph'] = false;
+            // 每次转换 清除增删列
+            this.addColumn._clearThead();
+			this.extendEntity['addThead'] = [];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -197,6 +218,10 @@ export class ReMultiOmicsComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
+			this.transformTable._setExtendParamsWithoutRequest( 'checkGraph', false );
+            // 每次转换清除增删列
+            this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
+            this.addColumn._clearThead();
 			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {
 				this.transformTable._getData();
@@ -209,12 +234,27 @@ export class ReMultiOmicsComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-        // 应用初始状态的 图设置参数
-        // 应用图选中的柱子  default里引用了无需设置
-		this.defaultEntity['searchList'] = [];
-        this.defaultEntity['rootSearchContentList'] = [];
-		this.first = true;
-	}
+        this.transformTable._setParamsNoRequest('checkGraph',!!this.selectedColumn.length);
+        this.transformTable._setParamsNoRequest('matrix',!!this.graphRelations.length);
+
+        this.chartBackStatus();
+    }
+
+    chartBackStatus(){
+        if(!this.first){
+            this.addColumn._clearThead();
+            this.addColumn._addThead(this.setAddedThead);
+            let {add,remove} = this.addColumn._confirmWithoutEvent();
+            this.defaultEntity['addThead'] = add;
+            this.defaultEntity['removeColumns'] = remove;
+            this.defaultEntity['rootSearchContentList'] = [];
+            this.defaultEntity['searchList'] = [];
+            this.first = true;
+        }else{
+            this.addColumn._addThead(this.setAddedThead);
+            this.addColumn._confirm();
+        }
+    }
 
 	// 在认为是基础头的时候发出基础头 双向绑定到增删列
 	baseTheadChange(thead) {
@@ -418,6 +458,10 @@ export class ReMultiOmicsComponent implements OnInit {
                         }
                     })
 
+                    this.transformTable._setParamsNoRequest('checkGraph',false);
+                    this.transformTable._setParamsNoRequest('matrix',!!this.graphRelations.length);
+                    that.chartBackStatus();
+
                 } else {  //单选
                     that.selectedColumn.length = 0;
 
@@ -445,7 +489,11 @@ export class ReMultiOmicsComponent implements OnInit {
 
                     d['checked'] = true;
                     that.selectedColumn.push(d);
-                    that.transformTable._getData();
+                    console.log(that.selectedColumn);
+
+                    this.transformTable._setParamsNoRequest('checkGraph',false);
+                    this.transformTable._setParamsNoRequest('matrix',!!this.graphRelations.length);
+                    that.chartBackStatus();
                 }
             })
 
@@ -576,6 +624,10 @@ export class ReMultiOmicsComponent implements OnInit {
                                 }
                             })
 
+                            this.transformTable._setParamsNoRequest('checkGraph',false);
+                            this.transformTable._setParamsNoRequest('matrix',!!this.graphRelations.length);
+                            that.chartBackStatus();
+
                         } else {  //单选
                             that.selectedBox.length = 0;
 
@@ -601,7 +653,10 @@ export class ReMultiOmicsComponent implements OnInit {
                             })
                             m['checked'] = true;
                             that.selectedBox.push(m);
-                            that.transformTable._get();
+                            this.transformTable._setParamsNoRequest('checkGraph',false);
+                            this.transformTable._setParamsNoRequest('matrix',!!this.graphRelations.length);
+                            that.chartBackStatus();
+
                         }
                     })
 
@@ -671,6 +726,8 @@ export class ReMultiOmicsComponent implements OnInit {
             d3.select("#multiOmicsChartDiv svg").selectAll(".boxplotRect").nodes().forEach(v => {
                 $(v).css("fill", $(v).attr("fill"));
             })
+
+            that.chartBackStatus();
         });
     }
 
@@ -719,17 +776,45 @@ export class ReMultiOmicsComponent implements OnInit {
 
     //设置 确定
     setConfirm(setArr) {
+        console.log(setArr);
         this.chartEntity['quantity'] = setArr;
         this.multiOmicsChart.reGetData();
-        if(this.setAddedThead.length) this.addColumn._deleteThead(this.setAddedThead);
+        // 获取图关系
         if(setArr.length){
-            this.setAddedThead = setArr;
-            this.addColumn._addThead(setArr);
-            this.addColumn._confirm();
+            setArr.forEach(v=>{
+                if(v['relation']!='false' && !this.graphRelations.includes(v['relations'])){
+                    this.graphRelations.push(v['relation']);
+                }
+            })
         }else{
-            this.setAddedThead = [];
-            this.addColumn._confirm();
+            this.graphRelations.length = 0;
         }
+
+        if(!this.allSetThead.length){
+            this.allSetThead = setArr;
+        }else{
+            let del = [];
+            this.allSetThead.forEach(v=>{
+                let index = setArr.findIndex((val,index)=>{
+                    return val['key']===v['key']
+                })
+                // 当前增加的头 在不在之前存的头里面
+                // 不再就删掉
+                if(index==-1){
+                    let d = this.allSetThead.splice(index,1);
+                    del.push(d);
+                }
+            })
+            if(del.length) this.addColumn._deleteThead(...del);
+        }
+        this.setAddedThead = setArr;
+        // 图会重画 把选中的数据清空
+        this.selectedColumn.length = 0;
+
+        this.transformTable._setParamsNoRequest('checkGraph',false);
+        this.transformTable._setParamsNoRequest('matrix',!!this.graphRelations.length);
+
+        this.chartBackStatus()
     }
 
     //阻止冒泡
