@@ -549,7 +549,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     filterType: argv[2],
                     valueOne: argv[3],
                     valueTwo: argv[4],
-                    crossUnion: argv[5]
+                    // crossUnion: argv[5]
                 }
             ];
         } else {
@@ -562,7 +562,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                         filterType: argv[2],
                         valueOne: argv[3],
                         valueTwo: argv[4],
-                        crossUnion: argv[5]
+                        // crossUnion: argv[5]
                     };
                     isIn = true;
                 }
@@ -575,7 +575,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     filterType: argv[2],
                     valueOne: argv[3],
                     valueTwo: argv[4],
-                    crossUnion: argv[5]
+                    // crossUnion: argv[5]
                 });
         }
         // 每次筛选的时候 重置选中的集合
@@ -594,19 +594,20 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.unionSearchConditionList = [];
         this.interSearchConditionList = [];
         if (this.tableEntity["searchList"].length) {
-            this.tableEntity["searchList"].forEach(val => {
-                val["crossUnion"] === "union"
-                    ? this.unionSearchConditionList.push(val)
-                    : this.interSearchConditionList.push(val);
-            });
+            // this.tableEntity["searchList"].forEach(val => {
+            //     val["crossUnion"] === "union"
+            //         ? this.unionSearchConditionList.push(val)
+            //         : this.interSearchConditionList.push(val);
+            // });
+            this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
         }
 
-        this.interConditionHtmlString = this.globalService.transformFilter(
-            this.interSearchConditionList
-        );
-        this.unionConditionHtmlStirng = this.globalService.transformFilter(
-            this.unionSearchConditionList
-        );
+        // this.interConditionHtmlString = this.globalService.transformFilter(
+        //     this.interSearchConditionList
+        // );
+        // this.unionConditionHtmlStirng = this.globalService.transformFilter(
+        //     this.unionSearchConditionList
+        // );
 
         // 每次分类筛选条件的时候 重新计算表格滚动区域高度
         setTimeout(() => {
@@ -929,7 +930,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         filterType,
         filterValueOne,
         filterValueTwo,
-        crossUnion
+        // crossUnion
     ) {
         /* 向filter组件传递  tableId  filterName  filterType
          找匹配tableId的filter子组件，并更新筛选状态；
@@ -947,7 +948,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                         filterType,
                         filterValueOne,
                         filterValueTwo,
-                        crossUnion
+                        // crossUnion
                     );
                     this.recive([
                         filterName,
@@ -955,7 +956,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                         filterType,
                         filterValueOne,
                         filterValueTwo,
-                        crossUnion
+                        // crossUnion
                     ]);
                 }
             });

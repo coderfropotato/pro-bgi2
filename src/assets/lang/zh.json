@@ -5,6 +5,7 @@
     "sortPhone": "升序排序 phone",
     "filterGender": "筛选gender 等于 'male'",
     "rootFilterTitle": "筛选类型",
+    "filterTitle":"筛选条件",
     "unionFilterTitle": "并集筛选条件",
     "interFilterTitle": "交级筛选条件",
     "filterPanel": {

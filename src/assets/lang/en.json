@@ -5,6 +5,7 @@
     "sortPhone": "sort phone of ascend",
     "filterGender": "filter gender of equal male",
     "rootFilterTitle":"Root screening conditions",
+    "filterTitle":"Screening conditions",
     "unionFilterTitle":"Union screening conditions",
     "interFilterTitle":"Intersection screening conditions",
     "filterPanel": {

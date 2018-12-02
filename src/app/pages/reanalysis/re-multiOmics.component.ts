@@ -51,6 +51,8 @@ export class ReMultiOmicsComponent implements OnInit {
     chartEntity: object;
     chartUrl: string;
 
+    chartSelect:any[] = []; // 图上选择的数据  把selectedColumn和selectedBox合并
+
     // table
 
     defaultEntity: object;
@@ -78,6 +80,7 @@ export class ReMultiOmicsComponent implements OnInit {
     geneType:string = '';
     addColumnShow:boolean = false;
     graphRelations:any[] =[];
+    fromChart:boolean = false; // 是否图触发的表更新
 
     // 图的设置
     constructor(
@@ -126,7 +129,8 @@ export class ReMultiOmicsComponent implements OnInit {
             tid:this.tid,
 			pageIndex: 1, //分页
             pageSize: 20,
-            quantity:this.selectedColumn,
+            quantity:this.chartSelect,
+            rationAddThead:this.setAddedThead,
 			LCID: sessionStorage.getItem('LCID'),
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
@@ -154,7 +158,8 @@ export class ReMultiOmicsComponent implements OnInit {
             tid:this.tid,
 			pageIndex: 1, //分页
             pageSize: 20,
-            quantity:this.selectedColumn,
+            quantity:this.chartSelect,
+            rationAddThead:this.setAddedThead,
 			LCID: sessionStorage.getItem('LCID'), //流程id
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
@@ -194,11 +199,13 @@ export class ReMultiOmicsComponent implements OnInit {
     // 表格转换 确定
     // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
+        this.fromChart = false;
+        this.defaultEmitBaseThead = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
 		if (this.first) {
-			this.extendCheckStatusInParams = false;
+            this.extendCheckStatusInParams = false;
 			this.extendEntity['checkStatus'] = checkParams['others']['checkStatus'];
 			this.extendEntity['unChecked'] = checkParams['others']['excludeGeneList']['unChecked'];
 			this.extendEntity['checked'] = checkParams['others']['excludeGeneList']['checked'];
@@ -236,15 +243,14 @@ export class ReMultiOmicsComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-        this.transformTable._setParamsNoRequest('checkGraph',!!this.graphRelations.length);
+        this.classifyChartSelect();
+        this.defaultEntity['checkGraph'] = !!this.chartSelect.length || !!this.graphRelations.length;
         this.chartBackStatus();
     }
 
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
         if(!this.first){
-            // this.addColumn._clearThead();
-            // this.addColumn._addThead(this.setAddedThead);
             let {add,remove} = this.addColumn._confirmWithoutEvent();
             this.defaultEntity['addThead'] = add;
             this.defaultEntity['removeColumns'] = remove;
@@ -255,14 +261,11 @@ export class ReMultiOmicsComponent implements OnInit {
         }else{
             this.transformTable._setParamsNoRequest('matrix',!!this.graphRelations.length);
             this.transformTable._getData();
-            // this.addColumn._addThead(this.setAddedThead);
-            // this.addColumn._confirm();
         }
     }
 
 	// 在认为是基础头的时候发出基础头 双向绑定到增删列
 	baseTheadChange(thead) {
-        console.log(thead);
 		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
     }
 
@@ -281,6 +284,13 @@ export class ReMultiOmicsComponent implements OnInit {
 		try {
             this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
 		} catch (error) {}
+    }
+
+    // 把选中的柱子和箱线图中的柱子 数据合并成选中的数据
+    classifyChartSelect(){
+        this.chartSelect.length = 0;
+        if(this.selectedColumn.length) this.chartSelect.push(...this.selectedColumn);
+        if(this.selectedBox.length) this.chartSelect.push(...this.selectedBox);
     }
 
     // 图
@@ -493,10 +503,10 @@ export class ReMultiOmicsComponent implements OnInit {
 
                     d['checked'] = true;
                     that.selectedColumn.push(d);
-                    console.log(that.selectedColumn);
-
                     that.first?that.transformTable._setParamsNoRequest('checkGraph',true):that.defaultEntity['checkGraph'] = true;
+                    that.classifyChartSelect();
                     that.chartBackStatus();
+                    that.fromChart = true;
                 }
             })
 
@@ -655,7 +665,9 @@ export class ReMultiOmicsComponent implements OnInit {
                             that.selectedBox.push(m);
 
                             that.first?that.transformTable._setParamsNoRequest('checkGraph',true):that.defaultEntity['checkGraph'] = true;
+                            that.classifyChartSelect();
                             that.chartBackStatus();
+                            that.fromChart = true;
 
                         }
                     })
@@ -728,6 +740,7 @@ export class ReMultiOmicsComponent implements OnInit {
             })
 
             that.first?that.transformTable._setParamsNoRequest('checkGraph',!!that.graphRelations.length || !!that.selectedColumn.length):that.defaultEntity['checkGraph'] = !!that.graphRelations.length || !!that.selectedColumn.length;
+            that.classifyChartSelect();
             that.chartBackStatus();
         });
     }
@@ -761,6 +774,9 @@ export class ReMultiOmicsComponent implements OnInit {
     multiSelectChange() {
         this.selectedColumn.length = 0;
         this.selectedBox.length = 0;
+        this.chartSelect.length = 0;
+        this.fromChart = !!this.graphRelations.length;
+
         this.multiOmicsChart.redraw();
         this.transformTable._getData();
     }
@@ -769,8 +785,10 @@ export class ReMultiOmicsComponent implements OnInit {
         console.log(this.selectedColumn);
         console.log(this.selectedBox);
 
+        this.classifyChartSelect();
         this.first?this.defaultEntity['checkGraph'] = true:this.transformTable._setParamsNoRequest('checkGraph',true);
         this.chartBackStatus();
+        this.fromChart = true;
     }
 
     colorChange(color) {
@@ -796,28 +814,14 @@ export class ReMultiOmicsComponent implements OnInit {
             this.graphRelations.length = 0;
         }
 
-        // if(!this.allSetThead.length){
-        //     this.allSetThead = setArr;
-        // }else{
-        //     let del = [];
-        //     this.allSetThead.forEach(v=>{
-        //         let index = setArr.findIndex((val,index)=>{
-        //             return val['key']===v['key'];
-        //         })
-        //         // 当前增加的头 在不在之前存的头里面
-        //         // 不再就删掉
-        //         if(index==-1){
-        //             let d = this.allSetThead.splice(index,1);
-        //             del.push(d);
-        //         }
-        //     })
-        //     if(del.length) this.addColumn._deleteThead(...del);
-        // }
 
-        this.setAddedThead = setArr;
+        this.setAddedThead.length = 0;
+        this.setAddedThead.push(...setArr);
         // 图会重画 把选中的数据清空
         this.selectedColumn.length = 0;
+        this.selectedBox.length = 0;
 
+        this.classifyChartSelect();
         this.transformTable._setParamsNoRequest('checkGraph',!!this.graphRelations.length);
         this.chartBackStatus();
     }

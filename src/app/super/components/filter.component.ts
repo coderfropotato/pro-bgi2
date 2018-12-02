@@ -41,7 +41,7 @@ export class FilterComponent implements OnInit {
     @Input() pid;
 
     filter: object;
-    radioValue: string;
+    // radioValue: string;
     // 当前筛选类型  in gt equap ...
     selectType: string;
     filtering: boolean = false;
@@ -55,7 +55,7 @@ export class FilterComponent implements OnInit {
     // 存每次确定后的值
     beforeSearchOne: any;
     beforeSearchTwo: any;
-    beforeRadioValue: any;
+    // beforeRadioValue: any;
     beforeSelectType: string;
 
     // 输入值判断
@@ -81,8 +81,8 @@ export class FilterComponent implements OnInit {
             default:
                 this.selectType = "range";
         }
-        this.radioValue = "inter";
-        this.beforeRadioValue = "inter";
+        // this.radioValue = "inter";
+        // this.beforeRadioValue = "inter";
         this.beforeSearchOne = "";
         this.beforeSearchTwo = "";
         this.beforeSelectType = this.selectType;
@@ -175,8 +175,8 @@ export class FilterComponent implements OnInit {
         }
 
         // 值变了才传给父组件
+        // this.beforeRadioValue === this.radioValue &&
         if (
-            this.beforeRadioValue === this.radioValue &&
             this.beforeSearchOne === valueOne &&
             this.beforeSearchTwo === valueTwo &&
             this.beforeSelectType === this.selectType
@@ -186,8 +186,18 @@ export class FilterComponent implements OnInit {
 
         this.beforeSearchOne = valueOne;
         this.beforeSearchTwo = valueTwo;
-        this.beforeRadioValue = this.radioValue;
+        // this.beforeRadioValue = this.radioValue;
         this.beforeSelectType = this.selectType;
+
+        // $in 默认用逗号拼接
+        if(this.selectType==='$in'){
+            if(valueOne.indexOf(',')!=-1){
+            }else if(valueOne.indexOf('，')!=-1){
+                valueOne = valueOne.replace(/\，/,',');
+            }else{
+                valueOne = valueOne.replace(/\n/,',');
+            }
+        }
 
         this.emit([
             this.filterName,
@@ -195,7 +205,7 @@ export class FilterComponent implements OnInit {
             this.selectType,
             valueOne,
             valueTwo,
-            this.radioValue
+            // this.radioValue
         ]);
         this.visible = false;
         this.filtering = true;
@@ -254,10 +264,10 @@ export class FilterComponent implements OnInit {
         filterType: string,
         filterValueOne: any,
         filterValueTwo: any,
-        crossUnion: string
+        // crossUnion: string
     ): void {
         this.selectType = filterType;
-        this.radioValue = crossUnion;
+        // this.radioValue = crossUnion;
         this.filter = {
             regExp: "",
             rangeA: "",

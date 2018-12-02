@@ -44,12 +44,12 @@
         </div>
         <nz-alert *ngIf="nodata" nzType="error" [nzMessage]="'filterPanel.error' | translate"></nz-alert>
         <!-- 交并集选择 -->
-        <div>
+        <!-- <div>
             <nz-radio-group [(ngModel)]="radioValue">
                 <label nz-radio nzValue="inter">{{'filterPanel.interText' | translate}}</label>
                 <label nz-radio nzValue="union">{{'filterPanel.unionText' | translate}}</label>
             </nz-radio-group>
-        </div>
+        </div> -->
         <!-- button group -->
         <div class="btn-group">
             <button nz-button nzType="primary" nzSize="small" (click)="confirm()">{{'filterPanel.confirmButtonText'|
