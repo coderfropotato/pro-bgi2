@@ -80,7 +80,7 @@ export class ReMultiOmicsComponent implements OnInit {
     geneType:string = '';
     addColumnShow:boolean = false;
     graphRelations:any[] =[];
-    fromChart:boolean = false; // 是否图触发的表更新
+    showBackButton:boolean = false; // 是否图触发的表更新
 
     // 图的设置
     constructor(
@@ -199,7 +199,7 @@ export class ReMultiOmicsComponent implements OnInit {
     // 表格转换 确定
     // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
-        this.fromChart = false;
+        this.showBackButton = true;
         this.defaultEmitBaseThead = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
@@ -244,6 +244,7 @@ export class ReMultiOmicsComponent implements OnInit {
 	// 表格转换返回
 	back() {
         this.classifyChartSelect();
+        this.showBackButton = false;
         this.defaultEntity['checkGraph'] = !!this.chartSelect.length || !!this.graphRelations.length;
         this.chartBackStatus();
     }
@@ -506,7 +507,7 @@ export class ReMultiOmicsComponent implements OnInit {
                     that.first?that.transformTable._setParamsNoRequest('checkGraph',true):that.defaultEntity['checkGraph'] = true;
                     that.classifyChartSelect();
                     that.chartBackStatus();
-                    that.fromChart = true;
+                    that.showBackButton = false;
                 }
             })
 
@@ -667,7 +668,7 @@ export class ReMultiOmicsComponent implements OnInit {
                             that.first?that.transformTable._setParamsNoRequest('checkGraph',true):that.defaultEntity['checkGraph'] = true;
                             that.classifyChartSelect();
                             that.chartBackStatus();
-                            that.fromChart = true;
+                            that.showBackButton = false;
 
                         }
                     })
@@ -739,8 +740,10 @@ export class ReMultiOmicsComponent implements OnInit {
                 $(v).css("fill", $(v).attr("fill"));
             })
 
+
             that.first?that.transformTable._setParamsNoRequest('checkGraph',!!that.graphRelations.length || !!that.selectedColumn.length):that.defaultEntity['checkGraph'] = !!that.graphRelations.length || !!that.selectedColumn.length;
             that.classifyChartSelect();
+            that.showBackButton = false;
             that.chartBackStatus();
         });
     }
@@ -775,7 +778,7 @@ export class ReMultiOmicsComponent implements OnInit {
         this.selectedColumn.length = 0;
         this.selectedBox.length = 0;
         this.chartSelect.length = 0;
-        this.fromChart = !!this.graphRelations.length;
+        this.showBackButton = false;
 
         this.multiOmicsChart.redraw();
         this.transformTable._getData();
@@ -788,7 +791,7 @@ export class ReMultiOmicsComponent implements OnInit {
         this.classifyChartSelect();
         this.first?this.defaultEntity['checkGraph'] = true:this.transformTable._setParamsNoRequest('checkGraph',true);
         this.chartBackStatus();
-        this.fromChart = true;
+        this.showBackButton = false;
     }
 
     colorChange(color) {
