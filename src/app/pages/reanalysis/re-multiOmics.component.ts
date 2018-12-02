@@ -364,8 +364,8 @@ export class ReMultiOmicsComponent implements OnInit {
 
         eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
         //判断极值
-        if (eachChartHeight <= 200) {
-            eachChartHeight = 200;
+        if (eachChartHeight <= 100) {
+            eachChartHeight = 100;
             height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
         }
 

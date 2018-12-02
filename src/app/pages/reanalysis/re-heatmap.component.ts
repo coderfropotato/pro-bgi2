@@ -46,6 +46,7 @@ export class ReHeatmapComponent implements OnInit {
     oLegendIndex:number=0;
     oColor:string;
 
+    geneList:string[]=[];
     defaultSetUrl:string;
     defaultSetEntity:object;
     defaultSetData:any;
@@ -923,6 +924,7 @@ export class ReHeatmapComponent implements OnInit {
                     resGeneId.push(val.x);
                 });
 
+                that.geneList = resGeneId;
                 that.setGeneList(resGeneId);
 
                 let high_j = d3.min([up_j, down_j]),
@@ -947,14 +949,16 @@ export class ReHeatmapComponent implements OnInit {
                 that.globalService.hidePopOver();
             });
 
-            $("#cluster").on("mousedown", function () {
+            d3.select("#clusterChartDiv svg").on("mousedown", function () {
                 select_rect.attr("width", 0).attr("height", 0);
                 isMousedown = false;
             })
 
-            $("#cluster").on("mouseup", function () {
+            d3.select("#clusterChartDiv svg").on("mouseup", function () {
                 select_rect.attr("width", 0).attr("height", 0);
                 isMousedown = false;
+                that.geneList.length=0;
+                that.setGeneList(that.geneList);
             })
         }
 
@@ -1079,10 +1083,12 @@ export class ReHeatmapComponent implements OnInit {
                 return i * legendClickRect_h;
             })
             .attr("fill", "transparent")
-            .on("click", (d, i) => {
+            .on("mousedown", () => {
                 let oEvent = d3.event || event;
                 clearEventBubble(oEvent);
-
+            })
+            .on("mouseup",(d,i)=>{
+                clearEventBubble(d3.event);
                 this.legendIndex = i;
                 this.isShowColorPanel = true;
             });
