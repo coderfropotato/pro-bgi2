@@ -952,8 +952,6 @@ export class ReHeatmapComponent implements OnInit {
             d3.select("#clusterChartDiv svg").on("mousedown", function () {
                 select_rect.attr("width", 0).attr("height", 0);
                 isMousedown = false;
-                that.geneList.length=0;
-                that.setGeneList(that.geneList);
             })
 
             d3.select("#clusterChartDiv svg").on("mouseup", function () {
@@ -1085,10 +1083,12 @@ export class ReHeatmapComponent implements OnInit {
                 return i * legendClickRect_h;
             })
             .attr("fill", "transparent")
-            .on("click", (d, i) => {
+            .on("mousedown", () => {
                 let oEvent = d3.event || event;
                 clearEventBubble(oEvent);
-
+            })
+            .on("mouseup",(d,i)=>{
+                clearEventBubble(d3.event);
                 this.legendIndex = i;
                 this.isShowColorPanel = true;
             });
