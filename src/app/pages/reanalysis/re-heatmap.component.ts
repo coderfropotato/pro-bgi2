@@ -29,10 +29,13 @@ export class ReHeatmapComponent implements OnInit {
     chartUrl: string;
     chartEntity: object;
 
-    isShowName: boolean = true;
-    isShowTopLine: boolean = true;
-    width: number = 480;
-    height: number = 480;
+    width: number;
+    height: number;
+    domainRange:number[]=[];
+    yName:string;
+    isCluster:boolean;
+    verticalList:object[]=[];
+    horizontalList:string[]=[];
 
     isShowColorPanel: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
@@ -42,6 +45,10 @@ export class ReHeatmapComponent implements OnInit {
     gaugeColors:string[]=[];
     oLegendIndex:number=0;
     oColor:string;
+
+    defaultSetUrl:string;
+    defaultSetEntity:object;
+    defaultSetData:any;
 
     // table
     setAddedThead :any= [];
@@ -103,20 +110,21 @@ export class ReHeatmapComponent implements OnInit {
     ngOnInit() {
         // chart
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
-        // this.chartUrl = 'http://localhost:8086/cluster';
-        this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
-        this.chartEntity = {
-            "LCID": "demo",
-            "tid": this.tid,
-            "isHorizontal": false,
-            "verticalClassification": {
-                "Blood": "aisdb.gene_exp_tcga_3.0",
-                "GO Term": "aisdb.go_3.0"
-            },
-            "horizontalClassification": this.storeService.getStore("horizontalType")
+        this.gaugeColors=this.storeService.getColors();
+
+        this.defaultSetUrl=`${config['javaPath']}/Cluster/defaultSet`;
+        this.defaultSetEntity={
+            "tid": this.tid
         }
 
-        this.gaugeColors=this.storeService.getColors();
+        this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
+        this.chartEntity = {
+            "LCID": this.storeService.getStore('LCID'),
+            "tid": this.tid,
+            "isHorizontal": true,
+            "verticalClassification": {},
+            "horizontalClassification": []
+        };
 
         // table
         this.first = true;
@@ -187,9 +195,10 @@ export class ReHeatmapComponent implements OnInit {
     addThead(thead) {
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
 		this.transformTable._addThead(thead['add']);
-	}
+    }
 
-	// 表格转换 确定
+    // 表格转换 确定
+    // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
@@ -201,8 +210,11 @@ export class ReHeatmapComponent implements OnInit {
 			this.extendEntity['checked'] = checkParams['others']['excludeGeneList']['checked'];
 			this.extendEntity['mongoId'] = checkParams['mongoId'];
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
-			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
-			this.extendEntity['relations'] = relations;
+            this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
+            this.extendEntity['relations'] = relations;
+            // 每次转换 清除增删列
+            this.addColumn._clearThead();
+			this.extendEntity['addThead'] = [];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -212,7 +224,10 @@ export class ReHeatmapComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
-			this.transformTable._setExtendParamsWithoutRequest( 'relations', relations );
+			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
+            // 每次转换清除增删列
+            this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
+            this.addColumn._clearThead();
 			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {
 				this.transformTable._getData();
@@ -225,11 +240,24 @@ export class ReHeatmapComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-        // 应用初始状态的 比较组 图选择的数据 设置参数
-		this.defaultEntity['searchList'] = [];
-        this.defaultEntity['rootSearchContentList'] = [];
-		this.first = true;
-	}
+        this.chartBackStatus();
+    }
+
+    chartBackStatus(){
+        if(!this.first){
+            this.addColumn._clearThead();
+            this.addColumn._addThead(this.setAddedThead);
+            let {add,remove} = this.addColumn._confirmWithoutEvent();
+            this.defaultEntity['addThead'] = add;
+            this.defaultEntity['removeColumns'] = remove;
+            this.defaultEntity['rootSearchContentList'] = [];
+            this.defaultEntity['searchList'] = [];
+            this.first = true;
+        }else{
+            this.addColumn._addThead(this.setAddedThead);
+            this.addColumn._confirm();
+        }
+    }
 
 	// 在认为是基础头的时候发出基础头 双向绑定到增删列
 	baseTheadChange(thead) {
@@ -249,10 +277,56 @@ export class ReHeatmapComponent implements OnInit {
 
     computedTableHeight() {
 		try {
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
 		} catch (error) {}
-	}
+    }
 
+    // 图的方法
+    //设置 默认
+    apiEntityChange(data){
+        let xNum=data.xNum;
+        if (xNum <= 8) {
+            this.width = 480;
+        } else {
+            let single_width = 60;
+            this.width = single_width * xNum;
+        }
+        this.height=480;
+        this.domainRange=[data.min,data.max];
+        this.yName='hidden';
+        this.isCluster=true;
+
+        this.chartEntity['isHorizontal']=this.isCluster;
+        this.chartEntity['horizontalClassification']=data.horizontalDefault;
+
+        this.defaultSetData=data;
+    }
+
+    //设置 确定
+    setConfirm(data){
+        this.setChartSetEntity(data);
+        this.clusterChart.reGetData();
+    }
+
+    setChartSetEntity(data){
+        //图
+        this.width=data.width;
+        this.height=data.height;
+        this.domainRange=data.domainRange;
+        this.yName=data.yName;
+        this.isCluster=data.isCluster;
+
+        //请求参数
+        this.chartEntity['isHorizontal']=data.isCluster;
+        this.chartEntity['horizontalClassification']=data.horizontalList;
+        if(data['verticalList'].length){
+            data['verticalList'].forEach(d=>{
+                this.chartEntity['verticalClassification'][d.key]=d['category'];
+            })
+        }
+    }
+
+    //画图
     drawChart(data) {
         let that=this;
 
@@ -263,8 +337,8 @@ export class ReHeatmapComponent implements OnInit {
         let leftLineData = data.left.line,
             topLineData = data.top.line,
             heatmapData = data.heatmaps,
-            valuemax = data.max,
-            valuemin = data.min;
+            valuemax = this.domainRange[1],
+            valuemin = this.domainRange[0];
 
         let topSimples=[];
         let topComplexes=[];
@@ -312,7 +386,7 @@ export class ReHeatmapComponent implements OnInit {
         let max_x_textLength = d3.max(heatmapData, d=>d.name.length);
 
         let max_y_textLength = 0;
-        if (this.isShowName) {
+        if (this.yName !=='hidden') {
             max_y_textLength = d3.max(heatmapData[0].heatmap, d=>d.x.length);
         }
 
@@ -331,15 +405,8 @@ export class ReHeatmapComponent implements OnInit {
         let single_rect_width = 0;
         let single_rect_height = 0;
 
-        if (heatmapData_len <= 8) {
-            this.width = 480;
-            heatmap_width = this.width;
-            single_rect_width = heatmap_width / heatmapData_len;
-        } else {
-            single_rect_width = 60;
-            this.width = single_rect_width * heatmapData_len;
-            heatmap_width = this.width;
-        }
+        heatmap_width = this.width;
+        single_rect_width = heatmap_width / heatmapData_len;
 
         heatmap_height = this.height;
         single_rect_height = heatmap_height / YgeneDataLen;
@@ -350,7 +417,7 @@ export class ReHeatmapComponent implements OnInit {
         let topCluster_width = 0,
             topCluster_height = 0;
 
-        if (this.isShowTopLine && isTopCluster) {
+        if (this.isCluster && isTopCluster) {
             topCluster_width = heatmap_width;
             topCluster_height = 60;
         }
@@ -443,7 +510,7 @@ export class ReHeatmapComponent implements OnInit {
 
         //定义图例比例尺
         let legend_yScale = d3.scaleLinear().range([legend_height, 0])
-            .domain([valuemin, valuemax]).clamp(true);
+            .domain([valuemin, valuemax]).clamp(true).nice();
 
         let legend_yAxis = d3.axisRight(legend_yScale).tickSizeOuter(0).ticks(5); //设置Y轴
 
@@ -489,7 +556,7 @@ export class ReHeatmapComponent implements OnInit {
             .text("差异基因表达量聚类热图");
 
         //top line
-        if (this.isShowTopLine && isTopCluster) {
+        if (this.isCluster && isTopCluster) {
             this._drawLine("topLine", topCluster_width, topCluster_height, body_g, topLine_x, 0, topLineData);
         }
 
@@ -531,7 +598,7 @@ export class ReHeatmapComponent implements OnInit {
         drawHeatmap(colors);
 
         // y text
-        if (this.isShowName) {
+        if (this.yName !=='hidden') {
             drawYText();
         }
 
@@ -640,10 +707,6 @@ export class ReHeatmapComponent implements OnInit {
 
                 let curLegend= legendWrap.append('g').attr('class','oLegend');
 
-                curLegend.append('text').attr('class','oLegendTitle')
-                .style('font-size','14px')
-                .style('text-anchor','start')
-                .text(d.title);
 
                 let sumWidth = 0,
                     sumBeforeWidth = 0;
@@ -670,20 +733,20 @@ export class ReHeatmapComponent implements OnInit {
                     .attr("width", OrdinalRectW)
                     .attr("height", OrdinalRectH)
                     .style("cursor", "pointer")
-                    .on("mouseover", function() {
-                        d3.select(this).append("title").text("单击修改颜色");
-                    })
-                    .on("mouseout", function() {
-                        d3.select(this).select("title").remove();
-                    })
-                    .on("click", function(m, i) {
-                        let oEvent = d3.event || event;
-                        clearEventBubble(oEvent);
+                    // .on("mouseover", function() {
+                    //     d3.select(this).append("title").text("单击修改颜色");
+                    // })
+                    // .on("mouseout", function() {
+                    //     d3.select(this).select("title").remove();
+                    // })
+                    // .on("click", function(m, i) {
+                    //     let oEvent = d3.event || event;
+                    //     clearEventBubble(oEvent);
 
-                        let select_index = Number($(this).parents('.legendGroup').attr("index"));
-                        that.oLegendIndex = select_index * legend_col_num + i;
-                        that.isShowColorPanel = true;
-                    });
+                    //     let select_index = Number($(this).parents('.legendGroup').attr("index"));
+                    //     that.oLegendIndex = select_index * legend_col_num + i;
+                    //     that.isShowColorPanel = true;
+                    // });
 
                 series.append("text")
                     .attr("font-size", "12px")
@@ -708,6 +771,26 @@ export class ReHeatmapComponent implements OnInit {
                         return "translate(0," + j * (OrdinalRectH + bottom_space) + ")";
                     })
 
+                curLegend.append('text').attr('class','oLegendTitle')
+                .style('font-size','14px')
+                .style('text-anchor','start')
+
+                .text(function(){
+                    let textwidth=d.title.length *7+legend_col_space/2;
+                    let colWidth=d3.select(this.parentNode).select('.legendGroup').node().getBBox().width;
+                    if(textwidth <= colWidth){
+                        return d.title;
+                    }else{
+                        let showNum=Math.ceil(colWidth/7);
+                        if(showNum<d.title.length){
+                            return d.title.substring(0,showNum) +'...';
+                        }else{
+                            return d.title;
+                        }
+                    }
+                })
+                .append('title').text(d.title)
+
             })
 
             d3.selectAll('.oLegend text.oLegendTitle')
@@ -722,7 +805,7 @@ export class ReHeatmapComponent implements OnInit {
         function drawHeatmap(colors) {
             d3.selectAll(".heatmapRects").remove();
             //颜色比例尺
-            let colorScale = d3.scaleLinear().domain([valuemax, (valuemin + valuemax) / 2, valuemin]).range(colors).interpolate(d3.interpolateRgb);
+            let colorScale = d3.scaleLinear().domain([valuemax, (valuemin + valuemax) / 2, valuemin]).range(colors).interpolate(d3.interpolateRgb).clamp(true);
             for (let i = 0; i < heatmapData_len; i++) {
                 let rect_g = heatmap_g.append("g").attr("class", "heatmapRects");
                 //画矩形
@@ -944,7 +1027,7 @@ export class ReHeatmapComponent implements OnInit {
                 .style("font-size", "12px")
                 .style("dominant-baseline", "middle")
                 .text(function (d) {
-                    return d.x;
+                    return that.yName === 'symbol' ? d.symbol : d.x;
                 })
                 .attr("y", function (d, i) {
                     return i * single_rect_height + single_rect_height / 2;
@@ -1057,7 +1140,7 @@ export class ReHeatmapComponent implements OnInit {
         console.log(geneList);
     }
 
-    // 数组分组
+     // 数组分组
     chunk(array, size) {
         let length = array.length;
 
