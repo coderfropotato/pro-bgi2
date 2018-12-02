@@ -11,12 +11,28 @@
             </div>
             <div class="left-bottom-layout">
                     <ng-template #setTemplate>
-                        <app-clusterSet></app-clusterSet>
+                        <app-clusterSet *ngIf="defaultSetData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData'></app-clusterSet>
                     </ng-template>
                     <!-- [selectTemplate]="selectTemplate" -->
-                    <app-table-switch-chart #clusterChart [id]="'cluster'" [isOnlyChart]="true" [chartUrl]="chartUrl" [apiEntity]="chartEntity" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'clusterChartDiv'" [chartName]="'聚类图'" [flex]="true">
+                    <app-table-switch-chart
+                        #clusterChart
+                        [id]="'cluster'"
+                        [isOnlyChart]="true"
+                        [chartUrl]="chartUrl"
+                        [apiEntity]="chartEntity"
+                        [setTemplate]="setTemplate"
+                        (drawChartEmit)="drawChart($event)"
+                        [chartId]="'clusterChartDiv'"
+                        [chartName]="'聚类图'"
+                        [defaultSetUrl]='defaultSetUrl'
+                        [defaultSetEntity]='defaultSetEntity'
+                        (apiEntityChange)='apiEntityChange($event)'
+                        [flex]="true"
+                    >
                     </app-table-switch-chart>
-                    <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
+
+                    <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+                    ></app-color-picker>
             </div>
             </div>
             <div #right class="right-layout" [class.expand]="switch" >
