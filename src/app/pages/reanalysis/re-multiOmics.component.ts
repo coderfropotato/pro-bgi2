@@ -119,6 +119,7 @@ export class ReMultiOmicsComponent implements OnInit {
             "quantity": []
         }
         this.chartUrl = `${config["javaPath"]}/multiOmics/graph`;
+        // this.chartUrl = `http://localhost:8086/multiOmicsY`;
 
         // table
         this.first = true;
@@ -315,9 +316,9 @@ export class ReMultiOmicsComponent implements OnInit {
         let width = 0;  //总图主体的总宽度
 
         let eachTypeWidth = 0;  //每个图中每种类型的width
-        const typeSpace = 10;  //图中每种类型的间距
+        const typeSpace = 0;  //图中每种类型的间距
         let rectWidth = 0;   //每个矩形width
-        const rectSpace = 5;  // 每个矩形的间距
+        let rectSpace = 0;  // 每个矩形的间距
 
         // 图例
         let legendRectW = 16, // 小矩形宽
@@ -327,7 +328,9 @@ export class ReMultiOmicsComponent implements OnInit {
             legend_text_space = 4; //图例矩形与文字之间的距离
 
         //根据每组柱子数量决定柱子宽度
+        //domain 柱子数量；range 宽、距离
         let widthScale = d3.scaleLinear().domain([1, 60]).range([50, 8]).clamp(true);
+        let spaceScale = d3.scaleLinear().domain([1,60]).range([40,2]).clamp(true);
 
         //calculate min max
         let allXTexts = [];
@@ -340,6 +343,7 @@ export class ReMultiOmicsComponent implements OnInit {
 
             let rectsLength = d.data.length;
             rectWidth = widthScale(rectsLength);
+            rectSpace = spaceScale(rectsLength);
             eachTypeWidth = rectsLength * rectWidth + (rectsLength + 1) * rectSpace;
 
             temp += eachTypeWidth;
@@ -347,9 +351,11 @@ export class ReMultiOmicsComponent implements OnInit {
 
             d.transX = (temp - eachTypeWidth) + i * typeSpace;
             d.w = rectWidth;
+            d.space=rectSpace;
 
             d.data.forEach(m => {
                 m.w = rectWidth;
+                m.space = rectSpace;
                 m.relation="false";
                 m.key=d.key;
                 m.type = d.type;
@@ -448,7 +454,7 @@ export class ReMultiOmicsComponent implements OnInit {
         columns.selectAll(".columnRect")
             .data(d => d.data).enter()
             .append("rect").attr("class", "columnRect")
-            .attr("transform", (d, i) => `translate(${(i + 1) * rectSpace + i * d.w},${yColumnScale(d.y)})`)
+            .attr("transform", (d, i) => `translate(${(i + 1) * d.space + i * d.w},${yColumnScale(d.y)})`)
             .attr("width", d => d.w)
             .attr("height", d => yColumnScale(0) - yColumnScale(d.y))
             .attr("fill", d => colorScale(d.type))
@@ -518,7 +524,7 @@ export class ReMultiOmicsComponent implements OnInit {
             .style("font-size", "10px")
             .attr("text-anchor", "end")
             .attr("dominant-baseline", "middle")
-            .attr("transform", (d, i) => `translate(${(i + 1) * rectSpace + i * d.w + d.w / 2},${eachChartHeight + 6}) rotate(-45)`)
+            .attr("transform", (d, i) => `translate(${(i + 1) * d.space + i * d.w + d.w / 2},${eachChartHeight + 6}) rotate(-45)`)
             .text(d => d.x);
 
         // boxplot
@@ -540,10 +546,10 @@ export class ReMultiOmicsComponent implements OnInit {
                         t.category=m.category;
                         t.value=t.x;
                         t['checked'] = false;
-                        t.relation = d.relation;
                         column.forEach(b => {
                             if (t.type === b.type) {
                                 t.w = b.w;
+                                t.space=b.space;
                             }
                         })
 
@@ -597,19 +603,19 @@ export class ReMultiOmicsComponent implements OnInit {
                     .data(m => m.boxList).enter();
 
                 // vertical line
-                this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w + k.w / 2, k => yScaleBox(k.box.high), (k, i) => (i + 1) * rectSpace + i * k.w + k.w / 2, k => yScaleBox(k.box.low));
+                this._drawLline(boxplots, (k, i) => (i + 1) * k.space + i * k.w + k.w / 2, k => yScaleBox(k.box.high), (k, i) => (i + 1) * k.space + i * k.w + k.w / 2, k => yScaleBox(k.box.low));
 
                 // high line
-                this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w + k.w / 4, k => yScaleBox(k.box.high), (k, i) => (i + 1) * rectSpace + i * k.w + 3 * k.w / 4, k => yScaleBox(k.box.high));
+                this._drawLline(boxplots, (k, i) => (i + 1) * k.space + i * k.w + k.w / 4, k => yScaleBox(k.box.high), (k, i) => (i + 1) * k.space + i * k.w + 3 * k.w / 4, k => yScaleBox(k.box.high));
 
                 // low line
-                this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w + k.w / 4, k => yScaleBox(k.box.low), (k, i) => (i + 1) * rectSpace + i * k.w + 3 * k.w / 4, k => yScaleBox(k.box.low));
+                this._drawLline(boxplots, (k, i) => (i + 1) * k.space + i * k.w + k.w / 4, k => yScaleBox(k.box.low), (k, i) => (i + 1) * k.space + i * k.w + 3 * k.w / 4, k => yScaleBox(k.box.low));
 
                 // rect
                 boxplots
                     .append("rect")
                     .attr("class", "boxplotRect")
-                    .attr("transform", (k, i) => `translate(${(i + 1) * rectSpace + i * k.w},${yScaleBox(k.box.y2)})`)
+                    .attr("transform", (k, i) => `translate(${(i + 1) * k.space + i * k.w},${yScaleBox(k.box.y2)})`)
                     .attr("width", k => k.w)
                     .attr("height", k => Math.abs(yScaleBox(k.box.y2) - yScaleBox(k.box.y1)))
                     .attr("fill", k => colorScale(k.type))
@@ -674,12 +680,12 @@ export class ReMultiOmicsComponent implements OnInit {
                     })
 
                 //median line
-                this._drawLline(boxplots, (k, i) => (i + 1) * rectSpace + i * k.w, k => yScaleBox(k.box.median), (k, i) => (i + 1) * rectSpace + i * k.w + k.w, k => yScaleBox(k.box.median));
+                this._drawLline(boxplots, (k, i) => (i + 1) * k.space + i * k.w, k => yScaleBox(k.box.median), (k, i) => (i + 1) * k.space + i * k.w + k.w, k => yScaleBox(k.box.median));
 
                 // scatter
                 const radius = 3;
                 boxplots.append("g").attr("class", "boxPoints")
-                    .attr("transform", (k, i) => `translate(${(i + 1) * rectSpace + i * k.w + k.w / 2},0)`)
+                    .attr("transform", (k, i) => `translate(${(i + 1) * k.space + i * k.w + k.w / 2},0)`)
                     .selectAll(".allPoints")
                     .data(z => z.scatters).enter()
                     .append("circle")
@@ -695,6 +701,7 @@ export class ReMultiOmicsComponent implements OnInit {
                     })
 
             })
+
         }
 
         //图例
