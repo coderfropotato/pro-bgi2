@@ -600,6 +600,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
             //         : this.interSearchConditionList.push(val);
             // });
             this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
+        }else{
+            this.filterHtmlString.length = 0;
         }
 
         // this.interConditionHtmlString = this.globalService.transformFilter(
