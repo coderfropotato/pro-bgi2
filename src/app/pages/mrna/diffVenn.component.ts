@@ -111,6 +111,7 @@ export class DiffVennComponent implements OnInit {
     upSelect: any[] = [];
 
     addColumnShow:boolean = false;
+    showBackButton:boolean = false;
 
 	constructor(
 		private message: MessageService,
@@ -289,6 +290,7 @@ export class DiffVennComponent implements OnInit {
 
 	// 表格转换 确定
 	confirm(relations) {
+        this.showBackButton = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -328,6 +330,8 @@ export class DiffVennComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
+        this.showBackButton = false;
+        this.defaultEmitBaseThead = true;
         this.chartBackStatus();
 	}
 
@@ -355,7 +359,7 @@ export class DiffVennComponent implements OnInit {
 		}else{
 			this.venn_or_upsetR = false;
 			this.tableSwitchChart.isShowTable=true;
-			this.showVenn(data);
+			// this.showVenn(data);
 		}
 	}
 
@@ -529,9 +533,8 @@ export class DiffVennComponent implements OnInit {
 		// this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
         // this.first ? this.transformTable._getData() : (this.first = true);
         // 更新当前回来的表头为基础头
-        console.log(this.selectConfirmData);
         this.defaultEmitBaseThead = true;
-        this.chartBackStatus()
+        this.chartBackStatus();
         this.updateVenn();
 	}
 

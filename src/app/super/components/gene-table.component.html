@@ -63,18 +63,23 @@
                     <span class="filter-item" (click)="deleteRootFilterItem(item)" *ngFor="let item of rootHtmlString"
                         [innerHTML]="item['html']"></span>
                 </div>
+                <div class="table-top" *ngIf="filterHtmlString.length">
+                    <span class="filter-head">{{'filterTitle' | translate}}：</span>
+                    <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of filterHtmlString"
+                        [innerHTML]="item['html']"></span>
+                </div>
                 <!-- 交集 interSearchConditionList -->
-                <div class="table-top" *ngIf="interConditionHtmlString.length">
+                <!-- <div class="table-top" *ngIf="interConditionHtmlString.length">
                     <span class="filter-head">{{'interFilterTitle' | translate}}：</span>
                     <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of interConditionHtmlString"
                         [innerHTML]="item['html']"></span>
-                </div>
+                </div> -->
                 <!-- 并集 unionSearchConditionList  -->
-                <div class="table-top" *ngIf="unionConditionHtmlStirng.length">
+                <!-- <div class="table-top" *ngIf="unionConditionHtmlStirng.length">
                     <span class="filter-head">{{'unionFilterTitle' | translate}}：</span>
                     <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of unionConditionHtmlStirng"
                         [innerHTML]="item['html']"></span>
-                </div>
+                </div> -->
             </div>
             <div class="table-content">
                 <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" x:head.length*150+'px'-->
