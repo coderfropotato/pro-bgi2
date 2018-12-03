@@ -26,7 +26,7 @@
             </div>
             <div class="func" #func (click)="resize($event)">
                 <!-- 增删列 -->
-                <app-add-column #addColumn (toggle)="toggle($event)" [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)"></app-add-column>
+                <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)"></app-add-column>
                 <!-- 关系 -->
                 <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
 

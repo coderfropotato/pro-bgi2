@@ -264,7 +264,7 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "re-multiOmics/:geneType/:tid",
+                path: "re-multiOmics/:geneType/:tid/:version",
                 component: ReMultiOmicsComponent,
                 canActivate: [SysDefendService],
                 data: {
@@ -273,7 +273,7 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "re-heatmap/:geneType/:tid",
+                path: "re-heatmap/:geneType/:tid/:version",
                 component: ReHeatmapComponent,
                 canActivate: [SysDefendService],
                 data: {

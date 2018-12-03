@@ -37,6 +37,8 @@ export class FilterComponent implements OnInit {
     @Output() getData: EventEmitter<any> = new EventEmitter();
     // 筛选面板清空发出的事件
     @Output() deleteData: EventEmitter<any> = new EventEmitter();
+    // 筛选面板清空发出的事件 表格不发请求
+    @Output() deleteDataWithoutRequest: EventEmitter<any> = new EventEmitter();
     // 父级表格的id
     @Input() pid;
 
@@ -205,6 +207,7 @@ export class FilterComponent implements OnInit {
             this.selectType,
             valueOne,
             valueTwo,
+            this.searchType
             // this.radioValue
         ]);
         this.visible = false;
@@ -264,9 +267,11 @@ export class FilterComponent implements OnInit {
         filterType: string,
         filterValueOne: any,
         filterValueTwo: any,
+        searchType:any,
         // crossUnion: string
     ): void {
         this.selectType = filterType;
+        this.searchType = searchType;
         // this.radioValue = crossUnion;
         this.filter = {
             regExp: "",
@@ -343,6 +348,29 @@ export class FilterComponent implements OnInit {
             this.visible = false;
             // 通知表格删除 筛选条件为  filterName 类型为beforeFilterType 的 筛选对象
             this.deleteData.emit([
+                this.filterName,
+                this.filterNamezh,
+                beforeFilterType
+            ]);
+        }
+    }
+
+    _outerDeleteWithoutRequest(filterName: string, filterNamezh: string, filterType: string){
+        if (
+            this.filterName === filterName &&
+            this.filterNamezh === filterNamezh &&
+            this.selectType === filterType
+        ) {
+            // 初始化之前存之前的筛选类型
+            let beforeFilterType = this.selectType;
+            // 初始化筛选面板
+            this.init();
+            // 初始化筛选状态
+            this.filtering = false;
+            // 隐藏筛选面板
+            this.visible = false;
+            // 通知表格删除 筛选条件为  filterName 类型为beforeFilterType 的 筛选对象
+            this.deleteDataWithoutRequest.emit([
                 this.filterName,
                 this.filterNamezh,
                 beforeFilterType

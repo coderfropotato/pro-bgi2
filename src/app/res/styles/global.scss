@@ -1,830 +1,826 @@
 @import "./setting.scss";
 // 韦恩图选中的状态
 .pathLinkArea path.active {
-    opacity: .5;
+	opacity: .5;
 }
 
 // report
 .anticon.active {
-    color: $them_color !important;
+	color: $them_color !important;
 }
 
 .selectPanel {
-    padding: 10px 20px;
-    border-bottom: $border;
+	padding: 10px 20px;
+	border-bottom: $border;
 }
 
 .selectPanel .selectContent button {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 .selectPanel .selectContent div {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .selectPanel .selectContent {
-    max-height: 200px;
-    overflow: auto;
+	max-height: 200px;
+	overflow: auto;
 }
 
-
 .table-content {
-    width: 100%;
-    // min-height: 400px;
-    position: relative;
-    border: $border;
-    border-radius: 0 0 4px 4px;
-    background-color: #fff;
-    // overflow: auto;
+	width: 100%;
+	// min-height: 400px;
+	position: relative;
+	border: $border;
+	border-radius: 0 0 4px 4px;
+	background-color: #fff;
+	// overflow: auto;
 }
 
 .table-content .error-msg {
-    text-align: center;
-    line-height: 400px;
+	text-align: center;
+	line-height: 400px;
 }
 
 .table-bottom {
-    padding: 10px 16px;
-    background-color: #f5f5f5;
+	padding: 10px 16px;
+	background-color: #f5f5f5;
 }
 
 .table-top {
-    padding: 8px 16px;
-    background-color: #f5f5f5;
-}
-
-.table-top .filter-item {
-    padding: 6px 4px;
-    background-color: #fff;
-    border: 1px solid #f5f5f5;
-    border-radius: 2px;
-    margin-left: 4px;
+	padding: 8px 16px;
+	background-color: #f5f5f5;
+	border: $border;
+	border-top: 0;
+	border-bottom: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+	& > span {
+		display: inline-block;
+	}
+	.filter-item {
+		padding: 6px 4px;
+		background-color: #fff;
+		border: 1px solid #f5f5f5;
+		border-radius: 2px;
+		margin-left: 4px;
+	}
 }
 
 .head-item {
-    display: inline-block;
-    padding: 8px;
-    line-height: 1;
-    background-color: #fff;
-    border: $border;
-    color: #386cca;
-    margin-right: 10px;
-    margin-bottom:10px;
-    cursor: pointer;
+	display: inline-block;
+	padding: 8px;
+	line-height: 1;
+	background-color: #fff;
+	border: $border;
+	color: #386cca;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
 }
 
 .head-item.active {
-    background-color: #ccc;
-    color: #fff;
+	background-color: #ccc;
+	color: #fff;
 }
 
 .head-item:hover {
-    opacity: 0.7;
+	opacity: 0.7;
 }
 
 .add-head {
-    display: flex;
+	display: flex;
 }
 
 .add-head button {
-    width: 96px;
-    margin-right: 26px;
+	width: 96px;
+	margin-right: 26px;
 }
 
-.add-head>div {
-    flex: 1;
+.add-head > div {
+	flex: 1;
 }
 
 .add-foot button {
-    float: right;
-    margin-left: 8px;
+	float: right;
+	margin-left: 8px;
 }
 
 .add-foot:after {
-    display: block;
-    content: "";
-    clear: both;
+	display: block;
+	content: "";
+	clear: both;
 }
 
 .add-thead-head-item {
-    position: relative;
+	position: relative;
 }
 
 .add-thead-head-item b {
-    position: absolute;
-    text-align: center;
-    right: -20px;
-    top: -12px;
-    height: 16px;
-    width: 16px;
-    font-size: 12px;
-    line-height: 16px;
-    border-radius: 50%;
-    color: #fff;
-    background-color: #52c41a;
+	position: absolute;
+	text-align: center;
+	right: -20px;
+	top: -12px;
+	height: 16px;
+	width: 16px;
+	font-size: 12px;
+	line-height: 16px;
+	border-radius: 50%;
+	color: #fff;
+	background-color: #52c41a;
 }
 
 .tag-wrap {
-    overflow-x: auto;
-    white-space:nowrap;
-    &::-webkit-scrollbar{
-        width:8px;
-        height:8px;
-        background-color: #ccc;
-    }
-    &::-webkit-scrollbar-track{
-        background: #fff;
-        border-radius:2px;
-    }
-    &::-webkit-scrollbar-thumb{
-        background: #ccc;
-        border-radius:2px;
-    }
-    &::-webkit-scrollbar-thumb:hover{
-        background: #ccc;
-    }
-    &::-webkit-scrollbar-corner{
-        background: #ccc;
-    }
+	overflow-x: auto;
+	white-space: nowrap;
+	&::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+		background-color: #ccc;
+	}
+	&::-webkit-scrollbar-track {
+		background: #fff;
+		border-radius: 2px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #ccc;
+		border-radius: 2px;
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background: #ccc;
+	}
+	&::-webkit-scrollbar-corner {
+		background: #ccc;
+	}
 }
-.outer-tab{
-    .outer-select-wrap.tag-wrap{
-        display:flex;
-        flex:1;
-        overflow:auto;
-        white-space:nowrap;
-        &::-webkit-scrollbar{
-            width:8px;
-            height:8px;
-            background-color: #ccc;
-        }
-        &::-webkit-scrollbar-track{
-            background: #fff;
-            border-radius:2px;
-        }
-        &::-webkit-scrollbar-thumb{
-            background: #ccc;
-            border-radius:2px;
-        }
-        &::-webkit-scrollbar-thumb:hover{
-            background: #ccc;
-        }
-        &::-webkit-scrollbar-corner{
-            background: #ccc;
-        }
-    }
+.outer-tab {
+	.outer-select-wrap.tag-wrap {
+		display: flex;
+		flex: 1;
+		overflow: auto;
+		white-space: nowrap;
+		&::-webkit-scrollbar {
+			width: 8px;
+			height: 8px;
+			background-color: #ccc;
+		}
+		&::-webkit-scrollbar-track {
+			background: #fff;
+			border-radius: 2px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: #ccc;
+			border-radius: 2px;
+		}
+		&::-webkit-scrollbar-thumb:hover {
+			background: #ccc;
+		}
+		&::-webkit-scrollbar-corner {
+			background: #ccc;
+		}
+	}
 }
-.relative{
-    position: relative;
+.relative {
+	position: relative;
 }
-
 
 .tag-wrap .ant-tag {
-    margin: 6px;
-    margin-left: 0;
+	margin: 6px;
+	margin-left: 0;
 }
 
 .little-table {
-    position: relative;
+	position: relative;
 }
 
 .table-thead i {
-    margin-right: 10px;
-    cursor: pointer;
-    font-size: 16px;
+	margin-right: 10px;
+	cursor: pointer;
+	font-size: 16px;
 }
 
 .table-thead button i {
-    margin-right: 0px;
-    font-size: 16px;
+	margin-right: 0px;
+	font-size: 16px;
 }
 
 .table-thead::after {
-    display: block;
-    clear: both;
-    content: "";
+	display: block;
+	clear: both;
+	content: "";
 }
 
 .tableHeader {
-    padding: 8px;
-    border: $border;
-    border-bottom: 0;
-    background-color: $table_header_bgcolor;
+	padding: 8px;
+	border: $border;
+	border-bottom: 0;
+	background-color: $table_header_bgcolor;
 }
 
-.table-top {
-    border: $border;
-    border-top: 0;
-    border-bottom: 0;
+tbody > tr:nth-child(odd) {
+	background-color: #f5f5f5 !important;
 }
 
-tbody>tr:nth-child(odd) {
-    background-color: #f5f5f5 !important;
-}
-
-tbody>tr:nth-child(even) {
-    background-color: #fff !important;
+tbody > tr:nth-child(even) {
+	background-color: #fff !important;
 }
 
 .ant-table-td-left-sticky,
 .ant-table-td-right-sticky {
-    background-color: inherit;
+	background-color: inherit;
 }
 
 .fLeft {
-    float: left;
+	float: left;
 }
 
 .fRight {
-    float: right;
+	float: right;
 }
 
 .tableSwitchChart {
-    width: 100%;
-    margin: 0 auto;
+	width: 100%;
+	margin: 0 auto;
 }
 
 .tableSwitchChart .ant-table-small {
-    border: 0 !important;
+	border: 0 !important;
 }
 
-.center-flex{
-    display: flex;
-    padding-top: 40px;
-    // align-items: center;
+.center-flex {
+	display: flex;
+	padding-top: 40px;
+	// align-items: center;
 }
 .clearfix {
-    display: block;
-    clear: both;
-    content: "";
+	display: block;
+	clear: both;
+	content: "";
 }
 
 .flex {
-    display: flex;
+	display: flex;
 }
 
 .extend-height {
-    height: inherit;
+	height: inherit;
 }
 
 .full-height {
-    height: 100%;
+	height: 100%;
 }
-.first-column-gene{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding:4px $padding;
+.first-column-gene {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 4px $padding;
 }
 
 button.btnActive {
-    border: 1px solid $btn_active_color !important;
-    color: #fff !important;
-    background: $btn_active_color !important;
+	border: 1px solid $btn_active_color !important;
+	color: #fff !important;
+	background: $btn_active_color !important;
 }
 
 .table-bottom {
-    height: 52px;
+	height: 52px;
 }
 
 .center {
-    text-align: center;
+	text-align: center;
 }
 
-.left{
-    text-align: left;
+.left {
+	text-align: left;
 }
 
 .right {
-    text-align: right;
+	text-align: right;
 }
 
 .hide {
-    display: none;
+	display: none;
 }
 
 .switchBtn {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 .multiConfirmBtn {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 .pagination-content button {
-    float: left;
-    margin: 0 4px;
-    padding: 0 12px;
+	float: left;
+	margin: 0 4px;
+	padding: 0 12px;
 }
 
 .selected {
-    stroke: #000;
-    stroke-width: 2;
+	stroke: #000;
+	stroke-width: 2;
 }
 
 .report {
-    width: 100%;
-    height: 100%;
-    // overflow: hidden;
-    background-color: $background_color;
+	width: 100%;
+	height: 100%;
+	// overflow: hidden;
+	background-color: $background_color;
 }
 
 .report-wrap {
-    width: 100%;
-    height: 100%;
-    // overflow: hidden;
+	width: 100%;
+	height: 100%;
+	// overflow: hidden;
 }
 
 .report-content {
-    width: 100%;
-    height: calc(100% - 80px);
-    // overflow: hidden;
-    padding: $padding;
+	width: 100%;
+	height: calc(100% - 80px);
+	// overflow: hidden;
+	padding: $padding;
 }
 
 .full {
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 .column {
-    flex-direction: column;
+	flex-direction: column;
 }
 
 .row {
-    flex-direction: row;
+	flex-direction: row;
 }
 
-.func{
-    background-color:#fff;
-    padding:12px;
+.func {
+	background-color: #fff;
+	padding: 12px;
 }
 
 .content {
-    // flex 5
-    width: 100%;
-    height: 100%;
-    min-width: 1350px;
-    page-break-before: always;
-    display: flex;
-    flex-direction: row;
-    &.reanalysis-content{
-        height:calc(100% - 80px);
-    }
-    .left-layout {
-        overflow: hidden;
-        flex: 3;
-        margin-right: 16px;
-        display: flex;
-        &.unexpand {
-            flex: 2;
-        }
-        .left-top-layout {
-            @include module-style;
-            margin-bottom: 12px;
-            padding: 12px;
-        }
-        .left-bottom-layout {
-            @include module-style;
-            padding: 12px;
-            flex: 1;
-            overflow: hidden;
-        }
-    }
-    .right-layout {
-        height: 100%;
-        overflow: hidden;
-        flex: 2;
-        transition: 0.2s all ease;
-        @include module-style;
-        &.expand {
-            flex: 3;
-        }
-    }
-    & .switch {
-        position: fixed;
-        right: 222px;
-        top: 46px;
-    }
+	// flex 5
+	width: 100%;
+	height: 100%;
+	min-width: 1350px;
+	page-break-before: always;
+	display: flex;
+	flex-direction: row;
+	&.reanalysis-content {
+		height: calc(100% - 80px);
+	}
+	.left-layout {
+		overflow: hidden;
+		flex: 3;
+		margin-right: 16px;
+		display: flex;
+		&.unexpand {
+			flex: 2;
+		}
+		.left-top-layout {
+			@include module-style;
+			margin-bottom: 12px;
+			padding: 12px;
+		}
+		.left-bottom-layout {
+			@include module-style;
+			padding: 12px;
+			flex: 1;
+			overflow: hidden;
+		}
+	}
+	.right-layout {
+		height: 100%;
+		overflow: hidden;
+		flex: 2;
+		transition: 0.2s all ease;
+		@include module-style;
+		&.expand {
+			flex: 3;
+		}
+	}
+	& .switch {
+		position: fixed;
+		right: 222px;
+		top: 46px;
+	}
 }
 
 .bar {
-    width: 12px;
-    height: 12px;
-    background-color: $background_color;
+	width: 12px;
+	height: 12px;
+	background-color: $background_color;
 }
 
 // top
 .top {
-    height: 40px;
-    min-width: $min-width;
-    background-color: $them_color;
+	height: 40px;
+	min-width: $min-width;
+	background-color: $them_color;
 }
 
 // menu
 .menu {
-    height: 40px;
-    padding: 0 20px;
-    min-width: $min-width;
-    border-bottom: $border;
-    background-color: #fff;
-    position: relative;
-    .menu-slot-text{
-        line-height:40px;
-        font-weight: bold;
-    }
-    ul {
-        margin: 0;
-        box-sizing: border-box;
-        background-color: #fff;
-        @include display-flex;
-        li {
-            padding: 8px 4px;
-            &:hover {
-                @include hover-animate;
-            }
-            span {
-                color: $menu_font_color;
-                &.active {
-                    color: $menu_active_font_color;
-                }
-            }
-        }
-    }
-    ol {
-        @include display-flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-start;
-        opacity: 0;
-        width: 100%;
-        min-width: $min-width;
-        margin: 0;
-        height: 310px;
-        transition: 0.3s all ease;
-        position: absolute;
-        left: 0;
-        top: 120px;
-        background-color: #fff;
-        z-index: 0;
-        &.active {
-            opacity: 1;
-            left: 0;
-            top: 40px;
-            z-index: 12;
-        }
-        li {
-            width: 310px;
-            padding: 12px;
-            @include display-flex;
-            justify-content: flex-start;
-            align-items: center;
-            flex-direction: column;
-            transition: 0.6s all ease;
-            &:hover {
-                @include hover-animate;
-            }
-            img {
-                margin-top: 24px;
-            }
-            p {
-                margin-top: 12px;
-                margin-bottom: 0;
-            }
-            .menu-button {
-                @include submenu-button;
-            }
-            &.active {
-                background-color: $them_color;
-            }
-        }
-    }
+	height: 40px;
+	padding: 0 20px;
+	min-width: $min-width;
+	border-bottom: $border;
+	background-color: #fff;
+	position: relative;
+	.menu-slot-text {
+		line-height: 40px;
+		font-weight: bold;
+	}
+	ul {
+		margin: 0;
+		box-sizing: border-box;
+		background-color: #fff;
+		@include display-flex;
+		li {
+			padding: 8px 4px;
+			&:hover {
+				@include hover-animate;
+			}
+			span {
+				color: $menu_font_color;
+				&.active {
+					color: $menu_active_font_color;
+				}
+			}
+		}
+	}
+	ol {
+		@include display-flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: flex-start;
+		opacity: 0;
+		width: 100%;
+		min-width: $min-width;
+		margin: 0;
+		height: 310px;
+		transition: 0.3s all ease;
+		position: absolute;
+		left: 0;
+		top: 120px;
+		background-color: #fff;
+		z-index: 0;
+		&.active {
+			opacity: 1;
+			left: 0;
+			top: 40px;
+			z-index: 12;
+		}
+		li {
+			width: 310px;
+			padding: 12px;
+			@include display-flex;
+			justify-content: flex-start;
+			align-items: center;
+			flex-direction: column;
+			transition: 0.6s all ease;
+			&:hover {
+				@include hover-animate;
+			}
+			img {
+				margin-top: 24px;
+			}
+			p {
+				margin-top: 12px;
+				margin-bottom: 0;
+			}
+			.menu-button {
+				@include submenu-button;
+			}
+			&.active {
+				background-color: $them_color;
+			}
+		}
+	}
 }
 
 // 颜色选择器
-.color-picker .button-area>button:first-child {
-    margin-right: 12px;
+.color-picker .button-area > button:first-child {
+	margin-right: 12px;
 }
 
 .color-picker-warp {
-    top: 10%!important;
+	top: 10% !important;
 }
 
 // tree-component
 .tree-component {
-    padding: 12px;
-    ul {
-        padding: 0 6px;
-        margin: 0 !important;
-        li {
-            padding: 0 14px;
-            font-size: 14px;
-            line-height: 28px;
-            position: relative;
-            i {
-                font-size: 12px;
-                color: #999;
-                position: absolute;
-                width: 16px;
-                height: 16px;
-                left: 0px;
-                top: 8px;
-                cursor: pointer;
-            }
-            label span {
-                margin: 0 !important;
-                padding: 2px 6px;
-                cursor: pointer;
-                user-select: none;
-                &.disabled {
-                    color: #ddd;
-                    cursor: not-allowed;
-                }
-                &:not(.ant-checkbox):not(.disabled):hover {
-                    background-color: $btn_active_color;
-                    color: #fff;
-                }
-            }
-        }
-    }
+	padding: 12px;
+	ul {
+		padding: 0 6px;
+		margin: 0 !important;
+		li {
+			padding: 0 14px;
+			font-size: 14px;
+			line-height: 28px;
+			position: relative;
+			i {
+				font-size: 12px;
+				color: #999;
+				position: absolute;
+				width: 16px;
+				height: 16px;
+				left: 0px;
+				top: 8px;
+				cursor: pointer;
+			}
+			label span {
+				margin: 0 !important;
+				padding: 2px 6px;
+				cursor: pointer;
+				user-select: none;
+				&.disabled {
+					color: #ddd;
+					cursor: not-allowed;
+				}
+				&:not(.ant-checkbox):not(.disabled):hover {
+					background-color: $btn_active_color;
+					color: #fff;
+				}
+			}
+		}
+	}
 }
-
 
 // 表格border
 .no-outside-border {
-    .table-content {
-        border: 0;
-    }
-    .error-component{
-        border: none;
-    }
+	.table-content {
+		border: 0;
+	}
+	.error-component {
+		border: none;
+	}
 }
 
 // loading
 .loading p {
-    color: #fff;
-    font-size: 16px;
+	color: #fff;
+	font-size: 16px;
 }
 
 // popover
 .ng-popover {
-    min-width: 120px;
-    min-height: 40px;
-    border-radius: 2px;
-    padding: 8px;
-    box-sizing: border-box;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    user-select: text;
-    white-space: normal;
-    font-weight: 400;
-    text-align: left;
-    border: $border;
-    background-color: #fff;
-    .arrow-outer {
-        position: absolute;
-        top: 50%;
-        margin-top: -8px;
-        border: 8px solid transparent;
-    }
-    .arrow-inner {
-        position: absolute;
-        top: 50%;
-        margin-top: -8px;
-        border: 8px solid transparent;
-    }
-    &.right {
-        .arrow-outer {
-            left: -17px;
-            border-right: 8px solid $border-color;
-        }
-        .arrow-inner {
-            left: -15px;
-            border-right: 8px solid #fff;
-        }
-    }
-    &.left {
-        .arrow-outer {
-            right: -17px;
-            border-left: 8px solid $border-color;
-        }
-        .arrow-inner {
-            right: -15px;
-            border-left: 8px solid #fff;
-        }
-    }
+	min-width: 120px;
+	min-height: 40px;
+	border-radius: 2px;
+	padding: 8px;
+	box-sizing: border-box;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	user-select: text;
+	white-space: normal;
+	font-weight: 400;
+	text-align: left;
+	border: $border;
+	background-color: #fff;
+	.arrow-outer {
+		position: absolute;
+		top: 50%;
+		margin-top: -8px;
+		border: 8px solid transparent;
+	}
+	.arrow-inner {
+		position: absolute;
+		top: 50%;
+		margin-top: -8px;
+		border: 8px solid transparent;
+	}
+	&.right {
+		.arrow-outer {
+			left: -17px;
+			border-right: 8px solid $border-color;
+		}
+		.arrow-inner {
+			left: -15px;
+			border-right: 8px solid #fff;
+		}
+	}
+	&.left {
+		.arrow-outer {
+			right: -17px;
+			border-left: 8px solid $border-color;
+		}
+		.arrow-inner {
+			right: -15px;
+			border-left: 8px solid #fff;
+		}
+	}
 }
 
 // table error
 .table-error {
-    width: 310px;
-    height: 300px;
-    margin: 0 auto;
-    text-align: center;
-    padding-bottom: 80px;
-    background: url(../img/error.png) no-repeat center 30px;
-    p {
-        padding-top: 200px;
-    }
+	width: 310px;
+	height: 300px;
+	margin: 0 auto;
+	text-align: center;
+	padding-bottom: 80px;
+	background: url(../img/error.png) no-repeat center 30px;
+	p {
+		padding-top: 200px;
+	}
 }
 
 // 小工具
 .tool-component {
-    padding: 16px;
+	padding: 16px;
 }
 
 .tools-wrap {
-    height: calc(100% - 32px) !important;
-    transform: translate(-16px, 16px) !important;
-    .ant-drawer-body {
-        padding: 24px !important;
-        ul {
-            li {
-                float: left;
-                width: 100px;
-                height: 114px;
-                margin-bottom: 24px;
-                text-align: center;
-                cursor: pointer;
-                img {
-                    transition: 0.3s all ease;
-                    border-width: 2px 2px 4px;
-                    border-style: solid;
-                    border-color: transparent;
-                    &:hover {
-                        transform:  translate(0,-4px);
-                        border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
-                        box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
-                    }
-                }
-            }
-        }
-    }
-    .tools-desc {
-        max-height: 180px;
-        overflow-y: auto;
-        h5 {
-            font-size: 15px;
-        }
-        p {
-            font-size: 14px;
-        }
-    }
+	height: calc(100% - 32px) !important;
+	transform: translate(-16px, 16px) !important;
+	.ant-drawer-body {
+		padding: 24px !important;
+		ul {
+			li {
+				float: left;
+				width: 100px;
+				height: 114px;
+				margin-bottom: 24px;
+				text-align: center;
+				cursor: pointer;
+				img {
+					transition: 0.3s all ease;
+					border-width: 2px 2px 4px;
+					border-style: solid;
+					border-color: transparent;
+					&:hover {
+						transform: translate(0, -4px);
+						border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
+						box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
+					}
+				}
+			}
+		}
+	}
+	.tools-desc {
+		max-height: 180px;
+		overflow-y: auto;
+		h5 {
+			font-size: 15px;
+		}
+		p {
+			font-size: 14px;
+		}
+	}
 }
 
 // 基因表的 分析按钮
 .table-analysis-button {
-    height: 30px;
-    line-height: 30px;
-    color: #fff;
-    border-radius: 50px;
-    transition: all 0.2s ease-out 0s;
-    box-shadow: rgba(92, 206, 139, 0) 0px 0px;
-    cursor: pointer;
-    &.blue {
-        background-color: $them_color;
-    }
-    &.green {
-        background: rgba(108, 210, 150, 0.9);
-    }
-    &.invaild {
-        opacity: 0.5;
-    }
-    &.active {
-        opacity: 0.9;
-    }
-    &.blue:hover {
-        @include hover-animate($them_color);
-        background-color: $them_color;
-        opacity: 1;
-    }
-    &.green:hover {
-        @include hover-animate(rgb(92, 206, 139));
-        background-color: rgb(92, 206, 139);
-        opacity: 1;
-    }
-    b {
-        margin: 0 10px;
-    }
-    span {
-        transition: 0.3s all ease;
-        background: rgba(0, 0, 0, 0.15);
-        padding: 2px 8px;
-        height: 24px;
-        line-height: 24px;
-        font-size: 11px;
-        border-radius: 20px;
-        margin-right: 8px;
-    }
+	height: 30px;
+	line-height: 30px;
+	color: #fff;
+	border-radius: 50px;
+	transition: all 0.2s ease-out 0s;
+	box-shadow: rgba(92, 206, 139, 0) 0px 0px;
+	cursor: pointer;
+	&.blue {
+		background-color: $them_color;
+	}
+	&.green {
+		background: rgba(108, 210, 150, 0.9);
+	}
+	&.invaild {
+		opacity: 0.5;
+	}
+	&.active {
+		opacity: 0.9;
+	}
+	&.blue:hover {
+		@include hover-animate($them_color);
+		background-color: $them_color;
+		opacity: 1;
+	}
+	&.green:hover {
+		@include hover-animate(rgb(92, 206, 139));
+		background-color: rgb(92, 206, 139);
+		opacity: 1;
+	}
+	b {
+		margin: 0 10px;
+	}
+	span {
+		transition: 0.3s all ease;
+		background: rgba(0, 0, 0, 0.15);
+		padding: 2px 8px;
+		height: 24px;
+		line-height: 24px;
+		font-size: 11px;
+		border-radius: 20px;
+		margin-right: 8px;
+	}
 }
 
 // 重分析
-.report-analysis{
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    .reanalysis-top{
-        height:40px;
-        line-height: 16px;
-        color: #fff;
-        font-size: 14px;
-        padding:12px 24px;
-        background-color: $them_color;
-    }
-    .reanalysis-content{
-        padding:$padding;
-        background-color: $background_color;
-        .switch{
-            right:144px;
-        }
-    }
+.report-analysis {
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	.reanalysis-top {
+		height: 40px;
+		line-height: 16px;
+		color: #fff;
+		font-size: 14px;
+		padding: 12px 24px;
+		background-color: $them_color;
+	}
+	.reanalysis-content {
+		padding: $padding;
+		background-color: $background_color;
+		.switch {
+			right: 144px;
+		}
+	}
 }
-.analysis-list{
-    padding:100px;
+.analysis-list {
+	padding: 100px;
 }
-
 
 // 重分析参数选择面板
 .tool-params-tab {
-    p{
-        font-size:14px;
-        color:#333;
-    }
-    button{
-        margin-bottom:12px;
-        margin-right:12px;
-    }
-    &>div{
-        padding:12px;
-    }
-    &>span{
-        padding-left:12px;
-        font-size:12px;
-        color:#999;
-    }
-    .ant-alert{
-        margin-bottom: 12px;
-    }
+	p {
+		font-size: 14px;
+		color: #333;
+	}
+	button {
+		margin-bottom: 12px;
+		margin-right: 12px;
+	}
+	& > div {
+		padding: 12px;
+	}
+	& > span {
+		padding-left: 12px;
+		font-size: 12px;
+		color: #999;
+	}
+	.ant-alert {
+		margin-bottom: 12px;
+	}
 }
 
-.tool-params-button-group{
-    display:flex;
-    flex-direction:row;
-    justify-content:flex-end;
-    button{
-        margin-left:12px;
-    }
+.tool-params-button-group {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	button {
+		margin-left: 12px;
+	}
 }
 
-.textEllipsis{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space:nowrap
+.textEllipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 // 设置面板
 .setPanel {
-    position: relative;
-    top: 11px;
-    right: 0;
-    width: 300px;
-    padding:10px;
+	position: relative;
+	top: 11px;
+	right: 0;
+	width: 300px;
+	padding: 10px;
 }
 
-.setBtns{
-    padding: 10px;
-    border-top: 1px solid rgba(234, 234, 235, 0.95);
+.setBtns {
+	padding: 10px;
+	border-top: 1px solid rgba(234, 234, 235, 0.95);
 }
-.addPanel{
-    position: absolute;
-    width: 300px;
-    background: #fff;
-    border: 1px solid #ddd;
-    top: 36px;
-    left: -300px;
-    padding: 10px;
-}
-
-.rationClassifyRow{
-    margin-bottom:10px;
-    max-height: 400px;
-    overflow: auto;
+.addPanel {
+	position: absolute;
+	width: 300px;
+	background: #fff;
+	border: 1px solid #ddd;
+	top: 36px;
+	left: -300px;
+	padding: 10px;
 }
 
-.rationClassifyRow button{
-    margin-right:5px;
-    margin-bottom:5px;
+.rationClassifyRow {
+	margin-bottom: 10px;
+	max-height: 400px;
+	overflow: auto;
 }
 
+.rationClassifyRow button {
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
 
-.ml-12{
-    margin-left: -12px;
+.ml-12 {
+	margin-left: -12px;
 }
-.ml12{
-    margin-left: 12px;
+.ml12 {
+	margin-left: 12px;
 }
-.mt12{
-    margin-top:12px;
+.mt12 {
+	margin-top: 12px;
 }
-.mb12{
-    margin-bottom: 12px;
+.mb12 {
+	margin-bottom: 12px;
 }

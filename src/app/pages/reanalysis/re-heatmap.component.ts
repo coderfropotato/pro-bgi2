@@ -74,9 +74,15 @@ export class ReHeatmapComponent implements OnInit {
     first = true;
     switch = false;
 
+    addColumnShow:boolean = false;
+    showBackButton:boolean = false;
+    verticalClass:any[] = []; // 图上设置面板选择的纵向分类
+    selectGeneList:string[]=[]; // 图上选择的基因集字符串
+
+    // 路由参数
     tid:string = null;
     geneType:string = '';
-    addColumnShow:boolean = false;
+    version:string = null;
 
     constructor(
         private message: MessageService,
@@ -103,6 +109,7 @@ export class ReHeatmapComponent implements OnInit {
         this.routes.paramMap.subscribe((params)=>{
             this.tid = params['params']['tid'];
             this.tid = '20783e1576b84867aee1a63e22716fed';
+            this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
             this.storeService.setTid(this.tid);
         })
@@ -146,9 +153,10 @@ export class ReHeatmapComponent implements OnInit {
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
+            verticalClassification:this.verticalClass,
             geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
-            version: this.storeService.getStore('reference'),
+            version: this.version,
             searchList: []
         };
         this.defaultTableId = 'default_heatmap';
@@ -171,9 +179,10 @@ export class ReHeatmapComponent implements OnInit {
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
+            verticalClassification:this.verticalClass,
             geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
-            version: this.storeService.getStore('reference'),
+            version: this.version,
             searchList: []
         };
         this.extendTableId = 'extend_heatmap';
@@ -201,11 +210,13 @@ export class ReHeatmapComponent implements OnInit {
     // 表格转换 确定
     // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
+        this.showBackButton = true;
+        this.defaultEmitBaseThead = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
 		if (this.first) {
-			this.extendCheckStatusInParams = false;
+            this.extendCheckStatusInParams = false;
 			this.extendEntity['checkStatus'] = checkParams['others']['checkStatus'];
 			this.extendEntity['unChecked'] = checkParams['others']['excludeGeneList']['unChecked'];
 			this.extendEntity['checked'] = checkParams['others']['excludeGeneList']['checked'];
@@ -213,7 +224,8 @@ export class ReHeatmapComponent implements OnInit {
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
             this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
             this.extendEntity['relations'] = relations;
-            // 每次转换 清除增删列
+            this.extendEntity['transform'] = true;
+            this.extendEntity['matrix'] = true;
             this.addColumn._clearThead();
 			this.extendEntity['addThead'] = [];
 			this.first = false;
@@ -226,7 +238,8 @@ export class ReHeatmapComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
 			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
-            // 每次转换清除增删列
+			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
+			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
             this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
             this.addColumn._clearThead();
 			// 每次checkStatusInParams状态变完  再去获取数据
@@ -239,28 +252,39 @@ export class ReHeatmapComponent implements OnInit {
 		}, 30);
 	}
 
-	// 表格转换返回
 	back() {
+        this.showBackButton = false;
         this.chartBackStatus();
     }
 
     chartBackStatus(){
+        this.showBackButton = false;
+        this.defaultEmitBaseThead = true;
         if(!this.first){
-            this.addColumn._clearThead();
-            this.addColumn._addThead(this.setAddedThead);
-            let {add,remove} = this.addColumn._confirmWithoutEvent();
-            this.defaultEntity['addThead'] = add;
-            this.defaultEntity['removeColumns'] = remove;
+            this.defaultEntity['addThead'] = [];
+            this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
-            this.defaultEntity['searchList'] = [];
+            if(this.selectGeneList.length){
+                this.defaultEntity['searchList'] = [
+                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
+                ];
+            }else{
+                this.defaultEntity['searchList']= [] ;
+            }
             this.first = true;
         }else{
-            this.addColumn._addThead(this.setAddedThead);
-            this.addColumn._confirm();
+            /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
+            if(this.selectGeneList.length) {
+                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
+            }else{
+                // this.transformTable._setParamsNoRequest('searchList',[]);
+                this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
+                this.transformTable._getData();
+            }
         }
     }
 
-	// 在认为是基础头的时候发出基础头 双向绑定到增删列
+	// 表格基础头改变  设置emitBaseThead为true的时候 表格下一次请求回来会把表头发出来 作为表格的基础表头传入增删列
 	baseTheadChange(thead) {
 		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
     }
@@ -305,8 +329,11 @@ export class ReHeatmapComponent implements OnInit {
 
     //设置 确定
     setConfirm(data){
+        console.log(data);
         this.setChartSetEntity(data);
         this.clusterChart.reGetData();
+
+        this.chartBackStatus();
     }
 
     setChartSetEntity(data){
@@ -325,6 +352,12 @@ export class ReHeatmapComponent implements OnInit {
                 this.chartEntity['verticalClassification'][d.key]=d['category'];
             })
         }
+
+        // 表纵向分类
+        this.verticalClass.length = 0;
+        // 确定会重画图 清空选中的gene
+        this.selectGeneList.length = 0;
+        this.verticalClass.push(...data['verticalList']);
     }
 
     //画图
@@ -1143,7 +1176,8 @@ export class ReHeatmapComponent implements OnInit {
     }
 
     setGeneList(geneList) {
-        console.log(geneList);
+        this.selectGeneList = geneList;
+        this.chartBackStatus();
     }
 
      // 数组分组

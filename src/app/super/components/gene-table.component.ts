@@ -119,6 +119,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
     isFirst = true;
     firstColumnGene = [];
     matchAll:boolean = true;
+    isErrorDelete:boolean = false;
 
     constructor(
         private translate: TranslateService,
@@ -323,6 +324,17 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     this.computedStatus();
                     this.getCollection();
                     this.isFirst = false;
+
+                    if(this.isErrorDelete){ // 如果是在无数据或者系统错误的情况下 删除了筛选条件 表格获取数据初始化以后就需要重新应用之前的筛选状态
+                        setTimeout(()=>{
+                            //如果表之前是错误的状态 筛选组件需要重新应用之前的状态
+                            this.tableEntity['searchList'].forEach(v=>{
+                                this._filterWithoutRequest(v['filterName'],v['filterNamezh'],v['searchType'],v['filterType'],v['valueOne'],v['valueTwo'])
+                            })
+                            this.isErrorDelete = false;
+                        },30)
+                    }
+
                 } else {
                     this.total = 0;
                     this.error = "error";
@@ -549,6 +561,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     filterType: argv[2],
                     valueOne: argv[3],
                     valueTwo: argv[4],
+                    searchType:argv[5]
                     // crossUnion: argv[5]
                 }
             ];
@@ -562,6 +575,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                         filterType: argv[2],
                         valueOne: argv[3],
                         valueTwo: argv[4],
+                        searchType:argv[5]
                         // crossUnion: argv[5]
                     };
                     isIn = true;
@@ -575,6 +589,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     filterType: argv[2],
                     valueOne: argv[3],
                     valueTwo: argv[4],
+                    searchType:argv[5]
                     // crossUnion: argv[5]
                 });
         }
@@ -635,6 +650,22 @@ export class GeneTableComponent implements OnInit, OnChanges {
         }
     }
 
+    deleteWithoutRequest(argv){
+        if (this.tableEntity["searchList"].length) {
+            this.tableEntity["searchList"].forEach((val, index) => {
+                if (
+                    val["filterName"] === argv[0] &&
+                    val["filterNamezh"] === argv[1]
+                ) {
+                    this.tableEntity["searchList"].splice(index, 1);
+                    this.classifySearchCondition();
+                    // this.getRemoteData();
+                    return;
+                }
+            });
+        }
+    }
+
     // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
     setPopoverText(text, type) {
         this.popoverText = text;
@@ -645,6 +676,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
     deleteFilterItem(item) {
         let filterObj = item.obj;
         if(this.error){
+            this.isErrorDelete = true;
             // 没数据的时候 在表格筛选参数里找出当前的筛选条件删除 重新获取表格数据
             let index = this.tableEntity['searchList'].findIndex((val,i)=>{
                 return (val['filterName'] === filterObj['filterName'] && val['filterType'] === filterObj['filterType'])
@@ -860,7 +892,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof BigTableComponent
      */
     _deleteFilter(filterName, filterNamezh, filterType) {
-        console.log(filterName,filterNamezh,filterType);
         this.children._results.forEach(val => {
             if (
                 val.pid === this.tableId &&
@@ -868,8 +899,20 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 val.selectType === filterType &&
                 val.filterNamezh === filterNamezh
             ) {
-                alert('delete');
                 val._outerDelete(filterName, filterNamezh, filterType);
+            }
+        });
+    }
+
+    _deleteFilterWithoutRequest(filterName, filterNamezh, filterType){
+        this.children._results.forEach(val => {
+            if (
+                val.pid === this.tableId &&
+                val.filterName === filterName &&
+                val.selectType === filterType &&
+                val.filterNamezh === filterNamezh
+            ) {
+                val._outerDeleteWithoutRequest(filterName, filterNamezh, filterType);
             }
         });
     }
@@ -932,15 +975,40 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @date 2018-10-09
      * @param {*} filterName
      * @param {*} filterNamezh
+     * @param {string} searchType
      * @param {*} filterType
      * @param {*} filterValueOne
      * @param {*} filterValueTwo
-     * @param {string} crossUnion
      * @memberof BigTableComponent
      */
     _filter(
-        filterName,
+        filterName, filterNamezh, searchType, filterType, filterValueOne, filterValueTwo,
+        // crossUnion
+    ) {
+        /* 向filter组件传递  tableId  filterName  filterType
+         找匹配tableId的filter子组件，并更新筛选状态；
+         手动调用本组件的 recive方法  模拟子组件发射的方法
+         */
+        // 没有打开筛选就打开
+        if (!this.beginFilterStatus) this.beginFilterStatus = true;
+        // 待筛选面板渲染完后找到匹配的筛选面板传数据
+        setTimeout(() => {
+            if(this.children._results.length){
+                this.children._results.forEach(val => {
+                    if (val.pid === this.tableId && val.filterName === filterName) {
+                        val._outerUpdate( filterName, filterNamezh, filterType, filterValueOne, filterValueTwo, searchType);// crossUnion
+                        this.recive([ filterName, filterNamezh, filterType, filterValueOne, filterValueTwo, searchType]);  // crossUnion
+                    }
+                });
+            }else{
+                this.recive([ filterName, filterNamezh, filterType, filterValueOne, filterValueTwo, searchType  ]); // crossUnion
+            }
+        }, 30);
+    }
+
+    _filterWithoutRequest(filterName,
         filterNamezh,
+        searchType,
         filterType,
         filterValueOne,
         filterValueTwo,
@@ -953,28 +1021,32 @@ export class GeneTableComponent implements OnInit, OnChanges {
         // 没有打开筛选就打开
         if (!this.beginFilterStatus) this.beginFilterStatus = true;
         // 待筛选面板渲染完后找到匹配的筛选面板传数据
-        setTimeout(() => {
-            this.children._results.forEach(val => {
-                if (val.pid === this.tableId && val.filterName === filterName) {
-                    val._outerUpdate(
-                        filterName,
-                        filterNamezh,
-                        filterType,
-                        filterValueOne,
-                        filterValueTwo,
-                        // crossUnion
-                    );
-                    this.recive([
-                        filterName,
-                        filterNamezh,
-                        filterType,
-                        filterValueOne,
-                        filterValueTwo,
-                        // crossUnion
-                    ]);
-                }
-            });
-        }, 30);
+        console.log(this.children._results.length);
+        if(this.children._results.length){
+            setTimeout(() => {
+                this.children._results.forEach(val => {
+                    if (val.pid === this.tableId && val.filterName === filterName) {
+                        val._outerUpdate(
+                            filterName,
+                            filterNamezh,
+                            filterType,
+                            filterValueOne,
+                            filterValueTwo,
+                            searchType
+                            // crossUnion
+                        );
+
+                        this.checkStatus = this.defaultChecked;
+                        this.checkedMap = {};
+                        this.unCheckedMap = {};
+                        this.checked = [];
+                        this.unChecked = [];
+
+                        this.classifySearchCondition();
+                    }
+                });
+            }, 30);
+        }
     }
 
     /**

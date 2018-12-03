@@ -15,6 +15,7 @@ export class ToolsService {
     tableEntity:object = {};
     tableUrl:string = '';
     baseThead:object[] = [];  // 多组学要表头
+    geneType:string = '';
 
     constructor() {}
 
@@ -22,6 +23,7 @@ export class ToolsService {
         this.geneCount = 0;
         this.tableEntity = {};
         this.tableUrl = '';
+        this.geneType = '';
         this.baseThead = [];
     }
 
@@ -35,6 +37,7 @@ export class ToolsService {
         this.tableEntity = entity['tableEntity'];
         this.tableEntity['reAnaly'] = true;
         this.baseThead = entity['baseThead'];
+        this.geneType = entity['geneType'];
         this.visible = true;
     }
 

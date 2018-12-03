@@ -126,6 +126,25 @@ export class TransformationTableComponent implements OnInit {
         this.isFirst? this.defaultTable._setParamsOfEntityWithoutRequest(key,value):this.extendTable._setParamsOfEntityWithoutRequest(key,value);
     }
 
+    _filter(filterName, filterNamezh, searchType,filterType, filterValueOne, filterValueTwo){
+        this.isFirst?this.defaultTable._filter(filterName, filterNamezh, searchType,filterType, filterValueOne, filterValueTwo):this.extendTable._filter(filterName, filterNamezh, searchType,filterType, filterValueOne, filterValueTwo);
+    }
+
+    _filterWithoutRequest(filterName, filterNamezh,searchType, filterType, filterValueOne, filterValueTwo){
+        this.isFirst?this.defaultTable._filterWithoutRequest(filterName, filterNamezh,searchType, filterType, filterValueOne, filterValueTwo):this.extendTable._filterWithoutRequest(filterName, filterNamezh,searchType, filterType, filterValueOne, filterValueTwo);
+    }
+
+
+    _deleteFilter(filterName,filterNamezh,filterType){
+        this.isFirst?this.defaultTable._deleteFilter(filterName,filterNamezh,filterType):this.extendTable._deleteFilter(filterName,filterNamezh,filterType);
+    }
+
+    _deleteFilterWithoutRequest(filterName,filterNamezh,filterType){
+        this.isFirst?this.defaultTable._deleteFilterWithoutRequest(filterName,filterNamezh,filterType):this.extendTable._deleteFilterWithoutRequest(filterName,filterNamezh,filterType);
+
+    }
+
+
     _initTableStatus(){
         this.isFirst ? this.defaultTable.initAllTableStatus() : this.extendTable.initAllTableStatus();
     }
