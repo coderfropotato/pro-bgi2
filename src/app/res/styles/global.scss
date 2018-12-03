@@ -643,7 +643,11 @@ button.btnActive {
 				margin-bottom: 24px;
 				text-align: center;
 				cursor: pointer;
-				img {
+				.tool-imgs {
+                    height: 40px;
+                    width: 40px;
+                    background-repeat: no-repeat;
+                    background-position: center;
 					transition: 0.3s all ease;
 					border-width: 2px 2px 4px;
 					border-style: solid;
@@ -653,7 +657,10 @@ button.btnActive {
 						border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
 						box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
 					}
-				}
+                }
+                .heatmap-img{
+                    background-image: '../img/error.png';
+                }
 			}
 		}
 	}
