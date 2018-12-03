@@ -73,7 +73,7 @@
 	line-height: 1;
 	background-color: #fff;
 	border: $border;
-	color: #386cca;
+	color: $btn_active_color;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	cursor: pointer;
@@ -186,7 +186,9 @@
 
 .tag-wrap .ant-tag {
 	margin: 6px;
-	margin-left: 0;
+    margin-left: 0;
+    // background-color: $btn_active_color;
+    // color:#fff;
 }
 
 .little-table {
@@ -675,7 +677,7 @@ button.btnActive {
 					border-color: transparent;
 					&:hover {
 						transform: translate(0, -4px);
-						border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
+						border-color: $btn_active_color;
 						box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
 					}
                 }
