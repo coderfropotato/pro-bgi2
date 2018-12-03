@@ -46,7 +46,7 @@
         </div>
         <div class="rationClassifyRow">
             <span>定量列：</span>
-            <button (click)="rationColSelect(item)" nz-button nzType="default" *ngFor="let item of rations">{{item.name}}</button>&nbsp;
+            <button [class.btnActive]='item.isChecked' (click)="rationColSelect(item)" nz-button nzType="default" *ngFor="let item of rations">{{item.name}}</button>&nbsp;
         </div>
         <div class="setBtns right">
             <button nz-button nzType="primary" (click)="addConfirm()">确定</button>&nbsp;

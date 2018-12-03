@@ -54,8 +54,7 @@ export class MultiOmicsSetComponent implements OnInit {
     rationClassifyList: object[] = [];
     curRationClassify: string;
 
-    rations: string[] = [];
-    curRation: object = {};
+    rations: object[] = []; //添加面板数据
 
     relationList: object[] = [];
     curRelation: object = {};
@@ -70,7 +69,7 @@ export class MultiOmicsSetComponent implements OnInit {
     isShowSetPanel: boolean = false;
 
     curUpdateClassify: string;
-    rationList: string[] = [];
+    rationList: object[] = [];  //修改面板数据
 
     curUpdateInfo: object = {};
 
@@ -126,6 +125,11 @@ export class MultiOmicsSetComponent implements OnInit {
                             }
 
                         })
+
+                        this.rations.forEach(d=>{
+                            d['isChecked']=false;
+                        })
+
                     }
                 },
                 error => {
@@ -183,61 +187,52 @@ export class MultiOmicsSetComponent implements OnInit {
 
     //添加面板，定量分类change
     rationClassifyChange() {
-        this.rations.length=0;
         this.rationClassifyList.forEach((d) => {
             if (d['name'] === this.curRationClassify) {
                 this.rations = d['data'];
             }
         })
+
+        this.rations.forEach(d=>{
+            d['isChecked']=false;
+        })
     }
 
     // 添加面板，选择定量列
     rationColSelect(item) {
-        this.curRation = item;
+        item.isChecked=!item.isChecked;
     }
 
     //添加面板， 确定
     addConfirm() {
-        if ($.isEmptyObject(this.curRation)) {
-            this.notification.warning('添加定量信息', '请选择一个定量列');
-            return;
-        }
+        let checkedCount=0;
+        this.rations.forEach(d=>{
+            if(d['isChecked']){
+                checkedCount++;
+            }
+        })
 
-        let infoObj = {
-            relation: this.curRelation['key'],
-            relationName: this.curRelation['name'],
-            key: this.curRation['key'],
-            category: this.curRation['category'],
-            name: this.curRation['name']
-        }
-
-        if (this.infoList.length >= 5) {
-            this.notification.warning('添加定量信息', '最多添加5项');
-            this.isShowAddPanel = false;
-            return;
-        }
-
-        let falseRelationArr = [];
-        if(this.infoList.length){
-            this.infoList.forEach(d => {
-                if (d['relation'] === 'false') {
-                    falseRelationArr.push(d['key']);
+        if(checkedCount>5){
+            this.notification.warning('添加定量信息','最多允许添加5个');
+        }else{
+            this.infoList.length=0;
+            this.rations.forEach(d=>{
+                if(d['isChecked']){
+                    this.infoList.push(d);
                 }
             })
-        }
+    
+           this.infoList.forEach(d=>{
+               d['relation']=this.curRelation['key'];
+               d['relationName']=this.curRelation['name'];
+            })
 
-        if(this.isInArray(this.curRation['key'],falseRelationArr,'')){
-            this.notification.warning('添加定量信息', '不能重复添加');
-        }else{
-            this.infoList.push(infoObj);
+            this.isShowAddPanel = false;
         }
-
-        this.isShowAddPanel = false;
     }
 
     //添加面板， 取消
     addCance() {
-        this.curRation = {};
         this.isShowAddPanel = false;
     }
 
