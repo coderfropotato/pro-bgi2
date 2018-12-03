@@ -495,7 +495,27 @@ button.btnActive {
 			}
 			&.active {
 				background-color: $them_color;
-			}
+            }
+            
+            .tool-imgs {
+                height: 192px;
+                width: 192px;
+                margin: 0 auto;
+                background-repeat: no-repeat;
+                background-position: center;
+                transition: 0.3s all ease;
+                // border-width: 2px 2px 4px;
+                // border-style: solid;
+                // border-color: transparent;
+                // &:hover {
+                //     transform: translate(0, -4px);
+                //     border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
+                //     box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
+                // }
+            }
+            .diff-img{
+                background-image: url('../img/韦恩图.png');
+            }
 		}
 	}
 }
@@ -660,7 +680,43 @@ button.btnActive {
 					}
                 }
                 .heatmap-img{
-                    background-image: '../img/error.png';
+                    background-image: url('../img/Group13.png');
+                }
+                .goRich-img{
+                    background-image: url('../img/Group6.png');
+                }
+                .keggRich-img{
+                    background-image: url('../img/Group20.png');
+                }
+                .goClass-img{
+                    background-image: url('../img/Group5.png');
+                }
+                .keggClass-img{
+                    background-image: url('../img/Group4.png');
+                }
+                .line-img{
+                    background-image: url('../img/1.png');
+                }
+                .net-img{
+                    background-image: url('../img/Group22.png');
+                }
+                .KDA-img{
+                    background-image: url('../img/2.png');
+                }
+                .multiOmics-img{
+                    background-image: url('../img/3.png');
+                }
+                .kaFun-img{
+                    background-image: url('../img/4.png');
+                }
+                .relativeSplice-img{
+                    background-image: url('../img/5.png');
+                }
+                .relaticeNet-img{
+                    background-image: url('../img/6.png');
+                }
+                .relativeHeatmap-img{
+                    background-image: url('../img/7.png');
                 }
 			}
 		}

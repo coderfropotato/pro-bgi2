@@ -1,10 +1,9 @@
 <div class="tool-component">
     <nz-drawer [nzClosable]="true" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="请选择一个分析方案" (nzOnClose)="close()" >
-        gene:{{ toolsService["geneCount"] }}
+        <!-- gene:{{ toolsService["geneCount"] }} -->
         <ul class="clearfix">
             <li *ngFor="let tool of toolList; index as i" (click)="selectParams(tool['type'])" >
-                <div class="tool-imgs" (mouseover)="handlerMouseOver(tool)"></div>
-                <!-- <img src="http://temp.im/68x82" (mouseover)="handlerMouseOver(tool)" /> -->
+                <div class="tool-imgs {{tool['type']}}-img" (mouseover)="handlerMouseOver(tool)"></div>
                 <p style="margin-top:12px;">{{ tool["name"] }}</p>
             </li>
         </ul>
