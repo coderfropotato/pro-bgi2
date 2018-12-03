@@ -359,6 +359,25 @@ export class ClusterSetComponent implements OnInit {
 
     //设置 确定
     setConfirm(){
+        if(this.horizontalInfos.length){
+            if((new Set(this.horizontalInfos)).size !== this.horizontalInfos.length){
+                this.notification.warning('横向分类','分类重复！');
+                return;
+            }
+        }
+
+        if(this.verticalInfos.length){
+            let verticalInfoList=[];
+            this.verticalInfos.forEach(d=>{
+                verticalInfoList.push(d['key']);
+            })
+
+            if((new Set(verticalInfoList)).size !== this.verticalInfos.length){
+                this.notification.warning('纵向分类','分类重复！');
+                return;
+            }
+        }
+
         this.isShowSetPanel=false;
 
         this.isShowEditHorizontal=false;
@@ -395,22 +414,4 @@ export class ClusterSetComponent implements OnInit {
         this.verticalInfos=[...this.confirmData['verticalList']];
     }
 
-     //判断item是否在数组中
-     isInArray(item, arr, key) {
-        if (key) {
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i][key] === item) {
-                    return true;
-                }
-            }
-
-        } else {
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i] === item) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }
