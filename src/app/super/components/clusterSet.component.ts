@@ -414,22 +414,4 @@ export class ClusterSetComponent implements OnInit {
         this.verticalInfos=[...this.confirmData['verticalList']];
     }
 
-     //判断item是否在数组中
-     isInArray(item, arr, key) {
-        if (key) {
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i][key] === item) {
-                    return true;
-                }
-            }
-
-        } else {
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i] === item) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }
