@@ -82,7 +82,19 @@ export class IndexComponent implements OnInit {
                                     sessionStorage.setItem(key,JSON.stringify(data["data"][key]));
                                 }
                             }
-                            this.menuList = data["data"].menu_list;
+                            //this.menuList = data["data"].menu_list;
+                            this.menuList = [
+                                {
+                                    category: "差异",
+                                    children: [
+                                        {
+                                            url: "diff-venn",
+                                            name: "差异venn",
+                                            isExport: true
+                                        }
+                                    ]
+                                }
+                            ];
                         }
                         resolve("success");
                     },
