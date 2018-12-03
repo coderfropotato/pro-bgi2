@@ -359,6 +359,25 @@ export class ClusterSetComponent implements OnInit {
 
     //设置 确定
     setConfirm(){
+        if(this.horizontalInfos.length){
+            if((new Set(this.horizontalInfos)).size !== this.horizontalInfos.length){
+                this.notification.warning('横向分类','分类重复！');
+                return;
+            }
+        }
+
+        if(this.verticalInfos.length){
+            let verticalInfoList=[];
+            this.verticalInfos.forEach(d=>{
+                verticalInfoList.push(d['key']);
+            })
+
+            if((new Set(verticalInfoList)).size !== this.verticalInfos.length){
+                this.notification.warning('纵向分类','分类重复！');
+                return;
+            }
+        }
+
         this.isShowSetPanel=false;
 
         this.isShowEditHorizontal=false;
