@@ -99,7 +99,7 @@ const ROUTES: Routes = [
             // demo
             {
                 path: "",
-                redirectTo: "layout1",
+                redirectTo: "diff-venn",
                 pathMatch: "full"
             },
             {

@@ -321,7 +321,7 @@ export class ReMultiOmicsComponent implements OnInit {
         let width = 0;  //总图主体的总宽度
 
         let eachTypeWidth = 0;  //每个图中每种类型的width
-        const typeSpace = 0;  //图中每种类型的间距
+        // const typeSpace = 0;  //图中每种类型的间距
         let rectWidth = 0;   //每个矩形width
         let rectSpace = 0;  // 每个矩形的间距
 
@@ -332,35 +332,35 @@ export class ReMultiOmicsComponent implements OnInit {
             legendBottom = 6, //图例上下之间的距离
             legend_text_space = 4; //图例矩形与文字之间的距离
 
-        //根据每组柱子数量决定柱子宽度
         //domain 柱子数量；range 宽、距离
-        let widthScale = d3.scaleLinear().domain([1, 60]).range([50, 8]).clamp(true);
-        let spaceScale = d3.scaleLinear().domain([1,60]).range([40,2]).clamp(true);
+        let widthScale = d3.scaleLinear().domain([1, 60]).range([50, 8]).clamp(true);  //根据每组柱子数量决定当前组每根柱子宽度
+        let spaceScale = d3.scaleLinear().domain([1,60]).range([40,2]).clamp(true);    //根据每组柱子数量决定当前组每根柱子之间的距离
+
+        //domain：箱线图数量
+        let heightScale=d3.scaleOrdinal().domain([1,2,3,4,5]).range([300,250,200,150,100]); 
 
         //calculate min max
         let allXTexts = [];
         let allYColumn = [];
-
         let colors = [];
-        let temp = 0
-        column.forEach((d, i) => {
+
+        let spaceNum=0; //柱子之间距离的个数
+        let allRectWidth=0; //所有柱子宽度
+
+        column.forEach((d,i)=>{
             colors.push(this.colors[i]);
 
-            let rectsLength = d.data.length;
-            rectWidth = widthScale(rectsLength);
-            rectSpace = spaceScale(rectsLength);
-            eachTypeWidth = rectsLength * rectWidth + (rectsLength + 1) * rectSpace;
+           let rectsLen=d.data.length;
+           rectWidth=widthScale(rectsLen);
 
-            temp += eachTypeWidth;
-            width = temp + typeSpace * (columnLength - 1);
+           let eachSpaceNum=rectsLen+1;
+           spaceNum+=eachSpaceNum;
+           allRectWidth+=(rectWidth*rectsLen);
 
-            d.transX = (temp - eachTypeWidth) + i * typeSpace;
-            d.w = rectWidth;
-            d.space=rectSpace;
+           d.w=rectWidth;
 
-            d.data.forEach(m => {
+           d.data.forEach(m => {
                 m.w = rectWidth;
-                m.space = rectSpace;
                 m.relation="false";
                 m.key=d.key;
                 m.type = d.type;
@@ -370,20 +370,60 @@ export class ReMultiOmicsComponent implements OnInit {
                 allXTexts.push(m.x);
                 allYColumn.push(m.y);
             })
-        });
+        })
 
-        height = width;
+        if(boxplotLength){
+            let temp = 0
+            eachChartHeight= heightScale(boxplotLength);
+            height=eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
+            width=height;
+            rectSpace=(width-allRectWidth)/spaceNum;
 
-        eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
-        //判断极值
-        if (eachChartHeight <= 100) {
-            eachChartHeight = 100;
-            height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
-        }
+            column.forEach((d)=>{
+                let rectsLength=d.data.length;
 
-        if (eachChartHeight >= 400) {
-            eachChartHeight = 400;
-            height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
+                eachTypeWidth=rectsLength * d.w + (rectsLength + 1) * rectSpace;
+                
+                temp += eachTypeWidth;
+                d.transX=temp - eachTypeWidth;
+
+                d.space=rectSpace;
+
+                d.data.forEach(m => {
+                    m.space = rectSpace;
+                })
+            
+            })
+        }else{
+            let temp = 0;
+            column.forEach((d) => {
+                let rectsLength = d.data.length;
+                rectSpace = spaceScale(rectsLength);
+
+                eachTypeWidth = rectsLength * d.w + (rectsLength + 1) * rectSpace;
+    
+                temp += eachTypeWidth;
+                // width = temp + typeSpace * (columnLength - 1);
+                // d.transX = (temp - eachTypeWidth) + i * typeSpace;
+                d.transX=temp - eachTypeWidth;
+
+                d.space=rectSpace;
+    
+                d.data.forEach(m => {
+                    m.space = rectSpace;
+                })
+                
+            });
+
+            width = temp;
+            height = width;
+    
+            eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
+            //判断极值
+            if (eachChartHeight >= 400) {
+                eachChartHeight = 400;
+                height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
+            }
         }
 
         //计算max
@@ -727,7 +767,6 @@ export class ReMultiOmicsComponent implements OnInit {
                 this.color = colorScale(d.type);
                 this.isShowColorPanel = true;
                 this.legendIndex = i;
-                console.log(this.isShowColorPanel);
             })
 
         // legend text

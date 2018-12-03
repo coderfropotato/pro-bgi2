@@ -52,8 +52,8 @@ export class DiffVennComponent implements OnInit {
 	baseThead: any[] = [];
 	applyOnceSearchParams: boolean;
 
-	venSelectAllData: string[] = []; //新增11.21号，11：16
-	selectConfirmData: string[] = []; //新增11.21号，11：16
+	venSelectAllData: string[] = []; 
+	selectConfirmData: string[] = []; 
 
 	panelShow: boolean = false;
 
@@ -67,8 +67,8 @@ export class DiffVennComponent implements OnInit {
 		FDR: ''
 	};
 
-	p_log2FC:string;	//111
-	p_FDR:string;		//111
+	p_log2FC:string;	
+	p_FDR:string;		
 
 	n_show: boolean; //设置里面的NOIseq
 	NOIseq: object = {
@@ -76,8 +76,8 @@ export class DiffVennComponent implements OnInit {
 		probability: ''
 	};
 
-	n_log2FC:string;		//111
-	n_probability:string;	//111
+	n_log2FC:string;		
+	n_probability:string;	
 
 	activedCompareGroup: any[] = [];
 	singleMultiSelect: object = {
@@ -87,7 +87,7 @@ export class DiffVennComponent implements OnInit {
 	};
 
 	//多选
-	doubleMultiSelect: object = {		//111
+	doubleMultiSelect: object = {		
 		bar_name: [],
 		total_name: []
 	};
@@ -373,10 +373,10 @@ export class DiffVennComponent implements OnInit {
 		} catch (error) {}
 	}
 
-	OnChange(value: string): void {				//111
+	OnChange(value: string): void {				
 		this.PossionDis['log2FC'] = value;
 	}
-	OnChange2(value: string): void {			//111
+	OnChange2(value: string): void {			
 		this.PossionDis['FDR'] = value;
 	}
 
@@ -391,14 +391,14 @@ export class DiffVennComponent implements OnInit {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
-		if(this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR!=this.PossionDis['FDR']){   //111
+		if(this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR!=this.PossionDis['FDR']){   
 			this.PossionDis = {
 				log2FC: this.p_show ? this.p_log2FC : '',
 				FDR: this.p_show ? this.p_FDR : ''
 			};
 		}
 
-		if(this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability!=this.NOIseq['probability']){   //111
+		if(this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability!=this.NOIseq['probability']){   
 			this.NOIseq = {
 				log2FC: this.n_show ? this.n_log2FC : '',
 				probability: this.n_show ? this.n_probability : ''
@@ -413,14 +413,14 @@ export class DiffVennComponent implements OnInit {
 			this.tableEntity['diffThreshold'] = {
 				PossionDis: this.PossionDis
 			};
-			this.p_log2FC = this.PossionDis['log2FC'];  //111
+			this.p_log2FC = this.PossionDis['log2FC'];  
 			this.p_FDR = this.PossionDis['FDR'];
 		}
 		if (this.n_show) {
 			this.tableEntity['diffThreshold'] = {
 				NOIseq: this.NOIseq
 			};
-			this.n_log2FC = this.NOIseq['log2FC'];  //111
+			this.n_log2FC = this.NOIseq['log2FC'];  
 			this.n_probability = this.NOIseq['probability'];
 		}
 
@@ -430,7 +430,7 @@ export class DiffVennComponent implements OnInit {
 			venn_name: ''
 		};
 
-		this.doubleMultiSelect = {        //111
+		this.doubleMultiSelect = {        
 			bar_name: [],
 			total_name: []
 		};
@@ -478,7 +478,7 @@ export class DiffVennComponent implements OnInit {
 
 	//venn和upsetR只能单选时候
 	doSingleData() {
-		//新增11.21号，11：16
+		
 		this.leftSelect.length = 0;
 		this.upSelect.length = 0;
 		if (this.selectConfirmData.length > 5) {
@@ -500,7 +500,7 @@ export class DiffVennComponent implements OnInit {
 
 	//多选确定时候,提交的数据
 	multipleConfirm() {
-		let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData; //新增11.21号，11：16
+		let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData; 
 		this.leftSelect.length = 0;
 		this.upSelect.length = 0;
 
@@ -521,12 +521,12 @@ export class DiffVennComponent implements OnInit {
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
-		this.selectConfirmData = data; //新增11.21号，11：16
+		this.selectConfirmData = data; 
 	}
 
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
-        this.selectConfirmData = data; //新增11.21号，11：16
+        this.selectConfirmData = data; 
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
 
@@ -560,7 +560,7 @@ export class DiffVennComponent implements OnInit {
 		this.venn = new Venn({ id: 'chartId22122' })
 			.config({
 				data: tempR,
-				compareGroup: _selfV.tableEntity['compareGroup'], //新增11.21号，11：16
+				compareGroup: _selfV.tableEntity['compareGroup'], 
 				isMultipleSelect: _selfV.isMultiSelect
 			})
 			.drawVenn()
