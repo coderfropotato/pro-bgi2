@@ -600,6 +600,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
             //         : this.interSearchConditionList.push(val);
             // });
             this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
+        }else{
+            this.filterHtmlString.length = 0;
         }
 
         // this.interConditionHtmlString = this.globalService.transformFilter(
@@ -642,11 +644,23 @@ export class GeneTableComponent implements OnInit, OnChanges {
     // 删除筛选条件
     deleteFilterItem(item) {
         let filterObj = item.obj;
-        this._deleteFilter(
-            filterObj["filterName"],
-            filterObj["filterNamezh"],
-            filterObj["filterType"]
-        );
+        if(this.error){
+            // 没数据的时候 在表格筛选参数里找出当前的筛选条件删除 重新获取表格数据
+            let index = this.tableEntity['searchList'].findIndex((val,i)=>{
+                return (val['filterName'] === filterObj['filterName'] && val['filterType'] === filterObj['filterType'])
+            })
+            if(index!=-1) {
+                this.tableEntity['searchList'].splice(index,1);
+                this.getRemoteData();
+            }
+            this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
+        }else{
+            this._deleteFilter(
+                filterObj["filterName"],
+                filterObj["filterNamezh"],
+                filterObj["filterType"]
+            );
+        }
     }
 
     // 删除一级筛选条件
