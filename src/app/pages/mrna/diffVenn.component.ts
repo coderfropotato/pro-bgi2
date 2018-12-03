@@ -604,7 +604,7 @@ export class DiffVennComponent implements OnInit {
                 }
                 _selfV.upSelect.length = 0;
                 // _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
-                this.chartBackStatus();
+                _selfV.chartBackStatus();
             })
 	}
 
