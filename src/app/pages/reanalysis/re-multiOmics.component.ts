@@ -76,11 +76,14 @@ export class ReMultiOmicsComponent implements OnInit {
     first = true;
     switch = false;
 
-    tid:string = null;
     geneType:string = '';
     addColumnShow:boolean = false;
     graphRelations:any[] =[];
     showBackButton:boolean = false; // 是否图触发的表更新
+
+    // 路由参数
+    tid:string = null;
+    version:string = null;
 
     // 图的设置
     constructor(
@@ -108,6 +111,8 @@ export class ReMultiOmicsComponent implements OnInit {
         this.routes.paramMap.subscribe((params)=>{
             this.tid = params['params']['tid'];
             this.geneType = params['params']['geneType'];
+            this.version = params['params']['version'];
+            // 存起来供页面显示
             this.storeService.setTid(this.tid);
         })
     }
@@ -146,7 +151,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			version: this.storeService.getStore('reference'),
+			version: this.version,
 			searchList: []
 		};
 		this.defaultTableId = 'default-multi-omics';
@@ -173,7 +178,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			version: this.storeService.getStore('reference'),
+			version: this.version,
 			searchList: []
 		};
 		this.extendTableId = 'extend-multi-omics';
@@ -201,7 +206,7 @@ export class ReMultiOmicsComponent implements OnInit {
     // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
         this.showBackButton = true;
-        this.defaultEmitBaseThead = true;
+        this.defaultEmitBaseThead = false;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -253,9 +258,9 @@ export class ReMultiOmicsComponent implements OnInit {
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
         if(!this.first){
-            let {add,remove} = this.addColumn._confirmWithoutEvent();
-            this.defaultEntity['addThead'] = add;
-            this.defaultEntity['removeColumns'] = remove;
+            // let {add,remove} = this.addColumn._confirmWithoutEvent();
+            this.defaultEntity['addThead'] = [];
+            this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['searchList'] = [];
             this.defaultEntity['matrix'] = !!this.graphRelations.length;
@@ -848,7 +853,6 @@ export class ReMultiOmicsComponent implements OnInit {
 
     //设置 确定
     setConfirm(setArr) {
-        // setArr 里要知道修改了哪个定量信息 如果是相同的 是从哪个key转过来的；
         this.chartEntity['quantity'] = setArr;
         this.multiOmicsChart.reGetData();
         // 获取图关系

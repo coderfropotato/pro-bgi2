@@ -20,6 +20,7 @@ export class AddColumnComponent implements OnInit {
 	@Output() toggle: EventEmitter<any> = new EventEmitter(); // 显示隐藏
 	@Output() addThead: EventEmitter<any> = new EventEmitter(); // 添加头的时候发出的事件
 	@Output() clearThead: EventEmitter<any> = new EventEmitter(); // 清除头的时候发出的事件 (没用  现在清除默认发出addThead事件)
+	@Output() computedTableEvent: EventEmitter<any> = new EventEmitter(); // 在树选择表头的时候，有选择的项需要重新计算表格的高度
 	show: boolean = false;
 
 	selected: Array<any> = [];
@@ -97,7 +98,9 @@ export class AddColumnComponent implements OnInit {
 		this.show = !this.show;
 		setTimeout(() => {
 			this.toggle.emit(this.show);
-		}, 0);
+        }, 0);
+
+        this.cancelStatus();
 	}
 
 	// 点击选择或者取消选择
@@ -189,8 +192,11 @@ export class AddColumnComponent implements OnInit {
 			add.push(...this.outerSelected);
 			this.outerBeforeSelected = this.outerSelected.concat([]);
 		}
-		console.log(add);
-		this.addThead.emit({ add, remove });
+        this.addThead.emit({ add, remove });
+        this.show = false;
+        setTimeout(() => {
+			this.toggle.emit(this.show);
+        }, 0);
 	}
 
 	copy(arr) {
@@ -223,6 +229,7 @@ export class AddColumnComponent implements OnInit {
 		return temp;
 	}
 
+    // 清除按钮
 	clear() {
 		this.initSelected();
 		this.initBeforeSelected();
@@ -232,15 +239,26 @@ export class AddColumnComponent implements OnInit {
 		this.outerSelected = [];
 		this.outerBeforeSelected = [];
 		this.confirm();
+    }
+
+    // 取消按钮
+    cancel() {
+        this.show = false;
+        this.cancelStatus();
 	}
 
-	cancel() {
-		this.selected = this.copy(this.beforeSelected);
+    // 清除内部状态
+    cancelStatus(){
+        this.selected = this.copy(this.beforeSelected);
 		this.applyCheckedStatus();
 		// 外部数据库取消
-		this.outerSelected = this.outerBeforeSelected.concat([]);
-	}
+        this.outerSelected = this.outerBeforeSelected.concat([]);
+        setTimeout(() => {
+			this.toggle.emit(this.show);
+        }, 0);
+    }
 
+	// 删除单个头
 	closeTag(d) {
 		this.toggleSelect(d, d['index']);
 	}
@@ -286,7 +304,10 @@ export class AddColumnComponent implements OnInit {
 				index: this.thead.length
 			});
 		}
-		this.initGeneratedThead();
+        this.initGeneratedThead();
+        setTimeout(()=>{
+            this.computedTableEvent.emit();
+        },0)
 	}
 
 	// 初始化临时产生的组合头 generatedThead

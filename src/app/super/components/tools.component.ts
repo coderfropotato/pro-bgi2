@@ -226,7 +226,10 @@ export class ToolsComponent implements OnInit {
 			.getDeferData({
 				url: `${config['javaPath']}/reAnalysis/getHeatmap`,
 				data: {
-					LCID: sessionStorage.getItem('LCID')
+                    LCID: sessionStorage.getItem('LCID'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.toolsService.get('tableEntity')['species'],
+					baseThead: this.toolsService.get('baseThead')
 				}
 			})
 			.subscribe(
