@@ -258,9 +258,14 @@ export class ReMultiOmicsComponent implements OnInit {
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
         if(!this.first){
-            // let {add,remove} = this.addColumn._confirmWithoutEvent();
-            this.defaultEntity['addThead'] = [];
-            this.defaultEntity['removeColumns'] = [];
+            if(!this.showBackButton){  // 如果是通过定量信息转的矩阵 那就需要保存增删列的激活状态
+                let {add,remove} = this.addColumn._confirmWithoutEvent();
+                this.defaultEntity['addThead'] = add;
+                this.defaultEntity['removeColumns'] = remove;
+            }else{
+                this.defaultEntity['addThead'] = [];
+                this.defaultEntity['removeColumns'] = [];
+            }
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['searchList'] = [];
             this.defaultEntity['matrix'] = !!this.graphRelations.length;
