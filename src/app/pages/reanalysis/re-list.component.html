@@ -11,16 +11,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let data of basicTable.data">
-            <td>{{data['nickname']}}</td>
-            <td>{{data['reanalysisType']}}</td>
-            <td>{{data['date']}}</td>
-            <td>{{data['remark']?data['remark']:'-'}}</td>
-            <td>
-                <a (click)="toDetail(data)">Check</a>
-                <nz-divider nzType="vertical"></nz-divider>
-                <a>Delete</a>
-            </td>
+            <tr class="center" *ngFor="let data of basicTable.data">
+                <td>{{data['nickname']}}</td>
+                <td>{{data['reanalysisType']}}</td>
+                <td>{{data['date']}}</td>
+                <td>{{data['remark']?data['remark']:'-'}}</td>
+                <td>
+                    <a (click)="toDetail(data)">Check</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a>Delete</a>
+                </td>
             </tr>
         </tbody>
     </nz-table>
