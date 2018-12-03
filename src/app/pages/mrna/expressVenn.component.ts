@@ -72,7 +72,7 @@ export class ExpressVennComponent implements OnInit {
         max:0
 	}
 
-	expression_temp_min:string;				//111
+	expression_temp_min:string;				
 	expression_temp_max:string;
 
 	activedCompareGroup: any[] = [];
@@ -84,8 +84,8 @@ export class ExpressVennComponent implements OnInit {
 
 	//多选
 	doubleMultiSelect: object = {
-		bar_name: '',
-		total_name: ''
+		bar_name: [],
+		total_name: []
 	};
 	pageEntity: object = {
 		pageSize: 20
@@ -106,7 +106,8 @@ export class ExpressVennComponent implements OnInit {
 
 	leftSelect: any[] = [];
 	upSelect: any[] = [];
-    addColumnShow:boolean = false;
+	addColumnShow:boolean = false;
+    showBackButton:boolean = false;
 	constructor(
 		private message: MessageService,
 		private store: StoreService,
@@ -253,10 +254,28 @@ export class ExpressVennComponent implements OnInit {
 		this.transformTable._addThead(thead['add']);
 	}
 
+	// 重置图 应用图转换前的设置
+    chartBackStatus(){
+        if(!this.first){
+            // 比较组  引用无需考=>虑图选中/阈值
+            // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+            this.defaultEntity['compareGroup'] = this.selectConfirmData;
+            this.defaultEntity['searchList'] = [];
+            this.defaultEntity['rootSearchContentList'] = [];
+            setTimeout(()=>{
+                this.first = true;
+            },30)
+        }else{
+            this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+            this.transformTable._getData();
+        }
+    }
+
 	/*-------- 表格转换开始 ----------*/
 
 	// 表格转换 确定
 	confirm(relations) {
+		this.showBackButton = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -297,10 +316,13 @@ export class ExpressVennComponent implements OnInit {
 	// 表格转换返回
 	back() {
         // 应用初始状态的 比较组 图选择的数据 设置参数
-        this.defaultEntity['sample'] = this.selectConfirmData;
-		this.defaultEntity['searchList'] = [];
-        this.defaultEntity['rootSearchContentList'] = [];
-		this.first = true;
+        // this.defaultEntity['sample'] = this.selectConfirmData;
+		// this.defaultEntity['searchList'] = [];
+        // this.defaultEntity['rootSearchContentList'] = [];
+		// this.first = true;
+		this.showBackButton = false;
+        this.defaultEmitBaseThead = true;
+        this.chartBackStatus();
 	}
 
 	// 在认为是基础头的时候发出基础头 双向绑定到增删列
@@ -381,9 +403,9 @@ export class ExpressVennComponent implements OnInit {
 			venn_name: ''
 		};
 
-		this.doubleMultiSelect= {
-			bar_name: '',
-			total_name: ''
+		this.doubleMultiSelect = {        
+			bar_name: [],
+			total_name: []
 		};
 
         this.panelShow = false;
@@ -391,18 +413,24 @@ export class ExpressVennComponent implements OnInit {
         this.leftSelect.length = 0 ;
 		this.tableSwitchChart.reGetData();
 
-		if (this.first) {
-			this.transformTable._getData();
-		} else {
-            this.first = true;
-		}
+		// if (this.first) {
+		// 	this.transformTable._getData();
+		// } else {
+        //     this.first = true;
+		// }
+		this.chartBackStatus();
 	}
 
 	//单、多选change
 	multiSelectChange() {
-        this.upSelect.length = 0;
+        // this.upSelect.length = 0;
+        // this.leftSelect.length = 0;
+        // this.first?this.transformTable._getData():this.first = true;
+		// this.updateVenn();
+		this.upSelect.length = 0;
         this.leftSelect.length = 0;
-        this.first?this.transformTable._getData():this.first = true;
+        // this.first?this.transformTable._getData():this.first = true;
+        this.chartBackStatus()
         this.updateVenn();
 	}
 
@@ -417,8 +445,8 @@ export class ExpressVennComponent implements OnInit {
 		};
 
 		this.doubleMultiSelect= {
-			bar_name: '',
-			total_name: ''
+			bar_name: [],
+			total_name: []
         };
         console.log(this.singleMultiSelect)
         console.log(this.doubleMultiSelect)
@@ -438,11 +466,12 @@ export class ExpressVennComponent implements OnInit {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
 		}
 
-		if (this.first) {
-				this.transformTable._getData();
-		} else {
-			this.first = true;
-		}
+		// if (this.first) {
+		// 		this.transformTable._getData();
+		// } else {
+		// 	this.first = true;
+		// }
+		this.chartBackStatus()
 	}
 
 	//多选确定时候,提交的数据
@@ -458,11 +487,12 @@ export class ExpressVennComponent implements OnInit {
 			this.leftSelect.push(tempData['total_name']);
 		}
 
-		if (this.first) {
-				this.transformTable._getData();
-		} else {
-			this.first = true;
-		}
+		// if (this.first) {
+		// 		this.transformTable._getData();
+		// } else {
+		// 	this.first = true;
+		// }
+		this.chartBackStatus()
 	}
 
 	//选择面板，默认选中数据
@@ -473,12 +503,22 @@ export class ExpressVennComponent implements OnInit {
 
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
-        this.selectConfirmData = data;
+        // this.selectConfirmData = data;
+		// this.upSelect.length = 0;
+        // this.leftSelect.length = 0;
+		// this.transformTable._setParamsNoRequest('sample',this.selectConfirmData);
+		// this.first ? this.transformTable._getData() : (this.first = true);
+		// this.updateVenn();
+		this.selectConfirmData = data; 
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
-		this.transformTable._setParamsNoRequest('sample',this.selectConfirmData);
-		this.first ? this.transformTable._getData() : (this.first = true);
-		this.updateVenn();
+
+		// this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+        // this.first ? this.transformTable._getData() : (this.first = true);
+        // 更新当前回来的表头为基础头
+        this.defaultEmitBaseThead = true;
+        this.chartBackStatus();
+        this.updateVenn();
 	}
 
 	redrawChart(width, height?) {
@@ -503,7 +543,7 @@ export class ExpressVennComponent implements OnInit {
 		this.venn = new Venn({ id: 'chartId22122' })
 			.config({
 				data: tempR,
-				compareGroup: _selfV.tableEntity['sample'], //新增11.21号，11：16
+				compareGroup: _selfV.tableEntity['compareGroup'], 
 				isMultipleSelect: _selfV.isMultiSelect
 			})
 			.drawVenn()
@@ -546,8 +586,8 @@ export class ExpressVennComponent implements OnInit {
 					_selfV.singleMultiSelect['venn_name'] = '';
                 }
                 _selfV.upSelect.length = 0;
-                _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
-
+                // _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
+                _selfV.chartBackStatus();
             })
 	}
 
@@ -686,6 +726,7 @@ export class ExpressVennComponent implements OnInit {
 
 		let nameList = [];
 		let tempName = {};
+		let sName = {};
 		let drawCircle = [];
 		let tempThat;
 		let tempP;
@@ -702,7 +743,8 @@ export class ExpressVennComponent implements OnInit {
             _self.updateVenn();
             _self.leftSelect.length = 0;
             _self.upSelect.length = 0;
-            _self.first ? _self.transformTable._getData() : (_self.first = true);
+            // _self.first ? _self.transformTable._getData() : (_self.first = true);
+            _self.chartBackStatus();
         },false);
 
 		drawSvg();
@@ -753,27 +795,26 @@ export class ExpressVennComponent implements OnInit {
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
 							_self.singleMultiSelect['bar_name'] = bar_name[i]; ///222
 							_self.singleMultiSelect['total_name'] = '';
-							_self.doubleMultiSelect['bar_name'] = bar_name[i];
 							_self.doSingleData();
 						} else if (d3.select(this).select('.MyRect').attr('fill') == 'steelblue') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', '#333');
 							_self.singleMultiSelect['bar_name'] = ''; ///222
 							_self.singleMultiSelect['total_name'] = '';
-							_self.doubleMultiSelect['bar_name'] = '';
 							_self.doSingleData();
 						}
-					} else {
+						console.log(_self.singleMultiSelect)
+					} else { //多选
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
-							d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
+							//d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
-							_self.doubleMultiSelect['bar_name'] = bar_name[i];
+							_self.doubleMultiSelect['bar_name'] = selectName2(_self.doubleMultiSelect['bar_name'],bar_name[i]);
 						} else if (d3.select(this).select('.MyRect').attr('fill') == 'steelblue') {
-							d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
+							//d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', '#333');
-							_self.doubleMultiSelect['bar_name'] = '';
+							_self.doubleMultiSelect['bar_name'] = selectName2(_self.doubleMultiSelect['bar_name'],bar_name[i]);;
 						}
-						//console.log(_self.doubleMultiSelect)
+						console.log(_self.doubleMultiSelect)
 					}
 				});
 
@@ -806,6 +847,40 @@ export class ExpressVennComponent implements OnInit {
 				.attr('class', 'axis_y1')
 				.attr('transform', 'translate(' + padding1.left + ',' + padding1.top + ')')
 				.call(yAxis1);
+		}
+
+		// function selectName(sList,d) {
+		// 	if (sList.length == 0) {
+		// 		sList.push(d);
+		// 	} else {
+		// 		if(sList[0]==d){
+		// 			sList.length=0;
+		// 		}else{
+		// 			sList.length=0;
+		// 			sList.push(d)
+		// 		}
+		// 	}
+		// 	return sList;
+		// }
+
+		function selectName2(sList,d) {
+			if (sList.length == 0) {
+				sList.push(d);
+				sName[d] = true;
+			} else {
+				if (sName[d]) {
+					for (let i = 0; i < sList.length; i++) {
+						if (sList[i] == d) {
+							sList.splice(i, 1);
+							sName[d] = false;
+						}
+					}
+				} else {
+					sList.push(d);
+					sName[d] = true;
+				}
+			}
+			return sList;
 		}
 
 		function drawSvg2() {
@@ -851,25 +926,24 @@ export class ExpressVennComponent implements OnInit {
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
 							_self.singleMultiSelect['total_name'] = total_name[i]; ///222
 							_self.singleMultiSelect['bar_name'] = '';
-							_self.doubleMultiSelect['total_name'] = total_name[i];
 							_self.doSingleData();
 						} else if (d3.select(this).select('.MyRect').attr('fill') == 'steelblue') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', '#333');
 							_self.singleMultiSelect['total_name'] = ''; ///222
 							_self.singleMultiSelect['bar_name'] = '';
-							_self.doubleMultiSelect['total_name'] = '';
 							_self.doSingleData();
 						}
-					} else {
+						console.log(_self.singleMultiSelect)
+					} else { //多选
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
-							d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
+							//d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
-							_self.doubleMultiSelect['total_name'] = total_name[i];
+							_self.doubleMultiSelect['total_name'] = selectName2(_self.doubleMultiSelect['total_name'],total_name[i]);
 						} else if (d3.select(this).select('.MyRect').attr('fill') == 'steelblue') {
-							d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
+							//d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', '#333');
-							_self.doubleMultiSelect['total_name'] = '';
+							_self.doubleMultiSelect['total_name'] = selectName2(_self.doubleMultiSelect['total_name'],total_name[i]);
 						}
 						console.log(_self.doubleMultiSelect);
 					}
@@ -1028,60 +1102,62 @@ export class ExpressVennComponent implements OnInit {
 
 		//造点 这时候包含点的颜色 添加圆 基本圆
 		function makeBaseCircle(arr, svg_t) {
-			svg_t
-				.selectAll('.MyCircle')
-				.data(arr)
-				.enter()
-				.append('circle')
-				.attr('class', 'MyCircle')
-				.attr('cx', function(d, i) {
-					return d['x_axis'];
-				})
-				.attr('cy', function(d, i) {
-					return d['y_axis'];
-				})
-				.attr('r', function(d, i) {
-					return d['r'];
-				})
-				.style('fill', function(d) {
-					return d.color;
-				});
-
-			let tempyList = sortArr(arr, 'y_axis');
-
-			for (let i = 0; i < tempyList.length; i++) {
+			if(arr.length>0){
 				svg_t
-					.append('rect')
-					.attr('class', 'MyRect4')
-					.attr('x', padding1.left)
-					.attr('y', tempyList[i][0]['y_axis'] - d3_rectWidth / 2)
-					.attr('width', d3_width + padding1.right)
-					.attr('height', d3_rectWidth)
-					.attr('opacity', 0.7)
-					.attr('fill', i % 2 == 0 ? '#EEE' : 'none');
-			}
-
-			let tempList = sortArr(arr, 'x_axis');
-			for (let i = 0; i < tempList.length; i++) {
-				svg_t
-					.append('rect')
-					.attr('class', 'MyRect3')
-					.attr('x', tempList[i][0]['x_axis'] - d3_rectWidth / 2)
-					.attr('y', function(d, i) {
-						return 0;
+					.selectAll('.MyCircle')
+					.data(arr)
+					.enter()
+					.append('circle')
+					.attr('class', 'MyCircle')
+					.attr('cx', function(d, i) {
+						return d['x_axis'];
 					})
-					.attr('width', d3_rectWidth)
-					.attr('height', function(d, i) {
-						return d3_height;
+					.attr('cy', function(d, i) {
+						return d['y_axis'];
 					})
-					.attr('opacity', 0)
-					.attr('fill', '#87CEFA')
-					.on('mouseover', function(d, i) {
-						d3.select(this).attr('opacity', 0.5);
+					.attr('r', function(d, i) {
+						return d['r'];
 					})
-					.on('mouseout', function(d) {
-						d3.select(this).attr('opacity', 0);
+					.style('fill', function(d) {
+						return d.color;
 					});
+
+				let tempyList = sortArr(arr, 'y_axis');
+
+				for (let i = 0; i < tempyList.length; i++) {
+					svg_t
+						.append('rect')
+						.attr('class', 'MyRect4')
+						.attr('x', padding1.left)
+						.attr('y', tempyList[i][0]['y_axis'] - d3_rectWidth / 2)
+						.attr('width', d3_width + padding1.right)
+						.attr('height', d3_rectWidth)
+						.attr('opacity', 0.7)
+						.attr('fill', i % 2 == 0 ? '#EEE' : 'none');
+				}
+
+				let tempList = sortArr(arr, 'x_axis');
+				for (let i = 0; i < tempList.length; i++) {
+					svg_t
+						.append('rect')
+						.attr('class', 'MyRect3')
+						.attr('x', tempList[i][0]['x_axis'] - d3_rectWidth / 2)
+						.attr('y', function(d, i) {
+							return 0;
+						})
+						.attr('width', d3_rectWidth)
+						.attr('height', function(d, i) {
+							return d3_height;
+						})
+						.attr('opacity', 0)
+						.attr('fill', '#87CEFA')
+						.on('mouseover', function(d, i) {
+							d3.select(this).attr('opacity', 0.5);
+						})
+						.on('mouseout', function(d) {
+							d3.select(this).attr('opacity', 0);
+						});
+				}
 			}
 		}
 
