@@ -28,6 +28,7 @@ export class DiffVennComponent implements OnInit {
 	@ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
+	@ViewChild('addColumn') addColumn;
 	@ViewChild('tableSwitchChart') tableSwitchChart;
 	@ViewChild('transformTable') transformTable;
 
@@ -52,8 +53,8 @@ export class DiffVennComponent implements OnInit {
 	baseThead: any[] = [];
 	applyOnceSearchParams: boolean;
 
-	venSelectAllData: string[] = []; 
-	selectConfirmData: string[] = []; 
+	venSelectAllData: string[] = [];
+	selectConfirmData: string[] = [];
 
 	panelShow: boolean = false;
 
@@ -67,8 +68,8 @@ export class DiffVennComponent implements OnInit {
 		FDR: ''
 	};
 
-	p_log2FC:string;	
-	p_FDR:string;		
+	p_log2FC:string;
+	p_FDR:string;
 
 	n_show: boolean; //设置里面的NOIseq
 	NOIseq: object = {
@@ -76,8 +77,8 @@ export class DiffVennComponent implements OnInit {
 		probability: ''
 	};
 
-	n_log2FC:string;		
-	n_probability:string;	
+	n_log2FC:string;
+	n_probability:string;
 
 	activedCompareGroup: any[] = [];
 	singleMultiSelect: object = {
@@ -87,7 +88,7 @@ export class DiffVennComponent implements OnInit {
 	};
 
 	//多选
-	doubleMultiSelect: object = {		
+	doubleMultiSelect: object = {
 		bar_name: [],
 		total_name: []
 	};
@@ -267,6 +268,8 @@ export class DiffVennComponent implements OnInit {
 
     // 重置图 应用图转换前的设置
     chartBackStatus(){
+        this.defaultEmitBaseThead = true;
+        this.showBackButton = false;
         if(!this.first){
             // 比较组  引用无需考=>虑图选中/阈值
             // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
@@ -294,6 +297,8 @@ export class DiffVennComponent implements OnInit {
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
+        this.extendEmitBaseThead = false;
+        this.addColumn._clearThead();
 		if (this.first) {
 			this.extendCheckStatusInParams = false;
 			this.extendEntity['checkStatus'] = checkParams['others']['checkStatus'];
@@ -307,6 +312,7 @@ export class DiffVennComponent implements OnInit {
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
             this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
             this.extendEntity['relations'] = relations;
+            this.extendEntity['addThead'] = [];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -318,7 +324,8 @@ export class DiffVennComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
             this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
             this.transformTable._setExtendParamsWithoutRequest('relations', relations);
-			// 每次checkStatusInParams状态变完  再去获取数据
+            // 每次checkStatusInParams状态变完  再去获取数据
+            this.transformTable._setExtendParamsWithoutRequest('addThead',[]);
 			setTimeout(() => {
 				this.transformTable._getData();
 			}, 30);
@@ -330,8 +337,6 @@ export class DiffVennComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-        this.showBackButton = false;
-        this.defaultEmitBaseThead = true;
         this.chartBackStatus();
 	}
 
@@ -373,10 +378,10 @@ export class DiffVennComponent implements OnInit {
 		} catch (error) {}
 	}
 
-	OnChange(value: string): void {				
+	OnChange(value: string): void {
 		this.PossionDis['log2FC'] = value;
 	}
-	OnChange2(value: string): void {			
+	OnChange2(value: string): void {
 		this.PossionDis['FDR'] = value;
 	}
 
@@ -391,14 +396,14 @@ export class DiffVennComponent implements OnInit {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
-		if(this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR!=this.PossionDis['FDR']){   
+		if(this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR!=this.PossionDis['FDR']){
 			this.PossionDis = {
 				log2FC: this.p_show ? this.p_log2FC : '',
 				FDR: this.p_show ? this.p_FDR : ''
 			};
 		}
 
-		if(this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability!=this.NOIseq['probability']){   
+		if(this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability!=this.NOIseq['probability']){
 			this.NOIseq = {
 				log2FC: this.n_show ? this.n_log2FC : '',
 				probability: this.n_show ? this.n_probability : ''
@@ -413,14 +418,14 @@ export class DiffVennComponent implements OnInit {
 			this.tableEntity['diffThreshold'] = {
 				PossionDis: this.PossionDis
 			};
-			this.p_log2FC = this.PossionDis['log2FC'];  
+			this.p_log2FC = this.PossionDis['log2FC'];
 			this.p_FDR = this.PossionDis['FDR'];
 		}
 		if (this.n_show) {
 			this.tableEntity['diffThreshold'] = {
 				NOIseq: this.NOIseq
 			};
-			this.n_log2FC = this.NOIseq['log2FC'];  
+			this.n_log2FC = this.NOIseq['log2FC'];
 			this.n_probability = this.NOIseq['probability'];
 		}
 
@@ -430,7 +435,7 @@ export class DiffVennComponent implements OnInit {
 			venn_name: ''
 		};
 
-		this.doubleMultiSelect = {        
+		this.doubleMultiSelect = {
 			bar_name: [],
 			total_name: []
 		};
@@ -478,7 +483,7 @@ export class DiffVennComponent implements OnInit {
 
 	//venn和upsetR只能单选时候
 	doSingleData() {
-		
+
 		this.leftSelect.length = 0;
 		this.upSelect.length = 0;
 		if (this.selectConfirmData.length > 5) {
@@ -488,19 +493,13 @@ export class DiffVennComponent implements OnInit {
 				: this.leftSelect.push(this.singleMultiSelect['total_name']);
 		} else {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
-		}
-
-		// if (this.first) {
-		// 		this.transformTable._getData();
-		// } else {
-		// 	this.first = true;
-        // }
+        }
         this.chartBackStatus()
 	}
 
 	//多选确定时候,提交的数据
 	multipleConfirm() {
-		let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData; 
+		let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData;
 		this.leftSelect.length = 0;
 		this.upSelect.length = 0;
 
@@ -511,36 +510,38 @@ export class DiffVennComponent implements OnInit {
 			this.leftSelect.push(...tempData['total_name']);
 		}
 
-		// if (this.first) {
-		// 	this.transformTable._getData();
-		// } else {
-		// 	this.first = true;
-        // }
         this.chartBackStatus()
 	}
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
-		this.selectConfirmData = data; 
+		this.selectConfirmData = data;
 	}
 
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
-        this.selectConfirmData = data; 
+        this.selectConfirmData = data;
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
 
 		// this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
         // this.first ? this.transformTable._getData() : (this.first = true);
         // 更新当前回来的表头为基础头
-        this.defaultEmitBaseThead = true;
         this.chartBackStatus();
         this.updateVenn();
 	}
 
 	redrawChart(width, height?) {
 		this.isMultiSelect = false;
-	}
+    }
+
+    // 图表切换刷新
+    handlerRefresh(){
+        // 清空选择的数据
+        this.upSelect.length = 0;
+        this.leftSelect.length = 0;
+        this.chartBackStatus();
+    }
 
 	//显示venn图
 	showVenn(data) {
@@ -560,7 +561,7 @@ export class DiffVennComponent implements OnInit {
 		this.venn = new Venn({ id: 'chartId22122' })
 			.config({
 				data: tempR,
-				compareGroup: _selfV.tableEntity['compareGroup'], 
+				compareGroup: _selfV.tableEntity['compareGroup'],
 				isMultipleSelect: _selfV.isMultiSelect
 			})
 			.drawVenn()
