@@ -255,6 +255,13 @@ export class ReMultiOmicsComponent implements OnInit {
         this.chartBackStatus();
     }
 
+    handlerRefresh(){
+        this.chartSelect.length = 0;
+        this.defaultEntity['checkGraph'] = !!this.chartSelect.length || !!this.graphRelations.length;
+        this.showBackButton = false;
+        this.chartBackStatus();
+    }
+
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
         if(!this.first){
