@@ -8,7 +8,7 @@ import { MessageService } from "../../super/service/messageService";
 import { NgxSpinnerService } from "ngx-spinner";
 import config from "../../../config";
 import { routeAnimation } from "../../super/animation/animation";
-import {OuterDataBaseService} from './../../super/service/outerDataBaseService';
+// import {OuterDataBaseService} from './../../super/service/outerDataBaseService';
 
 declare const window: any;
 declare const $: any;
@@ -280,23 +280,29 @@ export class IndexComponent implements OnInit {
                     data => {
                         if(data['status']==='0'){
                             let d = data['data'];
-                            let outerFlag = "006";
-                            let outerDataBase;
+                            // let outerFlag = "006";
+                            // let outerDataBase;
 
                             d.forEach((val,index)=>{
-                                if(val['category']==='006'){
-                                    outerDataBase = d.splice(index,1)[0];
+                                if(val['category']===config['outerDataBaseIndex']){
+                                    // outerDataBase = d.splice(index,1)[0];
+                                    val['children'].forEach(v=>{
+                                        v['children'].forEach(item=>{
+                                            // if(!('children' in item)) item['children'] = [];
+                                            this.initTreeData(item['treeData']);
+                                        })
+                                    })
                                 }
                             })
 
                             this.storeService.setThead(d);
-                            outerDataBase['children'].forEach(v=>{
-                                v['children'].forEach((val,index)=>{
-                                    val['generatedThead'] = [];
-                                    this.initTreeData(val['treeData']);
-                                })
-                            });
-                            this.outerDataBaseService.set(outerDataBase);
+                            // outerDataBase['children'].forEach(v=>{
+                            //     v['children'].forEach((val,index)=>{
+                            //         val['generatedThead'] = [];
+                            //         this.initTreeData(val['treeData']);
+                            //     })
+                            // });
+                            // this.outerDataBaseService.set(outerDataBase);
                             resolve("success");
                         }else{
                             reject('error');

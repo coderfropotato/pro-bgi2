@@ -18,13 +18,18 @@
                 </ng-template>
                 <div *ngIf="item['children'].length">
                     <ng-container *ngFor="let it of item['children'];index as m;">
-                        <p>{{it['category'] | translate}}</p>
-                        <span class="head-item" [ngClass]="{'active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</span>
+                        <p>
+                            {{it['category'] | translate}}
+                            <span *ngIf="it['category'] ==='006'">add</span>
+                        </p>
+                        <ng-container *ngIf="it['children'].length">
+                            <span class="head-item" [ngClass]="{'active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</span>
+                        </ng-container>
                     </ng-container>
                 </div>
             </nz-tab>
             <!-- 外部数据库 -->
-            <nz-tab class="outer-tab" *ngIf="outerDataBaseService['outerDataBase'] && outerDataBaseService['outerDataBase']['children'].length " [nzTitle]="titleTemplate">
+            <!-- <nz-tab class="outer-tab" *ngIf="outerDataBaseService['outerDataBase'] && outerDataBaseService['outerDataBase']['children'].length " [nzTitle]="titleTemplate">
                 <ng-template #titleTemplate>
                         <span class="add-thead-head-item">{{ outerDataBaseService['outerDataBase']['category'] | translate }}<b *ngIf="outerSelected.length">{{outerSelected.length}}</b></span>
                 </ng-template>
@@ -46,7 +51,7 @@
                         </nz-modal>
                     </ng-container>
                 </div>
-            </nz-tab>
+            </nz-tab> -->
         </nz-tabset>
     </div>
     <div class="add-foot" *ngIf="show && thead.length">

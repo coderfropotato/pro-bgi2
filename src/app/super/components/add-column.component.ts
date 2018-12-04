@@ -1,7 +1,9 @@
+import { AjaxService } from 'src/app/super/service/ajaxService';
 import { TranslateService } from '@ngx-translate/core';
 import { StoreService } from './../service/storeService';
-import { OuterDataBaseService } from './../service/outerDataBaseService';
+// import { OuterDataBaseService } from './../service/outerDataBaseService';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import config from '../../../config';
 /**
  * @description 增删列
  * @author Yangwd<277637411@qq.com>
@@ -27,18 +29,19 @@ export class AddColumnComponent implements OnInit {
 	selectCount: Array<any> = [];
 	beforeSelected: Array<any> = [];
 	theadInBase: string[] = []; // 哪些基础表头在增删列的数据里面
-	outerIndex: number = 0; // 当前的外部数据库索引
+	// outerIndex: number = 0; // 当前的外部数据库索引
 	modalVisible: boolean = false;
 
 	generatedThead: object = {};
 	modalVisibleList: boolean[] = [];
-	outerSelected: any[] = [];
-	outerBeforeSelected: any[] = [];
+	// outerSelected: any[] = [];
+	// outerBeforeSelected: any[] = [];
 
 	constructor(
 		private storeService: StoreService,
-		private translate: TranslateService,
-		public outerDataBaseService: OuterDataBaseService
+        private translate: TranslateService,
+        private ajaxService:AjaxService,
+		// public outerDataBaseService: OuterDataBaseService
 	) {
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
@@ -50,13 +53,13 @@ export class AddColumnComponent implements OnInit {
 		this.initSelected();
 		this.initBeforeSelected();
 		this.initSelectCount();
-		let outerTemp = this.outerDataBaseService.get();
-		if (outerTemp['children'].length) {
-			outerTemp['children'].forEach((val, index) => {
-				this.generatedThead[index] = [];
-				this.modalVisibleList[index] = false;
-			});
-		}
+		// let outerTemp = this.outerDataBaseService.get();
+		// if (outerTemp['children'].length) {
+		// 	outerTemp['children'].forEach((val, index) => {
+		// 		this.generatedThead[index] = [];
+		// 		this.modalVisibleList[index] = false;
+		// 	});
+		// }
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -78,6 +81,7 @@ export class AddColumnComponent implements OnInit {
 		}
 	}
 
+    // 初始化索引和选中状态
 	initIndexAndChecked() {
 		this.thead.forEach((val, index) => {
 			if (val['children'] && val['children'].length) {
@@ -91,7 +95,22 @@ export class AddColumnComponent implements OnInit {
 				});
 			}
 		});
-	}
+    }
+
+    // 初始化索引
+    initIndex(){
+        this.thead.forEach((val, index) => {
+			if (val['children'] && val['children'].length) {
+				val['children'].forEach((v, i) => {
+					if (v['children'] && v['children'].length) {
+						for (let m = 0; m < v['children'].length; m++) {
+							v['children'][m]['index'] = index;
+						}
+					}
+				});
+			}
+		});
+    }
 
 	// 切换显示面板
 	toggleShow() {
@@ -188,10 +207,10 @@ export class AddColumnComponent implements OnInit {
 		if (tempTheadInBase.length) remove = tempTheadInBase.concat([]);
 
 		// 把外部数据库添加的放进add
-		if (this.outerSelected.length) {
-			add.push(...this.outerSelected);
-			this.outerBeforeSelected = this.outerSelected.concat([]);
-		}
+		// if (this.outerSelected.length) {
+		// 	add.push(...this.outerSelected);
+		// 	this.outerBeforeSelected = this.outerSelected.concat([]);
+		// }
         this.addThead.emit({ add, remove });
         this.show = false;
         setTimeout(() => {
@@ -210,17 +229,17 @@ export class AddColumnComponent implements OnInit {
 
 	initSelected() {
 		this.selected = this.thead.map((v) => []);
-		if (this.outerDataBaseService.get()['children'].length) this.selected.push([]);
+		// if (this.outerDataBaseService.get()['children'].length) this.selected.push([]);
 	}
 
 	initBeforeSelected() {
 		this.beforeSelected = this.thead.map((v) => []);
-		if (this.outerDataBaseService.get()['children'].length) this.beforeSelected.push([]);
+		// if (this.outerDataBaseService.get()['children'].length) this.beforeSelected.push([]);
 	}
 
 	initSelectCount() {
 		this.selectCount = this.thead.map((v) => 0);
-		if (this.outerDataBaseService.get()['children'].length) this.selectCount.push(0);
+		// if (this.outerDataBaseService.get()['children'].length) this.selectCount.push(0);
 	}
 
 	classifyCollection(collection) {
@@ -236,8 +255,8 @@ export class AddColumnComponent implements OnInit {
 		this.initTheadStatus();
 		this.getCheckCount();
 		// 清除外部数据库
-		this.outerSelected = [];
-		this.outerBeforeSelected = [];
+		// this.outerSelected = [];
+		// this.outerBeforeSelected = [];
 		this.confirm();
     }
 
@@ -252,7 +271,7 @@ export class AddColumnComponent implements OnInit {
         this.selected = this.copy(this.beforeSelected);
 		this.applyCheckedStatus();
 		// 外部数据库取消
-        this.outerSelected = this.outerBeforeSelected.concat([]);
+        // this.outerSelected = this.outerBeforeSelected.concat([]);
         setTimeout(() => {
 			this.toggle.emit(this.show);
         }, 0);
@@ -265,21 +284,21 @@ export class AddColumnComponent implements OnInit {
 
 	// 外部数据库逻辑
 	// 外部数据库点击选择
-	outerClick(item, index) {
-		if (this.outerSelected.length) {
-			if (this.isInArr(item, this.outerSelected, 'key')) return;
-			this.outerSelected.push(item);
-		} else {
-			this.outerSelected.push(item);
-		}
-	}
+	// outerClick(item, index) {
+	// 	if (this.outerSelected.length) {
+	// 		if (this.isInArr(item, this.outerSelected, 'key')) return;
+	// 		this.outerSelected.push(item);
+	// 	} else {
+	// 		this.outerSelected.push(item);
+	// 	}
+	// }
 
-	outerClose(item) {
-		let index = this.outerSelected.findIndex((val, i) => {
-			return val['key'] === item['key'];
-		});
-		if (index != -1) this.outerSelected.splice(index, 1);
-	}
+	// outerClose(item) {
+	// 	let index = this.outerSelected.findIndex((val, i) => {
+	// 		return val['key'] === item['key'];
+	// 	});
+	// 	if (index != -1) this.outerSelected.splice(index, 1);
+	// }
 
 	addTreeThead(index) {
 		this.modalVisibleList[index] = true;
@@ -467,12 +486,35 @@ export class AddColumnComponent implements OnInit {
 		// tempTheadInBase.forEach(v=>remove.push({ category:null, key:v }))
 		if (tempTheadInBase.length) remove = tempTheadInBase.concat([]);
 
-		// 把外部数据库添加的放进add
-		if (this.outerSelected.length) {
-			add.push(...this.outerSelected);
-			this.outerBeforeSelected = this.outerSelected.concat([]);
-        }
+		// // 把外部数据库添加的放进add
+		// if (this.outerSelected.length) {
+		// 	add.push(...this.outerSelected);
+		// 	this.outerBeforeSelected = this.outerSelected.concat([]);
+        // }
+
+
 
         return {add,remove};
-	}
+    }
+
+    async shwfn(){
+        let a = await this.saveThead({});
+    }
+
+    // 保存树选择的头
+    async saveThead(thead:object){
+        return new Promise((resolve,reject)=>{
+            this.ajaxService.getDeferData({
+                data:{
+                    "LCID":sessionStorage.getItem('LCID'),
+                    "columns":[thead]
+                },
+                url:`${config['javaPath']}/savePublicColumns`
+            }).subscribe((res)=>{
+                res['status']==='0'?resolve(res):reject('error');
+            },error=>{
+                reject('error');
+            })
+        })
+    }
 }
