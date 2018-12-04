@@ -1,6 +1,8 @@
+import { AddColumnService } from './../service/addColumnService';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { TranslateService } from '@ngx-translate/core';
 import { StoreService } from './../service/storeService';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 // import { OuterDataBaseService } from './../service/outerDataBaseService';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import config from '../../../config';
@@ -17,7 +19,7 @@ import config from '../../../config';
 	styles: []
 })
 export class AddColumnComponent implements OnInit {
-	@Input() thead: Array<object>; // 默认显示的表头
+	// @Input() thead: Array<object>; // 默认显示的表头
 	@Input() baseThead: Array<string> = []; // 基础的表头  （需要默认激活)
 	@Output() toggle: EventEmitter<any> = new EventEmitter(); // 显示隐藏
 	@Output() addThead: EventEmitter<any> = new EventEmitter(); // 添加头的时候发出的事件
@@ -25,15 +27,16 @@ export class AddColumnComponent implements OnInit {
 	@Output() computedTableEvent: EventEmitter<any> = new EventEmitter(); // 在树选择表头的时候，有选择的项需要重新计算表格的高度
 	show: boolean = false;
 
+    thead:Array<object> = [];
 	selected: Array<any> = [];
 	selectCount: Array<any> = [];
 	beforeSelected: Array<any> = [];
 	theadInBase: string[] = []; // 哪些基础表头在增删列的数据里面
 	// outerIndex: number = 0; // 当前的外部数据库索引
-	modalVisible: boolean = false;
+	// modalVisible: boolean = false;
 
-	generatedThead: object = {};
-    modalVisibleList: boolean[] = [];
+	// generatedThead: object = {};
+    // modalVisibleList: boolean[] = [];
 
     treeTempSelect:any[] = [];
 	// outerSelected: any[] = [];
@@ -44,14 +47,25 @@ export class AddColumnComponent implements OnInit {
 	constructor(
 		private storeService: StoreService,
 		private translate: TranslateService,
-		private ajaxService: AjaxService
+        private ajaxService: AjaxService,
+        private addColumnService:AddColumnService,
+        private router:Router,
 	) // public outerDataBaseService: OuterDataBaseService
 	{
 		let browserLang = this.storeService.getLang();
-		this.translate.use(browserLang);
+        this.translate.use(browserLang);
+
+        // 每次进入路由重新获取增删列 并应用之前的选中状态
+        this.router.events.subscribe((event) => {
+			if (event instanceof NavigationEnd) {
+                this.thead = this.addColumnService.get();
+                this.applyCheckedStatus();
+            }
+		});
 	}
 
 	ngOnInit() {
+        this.thead = this.addColumnService.get();
 		this.initIndexAndChecked();
 		// 生成 点击选择 容器
 		this.initSelected();
@@ -329,6 +343,7 @@ export class AddColumnComponent implements OnInit {
             if(res!=='error'){
                 this.treeTempSelect = [];
                 it.children.push(...res['data']);
+                this.addColumnService.set(this.thead);
                 console.log('添加成功');
             }else{
                 this.treeTempSelect = [];
