@@ -257,6 +257,11 @@ export class ReHeatmapComponent implements OnInit {
         this.chartBackStatus();
     }
 
+    handlerRefresh(){
+        this.selectGeneList.length = 0;
+        this.chartBackStatus();
+    }
+
     chartBackStatus(){
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;

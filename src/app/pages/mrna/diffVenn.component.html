@@ -170,6 +170,7 @@
                 [flex]="true"
                 [chartId]="'chartId22122'"
                 [chartName]="'韦恩图'"
+                (refresh)="handlerRefresh()"
             >
             </app-table-switch-chart>
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
@@ -181,7 +182,7 @@
         </div>
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
-            <app-add-column (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)" ></app-add-column>
+            <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [thead]="allThead" [baseThead]="baseThead" (addThead)="addThead($event)" ></app-add-column>
             <!-- 关系 -->
             <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
 

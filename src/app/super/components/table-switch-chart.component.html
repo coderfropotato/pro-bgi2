@@ -23,9 +23,10 @@
             <!-- 设置 -->
             <ng-container *ngTemplateOutlet="setTemplate ? setTemplate :''"></ng-container>
             <!-- 刷新-->
-            <i *ngIf="!chartUrl" class="anticon anticon-sync" (click)="getTableData()" nz-tooltip nzTitle="刷新"></i>
-            <i *ngIf="chartUrl && isShowTable" class="anticon anticon-sync" (click)="getTableData()" nz-tooltip nzTitle="刷新"></i>
-            <i *ngIf="chartUrl && !isShowTable" class="anticon anticon-sync" (click)="getChartData()" nz-tooltip nzTitle="刷新"></i>
+            <!-- getTableData getTableData getChartData -->
+            <i *ngIf="!chartUrl" class="anticon anticon-sync" (click)="handlerRefresh()" nz-tooltip nzTitle="刷新"></i>
+            <i *ngIf="chartUrl && isShowTable" class="anticon anticon-sync" (click)="handlerRefresh()" nz-tooltip nzTitle="刷新"></i>
+            <i *ngIf="chartUrl && !isShowTable" class="anticon anticon-sync" (click)="handlerRefresh()" nz-tooltip nzTitle="刷新"></i>
             <!--表下载  -->
             <i class="anticon anticon-download" *ngIf="isShowTable && !error" nz-tooltip nzTitle="导出数据"></i>
             <!-- 图下载 -->
@@ -70,7 +71,7 @@
                 <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable && !error" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
                     <!-- table：固定表头-->
                     <nz-table nzShowPagination="false" [nzData]="isVennTable?chartData.rows:tableData.rows" [nzScroll]="scroll" [nzSize]="'small'" *ngIf="isShowTable && !error">
-                        
+
                         <!-- 普通表 -->
                         <thead  *ngIf="!isVennTable">
                             <tr>

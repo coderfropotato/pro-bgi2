@@ -73,7 +73,7 @@
 	line-height: 1;
 	background-color: #fff;
 	border: $border;
-	color: #386cca;
+	color: $btn_active_color;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	cursor: pointer;
@@ -186,7 +186,9 @@
 
 .tag-wrap .ant-tag {
 	margin: 6px;
-	margin-left: 0;
+    margin-left: 0;
+    // background-color: $btn_active_color;
+    // color:#fff;
 }
 
 .little-table {
@@ -480,8 +482,9 @@ button.btnActive {
 			align-items: center;
 			flex-direction: column;
 			transition: 0.6s all ease;
+            cursor: pointer;
 			&:hover {
-				@include hover-animate;
+                @include hover-animate;
 			}
 			img {
 				margin-top: 24px;
@@ -491,11 +494,36 @@ button.btnActive {
 				margin-bottom: 0;
 			}
 			.menu-button {
-				@include submenu-button;
+                @include submenu-button;
+                &:hover{
+                    @include hover-animate($them_color);
+                    background-color: $btn_active_color;
+                    color: #fff;
+                }
 			}
 			&.active {
-				background-color: $them_color;
-			}
+				background-color: $menu_active_bg_color;
+            }
+
+            .tool-imgs {
+                height: 192px;
+                width: 192px;
+                margin: 0 auto;
+                background-repeat: no-repeat;
+                background-position: center;
+                transition: 0.3s all ease;
+                // border-width: 2px 2px 4px;
+                // border-style: solid;
+                // border-color: transparent;
+                // &:hover {
+                //     transform: translate(0, -4px);
+                //     border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
+                //     box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
+                // }
+            }
+            .diff-venn-img{
+                background-image: url('../img/韦恩图.png');
+            }
 		}
 	}
 }
@@ -639,21 +667,65 @@ button.btnActive {
 			li {
 				float: left;
 				width: 100px;
-				height: 114px;
-				margin-bottom: 24px;
+				height: 90px;
+				margin-bottom:16px;
 				text-align: center;
 				cursor: pointer;
-				img {
+				.tool-imgs {
+                    height: 40px;
+                    width: 40px;
+                    margin: 0 auto;
+                    background-repeat: no-repeat;
+                    background-position: center;
 					transition: 0.3s all ease;
 					border-width: 2px 2px 4px;
 					border-style: solid;
 					border-color: transparent;
 					&:hover {
 						transform: translate(0, -4px);
-						border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
+						border-color: $btn_active_color;
 						box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
 					}
-				}
+                }
+                .heatmap-img{
+                    background-image: url('../img/Group13.png');
+                }
+                .goRich-img{
+                    background-image: url('../img/Group6.png');
+                }
+                .keggRich-img{
+                    background-image: url('../img/Group20.png');
+                }
+                .goClass-img{
+                    background-image: url('../img/Group5.png');
+                }
+                .keggClass-img{
+                    background-image: url('../img/Group4.png');
+                }
+                .line-img{
+                    background-image: url('../img/1.png');
+                }
+                .net-img{
+                    background-image: url('../img/Group22.png');
+                }
+                .KDA-img{
+                    background-image: url('../img/2.png');
+                }
+                .multiOmics-img{
+                    background-image: url('../img/3.png');
+                }
+                .kaFun-img{
+                    background-image: url('../img/4.png');
+                }
+                .relativeSplice-img{
+                    background-image: url('../img/5.png');
+                }
+                .relaticeNet-img{
+                    background-image: url('../img/6.png');
+                }
+                .relativeHeatmap-img{
+                    background-image: url('../img/7.png');
+                }
 			}
 		}
 	}

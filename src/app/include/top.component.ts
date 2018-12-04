@@ -3,6 +3,8 @@ import { StoreService } from "../super/service/storeService";
 import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
+import config from '../../config';
+
 declare const $: any;
 
 @Component({
@@ -34,7 +36,7 @@ export class TopComponent implements OnInit {
     ) {
         this.translate.addLangs(["zh", "en"]);
         this.translate.setDefaultLang("zh");
-        this.browserLang = this.translate.getBrowserLang(); // this.translate.getBrowserLang()
+        this.browserLang = config['lang']; // this.translate.getBrowserLang()
         this.translate.use(
             this.browserLang.match(/zh|en/) ? this.browserLang : "zh"
         );

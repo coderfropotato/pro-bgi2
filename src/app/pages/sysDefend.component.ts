@@ -9,6 +9,8 @@ export class SysDefendComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+      sessionStorage.clear();
+      localStorage.clear();
   }
 
 }

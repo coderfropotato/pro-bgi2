@@ -206,7 +206,7 @@ export class ReMultiOmicsComponent implements OnInit {
     // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
         this.showBackButton = true;
-        this.defaultEmitBaseThead = false;
+        this.extendEmitBaseThead = false;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -255,12 +255,24 @@ export class ReMultiOmicsComponent implements OnInit {
         this.chartBackStatus();
     }
 
+    handlerRefresh(){
+        this.chartSelect.length = 0;
+        this.defaultEntity['checkGraph'] = !!this.chartSelect.length || !!this.graphRelations.length;
+        this.showBackButton = false;
+        this.chartBackStatus();
+    }
+
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
         if(!this.first){
-            // let {add,remove} = this.addColumn._confirmWithoutEvent();
-            this.defaultEntity['addThead'] = [];
-            this.defaultEntity['removeColumns'] = [];
+            if(!this.showBackButton){  // 如果是通过定量信息转的矩阵 那就需要保存增删列的激活状态
+                let {add,remove} = this.addColumn._confirmWithoutEvent();
+                this.defaultEntity['addThead'] = add;
+                this.defaultEntity['removeColumns'] = remove;
+            }else{
+                this.defaultEntity['addThead'] = [];
+                this.defaultEntity['removeColumns'] = [];
+            }
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['searchList'] = [];
             this.defaultEntity['matrix'] = !!this.graphRelations.length;
@@ -383,7 +395,7 @@ export class ReMultiOmicsComponent implements OnInit {
                 let rectsLength=d.data.length;
 
                 eachTypeWidth=rectsLength * d.w + (rectsLength + 1) * rectSpace;
-                
+
                 temp += eachTypeWidth;
                 d.transX=temp - eachTypeWidth;
 
@@ -392,7 +404,7 @@ export class ReMultiOmicsComponent implements OnInit {
                 d.data.forEach(m => {
                     m.space = rectSpace;
                 })
-            
+
             })
         }else{
             let temp = 0;
@@ -401,23 +413,23 @@ export class ReMultiOmicsComponent implements OnInit {
                 rectSpace = spaceScale(rectsLength);
 
                 eachTypeWidth = rectsLength * d.w + (rectsLength + 1) * rectSpace;
-    
+
                 temp += eachTypeWidth;
                 // width = temp + typeSpace * (columnLength - 1);
                 // d.transX = (temp - eachTypeWidth) + i * typeSpace;
                 d.transX=temp - eachTypeWidth;
 
                 d.space=rectSpace;
-    
+
                 d.data.forEach(m => {
                     m.space = rectSpace;
                 })
-                
+
             });
 
             width = temp;
             height = width;
-    
+
             eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
             //判断极值
             if (eachChartHeight >= 400) {
