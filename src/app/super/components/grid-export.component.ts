@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from "@angular/core";
 declare const $:any;
 @Component({
     selector: "app-grid-export",
-    template: `<i class="anticon anticon-download" [nzTitle]="'tableButton.download' | translate" nz-tooltip (click)="download()"></i>`,
+    template: `<i class="iconfont icon-xiazai" [nzTitle]="'tableButton.download' | translate" nz-tooltip (click)="download()"></i>`,
     styles: []
 })
 export class GridExportComponent implements OnInit {
