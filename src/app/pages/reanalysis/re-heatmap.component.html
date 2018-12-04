@@ -26,7 +26,7 @@
                         [chartName]="'聚类图'"
                         [defaultSetUrl]='defaultSetUrl'
                         [defaultSetEntity]='defaultSetEntity'
-                        (apiEntityChange)='apiEntityChange($event)'
+                        (defaultSet)='apiEntityChange($event)'
                         [flex]="true"
                         (refresh)="handlerRefresh()"
                     >

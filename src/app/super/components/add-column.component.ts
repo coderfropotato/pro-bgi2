@@ -33,16 +33,20 @@ export class AddColumnComponent implements OnInit {
 	modalVisible: boolean = false;
 
 	generatedThead: object = {};
-	modalVisibleList: boolean[] = [];
+    modalVisibleList: boolean[] = [];
+
+    treeTempSelect:any[] = [];
 	// outerSelected: any[] = [];
 	// outerBeforeSelected: any[] = [];
 
+	config = config;
+
 	constructor(
 		private storeService: StoreService,
-        private translate: TranslateService,
-        private ajaxService:AjaxService,
-		// public outerDataBaseService: OuterDataBaseService
-	) {
+		private translate: TranslateService,
+		private ajaxService: AjaxService
+	) // public outerDataBaseService: OuterDataBaseService
+	{
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
 	}
@@ -81,7 +85,7 @@ export class AddColumnComponent implements OnInit {
 		}
 	}
 
-    // 初始化索引和选中状态
+	// 初始化索引和选中状态
 	initIndexAndChecked() {
 		this.thead.forEach((val, index) => {
 			if (val['children'] && val['children'].length) {
@@ -95,11 +99,11 @@ export class AddColumnComponent implements OnInit {
 				});
 			}
 		});
-    }
+	}
 
-    // 初始化索引
-    initIndex(){
-        this.thead.forEach((val, index) => {
+	// 初始化索引
+	initIndex() {
+		this.thead.forEach((val, index) => {
 			if (val['children'] && val['children'].length) {
 				val['children'].forEach((v, i) => {
 					if (v['children'] && v['children'].length) {
@@ -110,16 +114,16 @@ export class AddColumnComponent implements OnInit {
 				});
 			}
 		});
-    }
+	}
 
 	// 切换显示面板
 	toggleShow() {
 		this.show = !this.show;
 		setTimeout(() => {
 			this.toggle.emit(this.show);
-        }, 0);
+		}, 0);
 
-        this.cancelStatus();
+		this.cancelStatus();
 	}
 
 	// 点击选择或者取消选择
@@ -211,11 +215,11 @@ export class AddColumnComponent implements OnInit {
 		// 	add.push(...this.outerSelected);
 		// 	this.outerBeforeSelected = this.outerSelected.concat([]);
 		// }
-        this.addThead.emit({ add, remove });
-        this.show = false;
-        setTimeout(() => {
+		this.addThead.emit({ add, remove });
+		this.show = false;
+		setTimeout(() => {
 			this.toggle.emit(this.show);
-        }, 0);
+		}, 0);
 	}
 
 	copy(arr) {
@@ -248,7 +252,7 @@ export class AddColumnComponent implements OnInit {
 		return temp;
 	}
 
-    // 清除按钮
+	// 清除按钮
 	clear() {
 		this.initSelected();
 		this.initBeforeSelected();
@@ -258,24 +262,24 @@ export class AddColumnComponent implements OnInit {
 		// this.outerSelected = [];
 		// this.outerBeforeSelected = [];
 		this.confirm();
-    }
-
-    // 取消按钮
-    cancel() {
-        this.show = false;
-        this.cancelStatus();
 	}
 
-    // 清除内部状态
-    cancelStatus(){
-        this.selected = this.copy(this.beforeSelected);
+	// 取消按钮
+	cancel() {
+		this.show = false;
+		this.cancelStatus();
+	}
+
+	// 清除内部状态
+	cancelStatus() {
+		this.selected = this.copy(this.beforeSelected);
 		this.applyCheckedStatus();
 		// 外部数据库取消
-        // this.outerSelected = this.outerBeforeSelected.concat([]);
-        setTimeout(() => {
+		// this.outerSelected = this.outerBeforeSelected.concat([]);
+		setTimeout(() => {
 			this.toggle.emit(this.show);
-        }, 0);
-    }
+		}, 0);
+	}
 
 	// 删除单个头
 	closeTag(d) {
@@ -300,44 +304,68 @@ export class AddColumnComponent implements OnInit {
 	// 	if (index != -1) this.outerSelected.splice(index, 1);
 	// }
 
-	addTreeThead(index) {
-		this.modalVisibleList[index] = true;
+	addTreeThead(it) {
+		it['modalVisible'] = true;
 	}
 
 	// 树选择可匹配的头 改变
 	handlerSelectDataChange(thead, index) {
-		this.generatedThead[index] = thead;
+		this.treeTempSelect = thead;
 	}
 
-	handleCancel(index) {
-		this.modalVisibleList[index] = false;
+	handleCancel(it) {
+		it['modalVisible'] = false;
 	}
 
-	handleOk(index, curObj) {
-		if (this.generatedThead[index][0]) {
-			curObj['generatedThead'].push({
-				category: curObj['category'],
-				checked: false,
-				key: this.generatedThead[index][0],
-				name: this.generatedThead[index][0],
-				index: this.thead.length
-			});
-		}
-        this.initGeneratedThead();
-        setTimeout(()=>{
-            this.computedTableEvent.emit();
-        },0)
+	handleOk(it) {
+        it['modalVisible'] = false;
+
+        (async ()=>{
+            let res = await this.saveThead({
+                "category":it['category'],
+                "key":this.treeTempSelect[0],
+                "name":this.treeTempSelect[0]
+            });
+            if(res!=='error'){
+                this.treeTempSelect = [];
+                it.children.push(...res['data']);
+                console.log('添加成功');
+            }else{
+                this.treeTempSelect = [];
+                console.log('添加失败');
+            }
+        })()
+
+		setTimeout(() => {
+			this.computedTableEvent.emit();
+		}, 0);
 	}
+
+	// handleOk(index, curObj) {
+	// 	if (this.generatedThead[index][0]) {
+	// 		curObj['generatedThead'].push({
+	// 			category: curObj['category'],
+	// 			checked: false,
+	// 			key: this.generatedThead[index][0],
+	// 			name: this.generatedThead[index][0],
+	// 			index: this.thead.length
+	// 		});
+	// 	}
+	//     this.initGeneratedThead();
+	//     setTimeout(()=>{
+	//         this.computedTableEvent.emit();
+	//     },0)
+	// }
 
 	// 初始化临时产生的组合头 generatedThead
-	initGeneratedThead() {
-		for (let name in this.generatedThead) {
-			this.generatedThead[name] = [];
-		}
-		for (let i = 0; i < this.modalVisibleList.length; i++) {
-			this.modalVisibleList[i] = false;
-		}
-	}
+	// initGeneratedThead() {
+	// 	for (let name in this.generatedThead) {
+	// 		this.generatedThead[name] = [];
+	// 	}
+	// 	for (let i = 0; i < this.modalVisibleList.length; i++) {
+	// 		this.modalVisibleList[i] = false;
+	// 	}
+	// }
 
 	forTree(data, callback) {
 		if (!data || !data.length) return;
@@ -490,31 +518,30 @@ export class AddColumnComponent implements OnInit {
 		// if (this.outerSelected.length) {
 		// 	add.push(...this.outerSelected);
 		// 	this.outerBeforeSelected = this.outerSelected.concat([]);
-        // }
+		// }
 
+		return { add, remove };
+	}
 
-
-        return {add,remove};
-    }
-
-    async shwfn(){
-        let a = await this.saveThead({});
-    }
-
-    // 保存树选择的头
-    async saveThead(thead:object){
-        return new Promise((resolve,reject)=>{
-            this.ajaxService.getDeferData({
-                data:{
-                    "LCID":sessionStorage.getItem('LCID'),
-                    "columns":[thead]
-                },
-                url:`${config['javaPath']}/savePublicColumns`
-            }).subscribe((res)=>{
-                res['status']==='0'?resolve(res):reject('error');
-            },error=>{
-                reject('error');
-            })
-        })
-    }
+	// 保存树选择的头
+	async saveThead(thead: object) {
+		return new Promise((resolve, reject) => {
+			this.ajaxService
+				.getDeferData({
+					data: {
+						LCID: sessionStorage.getItem('LCID'),
+						columns: [ thead ]
+					},
+					url: `${config['javaPath']}/savePublicColumns`
+				})
+				.subscribe(
+					(res) => {
+						res['status'] === '0' ? resolve(res) : reject('error');
+					},
+					(error) => {
+						reject('error');
+					}
+				);
+		});
+	}
 }

@@ -677,14 +677,16 @@ button.btnActive {
                     margin: 0 auto;
                     background-repeat: no-repeat;
                     background-position: center;
+                    background-size:contain;
+                    border-radius: 50%;
 					transition: 0.3s all ease;
-					border-width: 2px 2px 4px;
-					border-style: solid;
-					border-color: transparent;
+					// border-width: 2px 2px 4px;
+					// border-style: solid;
+					// border-color: transparent;
 					&:hover {
 						transform: translate(0, -4px);
-						border-color: $btn_active_color;
-						box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
+						// border-color: $btn_active_color;
+						// box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
 					}
                 }
                 .heatmap-img{
