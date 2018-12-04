@@ -46,7 +46,6 @@ export class ReHeatmapComponent implements OnInit {
     oLegendIndex:number=0;
     oColor:string;
 
-    geneList:string[]=[];
     defaultSetUrl:string;
     defaultSetEntity:object;
     defaultSetData:any;
@@ -962,7 +961,7 @@ export class ReHeatmapComponent implements OnInit {
                     resGeneId.push(val.x);
                 });
 
-                that.geneList = resGeneId;
+                that.selectGeneList = resGeneId;
                 that.setGeneList(resGeneId);
 
                 let high_j = d3.min([up_j, down_j]),
@@ -995,8 +994,8 @@ export class ReHeatmapComponent implements OnInit {
             d3.select("#clusterChartDiv svg").on("mouseup", function () {
                 select_rect.attr("width", 0).attr("height", 0);
                 isMousedown = false;
-                that.geneList.length=0;
-                that.setGeneList(that.geneList);
+                that.selectGeneList.length=0;
+                that.setGeneList(that.selectGeneList);
             })
         }
 
