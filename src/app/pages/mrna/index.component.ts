@@ -33,7 +33,7 @@ export class IndexComponent implements OnInit {
         private ajaxService: AjaxService,
         private storeService: StoreService,
         private ngxSpinnerService: NgxSpinnerService,
-        private outerDataBaseService:OuterDataBaseService
+        // private outerDataBaseService:OuterDataBaseService
     ) {
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
