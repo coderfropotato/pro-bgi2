@@ -280,6 +280,18 @@ export class MultiOmicsSetComponent implements OnInit {
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
         this.infoList.splice(i, 1);
+
+        this.relationList.forEach(d => {
+            d['isDisabled'] = false;
+            this.infoList.forEach(m => {
+                if (d['key'] !== 'false') {
+                    if (d['key'] === m['relation']) {
+                        d['isDisabled'] = true;
+                    }
+                }
+            });
+
+        })
     }
 
     // 设置 确定
