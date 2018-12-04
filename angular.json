@@ -25,7 +25,8 @@
                         "styles": [
                             "src/app/res/styles/theme.less",
                             "src/app/res/styles/reset.css",
-                            "src/app/res/styles/global.scss"
+                            "src/app/res/styles/global.scss",
+                            "src/app/res/styles/iconfont/iconfont.css"
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js",
