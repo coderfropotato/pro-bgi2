@@ -1,4 +1,4 @@
-import { OuterDataBaseService } from './../../super/service/outerDataBaseService';
+// import { OuterDataBaseService } from './../../super/service/outerDataBaseService';
 import { AjaxService } from './../../super/service/ajaxService';
 import { StoreService } from './../../super/service/storeService';
 import { Component, OnInit } from '@angular/core';
@@ -19,7 +19,7 @@ export class ReanalysisIndexComponent implements OnInit {
         private routes:ActivatedRoute,
         private ajaxService:AjaxService,
         public storeService:StoreService,
-        private outerDataBaseService:OuterDataBaseService,
+        // private outerDataBaseService:OuterDataBaseService,
         private ngxSpinnerService:NgxSpinnerService
     ) {
         this.routes.paramMap.subscribe((params)=>{
@@ -83,23 +83,30 @@ export class ReanalysisIndexComponent implements OnInit {
                     data => {
                         if(data['status']==='0'){
                             let d = data['data'];
-                            let outerFlag = "006";
-                            let outerDataBase;
+                            // let outerFlag = "006";
+                            // let outerDataBase;
 
                             d.forEach((val,index)=>{
-                                if(val['category']==='006'){
-                                    outerDataBase = d.splice(index,1)[0];
+                                if(val['category']===config['outerDataBaseIndex']){
+                                    // outerDataBase = d.splice(index,1)[0];
+                                    val['children'].forEach(v=>{
+                                        if(!('children' in v)) v['children'] = [];
+                                        v['modalVisible'] = false;
+                                        v['children'].forEach(item=>{
+                                            this.initTreeData(item['treeData']);
+                                        })
+                                    })
                                 }
                             })
 
                             this.storeService.setThead(d);
-                            outerDataBase['children'].forEach(v=>{
-                                v['children'].forEach((val,index)=>{
-                                    val['generatedThead'] = [];
-                                    this.initTreeData(val['treeData']);
-                                })
-                            });
-                            this.outerDataBaseService.set(outerDataBase);
+                            // outerDataBase['children'].forEach(v=>{
+                            //     v['children'].forEach((val,index)=>{
+                            //         val['generatedThead'] = [];
+                            //         this.initTreeData(val['treeData']);
+                            //     })
+                            // });
+                            // this.outerDataBaseService.set(outerDataBase);
                             resolve("success");
                         }else{
                             reject('error');

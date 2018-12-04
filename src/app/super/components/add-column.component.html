@@ -20,7 +20,14 @@
                     <ng-container *ngFor="let it of item['children'];index as m;">
                         <p>
                             {{it['category'] | translate}}
-                            <span *ngIf="it['category'] ==='006'">add</span>
+                            <ng-container *ngIf="it['category'].startsWith(config['outerDataBaseIndex'])">
+                                <button nz-button nzType="default" nzSize="small" (click)="addTreeThead(it)" >
+                                    <i class="anticon anticon-plus"></i>
+                                </button>
+                                <nz-modal [(nzVisible)]="it['modalVisible']"  (nzOnCancel)="handleCancel(it)" (nzOnOk)="handleOk(it)">
+                                    <app-tree (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']" [theadMap]="it['theadMap']"></app-tree>
+                                </nz-modal>
+                            </ng-container>
                         </p>
                         <ng-container *ngIf="it['children'].length">
                             <span class="head-item" [ngClass]="{'active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</span>
