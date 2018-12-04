@@ -387,12 +387,11 @@ export class TableSwitchChartComponent implements OnInit {
 
     // 刷新
     handlerRefresh(){
+        this.refresh.emit();
         if(!this.chartUrl || (this.chartUrl && this.isShowTable)){
             this.getTableData();
-            this.refresh.emit();
         }else if(this.chartUrl && !this.isShowTable){
             this.getChartData();
-            this.refresh.emit();
         }
     }
 }
