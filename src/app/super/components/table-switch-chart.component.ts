@@ -63,6 +63,9 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() defaultSetEntity:object;
     @Output() apiEntityChange:EventEmitter<any> = new EventEmitter();
 
+    // 刷新
+    @Output() refresh:EventEmitter<any> = new EventEmitter();
+
     scroll: object = { y: '400px' };
     isShowTable: boolean = false;
     tableData: any;
@@ -137,8 +140,8 @@ export class TableSwitchChartComponent implements OnInit {
                 this.reGetData();
             }
         }
-        
-       
+
+
     }
 
     //获取默认值
@@ -380,5 +383,16 @@ export class TableSwitchChartComponent implements OnInit {
     SelectChange(key, value) {
         this.apiEntity[key] = value;
         this.reGetData();
+    }
+
+    // 刷新
+    handlerRefresh(){
+        if(!this.chartUrl || (this.chartUrl && this.isShowTable)){
+            this.getTableData();
+            this.refresh.emit();
+        }else if(this.chartUrl && !this.isShowTable){
+            this.getChartData();
+            this.refresh.emit();
+        }
     }
 }
