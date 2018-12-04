@@ -296,6 +296,18 @@ export class MultiOmicsSetComponent implements OnInit {
 
     // 设置 确定
     setConfirm() {
+        let rationinfos=[];
+        this.infoList.forEach(d=>{
+            if(d['relation']==='false'){
+                rationinfos.push(d['key']);
+            }
+        })
+
+        if((new Set(rationinfos)).size !== rationinfos.length){
+            this.notification.warning('定量信息','定量信息重复');
+            return;
+        }
+
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
         this.isShowSetPanel = false;
