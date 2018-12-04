@@ -283,17 +283,17 @@ export class IndexComponent implements OnInit {
                             // let outerFlag = "006";
                             // let outerDataBase;
 
-                            d.forEach((val,index)=>{
-                                if(val['category']===config['outerDataBaseIndex']){
-                                    // outerDataBase = d.splice(index,1)[0];
-                                    val['children'].forEach(v=>{
-                                        v['children'].forEach(item=>{
-                                            // if(!('children' in item)) item['children'] = [];
-                                            this.initTreeData(item['treeData']);
-                                        })
-                                    })
-                                }
-                            })
+                            // d.forEach((val,index)=>{
+                            //     if(val['category']===config['outerDataBaseIndex']){
+                            //         // outerDataBase = d.splice(index,1)[0];
+                            //         val['children'].forEach(v=>{
+                            //             v['children'].forEach(item=>{
+                            //                 // if(!('children' in item)) item['children'] = [];
+                            //                 this.initTreeData(item['treeData']);
+                            //             })
+                            //         })
+                            //     }
+                            // })
 
                             this.storeService.setThead(d);
                             // outerDataBase['children'].forEach(v=>{
