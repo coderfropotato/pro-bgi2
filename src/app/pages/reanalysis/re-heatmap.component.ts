@@ -334,7 +334,6 @@ export class ReHeatmapComponent implements OnInit {
 
     //设置 确定
     setConfirm(data){
-        console.log(data);
         this.setChartSetEntity(data);
         this.clusterChart.reGetData();
 
@@ -352,6 +351,7 @@ export class ReHeatmapComponent implements OnInit {
         //请求参数
         this.chartEntity['isHorizontal']=data.isCluster;
         this.chartEntity['horizontalClassification']=data.horizontalList;
+        this.chartEntity['verticalClassification']={};
         if(data['verticalList'].length){
             data['verticalList'].forEach(d=>{
                 this.chartEntity['verticalClassification'][d.key]=d['category'];
