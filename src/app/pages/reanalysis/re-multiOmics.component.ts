@@ -337,7 +337,7 @@ export class ReMultiOmicsComponent implements OnInit {
         let spaceScale = d3.scaleLinear().domain([1,60]).range([40,2]).clamp(true);    //根据每组柱子数量决定当前组每根柱子之间的距离
 
         //domain：箱线图数量
-        let heightScale=d3.scaleOrdinal().domain([1,2,3,4,5]).range([300,250,200,150,100]); 
+        let heightScale=d3.scaleOrdinal().domain([1,2,3,4,5]).range([280,240,200,160,120]); 
 
         //calculate min max
         let allXTexts = [];
