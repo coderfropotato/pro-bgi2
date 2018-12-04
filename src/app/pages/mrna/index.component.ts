@@ -1,3 +1,4 @@
+import { AddColumnService } from './../../super/service/addColumnService';
 import { Observable, fromEvent } from "rxjs";
 import { StoreService } from "./../../super/service/storeService";
 import { GlobalService } from "./../../super/service/globalService";
@@ -33,6 +34,7 @@ export class IndexComponent implements OnInit {
         private ajaxService: AjaxService,
         private storeService: StoreService,
         private ngxSpinnerService: NgxSpinnerService,
+        private addColumnService:AddColumnService
         // private outerDataBaseService:OuterDataBaseService
     ) {
         this.router.events.subscribe(event => {
@@ -90,6 +92,16 @@ export class IndexComponent implements OnInit {
                                         {
                                             url: "diff-venn",
                                             name: "差异venn",
+                                            isExport: true
+                                        }
+                                    ]
+                                },
+                                {
+                                    category: "布局一",
+                                    children: [
+                                        {
+                                            url: "layout1",
+                                            name: "布局页面",
                                             isExport: true
                                         }
                                     ]
@@ -296,7 +308,8 @@ export class IndexComponent implements OnInit {
                                 }
                             })
 
-                            this.storeService.setThead(d);
+                            // this.storeService.setThead(d);
+                            this.addColumnService.set(d);
                             // outerDataBase['children'].forEach(v=>{
                             //     v['children'].forEach((val,index)=>{
                             //         val['generatedThead'] = [];

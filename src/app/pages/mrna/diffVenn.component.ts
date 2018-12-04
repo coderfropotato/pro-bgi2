@@ -1,3 +1,4 @@
+import { AddColumnService } from './../../super/service/addColumnService';
 import { StoreService } from './../../super/service/storeService';
 import { PageModuleService } from './../../super/service/pageModuleService';
 import { MessageService } from './../../super/service/messageService';
@@ -15,7 +16,9 @@ declare const Venn: any;
 	styles: []
 })
 export class DiffVennPage {
-	constructor(public pageModuleService: PageModuleService) {}
+    constructor(
+        public pageModuleService: PageModuleService,
+        ) {}
 }
 
 @Component({
@@ -101,7 +104,6 @@ export class DiffVennComponent implements OnInit {
 	selectedData: object[] = [];
 
 	tableHeight = 0;
-	allThead = [];
 	first = true;
 
 	color = '#fff'; // 默认颜色
@@ -120,7 +122,8 @@ export class DiffVennComponent implements OnInit {
 		private ajaxService: AjaxService,
 		private globalService: GlobalService,
 		private storeService: StoreService,
-		public pageModuleService: PageModuleService,
+        public pageModuleService: PageModuleService,
+        // private addColumnService:AddColumnService,
 		private router: Router
 	) {
 		// 订阅windowResize 重新计算表格滚动高度
@@ -137,7 +140,6 @@ export class DiffVennComponent implements OnInit {
 	ngOnInit() {
 		this.isMultiSelect = false;
 		this.first = true;
-		this.allThead = this.storeService.getThead();
 		this.selectedData = [];
 		this.chartUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 

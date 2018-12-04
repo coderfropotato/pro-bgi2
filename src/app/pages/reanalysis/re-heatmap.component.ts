@@ -69,7 +69,6 @@ export class ReHeatmapComponent implements OnInit {
     applyOnceSearchParams: boolean;
 
     tableHeight = 0;
-	allThead = [];
     first = true;
     switch = false;
 
@@ -135,7 +134,6 @@ export class ReHeatmapComponent implements OnInit {
 
         // table
         this.first = true;
-        this.allThead = this.storeService.getThead();
         this.applyOnceSearchParams = true;
         this.defaultUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
         this.defaultEntity = {

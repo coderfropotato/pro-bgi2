@@ -101,6 +101,7 @@ export class clusterComponent implements OnInit {
         //请求参数
         this.chartEntity['isHorizontal']=data.isCluster;
         this.chartEntity['horizontalClassification']=data.horizontalList;
+        this.chartEntity['verticalClassification']={};
         if(data['verticalList'].length){
             data['verticalList'].forEach(d=>{
                 this.chartEntity['verticalClassification'][d.key]=d['category'];

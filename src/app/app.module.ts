@@ -73,7 +73,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SysDefendService } from "./super/service/sysDefendService";
 import { PageModuleService } from "./super/service/pageModuleService";
-import {OuterDataBaseService} from './super/service/outerDataBaseService';
+import { AddColumnService } from './super/service/addColumnService';
+
 
 // 国际化
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
@@ -427,7 +428,7 @@ export function createTranslateLoader(http: HttpClient) {
         StoreService,
         SysDefendService,
         PageModuleService,
-        OuterDataBaseService,
+        AddColumnService,
         // , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
         {
             provide: NZ_MESSAGE_CONFIG,
