@@ -49,7 +49,7 @@
                         <nz-option [nzLabel]="'accuracy.toFixedAll' | translate" [nzValue]="-1"></nz-option>
                     </nz-select>
                     <!-- 刷新、下载 -->
-                    <i class="anticon anticon-reload" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="refresh()"></i>
+                    <i class="iconfont icon-shuaxin" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="refresh()"></i>
                     <app-grid-export [url]="url" [tableEntity]="tableEntity" [fileName]="fileName"></app-grid-export>
                 </div>
             </div>

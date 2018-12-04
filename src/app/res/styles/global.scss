@@ -898,3 +898,68 @@ button.btnActive {
 .mb12 {
 	margin-bottom: 12px;
 }
+
+.top{
+	.top_left{
+		float: left;
+		width: 300px;
+		height: 100%;
+		margin-left:20px;
+		.topbar_logo{
+			width: 60px;
+			height: 28px;
+			margin-top: 6px;
+			display: inline-block;
+			background-image: url("../img/topbar_logo_icn.png");
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+		.middle_fg{
+			width: 1px;
+			height: 28px;
+			margin: 6px 16px 0 16px;
+			display: inline-block;
+			background: #fff;
+			opacity: .4;
+		}
+
+		.logo2{
+			width: 93px;
+			height: 28px;
+			margin-top: 6px;
+			display: inline-block;
+			background-image: url("../img/logo2.png");
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+	}
+	.top_right{
+		float: right;
+		width: 220px;
+		height: 100%;
+		position: relative;
+		button{
+            margin-left:10px;
+            // margin-top:4px;
+		}
+		i{	
+			cursor: pointer;
+			font-size: 25px;
+			color: white;
+			margin-left: 12px;
+		}
+		.div_lang{
+			position: absolute;
+			top: 6px;
+			width: 24px;
+			height: 24px;
+			line-height: 24px;
+			display: inline-block;
+			margin-left: 12px;
+			text-align: center;
+			cursor: pointer;
+			background: #fff;
+			border-radius: 2px;
+		}
+	}
+}
