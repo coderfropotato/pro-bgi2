@@ -937,29 +937,29 @@ button.btnActive {
 		float: right;
 		width: 220px;
 		height: 100%;
-		position: relative;
-		button{
-            margin-left:10px;
-            // margin-top:4px;
+		.top_right_content{
+			width: 200px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			i{	
+				cursor: pointer;
+				font-size: 20px;
+				color: white;
+				margin-right: 20px;
+			}
+			.div_lang{
+				width: 20px;
+				height: 20px;
+				line-height: 20px;
+				display: inline-block;
+				text-align: center;
+				cursor: pointer;
+				background: #fff;
+				border-radius: 2px;
+			}
 		}
-		i{	
-			cursor: pointer;
-			font-size: 25px;
-			color: white;
-			margin-left: 12px;
-		}
-		.div_lang{
-			position: absolute;
-			top: 6px;
-			width: 24px;
-			height: 24px;
-			line-height: 24px;
-			display: inline-block;
-			margin-left: 12px;
-			text-align: center;
-			cursor: pointer;
-			background: #fff;
-			border-radius: 2px;
-		}
+		
 	}
 }
