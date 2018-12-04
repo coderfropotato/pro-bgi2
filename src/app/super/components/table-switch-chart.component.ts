@@ -61,7 +61,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() defaultSetUrl:string;
     @Input() defaultSetEntity:object;
-    @Output() apiEntityChange:EventEmitter<any> = new EventEmitter();
+    @Output() defaultSet:EventEmitter<any> = new EventEmitter();
 
     // 刷新
     @Output() refresh:EventEmitter<any> = new EventEmitter();
@@ -161,7 +161,7 @@ export class TableSwitchChartComponent implements OnInit {
                     return;
                 } else {
                     let defaultSetData=data.data;
-                    this.apiEntityChange.emit(defaultSetData);
+                    this.defaultSet.emit(defaultSetData);
                     this.reGetData();
                 }
             }
