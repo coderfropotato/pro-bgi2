@@ -79,7 +79,10 @@ export class clusterComponent implements OnInit {
         this.isCluster=true;
 
         this.chartEntity['isHorizontal']=this.isCluster;
-        this.chartEntity['horizontalClassification']=data.horizontalDefault;
+
+        data['verticalDefault'].forEach(d=>{
+            this.chartEntity['verticalClassification'][d.key]=d['category'];
+        })
 
         this.defaultSetData=data;
     }
@@ -666,7 +669,8 @@ export class clusterComponent implements OnInit {
                     let i = index.x_index,
                         j = index.y_index;
                     let d = heatmapData[i].heatmap[j];
-                    let tipText = `sample: ${heatmapData[i].name}<br> gene:  ${d.x}<br> log2(fpkm+1): ${d.y}`;
+                    let gene = (that.yName === 'symbol') ? d.symbol : d.x;
+                    let tipText = `sample: ${heatmapData[i].name}<br> gene:  ${gene}<br> log2(fpkm+1): ${d.y}`;
                     that.globalService.showPopOver(d3.event, tipText);
                 }
                 clearEventBubble(moveEvent);
@@ -730,12 +734,12 @@ export class clusterComponent implements OnInit {
                 that.globalService.hidePopOver();
             });
 
-            $("#cluster").on("mousedown", function () {
+            d3.select("#clusterChartDiv svg").on("mousedown", function () {
                 select_rect.attr("width", 0).attr("height", 0);
                 isMousedown = false;
             })
 
-            $("#cluster").on("mouseup", function () {
+            d3.select("#clusterChartDiv svg").on("mouseup", function () {
                 select_rect.attr("width", 0).attr("height", 0);
                 isMousedown = false;
             })
@@ -862,10 +866,12 @@ export class clusterComponent implements OnInit {
                 return i * legendClickRect_h;
             })
             .attr("fill", "transparent")
-            .on("click", (d, i) => {
+            .on("mousedown", () => {
                 let oEvent = d3.event || event;
                 clearEventBubble(oEvent);
-
+            })
+            .on("mouseup",(d,i)=>{
+                clearEventBubble(d3.event);
                 this.legendIndex = i;
                 this.isShowColorPanel = true;
             });
