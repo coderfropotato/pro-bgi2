@@ -104,7 +104,7 @@
                         <tbody  *ngIf="isVennTable">
                             <tr *ngFor="let row of chartData['rows']">
                                 <td class="center">{{row['name']}}</td>
-                                <td class="center">{{row['value']}}</td>
+                                <td class="center">{{row['value'] | accuracyPipe : accuracy : "double"}}</td>
                             </tr>
                         </tbody>
 
