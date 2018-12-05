@@ -426,7 +426,11 @@ export class ReHeatmapComponent implements OnInit {
 
         let max_y_textLength = 0;
         if (this.yName !=='hidden') {
-            max_y_textLength = d3.max(heatmapData[0].heatmap, d=>d.x.length);
+            if(this.yName==='symbol'){
+                max_y_textLength = d3.max(heatmapData[0].heatmap, d=>d.symbol.length);
+            }else{
+                max_y_textLength = d3.max(heatmapData[0].heatmap, d=>d.x.length);
+            }
         }
 
         //下边文字高度、右边文字的宽度
