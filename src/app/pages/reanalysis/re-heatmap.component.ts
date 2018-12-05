@@ -324,7 +324,10 @@ export class ReHeatmapComponent implements OnInit {
         this.isCluster=true;
 
         this.chartEntity['isHorizontal']=this.isCluster;
-        this.chartEntity['horizontalClassification']=data.horizontalDefault;
+
+        data['verticalDefault'].forEach(d=>{
+            this.chartEntity['verticalClassification'][d.key]=d['category'];
+        })
 
         this.defaultSetData=data;
     }
