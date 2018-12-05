@@ -5,6 +5,7 @@ import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
+import { TranslateService } from "@ngx-translate/core";
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
@@ -110,10 +111,10 @@ export class ExpressVennComponent implements OnInit {
     showBackButton:boolean = false;
 	constructor(
 		private message: MessageService,
-		private store: StoreService,
 		private ajaxService: AjaxService,
 		private globalService: GlobalService,
 		private storeService: StoreService,
+		private translate: TranslateService,
 		public pageModuleService: PageModuleService,
 		private router: Router
 	) {
@@ -126,6 +127,9 @@ export class ExpressVennComponent implements OnInit {
 		this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) this.computedTableHeight();
 		});
+
+		let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
 	}
 
 	ngOnInit() {
@@ -136,38 +140,38 @@ export class ExpressVennComponent implements OnInit {
 		this.chartUrl = `${config['javaPath']}/Venn/expGeneGraph`;
 
         this.expression_threshold={
-            min:this.store.getStore('expression_threshold').min,
-            default:this.store.getStore('expression_threshold').default,
-            max:this.store.getStore('expression_threshold').max
+            min:this.storeService.getStore('expression_threshold').min,
+            default:this.storeService.getStore('expression_threshold').default,
+            max:this.storeService.getStore('expression_threshold').max
 		}
 
-		this.expression_temp_min = this.store.getStore('expression_threshold').min;
-		this.expression_temp_max = this.store.getStore('expression_threshold').max;
+		this.expression_temp_min = this.storeService.getStore('expression_threshold').min;
+		this.expression_temp_max = this.storeService.getStore('expression_threshold').max;
 
         this.expression_Max_min={
-            min:this.store.getStore('expression_threshold').min,
-            default:this.store.getStore('expression_threshold').default,
-            max:this.store.getStore('expression_threshold').max
+            min:this.storeService.getStore('expression_threshold').min,
+            default:this.storeService.getStore('expression_threshold').default,
+            max:this.storeService.getStore('expression_threshold').max
         }
 
 		this.selectPanelData = [
 			//选择面板的数据
 			{
 				type: 'sample',
-				data: this.store.getStore('sample')
+				data: this.storeService.getStore('sample')
             },
             {
 				type: 'group',
-				data: this.store.getStore('group')
+				data: this.storeService.getStore('group')
 			}
 		];
 
 		this.tableEntity = {
 			//查询参数
-            LCID: this.store.getStore('LCID'),
-            sample: this.store.getStore('sample'),
+            LCID: this.storeService.getStore('LCID'),
+            sample: this.storeService.getStore('sample'),
             geneType: this.pageModuleService['defaultModule'],
-            species: this.store.getStore('genome'),
+            species: this.storeService.getStore('genome'),
             low:this.expression_threshold['min'],
             high:this.expression_threshold['max']
         };
@@ -180,7 +184,7 @@ export class ExpressVennComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'),
 			leftChooseList: this.leftSelect, //upsetR参数
 			upChooseList: this.upSelect, //胜利n图选中部分参数
-			sample: this.store.getStore('sample'), //比较组
+			sample: this.storeService.getStore('sample'), //比较组
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -192,8 +196,8 @@ export class ExpressVennComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-            low:this.store.getStore('expression_threshold').min,
-            high:this.store.getStore('expression_threshold').max,
+            low:this.storeService.getStore('expression_threshold').min,
+            high:this.storeService.getStore('expression_threshold').max,
 			version: this.storeService.getStore('reference'),
 			searchList: []
         };
@@ -211,7 +215,7 @@ export class ExpressVennComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'), //流程id
 			leftChooseList: [], //upsetR参数
 			upChooseList: [], //胜利n图选中部分参数
-			sample: this.store.getStore('sample'), //比较组
+			sample: this.storeService.getStore('sample'), //比较组
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -222,8 +226,8 @@ export class ExpressVennComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			low:this.store.getStore('expression_threshold').min,
-            high:this.store.getStore('expression_threshold').max,
+			low:this.storeService.getStore('expression_threshold').min,
+            high:this.storeService.getStore('expression_threshold').max,
 			version: this.storeService.getStore('reference'),
 			searchList: []
 		};
@@ -367,7 +371,7 @@ export class ExpressVennComponent implements OnInit {
     onAfterChange(value: string): void{
         this.expression_threshold={
             min:value[0],
-            default:this.store.getStore('expression_threshold').default,
+            default:this.storeService.getStore('expression_threshold').default,
             max:value[1]
         }
         console.log(this.expression_threshold)

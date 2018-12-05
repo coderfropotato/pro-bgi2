@@ -6,6 +6,7 @@ import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
+import { TranslateService } from "@ngx-translate/core";
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
@@ -118,11 +119,11 @@ export class DiffVennComponent implements OnInit {
 
 	constructor(
 		private message: MessageService,
-		private store: StoreService,
 		private ajaxService: AjaxService,
 		private globalService: GlobalService,
 		private storeService: StoreService,
-        public pageModuleService: PageModuleService,
+		public pageModuleService: PageModuleService,
+		private translate: TranslateService,
         // private addColumnService:AddColumnService,
 		private router: Router
 	) {
@@ -135,6 +136,8 @@ export class DiffVennComponent implements OnInit {
 		this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) this.computedTableHeight();
 		});
+		let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
 	}
 
 	ngOnInit() {
@@ -143,38 +146,38 @@ export class DiffVennComponent implements OnInit {
 		this.selectedData = [];
 		this.chartUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 
-		this.p_show = this.store.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
+		this.p_show = this.storeService.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
 		this.PossionDis = {
-			log2FC: this.p_show ? this.store.getStore('diff_threshold').PossionDis.log2FC : '',
-			FDR: this.p_show ? this.store.getStore('diff_threshold').PossionDis.FDR : ''
+			log2FC: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '',
+			FDR: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.FDR : ''
 		};
-		this.p_log2FC = this.p_show ? this.store.getStore('diff_threshold').PossionDis.log2FC : '';
-		this.p_FDR = this.p_show ? this.store.getStore('diff_threshold').PossionDis.FDR : '';
+		this.p_log2FC = this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '';
+		this.p_FDR = this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.FDR : '';
 
-		this.n_show = this.store.getStore('diff_threshold').hasOwnProperty('NOIseq'); //设置里面的NOIseq
+		this.n_show = this.storeService.getStore('diff_threshold').hasOwnProperty('NOIseq'); //设置里面的NOIseq
 		this.NOIseq = {
-			log2FC: this.n_show ? this.store.getStore('diff_threshold').NOIseq.log2FC : '',
-			probability: this.n_show ? this.store.getStore('diff_threshold').NOIseq.probability : ''
+			log2FC: this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.log2FC : '',
+			probability: this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.probability : ''
 		};
 
-		this.n_log2FC = this.n_show ? this.store.getStore('diff_threshold').NOIseq.log2FC : '';
-		this.n_probability = this.n_show ? this.store.getStore('diff_threshold').NOIseq.probability : '';
+		this.n_log2FC = this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.log2FC : '';
+		this.n_probability = this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.probability : '';
 
 		this.selectPanelData = [
 			//差异面板的数据
 			{
 				type: '比较组',
-				data: this.store.getStore('diff_plan')
+				data: this.storeService.getStore('diff_plan')
 			}
 		];
 
 		this.tableEntity = {
 			//查询参数
-			LCID: this.store.getStore('LCID'),
-			compareGroup: this.store.getStore('diff_plan'),
+			LCID: this.storeService.getStore('LCID'),
+			compareGroup: this.storeService.getStore('diff_plan'),
 			geneType: this.pageModuleService['defaultModule'],
-			species: this.store.getStore('genome'),
-			diffThreshold: this.store.getStore('diff_threshold')
+			species: this.storeService.getStore('genome'),
+			diffThreshold: this.storeService.getStore('diff_threshold')
 		};
 
 		// this.vennEntity = {
@@ -199,7 +202,7 @@ export class DiffVennComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'),
 			leftChooseList: this.leftSelect, //upsetR参数
 			upChooseList: this.upSelect, //胜利n图选中部分参数
-			compareGroup: this.store.getStore('diff_plan'), //比较组
+			compareGroup: this.storeService.getStore('diff_plan'), //比较组
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -230,7 +233,7 @@ export class DiffVennComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'), //流程id
 			leftChooseList: [], //upsetR参数
 			upChooseList: [], //胜利n图选中部分参数
-			compareGroup: this.store.getStore('diff_plan'), //比较组
+			compareGroup: this.storeService.getStore('diff_plan'), //比较组
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,

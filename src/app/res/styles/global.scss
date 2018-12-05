@@ -429,6 +429,7 @@ button.btnActive {
 	min-width: $min-width;
 	border-bottom: $border;
 	background-color: #fff;
+	cursor: pointer;
 	position: relative;
 	.menu-slot-text {
 		line-height: 40px;

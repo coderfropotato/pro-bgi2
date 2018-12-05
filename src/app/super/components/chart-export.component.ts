@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { StoreService } from './../../super/service/storeService';
+import { TranslateService } from "@ngx-translate/core";
 
 declare const $: any;
 
@@ -6,11 +8,11 @@ declare const $: any;
     selector: 'app-chart-export',
     template: `
         <nz-dropdown [nzPlacement]="'bottomRight'">
-            <i nz-dropdown class="anticon anticon-picture" nz-tooltip nzTitle="导出"></i>
+            <i nz-dropdown class="anticon anticon-picture" nz-tooltip nzTitle="{{'tableButton.export' | translate}}"></i>
             <ul nz-menu>
-                <li nz-menu-item (click)="downLoadImage('image/png')">导出 PNG 格式图片</li>
-                <li nz-menu-item (click)="downLoadImage('image/jpeg')">导出 JPG 格式图片 </li>
-                <li nz-menu-item (click)="downLoadImage('svg')">导出 SVG 格式文件 </li>
+                <li nz-menu-item (click)="downLoadImage('image/png')">{{'tableButton.export_png' | translate}}</li>
+                <li nz-menu-item (click)="downLoadImage('image/jpeg')">{{'tableButton.export_jpg' | translate}}</li>
+                <li nz-menu-item (click)="downLoadImage('svg')">{{'tableButton.export_svg' | translate}}</li>
             </ul>
         </nz-dropdown>`,
     styles: []
@@ -19,6 +21,14 @@ declare const $: any;
 export class ChartExportComponent implements OnInit {
     @Input() chartId: string;
     @Input() chartName: any;
+
+    constructor(
+        private storeService: StoreService,
+        private translate: TranslateService,
+    ){
+        let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
+    }
 
     ngOnInit() { }
 
