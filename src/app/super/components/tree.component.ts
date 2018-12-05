@@ -4,6 +4,7 @@ declare const $: any;
     selector: "app-tree",
     template: `<div class="tree-component">
                     <b style="padding:12px 0;">当前匹配的头:{{selectComposeThead.length?selectComposeThead[0]:"暂无"}}</b>
+                    <p *ngIf="showExpandAll"><button nz-button nzType="default" nzSize="small" (click)="handlerExpandAll()">ExpandAll</button></p>
                     <ul *ngFor="let root of treeData;index as i">
                         <app-tree-item [floder]="root" (treeItemCheckedChange)="checkedChange($event)" (treeItemExpandChange)="expandChange($event)"></app-tree-item>
                     </ul>
@@ -58,14 +59,22 @@ export class TreeComponent implements OnInit, OnChanges {
     @Output() checkedChangeEvent: EventEmitter<any> = new EventEmitter();
     // 树中选中的项 可组成表头并且变化了 发出的事件
     @Output() composeTheadChange: EventEmitter<any> = new EventEmitter();
+    // 默认展开所有 false
+    @Input() defalutExpandAll:boolean = false;
+    // 是否显示”展开所有“ 按钮
+    @Input() showExpandAll:boolean = false;
+    // 展开所有  发生改变的时候发出的事件
+    @Output() expandAllChange: EventEmitter<any> = new EventEmitter();
 
     selectComposeThead = [];
     beforeComposeThead = [];
     theadReflactMap:object = {};
+    expandAll:boolean = false;
+
     constructor() {}
 
     ngOnInit() {
-        
+
         for (let key in this.theadMap) {
             if (this.theadMap[key].length) {
                 this.theadMap[key].forEach((val, index) => {
@@ -79,14 +88,13 @@ export class TreeComponent implements OnInit, OnChanges {
         }
 
         this.treeApplySelectData(this.treeData, this.selectData);
+
+        if(this.defalutExpandAll) this.handlerExpandAll(this.defalutExpandAll);
     }
 
     ngOnChanges(simpleChanges: SimpleChanges) {
         // selectData不是第一次改变的时候 重新应用树数据
-        if (
-            "selectData" in simpleChanges &&
-            !simpleChanges["selectData"].isFirstChange
-        ) {
+        if ( "selectData" in simpleChanges && !simpleChanges["selectData"].isFirstChange ) {
             this.treeApplySelectData(this.treeData, this.selectData);
         }
     }
@@ -276,6 +284,14 @@ export class TreeComponent implements OnInit, OnChanges {
               };
     }
 
+    handlerExpandAll(flag?:boolean){
+        this.expandAll = arguments.length?flag:!this.expandAll;
+        this.forLeaves(this.treeData,(item)=>{
+            item.isExpand = this.expandAll;
+        })
+        this.expandAllChange.emit(this.expandAll);
+    }
+
     /**
      * @description 数组是否包含某一项
      * @author Yangwd<277637411@qq.com>
@@ -292,6 +308,25 @@ export class TreeComponent implements OnInit, OnChanges {
     stringing(obj) {
         return JSON.stringify(obj);
     }
+
+    forLeaves(data, callback) {
+		if (!data || !data.length) return;
+		let stack = [];
+		for (var i = 0, len = data.length; i < len; i++) {
+			stack.push(data[i]);
+		}
+
+		let item;
+		while (stack.length) {
+			item = stack.shift();
+			if (item['children'].length) {
+				callback && callback(item);
+			}
+			if (item.children && item.children.length) {
+				stack = item.children.concat(stack);
+			}
+		}
+	}
 
     /**
      * @description 重置树状态
