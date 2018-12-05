@@ -226,7 +226,10 @@ export class ToolsComponent implements OnInit {
 			.getDeferData({
 				url: `${config['javaPath']}/reAnalysis/getHeatmap`,
 				data: {
-					LCID: sessionStorage.getItem('LCID')
+                    LCID: sessionStorage.getItem('LCID'),
+                    geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.toolsService.get('tableEntity')['species'],
+					baseThead: this.toolsService.get('baseThead')
 				}
 			})
 			.subscribe(
@@ -251,9 +254,10 @@ export class ToolsComponent implements OnInit {
 						if (this.diffData.length) this.diffData[0]['checked'] = true;
 						this.diffSelect = [ this.diffData[0] ];
 
-						this.geneType = res['horizontalType'].map((val) => {
-							return { name: val, checked: false };
-						});
+                        this.geneType = res['verticalDefault']
+                        this.geneType.forEach((val) => {
+                            val['checked'] = false;
+                        });
 					}
 				},
 				(err) => console.log(err)
@@ -323,7 +327,7 @@ export class ToolsComponent implements OnInit {
 		this.ajaxService
 			.getDeferData({
 				data: {
-					LCID: 'demo',
+					LCID: sessionStorage.getItem('LCID'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
 					baseThead: this.toolsService.get('baseThead')
