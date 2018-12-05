@@ -17,11 +17,13 @@ export class UploadComponent implements OnInit {
   nfileList: UploadFile[] = [];
   index:number=0;
   tab1:object;
+  PercentNum:number;
+  T_progress:any;
 
   constructor(private modalService: NzModalService) {}
 
   ngOnInit() {
-      
+    this.PercentNum = 0;
   }
 
 
@@ -87,10 +89,21 @@ export class UploadComponent implements OnInit {
       nzContent: temp
     });
     this.isShowTab = true;
+    this.PercentNum = 0;
   }
 
   updateLoad(){
     this.isShowTab = false;
+    let self=this;
+    self.T_progress=setInterval(function(){
+      if(self.PercentNum==100){
+        self.PercentNum==100
+        clearInterval(self.T_progress)
+        //console.log(self.T_progress)
+      }else{
+        self.PercentNum+=25;
+      }
+    },500)
   }
 
 }
