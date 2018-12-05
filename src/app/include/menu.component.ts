@@ -2,6 +2,8 @@ import { PageModuleService } from './../super/service/pageModuleService';
 import { Router } from "@angular/router";
 import { GlobalService } from "../super/service/globalService";
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { StoreService } from '../super/service/storeService';
+import { TranslateService } from "@ngx-translate/core";
 @Component({
     selector: "app-menu",
     templateUrl: "./menu.component.html"
@@ -24,8 +26,13 @@ export class MenuComponent implements OnChanges {
     constructor(
         private router: Router,
         private globalService: GlobalService,
-        public pageModuleService:PageModuleService
-        ) {}
+        public pageModuleService:PageModuleService,
+        private storeService: StoreService,
+        private translate: TranslateService
+        ) {
+            let browserLang = this.storeService.getLang();
+            this.translate.use(browserLang);
+        }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes["menu"].currentValue.length) {
