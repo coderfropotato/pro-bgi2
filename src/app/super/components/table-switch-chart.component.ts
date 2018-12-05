@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, ViewChild, TemplateRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { AjaxService } from "../../super/service/ajaxService";
 import { MessageService } from '../service/messageService';
+import { StoreService } from "./../service/storeService";
+import { TranslateService } from "@ngx-translate/core";
 
 declare const $: any;
 
@@ -82,12 +84,17 @@ export class TableSwitchChartComponent implements OnInit {
 
     constructor(
         private ajaxService: AjaxService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private storeService: StoreService,
+        private translate: TranslateService
     ) {
 
         this.messageService.getResize().subscribe(res => {
             if (res["message"] === "resize") this.scrollHeight();
         });
+
+        let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
     }
 
     ngOnInit() {

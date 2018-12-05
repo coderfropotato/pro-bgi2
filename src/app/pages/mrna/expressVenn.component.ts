@@ -5,6 +5,7 @@ import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
+import { TranslateService } from "@ngx-translate/core";
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
@@ -113,6 +114,7 @@ export class ExpressVennComponent implements OnInit {
 		private ajaxService: AjaxService,
 		private globalService: GlobalService,
 		private storeService: StoreService,
+		private translate: TranslateService,
 		public pageModuleService: PageModuleService,
 		private router: Router
 	) {
@@ -125,6 +127,9 @@ export class ExpressVennComponent implements OnInit {
 		this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) this.computedTableHeight();
 		});
+
+		let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
 	}
 
 	ngOnInit() {

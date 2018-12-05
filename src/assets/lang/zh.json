@@ -1,5 +1,9 @@
 {
     "title": "标题",
+    "diff_venn":{
+        "diff_venn_title":"差异基因聚类",
+        "diff_venn_content":"对每个比较组差异基因的FPKM值进行聚类"
+    },
     "cxzk1Title": "测序质控工作中",
     "sortEmail": "降序排序 email",
     "sortPhone": "升序排序 phone",
@@ -38,7 +42,20 @@
     "tableButton":{
         "refresh":"刷新",
         "download":"下载",
-        "filter":"筛选"
+        "filter":"筛选",
+        "setting":"设置",
+        "confirm":"确定",
+        "cancel":"取消",
+        "single":"单选",
+        "multiple":"多选",
+        "export":"导出",
+        "export_png":"导出 PNG 格式图片",
+        "export_jpg":"导出 JPG 格式图片",
+        "export_svg":"导出 SVG 格式图片"
+    },
+    "view":{
+        "s_view":"统计视图",
+        "t_view":"表格视图"
     },
     "accuracy":{
         "toFixedOne":"精度：1位小数",
