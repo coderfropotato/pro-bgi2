@@ -1,5 +1,6 @@
 {
     "title": "title",
+    "myAnalysis":"my analysis",
     "diff_venn":{
         "diff_venn_title":"Differential gene clustering",
         "diff_venn_content":"Clustering the FPKM values of different genes in each comparison group"
