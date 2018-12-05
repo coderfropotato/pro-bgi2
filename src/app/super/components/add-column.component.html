@@ -25,7 +25,7 @@
                                     <i class="anticon anticon-plus"></i>
                                 </button>
                                 <nz-modal [(nzVisible)]="it['modalVisible']"  (nzOnCancel)="handleCancel(it)" (nzOnOk)="handleOk(it)">
-                                    <app-tree (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']" [theadMap]="it['theadMap']"></app-tree>
+                                    <app-tree [defaultExpandAll]="true" (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']" [theadMap]="it['theadMap']"></app-tree>
                                 </nz-modal>
                             </ng-container>
                         </p>

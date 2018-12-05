@@ -9,7 +9,7 @@
             <ng-template #setTemplate>
                 <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow"
                     (nzVisibleChange)="panelChange()">
-                    <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
+                    <i class="iconfont icon-shezhi" nz-tooltip [nzTitle]="'tableButton.setting' | translate" nz-dropdown></i>
                     <style>
                         .ex_container {
                             height: 250px;
@@ -92,9 +92,9 @@
                             </div>
                         </div>
                         <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
-                            取消 </button>
+                            {{'tableButton.cancel' | translate}}  </button>
                         <button class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">
-                            确定 </button>
+                            {{'tableButton.confirm' | translate}}  </button>
                     </div>
                 </nz-dropdown>
             </ng-template>

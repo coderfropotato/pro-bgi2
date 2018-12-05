@@ -1,5 +1,9 @@
 {
     "title": "title",
+    "diff_venn":{
+        "diff_venn_title":"Differential gene clustering",
+        "diff_venn_content":"Clustering the FPKM values of different genes in each comparison group"
+    },
     "cxzk1Title": "cxzk is works",
     "sortEmail": "sort email of descend",
     "sortPhone": "sort phone of ascend",
@@ -38,7 +42,20 @@
     "tableButton":{
         "refresh":"refresh",
         "download":"download",
-        "filter":"filter"
+        "filter":"filter",
+        "setting":"setting",
+        "confirm":"confirm",
+        "cancel":"cancel",
+        "single":"single",
+        "multiple":"multiple",
+        "export":"export",
+        "export_png":"export PNG image",
+        "export_jpg":"export JPG image",
+        "export_svg":"export SVG image"
+    },
+    "view":{
+        "s_view":"statistical view",
+        "t_view":"table view"
     },
     "accuracy":{
         "toFixedOne":"accuracy : fix(1)",

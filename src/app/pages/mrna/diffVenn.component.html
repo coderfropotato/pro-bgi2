@@ -2,14 +2,14 @@
 <div class="content row venn">
     <div #left class="left-layout column" [class.unexpand]="switch">
         <div class="left-top-layout">
-            <h4 style="padding-left: 10px;border-left: 4px solid #5378F8;">差异基因聚类</h4>
-            <p>对每个比较组差异基因的FPKM值进行聚类</p>
+            <h4 style="padding-left: 10px;border-left: 4px solid #5378F8;">{{'diff_venn.diff_venn_title' | translate}}</h4>
+            <p>{{'diff_venn.diff_venn_content' | translate}}</p>
         </div>
         <div class="left-bottom-layout">
             <ng-template #setTemplate>
                     <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow"
                     (nzVisibleChange)="panelChange()">
-                    <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
+                    <i class="iconfont icon-shezhi" nz-tooltip [nzTitle]="'tableButton.setting' | translate" nz-dropdown></i>
                     <style>
                         .ex_container {
                             height: 360px;
@@ -142,9 +142,9 @@
                         </div>
 
                         <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
-                            取消 </button>
+                            {{'tableButton.cancel' | translate}} </button>
                         <button class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">
-                            确定 </button>
+                           {{'tableButton.confirm' | translate}} </button>
                     </div>
                 </nz-dropdown>
             </ng-template>
