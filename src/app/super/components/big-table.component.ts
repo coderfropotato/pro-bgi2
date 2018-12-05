@@ -125,7 +125,7 @@ export class BigTableComponent implements OnInit {
 
     sort(key, value): void {
         this.initSortMap();
-        this.sortMap[key] = value;
+        this.sortMap[value] = key;
 
         // 取消排序
         if (value == null) {
@@ -133,8 +133,8 @@ export class BigTableComponent implements OnInit {
             this.sortValue = null;
         } else {
             // 有排序
-            this.sortKey = key;
-            this.sortValue = value;
+            this.sortKey = value;
+            this.sortValue = key;
         }
         this.getRemoteData();
     }

@@ -592,11 +592,8 @@ export class DiffVennComponent implements OnInit {
 					_selfV.venSelectAllData = tempVenn;
 				}
             })
-            .legendClick(function(ev){
-                ev.stopPropagation();
-            })
-			.legendDblclick(function(ev, el) {
-				_selfV.color = el['$el'].getAttribute('fill');
+            .legendClick(function(ev,el){
+                _selfV.color = el['$el'].getAttribute('fill');
                 _selfV.show = true;
                 ev.stopPropagation();
             })

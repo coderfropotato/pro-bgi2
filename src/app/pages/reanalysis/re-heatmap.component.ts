@@ -919,7 +919,8 @@ export class ReHeatmapComponent implements OnInit {
                     let i = index.x_index,
                         j = index.y_index;
                     let d = heatmapData[i].heatmap[j];
-                    let tipText = `sample: ${heatmapData[i].name}<br> gene:  ${d.x}<br> log2(fpkm+1): ${d.y}`;
+                    let gene = (that.yName === 'symbol') ? d.symbol : d.x;
+                    let tipText = `sample: ${heatmapData[i].name}<br> gene:  ${gene}<br> log2(fpkm+1): ${d.y}`;
                     that.globalService.showPopOver(d3.event, tipText);
                 }
                 clearEventBubble(moveEvent);
