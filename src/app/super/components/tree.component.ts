@@ -60,7 +60,7 @@ export class TreeComponent implements OnInit, OnChanges {
     // 树中选中的项 可组成表头并且变化了 发出的事件
     @Output() composeTheadChange: EventEmitter<any> = new EventEmitter();
     // 默认展开所有 false
-    @Input() defalutExpandAll:boolean = false;
+    @Input() defaultExpandAll:boolean = false;
     // 是否显示”展开所有“ 按钮
     @Input() showExpandAll:boolean = false;
     // 展开所有  发生改变的时候发出的事件
@@ -89,7 +89,7 @@ export class TreeComponent implements OnInit, OnChanges {
 
         this.treeApplySelectData(this.treeData, this.selectData);
 
-        if(this.defalutExpandAll) this.handlerExpandAll(this.defalutExpandAll);
+        if(this.defaultExpandAll) this.handlerExpandAll(this.defaultExpandAll);
     }
 
     ngOnChanges(simpleChanges: SimpleChanges) {

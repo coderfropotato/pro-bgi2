@@ -191,7 +191,7 @@ export class Layout1Component implements OnInit,AfterViewInit {
                 show: true,
                 position: "right",
                 data: ["female", "male"],
-                dblclick: (d, index) => {
+                click: (d, index) => {
                     this.color = d[0].getAttribute("fill");
                     this.show = true;
                     this.legendIndex = index;
