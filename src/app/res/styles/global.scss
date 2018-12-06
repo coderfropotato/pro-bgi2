@@ -667,7 +667,7 @@ button.btnActive {
 		ul {
 			li {
 				float: left;
-				width: 100px;
+				width: 33%;
 				height: 90px;
 				margin-bottom:16px;
 				text-align: center;
@@ -687,7 +687,7 @@ button.btnActive {
 					&:hover {
 						transform: translate(0, -4px);
 						// border-color: $btn_active_color;
-						// box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
+						box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
 					}
                 }
                 .heatmap-img{
@@ -944,7 +944,7 @@ button.btnActive {
 			display: flex;
 			align-items: center;
 			justify-content: flex-end;
-			i{	
+			i{
 				cursor: pointer;
 				font-size: 20px;
 				color: white;
@@ -961,6 +961,6 @@ button.btnActive {
 				border-radius: 2px;
 			}
 		}
-		
+
 	}
 }

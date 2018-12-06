@@ -1,3 +1,4 @@
+import { AddColumnService } from './../../super/service/addColumnService';
 // import { OuterDataBaseService } from './../../super/service/outerDataBaseService';
 import { AjaxService } from './../../super/service/ajaxService';
 import { StoreService } from './../../super/service/storeService';
@@ -19,6 +20,7 @@ export class ReanalysisIndexComponent implements OnInit {
         private routes:ActivatedRoute,
         private ajaxService:AjaxService,
         public storeService:StoreService,
+        private addColumnService:AddColumnService,
         // private outerDataBaseService:OuterDataBaseService,
         private ngxSpinnerService:NgxSpinnerService
     ) {
@@ -99,7 +101,8 @@ export class ReanalysisIndexComponent implements OnInit {
                                 }
                             })
 
-                            this.storeService.setThead(d);
+                            // this.storeService.setThead(d);
+                            this.addColumnService.set(d);
                             // outerDataBase['children'].forEach(v=>{
                             //     v['children'].forEach((val,index)=>{
                             //         val['generatedThead'] = [];
@@ -143,7 +146,7 @@ export class ReanalysisIndexComponent implements OnInit {
         this.router.navigateByUrl('/report/reanalysis/index');
     }
 
-    toReport(){
-        this.router.navigateByUrl('/report/mrna');
+    handlerLogoClick(){
+        this.toAnalysisList();
     }
 }

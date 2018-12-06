@@ -48,7 +48,7 @@ export class ReHeatmapComponent implements OnInit {
 
     defaultSetUrl:string;
     defaultSetEntity:object;
-    defaultSetData:any;
+    defaultSetData:any = null;
 
     // table
     setAddedThead :any= [];
@@ -208,7 +208,8 @@ export class ReHeatmapComponent implements OnInit {
     // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
         this.showBackButton = true;
-        this.defaultEmitBaseThead = true;
+        // this.defaultEmitBaseThead = true;
+        this.extendEmitBaseThead = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -330,6 +331,9 @@ export class ReHeatmapComponent implements OnInit {
         })
 
         this.defaultSetData=data;
+        this.defaultEmitBaseThead = true;
+        this.verticalClass.length = 0;
+        this.verticalClass.push(...data['verticalDefault']);
     }
 
     //设置 确定
@@ -422,7 +426,17 @@ export class ReHeatmapComponent implements OnInit {
         let small_space = 3;  //图例与热图右边文字间距
 
         //文字最长
-        let max_x_textLength = d3.max(heatmapData, d=>d.name.length);
+        let xTexts=[];
+        leftSimples.forEach(d=>{
+            xTexts.push(d.title);
+        })
+        leftComplexes.forEach(d=>{
+            xTexts.push(d.title)
+        })
+        heatmapData.forEach(d=>{
+            xTexts.push(d.name);
+        })
+        let max_x_textLength = d3.max(xTexts, d=>d.length);
 
         let max_y_textLength = 0;
         if (this.yName !=='hidden') {
@@ -742,7 +756,7 @@ export class ReHeatmapComponent implements OnInit {
         //画离散型图例
         function drawOrdinalLegend(){
             let olegend_x=heatmap_x + heatmap_width + space + YtextWidth + space + gradientLegendWidth+legend_chart_space;
-            let olegend_y=margin.top+topCluster_height;
+            let olegend_y=heatmap_y;
             let title_space=10;
 
             let legendWrap = svg.append("g").attr('class',"OrdinalLegend").attr('transform',`translate(${olegend_x},${olegend_y})`);

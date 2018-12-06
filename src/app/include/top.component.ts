@@ -1,6 +1,6 @@
 import { ToolsService } from './../super/service/toolsService';
 import { StoreService } from "../super/service/storeService";
-import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter } from "@angular/core";
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import config from '../../config';
@@ -25,6 +25,7 @@ export class TopComponent implements OnInit {
     @Input() analysis:boolean = true;
     @Input() upload:boolean = true;
     @Input() lang:boolean = true;
+    @Output() logoClick:EventEmitter<any> = new EventEmitter();
 
     constructor(
         private el: ElementRef,
@@ -158,5 +159,9 @@ export class TopComponent implements OnInit {
 
     uploadFn(){
         this.router.navigateByUrl('/report/mrna/upload')
+    }
+
+    handlerLogoClick(){
+        this.logoClick.emit();
     }
 }

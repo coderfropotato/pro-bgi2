@@ -50,11 +50,9 @@ export class ReMultiOmicsComponent implements OnInit {
 
     chartEntity: object;
     chartUrl: string;
-
     chartSelect:any[] = []; // 图上选择的数据  把selectedColumn和selectedBox合并
 
     // table
-
     defaultEntity: object;
 	defaultUrl: string;
 	defaultTableId: string;

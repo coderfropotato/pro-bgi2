@@ -381,7 +381,7 @@ export class DiffVennComponent implements OnInit {
 
 	computedTableHeight() {
 		try {
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
 		} catch (error) {}
 	}
 
