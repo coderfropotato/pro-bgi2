@@ -279,7 +279,7 @@ export class ToolsComponent implements OnInit {
 					needReanalysis: 1,
 					chooseType: [ this.switchType(type) ],
 					chooseList: tempChooseList,
-					geneClass: this.selectGeneType.map((v) => v['name']),
+					verticalDefault: this.selectGeneType,
 					...this.toolsService.get('tableEntity')
 				},
 				url: this.toolsService.get('tableUrl')

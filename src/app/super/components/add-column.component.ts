@@ -344,6 +344,9 @@ export class AddColumnComponent implements OnInit {
                 this.treeTempSelect = [];
                 it.children.push(...res['data']);
                 this.addColumnService.set(this.thead);
+                setTimeout(() => {
+                    this.computedTableEvent.emit();
+                }, 30);
                 console.log('添加成功');
             }else{
                 this.treeTempSelect = [];
@@ -351,9 +354,6 @@ export class AddColumnComponent implements OnInit {
             }
         })()
 
-		setTimeout(() => {
-			this.computedTableEvent.emit();
-		}, 0);
 	}
 
 	// handleOk(index, curObj) {
