@@ -335,22 +335,24 @@ export class AddColumnComponent implements OnInit {
         it['modalVisible'] = false;
 
         (async ()=>{
-            let res = await this.saveThead({
-                "category":it['category'],
-                "key":this.treeTempSelect[0],
-                "name":this.treeTempSelect[0]
-            });
-            if(res!=='error'){
-                this.treeTempSelect = [];
-                it.children.push(...res['data']);
-                this.addColumnService.set(this.thead);
-                setTimeout(() => {
-                    this.computedTableEvent.emit();
-                }, 30);
-                console.log('添加成功');
-            }else{
-                this.treeTempSelect = [];
-                console.log('添加失败');
+            if(this.treeTempSelect.length){
+                let res = await this.saveThead({
+                    "category":it['category'],
+                    "key":this.treeTempSelect[0],
+                    "name":this.treeTempSelect[0]
+                });
+                if(res!=='error'){
+                    this.treeTempSelect = [];
+                    it.children.push(...res['data']);
+                    this.addColumnService.set(this.thead);
+                    setTimeout(() => {
+                        this.computedTableEvent.emit();
+                    }, 30);
+                    console.log('添加成功');
+                }else{
+                    this.treeTempSelect = [];
+                    console.log('添加失败');
+                }
             }
         })()
 

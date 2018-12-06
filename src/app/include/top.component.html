@@ -1,20 +1,20 @@
 <div class="top">
-    <ng-content></ng-content>
     <div class="top_left">
-        <div class="topbar_logo"></div>
+        <div (click)="handlerLogoClick()" class="topbar_logo"></div>
         <div class="middle_fg"></div>
         <div class="logo2"></div>
     </div>
     <div class="top_right">
+            <ng-content></ng-content>
             <!-- <button *ngIf="lang" nzSize="small" nz-button (click)="changeLan()">切换语言 {{browserLang}}</button>
             <button *ngIf="pdf" nzSize="small" nz-button (click)="exportPdf()"> export as pdf</button>
             <button *ngIf="analysis" nzSize="small" nz-button (click)="analysisFn()"> 我的分析</button>
             <button *ngIf="upload" nzSize="small" nz-button (click)="uploadFn()"> 上传数据</button> -->
             <div class="top_right_content">
-                <i class="iconfont icon-daochu-copy" title="export as pdf" (click)="exportPdf()"></i>
-                <i class="iconfont icon-shangchuanshuju-copy" title="上传数据" (click)="uploadFn()"></i>
-                <i class="iconfont icon-wode-copy" title="我的分析" (click)="analysisFn()"></i>
-                <div class="div_lang" title="切换语言" (click)="changeLan()">{{browserLang}}</div>
+                <i *ngIf="pdf" class="iconfont icon-daochu-copy" title="export as pdf" (click)="exportPdf()"></i>
+                <i *ngIf="upload" class="iconfont icon-shangchuanshuju-copy" title="上传数据" (click)="uploadFn()"></i>
+                <i *ngIf="analysis" class="iconfont icon-wode-copy" title="我的分析" (click)="analysisFn()"></i>
+                <div *ngIf="lang" class="div_lang" title="切换语言" (click)="changeLan()">{{browserLang}}</div>
             </div>
     </div>
 </div>

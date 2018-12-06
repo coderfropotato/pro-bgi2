@@ -1,7 +1,5 @@
 <div class="report-analysis">
-    <app-top [pdf]="false" [analysis]="false" [upload]="false" [lang]="false">
-        <p (click)="toAnalysisList()" style="color: #fff;font-size: 16px;padding:8px 24px;margin:0;">index</p>
-    </app-top>
+    <app-top [pdf]="false" [analysis]="false" [upload]="false" [lang]="false" (logoClick)="handlerLogoClick()"></app-top>
     <router-outlet *ngIf="ready"></router-outlet>
     <app-tools></app-tools>
 </div>

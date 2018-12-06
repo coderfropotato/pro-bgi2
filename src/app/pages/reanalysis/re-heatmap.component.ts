@@ -48,7 +48,7 @@ export class ReHeatmapComponent implements OnInit {
 
     defaultSetUrl:string;
     defaultSetEntity:object;
-    defaultSetData:any;
+    defaultSetData:any = null;
 
     // table
     setAddedThead :any= [];
@@ -208,7 +208,8 @@ export class ReHeatmapComponent implements OnInit {
     // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
         this.showBackButton = true;
-        this.defaultEmitBaseThead = true;
+        // this.defaultEmitBaseThead = true;
+        this.extendEmitBaseThead = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -330,6 +331,9 @@ export class ReHeatmapComponent implements OnInit {
         })
 
         this.defaultSetData=data;
+        this.defaultEmitBaseThead = true;
+        this.verticalClass.length = 0;
+        this.verticalClass.push(...data['verticalDefault']);
     }
 
     //设置 确定

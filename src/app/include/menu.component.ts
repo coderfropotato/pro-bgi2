@@ -15,7 +15,6 @@ export class MenuComponent implements OnChanges {
     timer: any = null;
     delayTimer:any = null;
     index: number = 0;
-
     moduleSwitch:true;
 
     @Input() menu: object[];
