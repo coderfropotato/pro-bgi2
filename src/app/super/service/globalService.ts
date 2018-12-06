@@ -1,6 +1,6 @@
 import { Injectable, TemplateRef } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { NzModalService } from "ng-zorro-antd";
+import {NzModalRef, NzModalService } from "ng-zorro-antd";
 declare const $: any;
 /**
  * @description 小服务集合
@@ -13,6 +13,9 @@ declare const $: any;
     providedIn: "root"
 })
 export class GlobalService {
+
+    colorPickerModal:NzModalRef = null;
+
     constructor(
         private sanitizer: DomSanitizer,
         private modalService: NzModalService
@@ -185,7 +188,7 @@ export class GlobalService {
         posLeft?: string,
         posTop?: String
     ): void {
-        this.modalService.create({
+        this.colorPickerModal = this.modalService.create({
             nzMask: true,
             nzContent: templateRef,
             nzStyle: {
@@ -198,9 +201,11 @@ export class GlobalService {
             nzWidth: 276,
             nzMaskClosable: true,
             nzOnOk: () => {
+                this.colorPickerModal.destroy();
                 confirmCallBack();
             },
             nzOnCancel() {
+                this.colorPickerModal.destroy();
                 cancelCallBack();
             }
         });
