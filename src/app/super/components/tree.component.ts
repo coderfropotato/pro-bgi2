@@ -66,6 +66,9 @@ export class TreeComponent implements OnInit, OnChanges {
     // 展开所有  发生改变的时候发出的事件
     @Output() expandAllChange: EventEmitter<any> = new EventEmitter();
 
+    // 是否重置树状态
+    @Input() reset:boolean = false;
+
     selectComposeThead = [];
     beforeComposeThead = [];
     theadReflactMap:object = {};
@@ -94,8 +97,14 @@ export class TreeComponent implements OnInit, OnChanges {
 
     ngOnChanges(simpleChanges: SimpleChanges) {
         // selectData不是第一次改变的时候 重新应用树数据
-        if ( "selectData" in simpleChanges && !simpleChanges["selectData"].isFirstChange ) {
+        if ( "selectData" in simpleChanges && !simpleChanges["selectData"].firstChange ) {
             this.treeApplySelectData(this.treeData, this.selectData);
+        }
+
+        // 重置树状态 后初始化重置状态
+        if ( "reset" in simpleChanges && !simpleChanges["reset"].firstChange && simpleChanges["reset"].currentValue ) {
+            this._reset();
+            setTimeout(() => { this.reset = false; }, 30);
         }
     }
 
@@ -339,6 +348,7 @@ export class TreeComponent implements OnInit, OnChanges {
     _reset() {
         this.selectComposeThead = [];
         this.beforeComposeThead = [];
+        this.selectData.length = 0;
 
         if (!this.treeData || !this.treeData.length) return;
         let stack = [];
@@ -349,7 +359,7 @@ export class TreeComponent implements OnInit, OnChanges {
         while (stack.length) {
             item = stack.shift();
             item.isChecked = false;
-            item.isExpand = true;
+            item.isExpand = this.defaultExpandAll;
             item.disabled = false;
             if (item.children && item.children.length) {
                 stack = stack.concat(item.children);

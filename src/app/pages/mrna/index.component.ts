@@ -96,16 +96,16 @@ export class IndexComponent implements OnInit {
                                         }
                                     ]
                                 },
-                                // {
-                                //     category: "布局一",
-                                //     children: [
-                                //         {
-                                //             url: "layout1",
-                                //             name: "布局页面",
-                                //             isExport: true
-                                //         }
-                                //     ]
-                                // }
+                                {
+                                    category: "布局一",
+                                    children: [
+                                        {
+                                            url: "layout1",
+                                            name: "布局页面",
+                                            isExport: true
+                                        }
+                                    ]
+                                }
                             ];
                         }
                         resolve("success");

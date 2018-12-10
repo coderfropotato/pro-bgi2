@@ -8,7 +8,7 @@ import {
 } from "@angular/common";
 import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
 import { NgModule } from "@angular/core";
-import { NgZorroAntdModule, NZ_MESSAGE_CONFIG } from "ng-zorro-antd";
+import { NgZorroAntdModule, NZ_MESSAGE_CONFIG ,NZ_NOTIFICATION_CONFIG} from "ng-zorro-antd";
 import { SimpleReuseStrategy } from "./super/service/simpleReuseStrategy";
 
 // 组件
@@ -432,12 +432,11 @@ export function createTranslateLoader(http: HttpClient) {
         // , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
         {
             provide: NZ_MESSAGE_CONFIG,
-            useValue: {
-                nzDuration: 1000,
-                nzPauseOnHover: true,
-                nzMaxStack: 3,
-                nzAnimate: true
-            }
+            useValue: { nzDuration: 2000, nzPauseOnHover: true, nzMaxStack: 3, nzAnimate: true, }
+        },
+        {
+            provide: NZ_NOTIFICATION_CONFIG,
+            useValue: { nzTop:'40px', nzBottom:'24px', nzPlacement:'topRight', nzDuration:2000, nzMaxStack:3, nzPauseOnHover:true, nzAnimate:true }
         },
         // { provide: HTTP_INTERCEPTORS, useClass: HttpInterService, multi: true },
         // enable route alive
