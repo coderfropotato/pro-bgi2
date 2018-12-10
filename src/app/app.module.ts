@@ -1,11 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ColorPickerModule, ColorPickerDirective } from "ngx-color-picker";
 import { NgxSpinnerModule } from "ngx-spinner";
-import {
-    HashLocationStrategy,
-    LocationStrategy,
-    registerLocaleData
-} from "@angular/common";
+import { HashLocationStrategy, LocationStrategy, registerLocaleData } from "@angular/common";
 import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { NgZorroAntdModule, NZ_MESSAGE_CONFIG ,NZ_NOTIFICATION_CONFIG} from "ng-zorro-antd";
