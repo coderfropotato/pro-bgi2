@@ -59,6 +59,7 @@ import { UploadComponent } from './pages/mrna/upload.component';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
 import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component';
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
+import {PromtComponent} from './super/service/promptService';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -74,6 +75,7 @@ import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from "@angular/common
 import { SysDefendService } from "./super/service/sysDefendService";
 import { PageModuleService } from "./super/service/pageModuleService";
 import { AddColumnService } from './super/service/addColumnService';
+import {PromptService} from './super/service/promptService'
 
 
 // 国际化
@@ -397,7 +399,8 @@ export function createTranslateLoader(http: HttpClient) {
         ReListComponent,
         ReHeatmapComponent,
         TooltipDirective,
-        ReMultiOmicsComponent
+        ReMultiOmicsComponent,
+        PromtComponent
     ],
     // 路由模块在imports 导入
     imports: [
@@ -429,6 +432,7 @@ export function createTranslateLoader(http: HttpClient) {
         SysDefendService,
         PageModuleService,
         AddColumnService,
+        PromptService,
         // , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
         {
             provide: NZ_MESSAGE_CONFIG,
@@ -444,6 +448,7 @@ export function createTranslateLoader(http: HttpClient) {
         // enable hash module
         { provide: LocationStrategy, useClass: HashLocationStrategy }
     ],
+    entryComponents:[PromtComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

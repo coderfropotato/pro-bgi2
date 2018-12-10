@@ -7,6 +7,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import { TranslateService } from "@ngx-translate/core";
+import {PromptService} from './../../super/service/promptService'
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
@@ -18,7 +19,7 @@ declare const Venn: any;
 })
 export class DiffVennPage {
     constructor(
-        public pageModuleService: PageModuleService,
+		public pageModuleService: PageModuleService
         ) {}
 }
 
@@ -124,6 +125,7 @@ export class DiffVennComponent implements OnInit {
 		private storeService: StoreService,
 		public pageModuleService: PageModuleService,
 		private translate: TranslateService,
+		private promptService:PromptService,
         // private addColumnService:AddColumnService,
 		private router: Router
 	) {

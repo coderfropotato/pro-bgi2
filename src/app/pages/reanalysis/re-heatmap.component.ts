@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import config from '../../../config';
+import {PromptService} from './../../super/service/promptService';
 
 declare const d3: any;
 declare const $: any;
@@ -90,7 +91,8 @@ export class ReHeatmapComponent implements OnInit {
 		private storeService: StoreService,
 		public pageModuleService: PageModuleService,
         private router: Router,
-        private routes:ActivatedRoute
+        private routes:ActivatedRoute,
+        private promptService:PromptService
     ) {
         // 订阅windowResize 重新计算表格滚动高度
 		this.message.getResize().subscribe((res) => {
@@ -600,7 +602,12 @@ export class ReHeatmapComponent implements OnInit {
             .attr("text-anchor", "middle")
             .style("cursor", "pointer")
             .on("dblclick", function () {
+                clearEventBubble(d3.event);
                 let textNode = d3.select(this).node();
+                let text = textNode.firstChild.nodeValue;
+                that.promptService.open(text,(data)=>{
+                    textNode.textContent = data;
+                })
             })
             .on("mouseover", function () {
                 d3.select(this).attr("fill", "#5378f8");
@@ -880,6 +887,23 @@ export class ReHeatmapComponent implements OnInit {
                 rect_g.append("text")
                     .style("font-family", "Consolas, Monaco, monospace")
                     .style("font-size", "12px")
+                    .style("cursor", "pointer")
+                    .on("dblclick", function () {
+                        clearEventBubble(d3.event);
+                        let textNode = d3.select(this).node();
+                        let text = textNode.firstChild.nodeValue;
+                        that.promptService.open(text,(data)=>{
+                            textNode.textContent = data;
+                        })
+                    })
+                    .on("mouseover", function () {
+                        d3.select(this).attr("fill", "#5378f8");
+                        d3.select(this).append("title").text("双击修改");
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this).attr("fill", "#000");
+                        d3.select(this).select("title").remove();
+                    })
                     .text(heatmapData[i].name)
                     .style("text-anchor", "start")
                     .attr("transform", function () {
