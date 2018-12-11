@@ -56,6 +56,7 @@ import { ReListComponent } from './pages/reanalysis/re-list.component';
 import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component';
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
 import {PromtComponent} from './super/service/promptService';
+import { ReNetComponent } from './pages/reanalysis/re-net.component'
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -281,6 +282,15 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-net/:geneType/:tid/:version",
+                component: ReNetComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reNet"
+                }
+            },
+            {
                 path: "",
                 redirectTo: "index",
                 pathMatch: "full"
@@ -395,6 +405,7 @@ export function createTranslateLoader(http: HttpClient) {
         ReListComponent,
         ReHeatmapComponent,
         TooltipDirective,
+        ReNetComponent,
         ReMultiOmicsComponent,
         PromtComponent
     ],

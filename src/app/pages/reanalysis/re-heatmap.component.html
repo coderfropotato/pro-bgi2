@@ -5,10 +5,10 @@
         </app-menu>
         <div class="content reanalysis-content row">
         <div #left class="left-layout column" [class.unexpand]="switch">
-            <div class="left-top-layout">
+            <!-- <div class="left-top-layout">
                 <h4>title</h4>
                 <p>describe</p>
-            </div>
+            </div> -->
             <div class="left-bottom-layout">
                     <ng-template #setTemplate>
                         <app-clusterSet *ngIf="defaultSetData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData'></app-clusterSet>

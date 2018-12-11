@@ -25,7 +25,8 @@ export class GeneRelativeComponent implements OnInit {
 		/*
             [{"key":"cerna","name":"cerna"},{"key":"coexpression","name":"coexpression"},{"key":"ppi","name":"ppi"},{"key":"rbp","name":"rbp"},{"key":"target","name":"target"}]
         */
-        this.relations = JSON.parse(sessionStorage.getItem('relations')).map(v=>{
+       let relations = [ { "key":"cerna", "name":"cerna", "score":[0,100,30], "max":[100,500,200] }, { "key":"coexpression", "name":"coexpression", "score":[0,100,20], "max":[100,500,120] }, { "key":"ppi", "name":"ppi", "score":[0,100,60], "max":[100,500,152] }, { "key":"ppi", "name":"ppi", "score":[0,100,90], "max":[100,500,200] }, { "key":"target", "name":"target", "score":[0,100,], "max":[100,500] }, ]
+        this.relations = relations.map(v=>{
             v['checked'] = false;
             return v;
         });

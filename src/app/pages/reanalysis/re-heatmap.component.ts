@@ -153,7 +153,7 @@ export class ReHeatmapComponent implements OnInit {
             sortKey: null, //排序
             reAnaly: false,
             verticalClassification:this.verticalClass,
-            geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+            geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
             searchList: []
@@ -179,7 +179,7 @@ export class ReHeatmapComponent implements OnInit {
             sortKey: null, //排序
             reAnaly: false,
             verticalClassification:this.verticalClass,
-            geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+            geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
             searchList: []

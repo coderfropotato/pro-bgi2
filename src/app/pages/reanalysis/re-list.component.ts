@@ -72,6 +72,6 @@ export class ReListComponent implements OnInit {
         }else{
             type = data['reanalysisType'];
         }
-        this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['tid']}/${data['version']}`);
+        this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
     }
 }
