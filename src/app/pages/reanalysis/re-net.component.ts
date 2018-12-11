@@ -68,7 +68,7 @@ export class ReNetComponent implements OnInit {
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
 
-    selectGeneList:[] = [];
+    selectGeneList:any[] = [];
 
     // 路由参数
     tid:string = null;
@@ -351,7 +351,7 @@ export class ReNetComponent implements OnInit {
 
 
     drawChart(dataset){
-        let _this  = this;
+        let that  = this;
         var svg = d3.select("#net").attr("width", 1000).attr("height", 800)
         var colorsArray = ["#FF8B8B", "#167C80", "#005397", "#FACA0C", "#F3C9DD", "#0BBCD6", "#BFB5D7", "#BEA1A5", "#0E38B1", "#A6CFE2", "#371722", "#C7C6C4", "#DABAAE", "#DB9AAD", "#F1C3B8", "#EF3E4A", "#C0C2CE", "#EEC0DB", "#B6CAC0", "#C5BEAA", "#FDF06F", "#EDB5BD", "#17C37B", "#2C3979", "#1B1D1C", "#E88565", "#FFEFE5", "#F4C7EE", "#77EEDF", "#E57066", "#FBFE56", "#A7BBC3", "#3C485E", "#055A5B", "#178E96", "#D3E8E1", "#CBA0AA", "#9C9CDD", "#20AD65", "#E75153", "#4F3A4B", "#112378", "#A82B35", "#FEDCCC", "#00B28B", "#9357A9", "#C6D7C7", "#B1FDEB", "#BEF6E9", "#776EA7", "#EAEAEA", "#EF303B", "#1812D6", "#FFFDE7", "#D1E9E3", "#7DE0E6", "#3A745F", "#CE7182", "#340B0B", "#F8EBEE", "#FF9966", "#002CFC", "#75FFC0", "#FB9B2A", "#FF8FA4", "#000000", "#083EA7", "#674B7C", "#19AAD1", "#12162D", "#121738", "#0C485E", "#FC3C2D", "#864BFF", "#EF5B09", "#97B8A3", "#FFD101", "#C26B6A", "#E3E3E3", "#FF4C06", "#CDFF06", "#0C485E", "#1F3B34", "#384D9D", "#E10000", "#F64A00", "#89937A", "#C39D63", "#00FDFF", "#B18AE0", "#96D0FF", "#3C225F", "#FF6B61", "#EEB200", "#F9F7E8", "#EED974", "#F0CF61", "#B7E3E4"];
 
@@ -440,10 +440,10 @@ export class ReNetComponent implements OnInit {
 
             //选中node加到list中，反选node中从list中去掉
             if (d.selected) {
-                _this.selectNodesList.push(d);
+                that.selectNodesList.push(d);
             } else {
-                var index = _this.selectNodesList.indexOf(d)
-                _this.selectNodesList.splice(index, 1)
+                var index = that.selectNodesList.indexOf(d)
+                that.selectNodesList.splice(index, 1)
             }
             //颜色变化，反选需还原到初始颜色（没写）
             d3.select(this).attr('fill', function (d) {
@@ -453,7 +453,7 @@ export class ReNetComponent implements OnInit {
                 return colorsArray[0];
             })
             event.stopPropagation();
-            console.log(_this.selectNodesList)
+            console.log(that.selectNodesList)
         })
 
 
@@ -541,19 +541,19 @@ export class ReNetComponent implements OnInit {
 
             link.each(function (d) {
                 //link的起点在已选择的list中，终点不在已选择的list中，且不在临时扩展的list中。
-                if ((_this.selectNodesList.indexOf(d.source) > -1) && (_this.selectNodesList.indexOf(d.target) == -1) && (expandNodeList.indexOf(d.target) == -1)) {
+                if ((that.selectNodesList.indexOf(d.source) > -1) && (that.selectNodesList.indexOf(d.target) == -1) && (expandNodeList.indexOf(d.target) == -1)) {
                     d.target.selected = true
                     expandNodeList.push(d.target)
                 }
-                if ((_this.selectNodesList.indexOf(d.target) > -1) && (_this.selectNodesList.indexOf(d.source) == -1) && (expandNodeList.indexOf(d.source) == -1)) {
+                if ((that.selectNodesList.indexOf(d.target) > -1) && (that.selectNodesList.indexOf(d.source) == -1) && (expandNodeList.indexOf(d.source) == -1)) {
                     d.source.selected = true
                     expandNodeList.push(d.source)
                 }
             })
             if(expandNodeList.length == 0) return;
             //更新扩展selectNodesList
-            _this.selectNodesList = [..._this.selectNodesList,...expandNodeList];
-            // _this.selectNodesList.push.apply(_this.selectNodesList, expandNodeList)
+            that.selectNodesList = [...that.selectNodesList,...expandNodeList];
+            // that.selectNodesList.push.apply(that.selectNodesList, expandNodeList)
             //更新颜色、获取List
             var geneList = [];
             node.each(function (d) {
@@ -563,13 +563,13 @@ export class ReNetComponent implements OnInit {
                 }
             })
 
-            console.log(_this.selectNodesList)
+            console.log(that.selectNodesList)
         })
 
         // show label
         d3.select("#name").on("click", function (d) {
-            _this.showTextFlag = !_this.showTextFlag
-            if (_this.showTextFlag) {
+            that.showTextFlag = !that.showTextFlag
+            if (that.showTextFlag) {
                 node_text.attr("visibility", "show")
             } else {
                 node_text.attr("visibility", "hidden")

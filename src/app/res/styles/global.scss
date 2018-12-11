@@ -53,8 +53,8 @@
 	border: $border;
 	border-top: 0;
 	border-bottom: 0;
-    overflow-x: auto;
-    white-space: nowrap;
+	overflow-x: auto;
+	white-space: nowrap;
 	& > span {
 		display: inline-block;
 	}
@@ -186,9 +186,9 @@
 
 .tag-wrap .ant-tag {
 	margin: 6px;
-    margin-left: 0;
-    // background-color: $btn_active_color;
-    // color:#fff;
+	margin-left: 0;
+	// background-color: $btn_active_color;
+	// color:#fff;
 }
 
 .little-table {
@@ -483,9 +483,9 @@ button.btnActive {
 			align-items: center;
 			flex-direction: column;
 			transition: 0.6s all ease;
-            cursor: pointer;
+			cursor: pointer;
 			&:hover {
-                @include hover-animate;
+				@include hover-animate;
 			}
 			img {
 				margin-top: 24px;
@@ -495,36 +495,36 @@ button.btnActive {
 				margin-bottom: 0;
 			}
 			.menu-button {
-                @include submenu-button;
-                &:hover{
-                    @include hover-animate($them_color);
-                    background-color: $btn_active_color;
-                    color: #fff;
-                }
+				@include submenu-button;
+				&:hover {
+					@include hover-animate($them_color);
+					background-color: $btn_active_color;
+					color: #fff;
+				}
 			}
 			&.active {
 				background-color: $menu_active_bg_color;
-            }
+			}
 
-            .tool-imgs {
-                height: 192px;
-                width: 192px;
-                margin: 0 auto;
-                background-repeat: no-repeat;
-                background-position: center;
-                transition: 0.3s all ease;
-                // border-width: 2px 2px 4px;
-                // border-style: solid;
-                // border-color: transparent;
-                // &:hover {
-                //     transform: translate(0, -4px);
-                //     border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
-                //     box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
-                // }
-            }
-            .diff-venn-img{
-                background-image: url('../img/韦恩图.png');
-            }
+			.tool-imgs {
+				height: 192px;
+				width: 192px;
+				margin: 0 auto;
+				background-repeat: no-repeat;
+				background-position: center;
+				transition: 0.3s all ease;
+				// border-width: 2px 2px 4px;
+				// border-style: solid;
+				// border-color: transparent;
+				// &:hover {
+				//     transform: translate(0, -4px);
+				//     border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
+				//     box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
+				// }
+			}
+			.diff-venn-img {
+				background-image: url('../img/韦恩图.png');
+			}
 		}
 	}
 }
@@ -669,17 +669,17 @@ button.btnActive {
 				float: left;
 				width: 33%;
 				height: 90px;
-				margin-bottom:16px;
+				margin-bottom: 16px;
 				text-align: center;
 				cursor: pointer;
 				.tool-imgs {
-                    height: 40px;
-                    width: 40px;
-                    margin: 0 auto;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-size:contain;
-                    border-radius: 50%;
+					height: 40px;
+					width: 40px;
+					margin: 0 auto;
+					background-repeat: no-repeat;
+					background-position: center;
+					background-size: contain;
+					border-radius: 50%;
 					transition: 0.3s all ease;
 					// border-width: 2px 2px 4px;
 					// border-style: solid;
@@ -689,46 +689,46 @@ button.btnActive {
 						// border-color: $btn_active_color;
 						box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
 					}
-                }
-                .heatmap-img{
-                    background-image: url('../img/Group13.png');
-                }
-                .goRich-img{
-                    background-image: url('../img/Group6.png');
-                }
-                .keggRich-img{
-                    background-image: url('../img/Group20.png');
-                }
-                .goClass-img{
-                    background-image: url('../img/Group5.png');
-                }
-                .keggClass-img{
-                    background-image: url('../img/Group4.png');
-                }
-                .line-img{
-                    background-image: url('../img/1.png');
-                }
-                .net-img{
-                    background-image: url('../img/Group22.png');
-                }
-                .KDA-img{
-                    background-image: url('../img/2.png');
-                }
-                .multiOmics-img{
-                    background-image: url('../img/3.png');
-                }
-                .kaFun-img{
-                    background-image: url('../img/4.png');
-                }
-                .relativeSplice-img{
-                    background-image: url('../img/5.png');
-                }
-                .relaticeNet-img{
-                    background-image: url('../img/6.png');
-                }
-                .relativeHeatmap-img{
-                    background-image: url('../img/7.png');
-                }
+				}
+				.heatmap-img {
+					background-image: url('../img/Group13.png');
+				}
+				.goRich-img {
+					background-image: url('../img/Group6.png');
+				}
+				.keggRich-img {
+					background-image: url('../img/Group20.png');
+				}
+				.goClass-img {
+					background-image: url('../img/Group5.png');
+				}
+				.keggClass-img {
+					background-image: url('../img/Group4.png');
+				}
+				.line-img {
+					background-image: url('../img/1.png');
+				}
+				.net-img {
+					background-image: url('../img/Group22.png');
+				}
+				.KDA-img {
+					background-image: url('../img/2.png');
+				}
+				.multiOmics-img {
+					background-image: url('../img/3.png');
+				}
+				.kaFun-img {
+					background-image: url('../img/4.png');
+				}
+				.relativeSplice-img {
+					background-image: url('../img/5.png');
+				}
+				.relaticeNet-img {
+					background-image: url('../img/6.png');
+				}
+				.relativeHeatmap-img {
+					background-image: url('../img/7.png');
+				}
 			}
 		}
 	}
@@ -900,13 +900,13 @@ button.btnActive {
 	margin-bottom: 12px;
 }
 
-.top{
-	.top_left{
+.top {
+	.top_left {
 		float: left;
 		width: 300px;
 		height: 100%;
-		margin-left:20px;
-		.topbar_logo{
+		margin-left: 20px;
+		.topbar_logo {
 			width: 60px;
 			height: 28px;
 			margin-top: 6px;
@@ -915,7 +915,7 @@ button.btnActive {
 			background-repeat: no-repeat;
 			background-position: center;
 		}
-		.middle_fg{
+		.middle_fg {
 			width: 1px;
 			height: 28px;
 			margin: 6px 16px 0 16px;
@@ -924,7 +924,7 @@ button.btnActive {
 			opacity: .4;
 		}
 
-		.logo2{
+		.logo2 {
 			width: 93px;
 			height: 28px;
 			margin-top: 6px;
@@ -934,23 +934,23 @@ button.btnActive {
 			background-position: center;
 		}
 	}
-	.top_right{
+	.top_right {
 		float: right;
 		width: 220px;
 		height: 100%;
-		.top_right_content{
+		.top_right_content {
 			width: 200px;
 			height: 100%;
 			display: flex;
 			align-items: center;
 			justify-content: flex-end;
-			i{
+			i {
 				cursor: pointer;
 				font-size: 20px;
 				color: white;
 				margin-right: 20px;
 			}
-			.div_lang{
+			.div_lang {
 				width: 20px;
 				height: 20px;
 				line-height: 20px;
@@ -961,6 +961,15 @@ button.btnActive {
 				border-radius: 2px;
 			}
 		}
-
 	}
+}
+
+// relation
+.relative-params-content {
+	max-height: 320px;
+	overflow: auto;
+}
+.relative-params-top{
+    // box-shadow: 0px 3px 13px #ccc;
+    padding-bottom: 20px;
 }
