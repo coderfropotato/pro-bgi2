@@ -8,7 +8,7 @@
 
             <ng-template #modalContent>
                 <div class="relative-params-top">
-                    <button style="margin-right: 8px;" [class.active]="relation['checked']" *ngFor="let relation of relations;index as i;" [nzSize]="middle" nz-button nzType="Default" (click)="select(relation)">{{relation['name']}} {{relation| json}}</button>
+                    <button style="margin-right: 8px;" [class.active]="relation['checked']" *ngFor="let relation of relations;index as i;" [nzSize]="middle" nz-button nzType="Default" (click)="select(relation)">{{relation['name']}}</button>
                 </div>
                 <div class="relative-params-content">
                     <ng-container *ngFor="let relation of relations;index as i;">
