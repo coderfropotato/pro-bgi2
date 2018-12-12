@@ -35,7 +35,6 @@ export class ReLineComponent implements OnInit {
     isShowColorPanel: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
     color: string; //当前选中的color
-    colors: string[];
 
     // table
     defaultEntity: object;
@@ -99,14 +98,12 @@ export class ReLineComponent implements OnInit {
 
     ngOnInit() {
         // chart
-        this.colors = ["#0070c0", "#ffffff", "#ff0000"];
-
         this.chartUrl=`${config['javaPath']}/line/getLineChart`;
         this.chartEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
             pageIndex: 1, 
-            pageSize: 20,
+            pageSize: 100000,
             mongoId: null,
             addThead: [], 
             transform: false, 
@@ -130,7 +127,7 @@ export class ReLineComponent implements OnInit {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
             pageIndex: 1, //分页
-            pageSize: 100000,
+            pageSize: 20,
             mongoId: null,
             addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
@@ -285,6 +282,7 @@ export class ReLineComponent implements OnInit {
 
     //画图
     drawChart(data) {
+		let that = this;
         let xKey = data['baseThead'].slice(1).map(v=>v['true_key']);
         let categoryKey = data['baseThead'][0]['true_key'];
 
@@ -294,11 +292,11 @@ export class ReLineComponent implements OnInit {
                 chartData.push({x:v,y:val[v],category:val[categoryKey]})
             })
         })
-        console.log(chartData);
         
         let config = {
             chart: {
-				height:560,
+				width:($('.left-bottom-layout').width())*0.9,
+				height:($('.left-bottom-layout').height())*0.75,
 				title: "折线图",
 				dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
@@ -309,9 +307,9 @@ export class ReLineComponent implements OnInit {
 				},
 				mouseover: function(event, titleObj) {
 					titleObj
-					.attr("fill", "blue")
+					.attr("fill", "#386cca")
 					.append("title")
-					.text("custom");
+					.text("双击修改标题");
 				},
 				mouseout: function(event, titleObj) {
 					titleObj.attr("fill", "#333");
@@ -349,7 +347,12 @@ export class ReLineComponent implements OnInit {
 			},
             legend: {
 				show: true,
-				position: "right"
+				position: "right",
+				click:function(d,index){
+					that.color = d[0].getAttribute("fill");
+					that.legendIndex = index;
+					that.isShowColorPanel = true;
+				}
             },
             tooltip: function(d) {
 				return `<span>FPKM：${d.name}</span><br><span>log10：${
@@ -361,10 +364,8 @@ export class ReLineComponent implements OnInit {
         this.chart=new d4().init(config);
     }
 
-    //color change 回调函数
     colorChange(curColor) {
-        this.color = curColor;
-        this.colors.splice(this.legendIndex, 1, curColor);
+		this.chart.setColor(curColor, this.legendIndex);
         this.chart.redraw();
     }
 
