@@ -218,12 +218,13 @@ export class UploadComponent implements OnInit {
 		let self = this;
 		this.isShowTab = false;
 		const formData = new FormData();
-		//let spark = new SparkMD5.ArrayBuffer();
+		let spark = new SparkMD5();
 		let nfileLength = this.nfileList.length;
         this.nfileList.forEach((file: any,index) => {
 			if(nfileLength == index+1){
 				formData.append("file", file);
-				formData.append("md5", SparkMD5.hashBinary(file));
+				spark.appendBinary(file);
+				formData.append("md5", spark.end());
 			}
         });
 
