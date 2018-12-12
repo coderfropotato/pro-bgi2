@@ -34,18 +34,16 @@ export class GeneRelativeComponent implements OnInit {
 			{ key: 'target', name: 'target', limit: true, score: [ 0, 100, 32 ], max: [ 100, 500, 459 ] }
 		];
 
-		this.relations.forEach((v,index) => {
-			index?v['checked'] = false:v['checked'] = true;
-        });
+		console.log(this.relations);
 
-		this.beforeRelation = JSON.parse(JSON.stringify(this.relations));
+		// this.beforeRelation = JSON.parse(JSON.stringify(this.relations));
 	}
 
 	// 选择关系
 	select(r) {
 		r['checked'] = !r['checked'];
 		if (r['checked']) {
-			this.selectRelations.push(r['key']);
+			this.selectRelations.push(r);
 		} else {
 			let index = this.selectRelations.findIndex((v, i) => {
 				return v['key'] === r['key'];
@@ -72,7 +70,9 @@ export class GeneRelativeComponent implements OnInit {
 		this.relations.forEach((v) => {
 			v['checked'] = false;
 		});
+		this.relations[0]['checked'] = true;
 		this.selectRelations.length = 0;
+		this.selectRelations.push(this.relations[0]);
 	}
 
 	_getRelative() {

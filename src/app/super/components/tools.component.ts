@@ -90,9 +90,12 @@ export class ToolsComponent implements OnInit {
     multiOmicsError: any = false;
     
     // 折线图参数
-    lineData:object[] = [];
-    lineSelect:object[] = [];
-    lineError:boolean = false;
+    lineGroupData:object[] = [];
+    lineSampleData:object[] = [];
+    lineGroupSelect:object[] = [];
+	lineSampleSelect:object[] = [];
+	lineGroupError:boolean = false;
+	lineSampleError:boolean = false;
 
 	// 当前选择的重分析类型
 	selectType: string = '';
@@ -138,9 +141,12 @@ export class ToolsComponent implements OnInit {
 		this.multiOmicsError = true;
 
         // 折线图参数
-        this.lineData = [];
-        this.lineSelect = [];
-        this.lineError = false;
+        this.lineGroupData = [];
+        this.lineSampleData = [];
+        this.lineGroupSelect = [];
+        this.lineSampleSelect = [];
+        this.lineGroupError = false;
+        this.lineSampleError = false;
 
 
 		// 页面参数
@@ -454,62 +460,97 @@ export class ToolsComponent implements OnInit {
 				(data) => {
 					if (data['status'] === '0') {
 						if (data['data']) {
+							this.lineGroupSelect.length = 0;
+							this.lineSampleSelect.length = 0;
+					
                             let group = data['data']['expression']['group'].map((v,index)=>{
                                 let status = index?false:true;
-                                if(status) this.lineSelect.push({name:v,checked:status,category:'group'});
+                                if(status) this.lineGroupSelect.push({name:v,checked:status,category:'group'});
                                 return {name:v,checked:status,category:'group'};
                             });
-							let sample = data['data']['expression']['sample'].map(v=>{
-                                return {name:v,checked:false,category:'sample'};
-                            });
-                            console.log(group,sample)
-                            this.lineData = [...group,...sample]
+                            let sample = data['data']['expression']['sample'].map((v,index)=>{
+                                let status = index?false:true;
+                                if(status) this.lineSampleSelect.push({name:v,checked:status,category:'sample'});
+                                return {name:v,checked:status,category:'sample'};
+							});
+							
+							this.lineGroupData = group;
+							this.lineSampleData = sample;
 						} else {
-                            this.lineData = [];
-                            this.lineSelect.length = 0;
+							this.initLineData();
 						}
 					} else {
-                        this.lineData = [];
-                        this.lineSelect.length = 0;
+						this.initLineData();
 					}
 				},
 				(err) => {
-                    this.lineData = [];
-                    this.lineSelect.length = 0;
-				})
-    }
+					this.initLineData();
+				}
+			)
+	})	
+	
+	initLineData(){
+		this.lineGroupData.length = 0;
+		this.lineSampleData.length = 0;
+		this.lineGroupSelect.length = 0;
+		this.lineSampleSelect.length = 0;
+	}
     
     // 折线图参数选择
-    lineClick(item){
-        item['checked'] = !item['checked'];
-		let index = this.lineSelect.findIndex((val, index) => {
-			return val['name'] === item['name'];
-		});
-		if (item['checked']) {
-			if (index == -1) this.lineSelect.push(item);
-		} else {
-			if (index != -1) this.lineSelect.splice(index, 1);
+    lineClick(type,item){
+		let temp = null;
+		switch(type){
+			case 'group':
+				temp = this.lineGroupSelect;
+				break;
+			case 'sample':
+				temp = this.lineSampleSelect;
+				break;
 		}
 
-		this.lineError = !this.lineSelect.length;
+
+        item['checked'] = !item['checked'];
+		let index = temp.findIndex((val, index) => {
+			return val['name'] === item['name'];
+		});
+
+		if (item['checked']) {
+			if (index == -1) temp.push(item);
+		} else {
+			if (index != -1) temp.splice(index, 1);
+		}
+
+		this.lineGroupError = !this.lineGroupData.length;
+		this.lineSampleError = !this.lineSampleData.length;
+		
     }
 
     // 提交折线图重分析
-    lineConfirm(type){
+    lineConfirm(reanalysisType,selectType){
 		this.isSubmitReanalysis = true;
-		let tempChooseList = this.lineSelect.map((val) => {
+		let tempSelect = null;
+		switch(selectType){
+			case 'group':
+				tempSelect = this.lineGroupSelect;
+				break;
+			case 'sample':
+				tempSelect = this.lineSampleSelect;
+				break;
+		}
+
+		let tempChooseList = tempSelect.map((val) => {
 			let temp = {};
 			temp[val['category']] = val['name'];
 			return temp;
 		});
+
 		this.ajaxService
 			.getDeferData({
 				data: {
-					reanalysisType: type,
+					reanalysisType: reanalysisType,
 					needReanalysis: 2,
-					chooseType: [],
+					chooseType: ['expression'],
 					chooseList: tempChooseList,
-					// verticalDefault: this.selectGeneType,
 					...this.toolsService.get('tableEntity')
 				},
 				url: this.toolsService.get('tableUrl')

@@ -14,12 +14,12 @@
                     <app-clusterSet *ngIf="defaultSetData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData'></app-clusterSet>
                 </ng-template>
                 <!-- [selectTemplate]="selectTemplate" -->
+                <!-- [apiEntity]="chartEntity" -->
                 <app-table-switch-chart
                     #netChart
                     [id]="'cluster'"
                     [isOnlyChart]="true"
                     [chartUrl]="chartUrl"
-                    [apiEntity]="chartEntity"
                     [setTemplate]="setTemplate"
                     (drawChartEmit)="drawChart($event)"
                     [chartId]="'netChartDiv'"

@@ -349,6 +349,11 @@ export class ReNetComponent implements OnInit {
 		} catch (error) {}
     }
 
+    colorChange(curColor) {
+        this.color = curColor;
+        this.colors.splice(this.legendIndex, 1, curColor);
+        this.clusterChart.redraw();
+    }
 
     drawChart(dataset){
         let that  = this;
