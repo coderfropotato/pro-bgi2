@@ -35,7 +35,7 @@ export class AjaxService {
                     })
                 };
                 // 如果系统维护了 那就跳系统维护
-                if(config['sysDefend']){
+                if (config["sysDefend"]) {
                     this.router.navigateByUrl("/report/sysDefend");
                     return;
                 }
@@ -44,20 +44,24 @@ export class AjaxService {
                     .post(`${config["javaPath"]}/swap_token`, { LCID }, head)
                     .subscribe(
                         res => {
-                            if(res['status']!='0'){
+                            if (res["status"] != "0") {
                                 observer.complete();
                                 this.router.navigateByUrl("/reprot/sysError");
-                            }else{
-                                let curToken = res['data'][0]
+                            } else {
+                                let curToken = res["data"][0];
                                 localStorage.setItem("token", curToken);
                                 let curHead = {
                                     headers: new HttpHeaders({
                                         "Content-Type": "application/json",
-                                        Authorization: `token ${curToken}`  // curToken
+                                        Authorization: `token ${curToken}` // curToken
                                     })
                                 };
                                 return this.http
-                                    .post(params["url"], params["data"], curHead)
+                                    .post(
+                                        params["url"],
+                                        params["data"],
+                                        curHead
+                                    )
                                     .subscribe(
                                         data => {
                                             observer.next(data);
@@ -72,6 +76,7 @@ export class AjaxService {
                         },
                         error => {
                             observer.complete();
+                            this.router.navigateByUrl("/reprot/sysError");
                         }
                     );
             } else {
@@ -89,8 +94,9 @@ export class AjaxService {
      * @memberof AjaxService
      */
     validTokenInLocal() {
-        return !!localStorage.getItem("token") && !!sessionStorage.getItem("LCID");
-
+        return (
+            !!localStorage.getItem("token") && !!sessionStorage.getItem("LCID")
+        );
     }
 
     /**
@@ -108,5 +114,48 @@ export class AjaxService {
             })
         };
         return this.http.post(params["url"], params["data"], head);
+    }
+
+    validToken() {
+        return new Observable(observer => {
+            if (this.validTokenInLocal()) {
+                let token = localStorage.getItem("token");
+                let LCID = sessionStorage.getItem("LCID");
+                let head = {
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                        Authorization: `token ${token}`
+                    })
+                };
+                // 如果系统维护了 那就跳系统维护
+                if (config["sysDefend"]) {
+                    this.router.navigateByUrl("/report/sysDefend");
+                    return;
+                }
+                // 验证token的合法性
+                this.http
+                    .post(`${config["javaPath"]}/swap_token`, { LCID }, head)
+                    .subscribe(
+                        res => {
+                            if (res["status"] != "0") {
+                                observer.complete();
+                                this.router.navigateByUrl("/reprot/sysError");
+                            } else {
+                                let curToken = res["data"][0];
+                                localStorage.setItem("token", curToken);
+                                observer.next(200);
+                                observer.complete();
+                            }
+                        },
+                        error => {
+                            observer.complete();
+                            this.router.navigateByUrl("/reprot/sysError");
+                        }
+                    );
+            } else {
+                observer.complete();
+                this.router.navigateByUrl("/reprot/sysError");
+            }
+        });
     }
 }

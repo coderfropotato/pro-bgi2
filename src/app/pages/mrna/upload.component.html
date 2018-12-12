@@ -14,14 +14,6 @@
                           {{i+1}} - {{item.name}}
                       </div>
                     </div>
-                    <!-- <div class="tab_bottom">
-                        <button nz-button nzType="default" (click)="updateLoad()">上传</button>
-                        <nz-upload nzAction="" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
-                            <button nz-button>
-                                <span>选择文件</span>
-                            </button>
-                        </nz-upload>
-                    </div> -->
                 </nz-tab>
                 <nz-tab [nzTitle]="'转录本信息'">
                     <div class="tab_content" [hidden]="fileList2.length !=0">
@@ -33,14 +25,6 @@
                             {{i+1}} - {{item.name}}
                         </div>
                     </div>
-                    <!-- <div class="tab_bottom">
-                        <button nz-button nzType="default" (click)="updateLoad()">上传</button>
-                        <nz-upload nzAction="" [(nzFileList)]="fileList2" [nzBeforeUpload]="beforeUpload2">
-                            <button nz-button>
-                                <span>选择文件</span>
-                            </button>
-                        </nz-upload>
-                    </div> -->
                 </nz-tab>
 
                 <nz-tab [nzTitle]="'样本信息'">
@@ -53,19 +37,11 @@
                             {{i+1}} - {{item.name}}
                         </div>
                     </div>
-                    <!-- <div class="tab_bottom">
-                        <button nz-button nzType="default" (click)="updateLoad()">上传</button>
-                        <nz-upload nzAction="" [(nzFileList)]="fileList3" [nzBeforeUpload]="beforeUpload3">
-                            <button nz-button>
-                                <span>选择文件</span>
-                            </button>
-                        </nz-upload>
-                    </div> -->
                 </nz-tab>
             </nz-tabset>
             <div class="tab_bottom">
                 <button nz-button nzType="default" (click)="updateLoad()">上传</button>
-                <nz-upload nzAction="" [(nzFileList)]="nfileList" [nzBeforeUpload]="beforeUpload">
+                <nz-upload nzAction="${config['javaPath']}/upload/do" [(nzFileList)]="nfileList" [nzBeforeUpload]="beforeUpload">
                     <button nz-button>
                         <span>选择文件</span>
                     </button>
@@ -86,7 +62,31 @@
             </div>
         </div>
     </div>
+    <div class="m_result" [hidden]="resultList.length==0">
+        <h4 style="margin-top:10px;">上传信息列表</h4>
+        <div class="m_result_content">
+            <div class="m_result_title">上传时间、数据类型、上传结果、查看详情、隐藏</div>
+            <div class="m_result_border">
+                <div class="m_result_list" *ngFor="let item of resultList;index as i">
+                    <span style="width: 140px">{{item.time}}</span>
+                    <span style="width: 80px">{{item.info}}</span>
 
+                    <span style="width: 50px;text-align: center;">{{item.status}}</span>
+                    <span style="width: 50px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'" (click)="goDetail(item.detail,item.status)">查看</span>
+                    <span style="width: 50px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'"></span>
+
+                    <span style="width: 50px;cursor: pointer;" *ngIf="item.hidden" (click)="goSwitch(item.id)">隐藏</span>
+                    <span style="width: 50px;cursor: pointer;" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m_bottom" [hidden]="resultList.length==0">
+        <button nz-button nzType="primary" [hidden]="now_page==1" (click)="leftPage()"><span>上一页</span></button>
+        <button nz-button nzType="primary" disabled [hidden]="now_page!=1"><span>上一页</span></button>
+        <button nz-button nzType="primary" [hidden]="now_page==total_page" (click)="rightPage()"><span>下一页</span></button>
+        <button nz-button nzType="primary" disabled [hidden]="now_page!=total_page"><span>下一页</span></button>
+    </div>
 </div>
 <style>
     .m_top {
@@ -124,6 +124,8 @@
         height: 180px;
         margin: 20px auto 0 auto;
         border: 1px solid #ccc;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
 
     .tab_div_item{
@@ -200,8 +202,77 @@
 
 
     :host ::ng-deep .m_div .ant-upload-list-item-info>span {
-
         display: none;
+    }
+
+    .m_result{
+        width: 90%;
+        height: auto;
+        margin: 20px auto;
+    }
+
+    .m_result_content{
+        width: 100%;
+        height: 400px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+    }
+
+    .m_result_title{
+        width: 96%;
+        height: 40px;
+        margin: 10px auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border: 1px solid #ccc;
+    }
+
+    .m_result_border{
+        width: 100%;
+        height: 320px;
+        margin: 0 auto;
+        overflow-y:scroll;
+        overflow-x: hidden; 
+    }
+
+    .m_result_list{
+        width: 96%;
+        height: 40px;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .m_result_list{
+        width: 96%;
+        height: 40px;
+        margin: 10px auto;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .m_result_list span{
+        display: block;
+        height: 24px;
+    }
+
+    .m_bottom{
+        width: 90%;
+        height: 40px;
+        margin: 0 auto;
+        padding-bottom: 20px;
+        display: flex;
+        justify-content:center;
+        align-items: center;
+    }
+
+    .m_bottom button{
+        margin-left: 20px;
+        cursor: pointer;
     }
 
 </style>
