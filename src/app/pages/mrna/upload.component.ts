@@ -5,8 +5,8 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { StoreService } from "./../../super/service/storeService";
 import { AjaxService } from "src/app/super/service/ajaxService";
 import config from "../../../config";
-import { retry } from "rxjs/operators";
 declare const $: any;
+declare const SparkMD5:any;
 
 @Component({
     selector: "app-upload",
@@ -77,8 +77,6 @@ export class UploadComponent implements OnInit {
 		}else{
 			this.now_page -=1;
 		}
-		// console.log(this.now_page)
-		// console.log(this.total_page)
 		this.getHistoryList();
 	}
 
@@ -88,8 +86,6 @@ export class UploadComponent implements OnInit {
 		}else{
 			this.now_page +=1;
 		}
-		// console.log(this.now_page)
-		// console.log(this.total_page)
 		this.getHistoryList();
 	}
 
@@ -220,18 +216,21 @@ export class UploadComponent implements OnInit {
 	
 	uploadTask(){ //上传进行
 		let self = this;
-        this.isShowTab = false;
-		debugger;
+		this.isShowTab = false;
 		const formData = new FormData();
+		//let spark = new SparkMD5.ArrayBuffer();
 		let nfileLength = this.nfileList.length;
         this.nfileList.forEach((file: any,index) => {
 			if(nfileLength == index+1){
 				formData.append("file", file);
+				formData.append("md5", SparkMD5.hashBinary(file));
 			}
         });
 
 		formData.append('LCID',this.storeService.getStore('LCID'))
 		formData.append('type',(this.index+1)+'');
+
+		console.log(formData.get('md5'));
 
         let p_url = `${config["javaPath"]}/upload/do`;
         let head = {
