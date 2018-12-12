@@ -13,14 +13,13 @@ declare const d4:any;
 declare const $: any;
 
 @Component({
-  selector: 'app-re-heatmap',
-  templateUrl: './re-heatmap.component.html',
+  selector: 'app-re-line',
+  templateUrl: './re-line.component.html',
   styles: []
 })
 
-export class ReHeatmapComponent implements OnInit {
-    @ViewChild('clusterChart') clusterChart;
-
+export class ReLineComponent implements OnInit {
+    @ViewChild('lineChart') lineChart;
     @ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
@@ -111,7 +110,6 @@ export class ReHeatmapComponent implements OnInit {
 
         this.routes.paramMap.subscribe((params)=>{
             this.tid = params['params']['tid'];
-            this.tid = '20783e1576b84867aee1a63e22716fed';
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
             this.storeService.setTid(this.tid);
@@ -123,24 +121,16 @@ export class ReHeatmapComponent implements OnInit {
         this.colors = ["#0070c0", "#ffffff", "#ff0000"];
         this.gaugeColors=this.storeService.getColors();
 
-        this.defaultSetUrl=`${config['javaPath']}/Cluster/defaultSet`;
-        this.defaultSetEntity={
-            "tid": this.tid
-        }
-
-        this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
+        this.chartUrl=`${config['javaPath']}/line/getLineChart`;
         this.chartEntity = {
             "LCID": this.storeService.getStore('LCID'),
-            "tid": this.tid,
-            "isHorizontal": true,
-            "verticalClassification": {},
-            "horizontalClassification": []
+            "tid": this.tid
         };
 
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.defaultUrl = `${config['javaPath']}/line/getLineTable`;
         this.defaultEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -155,7 +145,6 @@ export class ReHeatmapComponent implements OnInit {
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
-            verticalClassification:this.verticalClass,
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
@@ -166,7 +155,7 @@ export class ReHeatmapComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.extendUrl = `${config['javaPath']}/line/getLineTable`;
         this.extendEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -181,7 +170,6 @@ export class ReHeatmapComponent implements OnInit {
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
-            verticalClassification:this.verticalClass,
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
@@ -344,7 +332,7 @@ export class ReHeatmapComponent implements OnInit {
     //设置 确定
     setConfirm(data){
         this.setChartSetEntity(data);
-        this.clusterChart.reGetData();
+        this.lineChart.reGetData();
 
         this.chartBackStatus();
     }
@@ -376,127 +364,7 @@ export class ReHeatmapComponent implements OnInit {
 
     //画图
     drawChart(data) {
-        let that =this;
-
-        let legendData = [];
-        let heatmapData = data.heatmaps;
-        let dataLength = heatmapData.length;
-
-        for (let i = 0; i < dataLength; i++) {
-            let heatmapLength = heatmapData[i].heatmap.length;
-            for (let j = 0; j < heatmapLength; j++) {
-                legendData.push(heatmapData[i].heatmap[j].y);
-            }
-        }
-
-        let config:object={
-            chart: {
-                title: "差异基因表达量聚类热图",
-                dblclick: function(event,title) {
-                    let text = title.firstChild.nodeValue;
-                    that.promptService.open(text,(data)=>{
-                        title.textContent = data;
-                    })
-                },
-                mouseover: function(event, titleObj) {
-                    titleObj
-                        .attr("fill", "blue")
-                        .append("title")
-                        .text("双击修改标题");
-                },
-                mouseout: function(event, titleObj) {
-                    titleObj.attr("fill", "#333");
-                    titleObj.select("title").remove();
-                },
-                el: "#clusterChartDiv",
-                type: "complexCluster",
-                data: data,
-                colors: that.colors,
-                heatmap: {
-                    width: that.width,
-                    height: that.height
-                },
-                left: {
-                    show: true, //控制折线是否显示
-                    // simple:{
-                    //     tooltip:function(d){
-                    //         return `left name:${d.name}`;
-                    //     }
-                    // },
-                    // complex:{
-                    //     tooltip:function(d){
-                    //         return `left type:${d.type}`
-                    //     }
-                    // }
-                },
-                top: {
-                    show: that.isCluster,
-                    // simple:{
-                    //     tooltip:function(d){
-                    //         return `top name:${d.name}`;
-                    //     }
-                    // },
-                    // complex:{
-                    //     tooltip:function(d){
-                    //         return `top type:${d.type}`
-                    //     }
-                    // }
-                },
-                onselect: data => {
-                    that.setGeneList(data);
-                }
-            },
-            axis: {
-                x: {
-                    // rotate: 30,
-                    dblclick: function(event,title) {
-                        let text = title.firstChild.nodeValue;
-                        that.promptService.open(text,(data)=>{
-                            title.textContent = data;
-                        })
-                    },
-                    mouseover: function(event, title) {
-                        title
-                        .attr("fill", "blue")
-                        .append("title")
-                        .text("双击修改");
-                    },
-                    mouseout: function(event, title) {
-                        title.attr("fill", "#333");
-                        title.select("title").remove();
-                    }
-                },
-                y: {
-                    type:that.yName  //hidden,id,symbol
-                }
-            },
-            legend: {
-                show: true,
-                type: "gradient",
-                min: that.domainRange[0],
-                max: that.domainRange[1],
-                data: legendData,
-                position: "right",
-                click: (d, i) => {
-                    this.legendIndex = i;
-                    this.isShowColorPanel = true; 
-                },
-                mouseover: function(event, legendObj) {
-                    legendObj.append("title").text("单击修改颜色");
-                },
-                mouseout: function(event, legendObj) {
-                    legendObj.select("title").remove();
-                },
-                oLegend:{
-                    show:true,
-                    data:data.gauge
-                }
-            },
-            tooltip: function(d) {
-                // return `<span>基因：${d.x}</span><br><span>y：${d.y}</span>`;
-            }
-        }
-
+        console.log(data);
         this.chart=new d4().init(config);
     }
 
@@ -504,12 +372,12 @@ export class ReHeatmapComponent implements OnInit {
     colorChange(curColor) {
         this.color = curColor;
         this.colors.splice(this.legendIndex, 1, curColor);
-        this.clusterChart.redraw();
+        this.lineChart.redraw();
     }
 
     setGeneList(geneList) {
         this.selectGeneList = geneList;
         this.chartBackStatus();
     }
-
 }
+

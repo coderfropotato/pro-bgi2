@@ -31,7 +31,7 @@
                     <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate"
                         nz-tooltip (click)="beginFilter()"></i>
                         <!-- 匹配所有基因 按钮 -->
-                    <button *ngIf="!tableEntity['matchAll'] && tableType=='transform' && !error && matchAll " (click)="matchAllFn()" nz-button nzType="primary" nzSize="small">查看所有基因</button>
+                    <!-- <button *ngIf="!tableEntity['matchAll'] && tableType=='transform' && !error && matchAll " (click)="matchAllFn()" nz-button nzType="primary" nzSize="small">查看所有基因</button> -->
                     <!-- 下拉框 -->
                     <!-- <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
                         <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>

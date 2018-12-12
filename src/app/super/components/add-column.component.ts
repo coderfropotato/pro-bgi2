@@ -3,8 +3,8 @@ import { AjaxService } from 'src/app/super/service/ajaxService';
 import { TranslateService } from '@ngx-translate/core';
 import { StoreService } from './../service/storeService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-// import { OuterDataBaseService } from './../service/outerDataBaseService';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { NzNotificationService } from 'ng-zorro-antd';
 import config from '../../../config';
 /**
  * @description 增删列
@@ -32,15 +32,7 @@ export class AddColumnComponent implements OnInit {
 	selectCount: Array<any> = [];
 	beforeSelected: Array<any> = [];
 	theadInBase: string[] = []; // 哪些基础表头在增删列的数据里面
-	// outerIndex: number = 0; // 当前的外部数据库索引
-	// modalVisible: boolean = false;
-
-	// generatedThead: object = {};
-    // modalVisibleList: boolean[] = [];
-
     treeTempSelect:any[] = [];
-	// outerSelected: any[] = [];
-	// outerBeforeSelected: any[] = [];
 
 	config = config;
 
@@ -50,8 +42,8 @@ export class AddColumnComponent implements OnInit {
         private ajaxService: AjaxService,
         private addColumnService:AddColumnService,
         private router:Router,
-	) // public outerDataBaseService: OuterDataBaseService
-	{
+        private notification:NzNotificationService,
+	){
 		let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
 
@@ -71,13 +63,6 @@ export class AddColumnComponent implements OnInit {
 		this.initSelected();
 		this.initBeforeSelected();
 		this.initSelectCount();
-		// let outerTemp = this.outerDataBaseService.get();
-		// if (outerTemp['children'].length) {
-		// 	outerTemp['children'].forEach((val, index) => {
-		// 		this.generatedThead[index] = [];
-		// 		this.modalVisibleList[index] = false;
-		// 	});
-		// }
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -224,11 +209,6 @@ export class AddColumnComponent implements OnInit {
 		// tempTheadInBase.forEach(v=>remove.push({ category:null, key:v }))
 		if (tempTheadInBase.length) remove = tempTheadInBase.concat([]);
 
-		// 把外部数据库添加的放进add
-		// if (this.outerSelected.length) {
-		// 	add.push(...this.outerSelected);
-		// 	this.outerBeforeSelected = this.outerSelected.concat([]);
-		// }
 		this.addThead.emit({ add, remove });
 		this.show = false;
 		setTimeout(() => {
@@ -247,17 +227,14 @@ export class AddColumnComponent implements OnInit {
 
 	initSelected() {
 		this.selected = this.thead.map((v) => []);
-		// if (this.outerDataBaseService.get()['children'].length) this.selected.push([]);
 	}
 
 	initBeforeSelected() {
 		this.beforeSelected = this.thead.map((v) => []);
-		// if (this.outerDataBaseService.get()['children'].length) this.beforeSelected.push([]);
 	}
 
 	initSelectCount() {
 		this.selectCount = this.thead.map((v) => 0);
-		// if (this.outerDataBaseService.get()['children'].length) this.selectCount.push(0);
 	}
 
 	classifyCollection(collection) {
@@ -272,9 +249,6 @@ export class AddColumnComponent implements OnInit {
 		this.initBeforeSelected();
 		this.initTheadStatus();
 		this.getCheckCount();
-		// 清除外部数据库
-		// this.outerSelected = [];
-		// this.outerBeforeSelected = [];
 		this.confirm();
 	}
 
@@ -300,24 +274,6 @@ export class AddColumnComponent implements OnInit {
 		this.toggleSelect(d, d['index']);
 	}
 
-	// 外部数据库逻辑
-	// 外部数据库点击选择
-	// outerClick(item, index) {
-	// 	if (this.outerSelected.length) {
-	// 		if (this.isInArr(item, this.outerSelected, 'key')) return;
-	// 		this.outerSelected.push(item);
-	// 	} else {
-	// 		this.outerSelected.push(item);
-	// 	}
-	// }
-
-	// outerClose(item) {
-	// 	let index = this.outerSelected.findIndex((val, i) => {
-	// 		return val['key'] === item['key'];
-	// 	});
-	// 	if (index != -1) this.outerSelected.splice(index, 1);
-	// }
-
 	addTreeThead(it) {
 		it['modalVisible'] = true;
 	}
@@ -334,55 +290,53 @@ export class AddColumnComponent implements OnInit {
 	handleOk(it) {
         it['modalVisible'] = false;
 
-        (async ()=>{
-            if(this.treeTempSelect.length){
-                let res = await this.saveThead({
-                    "category":it['category'],
-                    "key":this.treeTempSelect[0],
-                    "name":this.treeTempSelect[0]
-                });
-                if(res!=='error'){
-                    this.treeTempSelect = [];
-                    it.children.push(...res['data']);
-                    this.addColumnService.set(this.thead);
-                    setTimeout(() => {
-                        this.computedTableEvent.emit();
-                    }, 30);
-                    console.log('添加成功');
-                }else{
-                    this.treeTempSelect = [];
-                    console.log('添加失败');
+        // 选择的头是不是重复选择
+        let n = it['children'].findIndex((val,index)=>{
+            return val['key'] === this.treeTempSelect[0];
+        })
+        if(n!=-1) {
+            this.notification.create('warning','Reprot notification', `重复选择 ${this.treeTempSelect[0]}`);
+            this.treeTempSelect.length = 0;
+            return;
+        }else{
+            (async ()=>{
+                if(this.treeTempSelect.length){
+                    let res = await this.saveThead({
+                        "category":it['category'],
+                        "key":this.treeTempSelect[0],
+                        "name":this.treeTempSelect[0]
+                    });
+                    if(res!=='error'){
+                        let tempIt = JSON.parse(JSON.stringify(it));
+                        it.children.length = 0;
+                        it.children.push(...res['data']);
+
+                        if(tempIt['children'].length){
+                            it['children'].forEach(val=>{
+                                let index = tempIt['children'].findIndex((v,i)=>{
+                                    return val['key'] === v['key'];
+                                })
+
+                                if(index!=-1){
+                                    it['children'][index]['checked'] = tempIt['children'][index]['checked'];
+                                    tempIt['children'].splice(index,1);
+                                }
+                            })
+                        }
+
+                        this.initIndex();
+                        this.addColumnService.set(this.thead);
+
+                        setTimeout(() => { this.computedTableEvent.emit()}, 30);
+                        this.notification.create('success','Reprot notification', `${this.treeTempSelect[0]} 添加成功`);
+                    }else{
+                        this.notification.create('warning','Reprot notification', `${this.treeTempSelect[0]} 添加失败`);
+                    }
+                    this.treeTempSelect.length = 0;
                 }
-            }
-        })()
-
+            })()
+        }
 	}
-
-	// handleOk(index, curObj) {
-	// 	if (this.generatedThead[index][0]) {
-	// 		curObj['generatedThead'].push({
-	// 			category: curObj['category'],
-	// 			checked: false,
-	// 			key: this.generatedThead[index][0],
-	// 			name: this.generatedThead[index][0],
-	// 			index: this.thead.length
-	// 		});
-	// 	}
-	//     this.initGeneratedThead();
-	//     setTimeout(()=>{
-	//         this.computedTableEvent.emit();
-	//     },0)
-	// }
-
-	// 初始化临时产生的组合头 generatedThead
-	// initGeneratedThead() {
-	// 	for (let name in this.generatedThead) {
-	// 		this.generatedThead[name] = [];
-	// 	}
-	// 	for (let i = 0; i < this.modalVisibleList.length; i++) {
-	// 		this.modalVisibleList[i] = false;
-	// 	}
-	// }
 
 	forTree(data, callback) {
 		if (!data || !data.length) return;
@@ -441,7 +395,7 @@ export class AddColumnComponent implements OnInit {
 		// 清空头的选中状态 不清空索引  需要两者清空 参考 initIndexAndChecked
 		this.initTheadStatus();
 		this.initSelectCount();
-		this.getCheckCount();
+        this.getCheckCount();
 	}
 
 	_addThead(head) {
@@ -530,12 +484,6 @@ export class AddColumnComponent implements OnInit {
 		// 有删除的就放在remove里面
 		// tempTheadInBase.forEach(v=>remove.push({ category:null, key:v }))
 		if (tempTheadInBase.length) remove = tempTheadInBase.concat([]);
-
-		// // 把外部数据库添加的放进add
-		// if (this.outerSelected.length) {
-		// 	add.push(...this.outerSelected);
-		// 	this.outerBeforeSelected = this.outerSelected.concat([]);
-		// }
 
 		return { add, remove };
 	}

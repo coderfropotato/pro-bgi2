@@ -7,7 +7,50 @@
             </ng-template>
 
             <ng-template #modalContent>
+                <div class="relative-params-top">
                     <button style="margin-right: 8px;" [class.active]="relation['checked']" *ngFor="let relation of relations;index as i;" [nzSize]="middle" nz-button nzType="Default" (click)="select(relation)">{{relation['name']}}</button>
+                </div>
+                <div class="relative-params-content">
+                    <ng-container *ngFor="let relation of relations;index as i;">
+                        <div [hidden]="!relation['checked']">
+                            <nz-divider [nzText]="relation['name']" nzOrientation="left"></nz-divider>
+                            <!-- min score -->
+                            <nz-row>
+                                <nz-col nzSpan="4">min score</nz-col>
+                                <nz-col nzSpan="10" style="margin-top: -6px;">
+                                    <nz-slider [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]"  [(ngModel)]="relation['score'][2]"></nz-slider>
+                                </nz-col>
+                                <nz-col nzSpan="1"></nz-col>
+                                <nz-col nzSpan="1">
+                                    <nz-input-number [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]"   [(ngModel)]="relation['score'][2]"></nz-input-number>
+                                </nz-col>
+                            </nz-row>
+                            <!-- max num -->
+                            <nz-row>
+                                <nz-col nzSpan="4">max num</nz-col>
+                                <nz-col nzSpan="10">
+                                    <nz-row>
+                                        <nz-col>
+                                            <nz-radio-group [(ngModel)]="relation['limit']">
+                                                <label nz-radio [nzValue]="true">limit</label>
+                                                <label nz-radio [nzValue]="false">no limit</label>
+                                            </nz-radio-group>
+                                        </nz-col>
+                                    </nz-row>
+                                    <nz-row>
+                                        <nz-col nzSpan="20">
+                                            <nz-slider [nzMin]="relation['max'][0]" [nzMax]="relation['max'][1]"  [(ngModel)]="relation['max'][2]" [nzDisabled]="!relation['limit']"></nz-slider>
+                                        </nz-col>
+                                        <nz-col nzSpan="1"></nz-col>
+                                        <nz-col nzSpan="1">
+                                            <nz-input-number [nzMin]="relation['max'][0]" [nzDisabled]="!relation['limit']" [nzMax]="relation['max'][1]"   [(ngModel)]="relation['max'][2]"></nz-input-number>
+                                        </nz-col>
+                                    </nz-row>
+                                </nz-col>
+                            </nz-row>
+                        </div>
+                    </ng-container>
+                </div>
             </ng-template>
 
             <ng-template #modalFooter>

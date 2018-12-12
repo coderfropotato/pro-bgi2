@@ -145,7 +145,7 @@ export class ReMultiOmicsComponent implements OnInit {
             checkGraph:false,
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+			geneType: this.geneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
 			searchList: []
@@ -172,7 +172,7 @@ export class ReMultiOmicsComponent implements OnInit {
             reAnaly: false,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+			geneType: this.geneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
 			searchList: []

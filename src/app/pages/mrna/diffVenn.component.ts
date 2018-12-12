@@ -490,17 +490,16 @@ export class DiffVennComponent implements OnInit {
 
 	//venn和upsetR只能单选时候
 	doSingleData() {
-
 		this.leftSelect.length = 0;
-		this.upSelect.length = 0;
+        this.upSelect.length = 0;
 		if (this.selectConfirmData.length > 5) {
-			// upset
-			this.singleMultiSelect['bar_name']
-				? this.upSelect.push(this.singleMultiSelect['bar_name'])
-				: this.leftSelect.push(this.singleMultiSelect['total_name']);
+            // upset
+            if(this.singleMultiSelect['bar_name']) this.upSelect.push(this.singleMultiSelect['bar_name']);
+            if(this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
 		} else {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
         }
+
         this.chartBackStatus()
 	}
 

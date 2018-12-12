@@ -87,7 +87,12 @@ export class ToolsComponent implements OnInit {
 	// 多组学参数
 	multiOmicsData: any[] = [];
 	multiOmicsSelect: any[] = [];
-	multiOmicsError: any = false;
+    multiOmicsError: any = false;
+    
+    // 折线图参数
+    lineData:object[] = [];
+    lineSelect:object[] = [];
+    lineError:boolean = false;
 
 	// 当前选择的重分析类型
 	selectType: string = '';
@@ -131,6 +136,12 @@ export class ToolsComponent implements OnInit {
 		this.multiOmicsData = [];
 		this.multiOmicsSelect = [];
 		this.multiOmicsError = true;
+
+        // 折线图参数
+        this.lineData = [];
+        this.lineSelect = [];
+        this.lineError = false;
+
 
 		// 页面参数
 		this.selectType = '';
@@ -428,8 +439,109 @@ export class ToolsComponent implements OnInit {
 
 	// 折线图
 	getlineParams() {
-		console.log('line');
-	}
+        // 获取折线图参数
+		this.ajaxService
+			.getDeferData({
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.toolsService.get('tableEntity')['species'],
+					baseThead: this.toolsService.get('baseThead')
+				},
+				url: `${config['javaPath']}/reAnalysis/getLine`
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						if (data['data']) {
+                            let group = data['data']['expression']['group'].map((v,index)=>{
+                                let status = index?false:true;
+                                if(status) this.lineSelect.push({name:v,checked:status,category:'group'});
+                                return {name:v,checked:status,category:'group'};
+                            });
+							let sample = data['data']['expression']['sample'].map(v=>{
+                                return {name:v,checked:false,category:'sample'};
+                            });
+                            console.log(group,sample)
+                            this.lineData = [...group,...sample]
+						} else {
+                            this.lineData = [];
+                            this.lineSelect.length = 0;
+						}
+					} else {
+                        this.lineData = [];
+                        this.lineSelect.length = 0;
+					}
+				},
+				(err) => {
+                    this.lineData = [];
+                    this.lineSelect.length = 0;
+				})
+    }
+    
+    // 折线图参数选择
+    lineClick(item){
+        item['checked'] = !item['checked'];
+		let index = this.lineSelect.findIndex((val, index) => {
+			return val['name'] === item['name'];
+		});
+		if (item['checked']) {
+			if (index == -1) this.lineSelect.push(item);
+		} else {
+			if (index != -1) this.lineSelect.splice(index, 1);
+		}
+
+		this.lineError = !this.lineSelect.length;
+    }
+
+    // 提交折线图重分析
+    lineConfirm(type){
+		this.isSubmitReanalysis = true;
+		let tempChooseList = this.lineSelect.map((val) => {
+			let temp = {};
+			temp[val['category']] = val['name'];
+			return temp;
+		});
+		this.ajaxService
+			.getDeferData({
+				data: {
+					reanalysisType: type,
+					needReanalysis: 2,
+					chooseType: [],
+					chooseList: tempChooseList,
+					// verticalDefault: this.selectGeneType,
+					...this.toolsService.get('tableEntity')
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						this.selectType = '';
+						this.childVisible = false;
+						this.toolsService.hide();
+						this.notify.blank('tips：', '折线图重分析提交成功', {
+							nzStyle: { width: '200px' },
+							nzDuration: 2000
+						});
+					} else {
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+							nzDuration: 2000
+						});
+					}
+				},
+				(err) => {
+					this.notify.blank('tips：', '重分析提交失败，请重试', {
+						nzStyle: { width: '200px' },
+						nzDuration: 2000
+					});
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
+    }
 
 	// 网路图
 	getnetParams() {

@@ -1,14 +1,10 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ColorPickerModule, ColorPickerDirective } from "ngx-color-picker";
 import { NgxSpinnerModule } from "ngx-spinner";
-import {
-    HashLocationStrategy,
-    LocationStrategy,
-    registerLocaleData
-} from "@angular/common";
+import { HashLocationStrategy, LocationStrategy, registerLocaleData } from "@angular/common";
 import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
 import { NgModule } from "@angular/core";
-import { NgZorroAntdModule, NZ_MESSAGE_CONFIG } from "ng-zorro-antd";
+import { NgZorroAntdModule, NZ_MESSAGE_CONFIG ,NZ_NOTIFICATION_CONFIG} from "ng-zorro-antd";
 import { SimpleReuseStrategy } from "./super/service/simpleReuseStrategy";
 
 // 组件
@@ -56,10 +52,12 @@ import { Layout2Component } from "./pages/mrna/layout2.component";
 import { ToolsComponent } from "./super/components/tools.component";
 import { SysDefendComponent } from "./pages/sysDefend.component";
 import { UploadComponent } from './pages/mrna/upload.component';
+import {PromtComponent} from './super/service/promptService';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
 import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component';
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
-import {PromtComponent} from './super/service/promptService';
+import { ReNetComponent } from './pages/reanalysis/re-net.component';
+import { ReLineComponent } from './pages/reanalysis/re-line.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -85,6 +83,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 // 管道
 import { AccuracyPipe } from "./super/filter/accuracy.pipe";
 import config from "../config";
+
 
 
 
@@ -285,6 +284,24 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-net/:geneType/:tid/:version",
+                component: ReNetComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reNet"
+                }
+            },
+            {
+                path: "re-line/:geneType/:tid/:version",
+                component: ReLineComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reLine"
+                }
+            },
+            {
                 path: "",
                 redirectTo: "index",
                 pathMatch: "full"
@@ -399,6 +416,8 @@ export function createTranslateLoader(http: HttpClient) {
         ReListComponent,
         ReHeatmapComponent,
         TooltipDirective,
+        ReNetComponent,
+        ReLineComponent,
         ReMultiOmicsComponent,
         PromtComponent
     ],
@@ -436,12 +455,11 @@ export function createTranslateLoader(http: HttpClient) {
         // , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
         {
             provide: NZ_MESSAGE_CONFIG,
-            useValue: {
-                nzDuration: 1000,
-                nzPauseOnHover: true,
-                nzMaxStack: 3,
-                nzAnimate: true
-            }
+            useValue: { nzDuration: 2000, nzPauseOnHover: true, nzMaxStack: 3, nzAnimate: true, }
+        },
+        {
+            provide: NZ_NOTIFICATION_CONFIG,
+            useValue: { nzTop:'40px', nzBottom:'24px', nzPlacement:'topRight', nzDuration:2000, nzMaxStack:3, nzPauseOnHover:true, nzAnimate:true }
         },
         // { provide: HTTP_INTERCEPTORS, useClass: HttpInterService, multi: true },
         // enable route alive

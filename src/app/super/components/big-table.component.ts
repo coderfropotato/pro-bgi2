@@ -125,16 +125,16 @@ export class BigTableComponent implements OnInit {
 
     sort(key, value): void {
         this.initSortMap();
-        this.sortMap[value] = key;
+        this.sortMap[value] = key ;
 
         // 取消排序
         if (value == null) {
-            this.sortKey = null;
-            this.sortValue = null;
+            this.tableEntity["sortKey"] = null;
+            this.tableEntity["sortValue"] = null;
         } else {
             // 有排序
-            this.sortKey = value;
-            this.sortValue = key;
+            this.tableEntity["sortKey"] = key;
+            this.tableEntity["sortValue"] = value;
         }
         this.getRemoteData();
     }

@@ -202,8 +202,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
             this.tableEntity["sortValue"] = null;
         } else {
             // 有排序
-            this.tableEntity["sortKey"] = value;
-            this.tableEntity["sortValue"] = key;
+            this.tableEntity["sortKey"] = key;
+            this.tableEntity["sortValue"] = value;
         }
         this.getRemoteData();
     }
