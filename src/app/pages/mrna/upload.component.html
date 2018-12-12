@@ -62,7 +62,7 @@
             </div>
         </div>
     </div>
-    <div class="m_result" [hidden]="resultList==0">
+    <div class="m_result" [hidden]="resultList.length==0">
         <h4 style="margin-top:10px;">上传信息列表</h4>
         <div class="m_result_content">
             <div class="m_result_title">上传时间、数据类型、上传结果、查看详情、隐藏</div>
@@ -81,7 +81,7 @@
             </div>
         </div>
     </div>
-    <div class="m_bottom" [hidden]="resultList==0">
+    <div class="m_bottom" [hidden]="resultList.length==0">
         <button nz-button nzType="primary" [hidden]="now_page==1" (click)="leftPage()"><span>上一页</span></button>
         <button nz-button nzType="primary" disabled [hidden]="now_page!=1"><span>上一页</span></button>
         <button nz-button nzType="primary" [hidden]="now_page==total_page" (click)="rightPage()"><span>下一页</span></button>
