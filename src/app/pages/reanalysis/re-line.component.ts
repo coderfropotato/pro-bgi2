@@ -102,19 +102,19 @@ export class ReLineComponent implements OnInit {
         this.chartEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
-            pageIndex: 1, 
+            pageIndex: 1,
             pageSize: 100000,
             mongoId: null,
-            addThead: [], 
-            transform: false, 
+            addThead: [],
+            transform: false,
             matchAll: false,
-            matrix: false, 
+            matrix: false,
             sortValue: null,
-            sortKey: null, 
+            sortKey: null,
             reAnaly: false,
             rootSearchContentList:[],
-            geneType: this.geneType, 
-            species: this.storeService.getStore('genome'), 
+            geneType: this.geneType,
+            species: this.storeService.getStore('genome'),
             version: this.version,
             searchList: []
         };
@@ -292,7 +292,7 @@ export class ReLineComponent implements OnInit {
                 chartData.push({x:v,y:val[v],category:val[categoryKey]})
             })
         })
-        
+
         let config = {
             chart: {
 				width:($('.left-bottom-layout').width())*0.9,
@@ -316,7 +316,7 @@ export class ReLineComponent implements OnInit {
 					titleObj.select("title").remove();
 				},
 				el: "#lineChartDiv",
-				interpolate: "cardinal",
+				interpolate: "linear",
 				type: "categoryLine",
 				data:chartData
             },
@@ -360,7 +360,7 @@ export class ReLineComponent implements OnInit {
 				}</span><br><span>id：${d.category}</span>`;
             }
 		  }
-		  
+
         this.chart=new d4().init(config);
     }
 
