@@ -29,6 +29,7 @@ export class ReNetComponent implements OnInit {
 
     chartUrl: string;
     chartEntity: object;
+    chart:object;
 
     isShowColorPanel: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
@@ -349,11 +350,6 @@ export class ReNetComponent implements OnInit {
 		} catch (error) {}
     }
 
-    colorChange(curColor) {
-        this.color = curColor;
-        this.colors.splice(this.legendIndex, 1, curColor);
-        this.clusterChart.redraw();
-    }
 
     drawChart(dataset){
         let that  = this;

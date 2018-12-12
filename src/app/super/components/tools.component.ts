@@ -477,7 +477,7 @@ export class ToolsComponent implements OnInit {
 							this.lineGroupData = group;
 							this.lineSampleData = sample;
 						} else {
-							this.initLineData();
+						this.initLineData();
 						}
 					} else {
 						this.initLineData();
@@ -487,7 +487,7 @@ export class ToolsComponent implements OnInit {
 					this.initLineData();
 				}
 			)
-	})	
+	}
 	
 	initLineData(){
 		this.lineGroupData.length = 0;

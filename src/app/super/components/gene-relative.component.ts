@@ -17,7 +17,7 @@ export class GeneRelativeComponent implements OnInit {
 	@Output() confirmEvent: EventEmitter<any> = new EventEmitter();
 
 	isVisible: boolean = false;
-	selectRelations: string[] = [];
+	selectRelations: object[] = [];
 	relations: object[] = [];
 	beforeRelation: object[] = [];
 	constructor() {}

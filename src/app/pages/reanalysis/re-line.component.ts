@@ -244,7 +244,6 @@ export class ReLineComponent implements OnInit {
     }
 
     handlerRefresh(){
-        this.selectGeneList.length = 0;
         this.chartBackStatus();
     }
 
@@ -299,62 +298,63 @@ export class ReLineComponent implements OnInit {
         
         let config = {
             chart: {
-              title: "折线图",
-              dblclick: function(event) {
-                var name = prompt("请输入需要修改的标题", "");
-                if (name) {
-                  this.setChartTitle(name);
-                  this.updateTitle();
-                }
-              },
-              mouseover: function(event, titleObj) {
-                titleObj
-                  .attr("fill", "blue")
-                  .append("title")
-                  .text("custom");
-              },
-              mouseout: function(event, titleObj) {
-                titleObj.attr("fill", "#333");
-                titleObj.select("title").remove();
-              },
-              el: "#line",
-              interpolate: "cardinal",
-              type: "categoryLine",
-              data:chartData
+				height:560,
+				title: "折线图",
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					this.setChartTitle(name);
+					this.updateTitle();
+					}
+				},
+				mouseover: function(event, titleObj) {
+					titleObj
+					.attr("fill", "blue")
+					.append("title")
+					.text("custom");
+				},
+				mouseout: function(event, titleObj) {
+					titleObj.attr("fill", "#333");
+					titleObj.select("title").remove();
+				},
+				el: "#lineChartDiv",
+				interpolate: "cardinal",
+				type: "categoryLine",
+				data:chartData
             },
             axis: {
-              x: {
-                title: "FPKM",
-                rotate: 60,
-                position: "bottom",
-                dblclick: function(event) {
-                  var name = prompt("请输入需要修改的标题", "");
-                  if (name) {
-                    this.setXTitle(name);
-                    this.updateTitle();
-                  }
-                }
-              },
-              y: {
-                title: "Log10",
-                position: "left",
-                dblclick: function(event) {
-                  var name = prompt("请输入需要修改的标题", "");
-                  if (name) {
-                    this.setYTitle(name);
-                    this.updateTitle();
-                  }
-                }
-              }
-            },
+				x: {
+					title: "FPKM",
+					rotate: 60,
+					position: "bottom",
+					dblclick: function(event) {
+						var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setXTitle(name);
+							this.updateTitle();
+						}
+					}
+				},
+				y: {
+					title: "Log10",
+					position: "left",
+					dblclick: function(event) {
+						var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setYTitle(name);
+							this.updateTitle();
+						}
+					}
+				}
+			},
             legend: {
-              show: true,
-              position: "right"
+				show: true,
+				position: "right"
             },
             tooltip: function(d) {
-              return `<span>FPKM：${d.name}</span><br><span>log10：${
-                d.value
-              }</span><br><span>id：${d.category}</span>`;
+				return `<span>FPKM：${d.name}</span><br><span>log10：${
+					d.value
+				}</span><br><span>id：${d.category}</span>`;
             }
 		  }
 		  
