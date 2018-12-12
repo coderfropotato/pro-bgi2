@@ -350,6 +350,10 @@ export class ReNetComponent implements OnInit {
 		} catch (error) {}
     }
 
+    colorChange(color){
+        console.log(color)
+    }
+
 
     drawChart(dataset){
         let that  = this;

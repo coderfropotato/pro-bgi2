@@ -24,9 +24,6 @@
                     (drawChartEmit)="drawChart($event)"
                     [chartId]="'netChartDiv'"
                     [chartName]="'网络图'"
-                    [defaultSetUrl]='defaultSetUrl'
-                    [defaultSetEntity]='defaultSetEntity'
-                    (defaultSet)='apiEntityChange($event)'
                     [flex]="true"
                     (refresh)="handlerRefresh()"
                 >
