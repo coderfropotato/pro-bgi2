@@ -111,5 +111,25 @@
                 </nz-spin>
             </nz-drawer>
 
+            <!-- 折线图 -->
+            <nz-drawer nzTitle="折线图" [nzVisible]="childVisible && selectType=='line'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+                <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+                    <ng-container *ngIf="lineData.length">
+                        <div class="tool-params-tab">
+                            <button  *ngFor="let line of lineData;index as i;" nz-button nzType="default" nzSize="middle" (click)="lineClick(line)" [class.active]="line['checked']">{{line['name']}}</button>
+                            <nz-alert *ngIf="lineError || !lineSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                            <nz-divider></nz-divider>
+                            <div class="tool-params-button-group">
+                                <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                                <button nz-button nzType="primary" [disabled]="lineError || !lineData.length" (click)="lineConfirm('line')" nzSize="middle">确定</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <p *ngIf="!lineData.length" class="center">暂无参数</p>
+                </nz-spin>
+            </nz-drawer>
+
+
+
     </nz-drawer>
 </div>

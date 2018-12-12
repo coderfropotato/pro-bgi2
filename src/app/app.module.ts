@@ -52,11 +52,12 @@ import { Layout2Component } from "./pages/mrna/layout2.component";
 import { ToolsComponent } from "./super/components/tools.component";
 import { SysDefendComponent } from "./pages/sysDefend.component";
 import { UploadComponent } from './pages/mrna/upload.component';
+import {PromtComponent} from './super/service/promptService';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
 import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component';
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
-import {PromtComponent} from './super/service/promptService';
-import { ReNetComponent } from './pages/reanalysis/re-net.component'
+import { ReNetComponent } from './pages/reanalysis/re-net.component';
+import { ReLineComponent } from './pages/reanalysis/re-line.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -82,6 +83,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 // 管道
 import { AccuracyPipe } from "./super/filter/accuracy.pipe";
 import config from "../config";
+
 
 
 
@@ -291,6 +293,15 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-line/:geneType/:tid/:version",
+                component: ReLineComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reLine"
+                }
+            },
+            {
                 path: "",
                 redirectTo: "index",
                 pathMatch: "full"
@@ -406,6 +417,7 @@ export function createTranslateLoader(http: HttpClient) {
         ReHeatmapComponent,
         TooltipDirective,
         ReNetComponent,
+        ReLineComponent,
         ReMultiOmicsComponent,
         PromtComponent
     ],
