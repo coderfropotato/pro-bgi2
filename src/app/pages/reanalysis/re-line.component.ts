@@ -32,29 +32,11 @@ export class ReLineComponent implements OnInit {
 
     chart:any;
 
-    width: number;
-    height: number;
-    domainRange:number[]=[];
-    yName:string;
-    isCluster:boolean;
-    verticalList:object[]=[];
-    horizontalList:string[]=[];
-
     isShowColorPanel: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
     color: string; //当前选中的color
-    colors: string[];
-
-    gaugeColors:string[]=[];
-    oLegendIndex:number=0;
-    oColor:string;
-
-    defaultSetUrl:string;
-    defaultSetEntity:object;
-    defaultSetData:any = null;
 
     // table
-    setAddedThead :any= [];
     defaultEntity: object;
 	defaultUrl: string;
 	defaultTableId: string;
@@ -77,8 +59,6 @@ export class ReLineComponent implements OnInit {
 
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
-    verticalClass:any[] = []; // 图上设置面板选择的纵向分类
-    selectGeneList:string[]=[]; // 图上选择的基因集字符串
 
     // 路由参数
     tid:string = null;
@@ -118,13 +98,25 @@ export class ReLineComponent implements OnInit {
 
     ngOnInit() {
         // chart
-        this.colors = ["#0070c0", "#ffffff", "#ff0000"];
-        this.gaugeColors=this.storeService.getColors();
-
         this.chartUrl=`${config['javaPath']}/line/getLineChart`;
         this.chartEntity = {
-            "LCID": this.storeService.getStore('LCID'),
-            "tid": this.tid
+            LCID: sessionStorage.getItem('LCID'),
+            tid:this.tid,
+            pageIndex: 1, 
+            pageSize: 100000,
+            mongoId: null,
+            addThead: [], 
+            transform: false, 
+            matchAll: false,
+            matrix: false, 
+            sortValue: null,
+            sortKey: null, 
+            reAnaly: false,
+            rootSearchContentList:[],
+            geneType: this.geneType, 
+            species: this.storeService.getStore('genome'), 
+            version: this.version,
+            searchList: []
         };
 
         // table
@@ -141,10 +133,10 @@ export class ReLineComponent implements OnInit {
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             matchAll: false,
             matrix: false, //是否转化。矩阵为matrix
-            relations: [], //关系组（简写，索引最后一个字段）
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
+            rootSearchContentList:[],
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
@@ -166,10 +158,10 @@ export class ReLineComponent implements OnInit {
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
             matchAll: false,
             matrix: false, //是否转化。矩阵为matrix
-            relations: [], //关系组（简写，索引最后一个字段）
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
+            rootSearchContentList:[],
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
@@ -249,7 +241,6 @@ export class ReLineComponent implements OnInit {
     }
 
     handlerRefresh(){
-        this.selectGeneList.length = 0;
         this.chartBackStatus();
     }
 
@@ -260,23 +251,10 @@ export class ReLineComponent implements OnInit {
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
-            if(this.selectGeneList.length){
-                this.defaultEntity['searchList'] = [
-                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
-                ];
-            }else{
-                this.defaultEntity['searchList']= [] ;
-            }
+            this.defaultEntity['searchList']= [] ;
             this.first = true;
         }else{
-            /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
-            if(this.selectGeneList.length) {
-                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
-            }else{
-                // this.transformTable._setParamsNoRequest('searchList',[]);
-                this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
-                this.transformTable._getData();
-            }
+            this.transformTable._getData();
         }
     }
 
@@ -302,82 +280,94 @@ export class ReLineComponent implements OnInit {
 		} catch (error) {}
     }
 
-    // 图的方法
-    //设置 默认
-    apiEntityChange(data){
-        let xNum=data.xNum;
-        if (xNum <= 8) {
-            this.width = 480;
-        } else {
-            let single_width = 60;
-            this.width = single_width * xNum;
-        }
-        this.height=480;
-        this.domainRange=[data.min,data.max];
-        this.yName='hidden';
-        this.isCluster=true;
-
-        this.chartEntity['isHorizontal']=this.isCluster;
-
-        data['verticalDefault'].forEach(d=>{
-            this.chartEntity['verticalClassification'][d.key]=d['category'];
-        })
-
-        this.defaultSetData=data;
-        this.defaultEmitBaseThead = true;
-        this.verticalClass.length = 0;
-        this.verticalClass.push(...data['verticalDefault']);
-    }
-
-    //设置 确定
-    setConfirm(data){
-        this.setChartSetEntity(data);
-        this.lineChart.reGetData();
-
-        this.chartBackStatus();
-    }
-
-    setChartSetEntity(data){
-        //图
-        this.width=data.width;
-        this.height=data.height;
-        this.domainRange=data.domainRange;
-        this.yName=data.yName;
-        this.isCluster=data.isCluster;
-
-        //请求参数
-        this.chartEntity['isHorizontal']=data.isCluster;
-        this.chartEntity['horizontalClassification']=data.horizontalList;
-        this.chartEntity['verticalClassification']={};
-        if(data['verticalList'].length){
-            data['verticalList'].forEach(d=>{
-                this.chartEntity['verticalClassification'][d.key]=d['category'];
-            })
-        }
-
-        // 表纵向分类
-        this.verticalClass.length = 0;
-        // 确定会重画图 清空选中的gene
-        this.selectGeneList.length = 0;
-        this.verticalClass.push(...data['verticalList']);
-    }
-
     //画图
     drawChart(data) {
-        console.log(data);
+		let that = this;
+        let xKey = data['baseThead'].slice(1).map(v=>v['true_key']);
+        let categoryKey = data['baseThead'][0]['true_key'];
+
+        let chartData = [];
+        data['rows'].forEach(val=>{
+            xKey.forEach((v,index)=>{
+                chartData.push({x:v,y:val[v],category:val[categoryKey]})
+            })
+        })
+        
+        let config = {
+            chart: {
+				width:($('.left-bottom-layout').width())*0.9,
+				height:($('.left-bottom-layout').height())*0.75,
+				title: "折线图",
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					this.setChartTitle(name);
+					this.updateTitle();
+					}
+				},
+				mouseover: function(event, titleObj) {
+					titleObj
+					.attr("fill", "#386cca")
+					.append("title")
+					.text("双击修改标题");
+				},
+				mouseout: function(event, titleObj) {
+					titleObj.attr("fill", "#333");
+					titleObj.select("title").remove();
+				},
+				el: "#lineChartDiv",
+				interpolate: "cardinal",
+				type: "categoryLine",
+				data:chartData
+            },
+            axis: {
+				x: {
+					title: "FPKM",
+					rotate: 60,
+					position: "bottom",
+					dblclick: function(event) {
+						var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setXTitle(name);
+							this.updateTitle();
+						}
+					}
+				},
+				y: {
+					title: "Log10",
+					position: "left",
+					dblclick: function(event) {
+						var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setYTitle(name);
+							this.updateTitle();
+						}
+					}
+				}
+			},
+            legend: {
+				show: true,
+				position: "right",
+				click:function(d,index){
+					that.color = d[0].getAttribute("fill");
+					that.legendIndex = index;
+					that.isShowColorPanel = true;
+				}
+            },
+            tooltip: function(d) {
+				return `<span>FPKM：${d.name}</span><br><span>log10：${
+					d.value
+				}</span><br><span>id：${d.category}</span>`;
+            }
+		  }
+		  
         this.chart=new d4().init(config);
     }
 
-    //color change 回调函数
     colorChange(curColor) {
-        this.color = curColor;
-        this.colors.splice(this.legendIndex, 1, curColor);
-        this.lineChart.redraw();
+		this.chart.setColor(curColor, this.legendIndex);
+        this.chart.redraw();
     }
 
-    setGeneList(geneList) {
-        this.selectGeneList = geneList;
-        this.chartBackStatus();
-    }
 }
 

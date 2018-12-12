@@ -36,6 +36,9 @@ export class ToolsService {
         this.tableUrl = entity['url'];
         this.tableEntity = entity['tableEntity'];
         this.tableEntity['reAnaly'] = true;
+        this.tableEntity['checkStatus'] = entity['others']['checkStatus'];
+        this.tableEntity['checked'] = entity['others']['excludeGeneList']['checked'];
+        this.tableEntity['unChecked'] = entity['others']['excludeGeneList']['unChecked'];
         this.baseThead = entity['baseThead'];
         this.geneType = entity['geneType'];
         this.visible = true;

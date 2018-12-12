@@ -29,6 +29,7 @@ export class ReNetComponent implements OnInit {
 
     chartUrl: string;
     chartEntity: object;
+    chart:object;
 
     isShowColorPanel: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
@@ -347,6 +348,10 @@ export class ReNetComponent implements OnInit {
 		try {
             this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
 		} catch (error) {}
+    }
+
+    colorChange(color){
+        console.log(color)
     }
 
 

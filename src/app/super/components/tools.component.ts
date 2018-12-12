@@ -18,41 +18,12 @@ export class ToolsComponent implements OnInit {
 	// "multiOmics" "多组学关联"
 
 	toolList: object[] = [
-		{
-			type: 'heatmap',
-			name: '聚类重分析',
-			needReanalysis: false,
-			desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。'
-		},
-		{
-			type: 'goRich',
-			name: 'GO富集分析',
-			desc:
-				'Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。下图是所选基因集的GO注释分类结果。'
-		},
-		{
-			type: 'keggRich',
-			name: 'kegg富集',
-			desc:
-				'将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。'
-		},
-		{
-			type: 'goClass',
-			name: 'GO分类',
-			desc:
-				'Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。下图是所选基因集的GO注释分类结果。'
-		},
-		{
-			type: 'keggClass',
-			name: 'KEGG分类',
-			desc:
-				'将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。'
-		},
-		{
-			type: 'net',
-			name: '蛋白网络互作用',
-			desc: '图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。'
-		},
+		{ type: 'heatmap', name: '聚类重分析', needReanalysis: false, desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。' },
+		{ type: 'goRich', name: 'GO富集分析', desc: 'Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。下图是所选基因集的GO注释分类结果。' },
+		{ type: 'keggRich', name: 'kegg富集', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。' },
+		{ type: 'goClass', name: 'GO分类', desc: 'Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。下图是所选基因集的GO注释分类结果。' },
+		{ type: 'keggClass', name: 'KEGG分类', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。' },
+		{ type: 'net', name: '蛋白网络互作用', desc: '图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。' },
 		{ type: 'line', name: '折线图', desc: '以折线图方式呈现数据' },
 		{ type: 'KDA', name: 'KDA', desc: 'kda' },
 		{ type: 'multiOmics', name: '多组学关联', desc: '多组学' },
@@ -90,9 +61,12 @@ export class ToolsComponent implements OnInit {
     multiOmicsError: any = false;
     
     // 折线图参数
-    lineData:object[] = [];
-    lineSelect:object[] = [];
-    lineError:boolean = false;
+    lineGroupData:object[] = [];
+    lineSampleData:object[] = [];
+    lineGroupSelect:object[] = [];
+	lineSampleSelect:object[] = [];
+	lineGroupError:boolean = false;
+	lineSampleError:boolean = false;
 
 	// 当前选择的重分析类型
 	selectType: string = '';
@@ -138,9 +112,12 @@ export class ToolsComponent implements OnInit {
 		this.multiOmicsError = true;
 
         // 折线图参数
-        this.lineData = [];
-        this.lineSelect = [];
-        this.lineError = false;
+        this.lineGroupData = [];
+        this.lineSampleData = [];
+        this.lineGroupSelect = [];
+        this.lineSampleSelect = [];
+        this.lineGroupError = false;
+        this.lineSampleError = false;
 
 
 		// 页面参数
@@ -454,62 +431,97 @@ export class ToolsComponent implements OnInit {
 				(data) => {
 					if (data['status'] === '0') {
 						if (data['data']) {
+							this.lineGroupSelect.length = 0;
+							this.lineSampleSelect.length = 0;
+					
                             let group = data['data']['expression']['group'].map((v,index)=>{
                                 let status = index?false:true;
-                                if(status) this.lineSelect.push({name:v,checked:status,category:'group'});
+                                if(status) this.lineGroupSelect.push({name:v,checked:status,category:'group'});
                                 return {name:v,checked:status,category:'group'};
                             });
-							let sample = data['data']['expression']['sample'].map(v=>{
-                                return {name:v,checked:false,category:'sample'};
-                            });
-                            console.log(group,sample)
-                            this.lineData = [...group,...sample]
+                            let sample = data['data']['expression']['sample'].map((v,index)=>{
+                                let status = index?false:true;
+                                if(status) this.lineSampleSelect.push({name:v,checked:status,category:'sample'});
+                                return {name:v,checked:status,category:'sample'};
+							});
+							
+							this.lineGroupData = group;
+							this.lineSampleData = sample;
 						} else {
-                            this.lineData = [];
-                            this.lineSelect.length = 0;
+						this.initLineData();
 						}
 					} else {
-                        this.lineData = [];
-                        this.lineSelect.length = 0;
+						this.initLineData();
 					}
 				},
 				(err) => {
-                    this.lineData = [];
-                    this.lineSelect.length = 0;
-				})
-    }
+					this.initLineData();
+				}
+			)
+	}
+	
+	initLineData(){
+		this.lineGroupData.length = 0;
+		this.lineSampleData.length = 0;
+		this.lineGroupSelect.length = 0;
+		this.lineSampleSelect.length = 0;
+	}
     
     // 折线图参数选择
-    lineClick(item){
-        item['checked'] = !item['checked'];
-		let index = this.lineSelect.findIndex((val, index) => {
-			return val['name'] === item['name'];
-		});
-		if (item['checked']) {
-			if (index == -1) this.lineSelect.push(item);
-		} else {
-			if (index != -1) this.lineSelect.splice(index, 1);
+    lineClick(type,item){
+		let temp = null;
+		switch(type){
+			case 'group':
+				temp = this.lineGroupSelect;
+				break;
+			case 'sample':
+				temp = this.lineSampleSelect;
+				break;
 		}
 
-		this.lineError = !this.lineSelect.length;
+
+        item['checked'] = !item['checked'];
+		let index = temp.findIndex((val, index) => {
+			return val['name'] === item['name'];
+		});
+
+		if (item['checked']) {
+			if (index == -1) temp.push(item);
+		} else {
+			if (index != -1) temp.splice(index, 1);
+		}
+
+		this.lineGroupError = !this.lineGroupData.length;
+		this.lineSampleError = !this.lineSampleData.length;
+		
     }
 
     // 提交折线图重分析
-    lineConfirm(type){
+    lineConfirm(reanalysisType,selectType){
 		this.isSubmitReanalysis = true;
-		let tempChooseList = this.lineSelect.map((val) => {
+		let tempSelect = null;
+		switch(selectType){
+			case 'group':
+				tempSelect = this.lineGroupSelect;
+				break;
+			case 'sample':
+				tempSelect = this.lineSampleSelect;
+				break;
+		}
+
+		let tempChooseList = tempSelect.map((val) => {
 			let temp = {};
 			temp[val['category']] = val['name'];
 			return temp;
 		});
+
 		this.ajaxService
 			.getDeferData({
 				data: {
-					reanalysisType: type,
+					reanalysisType: reanalysisType,
 					needReanalysis: 2,
-					chooseType: [],
+					chooseType: ['expression'],
 					chooseList: tempChooseList,
-					// verticalDefault: this.selectGeneType,
 					...this.toolsService.get('tableEntity')
 				},
 				url: this.toolsService.get('tableUrl')

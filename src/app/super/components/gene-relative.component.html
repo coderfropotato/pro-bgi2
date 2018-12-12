@@ -55,7 +55,7 @@
 
             <ng-template #modalFooter>
                 <button nz-button nzType="default" (click)="handleCancel()">取消</button>
-                <button nz-button nzType="primary" (click)="confirm()">确定</button>
+                <button nz-button nzType="primary" [disabled]="!selectRelations.length" (click)="confirm()">确定</button>
             </ng-template>
     </nz-modal>
 </div>

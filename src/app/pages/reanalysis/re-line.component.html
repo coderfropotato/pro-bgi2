@@ -10,23 +10,16 @@
             <p>describe</p>
         </div> -->
         <div class="left-bottom-layout">
-                <ng-template #setTemplate>
-                    <app-clusterSet *ngIf="defaultSetData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData'></app-clusterSet>
-                </ng-template>
                 <!-- [selectTemplate]="selectTemplate" -->
                 <app-table-switch-chart
                     #lineChart
-                    [id]="'cluster'"
+                    [id]="'line'"
                     [isOnlyChart]="true"
                     [chartUrl]="chartUrl"
                     [apiEntity]="chartEntity"
-                    [setTemplate]="setTemplate"
                     (drawChartEmit)="drawChart($event)"
-                    [chartId]="'clusterChartDiv'"
+                    [chartId]="'lineChartDiv'"
                     [chartName]="'折线图'"
-                    [defaultSetUrl]='defaultSetUrl'
-                    [defaultSetEntity]='defaultSetEntity'
-                    (defaultSet)='apiEntityChange($event)'
                     [flex]="true"
                     (refresh)="handlerRefresh()"
                 >
