@@ -79,10 +79,13 @@
                 </div>
             </div>
             <div class="m_result_bottom">
-                <button nz-button nzType="primary" [hidden]="now_page==1" (click)="leftPage()"><span>上一页</span></button>
-                <button nz-button nzType="primary" disabled [hidden]="now_page!=1"><span>上一页</span></button>
-                <button nz-button nzType="primary" [hidden]="now_page==total_page" (click)="rightPage()"><span>下一页</span></button>
-                <button nz-button nzType="primary" disabled [hidden]="now_page!=total_page"><span>下一页</span></button>
+                <button nz-button nzType="primary" *ngIf="now_page!=1" (click)="leftPage()"><span>上一页</span></button>
+                <button nz-button nzType="primary" disabled *ngIf="now_page==1"><span>上一页</span></button>
+                <button nz-button nzType="primary" *ngIf="now_page!=total_page" (click)="rightPage()"><span>下一页</span></button>
+                <button nz-button nzType="primary" disabled *ngIf="now_page==total_page"><span>下一页</span></button>
+
+                <!-- <button nz-button nzType="primary" *ngIf="now_page!=1" (click)="leftPage()"><span>上一页</span></button>
+                <button nz-button nzType="primary" disabled *ngIf="now_page!=total_page"><span>下一页</span></button> -->
             </div>
         </div>
         
@@ -101,7 +104,6 @@
         width: 90%;
         height: 358px;
         margin: 0 auto;
-        /* flex-grow: 1; */
     }
 
     .m_content_1 {
@@ -211,23 +213,17 @@
 
 
     .m_result{
-        /* width: 90%;
-        height: auto;
-        margin: 0 auto; */
         width: 90%;
         margin: 0 auto;
         flex: 1;
-        display: flex;
-        flex-direction: column;
+        height: calc(100% - 358px);
     }
 
     .m_result_content{
         width: 100%;
         margin: 0 auto;
         border: 1px solid #ccc;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
+        height: calc(100% - 58px);
     }
 
     .m_result_title{
@@ -242,11 +238,10 @@
 
     .m_result_scroll{
         width: 100%;
-        height: 320px;
         margin: 0 auto;
-        overflow-y:scroll;
-        overflow-x: hidden; 
-        flex: 1;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        height: calc(100% - 100px);
     }
 
     .m_result_list{
@@ -261,7 +256,7 @@
     .m_result_list{
         width: 96%;
         height: 40px;
-        margin: 10px auto;
+        margin: 8px auto;
         border: 1px solid #ccc;
         display: flex;
         justify-content: space-around;
@@ -276,9 +271,9 @@
     .m_result_bottom{
         width: 100%;
         height: 40px;
-        margin: 10px auto;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        margin: 0 auto;
+        /* padding-top: 10px;
+        padding-bottom: 10px; */
         display: flex;
         justify-content:center;
         align-items: center;

@@ -76,17 +76,22 @@ export class UploadComponent implements OnInit {
 			this.message.info('已经到第一页了');
 		}else{
 			this.now_page -=1;
+			this.getHistoryList();
 		}
-		this.getHistoryList();
+		
 	}
 
 	rightPage(){
+		// console.log(this.now_page)
+		// console.log(this.total_page)
 		if(this.now_page==this.total_page){
 			this.message.info('已经最后一页了');
 		}else{
 			this.now_page +=1;
+			this.getHistoryList();
+			console.log(this.now_page == this.total_page)
 		}
-		this.getHistoryList();
+		
 	}
 
 	getHistoryList(){//查看信息列表
@@ -107,7 +112,7 @@ export class UploadComponent implements OnInit {
 			(data: any) => {
 				if(data.status==0){
 					let tempArray = data["data"].result;
-					self.total_page = Math.floor(tempArray.length/self.pageSize) +1;
+					self.total_page = Math.floor(data["data"].total/self.pageSize) +1;
 					
 					for (let index = 0; index < tempArray.length; index++) {
 						const element = tempArray[index];
