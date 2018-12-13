@@ -30,6 +30,7 @@ export class UploadComponent implements OnInit {
 	now_page:number;//当前页
 	total_page:number;
 	pageSize: number;
+	selectAble:boolean;
 
     constructor(
         private modalService: NzModalService,
@@ -46,6 +47,7 @@ export class UploadComponent implements OnInit {
             type: this.index + 1,
             file: ""
 		};
+		this.selectAble = true;
 		this.now_page = 1;
 		this.total_page = 0;
 		this.pageSize = 10;
@@ -94,7 +96,7 @@ export class UploadComponent implements OnInit {
 		
 	}
 
-	getHistoryList(){//查看信息列表
+	getHistoryList(){//查看历史信息列表
 		let self = this;
 		self.resultList.length = 0;
 		self.ajaxService
@@ -112,7 +114,9 @@ export class UploadComponent implements OnInit {
 			(data: any) => {
 				if(data.status==0){
 					let tempArray = data["data"].result;
-					self.total_page = Math.floor(data["data"].total/self.pageSize) +1;
+					//self.total_page = Math.floor(data["data"].total/self.pageSize) +1;
+					self.total_page =Math.floor((data["data"].total + self.pageSize-1) / self.pageSize);
+					//console.log(self.total_page)
 					
 					for (let index = 0; index < tempArray.length; index++) {
 						const element = tempArray[index];
@@ -190,6 +194,7 @@ export class UploadComponent implements OnInit {
 
 	//先判断上一次文件是否传递完成
     updateLoad() { 
+		this.selectAble = false;
 		let tempflag = false;
 		let self = this;
 		this.ajaxService
@@ -223,13 +228,20 @@ export class UploadComponent implements OnInit {
 		let self = this;
 		this.isShowTab = false;
 		const formData = new FormData();
-		let spark = new SparkMD5();
 		let nfileLength = this.nfileList.length;
+		let fileReader = new FileReader();
+		
         this.nfileList.forEach((file: any,index) => {
 			if(nfileLength == index+1){
 				formData.append("file", file);
-				spark.appendBinary(file);
-				formData.append("md5", spark.end());
+				fileReader.onload = function(e){
+					//console.log(e);
+					//console.log(SparkMD5.hashBinary(e.target['result']));
+					formData.append("md5",SparkMD5.hashBinary(e.target['result']));
+				}
+				// fileReader.readAsBinaryString(file);
+				fileReader.readAsText(file);
+				
 			}
         });
 
@@ -261,6 +273,7 @@ export class UploadComponent implements OnInit {
 					if(xhr.readyState==4 && xhr.status == 200){
 						console.log(xhr.responseText);
 						self.go_ResponseText = JSON.parse(xhr.responseText);
+						self.selectAble = true;
 						self.getHistoryList();
 					}
 				}
