@@ -1,6 +1,6 @@
 {
     "title": "标题",
-    "myAnalysis":"我的分析",
+    "myAnalysis":" 我的分析 ",
     "diff_venn":{
         "diff_venn_title":"差异基因聚类",
         "diff_venn_content":"对每个比较组差异基因的FPKM值进行聚类"
