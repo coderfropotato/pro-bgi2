@@ -1,5 +1,4 @@
 <div class="m_div">
-    <div class="m_top">自定义数据</div>
     <div class="m_content">
         <h4>上传数据</h4>
         <div class="m_content_1" *ngIf="isShowTab">
@@ -63,10 +62,10 @@
         </div>
     </div>
     <div class="m_result" [hidden]="resultList.length==0">
-        <h4 style="margin-top:10px;">上传信息列表</h4>
+        <h4>上传信息列表</h4>
         <div class="m_result_content">
             <div class="m_result_title">上传时间、数据类型、上传结果、查看详情、隐藏</div>
-            <div class="m_result_border">
+            <div class="m_result_scroll">
                 <div class="m_result_list" *ngFor="let item of resultList;index as i">
                     <span style="width: 140px">{{item.time}}</span>
                     <span style="width: 80px">{{item.info}}</span>
@@ -79,27 +78,32 @@
                     <span style="width: 50px;cursor: pointer;" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</span>
                 </div>
             </div>
+            <div class="m_result_bottom">
+                <button nz-button nzType="primary" *ngIf="now_page!=1" (click)="leftPage()"><span>上一页</span></button>
+                <button nz-button nzType="primary" disabled *ngIf="now_page==1"><span>上一页</span></button>
+                <button nz-button nzType="primary" *ngIf="now_page!=total_page" (click)="rightPage()"><span>下一页</span></button>
+                <button nz-button nzType="primary" disabled *ngIf="now_page==total_page"><span>下一页</span></button>
+
+                <!-- <button nz-button nzType="primary" *ngIf="now_page!=1" (click)="leftPage()"><span>上一页</span></button>
+                <button nz-button nzType="primary" disabled *ngIf="now_page!=total_page"><span>下一页</span></button> -->
+            </div>
         </div>
+        
     </div>
-    <div class="m_bottom" [hidden]="resultList.length==0">
-        <button nz-button nzType="primary" [hidden]="now_page==1" (click)="leftPage()"><span>上一页</span></button>
-        <button nz-button nzType="primary" disabled [hidden]="now_page!=1"><span>上一页</span></button>
-        <button nz-button nzType="primary" [hidden]="now_page==total_page" (click)="rightPage()"><span>下一页</span></button>
-        <button nz-button nzType="primary" disabled [hidden]="now_page!=total_page"><span>下一页</span></button>
-    </div>
+    
 </div>
 <style>
-    .m_top {
+    .m_div{
+        display: flex;
+        flex-direction: column;
         width: 100%;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
+        height: 100%;
     }
 
     .m_content {
         width: 90%;
-        height: auto;
-        margin: 30px auto;
+        height: 358px;
+        margin: 0 auto;
     }
 
     .m_content_1 {
@@ -205,22 +209,26 @@
         display: none;
     }
 
+
+
+
     .m_result{
         width: 90%;
-        height: auto;
-        margin: 20px auto;
+        margin: 0 auto;
+        flex: 1;
+        height: calc(100% - 358px);
     }
 
     .m_result_content{
         width: 100%;
-        height: 400px;
         margin: 0 auto;
         border: 1px solid #ccc;
+        height: calc(100% - 58px);
     }
 
     .m_result_title{
         width: 96%;
-        height: 40px;
+        min-height: 40px;
         margin: 10px auto;
         display: flex;
         justify-content: space-around;
@@ -228,12 +236,12 @@
         border: 1px solid #ccc;
     }
 
-    .m_result_border{
+    .m_result_scroll{
         width: 100%;
-        height: 320px;
         margin: 0 auto;
-        overflow-y:scroll;
-        overflow-x: hidden; 
+        overflow-y: scroll;
+        overflow-x: hidden;
+        height: calc(100% - 100px);
     }
 
     .m_result_list{
@@ -248,7 +256,7 @@
     .m_result_list{
         width: 96%;
         height: 40px;
-        margin: 10px auto;
+        margin: 8px auto;
         border: 1px solid #ccc;
         display: flex;
         justify-content: space-around;
@@ -260,17 +268,18 @@
         height: 24px;
     }
 
-    .m_bottom{
-        width: 90%;
+    .m_result_bottom{
+        width: 100%;
         height: 40px;
         margin: 0 auto;
-        padding-bottom: 20px;
+        /* padding-top: 10px;
+        padding-bottom: 10px; */
         display: flex;
         justify-content:center;
         align-items: center;
     }
 
-    .m_bottom button{
+    .m_result_bottom button{
         margin-left: 20px;
         cursor: pointer;
     }
