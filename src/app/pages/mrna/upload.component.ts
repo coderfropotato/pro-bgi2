@@ -31,6 +31,7 @@ export class UploadComponent implements OnInit {
 	total_page:number;
 	pageSize: number;
 	selectAble:boolean;
+	fristFlag:boolean;
 
     constructor(
         private modalService: NzModalService,
@@ -48,10 +49,12 @@ export class UploadComponent implements OnInit {
             file: ""
 		};
 		this.selectAble = true;
+		this.fristFlag = true;
 		this.now_page = 1;
 		this.total_page = 0;
 		this.pageSize = 10;
 		this.getHistoryList();
+		this.updateLoad();
     }
 
     beforeUpload = (file: UploadFile): boolean => {
@@ -215,7 +218,13 @@ export class UploadComponent implements OnInit {
 					});
 				}else{
 					//成功了进行上传
-					self.uploadTask()
+					if(self.fristFlag){
+						self.fristFlag = false;
+						this.selectAble = true;
+					}else{
+						self.uploadTask()
+					}
+					
 				}
 			},
 			error => {
