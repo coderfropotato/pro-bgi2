@@ -128,7 +128,7 @@ export class ReHeatmapComponent implements OnInit {
             "tid": this.tid
         }
 
-        this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
+        this.chartUrl=`${config['javaPath']}/cluster/heatmapGraph`;
         this.chartEntity = {
             "LCID": this.storeService.getStore('LCID'),
             "tid": this.tid,
@@ -140,7 +140,7 @@ export class ReHeatmapComponent implements OnInit {
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
         this.defaultEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -166,7 +166,7 @@ export class ReHeatmapComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
         this.extendEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -479,7 +479,7 @@ export class ReHeatmapComponent implements OnInit {
                 position: "right",
                 click: (d, i) => {
                     this.legendIndex = i;
-                    this.isShowColorPanel = true; 
+                    this.isShowColorPanel = true;
                 },
                 mouseover: function(event, legendObj) {
                     legendObj.append("title").text("单击修改颜色");
