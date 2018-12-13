@@ -212,7 +212,7 @@ export class ToolsComponent implements OnInit {
 	getheatmapParams() {
 		this.ajaxService
 			.getDeferData({
-				url: `${config['javaPath']}/reAnalysis/getHeatmap`,
+				url: `${config['javaPath']}/Cluster/heatmapConfig`,
 				data: {
                     LCID: sessionStorage.getItem('LCID'),
                     geneType: this.toolsService.get('tableEntity')['geneType'],
@@ -320,7 +320,7 @@ export class ToolsComponent implements OnInit {
 					species: this.toolsService.get('tableEntity')['species'],
 					baseThead: this.toolsService.get('baseThead')
 				},
-				url: `${config['javaPath']}/reAnalysis/getQuality`
+				url: `${config['javaPath']}/multiOmics/config`
 			})
 			.subscribe(
 				(data) => {
@@ -425,7 +425,7 @@ export class ToolsComponent implements OnInit {
 					species: this.toolsService.get('tableEntity')['species'],
 					baseThead: this.toolsService.get('baseThead')
 				},
-				url: `${config['javaPath']}/reAnalysis/getLine`
+				url: `${config['javaPath']}/line/config`
 			})
 			.subscribe(
 				(data) => {
