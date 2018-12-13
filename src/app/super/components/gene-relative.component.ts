@@ -34,9 +34,7 @@ export class GeneRelativeComponent implements OnInit {
 			{ key: 'target', name: 'target', limit: true, score: [ 0, 100, 32 ], max: [ 100, 500, 459 ] }
 		];
 
-		console.log(this.relations);
-
-		// this.beforeRelation = JSON.parse(JSON.stringify(this.relations));
+		this.beforeRelation = JSON.parse(JSON.stringify(this.relations));
 	}
 
 	// 选择关系
@@ -59,6 +57,7 @@ export class GeneRelativeComponent implements OnInit {
 
 	handleCancel() {
         this.isVisible = false;
+        this.beforeRelation.forEach
 	}
 
 	confirm(): void {

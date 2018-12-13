@@ -28,6 +28,7 @@ export class ToolsService {
     }
 
     showTools(total,entity){
+        entity = JSON.parse(JSON.stringify(entity));
         if(entity['others']['checkStatus']){
             this.geneCount = total - entity['others']['excludeGeneList']['unChecked'].length;
         }else{

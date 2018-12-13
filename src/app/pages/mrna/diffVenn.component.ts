@@ -4,7 +4,7 @@ import { PageModuleService } from './../../super/service/pageModuleService';
 import { MessageService } from './../../super/service/messageService';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import { TranslateService } from "@ngx-translate/core";
 import {PromptService} from './../../super/service/promptService'
@@ -14,13 +14,28 @@ declare const Venn: any;
 
 @Component({
 	selector: 'app-venn-page',
-	template: `<app-venn-component *ngIf="pageModuleService['renderModule']"></app-venn-component>`,
+    template: `<app-venn-component *ngIf="showModule" [defaultGeneType]="defaultGeneType">
+                    <div class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
+                        <span>{{defaultGeneType['type'] | translate}}</span><i class="iconfont icon-qiehuan"></i>
+                    </div>
+                </app-venn-component>`,
 	styles: []
 })
 export class DiffVennPage {
-    constructor(
-		public pageModuleService: PageModuleService
-        ) {}
+    showModule:boolean = true;
+    defaultGeneType:object = {type:"gene"};
+
+    constructor(private storeService:StoreService,private translate:TranslateService) {
+        let browserLang = this.storeService.getLang();
+        this.translate.use(browserLang);
+    }
+
+    handlerSwitchChange(){
+        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transform':'gene';
+        this.showModule = false;
+        setTimeout(()=>{this.showModule = true},30);
+    }
+
 }
 
 @Component({
@@ -35,7 +50,8 @@ export class DiffVennComponent implements OnInit {
 	@ViewChild('func') func;
 	@ViewChild('addColumn') addColumn;
 	@ViewChild('tableSwitchChart') tableSwitchChart;
-	@ViewChild('transformTable') transformTable;
+    @ViewChild('transformTable') transformTable;
+    @Input('defaultGeneType') defaultGeneType;
 
 	switch: boolean = false;
 	tableUrl: string;
@@ -177,7 +193,7 @@ export class DiffVennComponent implements OnInit {
 			//查询参数
 			LCID: this.storeService.getStore('LCID'),
 			compareGroup: this.storeService.getStore('diff_plan'),
-			geneType: this.pageModuleService['defaultModule'],
+			geneType: this.defaultGeneType['type'],
 			species: this.storeService.getStore('genome'),
 			diffThreshold: this.storeService.getStore('diff_threshold')
 		};
@@ -185,7 +201,7 @@ export class DiffVennComponent implements OnInit {
 		// this.vennEntity = {
 		// 	LCID: sessionStorage.getItem('LCID'),
 		// 	compareGroup: this.activedCompareGroup,
-		// 	geneType: this.pageModuleService['defaultModule'],
+		// 	geneType: this.defaultGeneType['type'],
 		// 	species: this.storeService.getStore('genome'),
 		// 	version: this.storeService.getStore('reference'),
 		// 	diffThreshold: {
@@ -214,7 +230,7 @@ export class DiffVennComponent implements OnInit {
 			reAnaly: false,
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			diffThreshold: {
 				PossionDis: this.PossionDis
@@ -244,7 +260,7 @@ export class DiffVennComponent implements OnInit {
 			matchAll: false,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			diffThreshold: {
 				PossionDis: this.PossionDis

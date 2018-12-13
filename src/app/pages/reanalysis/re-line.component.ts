@@ -322,7 +322,7 @@ export class ReLineComponent implements OnInit {
             },
             axis: {
 				x: {
-					title: "FPKM",
+					title: "",
 					rotate: 60,
 					position: "bottom",
 					dblclick: function(event) {
@@ -334,7 +334,7 @@ export class ReLineComponent implements OnInit {
 					}
 				},
 				y: {
-					title: "Log10",
+					title: "FPKM",
 					position: "left",
 					dblclick: function(event) {
 						var name = prompt("请输入需要修改的标题", "");

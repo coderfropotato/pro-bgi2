@@ -21,10 +21,11 @@
         <b>{{'myAnalysis' | translate}}</b>
         <span><i class="anticon anticon-appstore"></i></span>
     </div>
+
     <!-- gene transform -->
-    <div *ngIf="geneSwitch" class="fRight" style="margin-top: 7px;margin-right: 12px;">
+    <!-- <div *ngIf="geneSwitch" class="fRight" style="margin-top: 7px;margin-right: 12px;">
         <nz-switch [ngModel]="pageModuleService['defaultModule']==='gene'" (ngModelChange)="moduleSwitchChange($event)" nzCheckedChildren="gene" nzUnCheckedChildren="transform"></nz-switch>
-    </div>
+    </div> -->
 
     <ng-content></ng-content>
 </div>

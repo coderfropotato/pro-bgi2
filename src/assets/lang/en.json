@@ -82,6 +82,8 @@
         "error":"Sorry, the system is wrong !",
         "maxOver":"Sorry, the amount of data is too large to display properly !"
     },
+    "gene":"gene",
+    "transform":"transform",
     "001":"Gene Attr",
     "001001":"",
     "002":"Exp Info",
