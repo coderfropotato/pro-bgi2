@@ -98,7 +98,7 @@ export class ReLineComponent implements OnInit {
 
     ngOnInit() {
         // chart
-        this.chartUrl=`${config['javaPath']}/line/getLineChart`;
+        this.chartUrl=`${config['javaPath']}/line/graph`;
         this.chartEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -122,7 +122,7 @@ export class ReLineComponent implements OnInit {
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/line/getLineTable`;
+        this.defaultUrl = `${config['javaPath']}/line/table`;
         this.defaultEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -147,7 +147,7 @@ export class ReLineComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/line/getLineTable`;
+        this.extendUrl = `${config['javaPath']}/line/table`;
         this.extendEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,

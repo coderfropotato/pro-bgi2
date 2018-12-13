@@ -101,7 +101,7 @@ export class MultiOmicsSetComponent implements OnInit {
     getRationClassify() {
         this.ajaxService
             .getDeferData({
-                url: `${config['javaPath']}/addQuantity`,
+                url: `${config['javaPath']}/multiOmics/quantity`,
                 data: {
                     "LCID": this.storeService.getStore('LCID'),
                     "geneType": "gene"  // gene 或 transcript
