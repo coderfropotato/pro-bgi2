@@ -70,8 +70,8 @@ export class ClusterSetComponent implements OnInit {
     verticalInfos:object[]=[];
 
     //添加面板 显示
-    isShowAddVertical:boolean=false;  
-    isShowAddHorizontal:boolean=false;  
+    isShowAddVertical:boolean=false;
+    isShowAddHorizontal:boolean=false;
 
     //修改面板 显示
     isShowEditVertical:boolean=false;
@@ -98,9 +98,9 @@ export class ClusterSetComponent implements OnInit {
 
     //设置、空白区点击
     setClick(){
-        this.isShowAddVertical=false;  
-        this.isShowAddHorizontal=false;  
-    
+        this.isShowAddVertical=false;
+        this.isShowAddHorizontal=false;
+
         this.isShowEditVertical=false;
         this.isShowEditHorizontal=false;
 
@@ -132,7 +132,7 @@ export class ClusterSetComponent implements OnInit {
         this.min=trueData.min;
         this.max=trueData.max;
         this.rangeValue=[this.min,this.max];
-        
+
         let geneType=trueData.geneType;
         if(geneType=="gene"){
             this.geneList=[{
@@ -171,10 +171,10 @@ export class ClusterSetComponent implements OnInit {
     }
 
     //获取分类
-    getClassification(){    
+    getClassification(){
         this.ajaxservice
         .getDeferData({
-            url:`${config['javaPath']}/Cluster/classification`,
+            url:`${config['javaPath']}/cluster/classification`,
             data:{
                     "geneType": "gene",
                     "LCID": "demo"
@@ -218,7 +218,7 @@ export class ClusterSetComponent implements OnInit {
         this.isShowAddHorizontal=false;
         this.isShowEditHorizontal=false;
         this.isShowEditVertical=false;
-        
+
         this.verticalClassList.forEach(d=>{
             d['isChecked']=false;
             if(this.verticalInfos.length){
@@ -244,7 +244,7 @@ export class ClusterSetComponent implements OnInit {
         })
 
         if(count>2){
-            this.notification.warning('添加纵向分类','最多允许添加2个'); 
+            this.notification.warning('添加纵向分类','最多允许添加2个');
         }else{
             this.verticalInfos=[];
             this.verticalClassList.forEach(d => {
@@ -252,7 +252,7 @@ export class ClusterSetComponent implements OnInit {
                     this.verticalInfos.push(d);
                 }
             })
-            this.isShowAddVertical=false;   
+            this.isShowAddVertical=false;
         }
 
     }
@@ -317,7 +317,7 @@ export class ClusterSetComponent implements OnInit {
         })
 
         if(count>2){
-            this.notification.warning('添加横向分类','最多允许添加2个'); 
+            this.notification.warning('添加横向分类','最多允许添加2个');
         }else{
             this.horizontalInfos=[];
             this.horizontalClassList.forEach(d => {
@@ -325,12 +325,12 @@ export class ClusterSetComponent implements OnInit {
                     this.horizontalInfos.push(d['key']);
                 }
             })
-            this.isShowAddHorizontal=false; 
+            this.isShowAddHorizontal=false;
         }
     }
 
     addHCance(){
-       this.isShowAddHorizontal=false; 
+       this.isShowAddHorizontal=false;
     }
 
      // 横向分类 修改

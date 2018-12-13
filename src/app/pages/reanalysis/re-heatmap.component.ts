@@ -123,7 +123,7 @@ export class ReHeatmapComponent implements OnInit {
         this.colors = ["#0070c0", "#ffffff", "#ff0000"];
         this.gaugeColors=this.storeService.getColors();
 
-        this.defaultSetUrl=`${config['javaPath']}/Cluster/defaultSet`;
+        this.defaultSetUrl=`${config['javaPath']}/cluster/defaultSet`;
         this.defaultSetEntity={
             "tid": this.tid
         }
