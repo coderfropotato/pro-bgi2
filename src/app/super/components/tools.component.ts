@@ -212,7 +212,7 @@ export class ToolsComponent implements OnInit {
 	getheatmapParams() {
 		this.ajaxService
 			.getDeferData({
-				url: `${config['javaPath']}/Cluster/heatmapConfig`,
+				url: `${config['javaPath']}/cluster/heatmapConfig`,
 				data: {
                     LCID: sessionStorage.getItem('LCID'),
                     geneType: this.toolsService.get('tableEntity')['geneType'],
