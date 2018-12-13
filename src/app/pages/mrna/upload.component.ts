@@ -220,7 +220,7 @@ export class UploadComponent implements OnInit {
 					//成功了进行上传
 					if(self.fristFlag){
 						self.fristFlag = false;
-						this.selectAble = true;
+						self.selectAble = true;
 					}else{
 						self.uploadTask()
 					}
