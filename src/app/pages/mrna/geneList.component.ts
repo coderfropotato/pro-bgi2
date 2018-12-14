@@ -1,29 +1,28 @@
-import { AddColumnService } from './../../super/service/addColumnService';
-import { StoreService } from './../../super/service/storeService';
-import { PageModuleService } from './../../super/service/pageModuleService';
-import { MessageService } from './../../super/service/messageService';
+import { AddColumnService } from '../../super/service/addColumnService';
+import { StoreService } from '../../super/service/storeService';
+import { PageModuleService } from '../../super/service/pageModuleService';
+import { MessageService } from '../../super/service/messageService';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import { TranslateService } from "@ngx-translate/core";
-import {PromptService} from './../../super/service/promptService'
+import {PromptService} from '../../super/service/promptService'
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
 
 @Component({
-	selector: 'app-venn-page',
-    template: `<app-express-venn *ngIf="showModule" [defaultGeneType]="defaultGeneType">
+	selector: 'app-gene-list-page',
+    template: `<gene-list-component *ngIf="showModule" [defaultGeneType]="defaultGeneType">
                     <div class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
                         <span>{{defaultGeneType['type'] | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
-                </app-express-venn>`,
+                </gene-list-component>`,
 	styles: []
 })
-
-export class ExpressVennPage {
-	showModule:boolean = true;
+export class GeneListPage {
+    showModule:boolean = true;
     defaultGeneType:object = {type:"gene"};
 
     constructor(private storeService:StoreService,private translate:TranslateService) {
@@ -36,14 +35,15 @@ export class ExpressVennPage {
         this.showModule = false;
         setTimeout(()=>{this.showModule = true},30);
     }
+
 }
 
 @Component({
-	selector: 'app-express-venn',
-	templateUrl: './expressVenn.component.html',
+	selector: 'gene-list-component',
+	templateUrl: './geneList.component.html',
 	styles: []
 })
-export class ExpressVennComponent implements OnInit {
+export class GeneListComponent implements OnInit {
 	// 表格高度相关
 	@ViewChild('left') left;
 	@ViewChild('right') right;
@@ -57,6 +57,7 @@ export class ExpressVennComponent implements OnInit {
 	tableUrl: string;
 	chartUrl: string;
 
+	// vennEntity: object;
 	defaultEntity: object;
 	defaultUrl: string;
 	defaultTableId: string;
@@ -75,29 +76,11 @@ export class ExpressVennComponent implements OnInit {
 
 	venSelectAllData: string[] = [];
 	selectConfirmData: string[] = [];
-
 	panelShow: boolean = false;
-
 	tableEntity: object = {};
 	selectPanelData: object[] = [];
 	venn_or_upsetR: boolean;
 
-    expression_Max_min:object ={
-        min:0,
-        default:0,
-        max:0
-    }
-
-    expression_threshold:object ={
-        min:0,
-        default:0,
-        max:0
-	}
-
-	expression_temp_min:string;
-	expression_temp_max:string;
-
-	activedCompareGroup: any[] = [];
 	singleMultiSelect: object = {
 		bar_name: '',
 		total_name: '',
@@ -108,10 +91,7 @@ export class ExpressVennComponent implements OnInit {
 	doubleMultiSelect: object = {
 		bar_name: [],
 		total_name: []
-	};
-	pageEntity: object = {
-		pageSize: 20
-	};
+    };
 
 	chart: any;
 	isMultiSelect: boolean;
@@ -125,10 +105,12 @@ export class ExpressVennComponent implements OnInit {
 	venn: any; // 韦恩图对象实例
 
 	leftSelect: any[] = [];
-	upSelect: any[] = [];
+    upSelect: any[] = [];
 
-	addColumnShow:boolean = false;
+    addColumnShow:boolean = false;
     showBackButton:boolean = false;
+    selectedGeneList:any[] = [];
+
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -157,54 +139,36 @@ export class ExpressVennComponent implements OnInit {
 		this.isMultiSelect = false;
 		this.first = true;
 		this.selectedData = [];
-		this.chartUrl = `${config['javaPath']}/Venn/expGeneGraph`;
-
-        this.expression_threshold={
-            min:this.storeService.getStore('expression_threshold').min,
-            default:this.storeService.getStore('expression_threshold').default,
-            max:this.storeService.getStore('expression_threshold').max
-		}
-
-		this.expression_temp_min = this.storeService.getStore('expression_threshold').min;
-		this.expression_temp_max = this.storeService.getStore('expression_threshold').max;
-
-        this.expression_Max_min={
-            min:this.storeService.getStore('expression_threshold').min,
-            default:this.storeService.getStore('expression_threshold').default,
-            max:this.storeService.getStore('expression_threshold').max
-        }
+		this.chartUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 
 		this.selectPanelData = [
-			//选择面板的数据
+			//差异面板的数据
 			{
-				type: 'sample',
-				data: this.storeService.getStore('sample')
-            },
-            {
-				type: 'group',
-				data: this.storeService.getStore('group')
+				type: '基因集',
+				data: this.storeService.getStore('diff_plan')
 			}
-		];
+        ];
+
+        // 选中的基因集
+        this.selectedGeneList = [this.storeService.getStore('diff_plan')];
 
 		this.tableEntity = {
 			//查询参数
-            LCID: this.storeService.getStore('LCID'),
-            sample: this.storeService.getStore('sample'),
-            geneType: this.pageModuleService['defaultModule'],
-            species: this.storeService.getStore('genome'),
-            low:this.expression_threshold['min'],
-            high:this.expression_threshold['max']
-        };
+			LCID: this.storeService.getStore('LCID'),
+			compareGroup: this.storeService.getStore('diff_plan'),
+			geneType: this.defaultGeneType['type'],
+			species: this.storeService.getStore('genome'),
+		};
 
 		this.applyOnceSearchParams = true;
-		this.defaultUrl = `${config['javaPath']}/Venn/expGeneTable`;
+		this.defaultUrl = `${config['javaPath']}/Venn/diffGeneTable`;
 		this.defaultEntity = {
 			pageIndex: 1, //分页
 			pageSize: 20,
 			LCID: sessionStorage.getItem('LCID'),
 			leftChooseList: this.leftSelect, //upsetR参数
 			upChooseList: this.upSelect, //胜利n图选中部分参数
-			sample: this.storeService.getStore('sample'), //比较组
+            compareGroup: this.storeService.getStore('diff_plan'), //比较组
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -214,20 +178,17 @@ export class ExpressVennComponent implements OnInit {
 			reAnaly: false,
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-            low:this.storeService.getStore('expression_threshold').min,
-            high:this.storeService.getStore('expression_threshold').max,
 			version: this.storeService.getStore('version'),
 			searchList: []
-        };
-        //console.log(this.defaultEntity)
-		this.defaultTableId = 'express_venn_default_gene';
+		};
+		this.defaultTableId = 'default_gene_list';
 		this.defaultDefaultChecked = true;
 		this.defaultEmitBaseThead = true;
 		this.defaultCheckStatusInParams = true;
 
-		this.extendUrl = `${config['javaPath']}/Venn/expGeneTable`;
+		this.extendUrl = `${config['javaPath']}/Venn/diffGeneTable`;
 		this.extendEntity = {
 			pageIndex: 1, //分页
 			pageSize: 20,
@@ -235,7 +196,7 @@ export class ExpressVennComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'), //流程id
 			leftChooseList: [], //upsetR参数
 			upChooseList: [], //胜利n图选中部分参数
-			sample: this.storeService.getStore('sample'), //比较组
+			compareGroup: this.storeService.getStore('diff_plan'), //比较组
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -244,42 +205,36 @@ export class ExpressVennComponent implements OnInit {
 			matchAll: false,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			low:this.storeService.getStore('expression_threshold').min,
-            high:this.storeService.getStore('expression_threshold').max,
 			version: this.storeService.getStore('version'),
 			searchList: []
 		};
-		this.extendTableId = 'express_venn_extend_gene';
+		this.extendTableId = 'extend_gene_list';
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
-	}
-	
-	ngAfterViewInit() {
-		setTimeout(() => {
-			this.computedTableHeight();
-		}, 30);
     }
 
     toggle(status){
         this.addColumnShow = status;
     }
 
+	ngAfterViewInit() {
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
+	}
+
 	handlerColorChange(color) {
 		this.venn.setColor(color);
 		this.venn.update();
-	}
+    }
 
-	// {add:[],remove:[{}]}
-	addThead(thead) {
-		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
-		this.transformTable._addThead(thead['add']);
-	}
-
-	// 重置图 应用图转换前的设置
+    // 重置图 应用图转换前的设置
     chartBackStatus(){
+        this.defaultEmitBaseThead = true;
+        this.showBackButton = false;
         if(!this.first){
             // 比较组  引用无需考=>虑图选中/阈值
             // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
@@ -295,15 +250,19 @@ export class ExpressVennComponent implements OnInit {
         }
     }
 
-	/*-------- 表格转换开始 ----------*/
+	// {add:[],remove:[{}]}
+	addThead(thead) {
+		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+		this.transformTable._addThead(thead['add']);
+	}
 
 	// 表格转换 确定
 	confirm(relations) {
-		this.showBackButton = true;
+        this.showBackButton = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
-		this.extendEmitBaseThead = false;
+        this.extendEmitBaseThead = false;
         this.addColumn._clearThead();
 		if (this.first) {
 			this.extendCheckStatusInParams = false;
@@ -313,13 +272,11 @@ export class ExpressVennComponent implements OnInit {
 			this.extendEntity['mongoId'] = checkParams['mongoId'];
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
 			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
-			this.extendEntity['sample'] = this.selectConfirmData;
+			this.extendEntity['compareGroup'] = this.selectConfirmData;
 			this.extendEntity['leftChooseList'] = checkParams['tableEntity']['leftChooseList'];
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
-            this.extendEntity['low'] = this.expression_threshold['min'];
-            this.extendEntity['high'] = this.expression_threshold['max'];
-			this.extendEntity['relations'] = relations;
-			this.extendEntity['addThead'] = [];
+            this.extendEntity['relations'] = relations;
+            this.extendEntity['addThead'] = [];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -329,9 +286,10 @@ export class ExpressVennComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
-			this.transformTable._setExtendParamsWithoutRequest( 'relations', relations);
-			// 每次checkStatusInParams状态变完  再去获取数据
-			this.transformTable._setExtendParamsWithoutRequest('addThead',[]);
+            this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
+            this.transformTable._setExtendParamsWithoutRequest('relations', relations);
+            // 每次checkStatusInParams状态变完  再去获取数据
+            this.transformTable._setExtendParamsWithoutRequest('addThead',[]);
 			setTimeout(() => {
 				this.transformTable._getData();
 			}, 30);
@@ -343,13 +301,6 @@ export class ExpressVennComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-        // 应用初始状态的 比较组 图选择的数据 设置参数
-        // this.defaultEntity['sample'] = this.selectConfirmData;
-		// this.defaultEntity['searchList'] = [];
-        // this.defaultEntity['rootSearchContentList'] = [];
-		// this.first = true;
-		// this.showBackButton = false;
-        // this.defaultEmitBaseThead = true;
         this.chartBackStatus();
 	}
 
@@ -358,7 +309,6 @@ export class ExpressVennComponent implements OnInit {
 		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
 	}
 
-	// 表格上方功能区 resize重新计算表格高度
 	resize(event) {
 		setTimeout(()=>{
             this.computedTableHeight();
@@ -378,7 +328,7 @@ export class ExpressVennComponent implements OnInit {
 		}else{
 			this.venn_or_upsetR = false;
 			this.tableSwitchChart.isShowTable=true;
-			//this.showVenn(data);
+			// this.showVenn(data);
 		}
 	}
 
@@ -388,85 +338,24 @@ export class ExpressVennComponent implements OnInit {
 
 	computedTableHeight() {
 		try {
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
 		} catch (error) {}
-	}
-
-    onAfterChange(value: string): void{
-        this.expression_threshold={
-            min:value[0],
-            default:this.storeService.getStore('expression_threshold').default,
-            max:value[1]
-        }
-        console.log(this.expression_threshold)
-    }
-
-    formatter(value){
-        return `${value}`;
-    }
-
-	panelChange() {
-		this.panelShow = !this.panelShow;
-	}
-	setCancle() {
-		if(this.expression_temp_min!=this.expression_threshold['min'] || this.expression_temp_max!=this.expression_threshold['max']){
-			this.expression_threshold['max'] = this.expression_temp_max;
-			this.expression_threshold['min'] = this.expression_temp_min;
-		}
-        //点击取消时需要还原滑动条
-		this.panelShow = false;
-	}
-	setConfirm() {
-
-        this.tableEntity['low'] = this.expression_threshold['min'];
-		this.tableEntity['high'] = this.expression_threshold['max'];
-
-		//this.expression_threshold_temp= this.expression_threshold;
-		this.expression_temp_min = this.expression_threshold['min'];
-		this.expression_temp_max = this.expression_threshold['max'];
-
-		this.singleMultiSelect={
-			bar_name: '',
-			total_name: '',
-			venn_name: ''
-		};
-
-		this.doubleMultiSelect = {
-			bar_name: [],
-			total_name: []
-		};
-
-        this.panelShow = false;
-        this.upSelect.length = 0;
-        this.leftSelect.length = 0 ;
-		this.tableSwitchChart.reGetData();
-
-		// if (this.first) {
-		// 	this.transformTable._getData();
-		// } else {
-        //     this.first = true;
-		// }
-		this.chartBackStatus();
 	}
 
 	//单、多选change
 	multiSelectChange() {
-        // this.upSelect.length = 0;
-        // this.leftSelect.length = 0;
-        // this.first?this.transformTable._getData():this.first = true;
-		// this.updateVenn();
-		this.upSelect.length = 0;
+        this.upSelect.length = 0;
         this.leftSelect.length = 0;
-        // this.first?this.transformTable._getData():this.first = true;
         this.chartBackStatus()
         this.updateVenn();
 	}
 
 	//韦恩,upsetR图二次更新
 	updateVenn() {
-        this.tableEntity['sample'] = this.selectConfirmData;
-        this.tableSwitchChart.reGetData();
-        this.singleMultiSelect={
+        this.tableEntity['compareGroup'] = this.selectConfirmData;
+		this.tableSwitchChart.reGetData();
+
+		this.singleMultiSelect={
 			bar_name: '',
 			total_name: '',
 			venn_name: ''
@@ -476,29 +365,21 @@ export class ExpressVennComponent implements OnInit {
 			bar_name: [],
 			total_name: []
         };
-        console.log(this.singleMultiSelect)
-        console.log(this.doubleMultiSelect)
 	}
 
 	//venn和upsetR只能单选时候
 	doSingleData() {
-
 		this.leftSelect.length = 0;
-		this.upSelect.length = 0;
+        this.upSelect.length = 0;
 		if (this.selectConfirmData.length > 5) {
-			// upset
-			if(this.singleMultiSelect['bar_name']) this.upSelect.push(this.singleMultiSelect['bar_name']);
+            // upset
+            if(this.singleMultiSelect['bar_name']) this.upSelect.push(this.singleMultiSelect['bar_name']);
             if(this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
 		} else {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
-		}
+        }
 
-		// if (this.first) {
-		// 		this.transformTable._getData();
-		// } else {
-		// 	this.first = true;
-		// }
-		this.chartBackStatus()
+        this.chartBackStatus()
 	}
 
 	//多选确定时候,提交的数据
@@ -510,38 +391,24 @@ export class ExpressVennComponent implements OnInit {
 		if (tempData instanceof Array) {
 			this.upSelect.push(...tempData);
 		} else {
-			this.upSelect.push(tempData['bar_name']);
-			this.leftSelect.push(tempData['total_name']);
+			this.upSelect.push(...tempData['bar_name']);
+			this.leftSelect.push(...tempData['total_name']);
 		}
 
-		// if (this.first) {
-		// 		this.transformTable._getData();
-		// } else {
-		// 	this.first = true;
-		// }
-		this.chartBackStatus()
+        this.chartBackStatus()
 	}
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
-        console.log(data)
 		this.selectConfirmData = data;
 	}
 
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
-        // this.selectConfirmData = data;
-		// this.upSelect.length = 0;
-        // this.leftSelect.length = 0;
-		// this.transformTable._setParamsNoRequest('sample',this.selectConfirmData);
-		// this.first ? this.transformTable._getData() : (this.first = true);
-		// this.updateVenn();
-		this.selectConfirmData = data;
+        this.selectConfirmData = data;
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
 
-		// this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
-        // this.first ? this.transformTable._getData() : (this.first = true);
         // 更新当前回来的表头为基础头
         this.chartBackStatus();
         this.updateVenn();
@@ -549,16 +416,16 @@ export class ExpressVennComponent implements OnInit {
 
 	redrawChart(width, height?) {
 		this.isMultiSelect = false;
-	}
+    }
 
-	// 图表切换刷新
+    // 图表切换刷新
     handlerRefresh(){
         // 清空选择的数据
         this.upSelect.length = 0;
         this.leftSelect.length = 0;
         this.chartBackStatus();
-	}
-	
+    }
+
 	//显示venn图
 	showVenn(data) {
 		let _selfV = this;
@@ -574,7 +441,7 @@ export class ExpressVennComponent implements OnInit {
 			tempR.push(tempO);
 		}
 
-		this.venn = new Venn({ id: 'chartId22122' })
+		this.venn = new Venn({ id: 'genelist_venn' })
 			.config({
 				data: tempR,
 				compareGroup: _selfV.tableEntity['compareGroup'],
@@ -624,7 +491,7 @@ export class ExpressVennComponent implements OnInit {
 
 	//显示upsetR图
 	showUpSetR(data) {
-		document.getElementById('chartId22122').innerHTML = '';
+		document.getElementById('genelist_upsetR').innerHTML = '';
 		let _self = this;
 		let selectBar = [];
 		let tempBar = data.rows;
@@ -635,7 +502,7 @@ export class ExpressVennComponent implements OnInit {
 			}
 		}
 
-		let t_chartID = document.getElementById('chartId22122');
+		let t_chartID = document.getElementById('genelist_upsetR');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
          <style>
              .MyRect {
@@ -726,7 +593,7 @@ export class ExpressVennComponent implements OnInit {
 			}
 		}
 
-		let oSvg = d3.select('#chartId22122').append('svg');
+		let oSvg = d3.select('#genelist_upsetR').append('svg');
 		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
 		let left_name_length = mText.nodes()[0].getBBox().width;
 		//let left_name_length = document.querySelector(".mText").getBBox().width;

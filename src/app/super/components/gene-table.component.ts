@@ -8,6 +8,8 @@ import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
 import { AjaxService } from "../service/ajaxService";
 import { NzNotificationService } from "ng-zorro-antd";
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 declare const $: any;
 /**
@@ -121,6 +123,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
     matchAll:boolean = true;
     isErrorDelete:boolean = false;
 
+    // 是否在保存基因集
+    isSaveGeneList:boolean=false;
+    validateForm: FormGroup;
+
     constructor(
         private translate: TranslateService,
         private globalService: GlobalService,
@@ -130,7 +136,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
         private el: ElementRef,
         private message: MessageService,
         private notify: NzNotificationService,
-        private toolsService: ToolsService
+        private toolsService: ToolsService,
+        private modalService:NzModalService,
+        private fb:FormBuilder
     ) {
         let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
@@ -138,6 +146,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.init();
+        this.initFormValue();
     }
 
     // 页面加载完成的时候会把算好的 tableHeight传进来，触发changes 然后组件内部计算表格滚动区域的高度；
@@ -190,6 +199,14 @@ export class GeneTableComponent implements OnInit, OnChanges {
         }
 
         this.getRemoteData();
+    }
+
+    initFormValue(){
+        this.validateForm = this.fb.group({
+            name:[null,[Validators.required]],
+            label:[null],
+            mark:[null]
+        });
     }
 
     sort(key, value): void {
@@ -841,6 +858,25 @@ export class GeneTableComponent implements OnInit, OnChanges {
             let params = this._getInnerStatusParams();
             this.toolsService.showTools(this.total, params);
         }
+    }
+
+    /**
+     * @description 保存基因集
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-12-14
+     * @memberof GeneTableComponent
+     */
+    saveGeneList(){
+        let params = this._getInnerStatusParams();
+        this.isSaveGeneList = true;
+    }
+
+    handleSaveGeneConfirm(){
+        this.isSaveGeneList = false;
+    }
+
+    handleSaveGeneCancel(){
+        this.isSaveGeneList = false;
     }
 
     /**

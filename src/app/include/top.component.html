@@ -14,7 +14,7 @@
                 <i *ngIf="pdf" class="iconfont icon-daochu-copy" title="export as pdf" (click)="exportPdf()"></i>
                 <i *ngIf="upload" class="iconfont icon-shangchuanshuju-copy" title="上传数据" (click)="uploadFn()"></i>
                 <i *ngIf="analysis" class="iconfont icon-wode-copy" title="我的分析" (click)="analysisFn()"></i>
-                <div *ngIf="lang" class="div_lang" title="切换语言" (click)="changeLan()">{{browserLang}}</div>
+                <i *ngIf="lang" class="iconfont" [class.icon-yingwen]="browserLang=='en'" [class.icon-zhongwen]="browserLang=='zh'" (click)="changeLan()"></i>
             </div>
     </div>
 </div>

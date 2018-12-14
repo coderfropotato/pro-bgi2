@@ -11,6 +11,7 @@ $padding: 12px; // 所有模块统一留白
 $btn_active_color: rgb(82, 120, 248); // 按钮激活颜色
 $table_header_bgcolor: #f5f5f5; // 表格头部背景色
 $min-width: 1350px; // 页面最小宽度
+$layout_switch_bgcolor:#ccc; // 布局切换按钮的背景色
 
 // flex 兼容
 @mixin display-flex {

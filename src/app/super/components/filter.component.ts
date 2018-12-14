@@ -13,6 +13,7 @@ export class FilterComponent implements OnInit {
             等于=
             不等于！=
             包含in
+            不为空       $notNull
 
         int double              default    range
             范围A-B     range
@@ -25,6 +26,7 @@ export class FilterComponent implements OnInit {
             小于等于（<=）  $lte
             绝对值>=     $gteabs
             绝对值>      $gtabs
+            不为空       $notNull
         */
 
     // 表头的数据类型
@@ -101,7 +103,8 @@ export class FilterComponent implements OnInit {
             gte: "",
             lte: "",
             gteabs: "",
-            gtabs: ""
+            gtabs: "",
+            notNull:""
         };
     }
 
@@ -155,6 +158,9 @@ export class FilterComponent implements OnInit {
             case "$gtabs":
                 valueOne = this.filter["gtabs"];
                 break;
+            case "$notNull":
+                valueOne = null;
+                valueTwo = null;
         }
         // 必填值
         if (this.selectType === "range") {
@@ -168,11 +174,16 @@ export class FilterComponent implements OnInit {
                 this.nodata = false;
             }
         } else {
-            if (!this.force(valueOne)) {
-                this.nodata = true;
-                return;
-            } else {
+            if(this.selectType === '$notNull'){
                 this.nodata = false;
+            }else{
+
+                if (!this.force(valueOne)) {
+                    this.nodata = true;
+                    return;
+                } else {
+                    this.nodata = false;
+                }
             }
         }
 

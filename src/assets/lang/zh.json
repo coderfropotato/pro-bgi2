@@ -30,7 +30,8 @@
         "lte": "小于等于",
         "gteabs":"绝对值大于等于",
         "gtabs":"绝对值大于",
-        "error":"输入值不能为空"
+        "error":"输入值不能为空",
+        "notNull":"不为空"
     },
     "addThead": {
         "addButton": "扩展列",
@@ -50,6 +51,7 @@
         "single":"单选",
         "multiple":"多选",
         "export":"导出",
+        "saveGene":"保存基因集",
         "export_png":"导出 PNG 格式图片",
         "export_jpg":"导出 JPG 格式图片",
         "export_svg":"导出 SVG 格式图片"

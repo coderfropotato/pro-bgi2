@@ -203,7 +203,7 @@ export class DiffVennComponent implements OnInit {
 		// 	compareGroup: this.activedCompareGroup,
 		// 	geneType: this.defaultGeneType['type'],
 		// 	species: this.storeService.getStore('genome'),
-		// 	version: this.storeService.getStore('reference'),
+		// 	version: this.storeService.getStore('version'),
 		// 	diffThreshold: {
 		// 		PossionDis: {
 		// 			log2FC: 1,
@@ -235,7 +235,7 @@ export class DiffVennComponent implements OnInit {
 			diffThreshold: {
 				PossionDis: this.PossionDis
 			},
-			version: this.storeService.getStore('reference'),
+			version: this.storeService.getStore('version'),
 			searchList: []
 		};
 		this.defaultTableId = 'diff_venn_default_gene';
@@ -265,7 +265,7 @@ export class DiffVennComponent implements OnInit {
 			diffThreshold: {
 				PossionDis: this.PossionDis
 			},
-			version: this.storeService.getStore('reference'),
+			version: this.storeService.getStore('version'),
 			searchList: []
 		};
 		this.extendTableId = 'diff_venn_extend_gene';

@@ -58,6 +58,8 @@ import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component'
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
 import { ReNetComponent } from './pages/reanalysis/re-net.component';
 import { ReLineComponent } from './pages/reanalysis/re-line.component';
+import { LayoutSwitchComponent } from './super/components/layout-switch.component';
+import { GeneListComponent,GeneListPage } from './pages/mrna/geneList.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -191,6 +193,14 @@ const ROUTES: Routes = [
                 data: {
                     keep: true,
                     module: "diffVenn"
+                }
+            },
+            {
+                path: "gene-list",
+                component: GeneListPage,
+                data: {
+                    keep: true,
+                    module: "geneList"
                 }
             },
             {
@@ -368,6 +378,7 @@ export function createTranslateLoader(http: HttpClient) {
         DiffVennPage,
         ExpressVennPage,
         Layout1Page,
+        GeneListPage,
         SysDefendComponent,
         LoginComponent,
         IndexComponent,
@@ -418,7 +429,9 @@ export function createTranslateLoader(http: HttpClient) {
         TooltipDirective,
         ReNetComponent,
         ReLineComponent,
+        LayoutSwitchComponent,
         ReMultiOmicsComponent,
+        GeneListComponent,
         PromtComponent
     ],
     // 路由模块在imports 导入

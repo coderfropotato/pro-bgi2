@@ -177,9 +177,9 @@
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
     </div>
-    <div #right class="right-layout" [class.expand]="switch" >
+    <div #right class="right-layout" [class.expand]="switch">
         <div class="switch">
-            <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" ></nz-switch>
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" ></app-layout-switch>
         </div>
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
@@ -188,7 +188,6 @@
             <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
 
             <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
-
         </div>
         <!-- 表格转换 -->
         <app-table-transformation
