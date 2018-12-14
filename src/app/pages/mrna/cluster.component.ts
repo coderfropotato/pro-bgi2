@@ -49,12 +49,12 @@ export class clusterComponent implements OnInit {
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
         this.gaugeColors=this.storeService.getColors();
 
-        this.defaultSetUrl=`${config['javaPath']}/Cluster/defaultSet`;
+        this.defaultSetUrl=`${config['javaPath']}/cluster/defaultSet`;
         this.defaultSetEntity={
             "tid": "20783e1576b84867aee1a63e22716fed"
         }
 
-        this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
+        this.chartUrl=`${config['javaPath']}/cluster/heatmapGraph`;
         this.chartEntity = {
             "LCID": this.storeService.getStore('LCID'), 
             "tid": "20783e1576b84867aee1a63e22716fed", 

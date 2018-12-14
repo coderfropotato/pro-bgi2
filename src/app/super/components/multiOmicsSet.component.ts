@@ -3,6 +3,7 @@ import { AjaxService } from '../service/ajaxService';
 import config from '../../../config';
 import { StoreService } from '../service/storeService';
 import { NzNotificationService } from 'ng-zorro-antd';
+import { PageModuleService } from '../service/pageModuleService';
 
 declare const $: any;
 
@@ -44,6 +45,9 @@ declare const $: any;
             display:block;
             clear:both;
         }
+        .relationRow{
+            margin-bottom:10px;
+        }
         `
     ]
 })
@@ -51,12 +55,15 @@ declare const $: any;
 export class MultiOmicsSetComponent implements OnInit {
     @Output() confirm: EventEmitter<any> = new EventEmitter();
 
+    geneType:string;
+
     // 添加、修改分类数据
     rationClassifyList: object[] = [];
     
     //添加面板数据
     rations: object[] = [];
     curRationClassify: string;  //当前定量类型
+    curAddRation:string; //当前添加的定量列
 
     //关联基因
     relationList: object[] = [];
@@ -73,19 +80,22 @@ export class MultiOmicsSetComponent implements OnInit {
 
     isShowSetPanel: boolean = false;
 
-     //修改面板数据
-     rationList: object[] = []; 
-     curUpdateClassify: string;  //当前定量类型
+    isShowRelationPanel:boolean=false;
 
+    //修改面板数据
+    rationList: object[] = []; 
+    curUpdateClassify: string;  //当前定量类型
     curUpdateInfo: object; //当前修改项
 
     constructor(
         private ajaxService: AjaxService,
         private storeService: StoreService,
-        private notification: NzNotificationService
+        private notification: NzNotificationService,
+        private pageModuleService: PageModuleService
     ) { }
 
     ngOnInit() {
+        this.geneType=this.pageModuleService['defaultModule'];
         this.getRationClassify();
         this.getRelations();
     }
@@ -97,6 +107,26 @@ export class MultiOmicsSetComponent implements OnInit {
         this.infoList = [...this.confirmInfoList];
     }
 
+    //获取关联基因
+    getRelations() {
+        let data = this.storeService.getStore('relations');
+        data.unshift({
+            key: "false",
+            name: "false"
+        })
+
+        this.relationList=[...data];
+        this.relationList.forEach(d => {
+            d['isDisabled']= false;
+            if(d['key']!=="false"){
+                d['limit']=true;
+            }
+        })
+        
+        this.curRelation = {...this.relationList[0]};
+
+    }
+
     //获取定量信息
     getRationClassify() {
         this.ajaxService
@@ -104,7 +134,7 @@ export class MultiOmicsSetComponent implements OnInit {
                 url: `${config['javaPath']}/multiOmics/quantity`,
                 data: {
                     "LCID": this.storeService.getStore('LCID'),
-                    "geneType": "gene"  // gene 或 transcript
+                    "geneType": this.geneType  // gene 或 transcript
                 }
             })
             .subscribe(
@@ -144,39 +174,72 @@ export class MultiOmicsSetComponent implements OnInit {
             )
     }
 
-    //获取关联基因列表
-    getRelations() {
-        let data = this.storeService.getStore('relations');
-        data.unshift({
-            key: "false",
-            name: "false"
-        })
-
-        data.forEach(d => {
-            this.relationList.push({
-                key: d['key'],
-                name: d['name'],
-                isDisabled: false
-            });
-        })
-        
-        this.curRelation = this.relationList[0];
-
-    }
-
     //点击“添加定量信息”
     addInfo() {
-        this.isShowAddPanel = true;
+        
+        if(this.infoList.length>=5){
+            this.notification.warning('添加定量信息','最多允许有5个定量信息');
+            return;
+        }
+
+        this.isShowRelationPanel=true;
+        this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
+        this.isShowSetPanel=false;
+
+        // 关联关系若存在，下拉框不可选择此关联关系
+        this.relationList.forEach(d => {
+            d['isDisabled'] = false;
+            this.infoList.forEach(m => {
+                if (d['key'] !== 'false') {
+                    if (d['key'] === m['relation']) {
+                        d['isDisabled'] = true;
+                    }
+                }
+            });
+
+        })
+
+        //清空之前的选择定量列
         this.rations.forEach(d=>{
             d['isChecked']=false;
-            this.infoList.forEach(m=>{
-                if(d['key']===m['key']){
-                    d['isChecked']=true;
-                }
-            })
         })
+
+        //关联关系恢复默认
+        this.curRelation = {...this.relationList[0]};
+
     }
+
+    // 添加关联关系
+
+     //关联基因change
+     relationChange() {
+         this.isShowAddPanel = false;
+         this.isShowUpdatePanel = false;
+         
+         this.relationList.forEach(d => {
+            //改变当前关联关系对应obj
+            if (this.curRelation['key'] === d['key']){
+                this.curRelation = {...d};
+            } 
+                    
+       })
+
+   }
+
+   //关联关系 确定
+    relationOk(){
+        this.isShowAddPanel=true;
+        this.isShowRelationPanel=false;
+    }
+
+    //关联关系 取消
+    relationCancel(){
+        this.isShowRelationPanel=false;
+    }
+
+
+    //添加定量信息
 
     //添加面板，定量分类change
     rationClassifyChange() {
@@ -193,22 +256,29 @@ export class MultiOmicsSetComponent implements OnInit {
 
     // 添加面板，选择定量列
     rationColSelect(item) {
-        item.isChecked=!item.isChecked;
+        this.rations.forEach(d=>{
+           d['isChecked']=false;
+        })
+
+        item.isChecked=true;
+        this.curAddRation=item['key'];
     }
 
     //添加面板， 确定
     addConfirm() {
-        let checkedCount=0;
-        this.rations.forEach(d=>{
-            if(d['isChecked']){
-                checkedCount++;
+        let fasleArr=[];
+        this.infoList.forEach(d=>{
+            if(d['relation']==='false'){
+                fasleArr.push(d['key']);
             }
         })
 
-        if(checkedCount>5){
-            this.notification.warning('添加定量信息','最多允许添加5个');
-        }else{
-            this.infoList.length=0;
+        if(this.isInArray(this.curAddRation,fasleArr,'') && this.curRelation['key']==='false'){
+            this.notification.warning('添加定量信息','请不要重复添加');
+            return;
+        }
+
+        if(this.curRelation['key']==='false'){
             this.rations.forEach(d=>{
                 if(d['isChecked']){
                     this.infoList.push({
@@ -216,44 +286,46 @@ export class MultiOmicsSetComponent implements OnInit {
                         category:d['category'],
                         name:d['name'],
                         relation:this.curRelation['key'],
-                        relationName:this.curRelation['name']
+                        relationName:this.curRelation['name'],
                     });
+
                 }
             })
-    
-            this.isShowAddPanel = false;
-        }
+        }else{
+            this.rations.forEach(d=>{
+                if(d['isChecked']){
+                    this.infoList.push({
+                        key:d['key'],
+                        category:d['category'],
+                        name:d['name'],
+                        relation:this.curRelation['key'],
+                        relationName:this.curRelation['name'],
+                        score:[...this.curRelation['score']],
+                        max:[...this.curRelation['max']],
+                        limit:this.curRelation['limit']
+                    });
+
+                }
+            })
+        
+        }  
+
+        this.isShowAddPanel = false;
+        this.isShowSetPanel=true;
+            
     }
 
     //添加面板， 取消
-    addCance() {
+    addCancel() {
         this.isShowAddPanel = false;
     }
 
-     //关联基因change
-     relationChange(info) {
-        this.isShowAddPanel = false;
-        this.isShowUpdatePanel = false;
-
-        this.relationList.forEach(d => {
-            d['isDisabled'] = false;
-            this.infoList.forEach(m => {
-                if (d['key'] !== 'false') {
-                    if (d['key'] === m['relation']) {
-                        d['isDisabled'] = true;
-                    }
-                }
-            });
-
-            if (info['relation'] === d['key']) info['relationName'] = d['name'];
-        })
-
-    }
-
+    
     //点击“修改”
     updateInfo(info) {
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = true;
+        this.isShowSetPanel=false;
         this.curUpdateInfo = info;
     }
 
@@ -273,6 +345,13 @@ export class MultiOmicsSetComponent implements OnInit {
         this.curUpdateInfo['name'] = item['name'];
 
         this.isShowUpdatePanel = false;
+        this.isShowSetPanel=true;
+
+    }
+
+    updateCancel(){
+        this.isShowUpdatePanel=false;
+        this.isShowSetPanel=true;
     }
 
     //点击“删除”

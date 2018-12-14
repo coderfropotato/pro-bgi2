@@ -38,7 +38,7 @@
                             <span>值域</span>
                         </nz-col>
                         <nz-col nzSpan="18">
-                            <nz-slider nzRange [nzMin]="min" [nzMax]="max" [(ngModel)]="rangeValue"></nz-slider>
+                            <nz-slider nzRange [nzStep]="(max<10) ? 0.1 : 1 " [nzMin]="min" [nzMax]="max" [(ngModel)]="rangeValue"></nz-slider>
                         </nz-col>
                     </nz-row>
         </div>

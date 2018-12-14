@@ -46,6 +46,8 @@ export class ClusterSetComponent implements OnInit {
 
     isShowSetPanel:boolean=false;
 
+    geneType:string;
+
     width:number=0;
     height:number=0;
 
@@ -133,8 +135,8 @@ export class ClusterSetComponent implements OnInit {
         this.max=trueData.max;
         this.rangeValue=[this.min,this.max];
 
-        let geneType=trueData.geneType;
-        if(geneType=="gene"){
+        this.geneType=trueData.geneType;
+        if(this.geneType=="gene"){
             this.geneList=[{
                 key:'hidden',
                 name:'隐藏'
@@ -176,8 +178,8 @@ export class ClusterSetComponent implements OnInit {
         .getDeferData({
             url:`${config['javaPath']}/cluster/classification`,
             data:{
-                    "geneType": "gene",
-                    "LCID": "demo"
+                    "geneType": this.geneType,
+                    "LCID": this.storeService.getStore('LCID')
             }
         })
         .subscribe(

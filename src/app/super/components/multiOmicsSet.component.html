@@ -3,16 +3,14 @@
 
     <!-- 设置面板 -->
     <div class="setPanel" nz-menu>
-        <div class="center setPanelTitle">定量信息选择</div>
+        <div class="center setPanelTitle">定量信息</div>
 
         <div class="infoContent" *ngIf="infoList.length">
             <span class="infoTitle center">关联基因</span>
             <span class="infoTitle center">定量列</span>
             <div class="infoContent" *ngFor="let info of infoList;let i=index">
-                <div class="infoCol">
-                    <nz-select style="width: 100px;margin-left: 10px" [(ngModel)]="info.relation" [nzSize]="'small'" (ngModelChange)="relationChange(info)" nzShowSearch>
-                        <nz-option [nzDisabled]='relation.isDisabled' *ngFor="let relation of relationList" [nzLabel]="relation.name" [nzValue]="relation.key"></nz-option>
-                    </nz-select>
+                <div class="infoCol rationColInfo center" nz-tooltip [nzTitle]="info.relation">
+                    <span>{{info.relation}}</span>
                 </div>
                 <div class="infoCol rationColInfo" nz-tooltip [nzTitle]="info.key">
                     <span>{{info.key}}</span>
@@ -36,36 +34,87 @@
         </div>
     </div>
 
-    <!-- 添加面板 -->
-    <div class="addPanel" *ngIf="isShowAddPanel && rationClassifyList.length">
+</nz-dropdown>
+
+<!-- 选择关联关系 弹窗 -->
+<nz-modal [(nzVisible)]="isShowRelationPanel && relationList.length" nzWidth="440" nzTitle="选择关联关系" (nzOnCancel)="relationCancel()" nzOkText="下一步" (nzOnOk)="relationOk()">
+      <div class="relationRow">
+          <nz-row>
+            <nz-col nzSpan="5" style="margin-top:5px">
+                <span>Relation</span>
+            </nz-col>
+            <nz-col nzSpan="13">
+                <nz-select style="width:100%" [(ngModel)]="curRelation.key" (ngModelChange)="relationChange()" nzShowSearch>
+                        <nz-option [nzDisabled]='relation.isDisabled' *ngFor="let relation of relationList" [nzLabel]="relation.name" [nzValue]="relation.key"></nz-option>
+                </nz-select>
+            </nz-col>
+        </nz-row>
+      </div>  
+
+      <div class="relationRow" *ngIf="curRelation.score && curRelation.score.length">
+          <nz-row>
+              <nz-col nzSpan="5" style="margin-top:8px">
+                  <span>Score</span>
+              </nz-col>
+              <nz-col nzSpan="13">
+                  <nz-slider [nzStep]="(curRelation.score[1]<10) ? 0.1 : 1 " [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [(ngModel)]="curRelation.score[2]"></nz-slider>
+              </nz-col>
+              <nz-col nzSpan="4" nzOffset="1">
+                  <nz-input-number [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [(ngModel)]="curRelation.score[2]"></nz-input-number>
+              </nz-col>
+          </nz-row>
+      </div>
+
+      <div class="relationRow" *ngIf="curRelation.max && curRelation.max.length">
+            <nz-row>
+                <nz-col nzSpan="5">
+                    <span>Max Num</span>
+                </nz-col>
+                <nz-col nzSpan="16">
+                    <nz-radio-group [(ngModel)]="curRelation.limit">
+                        <label nz-radio [nzValue]="true">limit</label>
+                        <label nz-radio [nzValue]="false">no limit</label>
+                    </nz-radio-group>
+                </nz-col>
+            </nz-row>
+
+            <nz-row>
+                <nz-col nzSpan="13" nzOffset="5">
+                    <nz-slider [nzDisabled]='!curRelation.limit' [nzStep]="(curRelation.max[1]<10) ? 0.1 : 1 " [nzMin]="curRelation.max[0]" [nzMax]="curRelation.max[1]" [(ngModel)]="curRelation.max[2]"></nz-slider>
+                </nz-col>
+                <nz-col nzSpan="4" nzOffset="1">
+                    <nz-input-number [nzDisabled]='!curRelation.limit'  [nzMin]="curRelation.max[0]" [nzMax]="curRelation.max[1]" [(ngModel)]="curRelation.max[2]"></nz-input-number>
+                </nz-col>
+            </nz-row>
+        </div>
+</nz-modal>
+
+<!-- 选择定量信息 弹窗 -->
+<nz-modal [(nzVisible)]="isShowAddPanel && rationClassifyList.length" nzWidth="440" nzTitle="选择定量信息" (nzOnCancel)="addCancel()" (nzOnOk)="addConfirm()">
         <div class="rationClassifyRow">
             <span>定量类型：</span>
-            <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curRationClassify" [nzSize]="'small'" (ngModelChange)="rationClassifyChange()" nzShowSearch>
+            <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curRationClassify" (ngModelChange)="rationClassifyChange()" nzShowSearch>
                 <nz-option *ngFor="let ration of rationClassifyList" [nzLabel]="ration?.name" [nzValue]="ration?.name"></nz-option>
             </nz-select>
         </div>
+
         <div class="rationClassifyRow">
             <span>定量列：</span>
             <button [class.btnActive]='item.isChecked' (click)="rationColSelect(item)" nz-button nzType="default" *ngFor="let item of rations">{{item.name}}</button>&nbsp;
         </div>
-        <div class="setBtns right">
-            <button nz-button nzType="primary" (click)="addConfirm()">确定</button>&nbsp;
-            <button nz-button nzType="default" (click)="addCance()">取消</button>
-        </div>
+</nz-modal>
+
+<!-- 修改定量列 弹窗 -->
+<nz-modal [(nzVisible)]="isShowUpdatePanel && rationClassifyList.length" nzWidth="440" nzTitle="修改定量列" [nzFooter]='null' (nzOnCancel)='updateCancel()'>
+    <div class="rationClassifyRow">
+        <span>定量类型：</span>
+        <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curUpdateClassify" [nzSize]="'small'" (ngModelChange)="updateClassifyChange()" nzShowSearch>
+            <nz-option *ngFor="let ration of rationClassifyList" [nzLabel]="ration?.name" [nzValue]="ration?.name"></nz-option>
+        </nz-select>
     </div>
 
-    <!-- 修改面板 -->
-    <div class="addPanel" *ngIf="isShowUpdatePanel && rationClassifyList.length">
-        <div class="rationClassifyRow">
-            <span>定量类型：</span>
-            <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curUpdateClassify" [nzSize]="'small'" (ngModelChange)="updateClassifyChange()" nzShowSearch>
-                <nz-option *ngFor="let ration of rationClassifyList" [nzLabel]="ration?.name" [nzValue]="ration?.name"></nz-option>
-            </nz-select>
-        </div>
-        <div class="rationClassifyRow">
-            <span>定量列：</span>
-            <button (click)="updateRationColSelect(item)" nz-button nzType="default" *ngFor="let item of rationList">{{item.name}}</button>&nbsp;
-        </div>
+    <div class="rationClassifyRow">
+        <span>定量列：</span>
+        <button (click)="updateRationColSelect(item)" nz-button nzType="default" *ngFor="let item of rationList">{{item.name}}</button>&nbsp;
     </div>
-
-</nz-dropdown>
+</nz-modal>
