@@ -30,7 +30,8 @@
         "lte":"lt && equal",
         "gteabs":"abs gt && equal",
         "gtabs":"abs gt",
-        "error":"Input value cannot be empty"
+        "error":"Input value cannot be empty",
+        "notNull":"not null"
     },
     "addThead":{
         "addButton":"add",
@@ -50,6 +51,7 @@
         "single":"single",
         "multiple":"multiple",
         "export":"export",
+        "saveGene":"save Gene list",
         "export_png":"export PNG image",
         "export_jpg":"export JPG image",
         "export_svg":"export SVG image"

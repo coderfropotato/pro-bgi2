@@ -16,7 +16,7 @@
                 <ng-template #titleTemplate>
                     <span class="add-thead-head-item">{{ item['category'] | translate }}<b *ngIf="selectCount[i]">{{selectCount[i]}}</b></span>
                 </ng-template>
-                <div *ngIf="item['children'].length">
+                <div class="head-item-content" *ngIf="item['children'].length">
                     <ng-container *ngFor="let it of item['children'];index as m;">
                         <p>
                             {{it['category'] | translate}}
@@ -30,7 +30,8 @@
                             </ng-container>
                         </p>
                         <ng-container *ngIf="it['children'].length">
-                            <span class="head-item" [ngClass]="{'active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</span>
+                            <button class="head-item" nz-button nzSize="small" nzType="default" [ngClass]="{'active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</button>
+                            <!-- <span class="head-item" [ngClass]="{'active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</span> -->
                         </ng-container>
                     </ng-container>
                 </div>

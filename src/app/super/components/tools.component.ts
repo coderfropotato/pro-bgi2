@@ -12,10 +12,12 @@ declare const $: any;
 export class ToolsComponent implements OnInit {
 	// heatmap goRich keggRich goClass keggClass line net
 
-	// "heatmaprelation""关联聚类"
-	// "heatmapexpress""表达量聚类"  chooseType heatmapexpression
-	// "heatmapdiff" "差异聚类"
-	// "multiOmics" "多组学关联"
+	/* "heatmaprelation""关联聚类"
+	"heatmapexpress""表达量聚类"
+	"heatmapdiff" "差异聚类"
+    "multiOmics" "多组学关联"
+    "net" 普通网络图
+    "netrelation" "关联网络图" */
 
 	toolList: object[] = [
 		{ type: 'heatmap', name: '聚类重分析', needReanalysis: false, desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。' },
@@ -59,7 +61,7 @@ export class ToolsComponent implements OnInit {
 	multiOmicsData: any[] = [];
 	multiOmicsSelect: any[] = [];
     multiOmicsError: any = false;
-    
+
     // 折线图参数
     lineGroupData:object[] = [];
     lineSampleData:object[] = [];
@@ -433,7 +435,7 @@ export class ToolsComponent implements OnInit {
 						if (data['data']) {
 							this.lineGroupSelect.length = 0;
 							this.lineSampleSelect.length = 0;
-					
+
                             let group = data['data']['expression']['group'].map((v,index)=>{
                                 let status = index?false:true;
                                 if(status) this.lineGroupSelect.push({name:v,checked:status,category:'group'});
@@ -444,7 +446,7 @@ export class ToolsComponent implements OnInit {
                                 if(status) this.lineSampleSelect.push({name:v,checked:status,category:'sample'});
                                 return {name:v,checked:status,category:'sample'};
 							});
-							
+
 							this.lineGroupData = group;
 							this.lineSampleData = sample;
 						} else {
@@ -459,14 +461,14 @@ export class ToolsComponent implements OnInit {
 				}
 			)
 	}
-	
+
 	initLineData(){
 		this.lineGroupData.length = 0;
 		this.lineSampleData.length = 0;
 		this.lineGroupSelect.length = 0;
 		this.lineSampleSelect.length = 0;
 	}
-    
+
     // 折线图参数选择
     lineClick(type,item){
 		let temp = null;
@@ -493,7 +495,7 @@ export class ToolsComponent implements OnInit {
 
 		this.lineGroupError = !this.lineGroupData.length;
 		this.lineSampleError = !this.lineSampleData.length;
-		
+
     }
 
     // 提交折线图重分析

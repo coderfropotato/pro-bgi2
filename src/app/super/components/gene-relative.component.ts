@@ -20,20 +20,23 @@ export class GeneRelativeComponent implements OnInit {
 	selectRelations: object[] = [];
 	relations: object[] = [];
 	beforeRelation: object[] = [];
-	constructor() {}
+	constructor(
+        private storeService:StoreService
+    ) {}
 
 	ngOnInit() {
 		/*
             [{"key":"cerna","name":"cerna"},{"key":"coexpression","name":"coexpression"},{"key":"ppi","name":"ppi"},{"key":"rbp","name":"rbp"},{"key":"target","name":"target"}]
         */
-		this.relations = [
-			{ key: 'cerna', name: 'cerna', limit: true, score: [ 0, 100, 30 ], max: [ 100, 500, 200 ] },
-			{ key: 'coexpression', name: 'coexpression', limit: true, score: [ 0, 100, 20 ], max: [ 100, 500, 120 ] },
-			{ key: 'ppi', name: 'ppi', limit: true, score: [ 0, 100, 60 ], max: [ 100, 500, 152 ] },
-			{ key: 'rbp', name: 'rbp', limit: true, score: [ 0, 100, 90 ], max: [ 100, 500, 200 ] },
-			{ key: 'target', name: 'target', limit: true, score: [ 0, 100, 32 ], max: [ 100, 500, 459 ] }
-		];
+		// this.relations = [
+		// 	{ key: 'cerna', name: 'cerna', limit: true, score: [ 0, 100, 30 ], max: [ 100, 500, 200 ] },
+		// 	{ key: 'coexpression', name: 'coexpression', limit: true, score: [ 0, 100, 20 ], max: [ 100, 500, 120 ] },
+		// 	{ key: 'ppi', name: 'ppi', limit: true, score: [ 0, 100, 60 ], max: [ 100, 500, 152 ] },
+		// 	{ key: 'rbp', name: 'rbp', limit: true, score: [ 0, 100, 90 ], max: [ 100, 500, 200 ] },
+		// 	{ key: 'target', name: 'target', limit: true, score: [ 0, 100, 32 ], max: [ 100, 500, 459 ] }
+        // ];
 
+        this.relations = this.storeService.getStore('relations');
 		this.beforeRelation = JSON.parse(JSON.stringify(this.relations));
 	}
 

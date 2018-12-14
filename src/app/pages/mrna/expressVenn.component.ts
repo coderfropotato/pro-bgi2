@@ -73,7 +73,7 @@ export class ExpressVennComponent implements OnInit {
         max:0
 	}
 
-	expression_temp_min:string;				
+	expression_temp_min:string;
 	expression_temp_max:string;
 
 	activedCompareGroup: any[] = [];
@@ -198,7 +198,7 @@ export class ExpressVennComponent implements OnInit {
 			species: this.storeService.getStore('genome'), //物种
             low:this.storeService.getStore('expression_threshold').min,
             high:this.storeService.getStore('expression_threshold').max,
-			version: this.storeService.getStore('reference'),
+			version: this.storeService.getStore('version'),
 			searchList: []
         };
         //console.log(this.defaultEntity)
@@ -228,7 +228,7 @@ export class ExpressVennComponent implements OnInit {
 			species: this.storeService.getStore('genome'), //物种
 			low:this.storeService.getStore('expression_threshold').min,
             high:this.storeService.getStore('expression_threshold').max,
-			version: this.storeService.getStore('reference'),
+			version: this.storeService.getStore('version'),
 			searchList: []
 		};
 		this.extendTableId = 'diff_venn_extend_gene';
@@ -407,7 +407,7 @@ export class ExpressVennComponent implements OnInit {
 			venn_name: ''
 		};
 
-		this.doubleMultiSelect = {        
+		this.doubleMultiSelect = {
 			bar_name: [],
 			total_name: []
 		};
@@ -513,7 +513,7 @@ export class ExpressVennComponent implements OnInit {
 		// this.transformTable._setParamsNoRequest('sample',this.selectConfirmData);
 		// this.first ? this.transformTable._getData() : (this.first = true);
 		// this.updateVenn();
-		this.selectConfirmData = data; 
+		this.selectConfirmData = data;
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
 
@@ -547,7 +547,7 @@ export class ExpressVennComponent implements OnInit {
 		this.venn = new Venn({ id: 'chartId22122' })
 			.config({
 				data: tempR,
-				compareGroup: _selfV.tableEntity['compareGroup'], 
+				compareGroup: _selfV.tableEntity['compareGroup'],
 				isMultipleSelect: _selfV.isMultiSelect
 			})
 			.drawVenn()

@@ -67,25 +67,17 @@
 	}
 }
 
-.head-item {
-	display: inline-block;
-	padding: 8px;
-	line-height: 1;
-	background-color: #fff;
-	border: $border;
-	color: $btn_active_color;
-	margin-right: 10px;
-	margin-bottom: 10px;
-	cursor: pointer;
-}
 
-.head-item.active {
-	background-color: #ccc;
-	color: #fff;
-}
-
-.head-item:hover {
-	opacity: 0.7;
+.head-item-content{
+    max-height: 200px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    border-bottom: 1px solid $border-color;
+    .head-item {
+        margin-right: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
 }
 
 .add-head {
@@ -101,15 +93,18 @@
 	flex: 1;
 }
 
-.add-foot button {
-	float: right;
-	margin-left: 8px;
-}
+.add-foot{
+    padding: 12px 0;
+    button {
+        float: right;
+        margin-left: 8px;
+    }
 
-.add-foot:after {
-	display: block;
-	content: "";
-	clear: both;
+    &:after {
+        display: block;
+        content: "";
+        clear: both;
+    }
 }
 
 .add-thead-head-item {
@@ -407,6 +402,33 @@ button.btnActive {
 		right: 162px;
 		top: 46px;
 	}
+	.layout-switch {
+        width: 72px;
+        height: 20px;
+		background: $layout_switch_bgcolor;
+		border-radius: 4px;
+        position: relative;
+        margin-top: 4px;
+        cursor: pointer;
+		span {
+			position: absolute;
+            top: 4px;
+            left:4px;
+            transform: translateX(0);
+			width: 40px;
+			height: 12px;
+			background: #ffffff;
+			box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
+            border-radius: 2px;
+            transition: .3s all ease;
+            &.left{
+                transform: translateX(0);
+            }
+            &.right{
+                transform: translateX(24px);
+            }
+		}
+	}
 }
 
 .bar {
@@ -462,7 +484,7 @@ button.btnActive {
 		width: 100%;
 		min-width: $min-width;
 		margin: 0;
-		height: 310px;
+		height: 240px;
 		transition: 0.3s all ease;
 		position: absolute;
 		left: 0;
@@ -507,12 +529,13 @@ button.btnActive {
 			}
 
 			.tool-imgs {
-				height: 192px;
-				width: 192px;
+				height: 96px;
+				width: 96px;
 				margin: 0 auto;
 				background-repeat: no-repeat;
 				background-position: center;
 				transition: 0.3s all ease;
+				border-radius: 50%;
 				// border-width: 2px 2px 4px;
 				// border-style: solid;
 				// border-color: transparent;
@@ -969,30 +992,30 @@ button.btnActive {
 	max-height: 320px;
 	overflow: auto;
 }
-.relative-params-top{
-    // box-shadow: 0px 3px 13px #ccc;
-    padding-bottom: 20px;
+.relative-params-top {
+	// box-shadow: 0px 3px 13px #ccc;
+	padding-bottom: 20px;
 }
 
 // 基因转录本切换按钮
-.left-top-layout{
-    position: relative;
-    .gene-switch{
-        position: absolute;
-        top: 12px;
-        right: 0px;
-        border-radius: 16px 0 0 16px;
-        background-color: $them_color;
-        color: #fff;
-        padding:2px 16px;
-        font-size: 12px;
-        transition: .3s all ease;
-        cursor: pointer;
-        &:hover{
-            @include hover-animate($them_color);
-        }
-        span{
-            margin-right: 8px;
-        }
-    }
+.left-top-layout {
+	position: relative;
+	.gene-switch {
+		position: absolute;
+		top: 12px;
+		right: 0px;
+		border-radius: 16px 0 0 16px;
+		background-color: $them_color;
+		color: #fff;
+		padding: 2px 16px;
+		font-size: 12px;
+		transition: .3s all ease;
+		cursor: pointer;
+		&:hover {
+			@include hover-animate($them_color);
+		}
+		span {
+			margin-right: 8px;
+		}
+	}
 }

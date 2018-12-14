@@ -1,27 +1,27 @@
-import { AddColumnService } from './../../super/service/addColumnService';
-import { StoreService } from './../../super/service/storeService';
-import { PageModuleService } from './../../super/service/pageModuleService';
-import { MessageService } from './../../super/service/messageService';
+import { AddColumnService } from '../../super/service/addColumnService';
+import { StoreService } from '../../super/service/storeService';
+import { PageModuleService } from '../../super/service/pageModuleService';
+import { MessageService } from '../../super/service/messageService';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import { TranslateService } from "@ngx-translate/core";
-import {PromptService} from './../../super/service/promptService'
+import {PromptService} from '../../super/service/promptService'
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
 
 @Component({
-	selector: 'app-venn-page',
-    template: `<app-venn-component *ngIf="showModule" [defaultGeneType]="defaultGeneType">
+	selector: 'app-gene-list-page',
+    template: `<gene-list-component *ngIf="showModule" [defaultGeneType]="defaultGeneType">
                     <div class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
                         <span>{{defaultGeneType['type'] | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
-                </app-venn-component>`,
+                </gene-list-component>`,
 	styles: []
 })
-export class DiffVennPage {
+export class GeneListPage {
     showModule:boolean = true;
     defaultGeneType:object = {type:"gene"};
 
@@ -39,11 +39,11 @@ export class DiffVennPage {
 }
 
 @Component({
-	selector: 'app-venn-component',
-	templateUrl: './diffVenn.component.html',
+	selector: 'gene-list-component',
+	templateUrl: './geneList.component.html',
 	styles: []
 })
-export class DiffVennComponent implements OnInit {
+export class GeneListComponent implements OnInit {
 	// 表格高度相关
 	@ViewChild('left') left;
 	@ViewChild('right') right;
@@ -76,32 +76,11 @@ export class DiffVennComponent implements OnInit {
 
 	venSelectAllData: string[] = [];
 	selectConfirmData: string[] = [];
-
 	panelShow: boolean = false;
-
 	tableEntity: object = {};
 	selectPanelData: object[] = [];
 	venn_or_upsetR: boolean;
 
-	p_show: boolean; //设置里面的PossionDis
-	PossionDis: object = {
-		log2FC: '',
-		FDR: ''
-	};
-
-	p_log2FC:string;
-	p_FDR:string;
-
-	n_show: boolean; //设置里面的NOIseq
-	NOIseq: object = {
-		log2FC: '',
-		probability: ''
-	};
-
-	n_log2FC:string;
-	n_probability:string;
-
-	activedCompareGroup: any[] = [];
 	singleMultiSelect: object = {
 		bar_name: '',
 		total_name: '',
@@ -112,10 +91,7 @@ export class DiffVennComponent implements OnInit {
 	doubleMultiSelect: object = {
 		bar_name: [],
 		total_name: []
-	};
-	pageEntity: object = {
-		pageSize: 20
-	};
+    };
 
 	chart: any;
 	isMultiSelect: boolean;
@@ -133,6 +109,7 @@ export class DiffVennComponent implements OnInit {
 
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
+    selectedGeneList:any[] = [];
 
 	constructor(
 		private message: MessageService,
@@ -164,30 +141,16 @@ export class DiffVennComponent implements OnInit {
 		this.selectedData = [];
 		this.chartUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 
-		this.p_show = this.storeService.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
-		this.PossionDis = {
-			log2FC: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '',
-			FDR: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.FDR : ''
-		};
-		this.p_log2FC = this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '';
-		this.p_FDR = this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.FDR : '';
-
-		this.n_show = this.storeService.getStore('diff_threshold').hasOwnProperty('NOIseq'); //设置里面的NOIseq
-		this.NOIseq = {
-			log2FC: this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.log2FC : '',
-			probability: this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.probability : ''
-		};
-
-		this.n_log2FC = this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.log2FC : '';
-		this.n_probability = this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.probability : '';
-
 		this.selectPanelData = [
 			//差异面板的数据
 			{
-				type: '比较组',
+				type: '基因集',
 				data: this.storeService.getStore('diff_plan')
 			}
-		];
+        ];
+
+        // 选中的基因集
+        this.selectedGeneList = [this.storeService.getStore('diff_plan')];
 
 		this.tableEntity = {
 			//查询参数
@@ -195,22 +158,7 @@ export class DiffVennComponent implements OnInit {
 			compareGroup: this.storeService.getStore('diff_plan'),
 			geneType: this.defaultGeneType['type'],
 			species: this.storeService.getStore('genome'),
-			diffThreshold: this.storeService.getStore('diff_threshold')
 		};
-
-		// this.vennEntity = {
-		// 	LCID: sessionStorage.getItem('LCID'),
-		// 	compareGroup: this.activedCompareGroup,
-		// 	geneType: this.defaultGeneType['type'],
-		// 	species: this.storeService.getStore('genome'),
-		// 	version: this.storeService.getStore('version'),
-		// 	diffThreshold: {
-		// 		PossionDis: {
-		// 			log2FC: 1,
-		// 			FDR: 0.001
-		// 		}
-		// 	}
-		// };
 
 		this.applyOnceSearchParams = true;
 		this.defaultUrl = `${config['javaPath']}/Venn/diffGeneTable`;
@@ -220,7 +168,7 @@ export class DiffVennComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'),
 			leftChooseList: this.leftSelect, //upsetR参数
 			upChooseList: this.upSelect, //胜利n图选中部分参数
-			compareGroup: this.storeService.getStore('diff_plan'), //比较组
+            compareGroup: this.storeService.getStore('diff_plan'), //比较组
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -232,13 +180,10 @@ export class DiffVennComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			diffThreshold: {
-				PossionDis: this.PossionDis
-			},
 			version: this.storeService.getStore('version'),
 			searchList: []
 		};
-		this.defaultTableId = 'diff_venn_default_gene';
+		this.defaultTableId = 'default_gene_list';
 		this.defaultDefaultChecked = true;
 		this.defaultEmitBaseThead = true;
 		this.defaultCheckStatusInParams = true;
@@ -262,13 +207,10 @@ export class DiffVennComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			diffThreshold: {
-				PossionDis: this.PossionDis
-			},
 			version: this.storeService.getStore('version'),
 			searchList: []
 		};
-		this.extendTableId = 'diff_venn_extend_gene';
+		this.extendTableId = 'extend_gene_list';
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
@@ -333,7 +275,6 @@ export class DiffVennComponent implements OnInit {
 			this.extendEntity['compareGroup'] = this.selectConfirmData;
 			this.extendEntity['leftChooseList'] = checkParams['tableEntity']['leftChooseList'];
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
-            this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
             this.extendEntity['relations'] = relations;
             this.extendEntity['addThead'] = [];
 			this.first = false;
@@ -401,86 +342,10 @@ export class DiffVennComponent implements OnInit {
 		} catch (error) {}
 	}
 
-	OnChange(value: string): void {
-		this.PossionDis['log2FC'] = value;
-	}
-	OnChange2(value: string): void {
-		this.PossionDis['FDR'] = value;
-	}
-
-	OnChange3(value: string): void {
-		this.NOIseq['log2FC'] = value;
-	}
-	OnChange4(value: string): void {
-		this.NOIseq['probability'] = value;
-	}
-
-	panelChange() {
-		this.panelShow = !this.panelShow;
-	}
-	setCancle() {
-		if(this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR!=this.PossionDis['FDR']){
-			this.PossionDis = {
-				log2FC: this.p_show ? this.p_log2FC : '',
-				FDR: this.p_show ? this.p_FDR : ''
-			};
-		}
-
-		if(this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability!=this.NOIseq['probability']){
-			this.NOIseq = {
-				log2FC: this.n_show ? this.n_log2FC : '',
-				probability: this.n_show ? this.n_probability : ''
-			};
-		}
-
-		this.panelShow = false;
-	}
-	setConfirm() {
-		//设置下拉面板点击确定时候的两个参数
-		if (this.p_show) {
-			this.tableEntity['diffThreshold'] = {
-				PossionDis: this.PossionDis
-			};
-			this.p_log2FC = this.PossionDis['log2FC'];
-			this.p_FDR = this.PossionDis['FDR'];
-		}
-		if (this.n_show) {
-			this.tableEntity['diffThreshold'] = {
-				NOIseq: this.NOIseq
-			};
-			this.n_log2FC = this.NOIseq['log2FC'];
-			this.n_probability = this.NOIseq['probability'];
-		}
-
-		this.singleMultiSelect={
-			bar_name: '',
-			total_name: '',
-			venn_name: ''
-		};
-
-		this.doubleMultiSelect = {
-			bar_name: [],
-			total_name: []
-		};
-
-        this.panelShow = false;
-        this.upSelect.length = 0;
-        this.leftSelect.length = 0 ;
-		this.tableSwitchChart.reGetData();
-
-		// if (this.first) {
-		// 	this.transformTable._getData();
-		// } else {
-        //     this.first = true;
-        // }
-        this.chartBackStatus();
-	}
-
 	//单、多选change
 	multiSelectChange() {
         this.upSelect.length = 0;
         this.leftSelect.length = 0;
-        // this.first?this.transformTable._getData():this.first = true;
         this.chartBackStatus()
         this.updateVenn();
 	}
@@ -500,8 +365,6 @@ export class DiffVennComponent implements OnInit {
 			bar_name: [],
 			total_name: []
         };
-        // console.log(this.singleMultiSelect)
-        // console.log(this.doubleMultiSelect)
 	}
 
 	//venn和upsetR只能单选时候
@@ -546,8 +409,6 @@ export class DiffVennComponent implements OnInit {
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
 
-		// this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
-        // this.first ? this.transformTable._getData() : (this.first = true);
         // 更新当前回来的表头为基础头
         this.chartBackStatus();
         this.updateVenn();
@@ -580,7 +441,7 @@ export class DiffVennComponent implements OnInit {
 			tempR.push(tempO);
 		}
 
-		this.venn = new Venn({ id: 'chartId22122' })
+		this.venn = new Venn({ id: 'genelist_venn' })
 			.config({
 				data: tempR,
 				compareGroup: _selfV.tableEntity['compareGroup'],
@@ -630,7 +491,7 @@ export class DiffVennComponent implements OnInit {
 
 	//显示upsetR图
 	showUpSetR(data) {
-		document.getElementById('chartId22122').innerHTML = '';
+		document.getElementById('genelist_upsetR').innerHTML = '';
 		let _self = this;
 		let selectBar = [];
 		let tempBar = data.rows;
@@ -641,7 +502,7 @@ export class DiffVennComponent implements OnInit {
 			}
 		}
 
-		let t_chartID = document.getElementById('chartId22122');
+		let t_chartID = document.getElementById('genelist_upsetR');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
          <style>
              .MyRect {
@@ -732,7 +593,7 @@ export class DiffVennComponent implements OnInit {
 			}
 		}
 
-		let oSvg = d3.select('#chartId22122').append('svg');
+		let oSvg = d3.select('#genelist_upsetR').append('svg');
 		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
 		let left_name_length = mText.nodes()[0].getBBox().width;
 		//let left_name_length = document.querySelector(".mText").getBBox().width;

@@ -1,0 +1,72 @@
+<!-- venn -->
+<div class="content row geneList">
+    <div #left class="left-layout column" [class.unexpand]="switch">
+        <div class="left-top-layout">
+            <h4 style="padding-left: 10px;border-left: 4px solid #5378F8;">基因集</h4>
+            <p>desc</p>
+            <ng-content select=".gene-switch-module"></ng-content>
+        </div>
+        <div class="left-bottom-layout">
+            <!-- [selectTemplate]="selectTemplate" -->
+            <app-table-switch-chart
+                #tableSwitchChart
+                [id]="'tableSwitchChart'"
+                [isHasMultiSelect]="true"
+                [(isMultiSelect)]="isMultiSelect"
+                (isMultiSelectChange)="multiSelectChange()"
+                (multipleConfirmEmit)="multipleConfirm()"
+                [tableUrl]="tableUrl"
+                [chartUrl]="chartUrl"
+                [apiEntity]="tableEntity"
+                [isShowAccuracy]="true"
+                (drawChartEmit)="drawVenn($event)"
+                [selectPanelData]="selectPanelData"
+                (selectConfirmEmit)="selectConfirm($event)"
+                [defaultSelectNum]="1"
+                (defaultSelectList)="defaultSelectList($event)"
+                [isVennTable]="true"
+                [flex]="true"
+                [chartId]="'genelist_upsetR'"
+                [chartName]="'韦恩图'"
+                (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
+        </div>
+    </div>
+    <div #right class="right-layout" [class.expand]="switch">
+        <div class="switch">
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" ></app-layout-switch>
+        </div>
+        <div class="func" #func (click)="resize($event)">
+            <!-- 增删列 -->
+            <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" ></app-add-column>
+            <!-- 关系 -->
+            <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
+
+            <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
+        </div>
+        <!-- 表格转换 -->
+        <app-table-transformation
+            class="no-outside-border"
+            #transformTable
+            [isFirst]="first"
+            [tableHeight]="tableHeight"
+            [defaultTableEntity]="defaultEntity"
+            [defaultTableUrl]="defaultUrl"
+            [defaultTableId]="defaultTableId"
+            [defaultTableDefaultChecked]="defaultDefaultChecked"
+            [(defaultEmitBaseThead)]="defaultEmitBaseThead"
+            (defaultBaseTheadChange)="baseTheadChange($event)"
+            [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
+            [extendTableEntity]="extendEntity"
+            [extendTableUrl]="extendUrl"
+            [extendTableId]="extendTableId"
+            [extendTableDefaultChecked]="extendDefaultChecked"
+            [(extendEmitBaseThead)]="extendEmitBaseThead"
+            (extendBaseTheadChange)="baseTheadChange($event)"
+            [extendTableCheckStatusInParams]="extendCheckStatusInParams"
+            [(applyOnceSearchParams)]="applyOnceSearchParams"
+        ></app-table-transformation>
+    </div>
+</div>

@@ -136,6 +136,11 @@ export class GlobalService {
                             el.valueOne
                         }&emsp;`;
                         break;
+                    case "$notNull":
+                        text = `<span>${
+                            el.filterNamezh
+                        }</span>&nbsp;<font color="#f40">not Null</font>&nbsp;&emsp;`;
+                        break;
                 }
                 htmlStringList.push({ html: null, obj: el, beforeHtml: text });
             });
