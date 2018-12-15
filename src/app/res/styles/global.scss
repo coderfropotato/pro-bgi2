@@ -876,6 +876,24 @@ button.btnActive {
 	white-space: nowrap;
 }
 
+
+.tool-params-kafun{
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	.tool-params-kafun-top{
+		width: 96%;
+		height: auto;
+		margin: 0 auto 10px auto;
+		.my-nz-row{
+			height: 40px;
+			line-height: 40px;
+			margin-bottom: 10px;
+		}
+	}
+}
+
 // 设置面板
 .setPanel {
 	position: relative;

@@ -70,6 +70,12 @@ export class ToolsComponent implements OnInit {
 	lineGroupError:boolean = false;
 	lineSampleError:boolean = false;
 
+	//卡方图参数
+	geneNum:number;
+	kaFunGroupData:object[] = [];
+    kaFunGroupSelect:object[] = [];
+	kaFunGroupError:boolean = false;
+
 	// 当前选择的重分析类型
 	selectType: string = '';
 	childVisible: boolean = false;
@@ -121,6 +127,11 @@ export class ToolsComponent implements OnInit {
         this.lineGroupError = false;
         this.lineSampleError = false;
 
+		//卡方检验
+		this.geneNum = 1;
+		this.kaFunGroupData = [];
+        this.kaFunGroupSelect = [];
+        this.kaFunGroupError = false;
 
 		// 页面参数
 		this.selectType = '';
@@ -210,6 +221,8 @@ export class ToolsComponent implements OnInit {
 			return x === val[key];
 		});
 	}
+
+	
 
 	getheatmapParams() {
 		this.ajaxService
@@ -415,6 +428,68 @@ export class ToolsComponent implements OnInit {
 	getkeggClassParams() {
 		console.log('keggclass');
 	}
+
+	getkaFunParams() {
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/chiSquare/config`,
+				data: {
+                    LCID: sessionStorage.getItem('LCID'),
+                    geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.toolsService.get('tableEntity')['species'],
+					baseThead: this.toolsService.get('baseThead'),
+					geneNum:this.geneNum
+				}
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						if (data['data']) {
+							this.kaFunGroupSelect.length = 0;
+
+                            let group = data['data']['Classification'].map((v,index)=>{
+                                let status = index?false:true;
+                                if(status) this.kaFunGroupSelect.push({name:v,checked:status,category:'group'});
+                                return {name:v,checked:status,category:'group'};
+                            });
+                            
+							this.kaFunGroupData = group;
+						} else {
+						this.initKaFunData();
+						}
+					} else {
+						this.initKaFunData();
+					}
+				},
+				(err) => {
+					this.initKaFunData();
+				}
+			)
+	}
+
+	initKaFunData(){
+		this.kaFunGroupData.length = 0;
+		this.kaFunGroupSelect.length = 0;
+	}
+
+	// 卡方图参数选择
+    kaFunClick(item){
+		let temp =this.lineGroupSelect;
+
+        item['checked'] = !item['checked'];
+		let index = temp.findIndex((val, index) => {
+			return val['name'] === item['name'];
+		});
+
+		if (item['checked']) {
+			if (index == -1) temp.push(item);
+		} else {
+			if (index != -1) temp.splice(index, 1);
+		}
+
+		this.kaFunGroupError = !this.lineGroupData.length;
+
+    }
 
 	// 折线图
 	getlineParams() {
