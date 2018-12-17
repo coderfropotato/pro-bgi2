@@ -275,7 +275,7 @@ export class DiffVennComponent implements OnInit {
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
 	}
-	
+
 	moduleDescChange(){
 		this.expandModuleDesc = !this.expandModuleDesc;
 		// 重新计算表格切换组件表格的滚动高度
@@ -399,8 +399,13 @@ export class DiffVennComponent implements OnInit {
 		}
 	}
 
+    // 切换左右布局 计算左右表格的滚动高度
 	switchChange(status) {
-		this.switch = status;
+        this.switch = status;
+        setTimeout(()=>{
+            this.tableSwitchChart.scrollHeight();
+            this.computedTableHeight();
+        },320)
 	}
 
 	computedTableHeight() {
