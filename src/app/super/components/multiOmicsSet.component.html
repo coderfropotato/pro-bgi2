@@ -44,14 +44,14 @@
                 <span>Relation</span>
             </nz-col>
             <nz-col nzSpan="13">
-                <nz-select style="width:100%" [(ngModel)]="curRelation.key" (ngModelChange)="relationChange()" nzShowSearch>
+                <nz-select style="width:100%" [(ngModel)]="curRelation['key']" (ngModelChange)="relationChange()" nzShowSearch>
                         <nz-option [nzDisabled]='relation.isDisabled' *ngFor="let relation of relationList" [nzLabel]="relation.name" [nzValue]="relation.key"></nz-option>
                 </nz-select>
             </nz-col>
         </nz-row>
       </div>  
 
-      <div class="relationRow" *ngIf="curRelation.score && curRelation.score.length">
+      <div class="relationRow" *ngIf="curRelation['score'] && curRelation['score'].length">
           <nz-row>
               <nz-col nzSpan="5" style="margin-top:8px">
                   <span>Score</span>
@@ -65,7 +65,7 @@
           </nz-row>
       </div>
 
-      <div class="relationRow" *ngIf="curRelation.max && curRelation.max.length">
+      <div class="relationRow" *ngIf="curRelation['max'] && curRelation['max'].length">
             <nz-row>
                 <nz-col nzSpan="5">
                     <span>Max Num</span>
