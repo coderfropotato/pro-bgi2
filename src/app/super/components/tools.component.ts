@@ -72,6 +72,9 @@ export class ToolsComponent implements OnInit {
 
 	//卡方图参数
 	geneNum:number;
+	kaFunDataName:string;
+	kaFunStatistics:any[] = [];
+	kaFunStatisticsName:string;
 	kaFunGroupData:object[] = [];
     kaFunGroupSelect:object[] = [];
 	kaFunGroupError:boolean = false;
@@ -129,6 +132,7 @@ export class ToolsComponent implements OnInit {
 
 		//卡方检验
 		this.geneNum = 1;
+		this.kaFunDataName = "";
 		this.kaFunGroupData = [];
         this.kaFunGroupSelect = [];
         this.kaFunGroupError = false;
@@ -447,13 +451,21 @@ export class ToolsComponent implements OnInit {
 						if (data['data']) {
 							this.kaFunGroupSelect.length = 0;
 
-                            let group = data['data']['Classification'].map((v,index)=>{
+							//data['data']['Classification']=["A","B","C","D","E"];//11111111111
+                            let m_list = data['data']['Classification'].map((v,index)=>{
                                 let status = index?false:true;
-                                if(status) this.kaFunGroupSelect.push({name:v,checked:status,category:'group'});
-                                return {name:v,checked:status,category:'group'};
+                                if(status) this.kaFunGroupSelect.push({name:v,checked:status});
+                                return {name:v,checked:status};
                             });
-                            
-							this.kaFunGroupData = group;
+							
+							this.kaFunDataName = data['data']['Data'];	//data Name
+							this.kaFunStatistics = data['data']['Statistics'];
+
+							//this.kaFunStatistics = ["name1","name2","name3"]; //11111111111
+
+							this.kaFunStatisticsName = !this.kaFunStatistics.length?this.kaFunStatistics[0]:"";
+							this.kaFunGroupData = m_list;
+							console.log(m_list);
 						} else {
 						this.initKaFunData();
 						}
@@ -474,7 +486,7 @@ export class ToolsComponent implements OnInit {
 
 	// 卡方图参数选择
     kaFunClick(item){
-		let temp =this.lineGroupSelect;
+		let temp =this.kaFunGroupSelect;
 
         item['checked'] = !item['checked'];
 		let index = temp.findIndex((val, index) => {
@@ -487,9 +499,64 @@ export class ToolsComponent implements OnInit {
 			if (index != -1) temp.splice(index, 1);
 		}
 
-		this.kaFunGroupError = !this.lineGroupData.length;
+		this.kaFunGroupError = !this.kaFunGroupData.length;
+		console.log(this.kaFunGroupSelect)
+	}
+	
+	selectStatistics(item,index){
+		this.kaFunStatisticsName = item;
+		console.log(this.kaFunStatisticsName);
+	}
 
-    }
+	kaFunConfirm(reanalysisType){
+		this.isSubmitReanalysis = true;
+		let tempSelect = this.kaFunGroupSelect;
+
+		let tempChooseList = tempSelect.map((val) => {
+			let temp = {};
+			temp[val['category']] = val['name'];
+			return temp;
+		});
+
+		this.ajaxService
+			.getDeferData({
+				data: {
+					reanalysisType: reanalysisType,
+					needReanalysis: 2,
+					chooseType: ['expression'],
+					chooseList: tempChooseList,
+					...this.toolsService.get('tableEntity')
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				(data) => {
+					// if (data['status'] === '0') {
+					// 	this.selectType = '';
+					// 	this.childVisible = false;
+					// 	this.toolsService.hide();
+					// 	this.notify.blank('tips：', '折线图重分析提交成功', {
+					// 		nzStyle: { width: '200px' },
+					// 		nzDuration: 2000
+					// 	});
+					// } else {
+					// 	this.notify.blank('tips：', '重分析提交失败，请重试', {
+					// 		nzStyle: { width: '200px' },
+					// 		nzDuration: 2000
+					// 	});
+					// }
+				},
+				(err) => {
+					// this.notify.blank('tips：', '重分析提交失败，请重试', {
+					// 	nzStyle: { width: '200px' },
+					// 	nzDuration: 2000
+					// });
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
+	}
 
 	// 折线图
 	getlineParams() {
