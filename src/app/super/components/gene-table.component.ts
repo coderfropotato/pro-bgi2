@@ -126,6 +126,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
     // 是否在保存基因集
     isSaveGeneList:boolean=false;
     validateForm: FormGroup;
+    labels:any[] = ['1','2','3'];
+    textareaMaxLen:number = 200;
 
     constructor(
         private translate: TranslateService,
@@ -199,14 +201,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
         }
 
         this.getRemoteData();
-    }
-
-    initFormValue(){
-        this.validateForm = this.fb.group({
-            name:[null,[Validators.required]],
-            label:[null],
-            mark:[null]
-        });
     }
 
     sort(key, value): void {
@@ -866,17 +860,36 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @date 2018-12-14
      * @memberof GeneTableComponent
      */
+    initFormValue(){
+        this.validateForm = this.fb.group({
+            name:["",[Validators.required]],
+            label:[null],
+            mark:["",[Validators.maxLength(this.textareaMaxLen)]]
+        });
+    }
+
     saveGeneList(){
         let params = this._getInnerStatusParams();
         this.isSaveGeneList = true;
     }
 
     handleSaveGeneConfirm(){
+        console.log(this.validateForm.value);
         this.isSaveGeneList = false;
+        this.initFormValue();
     }
 
     handleSaveGeneCancel(){
         this.isSaveGeneList = false;
+        this.initFormValue();
+    }
+
+    // textarea 字符提示
+    handleTextKeyUp(){
+        // let textLen = this.validateForm.value['mark'].length;
+        // if(textLen>=200){
+        //     this.validateForm.get('mark').setValue()
+        // }
     }
 
     /**
