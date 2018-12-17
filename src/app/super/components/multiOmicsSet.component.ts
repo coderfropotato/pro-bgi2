@@ -110,17 +110,16 @@ export class MultiOmicsSetComponent implements OnInit {
     //获取关联基因
     getRelations() {
         let data = this.storeService.getStore('relations');
-        data.unshift({
+        this.relationList=[...data];
+        this.relationList.unshift({
             key: "false",
             name: "false"
         })
-
-        this.relationList=[...data];
         this.relationList.forEach(d => {
             d['isDisabled']= false;
-            if(d['key']!=="false"){
-                d['limit']=true;
-            }
+            // if(d['key']!=="false"){
+            //     d['limit']=true;
+            // }
         })
         
         this.curRelation = {...this.relationList[0]};

@@ -1037,3 +1037,14 @@ button.btnActive {
 		}
 	}
 }
+
+// 保存基因集 备注容器
+.counter-content{
+	position: relative;
+	padding-bottom: 20px;
+	span{
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
+}

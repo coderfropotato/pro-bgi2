@@ -64,14 +64,20 @@
                                 <nz-form-item>
                                   <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="label">标签</nz-form-label>
                                   <nz-form-control [nzSm]="14" [nzXs]="24">
-                                    <input nz-input id="label" formControlName="label">
+                                        <nz-select id="label" nzMode="tags" formControlName="label" nzPlaceHolder="tags">
+                                            <nz-option  *ngFor="let label of labels" [nzLabel]="label" [nzValue]="label">
+                                            </nz-option>
+                                        </nz-select>
                                   </nz-form-control>
                                 </nz-form-item>
                                 <nz-form-item>
                                   <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="mark"> 备注</nz-form-label>
-                                  <nz-form-control [nzSm]="14" [nzXs]="24">
-									<textarea rows="4" nz-input  formControlName="mark" id="mark"></textarea>
-                                  </nz-form-control>
+                                    <nz-form-control [nzSm]="14" [nzXs]="24">
+                                        <div class="counter-content">
+                                            <textarea rows="4" nz-input (keyup)="handleTextKeyUp($event)" formControlName="mark" id="mark"></textarea>
+                                            <span>{{validateForm.value['mark'].length?validateForm.value['mark'].length:0}}/{{textareaMaxLen}}</span>
+                                        </div>
+                                    </nz-form-control>
                                 </nz-form-item>
                               </form>
                         </nz-modal>

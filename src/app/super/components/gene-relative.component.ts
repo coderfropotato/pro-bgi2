@@ -59,13 +59,14 @@ export class GeneRelativeComponent implements OnInit {
 	}
 
 	handleCancel() {
-        this.isVisible = false;
-        this.beforeRelation.forEach
+		this.isVisible = false;
+		this.relations = JSON.parse(JSON.stringify(this.beforeRelation));
 	}
 
 	confirm(): void {
 		this.isVisible = false;
 		this.confirmEvent.emit(this.selectRelations);
+		this.relations = JSON.parse(JSON.stringify(this.beforeRelation));
 	}
 
 	initRelations() {
