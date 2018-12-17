@@ -134,7 +134,8 @@ export class ReHeatmapComponent implements OnInit {
             "tid": this.tid,
             "isHorizontal": true,
             "verticalClassification": {},
-            "horizontalClassification": []
+            "horizontalClassification": [],
+            "version":this.storeService.getStore('version')
         };
 
         // table
