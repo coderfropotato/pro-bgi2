@@ -572,6 +572,7 @@ export class ToolsComponent implements OnInit {
 					LCID: sessionStorage.getItem('LCID'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
+					version:this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead')
 				},
 				url: `${config['javaPath']}/line/config`

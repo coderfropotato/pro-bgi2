@@ -95,6 +95,10 @@
         "cancel":"取消",
         "confirm":"确定"
     },
+    "moduleDesc":{
+        "expand":"展开模块描述",
+        "unexpand":"收起模块描述"
+    },
     "gene":"基因",
     "transform":"转录本",
     "001":"基因属性",

@@ -95,6 +95,10 @@
         "cancel":"cancel",
         "confirm":"confirm"
     },
+    "moduleDesc":{
+        "expand":"expand module describe",
+        "unexpand":"Retract module describe"
+    },
     "gene":"gene",
     "transform":"transform",
     "001":"Gene Attr",
