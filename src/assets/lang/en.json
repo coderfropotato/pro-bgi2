@@ -84,6 +84,17 @@
         "error":"Sorry, the system is wrong !",
         "maxOver":"Sorry, the amount of data is too large to display properly !"
     },
+    "saveGene":{
+        "title":"save Gene",
+        "name":"name",
+        "name_maxlength":"Character length should not exceed 12 bits !",
+        "name_repeat":"The value duplication of input !",
+        "name_invalid":"The input is not valid name !",
+        "tag":"tag",
+        "remark":"remark",
+        "cancel":"cancel",
+        "confirm":"confirm"
+    },
     "gene":"gene",
     "transform":"transform",
     "001":"Gene Attr",

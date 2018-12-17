@@ -84,6 +84,17 @@
         "error":"对不起，系统错误 !",
         "maxOver":"对不起，数据量过大，无法正常显示 !"
     },
+    "saveGene":{
+        "title":"保存基因集",
+        "name":"名称",
+        "name_maxlength":"字符长度不能超过12位 !",
+        "name_repeat":"当前名称重复 !",
+        "name_invalid":"当前名称不可用 !",
+        "tag":"标签",
+        "remark":"备注",
+        "cancel":"取消",
+        "confirm":"确定"
+    },
     "gene":"基因",
     "transform":"转录本",
     "001":"基因属性",

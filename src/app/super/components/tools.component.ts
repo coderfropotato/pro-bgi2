@@ -1,3 +1,4 @@
+import { StoreService } from './../service/storeService';
 import { AjaxService } from './../service/ajaxService';
 import { ToolsService } from './../service/toolsService';
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
@@ -84,6 +85,7 @@ export class ToolsComponent implements OnInit {
 	constructor(
 		public toolsService: ToolsService,
 		private ajaxService: AjaxService,
+		private storeService:StoreService,
 		private notify: NzNotificationService
 	) {}
 
@@ -232,6 +234,7 @@ export class ToolsComponent implements OnInit {
                     LCID: sessionStorage.getItem('LCID'),
                     geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
+					version:this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead')
 				}
 			})
@@ -333,6 +336,7 @@ export class ToolsComponent implements OnInit {
 					LCID: sessionStorage.getItem('LCID'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
+					version:this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead')
 				},
 				url: `${config['javaPath']}/multiOmics/config`
@@ -437,6 +441,7 @@ export class ToolsComponent implements OnInit {
                     LCID: sessionStorage.getItem('LCID'),
                     geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
+					version:this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead'),
 					geneNum:this.geneNum
 				}
