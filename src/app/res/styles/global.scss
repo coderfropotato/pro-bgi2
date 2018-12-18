@@ -369,12 +369,16 @@ button.btnActive {
 	}
 	.left-layout {
 		overflow: hidden;
-		flex: 3;
+		flex: 7;
 		margin-right: 16px;
-		display: flex;
+        display: flex;
+        transition: 0.2s all ease;
 		&.unexpand {
-			flex: 2;
-		}
+			flex: 4;
+        }
+        &.table-only{
+            flex:0;
+        }
 		.left-top-layout {
 			@include module-style;
 			margin-bottom: 12px;
@@ -385,50 +389,64 @@ button.btnActive {
 			padding: 12px;
 			flex: 1;
 			overflow: hidden;
-		}
+        }
 	}
 	.right-layout {
 		height: 100%;
 		overflow: hidden;
-		flex: 2;
+		flex: 4;
 		transition: 0.2s all ease;
 		@include module-style;
 		&.expand {
-			flex: 3;
-		}
+			flex: 7;
+        }
+        &.table-only{
+            flex:1;
+        }
 	}
 	& .switch {
 		position: fixed;
 		right: 162px;
 		top: 46px;
-	}
-	.layout-switch {
-        width: 72px;
-        height: 20px;
-		background: $layout_switch_bgcolor;
-		border-radius: 4px;
-        position: relative;
-        margin-top: 4px;
-        cursor: pointer;
-		span {
-			position: absolute;
-            top: 4px;
-            left:4px;
-            transform: translateX(0);
-			width: 40px;
-			height: 12px;
-			background: #ffffff;
-			box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
-            border-radius: 2px;
-            transition: .3s all ease;
-            &.left{
+    }
+    .layout-switch-wrap{
+        .layout-switch {
+            width: 72px;
+            height: 20px;
+            background: $layout_switch_bgcolor;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: -6px;
+            vertical-align: middle;
+            margin-right: 6px;
+            span {
+                position: absolute;
+                top: 4px;
+                left:4px;
                 transform: translateX(0);
+                width: 40px;
+                height: 12px;
+                background: #ffffff;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
+                border-radius: 2px;
+                transition: .3s all ease;
+                &.left{
+                    transform: translateX(0);
+                }
+                &.right{
+                    transform: translateX(24px);
+                }
             }
-            &.right{
-                transform: translateX(24px);
-            }
-		}
-	}
+        }
+        i{
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 6px;
+            cursor: pointer;
+        }
+    }
 }
 
 .bar {
@@ -1046,5 +1064,18 @@ button.btnActive {
 		position: absolute;
 		bottom: 0;
 		right: 0;
+		line-height: 1;
 	}
+}
+
+.pointer{
+	cursor:pointer;
+}
+.icon-theme{
+	color:$them-color;
+}
+
+// 禁用状态
+.disabled{
+    cursor: not-allowed!important;
 }

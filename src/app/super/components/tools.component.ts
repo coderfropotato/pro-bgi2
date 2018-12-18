@@ -1,3 +1,4 @@
+import { StoreService } from './../service/storeService';
 import { AjaxService } from './../service/ajaxService';
 import { ToolsService } from './../service/toolsService';
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
@@ -12,12 +13,19 @@ declare const $: any;
 export class ToolsComponent implements OnInit {
 	// heatmap goRich keggRich goClass keggClass line net
 
-	/* "heatmaprelation""关联聚类"
-	"heatmapexpress""表达量聚类"
-	"heatmapdiff" "差异聚类"
-    "multiOmics" "多组学关联"
-    "net" 普通网络图
-    "netrelation" "关联网络图" */
+    /*
+        "heatmaprelation""关联聚类"
+        "heatmapexpress""表达量聚类"
+        "heatmapdiff" "差异聚类"
+        "multiOmics" "多组学关联"
+        "net" 普通网络图
+        "netrelation" "关联网络图"
+    */
+
+
+    /*
+        聚类，富集，KDA 需要生信重分析
+    */
 
 	toolList: object[] = [
 		{ type: 'heatmap', name: '聚类重分析', needReanalysis: false, desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。' },
@@ -87,6 +95,7 @@ export class ToolsComponent implements OnInit {
 	constructor(
 		public toolsService: ToolsService,
 		private ajaxService: AjaxService,
+		private storeService:StoreService,
 		private notify: NzNotificationService
 	) {}
 
@@ -226,7 +235,7 @@ export class ToolsComponent implements OnInit {
 		});
 	}
 
-	
+
 
 	getheatmapParams() {
 		this.ajaxService
@@ -236,6 +245,7 @@ export class ToolsComponent implements OnInit {
                     LCID: sessionStorage.getItem('LCID'),
                     geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
+					version:this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead')
 				}
 			})
@@ -337,6 +347,7 @@ export class ToolsComponent implements OnInit {
 					LCID: sessionStorage.getItem('LCID'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
+					version:this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead')
 				},
 				url: `${config['javaPath']}/multiOmics/config`
@@ -388,6 +399,7 @@ export class ToolsComponent implements OnInit {
 			})
 			.subscribe(
 				(data) => {
+                    console.log(data);
 					if (data['status'] === '0') {
 						this.selectType = '';
 						this.childVisible = false;
@@ -441,6 +453,7 @@ export class ToolsComponent implements OnInit {
                     LCID: sessionStorage.getItem('LCID'),
                     geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
+					version:this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead'),
 					geneNum:this.geneNum
 				}
@@ -467,14 +480,12 @@ export class ToolsComponent implements OnInit {
 									checked:status
 								};
                             });
-							
-							this.kaFunDataName = data['data']['Data'];
+
+							this.kaFunDataName = data['data']['Data'];	//data Name
 							this.kaFunStatistics = data['data']['Statistics'];
 
 							this.kaFunStatisticsName = this.kaFunStatistics.length?this.kaFunStatistics[0]:"";
-							console.log(this.kaFunStatisticsName);
 							this.kaFunGroupData = m_list;
-							//console.log(this.kaFunGroupData);
 						} else {
 						this.initKaFunData();
 						}
@@ -515,11 +526,6 @@ export class ToolsComponent implements OnInit {
 	onkaFunChange(value:any):void{
 		console.log(value)
 	}
-
-	// selectStatistics(item,index){
-	// 	this.kaFunStatisticsName = item;
-	// 	console.log(this.kaFunStatisticsName);
-	// }
 
 	kaFunConfirm(reanalysisType){
 		this.isSubmitReanalysis = true;
@@ -580,6 +586,7 @@ export class ToolsComponent implements OnInit {
 					LCID: sessionStorage.getItem('LCID'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
+					version:this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead')
 				},
 				url: `${config['javaPath']}/line/config`

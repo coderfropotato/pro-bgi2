@@ -5,6 +5,7 @@
         "diff_venn_title":"差异基因聚类",
         "diff_venn_content":"对每个比较组差异基因的FPKM值进行聚类"
     },
+    "onlytable":"只显示表",
     "cxzk1Title": "测序质控工作中",
     "sortEmail": "降序排序 email",
     "sortPhone": "升序排序 phone",
@@ -83,6 +84,21 @@
         "nodata":"对不起，没有可显示的数据 !",
         "error":"对不起，系统错误 !",
         "maxOver":"对不起，数据量过大，无法正常显示 !"
+    },
+    "saveGene":{
+        "title":"保存基因集",
+        "name":"名称",
+        "name_maxlength":"字符长度不能超过12位 !",
+        "name_repeat":"当前名称重复 !",
+        "name_invalid":"当前名称不可用 !",
+        "tag":"标签",
+        "remark":"备注",
+        "cancel":"取消",
+        "confirm":"确定"
+    },
+    "moduleDesc":{
+        "expand":"展开模块描述",
+        "unexpand":"收起模块描述"
     },
     "gene":"基因",
     "transform":"转录本",

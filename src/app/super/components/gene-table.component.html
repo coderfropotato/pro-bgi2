@@ -52,37 +52,42 @@
                     </nz-select>
                     <!-- 保存基因集 -->
                     <i *ngIf="!error" class="iconfont icon-baocunjiyin" [nzTitle]="'tableButton.saveGene' | translate" nz-tooltip (click)="saveGeneList()">
-                        <nz-modal [(nzVisible)]="isSaveGeneList" nzTitle="保存基因集" nzOkText="确定" nzCancelText="取消" (nzOnOk)="handleSaveGeneConfirm()" (nzOnCancel)="handleSaveGeneCancel()" >
-                            <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+                        <nz-modal [(nzVisible)]="isSaveGeneList" [nzTitle]="'saveGene.title' | translate" [nzOkText]="'saveGene.confirm'| translate" [nzCancelText]="'saveGene.cancel' | translate" (nzOnOk)="handleSaveGeneConfirm()" (nzOnCancel)="handleSaveGeneCancel()" >
+                            <form nz-form [formGroup]="validateForm">
                                 <nz-form-item>
-                                  <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">名称</nz-form-label>
-                                  <nz-form-control [nzSm]="14" [nzXs]="24">
-                                    <input nz-input formControlName="name" id="name">
-                                    <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">The input is not valid name!</nz-form-explain>
-                                </nz-form-control>
+                                    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">{{'saveGene.name' | translate}}</nz-form-label>
+                                    <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="validateForm.controls['name']">
+                                        <input nz-input formControlName="name" id="name">
+                                        <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">
+                                            <!-- required -->
+                                            <ng-container *ngIf="validateForm.get('name').errors.required">{{'saveGene.name_invalid' | translate}}</ng-container>
+                                            <!-- maxlength -->
+                                            <ng-container *ngIf="validateForm.get('name').errors.maxlength">{{'saveGene.name_maxlength' | translate}}</ng-container>
+                                        </nz-form-explain>
+                                    </nz-form-control>
                                 </nz-form-item>
                                 <nz-form-item>
-                                  <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="label">标签</nz-form-label>
-                                  <nz-form-control [nzSm]="14" [nzXs]="24">
+                                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="label">{{'saveGene.tag' | translate}}</nz-form-label>
+                                    <nz-form-control [nzSm]="14" [nzXs]="24">
                                         <nz-select id="label" nzMode="tags" formControlName="label" nzPlaceHolder="tags">
                                             <nz-option  *ngFor="let label of labels" [nzLabel]="label" [nzValue]="label">
                                             </nz-option>
                                         </nz-select>
-                                  </nz-form-control>
+                                    </nz-form-control>
                                 </nz-form-item>
                                 <nz-form-item>
-                                  <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="mark"> 备注</nz-form-label>
+                                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="mark"> {{'saveGene.remark' | translate}}</nz-form-label>
                                     <nz-form-control [nzSm]="14" [nzXs]="24">
                                         <div class="counter-content">
                                             <textarea rows="4" nz-input (keyup)="handleTextKeyUp($event)" formControlName="mark" id="mark"></textarea>
-                                            <span>{{validateForm.value['mark'].length?validateForm.value['mark'].length:0}}/{{textareaMaxLen}}</span>
+                                            <span>{{validateForm.value['mark'].length}}/{{textareaMaxLen}}</span>
                                         </div>
                                     </nz-form-control>
                                 </nz-form-item>
                               </form>
                         </nz-modal>
                     </i>
-                    <!-- 刷新、下载 anticon anticon-reload-->
+                    <!-- 刷新、下载 -->
                     <i class="iconfont icon-shuaxin" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="refresh()"></i>
                     <app-grid-export *ngIf="!error" [url]="url" [tableEntity]="tableEntity" [fileName]="fileName"></app-grid-export>
                 </div>

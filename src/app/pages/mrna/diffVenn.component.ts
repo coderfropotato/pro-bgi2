@@ -55,7 +55,10 @@ export class DiffVennComponent implements OnInit {
 
 	switch: boolean = false;
 	tableUrl: string;
-	chartUrl: string;
+    chartUrl: string;
+    onlyTable:boolean = false;
+	// 默认收起模块描述
+	expandModuleDesc:boolean = false;
 
 	// vennEntity: object;
 	defaultEntity: object;
@@ -272,7 +275,13 @@ export class DiffVennComponent implements OnInit {
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
-    }
+	}
+
+	moduleDescChange(){
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(()=>{this.tableSwitchChart.scrollHeight()},30)
+	}
 
     toggle(status){
         this.addColumnShow = status;
@@ -391,9 +400,18 @@ export class DiffVennComponent implements OnInit {
 		}
 	}
 
+    // 切换左右布局 计算左右表格的滚动高度
 	switchChange(status) {
-		this.switch = status;
-	}
+        this.switch = status;
+        setTimeout(()=>{
+            this.tableSwitchChart.scrollHeight();
+            this.computedTableHeight();
+        },320)
+    }
+
+    handleOnlyTable(){
+        this.onlyTable = !this.onlyTable;
+    }
 
 	computedTableHeight() {
 		try {
