@@ -58,6 +58,7 @@ import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component'
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
 import { ReNetComponent } from './pages/reanalysis/re-net.component';
 import { ReLineComponent } from './pages/reanalysis/re-line.component';
+import { KaFunComponent } from './pages/reanalysis/re-kaFun.component';
 import { LayoutSwitchComponent } from './super/components/layout-switch.component';
 import { GeneListComponent,GeneListPage } from './pages/mrna/geneList.component';
 import { LoadingComponent } from './pages/reanalysis/loading.component';
@@ -314,6 +315,15 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-kaFun/:geneType/:tid/:version",
+                component: KaFunComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reKaFun"
+                }
+            },
+            {
                 path: "",
                 redirectTo: "index",
                 pathMatch: "full"
@@ -439,6 +449,7 @@ export function createTranslateLoader(http: HttpClient) {
         TooltipDirective,
         ReNetComponent,
         ReLineComponent,
+        KaFunComponent,
         LayoutSwitchComponent,
         ReMultiOmicsComponent,
         LoadingComponent,
