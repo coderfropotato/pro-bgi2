@@ -13,7 +13,7 @@ import { ControlValueAccessor } from '@angular/forms/src/directives';
 @Component({
 	selector: 'app-layout-switch',
     template: `<div class="layout-switch-wrap">
-                    <div class="layout-switch" [class.disabled]="disabled" (click)="writeValue(!innerValue)">
+                    <div class="layout-switch"  (click)="writeValue(!innerValue)">
                         <span [class.left]="innerValue" [class.right]="!innerValue"></span>
                     </div>
                     <ng-content></ng-content>
