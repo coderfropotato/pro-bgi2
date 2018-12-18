@@ -8,26 +8,32 @@ import { TranslateService } from "@ngx-translate/core";
     styleUrls: ["./filter.component.css"]
 })
 export class FilterComponent implements OnInit {
-    /*  string       searchType    default regExp
-            模糊like    regExp
-            等于=
-            不等于！=
-            包含in
-            不为空       $notNull
+    /*  string (default regExp)      searchType
+            模糊like                       regExp
+            等于=                           equal
+            不等于！=                       $ne
+            包含in                          $in
+            不为空                          $notNull
 
-        int double              default    range
-            范围A-B     range
-            等于=       equal
-            不等于！=   $ne
-            包含In      $in
-            大于（>）   $gt
-            小于(<)     $lt
-            大于等于（>=）  $gte
-            小于等于（<=）  $lte
-            绝对值>=     $gteabs
-            绝对值>      $gtabs
-            不为空       $notNull
-        */
+        int double (default range)
+            范围A-B                         range
+            等于=                           equal
+            不等于！=                       $ne
+            包含In                          $in
+            大于（>）                       $gt
+            小于(<)                         $lt
+            大于等于（>=）                  $gte
+            小于等于（<=）                  $lte
+            绝对值>=                        $gteabs
+            绝对值>                         $gtabs
+            不为空                          $notNull
+
+        新增类型
+        total
+            大于等于（>=）                  $gte
+        number
+            0-1                             $and
+    */
 
     // 表头的数据类型
     @Input() searchType: string;

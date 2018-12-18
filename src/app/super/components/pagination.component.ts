@@ -46,7 +46,7 @@ export class PaginationComponent implements OnInit, OnChanges {
     pageIndexInput;
 
     pageCount: number = 0;
-    defaultPageIndexSize: number = 3;
+    defaultPageIndexSize: number = 1;
     pageIndexList: number[] = [];
     inputPageIndex: number;
     isLeft: boolean = false;
@@ -183,9 +183,9 @@ export class PaginationComponent implements OnInit, OnChanges {
                 } else {
                     // 正常情况 不靠边
                     this.pageIndexList = [
-                        +this.pageIndex - 1,
+                        // +this.pageIndex - 1,    // defaultPageIndexSize 不为1需要打开
                         +this.pageIndex,
-                        +this.pageIndex + 1
+                        // +this.pageIndex + 1      // defaultPageIndexSize 不为1需要打开
                     ];
                     this.isLeft = this.isRight = false;
                 }

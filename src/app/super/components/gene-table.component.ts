@@ -127,7 +127,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
     isSaveGeneList:boolean=false;
     validateForm: FormGroup;
     labels:any[] = ['1','2','3'];
-    textareaMaxLen:number = 200;
+    textareaMaxLen:number = 100;
 
     constructor(
         private translate: TranslateService,
@@ -766,7 +766,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof BigTableComponent
      */
     computedTheadWidth(head): object {
-        let defaultWidth =15;
+        let defaultWidth =10;
         let widthConfig = [];
         let twoLevelHead = [];
         let totalWidth: string;
@@ -861,35 +861,43 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
     initFormValue(){
+        // name reg /^[a-z0-9_]{1,12}$/gi
         this.validateForm = this.fb.group({
-            name:["",[Validators.required]],
+            name:["",[Validators.required,Validators.pattern("^[a-z0-9_A-Z]{1,12}$")]],
             label:[null],
-            mark:["",[Validators.maxLength(this.textareaMaxLen)]]
+            mark:[""]
         });
     }
 
     saveGeneList(){
         let params = this._getInnerStatusParams();
+        this.initFormValue();
         this.isSaveGeneList = true;
     }
 
     handleSaveGeneConfirm(){
-        console.log(this.validateForm.value);
-        this.isSaveGeneList = false;
-        this.initFormValue();
+        for (const i in this.validateForm.controls) {
+            this.validateForm.controls[i].markAsDirty();
+            this.validateForm.controls[i].updateValueAndValidity();
+        }
+
+        if(this.validateForm.controls["name"]["valid"]){
+            this.isSaveGeneList = false;
+            console.log( this.validateForm.value)
+        }
     }
 
     handleSaveGeneCancel(){
         this.isSaveGeneList = false;
-        this.initFormValue();
     }
 
     // textarea 字符提示
     handleTextKeyUp(){
-        // let textLen = this.validateForm.value['mark'].length;
-        // if(textLen>=200){
-        //     this.validateForm.get('mark').setValue()
-        // }
+        let textLen = this.validateForm.value['mark'].length;
+        if(textLen>=this.textareaMaxLen){
+            let str = this.validateForm.value['mark'];
+            this.validateForm.get('mark').setValue(str.substring(0,this.textareaMaxLen));
+        }
     }
 
     /**

@@ -5,6 +5,7 @@
         "diff_venn_title":"Differential gene clustering",
         "diff_venn_content":"Clustering the FPKM values of different genes in each comparison group"
     },
+    "onlytable":"only show table",
     "cxzk1Title": "cxzk is works",
     "sortEmail": "sort email of descend",
     "sortPhone": "sort phone of ascend",
@@ -83,6 +84,20 @@
         "nodata":"Sorry, there is no data to display ！",
         "error":"Sorry, the system is wrong !",
         "maxOver":"Sorry, the amount of data is too large to display properly !"
+    },
+    "saveGene":{
+        "title":"save Gene",
+        "name":"name",
+        "name_pattern":"The input is not valid name !",
+        "name_invalid":"The input is not valid name !",
+        "tag":"tag",
+        "remark":"remark",
+        "cancel":"cancel",
+        "confirm":"confirm"
+    },
+    "moduleDesc":{
+        "expand":"expand module describe",
+        "unexpand":"Retract module describe"
     },
     "gene":"gene",
     "transform":"transform",

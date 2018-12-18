@@ -117,3 +117,8 @@ ul,ol {
     margin:0 0 0 0 !important;
 }
 
+/* 表单错误状态 */
+.has-error .ant-form-explain, .has-error .ant-form-split{
+    color: #f5222d;
+}
+
