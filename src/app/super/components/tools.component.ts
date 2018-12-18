@@ -13,12 +13,19 @@ declare const $: any;
 export class ToolsComponent implements OnInit {
 	// heatmap goRich keggRich goClass keggClass line net
 
-	/* "heatmaprelation""关联聚类"
-	"heatmapexpress""表达量聚类"
-	"heatmapdiff" "差异聚类"
-    "multiOmics" "多组学关联"
-    "net" 普通网络图
-    "netrelation" "关联网络图" */
+    /*
+        "heatmaprelation""关联聚类"
+        "heatmapexpress""表达量聚类"
+        "heatmapdiff" "差异聚类"
+        "multiOmics" "多组学关联"
+        "net" 普通网络图
+        "netrelation" "关联网络图"
+    */
+
+
+    /*
+        聚类，富集，KDA 需要生信重分析
+    */
 
 	toolList: object[] = [
 		{ type: 'heatmap', name: '聚类重分析', needReanalysis: false, desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。' },
@@ -228,7 +235,7 @@ export class ToolsComponent implements OnInit {
 		});
 	}
 
-	
+
 
 	getheatmapParams() {
 		this.ajaxService
@@ -392,6 +399,7 @@ export class ToolsComponent implements OnInit {
 			})
 			.subscribe(
 				(data) => {
+                    console.log(data);
 					if (data['status'] === '0') {
 						this.selectType = '';
 						this.childVisible = false;
@@ -462,7 +470,7 @@ export class ToolsComponent implements OnInit {
                                 if(status) this.kaFunGroupSelect.push({name:v,checked:status});
                                 return {name:v,checked:status};
                             });
-							
+
 							this.kaFunDataName = data['data']['Data'];	//data Name
 							this.kaFunStatistics = data['data']['Statistics'];
 
@@ -507,7 +515,7 @@ export class ToolsComponent implements OnInit {
 		this.kaFunGroupError = !this.kaFunGroupData.length;
 		console.log(this.kaFunGroupSelect)
 	}
-	
+
 	selectStatistics(item,index){
 		this.kaFunStatisticsName = item;
 		console.log(this.kaFunStatisticsName);

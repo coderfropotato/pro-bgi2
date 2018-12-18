@@ -1,10 +1,10 @@
 <!-- venn -->
 <div class="content row venn">
-    <div #left class="left-layout column" [class.unexpand]="switch">
+    <div #left class="left-layout column" [class.unexpand]="switch" [class.table-only]="onlyTable">
         <div class="left-top-layout">
             <h4>
-                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.expand' | translate" nz-tooltip class="iconfont icon-theme pointer" [class.icon-zhankai]="!expandModuleDesc"></i> 
-                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.unexpand' | translate" nz-tooltip class="iconfont icon-theme pointer" [class.icon-shouqi]="expandModuleDesc"></i> 
+                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.expand' | translate" nz-tooltip class="iconfont icon-theme pointer" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.unexpand' | translate" nz-tooltip class="iconfont icon-theme pointer" [class.icon-shouqi]="expandModuleDesc"></i>
                 {{'diff_venn.diff_venn_title' | translate}}
             </h4>
             <p [hidden]="!expandModuleDesc">{{'diff_venn.diff_venn_content' | translate}}</p>
@@ -181,9 +181,11 @@
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
     </div>
-    <div #right class="right-layout" [class.expand]="switch">
+    <div #right class="right-layout" [class.expand]="switch" [class.table-only]="onlyTable">
         <div class="switch">
-            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" ></app-layout-switch>
+            <app-layout-switch [disabled]="onlyTable" [ngModel]="switch" (ngModelChange)="switchChange($event)" >
+                <i class="anticon anticon-menu-fold" [nzTitle]="'onlytable' | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i>
+            </app-layout-switch>
         </div>
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->

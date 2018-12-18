@@ -5,6 +5,7 @@
         "diff_venn_title":"差异基因聚类",
         "diff_venn_content":"对每个比较组差异基因的FPKM值进行聚类"
     },
+    "onlytable":"只显示表",
     "cxzk1Title": "测序质控工作中",
     "sortEmail": "降序排序 email",
     "sortPhone": "升序排序 phone",

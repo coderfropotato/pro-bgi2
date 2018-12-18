@@ -5,6 +5,7 @@
         "diff_venn_title":"Differential gene clustering",
         "diff_venn_content":"Clustering the FPKM values of different genes in each comparison group"
     },
+    "onlytable":"only show table",
     "cxzk1Title": "cxzk is works",
     "sortEmail": "sort email of descend",
     "sortPhone": "sort phone of ascend",

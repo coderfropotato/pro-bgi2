@@ -55,7 +55,8 @@ export class DiffVennComponent implements OnInit {
 
 	switch: boolean = false;
 	tableUrl: string;
-	chartUrl: string;
+    chartUrl: string;
+    onlyTable:boolean = false;
 	// 默认收起模块描述
 	expandModuleDesc:boolean = false;
 
@@ -406,7 +407,11 @@ export class DiffVennComponent implements OnInit {
             this.tableSwitchChart.scrollHeight();
             this.computedTableHeight();
         },320)
-	}
+    }
+
+    handleOnlyTable(){
+        this.onlyTable = !this.onlyTable;
+    }
 
 	computedTableHeight() {
 		try {
