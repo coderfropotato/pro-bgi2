@@ -1191,28 +1191,28 @@ export class DiffVennComponent implements OnInit {
 						.attr('fill', i % 2 == 0 ? '#EEE' : 'none');
 				}
 
-				let tempList = sortArr(arr, 'x_axis');
-				for (let i = 0; i < tempList.length; i++) {
-					svg_t
-						.append('rect')
-						.attr('class', 'MyRect3')
-						.attr('x', tempList[i][0]['x_axis'] - d3_rectWidth / 2)
-						.attr('y', function(d, i) {
-							return 0;
-						})
-						.attr('width', d3_rectWidth)
-						.attr('height', function(d, i) {
-							return d3_height;
-						})
-						.attr('opacity', 0)
-						.attr('fill', '#87CEFA')
-						.on('mouseover', function(d, i) {
-							d3.select(this).attr('opacity', 0.5);
-						})
-						.on('mouseout', function(d) {
-							d3.select(this).attr('opacity', 0);
-						});
-				}
+				// let tempList = sortArr(arr, 'x_axis');
+				// for (let i = 0; i < tempList.length; i++) {
+				// 	svg_t
+				// 		.append('rect')
+				// 		.attr('class', 'MyRect3')
+				// 		.attr('x', tempList[i][0]['x_axis'] - d3_rectWidth / 2)
+				// 		.attr('y', function(d, i) {
+				// 			return 0;
+				// 		})
+				// 		.attr('width', d3_rectWidth)
+				// 		.attr('height', function(d, i) {
+				// 			return d3_height;
+				// 		})
+				// 		.attr('opacity', 0)
+				// 		.attr('fill', '#87CEFA')
+				// 		.on('mouseover', function(d, i) {
+				// 			d3.select(this).attr('opacity', 0.5);
+				// 		})
+				// 		.on('mouseout', function(d) {
+				// 			d3.select(this).attr('opacity', 0);
+				// 		});
+				// }
 			}
 		}
 
@@ -1389,7 +1389,7 @@ export class DiffVennComponent implements OnInit {
 					return d['y_axis'];
 				})
 				.attr('r', function(d, i) {
-					return d['r'];
+					return d['r']+0.15;
 				})
 				.style('fill', function(d) {
 					return d.color;
