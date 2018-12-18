@@ -61,6 +61,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Output() selectConfirmEmit: EventEmitter<any> = new EventEmitter(); // 选择面板 确定
 
+    // 设置
     @Input() defaultSetUrl:string;
     @Input() defaultSetEntity:object;
     @Output() defaultSet:EventEmitter<any> = new EventEmitter();

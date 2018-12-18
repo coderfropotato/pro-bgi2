@@ -24,7 +24,6 @@ export class ReHeatmapComponent implements OnInit {
     @ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
-	@ViewChild('tableSwitchChart') tableSwitchChart;
     @ViewChild('transformTable') transformTable;
     @ViewChild('addColumn') addColumn;
 
