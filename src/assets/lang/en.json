@@ -88,8 +88,7 @@
     "saveGene":{
         "title":"save Gene",
         "name":"name",
-        "name_maxlength":"Character length should not exceed 12 bits !",
-        "name_repeat":"The value duplication of input !",
+        "name_pattern":"The input is not valid name !",
         "name_invalid":"The input is not valid name !",
         "tag":"tag",
         "remark":"remark",

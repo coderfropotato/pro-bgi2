@@ -127,7 +127,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
     isSaveGeneList:boolean=false;
     validateForm: FormGroup;
     labels:any[] = ['1','2','3'];
-    textareaMaxLen:number = 200;
+    textareaMaxLen:number = 100;
 
     constructor(
         private translate: TranslateService,
@@ -861,8 +861,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
     initFormValue(){
+        // name reg /^[a-z0-9_]{1,12}$/gi
         this.validateForm = this.fb.group({
-            name:["",[Validators.required,Validators.maxLength(12)]],
+            name:["",[Validators.required,Validators.pattern("^[a-z0-9_A-Z]{1,12}$")]],
             label:[null],
             mark:[""]
         });
@@ -895,7 +896,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         let textLen = this.validateForm.value['mark'].length;
         if(textLen>=this.textareaMaxLen){
             let str = this.validateForm.value['mark'];
-            this.validateForm.get('mark').setValue(str.substring(0,200));
+            this.validateForm.get('mark').setValue(str.substring(0,this.textareaMaxLen));
         }
     }
 

@@ -62,7 +62,7 @@
                                             <!-- required -->
                                             <ng-container *ngIf="validateForm.get('name').errors.required">{{'saveGene.name_invalid' | translate}}</ng-container>
                                             <!-- maxlength -->
-                                            <ng-container *ngIf="validateForm.get('name').errors.maxlength">{{'saveGene.name_maxlength' | translate}}</ng-container>
+                                            <ng-container *ngIf="validateForm.get('name').errors.pattern">{{'saveGene.name_pattern' | translate}}</ng-container>
                                         </nz-form-explain>
                                     </nz-form-control>
                                 </nz-form-item>

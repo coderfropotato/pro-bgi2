@@ -27,6 +27,12 @@ export class FilterComponent implements OnInit {
             绝对值>=                        $gteabs
             绝对值>                         $gtabs
             不为空                          $notNull
+
+        新增类型
+        total
+            大于等于（>=）                  $gte
+        number
+            0-1                             $and
     */
 
     // 表头的数据类型
