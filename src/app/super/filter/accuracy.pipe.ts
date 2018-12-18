@@ -19,17 +19,23 @@ export class AccuracyPipe implements PipeTransform {
             return value;
         } else {
             if (type === "double") {
-                if (args == -1) return value;
-                if (!isNaN(value)) {
-                    var f = parseFloat(value);
-                    if (isNaN(f)) {
-                        return value;
-                    } else {
-                        return this.toAccuracy(value, args);
-                    }
-                } else {
+                // if (args == -1) return value;
+                if(`${value}`.split('.')[1].length>5){
+                    let e = value.toExponential(3);
+                    return e;
+                }else{
                     return value;
                 }
+                // if (!isNaN(value)) {
+                //     var f = parseFloat(value);
+                //     if (isNaN(f)) {
+                //         return value;
+                //     } else {
+                //         return this.toAccuracy(value, args);
+                //     }
+                // } else {
+                //     return value;
+                // }
             } else if (type == "int") {
                 return this.toThousands(value);
             } else{

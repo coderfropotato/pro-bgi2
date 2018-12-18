@@ -30,15 +30,20 @@ import { ControlValueAccessor } from '@angular/forms/src/directives';
 })
 export class LayoutSwitchComponent implements ControlValueAccessor {
     @Output() ngModelChange: EventEmitter<any> = new EventEmitter();
-    @Input() disabled:boolean = false;
 
+    @Input() onlyTable:boolean = false;  // 可选参数 当前是否是 只有表的状态
+    @Output() onlyTableChange:EventEmitter<any> = new EventEmitter(); 
+    
     innerValue:any = null;
 
     constructor() {}
 
     // 该方法用于将模型中的新值写入视图或 DOM 属性中
     writeValue(value){
-        if(this.disabled) return;
+        if(this.onlyTable) {
+            this.onlyTable = false;
+            this.onlyTableChange.emit(this.onlyTable);
+        }
         if(value!==this.innerValue){
             this.innerValue = value;
             this.ngModelChange.emit(this.innerValue);

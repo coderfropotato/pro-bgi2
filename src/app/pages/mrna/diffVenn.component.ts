@@ -409,13 +409,19 @@ export class DiffVennComponent implements OnInit {
         },320)
     }
 
+	// 展开表icon 点击事件
     handleOnlyTable(){
         this.onlyTable = !this.onlyTable;
-    }
+	}
+	
+	// 从布局切换发出的事件
+	handlOnlyTableChange(status){
+		this.onlyTable = status; 
+	}
 
 	computedTableHeight() {
 		try {
-            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
 		} catch (error) {}
 	}
 

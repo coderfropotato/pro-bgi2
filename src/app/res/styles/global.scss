@@ -354,6 +354,19 @@ button.btnActive {
 .func {
 	background-color: #fff;
 	padding: 12px;
+	position:relative;
+	.only-table{
+		position:absolute;
+		right:16px;
+		top:16px;
+		font-size:18px;
+		cursor:pointer;
+	}
+}
+
+// 转换表
+.transformation-table-component{
+	padding:12px;
 }
 
 .content {
@@ -377,12 +390,16 @@ button.btnActive {
 			flex: 4;
         }
         &.table-only{
-            flex:0;
+			flex:0;
+			margin-right: 0;
         }
 		.left-top-layout {
 			@include module-style;
 			margin-bottom: 12px;
 			padding: 12px;
+			.expand-icon{
+				font-size:13px;
+			}
 		}
 		.left-bottom-layout {
 			@include module-style;
@@ -418,7 +435,6 @@ button.btnActive {
             position: relative;
             cursor: pointer;
             display: inline-block;
-            margin-top: -6px;
             vertical-align: middle;
             margin-right: 6px;
             span {
