@@ -5,7 +5,8 @@
         "diff_venn_title":"Differential gene clustering",
         "diff_venn_content":"Clustering the FPKM values of different genes in each comparison group"
     },
-    "onlytable":"only show table",
+    "expandTable":"Expand table",
+    "unExpandTable":"Retract table",
     "cxzk1Title": "cxzk is works",
     "sortEmail": "sort email of descend",
     "sortPhone": "sort phone of ascend",
@@ -32,7 +33,8 @@
         "gteabs":"abs gt && equal",
         "gtabs":"abs gt",
         "error":"Input value cannot be empty",
-        "notNull":"not null"
+        "notNull":"not null",
+        "and":"choose"
     },
     "addThead":{
         "addButton":"add",
@@ -90,6 +92,7 @@
         "name":"name",
         "name_pattern":"The input is not valid name !",
         "name_invalid":"The input is not valid name !",
+        "label_invalid":"Currently new labels are unavailable ！",
         "tag":"tag",
         "remark":"remark",
         "cancel":"cancel",

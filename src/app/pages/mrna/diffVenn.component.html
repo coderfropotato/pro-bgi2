@@ -3,8 +3,8 @@
     <div #left class="left-layout column" [class.unexpand]="switch" [class.table-only]="onlyTable">
         <div class="left-top-layout">
             <h4>
-                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.expand' | translate" nz-tooltip class="iconfont icon-theme pointer" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.unexpand' | translate" nz-tooltip class="iconfont icon-theme pointer" [class.icon-shouqi]="expandModuleDesc"></i>
+                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.expand' | translate" nz-tooltip class="iconfont icon-theme pointer expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.unexpand' | translate" nz-tooltip class="iconfont icon-theme pointer expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
                 {{'diff_venn.diff_venn_title' | translate}}
             </h4>
             <p [hidden]="!expandModuleDesc">{{'diff_venn.diff_venn_content' | translate}}</p>
@@ -183,8 +183,7 @@
     </div>
     <div #right class="right-layout" [class.expand]="switch" [class.table-only]="onlyTable">
         <div class="switch">
-            <app-layout-switch [disabled]="onlyTable" [ngModel]="switch" (ngModelChange)="switchChange($event)" >
-                <i class="anticon anticon-menu-fold" [nzTitle]="'onlytable' | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i>
+            <app-layout-switch [onlyTable]="onlyTable" (onlyTableChange)="handlOnlyTableChange($event)" [ngModel]="switch" (ngModelChange)="switchChange($event)" >
             </app-layout-switch>
         </div>
         <div class="func" #func (click)="resize($event)">
@@ -192,8 +191,10 @@
             <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" ></app-add-column>
             <!-- 关系 -->
             <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
-
+            <!-- 返回 -->
             <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
+            <!-- 只看表 -->
+            <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i>
         </div>
         <!-- 表格转换 -->
         <app-table-transformation

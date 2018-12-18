@@ -22,21 +22,32 @@ export class GlobalService {
     ) {}
 
     // 将表格的筛选条件装换成文字
-    /*string       searchType    default regExp
-            模糊like    regExp
-            等于=
-            不等于！=
-            包含in
+    /*  string (default regExp)      searchType
+            模糊like                       regExp
+            等于=                           equal
+            不等于！=                       $ne
+            包含in                          $in
+            不为空                          $notNull
 
-        float double              default    range
-            范围A-B     range
-            等于=       equal
-            不等于！=   $ne
-            包含In      $in
-            大于（>）   $gt
-            小于(<)     $lt
-            大于等于（>=）  $gte
-            小于等于（<=）  $lte
+        int double (default range)
+            范围A-B                         range
+            等于=                           equal
+            不等于！=                       $ne
+            包含In                          $in
+            大于（>）                       $gt
+            小于(<)                         $lt
+            大于等于（>=）                  $gte
+            小于等于（<=）                  $lte
+            绝对值>=                        $gteabs
+            绝对值>                         $gtabs
+            不为空                          $notNull
+
+        新增类型
+
+        total
+            大于等于（>=）                  $gte
+        number
+            0-1                             $and
     */
 
     /*
@@ -140,7 +151,14 @@ export class GlobalService {
                         text = `<span>${
                             el.filterNamezh
                         }</span>&nbsp;<font color="#f40">not Null</font>&nbsp;&emsp;`;
-                        break;
+                    break;
+                    case "$and":
+                        text = `<span>${
+                            el.filterNamezh
+                        }</span>&nbsp;<font color="#f40">choose</font>&nbsp;${
+                            el.valueOne
+                        }&emsp;`;
+                    break;
                 }
                 htmlStringList.push({ html: null, obj: el, beforeHtml: text });
             });

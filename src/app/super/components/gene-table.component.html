@@ -68,11 +68,12 @@
                                 </nz-form-item>
                                 <nz-form-item>
                                     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="label">{{'saveGene.tag' | translate}}</nz-form-label>
-                                    <nz-form-control [nzSm]="14" [nzXs]="24">
-                                        <nz-select id="label" nzMode="tags" formControlName="label" nzPlaceHolder="tags">
+                                    <nz-form-control [class.has-error]="labelSelectError" [nzSm]="14" [nzXs]="24">
+                                        <nz-select [(nzOpen)]="openSelect" id="label" nzMode="tags" (ngModelChange)="handleSelectChange()" formControlName="label" nzPlaceHolder="tags">
                                             <nz-option  *ngFor="let label of labels" [nzLabel]="label" [nzValue]="label">
                                             </nz-option>
                                         </nz-select>
+                                        <nz-form-explain *ngIf="labelSelectError">{{delSelect[0]}} &emsp;{{'saveGene.label_invalid' | translate}}</nz-form-explain>
                                     </nz-form-control>
                                 </nz-form-item>
                                 <nz-form-item>

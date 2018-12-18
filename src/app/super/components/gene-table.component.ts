@@ -126,8 +126,13 @@ export class GeneTableComponent implements OnInit, OnChanges {
     // 是否在保存基因集
     isSaveGeneList:boolean=false;
     validateForm: FormGroup;
+    openSelect:boolean = false;
     labels:any[] = ['1','2','3'];
+    labelSelect:any[] = [];
+    labelSelectError:boolean = false;
+    delSelect:any[] = [];
     textareaMaxLen:number = 100;
+
 
     constructor(
         private translate: TranslateService,
@@ -863,16 +868,18 @@ export class GeneTableComponent implements OnInit, OnChanges {
     initFormValue(){
         // name reg /^[a-z0-9_]{1,12}$/gi
         this.validateForm = this.fb.group({
-            name:["",[Validators.required,Validators.pattern("^[a-z0-9_A-Z]{1,12}$")]],
+            name:["",[Validators.required,Validators.pattern("^[a-z0-9_A-Z]{1,16}$")]],
             label:[null],
             mark:[""]
         });
+        this.labelSelectError = false;
     }
 
     saveGeneList(){
-        let params = this._getInnerStatusParams();
         this.initFormValue();
         this.isSaveGeneList = true;
+        this.delSelect.length = 0;
+        this.openSelect = false;
     }
 
     handleSaveGeneConfirm(){
@@ -881,14 +888,47 @@ export class GeneTableComponent implements OnInit, OnChanges {
             this.validateForm.controls[i].updateValueAndValidity();
         }
 
-        if(this.validateForm.controls["name"]["valid"]){
+        if(this.validateForm.controls["name"]["valid"] && !this.labelSelectError){
             this.isSaveGeneList = false;
-            console.log( this.validateForm.value)
+            let params = this._getInnerStatusParams();
+
+            console.log( this.validateForm.value);
         }
     }
 
     handleSaveGeneCancel(){
         this.isSaveGeneList = false;
+    }
+
+    handleSelectChange(){
+        var timer = null;
+        if(timer) clearTimeout(timer);
+        timer = setTimeout(()=>{
+            if(!this.arrEquals(this.labelSelect,this.validateForm.value['label'].concat())){
+                let reg = /^[a-z0-9_]{1,16}$/gi;
+                this.delSelect.length = 0;
+                this.labelSelect = [...this.validateForm.value['label']];
+
+                this.validateForm.value['label'].forEach((v,i)=>{
+                    if(!v.match(reg))  this.delSelect.push(...this.labelSelect.splice(i,1));
+                })
+
+                this.validateForm.get('label').setValue([...this.labelSelect]);
+
+                this.labelSelectError = !!this.delSelect.length;
+                // 关闭下拉选择框
+                if(this.labelSelectError) this.openSelect = false;
+                setTimeout(()=>{this.labelSelectError = false},3000);
+            }
+        },30)
+    }
+
+    arrEquals(temp,arr):boolean{
+        if(temp.length!==arr.length) return false;
+        temp.forEach((v,i)=>{
+            if(v!=arr[i]) return false;
+        })
+        return true;
     }
 
     // textarea 字符提示
