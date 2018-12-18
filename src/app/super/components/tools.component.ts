@@ -490,7 +490,7 @@ export class ToolsComponent implements OnInit {
 					species: this.toolsService.get('tableEntity')['species'],
 					version: this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead'),
-					geneNum: this.geneNum
+					geneNum: this.toolsService.get('geneCount')
 				}
 			})
 			.subscribe(
