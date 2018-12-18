@@ -147,31 +147,36 @@
         <nz-drawer nzTitle="卡方检验" [nzVisible]="childVisible && selectType=='kaFun'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
                 <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
 
-                    <div class="tool-params-kafun">
-                        <div class="tool-params-kafun-top">
-                            <div nz-row class="my-nz-row">
-                                <div nz-col nzSpan="8" class="my-nz-row">Data</div>
-                                <div nz-col nzSpan="16" class="my-nz-row">{{kaFunDataName}}</div>
-                            </div>
-                            <div nz-row class="my-nz-row">
-                                <div nz-col nzSpan="8" class="my-nz-row">Statistics</div>
-                                <div nz-col nzSpan="16" class="my-nz-row">
-                                    <nz-dropdown nzTrigger="click">
-                                        <a nz-dropdown>
-                                            请选择统计类型<i nz-icon type="down"></i>
-                                        </a>
-                                        <ul nz-menu nzSelectable>
-                                            <li nz-menu-item *ngFor="let item of kaFunStatistics;index as i;" (click)="selectStatistics(item,i)">{{item}}</li>
-                                        </ul>
-                                    </nz-dropdown>
+            <!-- 卡方检验 -->
+            <nz-drawer nzTitle="卡方检验" [nzVisible]="childVisible && selectType=='kaFun'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+                    <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+
+                        <div class="tool-params-kafun">
+                            <div class="tool-params-kafun-top">
+                                <div nz-row class="my-nz-row">
+                                    <div nz-col nzSpan="8" class="my-nz-row">Data</div>
+                                    <div nz-col nzSpan="16" class="my-nz-row">{{kaFunDataName}}</div>
+                                </div>
+                                <div nz-row class="my-nz-row">
+                                    <div nz-col nzSpan="8" class="my-nz-row">Statistics</div>
+                                    <div nz-col nzSpan="16" class="my-nz-row">
+                                        <nz-select style="width: 160px;" [(ngModel)]="kaFunStatisticsName" nzAllowClear nzPlaceHolder="选择" (ngModelChange)="onkaFunChange($event)">
+                                            <nz-option nzValue="{{item}}" nzLabel="{{item}}" *ngFor="let item of kaFunStatistics;index as i;"></nz-option>
+                                        </nz-select>
+                                    </div>
+                                </div>
+                                <div nz-row class="my-nz-row" *ngIf="kaFunGroupData.length">Classification</div>
+                                <div class="tool-params-tab" *ngIf="kaFunGroupData.length">
+                                    <button (click)="kaFunClick(kaFun)" [class.active]="kaFun['checked']" *ngFor="let kaFun of kaFunGroupData;index as i;" nz-button nzType="default" nzSize="middle">{{kaFun['name']}}</button>
+                                    <nz-alert *ngIf="kaFunGroupError || !kaFunGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                                    <p *ngIf="!kaFunGroupData.length" class="center">暂无参数</p>
                                 </div>
                             </div>
-                            <div nz-row class="my-nz-row">Classification</div>
-                            <div class="tool-params-tab" *ngIf="kaFunGroupData.length">
-                                <button (click)="kaFunClick(kaFun)" [class.active]="kaFun['checked']" *ngFor="let kaFun of kaFunGroupData;index as i;" nz-button nzType="default" nzSize="middle">{{kaFun['name']}}</button>
-                                <nz-alert *ngIf="kaFunGroupError || !kaFunGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
-                                <p *ngIf="!kaFunGroupData.length" class="center">暂无参数</p>
-                            </div>
+                            
+                        </div>
+                        <div class="tool-params-button-group" *ngIf="kaFunGroupData.length">
+                            <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                            <button nz-button nzType="primary" [disabled]="kaFunGroupError || !kaFunGroupSelect.length"  (click)="kaFunConfirm('kaFun')" nzSize="middle">确定</button>
                         </div>
 
                     </div>

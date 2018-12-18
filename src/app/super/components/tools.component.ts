@@ -499,21 +499,28 @@ export class ToolsComponent implements OnInit {
 						if (data['data']) {
 							this.kaFunGroupSelect.length = 0;
 
-							//data['data']['Classification']=["A","B","C","D","E"];//11111111111
-							let m_list = data['data']['Classification'].map((v, index) => {
-								let status = index ? false : true;
-								if (status) this.kaFunGroupSelect.push({ name: v, checked: status });
-								return { name: v, checked: status };
-							});
+                            let m_list = data['data']['Classification'].map((v,index)=>{
+                                let status = index?false:true;
+								if(status)
+								this.kaFunGroupSelect.push({
+									name:v.name,
+									key:v.key,
+									category:v.category,
+									checked:status
+								});
+                                return {
+									name:v.name,
+									key:v.key,
+									category:v.category,
+									checked:status
+								};
+                            });
 
 							this.kaFunDataName = data['data']['Data']; //data Name
 							this.kaFunStatistics = data['data']['Statistics'];
 
-							//this.kaFunStatistics = ["name1","name2","name3"]; //11111111111
-
-							this.kaFunStatisticsName = !this.kaFunStatistics.length ? this.kaFunStatistics[0] : '';
+							this.kaFunStatisticsName = this.kaFunStatistics.length?this.kaFunStatistics[0]:"";
 							this.kaFunGroupData = m_list;
-							console.log(m_list);
 						} else {
 							this.initKaFunData();
 						}
@@ -551,9 +558,8 @@ export class ToolsComponent implements OnInit {
 		console.log(this.kaFunGroupSelect);
 	}
 
-	selectStatistics(item, index) {
-		this.kaFunStatisticsName = item;
-		console.log(this.kaFunStatisticsName);
+	onkaFunChange(value:any):void{
+		console.log(value)
 	}
 
 	kaFunConfirm(reanalysisType) {
