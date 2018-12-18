@@ -564,47 +564,54 @@ export class ToolsComponent implements OnInit {
 
 	kaFunConfirm(reanalysisType) {
 		this.isSubmitReanalysis = true;
-		let tempSelect = this.kaFunGroupSelect;
-
-		let tempChooseList = tempSelect.map((val) => {
-			let temp = {};
-			temp[val['category']] = val['name'];
-			return temp;
-		});
-
+		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 		this.ajaxService
 			.getDeferData({
 				data: {
+					LCID: sessionStorage.getItem('LCID'),
 					reanalysisType: reanalysisType,
 					needReanalysis: 2,
-					chooseType: [ 'expression' ],
-					chooseList: tempChooseList,
+					version:this.storeService.getStore('version'),
+					geneType:this.toolsService.get('tableEntity')['geneType'],
+					species:this.storeService.getStore('genome'),
+					Data:this.kaFunDataName,
+					Statistics:this.kaFunStatisticsName,
+					classInfo: this.kaFunGroupSelect,
 					...this.toolsService.get('tableEntity')
 				},
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
 				(data) => {
-					// if (data['status'] === '0') {
-					// 	this.selectType = '';
-					// 	this.childVisible = false;
-					// 	this.toolsService.hide();
-					// 	this.notify.blank('tips：', '折线图重分析提交成功', {
-					// 		nzStyle: { width: '200px' },
-					// 		nzDuration: 2000
-					// 	});
-					// } else {
-					// 	this.notify.blank('tips：', '重分析提交失败，请重试', {
-					// 		nzStyle: { width: '200px' },
-					// 		nzDuration: 2000
-					// 	});
-					// }
+					if (data['status'] === '0') {
+						if (data['data'].length) {
+							let href = `${window.location.href.split(
+								'report'
+							)[0]}report/reanalysis/re-kaFun/${this.toolsService.get('geneType')}/${data[
+								'data'
+							][0]}/${this.storeService.getStore('version')}`;
+							newWindow.location.href = href;
+						} else {
+							this.notify.blank('tips：', '重分析提交失败，请重试', {
+								nzStyle: { width: '200px' },
+								nzDuration: 2000
+							});
+						}
+						this.selectType = '';
+						this.childVisible = false;
+						this.toolsService.hide();
+					} else {
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+							nzDuration: 2000
+						});
+					}
 				},
 				(err) => {
-					// this.notify.blank('tips：', '重分析提交失败，请重试', {
-					// 	nzStyle: { width: '200px' },
-					// 	nzDuration: 2000
-					// });
+					this.notify.blank('tips：', '重分析提交失败，请重试', {
+						nzStyle: { width: '200px' },
+						nzDuration: 2000
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
