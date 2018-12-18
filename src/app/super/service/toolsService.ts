@@ -41,7 +41,7 @@ export class ToolsService {
         this.tableEntity['checked'] = entity['others']['excludeGeneList']['checked'];
         this.tableEntity['unChecked'] = entity['others']['excludeGeneList']['unChecked'];
         this.baseThead = entity['baseThead'];
-        this.geneType = entity['geneType'];
+        this.geneType =  entity['tableEntity']['geneType'];
         this.visible = true;
     }
 

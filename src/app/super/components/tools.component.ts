@@ -13,7 +13,7 @@ declare const $: any;
 export class ToolsComponent implements OnInit {
 	// heatmap goRich keggRich goClass keggClass line net
 
-    /*
+	/*
         "heatmaprelation""关联聚类"
         "heatmapexpress""表达量聚类"
         "heatmapdiff" "差异聚类"
@@ -22,18 +22,46 @@ export class ToolsComponent implements OnInit {
         "netrelation" "关联网络图"
     */
 
-
-    /*
+	/*
         聚类，富集，KDA 需要生信重分析
     */
 
 	toolList: object[] = [
-		{ type: 'heatmap', name: '聚类重分析', needReanalysis: false, desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。' },
-		{ type: 'goRich', name: 'GO富集分析', desc: 'Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。下图是所选基因集的GO注释分类结果。' },
-		{ type: 'keggRich', name: 'kegg富集', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。' },
-		{ type: 'goClass', name: 'GO分类', desc: 'Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。下图是所选基因集的GO注释分类结果。' },
-		{ type: 'keggClass', name: 'KEGG分类', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。' },
-		{ type: 'net', name: '蛋白网络互作用', desc: '图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。' },
+		{
+			type: 'heatmap',
+			name: '聚类重分析',
+			needReanalysis: false,
+			desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。'
+		},
+		{
+			type: 'goRich',
+			name: 'GO富集分析',
+			desc:
+				'Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。下图是所选基因集的GO注释分类结果。'
+		},
+		{
+			type: 'keggRich',
+			name: 'kegg富集',
+			desc:
+				'将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。'
+		},
+		{
+			type: 'goClass',
+			name: 'GO分类',
+			desc:
+				'Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。下图是所选基因集的GO注释分类结果。'
+		},
+		{
+			type: 'keggClass',
+			name: 'KEGG分类',
+			desc:
+				'将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。'
+		},
+		{
+			type: 'net',
+			name: '蛋白网络互作用',
+			desc: '图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。'
+		},
 		{ type: 'line', name: '折线图', desc: '以折线图方式呈现数据' },
 		{ type: 'KDA', name: 'KDA', desc: 'kda' },
 		{ type: 'multiOmics', name: '多组学关联', desc: '多组学' },
@@ -68,24 +96,24 @@ export class ToolsComponent implements OnInit {
 	// 多组学参数
 	multiOmicsData: any[] = [];
 	multiOmicsSelect: any[] = [];
-    multiOmicsError: any = false;
+	multiOmicsError: any = false;
 
-    // 折线图参数
-    lineGroupData:object[] = [];
-    lineSampleData:object[] = [];
-    lineGroupSelect:object[] = [];
-	lineSampleSelect:object[] = [];
-	lineGroupError:boolean = false;
-	lineSampleError:boolean = false;
+	// 折线图参数
+	lineGroupData: object[] = [];
+	lineSampleData: object[] = [];
+	lineGroupSelect: object[] = [];
+	lineSampleSelect: object[] = [];
+	lineGroupError: boolean = false;
+	lineSampleError: boolean = false;
 
 	//卡方图参数
-	geneNum:number;
-	kaFunDataName:string;
-	kaFunStatistics:any[] = [];
-	kaFunStatisticsName:string;
-	kaFunGroupData:object[] = [];
-    kaFunGroupSelect:object[] = [];
-	kaFunGroupError:boolean = false;
+	geneNum: number;
+	kaFunDataName: string;
+	kaFunStatistics: any[] = [];
+	kaFunStatisticsName: string;
+	kaFunGroupData: object[] = [];
+	kaFunGroupSelect: object[] = [];
+	kaFunGroupError: boolean = false;
 
 	// 当前选择的重分析类型
 	selectType: string = '';
@@ -95,7 +123,7 @@ export class ToolsComponent implements OnInit {
 	constructor(
 		public toolsService: ToolsService,
 		private ajaxService: AjaxService,
-		private storeService:StoreService,
+		private storeService: StoreService,
 		private notify: NzNotificationService
 	) {}
 
@@ -131,20 +159,20 @@ export class ToolsComponent implements OnInit {
 		this.multiOmicsSelect = [];
 		this.multiOmicsError = true;
 
-        // 折线图参数
-        this.lineGroupData = [];
-        this.lineSampleData = [];
-        this.lineGroupSelect = [];
-        this.lineSampleSelect = [];
-        this.lineGroupError = false;
-        this.lineSampleError = false;
+		// 折线图参数
+		this.lineGroupData = [];
+		this.lineSampleData = [];
+		this.lineGroupSelect = [];
+		this.lineSampleSelect = [];
+		this.lineGroupError = false;
+		this.lineSampleError = false;
 
 		//卡方检验
 		this.geneNum = 1;
-		this.kaFunDataName = "";
+		this.kaFunDataName = '';
 		this.kaFunGroupData = [];
-        this.kaFunGroupSelect = [];
-        this.kaFunGroupError = false;
+		this.kaFunGroupSelect = [];
+		this.kaFunGroupError = false;
 
 		// 页面参数
 		this.selectType = '';
@@ -235,17 +263,15 @@ export class ToolsComponent implements OnInit {
 		});
 	}
 
-
-
 	getheatmapParams() {
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/cluster/heatmapConfig`,
 				data: {
-                    LCID: sessionStorage.getItem('LCID'),
-                    geneType: this.toolsService.get('tableEntity')['geneType'],
+					LCID: sessionStorage.getItem('LCID'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
-					version:this.storeService.getStore('version'),
+					version: this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead')
 				}
 			})
@@ -271,10 +297,10 @@ export class ToolsComponent implements OnInit {
 						if (this.diffData.length) this.diffData[0]['checked'] = true;
 						this.diffSelect = [ this.diffData[0] ];
 
-                        this.geneType = res['verticalDefault']
-                        this.geneType.forEach((val) => {
-                            val['checked'] = false;
-                        });
+						this.geneType = res['verticalDefault'];
+						this.geneType.forEach((val) => {
+							val['checked'] = false;
+						});
 					}
 				},
 				(err) => console.log(err)
@@ -347,7 +373,7 @@ export class ToolsComponent implements OnInit {
 					LCID: sessionStorage.getItem('LCID'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
-					version:this.storeService.getStore('version'),
+					version: this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead')
 				},
 				url: `${config['javaPath']}/multiOmics/config`
@@ -386,6 +412,7 @@ export class ToolsComponent implements OnInit {
 
 	multiOmicsConfirm(type) {
 		this.isSubmitReanalysis = true;
+		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -399,15 +426,23 @@ export class ToolsComponent implements OnInit {
 			})
 			.subscribe(
 				(data) => {
-                    console.log(data);
 					if (data['status'] === '0') {
+						if (data['data'].length) {
+							let href = `${window.location.href.split(
+								'report'
+							)[0]}report/reanalysis/re-multiOmics/${this.toolsService.get('geneType')}/${data[
+								'data'
+							][0]}/${this.storeService.getStore('version')}`;
+							newWindow.location.href = href;
+						} else {
+							this.notify.blank('tips：', '重分析提交失败，请重试', {
+								nzStyle: { width: '200px' },
+								nzDuration: 2000
+							});
+						}
 						this.selectType = '';
 						this.childVisible = false;
 						this.toolsService.hide();
-						this.notify.blank('tips：', '多组学重分析提交成功', {
-							nzStyle: { width: '200px' },
-							nzDuration: 2000
-						});
 					} else {
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
 							nzStyle: { width: '200px' },
@@ -450,12 +485,12 @@ export class ToolsComponent implements OnInit {
 			.getDeferData({
 				url: `${config['javaPath']}/chiSquare/config`,
 				data: {
-                    LCID: sessionStorage.getItem('LCID'),
-                    geneType: this.toolsService.get('tableEntity')['geneType'],
+					LCID: sessionStorage.getItem('LCID'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
-					version:this.storeService.getStore('version'),
+					version: this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead'),
-					geneNum:this.geneNum
+					geneNum: this.geneNum
 				}
 			})
 			.subscribe(
@@ -465,22 +500,22 @@ export class ToolsComponent implements OnInit {
 							this.kaFunGroupSelect.length = 0;
 
 							//data['data']['Classification']=["A","B","C","D","E"];//11111111111
-                            let m_list = data['data']['Classification'].map((v,index)=>{
-                                let status = index?false:true;
-                                if(status) this.kaFunGroupSelect.push({name:v,checked:status});
-                                return {name:v,checked:status};
-                            });
+							let m_list = data['data']['Classification'].map((v, index) => {
+								let status = index ? false : true;
+								if (status) this.kaFunGroupSelect.push({ name: v, checked: status });
+								return { name: v, checked: status };
+							});
 
-							this.kaFunDataName = data['data']['Data'];	//data Name
+							this.kaFunDataName = data['data']['Data']; //data Name
 							this.kaFunStatistics = data['data']['Statistics'];
 
 							//this.kaFunStatistics = ["name1","name2","name3"]; //11111111111
 
-							this.kaFunStatisticsName = !this.kaFunStatistics.length?this.kaFunStatistics[0]:"";
+							this.kaFunStatisticsName = !this.kaFunStatistics.length ? this.kaFunStatistics[0] : '';
 							this.kaFunGroupData = m_list;
 							console.log(m_list);
 						} else {
-						this.initKaFunData();
+							this.initKaFunData();
 						}
 					} else {
 						this.initKaFunData();
@@ -489,19 +524,19 @@ export class ToolsComponent implements OnInit {
 				(err) => {
 					this.initKaFunData();
 				}
-			)
+			);
 	}
 
-	initKaFunData(){
+	initKaFunData() {
 		this.kaFunGroupData.length = 0;
 		this.kaFunGroupSelect.length = 0;
 	}
 
 	// 卡方图参数选择
-    kaFunClick(item){
-		let temp =this.kaFunGroupSelect;
+	kaFunClick(item) {
+		let temp = this.kaFunGroupSelect;
 
-        item['checked'] = !item['checked'];
+		item['checked'] = !item['checked'];
 		let index = temp.findIndex((val, index) => {
 			return val['name'] === item['name'];
 		});
@@ -513,15 +548,15 @@ export class ToolsComponent implements OnInit {
 		}
 
 		this.kaFunGroupError = !this.kaFunGroupData.length;
-		console.log(this.kaFunGroupSelect)
+		console.log(this.kaFunGroupSelect);
 	}
 
-	selectStatistics(item,index){
+	selectStatistics(item, index) {
 		this.kaFunStatisticsName = item;
 		console.log(this.kaFunStatisticsName);
 	}
 
-	kaFunConfirm(reanalysisType){
+	kaFunConfirm(reanalysisType) {
 		this.isSubmitReanalysis = true;
 		let tempSelect = this.kaFunGroupSelect;
 
@@ -536,7 +571,7 @@ export class ToolsComponent implements OnInit {
 				data: {
 					reanalysisType: reanalysisType,
 					needReanalysis: 2,
-					chooseType: ['expression'],
+					chooseType: [ 'expression' ],
 					chooseList: tempChooseList,
 					...this.toolsService.get('tableEntity')
 				},
@@ -573,14 +608,14 @@ export class ToolsComponent implements OnInit {
 
 	// 折线图
 	getlineParams() {
-        // 获取折线图参数
+		// 获取折线图参数
 		this.ajaxService
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
-					version:this.storeService.getStore('version'),
+					version: this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead')
 				},
 				url: `${config['javaPath']}/line/config`
@@ -592,21 +627,22 @@ export class ToolsComponent implements OnInit {
 							this.lineGroupSelect.length = 0;
 							this.lineSampleSelect.length = 0;
 
-                            let group = data['data']['expression']['group'].map((v,index)=>{
-                                let status = index?false:true;
-                                if(status) this.lineGroupSelect.push({name:v,checked:status,category:'group'});
-                                return {name:v,checked:status,category:'group'};
-                            });
-                            let sample = data['data']['expression']['sample'].map((v,index)=>{
-                                let status = index?false:true;
-                                if(status) this.lineSampleSelect.push({name:v,checked:status,category:'sample'});
-                                return {name:v,checked:status,category:'sample'};
+							let group = data['data']['expression']['group'].map((v, index) => {
+								let status = index ? false : true;
+								if (status) this.lineGroupSelect.push({ name: v, checked: status, category: 'group' });
+								return { name: v, checked: status, category: 'group' };
+							});
+							let sample = data['data']['expression']['sample'].map((v, index) => {
+								let status = index ? false : true;
+								if (status)
+									this.lineSampleSelect.push({ name: v, checked: status, category: 'sample' });
+								return { name: v, checked: status, category: 'sample' };
 							});
 
 							this.lineGroupData = group;
 							this.lineSampleData = sample;
 						} else {
-						this.initLineData();
+							this.initLineData();
 						}
 					} else {
 						this.initLineData();
@@ -615,20 +651,20 @@ export class ToolsComponent implements OnInit {
 				(err) => {
 					this.initLineData();
 				}
-			)
+			);
 	}
 
-	initLineData(){
+	initLineData() {
 		this.lineGroupData.length = 0;
 		this.lineSampleData.length = 0;
 		this.lineGroupSelect.length = 0;
 		this.lineSampleSelect.length = 0;
 	}
 
-    // 折线图参数选择
-    lineClick(type,item){
+	// 折线图参数选择
+	lineClick(type, item) {
 		let temp = null;
-		switch(type){
+		switch (type) {
 			case 'group':
 				temp = this.lineGroupSelect;
 				break;
@@ -637,8 +673,7 @@ export class ToolsComponent implements OnInit {
 				break;
 		}
 
-
-        item['checked'] = !item['checked'];
+		item['checked'] = !item['checked'];
 		let index = temp.findIndex((val, index) => {
 			return val['name'] === item['name'];
 		});
@@ -651,14 +686,13 @@ export class ToolsComponent implements OnInit {
 
 		this.lineGroupError = !this.lineGroupData.length;
 		this.lineSampleError = !this.lineSampleData.length;
+	}
 
-    }
-
-    // 提交折线图重分析
-    lineConfirm(reanalysisType,selectType){
+	// 提交折线图重分析
+	lineConfirm(reanalysisType, selectType) {
 		this.isSubmitReanalysis = true;
 		let tempSelect = null;
-		switch(selectType){
+		switch (selectType) {
 			case 'group':
 				tempSelect = this.lineGroupSelect;
 				break;
@@ -673,12 +707,13 @@ export class ToolsComponent implements OnInit {
 			return temp;
 		});
 
+        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 		this.ajaxService
 			.getDeferData({
 				data: {
 					reanalysisType: reanalysisType,
 					needReanalysis: 2,
-					chooseType: ['expression'],
+					chooseType: [ 'expression' ],
 					chooseList: tempChooseList,
 					...this.toolsService.get('tableEntity')
 				},
@@ -687,13 +722,22 @@ export class ToolsComponent implements OnInit {
 			.subscribe(
 				(data) => {
 					if (data['status'] === '0') {
+                        if(data['data'].length){
+                            let href = `${window.location.href.split(
+								'report'
+							)[0]}report/reanalysis/re-line/${this.toolsService.get('geneType')}/${data[
+								'data'
+							][0]}/${this.storeService.getStore('version')}`;
+							newWindow.location.href = href;
+                        }else{
+                            this.notify.blank('tips：', '重分析提交失败，请重试', {
+                                nzStyle: { width: '200px' },
+                                nzDuration: 2000
+                            });
+                        }
 						this.selectType = '';
 						this.childVisible = false;
 						this.toolsService.hide();
-						this.notify.blank('tips：', '折线图重分析提交成功', {
-							nzStyle: { width: '200px' },
-							nzDuration: 2000
-						});
 					} else {
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
 							nzStyle: { width: '200px' },
@@ -711,7 +755,7 @@ export class ToolsComponent implements OnInit {
 					this.isSubmitReanalysis = false;
 				}
 			);
-    }
+	}
 
 	// 网路图
 	getnetParams() {
