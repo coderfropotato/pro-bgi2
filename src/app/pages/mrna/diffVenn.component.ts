@@ -1363,7 +1363,7 @@ export class DiffVennComponent implements OnInit {
 		}
 
 		function drawLine2(targetGroup, svg_s, color) {
-			console.log(targetGroup)
+			//console.log(targetGroup)
 			if (targetGroup.length > 1) {
 				let line = d3
 					.line()

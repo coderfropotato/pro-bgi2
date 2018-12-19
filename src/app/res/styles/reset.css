@@ -122,3 +122,11 @@ ul,ol {
     color: #f5222d;
 }
 
+/* 基因表的checkbox label区域调大 */
+.gene-table-component td .ant-checkbox-wrapper {
+    padding: 1px 12px;
+}
+.gene-table-component th .ant-checkbox-wrapper {
+    padding-left: 12px;
+}
+
