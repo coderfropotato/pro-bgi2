@@ -19,7 +19,7 @@ declare const $: any;
 })
 
 export class KaFunComponent implements OnInit {
-    @ViewChild('lineChart') lineChart;
+    @ViewChild('kaFunChart') kaFunChart;
     @ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
@@ -98,31 +98,35 @@ export class KaFunComponent implements OnInit {
 
     ngOnInit() {
         // chart
-        this.chartUrl=`${config['javaPath']}/line/graph`;
+        this.chartUrl=`${config['javaPath']}/chiSquare/switchTable`;
         this.chartEntity = {
             LCID: sessionStorage.getItem('LCID'),
-            tid:this.tid,
-            pageIndex: 1,
-            pageSize: 100000,
-            mongoId: null,
-            addThead: [],
-            transform: false,
-            matchAll: false,
-            matrix: false,
-            sortValue: null,
-            sortKey: null,
-            reAnaly: false,
-            rootSearchContentList:[],
-            geneType: this.geneType,
-            species: this.storeService.getStore('genome'),
-            version: this.version,
-            searchList: []
+            tid:this.tid
         };
+        // this.chartEntity = {
+        //     LCID: sessionStorage.getItem('LCID'),
+        //     tid:this.tid,
+        //     pageIndex: 1,
+        //     pageSize: 100000,
+        //     mongoId: null,
+        //     addThead: [],
+        //     transform: false,
+        //     matchAll: false,
+        //     matrix: false,
+        //     sortValue: null,
+        //     sortKey: null,
+        //     reAnaly: false,
+        //     rootSearchContentList:[],
+        //     geneType: this.geneType,
+        //     species: this.storeService.getStore('genome'),
+        //     version: this.version,
+        //     searchList: []
+        // };
 
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/line/table`;
+        this.defaultUrl = `${config['javaPath']}/chiSquare/table`;
         this.defaultEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -142,12 +146,12 @@ export class KaFunComponent implements OnInit {
             version: this.version,
             searchList: []
         };
-        this.defaultTableId = 'default_heatmap';
+        this.defaultTableId = 'default_kafun';
         this.defaultDefaultChecked = true;
         this.defaultEmitBaseThead = true;
         this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/line/table`;
+        this.extendUrl = `${config['javaPath']}/chiSquare/table`;
         this.extendEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -167,7 +171,7 @@ export class KaFunComponent implements OnInit {
             version: this.version,
             searchList: []
         };
-        this.extendTableId = 'extend_heatmap';
+        this.extendTableId = 'extend_kafun';
         this.extendDefaultChecked = true;
         this.extendEmitBaseThead = true;
         this.extendCheckStatusInParams = false;
@@ -282,92 +286,172 @@ export class KaFunComponent implements OnInit {
 
     //画图
     drawChart(data) {
-		// let that = this;
-        // let xKey = data['baseThead'].slice(1).map(v=>v['true_key']);
-        // let categoryKey = data['baseThead'][0]['true_key'];
+        document.getElementById('kaFunChartDiv').innerHTML = '';
+        console.log(data)
 
-        // let chartData = [];
-        // data['rows'].forEach(val=>{
-        //     xKey.forEach((v,index)=>{
-        //         chartData.push({x:v,y:val[v],category:val[categoryKey]})
-        //     })
-        // })
+        let that = this;
+        let k_baseThead = data.baseThead;//["high", "middle", "low", "sum"]
+        let k_dataRow = data.row;
+        let k_dataName = [];
+        k_dataRow.forEach(val => {
+            k_dataName.push(val.name);
+        });
+        // data:
+        //     high: 825
+        //     low: 856
+        //     middle: 294
+        //     sum: 1975
+        //     __proto__: Object
+        // name: "Eye||male"
 
-        // let config = {
-        //     chart: {
-		// 		width:($('.left-bottom-layout').width())*0.9,
-		// 		height:($('.left-bottom-layout').height())*0.75,
-		// 		title: "折线图",
-		// 		dblclick: function(event) {
-		// 			var name = prompt("请输入需要修改的标题", "");
-		// 			if (name) {
-		// 			this.setChartTitle(name);
-		// 			this.updateTitle();
-		// 			}
-		// 		},
-		// 		mouseover: function(event, titleObj) {
-		// 			titleObj
-		// 			.attr("fill", "#386cca")
-		// 			.append("title")
-		// 			.text("双击修改标题");
-		// 		},
-		// 		mouseout: function(event, titleObj) {
-		// 			titleObj.attr("fill", "#333");
-		// 			titleObj.select("title").remove();
-		// 		},
-		// 		el: "#lineChartDiv",
-		// 		interpolate: "linear",
-		// 		type: "categoryLine",
-		// 		data:chartData
-        //     },
-        //     axis: {
-		// 		x: {
-		// 			title: "",
-		// 			rotate: 60,
-		// 			position: "bottom",
-		// 			dblclick: function(event) {
-		// 				var name = prompt("请输入需要修改的标题", "");
-		// 				if (name) {
-		// 					this.setXTitle(name);
-		// 					this.updateTitle();
-		// 				}
-		// 			}
-		// 		},
-		// 		y: {
-		// 			title: "FPKM",
-		// 			position: "left",
-		// 			dblclick: function(event) {
-		// 				var name = prompt("请输入需要修改的标题", "");
-		// 				if (name) {
-		// 					this.setYTitle(name);
-		// 					this.updateTitle();
-		// 				}
-		// 			}
-		// 		}
-		// 	},
-        //     legend: {
-		// 		show: true,
-		// 		position: "right",
-		// 		click:function(d,index){
-		// 			that.color = d[0].getAttribute("fill");
-		// 			that.legendIndex = index;
-		// 			that.isShowColorPanel = true;
-		// 		}
-        //     },
-        //     tooltip: function(d) {
-		// 		return `<span>FPKM：${d.name}</span><br><span>log10：${
-		// 			d.value
-		// 		}</span><br><span>id：${d.category}</span>`;
-        //     }
-		//   }
+        //计算左侧最大的名字长度
+        let k_name_max = [];
+		for (let i = 0; i < k_dataName.length; i++) {
+			k_name_max.push(getBLen(k_dataName[i]));
+		}
 
-        // this.chart=new d4().init(config);
+		let max_name = Math.max.apply(null, k_name_max);
+		let target_name = '';
+		for (let i = 0; i < k_name_max.length; i++) {
+			if (max_name == k_name_max[i]) {
+				target_name = k_dataName[i];
+				break;
+			}
+        }
+        
+        let oSvg = d3.select('#kaFunChartDiv').append('svg');
+		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
+		let left_name_length = mText.nodes()[0].getBBox().width;
+		// if (left_name_length > 200) {
+		// 	left_name_length = 200;
+		// }
+		oSvg.remove();
+
+        console.log(left_name_length);
+
+        let t_chartID = document.getElementById('kaFunChartDiv');
+		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+            <style>
+                .axis_x1{
+                    display:none;
+                }
+                .axis_y1{
+                    display:none;
+                }
+                
+                .axis_yname{
+                    
+                }
+            </style>
+        </svg>`;
+		t_chartID.innerHTML = str;
+
+        let x_length = k_baseThead.length*80;
+        let y_length = k_dataRow.length*80;
+
+        let svg_width = left_name_length+x_length+60; //计算最外层svg宽度
+        let svg_height = y_length; //计算最外层svg高度
+
+        let name_yScale;
+        
+        let svg = d3.select('#svg') //最外层svg
+                .attr('width', svg_width)
+                .attr('height', svg_height)
+                .on('click', function(d) {
+
+                },false);
+        
+        drawSvg();  //画中间主题
+        drawLeftName();//左侧名字
+
+        function drawSvg(){
+            let width = x_length;
+            let height = y_length;
+    
+            let svg1 = d3
+                .select('#svg')
+                .append('svg')
+                .attr('x', left_name_length)
+                .attr('y', '0')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('class', 'svg1');
+            let xScale = d3.scaleBand().domain(k_baseThead).range([ 0, width ]);
+            let yScale = d3.scaleBand().domain(k_dataName).range([ 0, height ]);
+
+            name_yScale = yScale;
+    
+            let xAxis = d3.axisBottom(xScale);
+            let yAxis = d3.axisRight(yScale);
+    
+            svg1.append('g')
+                .attr('class', 'axis_x1')
+                .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
+                .call(xAxis);
+            svg1.append('g')
+                .attr('class', 'axis_y1')
+                .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
+                .call(yAxis);
+        }
+
+        function drawLeftName(){
+            let width = left_name_length;
+            let height = y_length;
+    
+            let svg2 = d3
+                .select('#svg')
+                .append('svg')
+                .attr('x', '0')
+                .attr('y', '0')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('class', 'svg2');
+            
+            let yAxis = d3.axisLeft(name_yScale);
+
+            let textsk = svg2
+				.selectAll('text')
+				.data(k_dataName)
+				.enter()
+				.append('text')
+				.attr('class', 'MyText')
+				.attr('width', left_name_length)
+				.attr('dx', function(d, i) {
+					return 0;
+				})
+				.attr('dy', function(d, i) {
+					return name_yScale(k_dataName[i]);
+				})
+				.text(function(d, i) {
+					return d;
+				})
+				.on('click', function(d, i) {
+                    var event = d3.event;
+                    event.stopPropagation();
+					///sortName(d, d3.select(this));
+                });
+                
+            svg2.append('g')
+                .attr('class', 'axis_yname')
+                .attr('transform', 'translate(' + width + ',' + 0 + ')')
+                .call(yAxis);
+        }
+
+        function getBLen(str) {
+            if (str == null) return 0;
+            if (typeof str != 'string') {
+                str += '';
+            }
+            return str.replace(/[^\x00-\xff]/g, '01').length;
+        }
     }
 
     colorChange(curColor) {
 		this.chart.setColor(curColor, this.legendIndex);
         this.chart.redraw();
     }
+
+    
 
 }
 
