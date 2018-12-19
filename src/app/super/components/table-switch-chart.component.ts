@@ -16,15 +16,15 @@ export class TableSwitchChartComponent implements OnInit {
     @ViewChild('selectPanel') selectPanel;
     @ViewChild('tableChartContent') tableChartContent;
 
-    @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
     @Input() tableUrl: string;  //表格api地址；isOnlyChart=true时可不传
+    @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
     @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。isOnlyChart=true则为必选。
 
     @Input() apiEntity: object;  //api请求参数
 
-    @Input() id: string;
+    @Input() id: string;  // 当前模块id
 
-    @Input() chartId: string;
+    @Input() chartId: string; // 当前图容器div的id
     @Input() chartName: any;
 
     @Input() isShowAccuracy: boolean; //可选，是否有精度下拉选择
@@ -33,19 +33,20 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() setTemplate: TemplateRef<any>; //可选，设置模块
 
+    // 单、多选
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
-
-    @Input() isVennTable:boolean=false;//为true时候venn/unsetR图的表，false时候是普通表
-    // 双向绑定:变量名x，fn命名规范xChange
-    @Input() isMultiSelect: boolean; //是否是多选
+    @Input() isMultiSelect: boolean; //是否是多选 ；双向绑定:变量名x，fn命名规范xChange
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
-    //多选确定
-    @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter();
-
-    @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
-
+    @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter(); //多选确定
+    
+    @Output() drawChartEmit: EventEmitter<any> = new EventEmitter(); //画图
+    
     @Input() flex: boolean; // 是否flex布局
+    
+    // 特殊图表
+    @Input() isVennTable:boolean=false;  // true：venn/unsetR图的表；false：是普通表
 
+    //选择面板模块
     /**
      * selectPanelUrl 、selectPanelEntity 或 selectPanelData，二者选一传入；
         selectPanelUrl 、selectPanelEntity：选择面板需请求api获取，返回数据结构是object[]={type:'sample',data:['sample1','sample2']};
