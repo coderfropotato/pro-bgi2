@@ -303,7 +303,6 @@ export class KaFunComponent implements OnInit {
     //画图
     drawChart(data) {
         document.getElementById('kaFunChartDiv').innerHTML = '';
-        console.log(data)
 
         let that = this;
         let k_baseThead = data.baseThead;//["high", "middle", "low", "sum"]
@@ -338,9 +337,6 @@ export class KaFunComponent implements OnInit {
         let oSvg = d3.select('#kaFunChartDiv').append('svg');
 		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
 		let left_name_length = mText.nodes()[0].getBBox().width;
-		// if (left_name_length > 200) {
-		// 	left_name_length = 200;
-		// }
 		oSvg.remove();
 
         console.log(left_name_length);
@@ -348,25 +344,38 @@ export class KaFunComponent implements OnInit {
         let t_chartID = document.getElementById('kaFunChartDiv');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
             <style>
+                .mText{
+                    font-size:12px;
+                }
+
                 .axis_x1{
-                    display:none;
+                   
                 }
                 .axis_y1{
-                    display:none;
+                   
                 }
 
                 .axis_yname{
+                    //display:none;
+                }
 
+                .nameText{
+                    font-size:12px;
+                    text-align:right;
                 }
             </style>
         </svg>`;
 		t_chartID.innerHTML = str;
 
-        let x_length = k_baseThead.length*80;
-        let y_length = k_dataRow.length*80;
+        let s_width = 80;  //正方体宽高
+        let r_width = 60;  //右侧图例宽度
+        let t_height = 20;  //右侧图例宽度
 
-        let svg_width = left_name_length+x_length+60; //计算最外层svg宽度
-        let svg_height = y_length; //计算最外层svg高度
+        let x_length = k_baseThead.length*s_width;
+        let y_length = k_dataRow.length*s_width;
+
+        let svg_width = left_name_length+x_length+r_width; //计算最外层svg宽度
+        let svg_height = y_length+t_height; //计算最外层svg高度
 
         let name_yScale;
 
@@ -383,12 +392,11 @@ export class KaFunComponent implements OnInit {
         function drawSvg(){
             let width = x_length;
             let height = y_length;
-
-            let svg1 = d3
-                .select('#svg')
+    
+            let svg1 = svg
+                .append('g')
+                .attr('transform', 'translate(' + left_name_length + ',' + 0 + ')')
                 .append('svg')
-                .attr('x', left_name_length)
-                .attr('y', '0')
                 .attr('width', width)
                 .attr('height', height)
                 .attr('class', 'svg1');
@@ -396,47 +404,48 @@ export class KaFunComponent implements OnInit {
             let yScale = d3.scaleBand().domain(k_dataName).range([ 0, height ]);
 
             name_yScale = yScale;
-
-            let xAxis = d3.axisBottom(xScale);
-            let yAxis = d3.axisRight(yScale);
-
+    
+            let xAxis = d3.axisTop(xScale);
+            let yAxis = d3.axisLeft(yScale);
+    
             svg1.append('g')
                 .attr('class', 'axis_x1')
-                .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
+                .attr('transform', 'translate(' + 0 + ',' + t_height + ')')
                 .call(xAxis);
             svg1.append('g')
                 .attr('class', 'axis_y1')
-                .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
+                .attr('transform', 'translate(' + 0 + ',' + t_height + ')')
                 .call(yAxis);
         }
 
         function drawLeftName(){
             let width = left_name_length;
             let height = y_length;
-
-            let svg2 = d3
-                .select('#svg')
+    
+            let svg2 = svg
+                .append('g')
+                .attr('transform', 'translate(' + 0 + ',' + t_height + ')')
                 .append('svg')
                 .attr('x', '0')
-                .attr('y', '0')
+				.attr('y', '0')
                 .attr('width', width)
                 .attr('height', height)
                 .attr('class', 'svg2');
-
-            let yAxis = d3.axisLeft(name_yScale);
+            
+            let yAxis = d3.axisRight(name_yScale);
 
             let textsk = svg2
 				.selectAll('text')
 				.data(k_dataName)
 				.enter()
 				.append('text')
-				.attr('class', 'MyText')
+				.attr('class', 'nameText')
 				.attr('width', left_name_length)
 				.attr('dx', function(d, i) {
 					return 0;
 				})
 				.attr('dy', function(d, i) {
-					return name_yScale(k_dataName[i]);
+					return name_yScale(k_dataName[i])+s_width/2;
 				})
 				.text(function(d, i) {
 					return d;
@@ -446,11 +455,8 @@ export class KaFunComponent implements OnInit {
                     event.stopPropagation();
 					///sortName(d, d3.select(this));
                 });
-
-            svg2.append('g')
-                .attr('class', 'axis_yname')
-                .attr('transform', 'translate(' + width + ',' + 0 + ')')
-                .call(yAxis);
+                
+            svg2.append('g').attr('class', 'axis_yname').attr('transform', 'translate(' + left_name_length + ',' + 0 + ')').call(yAxis);
         }
 
         function getBLen(str) {
