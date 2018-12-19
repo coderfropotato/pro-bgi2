@@ -339,8 +339,6 @@ export class KaFunComponent implements OnInit {
 		let left_name_length = mText.nodes()[0].getBBox().width;
 		oSvg.remove();
 
-        console.log(left_name_length);
-
         let t_chartID = document.getElementById('kaFunChartDiv');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
             <style>
@@ -349,35 +347,38 @@ export class KaFunComponent implements OnInit {
                 }
 
                 .axis_x1{
-                   
+                   display:none;
                 }
                 .axis_y1{
-                   
+                   display:none;
                 }
 
                 .axis_yname{
-                    //display:none;
+                   
                 }
 
                 .nameText{
                     font-size:12px;
                     text-align:right;
                 }
+
+                .MyTopText{
+                    font-size:12px;
+                }
+                
             </style>
         </svg>`;
 		t_chartID.innerHTML = str;
 
         let s_width = 80;  //正方体宽高
         let r_width = 60;  //右侧图例宽度
-        let t_height = 20;  //右侧图例宽度
+        let t_height = 20;  //上图例宽度
 
         let x_length = k_baseThead.length*s_width;
         let y_length = k_dataRow.length*s_width;
 
         let svg_width = left_name_length+x_length+r_width; //计算最外层svg宽度
         let svg_height = y_length+t_height; //计算最外层svg高度
-
-        let name_yScale;
 
         let svg = d3.select('#svg') //最外层svg
                 .attr('width', svg_width)
@@ -388,6 +389,7 @@ export class KaFunComponent implements OnInit {
 
         drawSvg();  //画中间主题
         drawLeftName();//左侧名字
+        drawTopName();//左侧名字
 
         function drawSvg(){
             let width = x_length;
@@ -395,26 +397,26 @@ export class KaFunComponent implements OnInit {
     
             let svg1 = svg
                 .append('g')
-                .attr('transform', 'translate(' + left_name_length + ',' + 0 + ')')
+                .attr('transform', 'translate(' + left_name_length + ',' + t_height + ')')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height)
                 .attr('class', 'svg1');
             let xScale = d3.scaleBand().domain(k_baseThead).range([ 0, width ]);
             let yScale = d3.scaleBand().domain(k_dataName).range([ 0, height ]);
+    
+            let xAxis = d3.axisBottom(xScale);
+            let yAxis = d3.axisRight(yScale);
+            
+            drawMiddleLine(svg1);
 
-            name_yScale = yScale;
-    
-            let xAxis = d3.axisTop(xScale);
-            let yAxis = d3.axisLeft(yScale);
-    
             svg1.append('g')
                 .attr('class', 'axis_x1')
-                .attr('transform', 'translate(' + 0 + ',' + t_height + ')')
+                .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
                 .call(xAxis);
             svg1.append('g')
                 .attr('class', 'axis_y1')
-                .attr('transform', 'translate(' + 0 + ',' + t_height + ')')
+                .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
                 .call(yAxis);
         }
 
@@ -432,33 +434,95 @@ export class KaFunComponent implements OnInit {
                 .attr('height', height)
                 .attr('class', 'svg2');
             
-            let yAxis = d3.axisRight(name_yScale);
-
-            let textsk = svg2
-				.selectAll('text')
-				.data(k_dataName)
-				.enter()
-				.append('text')
-				.attr('class', 'nameText')
-				.attr('width', left_name_length)
-				.attr('dx', function(d, i) {
-					return 0;
-				})
-				.attr('dy', function(d, i) {
-					return name_yScale(k_dataName[i])+s_width/2;
-				})
-				.text(function(d, i) {
-					return d;
-				})
-				.on('click', function(d, i) {
-                    var event = d3.event;
-                    event.stopPropagation();
-					///sortName(d, d3.select(this));
-                });
+            let ynScale = d3.scaleBand().domain(k_dataName).range([ 0, height ]);
+            let ynAxis = d3.axisLeft(ynScale);
                 
-            svg2.append('g').attr('class', 'axis_yname').attr('transform', 'translate(' + left_name_length + ',' + 0 + ')').call(yAxis);
+            svg2.append('g').attr('class', 'axis_yname').attr('transform', 'translate(' + width + ',' + 0 + ')').call(ynAxis);
         }
 
+        function drawTopName(){
+            let width = x_length;
+            let height = t_height;
+    
+            let svg3 = svg
+                .append('g')
+                .attr('transform', 'translate(' + left_name_length + ',' + 0 + ')')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height+0.5)
+                .attr('class', 'svg3');
+            
+            let xtScale = d3.scaleBand().domain(k_baseThead).range([ 0, width ]);
+            let xtAxis = d3.axisTop(xtScale);
+
+            svg3.append('g').attr('class', 'axis_topname').attr('transform', 'translate(' + 0 + ',' + height + ')').call(xtAxis);
+        }
+
+        function drawMiddleLine(tempThatone){
+
+            // left_name_length
+            // let t_height = 20;  //上图例宽度
+            // let s_width = 80;  //正方体宽高
+            // let y_length = k_dataRow.length*s_width;
+
+            let rowGroup = [];
+            let columGroup = [];
+
+            for (let index = 0; index <= k_baseThead.length; index++) {
+                let temp1 = {
+                    x_axis:index*s_width,
+                    y_axis:0
+                }
+                let temp2 = {
+                    x_axis:index*s_width,
+                    y_axis:y_length
+                }
+                rowGroup.push(temp1);
+                rowGroup.push(temp2);
+            }
+
+            for (let index = 0; index <= k_dataRow.length; index++) {
+                let temp1 = {
+                    x_axis:0,
+                    y_axis:index*s_width
+                }
+                let temp2 = {
+                    x_axis:x_length,
+                    y_axis:index*s_width
+                }
+                columGroup.push(temp1);
+                columGroup.push(temp2);
+            }
+            
+            let line = d3
+				.line()
+				.x(function(d) {
+					return d.x_axis;
+				})
+				.y(function(d) {
+					return d.y_axis;
+                });
+                
+            let tempGroup1 = sortArr(rowGroup,'x_axis');
+            for (let i = 0; i < tempGroup1.length; i++) {
+                let path = tempThatone
+                    .append('path')
+                    .attr('class', 'line')
+                    .attr('d', line(tempGroup1[i]))
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 1);
+            }
+
+            let tempGroup2 = sortArr(columGroup,'y_axis');
+            for (let i = 0; i < tempGroup2.length; i++) {
+                let path = tempThatone
+                    .append('path')
+                    .attr('class', 'line')
+                    .attr('d', line(tempGroup2[i]))
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 1);
+            }
+        }
         function getBLen(str) {
             if (str == null) return 0;
             if (typeof str != 'string') {
@@ -466,6 +530,51 @@ export class KaFunComponent implements OnInit {
             }
             return str.replace(/[^\x00-\xff]/g, '01').length;
         }
+
+        //把x轴相同的分在一起
+		function sortArr(arr, str) {
+			let _arr = [],
+				_t = [],
+				// 临时的变量
+				_tmp;
+
+			// 按照特定的参数将数组排序将具有相同值得排在一起
+			arr = arr.sort(function(a, b) {
+				let s = a[str],
+					t = b[str];
+				return s < t ? -1 : 1;
+			});
+
+			if (arr.length) {
+				_tmp = arr[0][str];
+			}
+			// console.log( arr );
+			// 将相同类别的对象添加到统一个数组
+			for (let i in arr) {
+				//console.log( _tmp);
+				if (arr[i][str] === _tmp) {
+					//console.log(_tmp)
+					_t.push(arr[i]);
+				} else {
+					_tmp = arr[i][str];
+					_arr.push(_t);
+					_t = [ arr[i] ];
+				}
+			}
+			// 将最后的内容推出新数组
+			_arr.push(_t);
+			return _arr;
+        }
+
+        // 把每组中要画的点提取到一起
+		function secondArr(arr) {
+			let tempArr = [];
+			for (let i = 0; i < arr.length; i++) {
+                tempArr.push(arr[i]);
+			}
+			return tempArr;
+		}
+
     }
 
     colorChange(curColor) {
