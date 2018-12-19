@@ -501,6 +501,20 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.unChecked = Object.keys(this.unCheckedMap);
     }
 
+    /**
+     * @description 外部初始化表内部选中状态
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-12-19
+     * @memberof GeneTableComponent
+     */
+    _initCheckStatus(){
+        this.checkedMap = {};
+        this.unCheckedMap = {};
+        this.checked = [];
+        this.unChecked = [];
+        this.checkStatus = this.defaultChecked;
+    }
+
     // applyOnceBeforeStatusThenReset(){
     //     console.log('use itself');
     //     console.log(this.checked);

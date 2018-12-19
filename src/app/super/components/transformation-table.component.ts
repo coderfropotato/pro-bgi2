@@ -144,6 +144,9 @@ export class TransformationTableComponent implements OnInit {
 
     }
 
+    _initCheckStatus(){
+        this.isFirst ? this.defaultTable._initCheckStatus() : this.extendTable._initCheckStatus();
+    }
 
     _initTableStatus(){
         this.isFirst ? this.defaultTable.initAllTableStatus() : this.extendTable.initAllTableStatus();
