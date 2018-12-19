@@ -181,9 +181,9 @@
                                 [nzContent]="(d[two['true_key']]+'')?(d[two['true_key']]| accuracyPipe : accuracy : two['searchType']):'NA'" nzPlacement="right" nz-popover>
                                 {{d[two['true_key']] | accuracyPipe : accuracy : two['searchType']}}
                             </td>
-                            <!-- 其他列 -->
+                            <!-- 其他列  (| accuracyPipe : accuracy : h['searchType'])-->
                             <td *ngFor="let h of tbodyOutFirstCol"
-                            [nzContent]="d[h['true_key']]?(d[h['true_key']] | accuracyPipe : accuracy : h['searchType']):'NA' " nzPlacement="right" nz-popover>
+                            [nzContent]="d[h['true_key']]?d[h['true_key']]:'NA' " nzPlacement="right" nz-popover>
                                 {{d[h['true_key']]?(d[h['true_key']] | accuracyPipe : accuracy : h['searchType']):'NA' }}
                             </td>
                         </tr>
@@ -197,8 +197,8 @@
                     </app-pagination>
                     <!-- 分析按钮 -->
                     <div class="table-analysis-button green" (click)="analysis()" [class.invaild]="!checked.length" [class.active]="checked.length" style="float:right;">
-                        <b>分析</b>
-                        <span>{{checkStatus?(total - unChecked.length):checked.length}}&nbsp;例</span>
+                        <b>{{'tableButton.analysis' | translate}}</b>
+                        <span>{{checkStatus?(total - unChecked.length):checked.length}}</span>
                     </div>
                 </div>
             </div>

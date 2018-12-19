@@ -20,9 +20,13 @@ export class AccuracyPipe implements PipeTransform {
         } else {
             if (type === "double") {
                 // if (args == -1) return value;
-                if(`${value}`.split('.')[1].length>5){
-                    let e = value.toExponential(3);
-                    return e;
+                if(`${value}`.indexOf('.')!=-1){
+                    if(`${value}`.split('.')[1].length>5){
+                        let e = value.toExponential(3);
+                        return e;
+                    }else{
+                        return value;
+                    }
                 }else{
                     return value;
                 }
