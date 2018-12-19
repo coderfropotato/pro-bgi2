@@ -10,15 +10,14 @@
             <p>describe</p>
         </div> -->
         <div class="left-bottom-layout">
-                <!-- [selectTemplate]="selectTemplate" -->
-                <!-- <app-table-switch-chart
-                    #lineChart
-                    [id]="'line'"
+                <app-table-switch-chart
+                    #kaFunChart
+                    [id]="'kaFun'"
                     [isOnlyChart]="true"
                     [chartUrl]="chartUrl"
                     [apiEntity]="chartEntity"
                     (drawChartEmit)="drawChart($event)"
-                    [chartId]="'lineChartDiv'"
+                    [chartId]="'kaFunChartDiv'"
                     [chartName]="'kaFun图'"
                     [flex]="true"
                     (refresh)="handlerRefresh()"
@@ -26,7 +25,8 @@
                 </app-table-switch-chart>
 
                 <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-                ></app-color-picker> -->
+                ></app-color-picker>
+
         </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch" >
