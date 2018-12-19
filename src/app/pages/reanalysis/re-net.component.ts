@@ -36,10 +36,20 @@ export class ReNetComponent implements OnInit {
     color: string; //当前选中的color
     colors: string[];
 
-    selectGeneList:any[] = [];
+    // 选中的节点、线
+    selectGeneList:string[] = []; // 选择的节点geneID
+    selectLinkList:string[]=[]; // 选择的线ID
+    selectedNodes:object[]=[]; //选中的节点
+    selectedLinks:object[]=[];  //选择的线
+
+    // 设置
     force:number=600; //斥力
     radian:number=10; //弧度
     symbolType:string='selected'; // gene symbol 显示: hidden all selected
+
+    //serach
+    allNodes:any[]=[];
+    curSearchNode:string;
 
     // table
     setAddedThead :any= [];
@@ -305,10 +315,13 @@ export class ReNetComponent implements OnInit {
 		} catch (error) {}
     }
 
+    // 图
+
     //画图
     drawChart(data){
         d3.select("#netChartDiv svg").remove();
         let that  = this;
+        this.allNodes=data.nodes;
 
         //关联关系
         let relations = this.storeService.getStore('relations');
@@ -366,10 +379,7 @@ export class ReNetComponent implements OnInit {
             })
         })
 
-        let selectedNodes=[]; //选中的节点
-        let selectedLinks=[];  //选择的线
-
-        let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }];
+        let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
 
         //容器宽高
         let width=700,height=700;
@@ -473,12 +483,16 @@ export class ReNetComponent implements OnInit {
                 //选中link加到list中，反选link中从list中去掉
                 if (d.selected) {
                     d3.select(this).attr('stroke',"#000000");
-                    selectedLinks.push(d);
+                    that.selectedLinks.push(d);
                 } else {
                     d3.select(this).attr('stroke',d.score===null ? d.scale(d.min) : d.scale(d.score));
                 }
 
-                selectedLinks=selectedLinks.filter(k=>k.selected===true);
+                that.selectedLinks=that.selectedLinks.filter(k=>k['selected']===true);
+                that.selectLinkList.length=0;
+                that.selectedLinks.forEach(m=>{
+                    that.selectLinkList.push(m['id']);
+                })
             });
 
 
@@ -517,15 +531,15 @@ export class ReNetComponent implements OnInit {
                 //选中node加到list中，反选node中从list中去掉
                 if (d.selected) {
                     d3.select(this).attr('fill',"#167C80");
-                    selectedNodes.push(d);
+                    that.selectedNodes.push(d);
                 } else {
                     d3.select(this).attr('fill',d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
                 }
 
-                selectedNodes=selectedNodes.filter(k=>k.selected===true);
+                that.selectedNodes=that.selectedNodes.filter(k=>k['selected']===true);
                 that.selectGeneList.length=0;
-                selectedNodes.forEach(m=>{
-                    that.selectGeneList.push(m.geneID);
+                that.selectedNodes.forEach(m=>{
+                    that.selectGeneList.push(m['geneID']);
                 })
             })
 
@@ -551,9 +565,10 @@ export class ReNetComponent implements OnInit {
         d3.select("#netChartDiv svg").on('click',function(){
             d3.selectAll('path.node').attr('fill',d=>d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
             d3.selectAll('path.link').attr('stroke',d=>d.score===null ? d.scale(d.min) : d.scale(d.score));
-            selectedNodes.length=0;
-            selectedLinks.length=0;
+            that.selectedNodes.length=0;
+            that.selectedLinks.length=0;
             that.selectGeneList.length=0;
+            that.selectLinkList.length=0;
         })
 
         function drawText(){
@@ -690,6 +705,16 @@ export class ReNetComponent implements OnInit {
             console.log(that.selectGeneList)
         })
 
+    }
+
+    //搜索
+    searchNodeChange(){
+        // d3.selectAll('path.node').attr('fill',d=>d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
+        d3.selectAll('path.link').attr('stroke',d=>d.score===null ? d.scale(d.min) : d.scale(d.score));
+        this.selectedNodes.length=0;
+        this.selectedLinks.length=0;
+        this.selectGeneList.length=0;
+        this.selectLinkList.length=0;
     }
 
     colorChange(color){

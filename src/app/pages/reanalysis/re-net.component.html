@@ -13,9 +13,19 @@
                     <ng-template #setTemplate>
                         <!-- <app-clusterSet *ngIf="defaultSetData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData'></app-clusterSet> -->
                     </ng-template>
-                    <div>
-                        <button nz-button nzType="primary" [disabled]="!selectGeneList.length" id="expand">expand</button>
-                    </div>
+
+                    <ng-template #funcBtnsTemplate>
+                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px">add link</button>
+                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px">delete link</button>
+                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" id="expand">expand</button>
+                    </ng-template>
+
+                    <ng-template #searchTemplate>
+                        <nz-select style="width: 140px;margin-left: 10px" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
+                            <nz-option *ngFor="let node of allNodes" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
+                        </nz-select>
+                    </ng-template>
+                    
                     <!-- [selectTemplate]="selectTemplate" -->
                     <app-table-switch-chart
                         #netChart
@@ -24,6 +34,8 @@
                         [apiEntity]="chartEntity"
                         [chartUrl]="chartUrl"
                         [setTemplate]="setTemplate"
+                        [funcBtnsTemplate]='funcBtnsTemplate'
+                        [searchTemplate]='searchTemplate'
                         (drawChartEmit)="drawChart($event)"
                         [chartId]="'netChartDiv'"
                         [chartName]="'网络图'"
