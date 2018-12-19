@@ -56,6 +56,7 @@ export class KaFunComponent implements OnInit {
     tableHeight = 0;
     first = true;
     switch = false;
+    onlyTable:boolean = false;
 
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
@@ -267,10 +268,6 @@ export class KaFunComponent implements OnInit {
 		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
     }
 
-    switchChange(status) {
-		this.switch = status;
-	}
-
 	// 表格上方功能区 resize重新计算表格高度
 	resize(event) {
         setTimeout(()=>{
@@ -278,9 +275,28 @@ export class KaFunComponent implements OnInit {
         },30)
     }
 
+    // 切换左右布局 计算左右表格的滚动高度
+	switchChange(status) {
+        this.switch = status;
+        setTimeout(()=>{
+            this.kaFunChart.scrollHeight();
+            this.computedTableHeight();
+        },320)
+    }
+
+	// 展开表icon 点击事件
+    handleOnlyTable(){
+        this.onlyTable = !this.onlyTable;
+	}
+
+	// 从布局切换发出的事件
+	handlOnlyTableChange(status){
+		this.onlyTable = status;
+	}
+
     computedTableHeight() {
 		try {
-            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
 		} catch (error) {}
     }
 
@@ -317,7 +333,7 @@ export class KaFunComponent implements OnInit {
 				break;
 			}
         }
-        
+
         let oSvg = d3.select('#kaFunChartDiv').append('svg');
 		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
 		let left_name_length = mText.nodes()[0].getBBox().width;
@@ -338,7 +354,7 @@ export class KaFunComponent implements OnInit {
                 .axis_y1{
                    
                 }
-                
+
                 .axis_yname{
                     //display:none;
                 }
@@ -362,14 +378,14 @@ export class KaFunComponent implements OnInit {
         let svg_height = y_length+t_height; //计算最外层svg高度
 
         let name_yScale;
-        
+
         let svg = d3.select('#svg') //最外层svg
                 .attr('width', svg_width)
                 .attr('height', svg_height)
                 .on('click', function(d) {
 
                 },false);
-        
+
         drawSvg();  //画中间主题
         drawLeftName();//左侧名字
 
@@ -416,7 +432,7 @@ export class KaFunComponent implements OnInit {
                 .attr('height', height)
                 .attr('class', 'svg2');
             
-            //let yAxis = d3.axisRight(name_yScale);
+            let yAxis = d3.axisRight(name_yScale);
 
             let textsk = svg2
 				.selectAll('text')
@@ -440,7 +456,7 @@ export class KaFunComponent implements OnInit {
 					///sortName(d, d3.select(this));
                 });
                 
-            //svg2.append('g').attr('class', 'axis_yname').attr('transform', 'translate(' + left_name_length + ',' + 0 + ')').call(yAxis);
+            svg2.append('g').attr('class', 'axis_yname').attr('transform', 'translate(' + left_name_length + ',' + 0 + ')').call(yAxis);
         }
 
         function getBLen(str) {
@@ -457,7 +473,7 @@ export class KaFunComponent implements OnInit {
         this.chart.redraw();
     }
 
-    
+
 
 }
 
