@@ -55,7 +55,6 @@ export class DiffVennComponent implements OnInit {
 
 	switch: boolean = false;
 	tableUrl: string;
-    chartUrl: string;
     onlyTable:boolean = false;
 	// 默认收起模块描述
 	expandModuleDesc:boolean = false;
@@ -165,7 +164,7 @@ export class DiffVennComponent implements OnInit {
 		this.isMultiSelect = false;
 		this.first = true;
 		this.selectedData = [];
-		this.chartUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
+		this.tableUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 
 		this.p_show = this.storeService.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
 		this.PossionDis = {
@@ -604,7 +603,7 @@ export class DiffVennComponent implements OnInit {
 			tempR.push(tempO);
 		}
 
-		this.venn = new Venn({ id: 'chartId22122' })
+		this.venn = new Venn({ id: 'diffVennId' })
 			.config({
 				data: tempR,
 				compareGroup: _selfV.tableEntity['compareGroup'],
@@ -654,7 +653,7 @@ export class DiffVennComponent implements OnInit {
 
 	//显示upsetR图
 	showUpSetR(data) {
-		document.getElementById('chartId22122').innerHTML = '';
+		document.getElementById('diffVennId').innerHTML = '';
 		let _self = this;
 		let selectBar = [];
 		let tempBar = data.rows;
@@ -665,7 +664,7 @@ export class DiffVennComponent implements OnInit {
 			}
 		}
 
-		let t_chartID = document.getElementById('chartId22122');
+		let t_chartID = document.getElementById('diffVennId');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
          <style>
              .MyRect {
@@ -756,7 +755,7 @@ export class DiffVennComponent implements OnInit {
 			}
 		}
 
-		let oSvg = d3.select('#chartId22122').append('svg');
+		let oSvg = d3.select('#diffVennId').append('svg');
 		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
 		let left_name_length = mText.nodes()[0].getBBox().width;
 		//let left_name_length = document.querySelector(".mText").getBBox().width;
@@ -1363,7 +1362,7 @@ export class DiffVennComponent implements OnInit {
 		}
 
 		function drawLine2(targetGroup, svg_s, color) {
-			//console.log(targetGroup)
+			console.log(targetGroup)
 			if (targetGroup.length > 1) {
 				let line = d3
 					.line()
