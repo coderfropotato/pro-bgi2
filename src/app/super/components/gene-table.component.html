@@ -40,7 +40,7 @@
                 </div>
                 <div class="fRight">
                     <!-- 精度 -->
-                    <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'">
+                    <!-- <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'">
                         <nz-option [nzLabel]="'accuracy.toFixedOne' | translate" [nzValue]="1"></nz-option>
                         <nz-option [nzLabel]="'accuracy.toFixedTwo' | translate" [nzValue]="2"></nz-option>
                         <nz-option [nzLabel]="'accuracy.toFixedThree' | translate" [nzValue]="3"></nz-option>
@@ -49,7 +49,7 @@
                         <nz-option [nzLabel]="'accuracy.toFixedSix' | translate" [nzValue]="6"></nz-option>
                         <nz-option [nzLabel]="'accuracy.toFixedSeven' | translate" [nzValue]="7"></nz-option>
                         <nz-option [nzLabel]="'accuracy.toFixedAll' | translate" [nzValue]="-1"></nz-option>
-                    </nz-select>
+                    </nz-select> -->
                     <!-- 保存基因集 -->
                     <i *ngIf="!error" class="iconfont icon-baocunjiyin" [nzTitle]="'tableButton.saveGene' | translate" nz-tooltip (click)="saveGeneList()">
                         <nz-modal [(nzVisible)]="isSaveGeneList" [nzTitle]="'saveGene.title' | translate" [nzOkText]="'saveGene.confirm'| translate" [nzCancelText]="'saveGene.cancel' | translate" (nzOnOk)="handleSaveGeneConfirm()" (nzOnCancel)="handleSaveGeneCancel()" >
