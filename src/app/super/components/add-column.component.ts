@@ -146,15 +146,14 @@ export class AddColumnComponent implements OnInit {
 		if (this.beforeSelected.every(everySuit)) {
 			this.initTheadStatus();
 		} else {
-			this.beforeSelected.forEach((v) => {
-				if (v.length) {
-					let status = false;
-					this.forLeaves(this.thead, (item) => {
-						status = this.isInArr(item, v, 'key') ? true : false;
-						item['checked'] = status;
-					});
-				}
-			});
+			let classifyBeforeSelected = this.classifyCollection(this.beforeSelected);
+
+            this.forLeaves(this.thead, (item) => {
+                let index = classifyBeforeSelected.findIndex((val,index)=>{
+                    return val['key'] === item['key'];
+                })
+                item['checked'] = index!=-1;
+            })
 		}
 		this.getCheckCount();
 
