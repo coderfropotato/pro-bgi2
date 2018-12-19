@@ -33,16 +33,20 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() setTemplate: TemplateRef<any>; //可选，设置模块
 
+    @Input() funcBtnsTemplate:TemplateRef<any>;  //可选，图功能按钮模块
+
+    @Input() searchTemplate:TemplateRef<any>;  //可选，图搜索模块
+
     // 单、多选
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
     @Input() isMultiSelect: boolean; //是否是多选 ；双向绑定:变量名x，fn命名规范xChange
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
     @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter(); //多选确定
-    
+
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter(); //画图
-    
+
     @Input() flex: boolean; // 是否flex布局
-    
+
     // 特殊图表
     @Input() isVennTable:boolean=false;  // true：venn/unsetR图的表；false：是普通表
 
@@ -83,6 +87,8 @@ export class TableSwitchChartComponent implements OnInit {
     selectPanelList: object[] = [];  //选择面板数据
     isHasSelectPanel: boolean;
     selectedList: string[] = [];  //选中的数据
+    isShowSelectPanel:boolean=false;
+    confirmSelects:any[]=[];
 
     constructor(
         private ajaxService: AjaxService,
@@ -267,6 +273,7 @@ export class TableSwitchChartComponent implements OnInit {
 
         this.defaultSelectList.emit(this.selectedList);
         this.reGetData();
+        this.confirmSelects=[...this.selectedList];
     }
 
     //选择面板 选择
@@ -286,7 +293,28 @@ export class TableSwitchChartComponent implements OnInit {
 
     //选择面板 确定
     selectConfirm() {
+        this.confirmSelects=[...this.selectedList];
         this.selectConfirmEmit.emit(this.selectedList);
+        this.isShowSelectPanel=false;
+    }
+
+    //显示隐藏选择面板
+    showSelectPanel(){
+        this.isShowSelectPanel = !this.isShowSelectPanel;
+        this.selectPanelList.forEach(d=>{
+            d['data'].forEach(k=>{
+                k['isChecked']=false;
+                this.confirmSelects.forEach(m=>{
+                    if(k['name']===m){
+                        k['isChecked']=true;
+                    }
+                })
+            })
+        })
+
+        setTimeout(()=>{
+            this.scrollHeight();
+        },30)
     }
 
     /**

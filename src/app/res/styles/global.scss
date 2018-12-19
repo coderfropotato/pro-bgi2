@@ -426,45 +426,46 @@ button.btnActive {
 		right: 162px;
 		top: 46px;
     }
-    .layout-switch-wrap{
-        .layout-switch {
-            width: 72px;
-            height: 20px;
-            background: $layout_switch_bgcolor;
-            border-radius: 4px;
-            position: relative;
-            cursor: pointer;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 6px;
-            span {
-                position: absolute;
-                top: 4px;
-                left:4px;
-                transform: translateX(0);
-                width: 40px;
-                height: 12px;
-                background: #ffffff;
-                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
-                border-radius: 2px;
-                transition: .3s all ease;
-                &.left{
-                    transform: translateX(0);
-                }
-                &.right{
-                    transform: translateX(24px);
-                }
-            }
-        }
-        i{
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 6px;
-            cursor: pointer;
-        }
-    }
 }
 
+// 布局切换
+.layout-switch-wrap{
+    .layout-switch {
+        width: 72px;
+        height: 20px;
+        background: $layout_switch_bgcolor;
+        border-radius: 4px;
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 6px;
+        span {
+            position: absolute;
+            top: 4px;
+            left:4px;
+            transform: translateX(0);
+            width: 40px;
+            height: 12px;
+            background: #ffffff;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
+            border-radius: 2px;
+            transition: .3s all ease;
+            &.left{
+                transform: translateX(0);
+            }
+            &.right{
+                transform: translateX(24px);
+            }
+        }
+    }
+    i{
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 6px;
+        cursor: pointer;
+    }
+}
 .bar {
 	width: 12px;
 	height: 12px;
@@ -863,9 +864,6 @@ button.btnActive {
 	.reanalysis-content {
 		padding: $padding;
 		background-color: $background_color;
-		.switch {
-			right: 144px;
-		}
 	}
 }
 .analysis-list {

@@ -57,7 +57,8 @@
         "saveGene":"save Gene list",
         "export_png":"export PNG image",
         "export_jpg":"export JPG image",
-        "export_svg":"export SVG image"
+        "export_svg":"export SVG image",
+        "analysis":"analysis"
     },
     "view":{
         "s_view":"statistical view",
@@ -101,6 +102,22 @@
     "moduleDesc":{
         "expand":"expand module describe",
         "unexpand":"Retract module describe"
+    },
+    "analysisPanel":{
+        "title":"Please choose an analysis scheme",
+        "cluster":"cluster",
+        "goRich":"GO Rich",
+        "keggRich":"KEGG Rich",
+        "goClass":"GO Class",
+        "keggClass":"KEGG Class",
+        "net":"net",
+        "line":"line",
+        "kda":"KDA",
+        "multi":"multiOmics",
+        "kaFun":"chi-square test ",
+        "splice":"alternative splicing",
+        "relationNet":"relation net",
+        "relationCluster":"relation cluster"
     },
     "gene":"gene",
     "transform":"transform",

@@ -37,7 +37,7 @@ export class TopComponent implements OnInit {
     ) {
         this.translate.addLangs(["zh", "en"]);
         this.translate.setDefaultLang("zh");
-        this.browserLang = config['lang']; // this.translate.getBrowserLang()
+        this.browserLang = sessionStorage.getItem('lang') || config['lang']; // this.translate.getBrowserLang()
         this.translate.use(
             this.browserLang.match(/zh|en/) ? this.browserLang : "zh"
         );

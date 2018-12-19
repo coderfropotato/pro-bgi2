@@ -8,9 +8,14 @@
             <button *ngIf="!isOnlyChart" nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
                 <i class="anticon anticon-table"></i>
             </button>
+            <!-- 选择面板 显示隐藏icon -->
+            <span *ngIf="isHasSelectPanel && selectPanelList.length" style="margin-left:10px" (click)='showSelectPanel()'>
+                <i class="iconfont icon-zhankai"></i>
+            </span>
             <!-- 下拉框 -->
             <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate :''"></ng-container>
-
+            <!--图 搜索 -->
+            <ng-container *ngTemplateOutlet="(!isShowTable && searchTemplate && !error) ? searchTemplate :''"></ng-container>
         </div>
         <div class="fRight">
             <!-- 单选、多选 -->
@@ -30,6 +35,8 @@
                 <nz-option [nzLabel]="'accuracy.toFixedSeven' | translate" [nzValue]="7"></nz-option>
                 <nz-option [nzLabel]="'accuracy.toFixedAll' | translate" [nzValue]="-1"></nz-option>
             </nz-select>
+            <!-- 图功能按钮 -->
+            <ng-container *ngTemplateOutlet="(!isShowTable && funcBtnsTemplate && !error) ? funcBtnsTemplate :''"></ng-container>
             <!-- 设置 -->
             <ng-container *ngTemplateOutlet="(setTemplate && !error) ? setTemplate :''"></ng-container>
             <!-- 刷新-->
@@ -65,8 +72,9 @@
             <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
 
             <div #tableContent class="table-content" style="flex:1;display: flex;flex-direction: column;padding: 0 1px;">
+                <!-- 选择面板 -->
                 <!-- <ng-container *ngTemplateOutlet="(selectPanel && isHasSelectPanel) ? selectPanel :''"></ng-container> -->
-                <div #selectPanel class="selectPanel" *ngIf="isHasSelectPanel && selectPanelList.length">
+                <div #selectPanel class="selectPanel" *ngIf="isShowSelectPanel && isHasSelectPanel && selectPanelList.length">
                     <div class="selectContent">
                         <div *ngFor="let selected of selectPanelList">
                             <span>{{selected.type}}</span>&nbsp;
