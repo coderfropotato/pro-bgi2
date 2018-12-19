@@ -3,45 +3,76 @@
     <div class="custom-filter-dropdown">
         <!-- select search type -->
         <div>
-            <!--  ngModelChange="handlerSelectChange()" -->
             <nz-select style="width: 160px;" nzSize="default" [(ngModel)]="selectType" [nzAllowClear]="false"
                 nzPlaceHolder="Choose" (ngModelChange)="selectChange()">
+                <!-- string -->
                 <nz-option *ngIf="searchType==='string'" nzValue='regExp' nzLabel="{{'filterPanel.like' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='range' nzLabel="{{'filterPanel.range' | translate}}"></nz-option>
-                <nz-option nzValue='equal' nzLabel="{{'filterPanel.equal' | translate}}"></nz-option>
-                <nz-option nzValue='$ne' nzLabel="{{'filterPanel.ne' | translate}}"></nz-option>
-                <nz-option nzValue='$in' nzLabel="{{'filterPanel.in'| translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$gt' nzLabel="{{'filterPanel.gt' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$lt' nzLabel="{{'filterPanel.lt' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$gte' nzLabel="{{'filterPanel.gte' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$lte' nzLabel="{{'filterPanel.lte' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$gteabs' nzLabel="{{'filterPanel.gteabs' | translate}}"></nz-option>
-                <nz-option *ngIf="searchType!=='string'" nzValue='$gtabs' nzLabel="{{'filterPanel.gtabs' | translate}}"></nz-option>
-                <nz-option  nzValue='$notNull' nzLabel="{{'filterPanel.notNull' | translate}}"></nz-option>
+                <!-- double int -->
+                <nz-option *ngIf="searchType==='double' || searchType==='int'" nzValue='range' nzLabel="{{'filterPanel.range' | translate}}"></nz-option>
+                <!-- string int double -->
+                <nz-option *ngIf="searchType!=='total' && searchType!=='number'" nzValue='equal' nzLabel="{{'filterPanel.equal' | translate}}"></nz-option>
+                <!-- string int double -->
+                <nz-option *ngIf="searchType!=='total' && searchType!=='number'" nzValue='$ne' nzLabel="{{'filterPanel.ne' | translate}}"></nz-option>
+                <!-- string int double -->
+                <nz-option *ngIf="searchType!=='total' && searchType!=='number'" nzValue='$in' nzLabel="{{'filterPanel.in'| translate}}"></nz-option>
+                <!-- int double -->
+                <nz-option *ngIf="searchType==='double' || searchType==='int'" nzValue='$gt' nzLabel="{{'filterPanel.gt' | translate}}"></nz-option>
+                <!-- int double -->
+                <nz-option *ngIf="searchType==='double' || searchType==='int'" nzValue='$lt' nzLabel="{{'filterPanel.lt' | translate}}"></nz-option>
+                <!-- int double total -->
+                <nz-option *ngIf="searchType==='double' || searchType==='int' || searchType==='total'" nzValue='$gte' nzLabel="{{'filterPanel.gte' | translate}}"></nz-option>
+                <!-- int double -->
+                <nz-option *ngIf="searchType==='double' || searchType==='int'" nzValue='$lte' nzLabel="{{'filterPanel.lte' | translate}}"></nz-option>
+                <!-- int double -->
+                <nz-option *ngIf="searchType==='double' || searchType==='int'" nzValue='$gteabs' nzLabel="{{'filterPanel.gteabs' | translate}}"></nz-option>
+                <!-- int double -->
+                <nz-option *ngIf="searchType==='double' || searchType==='int'" nzValue='$gtabs' nzLabel="{{'filterPanel.gtabs' | translate}}"></nz-option>
+                <!-- string int double -->
+                <nz-option *ngIf="searchType==='string' || searchType==='int' || searchType==='double'" nzValue='$notNull' nzLabel="{{'filterPanel.notNull' | translate}}"></nz-option>
+                <!-- number -->
+                <nz-option *ngIf="searchType==='number'" nzValue='$and' nzLabel="{{'filterPanel.and' | translate}}"></nz-option>
             </nz-select>
         </div>
         <div class="form">
+            <!-- string // regExp -->
             <input *ngIf="searchType==='string' && selectType==='regExp'" type="text" nz-input placeholder="like"
                 nzSize="default" (input)="oninput()" [(ngModel)]="filter.regExp">
-            <input *ngIf="searchType!=='string' && selectType==='range'" type="number" nz-input placeholder="rangeA"
+            <!-- int double // range -->
+            <input *ngIf="(searchType==='double' || searchType==='int') && selectType==='range'" type="number" nz-input placeholder="rangeA"
                 nzSize="default" (input)="oninput()" [(ngModel)]="filter.rangeA">
-            <input style="margin-top:6px;" *ngIf="searchType!=='string' && selectType==='range'" type="number" nz-input placeholder="rangeB"
+            <!-- int double // range -->
+            <input style="margin-top:6px;" *ngIf="(searchType==='double' || searchType==='int') && selectType==='range'" type="number" nz-input placeholder="rangeB"
                 nzSize="default" (input)="oninput()" [(ngModel)]="filter.rangeB">
-            <input *ngIf="selectType==='equal'" type="text" nz-input placeholder="equal" nzSize="default" (input)="oninput()" [(ngModel)]="filter.equal">
-            <input *ngIf="selectType==='$ne'" type="text" nz-input placeholder="unequal" nzSize="default" (input)="oninput()" [(ngModel)]="filter.unequal">
-            <textarea *ngIf="selectType==='$in'" type="text" nz-input placeholder="in" nzSize="default" (input)="oninput()" [(ngModel)]="filter.in"></textarea>
-            <input *ngIf="searchType!=='string' && selectType==='$gt'" type="number" nz-input placeholder="gt" nzSize="default" (input)="oninput()"
+            <!-- string int double // equal -->
+            <input *ngIf="(searchType==='string' || searchType==='int' || searchType==='double') && selectType==='equal'" type="text" nz-input placeholder="equal" nzSize="default" (input)="oninput()" [(ngModel)]="filter.equal">
+            <!-- string int double // $ne -->
+            <input *ngIf="(searchType==='string' || searchType==='int' || searchType==='double') && selectType==='$ne'" type="text" nz-input placeholder="unequal" nzSize="default" (input)="oninput()" [(ngModel)]="filter.unequal">
+            <!-- string int double // $in -->
+            <textarea *ngIf="(searchType==='string' || searchType==='int' || searchType==='double') && selectType==='$in'" type="text" nz-input placeholder="in" nzSize="default" (input)="oninput()" [(ngModel)]="filter.in"></textarea>
+            <!-- int double // $gt -->
+            <input *ngIf="(searchType==='double' || searchType==='int') && selectType==='$gt'" type="number" nz-input placeholder="gt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gt">
-            <input *ngIf="searchType!=='string' && selectType==='$lt'" type="number" nz-input placeholder="lt" nzSize="default" (input)="oninput()"
+            <!-- int double // $lt -->
+            <input *ngIf="(searchType==='double' || searchType==='int') && selectType==='$lt'" type="number" nz-input placeholder="lt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.lt">
-            <input *ngIf="searchType!=='string' && selectType==='$gte'" type="number" nz-input placeholder="egt" nzSize="default" (input)="oninput()"
+            <!-- int double total // $gte -->
+            <input *ngIf="(searchType==='int' || searchType==='double' || searchType==='total') && selectType==='$gte'" type="number" nz-input placeholder="egt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gte">
-            <input *ngIf="searchType!=='string' && selectType==='$lte'" type="number" nz-input placeholder="elt" nzSize="default" (input)="oninput()"
+            <!-- int double // $lte -->
+            <input *ngIf="(searchType==='double' || searchType==='int') && selectType==='$lte'" type="number" nz-input placeholder="elt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.lte">
-            <input *ngIf="searchType!=='string' && selectType==='$gteabs'" type="number" nz-input placeholder="gteabs" nzSize="default" (input)="oninput()"
+            <!-- int double // $gteabs -->
+            <input *ngIf="(searchType==='double' || searchType==='int') && selectType==='$gteabs'" type="number" nz-input placeholder="gteabs" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gteabs">
-            <input *ngIf="searchType!=='string' && selectType==='$gtabs'" type="number" nz-input placeholder="gtabs" nzSize="default" (input)="oninput()"
+            <!-- int double // $gtabs -->
+            <input *ngIf="(searchType==='double' || searchType==='int') && selectType==='$gtabs'" type="number" nz-input placeholder="gtabs" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gtabs">
+            <!-- number // $and -->
+            <nz-radio-group *ngIf="searchType==='number' && selectType==='$and'" [(ngModel)]="filter.and">
+                <label nz-radio nzValue="0">0</label>
+                <label nz-radio nzValue="1">1</label>
+                <label nz-radio nzValue="All">All</label>
+            </nz-radio-group>
         </div>
         <nz-alert *ngIf="nodata" nzType="error" [nzMessage]="'filterPanel.error' | translate"></nz-alert>
         <!-- 交并集选择 -->

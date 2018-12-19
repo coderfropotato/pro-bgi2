@@ -29,6 +29,7 @@ export class FilterComponent implements OnInit {
             不为空                          $notNull
 
         新增类型
+
         total
             大于等于（>=）                  $gte
         number
@@ -88,8 +89,19 @@ export class FilterComponent implements OnInit {
             case "string":
                 this.selectType = "regExp";
                 break;
-            default:
+            case "int":
                 this.selectType = "range";
+                break;
+            case "double":
+                this.selectType = "range";
+                break;
+            case "total":
+                this.selectType = "$gte";
+                break;
+            case "number":
+                this.selectType = "$and";
+                break;
+
         }
         // this.radioValue = "inter";
         // this.beforeRadioValue = "inter";
@@ -110,7 +122,8 @@ export class FilterComponent implements OnInit {
             lte: "",
             gteabs: "",
             gtabs: "",
-            notNull:""
+            notNull:"",
+            and:"0"
         };
     }
 
@@ -166,6 +179,9 @@ export class FilterComponent implements OnInit {
                 break;
             case "$notNull":
                 valueOne = null;
+                valueTwo = null;
+            case "$and":
+                valueOne = this.filter['and'];
                 valueTwo = null;
         }
         // 必填值
@@ -302,7 +318,9 @@ export class FilterComponent implements OnInit {
             gte: "",
             lte: "",
             gteabs: "",
-            gtabs: ""
+            gtabs: "",
+            notNull:"",
+            and:"0"        
         };
 
         switch (filterType) {
@@ -339,6 +357,12 @@ export class FilterComponent implements OnInit {
                 break;
             case "$gtabs":
                 this.filter["gtabs"] = filterValueOne;
+                break;
+            case "$notNull":
+                this.filter["notNull"] = filterValueOne || "";
+                break;
+            case "$and":
+                this.filter["and"] = filterValueOne || "0";
                 break;
         }
 

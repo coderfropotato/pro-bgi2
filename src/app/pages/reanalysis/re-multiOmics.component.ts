@@ -71,6 +71,7 @@ export class ReMultiOmicsComponent implements OnInit {
     tableHeight = 0;
     first = true;
     switch = false;
+    onlyTable:boolean = false;
 
     geneType:string = '';
     addColumnShow:boolean = false;
@@ -283,10 +284,6 @@ export class ReMultiOmicsComponent implements OnInit {
 		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
     }
 
-    switchChange(status) {
-		this.switch = status;
-	}
-
 	// 表格上方功能区 resize重新计算表格高度
 	resize(event) {
         setTimeout(()=>{
@@ -294,9 +291,28 @@ export class ReMultiOmicsComponent implements OnInit {
         },30)
     }
 
+    // 切换左右布局 计算左右表格的滚动高度
+	switchChange(status) {
+        this.switch = status;
+        setTimeout(()=>{
+            this.multiOmicsChart.scrollHeight();
+            this.computedTableHeight();
+        },320)
+    }
+
+	// 展开表icon 点击事件
+    handleOnlyTable(){
+        this.onlyTable = !this.onlyTable;
+	}
+
+	// 从布局切换发出的事件
+	handlOnlyTableChange(status){
+		this.onlyTable = status;
+	}
+
     computedTableHeight() {
 		try {
-            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
 		} catch (error) {}
     }
 

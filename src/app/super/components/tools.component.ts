@@ -574,9 +574,9 @@ export class ToolsComponent implements OnInit {
 					version:this.storeService.getStore('version'),
 					geneType:this.toolsService.get('tableEntity')['geneType'],
 					species:this.storeService.getStore('genome'),
-					Data:this.kaFunDataName,
-					Statistics:this.kaFunStatisticsName,
-					classInfo: this.kaFunGroupSelect,
+					statisticData:this.kaFunDataName,
+					statisticMethod:this.kaFunStatisticsName,
+					classification: this.kaFunGroupSelect,
 					...this.toolsService.get('tableEntity')
 				},
 				url: this.toolsService.get('tableUrl')
