@@ -42,11 +42,11 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() isMultiSelect: boolean; //是否是多选 ；双向绑定:变量名x，fn命名规范xChange
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
     @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter(); //多选确定
-    
+
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter(); //画图
-    
+
     @Input() flex: boolean; // 是否flex布局
-    
+
     // 特殊图表
     @Input() isVennTable:boolean=false;  // true：venn/unsetR图的表；false：是普通表
 
@@ -311,6 +311,10 @@ export class TableSwitchChartComponent implements OnInit {
                 })
             })
         })
+
+        setTimeout(()=>{
+            this.scrollHeight();
+        },30)
     }
 
     /**
