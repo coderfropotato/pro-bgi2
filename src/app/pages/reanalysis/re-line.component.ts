@@ -371,8 +371,8 @@ export class ReLineComponent implements OnInit {
 				}
             },
             tooltip: function(d) {
-				return `<span>FPKM：${d.name}</span><br><span>log10：${
-					d.value
+				return `<span>FPKM：${d.x}</span><br><span>log10：${
+					d.y
 				}</span><br><span>id：${d.category}</span>`;
             }
 		  }

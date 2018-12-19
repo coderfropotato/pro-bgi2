@@ -69,7 +69,7 @@ export class ReNetComponent implements OnInit {
 
 
     // 路由参数
-    tid:string = null;
+    tid:string = "df3017e1c1ab4acca8f92b336ebc921b";
     geneType:string = '';
     version:string = null;
 
@@ -106,13 +106,13 @@ export class ReNetComponent implements OnInit {
 
     ngOnInit() {
         // chart
-        this.colors = ["#ff0000", "#ffffff", "#0070c0"];
+        this.colors = ["#0000ff", "#ff0000"];
 
-        // this.chartUrl=`${config['javaPath']}/Cluster/clusterGraph`;
+        // this.chartUrl=`${config['javaPath']}/net/graph`; 
         this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
-            "LCID": this.storeService.getStore('LCID'),
-            "tid": this.tid
+            "id": this.tid,
+            "quantity":{}
         };
 
         // table
@@ -310,9 +310,21 @@ export class ReNetComponent implements OnInit {
         d3.select("#netChartDiv svg").remove();
         let that  = this;
 
+        //关联关系
+        let relations = this.storeService.getStore('relations');
+        let colorArr = [["#FF8B8B", "#167C80"], ["#005397", "#FACA0C"], ["#F3C9DD", "#0BBCD6"], ["#BFB5D7", "#BEA1A5"], ["#0E38B1", "#A6CFE2"], ["#371722", "#C7C6C4"]];
+        let relationColors=[...relations];
+        relationColors.forEach((d,i)=>{
+            d.colors=[...colorArr[i]];
+        })
+        
+        let netRelations=[];
+        let linkRelations=[];
+
         //数据
         let nodes=data.nodes,links=data.links;
-        let min=data.min,max=data.max,scores=data.scores;
+        let values=data.value;
+        let min=values[0],max=values[1];
 
         nodes.forEach(d => {
             d.selected=false;
@@ -323,14 +335,46 @@ export class ReNetComponent implements OnInit {
             })
         });
 
-        let selectedList=[]; //选中的节点
+        links.forEach(d=>{
+            netRelations.push(d.type);
+        })
+        netRelations=Array.from(new Set(netRelations));
+
+        netRelations.forEach(d=>{
+            linkRelations.push({
+                type:d
+            })
+        })
+
+        linkRelations.forEach(d=>{
+            relationColors.forEach(m=>{
+                if(d.type===m.key){
+                    d.scores=[m.score[0],m.score[1]];
+                    d.colors=[...m.colors];
+                    d.scale=d3.scaleLinear().domain(d.scores).range(d.colors).clamp(true).nice();
+                }
+            })
+        })
+
+        links.forEach(d=>{
+            d.selected=false;
+            linkRelations.forEach(m=>{
+                if(d.type===m.type){
+                    d.min=m.scores[0];
+                    d.scale=m.scale;
+                }
+            })
+        })
+
+        let selectedNodes=[]; //选中的节点
+        let selectedLinks=[];  //选择的线
+
+        let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }];
 
         //容器宽高
         let width=700,height=700;
-
-        let colorsArray = ["#FF8B8B", "#167C80", "#005397", "#FACA0C", "#F3C9DD", "#0BBCD6", "#BFB5D7", "#BEA1A5", "#0E38B1", "#A6CFE2", "#371722", "#C7C6C4", "#DABAAE", "#DB9AAD", "#F1C3B8", "#EF3E4A", "#C0C2CE", "#EEC0DB", "#B6CAC0", "#C5BEAA", "#FDF06F", "#EDB5BD", "#17C37B", "#2C3979", "#1B1D1C", "#E88565", "#FFEFE5", "#F4C7EE", "#77EEDF", "#E57066", "#FBFE56", "#A7BBC3", "#3C485E", "#055A5B", "#178E96", "#D3E8E1", "#CBA0AA", "#9C9CDD", "#20AD65", "#E75153", "#4F3A4B", "#112378", "#A82B35", "#FEDCCC", "#00B28B", "#9357A9", "#C6D7C7", "#B1FDEB", "#BEF6E9", "#776EA7", "#EAEAEA", "#EF303B", "#1812D6", "#FFFDE7", "#D1E9E3", "#7DE0E6", "#3A745F", "#CE7182", "#340B0B", "#F8EBEE", "#FF9966", "#002CFC", "#75FFC0", "#FB9B2A", "#FF8FA4", "#000000", "#083EA7", "#674B7C", "#19AAD1", "#12162D", "#121738", "#0C485E", "#FC3C2D", "#864BFF", "#EF5B09", "#97B8A3", "#FFD101", "#C26B6A", "#E3E3E3", "#FF4C06", "#CDFF06", "#0C485E", "#1F3B34", "#384D9D", "#E10000", "#F64A00", "#89937A", "#C39D63", "#00FDFF", "#B18AE0", "#96D0FF", "#3C225F", "#FF6B61", "#EEB200", "#F9F7E8", "#EED974", "#F0CF61", "#B7E3E4"];
-
-        let colors=["#0000ff", "#ff0000"];
+        
+        let colors=this.colors;
 
         //node比例尺
         let typeArr=["mrna", "miRNA", "lncRNA", "other"];
@@ -376,13 +420,28 @@ export class ReNetComponent implements OnInit {
             )
             .on("dblclick.zoom", null);
 
+        //箭头
+        svg.append("defs").selectAll("marker")
+        .data(arrows).enter()
+        .append("marker")
+        .attr("id", d => d.id)
+        .attr("viewBox", '0 0 10 10')
+        .attr("refX", 20)
+        .attr("refY", 5)
+        .attr("markerWidth", 4)
+        .attr("markerHeight", 4)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("d", 'M0,0 L0,10 L10,5 z')
+        .attr("opacity", d => d.opacity);
+
         let g = svg .append("g");
 
         //力图
         let simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d=> d.geneID).iterations(4))
             .force('charge', d3.forceManyBody().strength(-this.force))
-            // .force("collide", d3.forceCollide().radius(d => sizeScale(d.num)))  // 添加碰撞检测，使节点不重叠
+            // .force("collide", d3.forceCollide().radius(d => sizeScale(d.value)))  // 添加碰撞检测，使节点不重叠
             .force('center', d3.forceCenter(width/2, height/2))
             .force("x", d3.forceX())
             .force("y", d3.forceY())
@@ -395,10 +454,31 @@ export class ReNetComponent implements OnInit {
             .enter()
             .append('path')
             .attr('class', 'link')
-            .attr('stroke', "#ddd")
-            .attr('stroke-width', 2).attr("fill", "none")
+            .attr('stroke', d=>d.score===null ? d.scale(d.min) : d.scale(d.score))
+            .attr('stroke-width', 2)
+            .attr("fill", "none")
+            .style('cursor','pointer')
+            .attr("marker-end",d=> d.type==='target' ? 'url(#end-arrow)' :'')
+            .on("mouseover", m => {
+                let text = `source：${m.source.geneID}<br>target：${m.target.geneID}<br>type：${m.type}<br>score：${m.score}<br>文献：${m.references}`;
+                this.globalService.showPopOver(d3.event, text);
+            })
+            .on("mouseout", () => {
+                this.globalService.hidePopOver();
+            })
             .on("click", function (d) {
-                console.log(d)
+                clearEventBubble(d3.event);
+                d.selected = !d.selected;
+    
+                //选中link加到list中，反选link中从list中去掉
+                if (d.selected) {
+                    d3.select(this).attr('stroke',"#000000");
+                    selectedLinks.push(d);
+                } else {
+                    d3.select(this).attr('stroke',d.score===null ? d.scale(d.min) : d.scale(d.score));
+                }
+
+                selectedLinks=selectedLinks.filter(k=>k.selected===true);
             });
 
 
@@ -410,35 +490,41 @@ export class ReNetComponent implements OnInit {
             .enter().append("g")
 
         let node = g_node.append("path")
-            .attr('class',d=>d.type)
+            .attr('class',"node")
             .attr("d",d3.symbol()
                 .type(d=>symbolScale(d.type))
-                .size(d=>sizeScale(d.num))
+                .size(d=>sizeScale(d.value))
             )
-            .attr('fill', d=>d.selected ? "#167C80" : nodeColorScale(d.num))
+            .attr('fill', d=>{
+                if(d.selected){
+                    return "#167C80";
+                }else{
+                    return  d.value === null ? nodeColorScale(min) : nodeColorScale(d.value);
+                }
+            })
             .attr("cursor", "pointer")
             .on("mouseover", m => {
-                let text = `geneID：${m.geneID}<br>type：${m.type}<br>linkNum：${m.num}<br>geneSymbol：${m.symbol}`;
+                let text = `geneID：${m.geneID}<br>type：${m.type}<br>linkNum：${m.value}<br>geneSymbol：${m.symbol}`;
                 this.globalService.showPopOver(d3.event, text);
             })
             .on("mouseout", () => {
                 this.globalService.hidePopOver();
             })
             .on("click", function (d) {
-                event.stopPropagation();
+                clearEventBubble(d3.event);
                 d.selected = !d.selected;
 
                 //选中node加到list中，反选node中从list中去掉
                 if (d.selected) {
                     d3.select(this).attr('fill',"#167C80");
-                    selectedList.push(d);
+                    selectedNodes.push(d);
                 } else {
-                    d3.select(this).attr('fill',nodeColorScale(d.num));
+                    d3.select(this).attr('fill',d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
                 }
 
-                selectedList=selectedList.filter(k=>k.selected===true);
+                selectedNodes=selectedNodes.filter(k=>k.selected===true);
                 that.selectGeneList.length=0;
-                selectedList.forEach(m=>{
+                selectedNodes.forEach(m=>{
                     that.selectGeneList.push(m.geneID);
                 })
             })
@@ -461,6 +547,15 @@ export class ReNetComponent implements OnInit {
             drawText();
         }
 
+        // svg 点击清空选择
+        d3.select("#netChartDiv svg").on('click',function(){
+            d3.selectAll('path.node').attr('fill',d=>d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
+            d3.selectAll('path.link').attr('stroke',d=>d.score===null ? d.scale(d.min) : d.scale(d.score));
+            selectedNodes.length=0;
+            selectedLinks.length=0;
+            that.selectGeneList.length=0;
+        })
+
         function drawText(){
             let node_text= g_node.append("text")
                 .attr("dx", 12)
@@ -480,7 +575,6 @@ export class ReNetComponent implements OnInit {
                 })
             }
         }
-
 
         function ticked() {
             link.attr("d", function (d) {
@@ -547,6 +641,22 @@ export class ReNetComponent implements OnInit {
             d.fx = null;
             d.fy = null;
         }
+
+
+        //阻止冒泡
+		function clearEventBubble(evt) {
+			if (evt.stopPropagation) {
+				evt.stopPropagation();
+			} else {
+				evt.cancelBubble = true;
+			}
+
+			if (evt.preventDefault) {
+				evt.preventDefault();
+			} else {
+				evt.returnValue = false;
+			}
+		}
 
         //expand 点击 支持扩展，所有已选中node进行扩展一级。
         d3.select("#expand").on("click", function () {
