@@ -83,6 +83,8 @@ export class TableSwitchChartComponent implements OnInit {
     selectPanelList: object[] = [];  //选择面板数据
     isHasSelectPanel: boolean;
     selectedList: string[] = [];  //选中的数据
+    isShowSelectPanel:boolean=false;
+    confirmSelects:any[]=[];
 
     constructor(
         private ajaxService: AjaxService,
@@ -267,6 +269,7 @@ export class TableSwitchChartComponent implements OnInit {
 
         this.defaultSelectList.emit(this.selectedList);
         this.reGetData();
+        this.confirmSelects=[...this.selectedList];
     }
 
     //选择面板 选择
@@ -286,7 +289,23 @@ export class TableSwitchChartComponent implements OnInit {
 
     //选择面板 确定
     selectConfirm() {
+        this.confirmSelects=[...this.selectedList];
         this.selectConfirmEmit.emit(this.selectedList);
+    }
+
+    //显示隐藏选择面板
+    showSelectPanel(){
+        this.isShowSelectPanel = !this.isShowSelectPanel;
+        this.selectPanelList.forEach(d=>{
+            d['data'].forEach(k=>{
+                k['isChecked']=false;
+                this.confirmSelects.forEach(m=>{
+                    if(k['name']===m){
+                        k['isChecked']=true;
+                    }
+                })
+            })
+        })
     }
 
     /**
