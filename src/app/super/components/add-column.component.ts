@@ -249,7 +249,28 @@ export class AddColumnComponent implements OnInit {
 		this.initTheadStatus();
 		this.getCheckCount();
 		this.confirm();
-	}
+    }
+
+    // 重置按钮  （重置到基础头激活的状态）
+    reset(){
+        this.theadInBase = [];
+        this.initSelected();
+
+        this.forLeaves(this.thead, (item) => {
+            if (this.baseThead.includes(item['key'])) {
+                item['checked'] = true;
+                this.selected[item['index']].push(item);
+                this.theadInBase.push(item);
+            } else {
+                item['checked'] = false;
+            }
+        });
+
+        this.getCheckCount();
+        this.beforeSelected = this.copy(this.selected);
+
+        this.confirm();
+    }
 
 	// 取消按钮
 	cancel() {
@@ -266,7 +287,31 @@ export class AddColumnComponent implements OnInit {
 		setTimeout(() => {
 			this.toggle.emit(this.show);
 		}, 0);
-	}
+    }
+
+    // 分类全选 不确定
+    categoryCheckAll(categorys){
+        categorys.forEach(v=>{
+            if(v['children'].length){
+                v['children'].forEach(val=>{
+                    val['checked'] = false;
+                    this.toggleSelect(val,val['index']);
+                })
+            }
+        })
+    }
+
+    // 分类清空 不确定
+    categoryClear(categorys){
+        categorys.forEach(v=>{
+            if(v['children'].length){
+                v['children'].forEach(val=>{
+                    val['checked'] = true;
+                    this.toggleSelect(val,val['index']);
+                })
+            }
+        })
+    }
 
 	// 删除单个头
 	closeTag(d) {

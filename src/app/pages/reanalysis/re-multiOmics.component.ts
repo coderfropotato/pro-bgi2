@@ -194,7 +194,11 @@ export class ReMultiOmicsComponent implements OnInit {
 
     // 表
     addThead(thead) {
+        this.transformTable._initCheckStatus();
+
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._setParamsNoRequest('pageIndex', 1);
+
 		this.transformTable._addThead(thead['add']);
     }
 
@@ -260,6 +264,7 @@ export class ReMultiOmicsComponent implements OnInit {
 
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
+        this.transformTable._initCheckStatus();
         if(!this.first){
             if(!this.showBackButton){  // 如果是通过定量信息转的矩阵 那就需要保存增删列的激活状态
                 let {add,remove} = this.addColumn._confirmWithoutEvent();
@@ -269,11 +274,13 @@ export class ReMultiOmicsComponent implements OnInit {
                 this.defaultEntity['addThead'] = [];
                 this.defaultEntity['removeColumns'] = [];
             }
+            this.defaultEntity['pageIndex'] = 1;
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['searchList'] = [];
             this.defaultEntity['matrix'] = !!this.graphRelations.length;
             this.first = true;
         }else{
+            this.transformTable._setParamsNoRequest('pageIndex',1);
             this.transformTable._setParamsNoRequest('matrix',!!this.graphRelations.length);
             this.transformTable._getData();
         }

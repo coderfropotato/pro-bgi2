@@ -57,6 +57,7 @@ export class FilterComponent implements OnInit {
     selectType: string;
     filtering: boolean = false;
     visible: boolean = false;
+    filterPanelPlace:string = 'bottomRight';
 
     // 国际化
     closeButtonText: string;
@@ -320,7 +321,7 @@ export class FilterComponent implements OnInit {
             gteabs: "",
             gtabs: "",
             notNull:"",
-            and:"0"        
+            and:"0"
         };
 
         switch (filterType) {

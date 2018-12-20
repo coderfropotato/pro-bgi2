@@ -42,6 +42,7 @@
         "confirmButton":"confirm",
         "clearButton":"clear",
         "cancelButton":"cancel",
+        "resetButton":"reset",
         "noData":"no data"
     },
     "tableButton":{

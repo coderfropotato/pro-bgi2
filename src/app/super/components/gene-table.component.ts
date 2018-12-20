@@ -479,7 +479,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.dataSet.forEach(val => {
             val.checked = this.checkStatus;
             this.checkedMap[val[this.key]] = val;
-            delete this.unCheckedMap[val[this.key]];
+            this.unCheckedMap = {};
         });
         this.computedStatus();
     }
