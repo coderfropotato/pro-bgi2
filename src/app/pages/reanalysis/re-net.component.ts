@@ -323,7 +323,6 @@ export class ReNetComponent implements OnInit {
     drawChart(data){
         d3.select("#netChartDiv svg").remove();
         let that  = this;
-        this.allNodes=data.nodes;
 
         //关联关系
         let relations = this.storeService.getStore('relations');
@@ -381,6 +380,8 @@ export class ReNetComponent implements OnInit {
         })
 
         let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
+
+        this.allNodes=[...nodes];
 
         //容器宽高
         let width=700,height=700;
@@ -506,6 +507,7 @@ export class ReNetComponent implements OnInit {
 
         let node = g_node.append("path")
             .attr('class',"node")
+            .attr('id',d=>d.geneID)
             .attr("d",d3.symbol()
                 .type(d=>symbolScale(d.type))
                 .size(d=>sizeScale(d.value))
@@ -536,6 +538,7 @@ export class ReNetComponent implements OnInit {
                 that.selectedNodes.forEach(m=>{
                     that.selectGeneList.push(m['geneID']);
                 })
+
             })
 
         g_node.call(d3.drag()
@@ -564,6 +567,7 @@ export class ReNetComponent implements OnInit {
             that.selectedLinks.length=0;
             that.selectGeneList.length=0;
             that.selectLinkList.length=0;
+            that.curSearchNode=null;
         })
 
         function drawText(){
@@ -710,6 +714,15 @@ export class ReNetComponent implements OnInit {
         this.selectedLinks.length=0;
         this.selectGeneList.length=0;
         this.selectLinkList.length=0;
+
+        d3.select("path#"+this.curSearchNode).attr('fill',"#167C80");
+        this.allNodes.forEach(d=>{
+            if(d.geneID === this.curSearchNode){
+                this.selectedNodes.push(d);
+            }
+        })
+        this.selectGeneList.push(this.curSearchNode);
+
     }
 
     colorChange(color){

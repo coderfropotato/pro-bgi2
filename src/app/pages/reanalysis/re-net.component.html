@@ -16,7 +16,7 @@
 
                     <ng-template #funcBtnsTemplate>
                         <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px">add link</button>
-                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px">delete link</button>
+                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length">delete link</button>
                         <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" id="expand">expand</button>
                     </ng-template>
 
