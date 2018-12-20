@@ -36,6 +36,8 @@ export class ReNetComponent implements OnInit {
     color: string; //当前选中的color
     colors: string[];
 
+    nodeColorScale:any;
+
     // 选中的节点、线
     selectGeneList:string[] = []; // 选择的节点geneID
     selectLinkList:string[]=[]; // 选择的线ID
@@ -373,7 +375,6 @@ export class ReNetComponent implements OnInit {
             d.selected=false;
             linkRelations.forEach(m=>{
                 if(d.type===m.type){
-                    d.min=m.scores[0];
                     d.scale=m.scale;
                 }
             })
@@ -405,10 +406,10 @@ export class ReNetComponent implements OnInit {
         //大小
         let sizeScale=d3.scaleLinear()
             .range([min*10+20, max*10+20])
-            .domain([min, max]).clamp(true);
+            .domain([min, max]).clamp(true).nice();
 
         //颜色
-        let nodeColorScale=d3.scaleLinear()
+        this.nodeColorScale=d3.scaleLinear()
             .range(colors)
             .domain([min,max]).clamp(true).nice();
 
@@ -464,7 +465,7 @@ export class ReNetComponent implements OnInit {
             .enter()
             .append('path')
             .attr('class', 'link')
-            .attr('stroke', d=>d.score===null ? d.scale(d.min) : d.scale(d.score))
+            .attr('stroke', d=> d.scale(d.score))
             .attr('stroke-width', 2)
             .attr("fill", "none")
             .style('cursor','pointer')
@@ -485,7 +486,7 @@ export class ReNetComponent implements OnInit {
                     d3.select(this).attr('stroke',"#000000");
                     that.selectedLinks.push(d);
                 } else {
-                    d3.select(this).attr('stroke',d.score===null ? d.scale(d.min) : d.scale(d.score));
+                    d3.select(this).attr('stroke',d.scale(d.score));
                 }
 
                 that.selectedLinks=that.selectedLinks.filter(k=>k['selected']===true);
@@ -509,13 +510,7 @@ export class ReNetComponent implements OnInit {
                 .type(d=>symbolScale(d.type))
                 .size(d=>sizeScale(d.value))
             )
-            .attr('fill', d=>{
-                if(d.selected){
-                    return "#167C80";
-                }else{
-                    return  d.value === null ? nodeColorScale(min) : nodeColorScale(d.value);
-                }
-            })
+            .attr('fill', d=>d.selected ? "#167C80" : that.nodeColorScale(d.value))
             .attr("cursor", "pointer")
             .on("mouseover", m => {
                 let text = `geneID：${m.geneID}<br>type：${m.type}<br>linkNum：${m.value}<br>geneSymbol：${m.symbol}`;
@@ -533,7 +528,7 @@ export class ReNetComponent implements OnInit {
                     d3.select(this).attr('fill',"#167C80");
                     that.selectedNodes.push(d);
                 } else {
-                    d3.select(this).attr('fill',d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
+                    d3.select(this).attr('fill',that.nodeColorScale(d.value));
                 }
 
                 that.selectedNodes=that.selectedNodes.filter(k=>k['selected']===true);
@@ -563,8 +558,8 @@ export class ReNetComponent implements OnInit {
 
         // svg 点击清空选择
         d3.select("#netChartDiv svg").on('click',function(){
-            d3.selectAll('path.node').attr('fill',d=>d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
-            d3.selectAll('path.link').attr('stroke',d=>d.score===null ? d.scale(d.min) : d.scale(d.score));
+            d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
+            d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
             that.selectedNodes.length=0;
             that.selectedLinks.length=0;
             that.selectGeneList.length=0;
@@ -709,8 +704,8 @@ export class ReNetComponent implements OnInit {
 
     //搜索
     searchNodeChange(){
-        // d3.selectAll('path.node').attr('fill',d=>d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
-        d3.selectAll('path.link').attr('stroke',d=>d.score===null ? d.scale(d.min) : d.scale(d.score));
+        d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.value));
+        d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
         this.selectedNodes.length=0;
         this.selectedLinks.length=0;
         this.selectGeneList.length=0;
