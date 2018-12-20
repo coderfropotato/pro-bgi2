@@ -318,33 +318,9 @@ export class KaFunComponent implements OnInit {
         k_dataRow.forEach(val => {
             k_dataName.push(val.name);
         });
-        // data:
-        //     high: 825
-        //     low: 856
-        //     middle: 294
-        //     sum: 1975
-        //     __proto__: Object
-        // name: "Eye||male"
-
-        //计算左侧最大的名字长度
-        let k_name_max = [];
-		for (let i = 0; i < k_dataName.length; i++) {
-			k_name_max.push(getBLen(k_dataName[i]));
-		}
-
-		let max_name = Math.max.apply(null, k_name_max);
-		let target_name = '';
-		for (let i = 0; i < k_name_max.length; i++) {
-			if (max_name == k_name_max[i]) {
-				target_name = k_dataName[i];
-				break;
-			}
-        }
-
-        let oSvg = d3.select('#kaFunChartDiv').append('svg');
-		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
-		let left_name_length = mText.nodes()[0].getBBox().width;
-		oSvg.remove();
+        let k_dataCircle = [];
+        
+        let left_name_length = getNameLength(k_dataName);//获取左侧名字最大长度
 
         let t_chartID = document.getElementById('kaFunChartDiv');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
@@ -373,19 +349,30 @@ export class KaFunComponent implements OnInit {
                     font-size:12px;
                 }
 
+                .titleText{
+                    font-size:16px;
+                    cursor: pointer;
+                }
+                
             </style>
         </svg>`;
 		t_chartID.innerHTML = str;
+        
+        let tempSvg = null;
+        let tempSvg_xScale = null;
+        let tempSvg_yScale = null;
 
+        let top_name = 50; //上侧标题高度
+        let left_name = 20;//左侧标题
         let s_width = 80;  //正方体宽高
-        let r_width = 60;  //右侧图例宽度
+        let r_width = 80;  //右侧图例宽度
         let t_height = 20;  //上图例宽度
 
         let x_length = k_baseThead.length*s_width;
         let y_length = k_dataRow.length*s_width;
 
         let svg_width = left_name_length+x_length+r_width; //计算最外层svg宽度
-        let svg_height = y_length+t_height; //计算最外层svg高度
+        let svg_height = y_length+t_height+top_name; //计算最外层svg高度
 
         let svg = d3.select('#svg') //最外层svg
                 .attr('width', svg_width)
@@ -394,24 +381,103 @@ export class KaFunComponent implements OnInit {
 
                 },false);
 
-        drawSvg();  //画中间主题
-        drawLeftName();//左侧名字
-        drawTopName();//左侧名字
+        for (let index = 0; index < k_dataRow.length; index++) {
+            const element = k_dataRow[index];
+            let tempData = element.data;
+            k_dataCircle.push(
+                {
+                    x:s_width/2,
+                    y:s_width*(2*index+1)/2,
+                    r:5,
+                    color:'red',
+                    value:tempData.high,
+                    name:element.name,
+                    type:"high"
+                },
+                {
+                    x:s_width*3/2,
+                    y:s_width*(2*index+1)/2,
+                    r:5,
+                    color:'red',
+                    value:tempData.middle,
+                    name:element.name,
+                    type:"middle"
+                },
+                {
+                    x:s_width*5/2,
+                    y:s_width*(2*index+1)/2,
+                    r:5,
+                    color:'red',
+                    value:tempData.low,
+                    name:element.name,
+                    type:"low"
+                },
+                {
+                    x:s_width*7/2,
+                    y:s_width*(2*index+1)/2,
+                    r:5,
+                    color:'red',
+                    value:tempData.sum,
+                    name:element.name,
+                    type:"sum"
+                }
+            )
 
+        }
+        //console.log(k_dataCircle);
+        drawTopTitle();//上侧标题
+        drawSvg();  //画中间主题
+        drawYaxisName();//y轴名字
+        drawXaxisName();//x轴名字
+        drawRightTopLegend();//画右上方图例
+        drawRightBottomLegend();//画右下方图例
+
+        function drawTopTitle(){
+            let width = x_length/2;
+            let height = y_length;
+            let svgTitle = svg
+                .append('g')
+                .attr('transform', 'translate(' + left_name_length + ',' + 0 + ')')
+                .append('text')
+                .attr("class","titleText")
+                .attr('width', width)
+                .attr('height', top_name)
+                .attr('dx', '60')
+				.attr('dy', '30')
+				.text(function(d, i) {
+					return "气泡统计图";
+				})
+				.on('click', function(d, i) {
+                    let event = d3.event;
+                    event.stopPropagation();
+					console.log(1111)
+				});
+        }
+
+        //画中间主体框架
         function drawSvg(){
             let width = x_length;
             let height = y_length;
 
+            let top_length = top_name+t_height;
+    
             let svg1 = svg
                 .append('g')
-                .attr('transform', 'translate(' + left_name_length + ',' + t_height + ')')
+                .attr('transform', 'translate(' + left_name_length + ',' + top_length + ')')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height)
                 .attr('class', 'svg1');
+
+            
+
             let xScale = d3.scaleBand().domain(k_baseThead).range([ 0, width ]);
             let yScale = d3.scaleBand().domain(k_dataName).range([ 0, height ]);
 
+            tempSvg = svg1;
+            tempSvg_xScale = xScale;
+            tempSvg_yScale = yScale;
+    
             let xAxis = d3.axisBottom(xScale);
             let yAxis = d3.axisRight(yScale);
 
@@ -427,13 +493,16 @@ export class KaFunComponent implements OnInit {
                 .call(yAxis);
         }
 
-        function drawLeftName(){
+        //画y轴
+        function drawYaxisName(){
             let width = left_name_length;
             let height = y_length;
+            
+            let top_length = top_name+t_height;
 
             let svg2 = svg
                 .append('g')
-                .attr('transform', 'translate(' + 0 + ',' + t_height + ')')
+                .attr('transform', 'translate(' + 0 + ',' + top_length + ')')
                 .append('svg')
                 .attr('x', '0')
 				.attr('y', '0')
@@ -447,13 +516,14 @@ export class KaFunComponent implements OnInit {
             svg2.append('g').attr('class', 'axis_yname').attr('transform', 'translate(' + width + ',' + 0 + ')').call(ynAxis);
         }
 
-        function drawTopName(){
+        //画X轴
+        function drawXaxisName(){
             let width = x_length;
             let height = t_height;
 
             let svg3 = svg
                 .append('g')
-                .attr('transform', 'translate(' + left_name_length + ',' + 0 + ')')
+                .attr('transform', 'translate(' + left_name_length + ',' + top_name + ')')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height+0.5)
@@ -465,16 +535,10 @@ export class KaFunComponent implements OnInit {
             svg3.append('g').attr('class', 'axis_topname').attr('transform', 'translate(' + 0 + ',' + height + ')').call(xtAxis);
         }
 
+        //画中间网格线
         function drawMiddleLine(tempThatone){
-
-            // left_name_length
-            // let t_height = 20;  //上图例宽度
-            // let s_width = 80;  //正方体宽高
-            // let y_length = k_dataRow.length*s_width;
-
             let rowGroup = [];
             let columGroup = [];
-
             for (let index = 0; index <= k_baseThead.length; index++) {
                 let temp1 = {
                     x_axis:index*s_width,
@@ -530,6 +594,152 @@ export class KaFunComponent implements OnInit {
                     .attr('stroke-width', 1);
             }
         }
+
+        function drawRightTopLegend(){
+            // t_height
+            // y_length  //高度
+            // left_name_length+x_length //偏移位置
+            // let r_width = 60;  //右侧图例宽度
+
+            // let width = x_length/2;
+            // let height = y_length;
+
+            let leftLength = left_name_length+x_length;
+            let topLength = top_name + t_height;
+            let rectWidth = 40;     //y轴偏移距离
+            let legendHeight = 100; //上侧图例高度
+            let legend_g = svg
+                .append('g')
+                .attr('transform', 'translate(' + leftLength + ',' + top_name + ')');
+
+            legend_g.append('text').attr("class","titleText").attr('dx', '15').attr('dy', '10').text("num");
+
+            let legendScale = d3.scaleLinear().range([0, legendHeight]) //定义图例比例尺
+            .domain([0, 1]).nice().clamp(true);
+            let yAxis = d3.axisRight(legendScale).tickSizeOuter(0).ticks(5); //设置Y轴
+            legend_g.append("g").attr("class", "gradient_legendAxis")
+                .attr("transform", 'translate(' + rectWidth + ',' + t_height + ')')
+                .call(yAxis);
+        }
+
+        function drawRightBottomLegend(){
+            let leftLength = left_name_length+x_length;
+            let legendHeight = 100; //上侧图例高度
+            let topLength = top_name + t_height+legendHeight+20;//20为上侧图例的title高度
+
+            let r_legend = svg
+                .append('g')
+                .attr('transform', 'translate(' + leftLength + ',' + topLength + ')');
+            
+            r_legend.append('text').attr("class","titleText").attr('dx', '15').attr('dy', '10').text("radius");
+
+            setBubble(k_dataCircle,r_legend);
+
+        }
+
+        function setBubble(data,r_legend){ 
+            // {
+            //     x:s_width/2,
+            //     y:s_width*(2*index+1)/2,
+            //     r:5,
+            //     color:'red',
+            //     value:tempData.high,
+            //     name:element.name,
+            //     type:"high"
+            // },
+            let r_min = d3.min(data, function(d) {
+                return d.value;
+            });
+            let r_max = d3.max(data, function(d) {
+                return d.value;
+            });
+
+            let Rmin=10,Rmax=s_width/2;
+            let Rsize_arr = [Rmin, Rmax];
+            let rScale = d3.scaleLinear().domain([r_min, r_max]).range(Rsize_arr).clamp(true);
+
+            let rData = [];
+            let rLen = 3;
+            for (let i = 0; i < rLen; i++) {
+                let r = r_min + i * ((r_max - r_min) / (rLen - 1));
+                rData.push(Math.round(r));
+            }
+            let resultarr = uniq(rData); //去重
+            let circle_legend = r_legend.append("g").attr('transform', 'translate(' + 20 + ',' + 20 + ')');
+            let r_sum = 0;
+            let space = 10;
+            resultarr.forEach(function(d, i) {
+                let r_size = 2 * rScale(d);
+                r_sum += r_size;
+                circle_legend.append("circle")
+                    .attr("r", rScale(d)/4)
+                    .attr("cy", r_sum/4 + i * space);
+                circle_legend.append("text")
+                    .attr("dx", rScale(resultarr[resultarr.length - 1])/4 + 10)
+                    .attr("dy", r_sum/4 + i * space)
+                    .style("font-size", "12")
+                    .attr("text-anchor", "start")
+                    .attr("dominant-baseline", "middle")
+                    .text(d);
+            })
+
+            tempSvg.selectAll('.MyCircle')
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("r", function(d, i) {
+                return rScale(d['value'])-1;
+            })
+            .attr("cx", function(d, i) {
+                return d['x'];
+            })
+            .attr("cy", function(d, i) {
+                return d['y'];
+            })
+            // .attr("fill", d => colorScale(d.color))
+            // .attr("fill-opacity", 0.3)
+            // .attr("stroke", d => colorScale(d.color))
+            // .attr("stroke-opacity", 0.7)
+            .on("mouseover", function(d) {
+                console.log(d)
+                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}<br> color:  ${d.color}`;
+                that.globalService.showPopOver(d3.event, tipText);
+            })
+            .on("mouseout", function(d) {
+                that.globalService.hidePopOver();
+            })
+            .on('click', function(d) {
+                // if (that.selectedModule) {
+                //     that._applyChartSelect(d, d3.select(this), colorScale(d.color));
+                //     d3.event.stopPropagation();
+                // } else {
+                //     return false;
+                // }
+            })
+            // .transition()
+            // .duration(800)
+            // .attr("r", d => rScale(d.r));
+
+        }
+        
+        function uniq(array){
+            var temp = [];
+            var index = [];
+            var l = array.length;
+            for(var i = 0; i < l; i++) {
+                for(var j = i + 1; j < l; j++){
+                    if (array[i] === array[j]){
+                        i++;
+                        j = i;
+                    }
+                }
+                temp.push(array[i]);
+                index.push(i);
+            }
+            console.log(index);
+            return temp;
+        }
+
         function getBLen(str) {
             if (str == null) return 0;
             if (typeof str != 'string') {
@@ -580,7 +790,30 @@ export class KaFunComponent implements OnInit {
                 tempArr.push(arr[i]);
 			}
 			return tempArr;
-		}
+        }
+        
+        function getNameLength(k_dataName){
+            //计算左侧最大的名字长度
+            let k_name_max = [];
+            for (let i = 0; i < k_dataName.length; i++) {
+                k_name_max.push(getBLen(k_dataName[i]));
+            }
+
+            let max_name = Math.max.apply(null, k_name_max);
+            let target_name = '';
+            for (let i = 0; i < k_name_max.length; i++) {
+                if (max_name == k_name_max[i]) {
+                    target_name = k_dataName[i];
+                    break;
+                }
+            }
+            let oSvg = d3.select('#kaFunChartDiv').append('svg');
+            let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
+            let name_length = mText.nodes()[0].getBBox().width;
+            oSvg.remove();
+
+            return name_length;
+        }
 
     }
 
