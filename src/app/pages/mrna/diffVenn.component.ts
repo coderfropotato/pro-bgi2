@@ -835,16 +835,21 @@ export class DiffVennComponent implements OnInit {
 			let xAxis1 = d3.axisBottom(xScale1);
 			let yAxis1 = d3.axisLeft(yScale1).ticks(5);
 
+			let tempSelectColor = "";
+
 			let rects1 = svg1
 				.selectAll('MyRect1')
 				.data(bar_value)
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
+					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
+					d3.select(this).select('.MyRect').attr('fill',"#3D4871");
 					let tipText = `name: ${bar_name[i]}<br> value:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
-				.on('mouseout', () => {
+				.on('mouseout', function(d, i) {
+					d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
@@ -966,16 +971,22 @@ export class DiffVennComponent implements OnInit {
 			let xAxis2 = d3.axisBottom(xScale2).ticks(4);
 			let yAxis2 = d3.axisRight(yScale2);
 
+			let tempSelectColor = "";
+
 			let rects2 = svg2
 				.selectAll('MyRect2')
 				.data(total_value)
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
+					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
+					//console.log(tempSelectColor);
+					d3.select(this).select('.MyRect').attr('fill',"#3D4871");
 					let tipText = `name: ${total_name[i]}<br> value:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
-				.on('mouseout', () => {
+				.on('mouseout', function(d, i){
+					d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
@@ -1061,6 +1072,7 @@ export class DiffVennComponent implements OnInit {
 
 			let yAxisk = d3.axisLeft(yScalek);
 
+			let tempSelectColor = "";
 			let textsk = svgk
 				.selectAll('text')
 				.data(total_name)
@@ -1076,6 +1088,17 @@ export class DiffVennComponent implements OnInit {
 				})
 				.text(function(d, i) {
 					return d;
+				})
+				.on('mouseover', function(d, i) {
+					if(d3.select(this).style('fill') !="red"){
+						tempSelectColor = d3.select(this).style('fill');
+						d3.select(this).style('fill',"#475FB1");
+					}
+				})
+				.on('mouseout', function(d, i){
+					if(d3.select(this).style('fill') !="red"){
+						d3.select(this).style('fill',tempSelectColor);
+					}
 				})
 				.on('click', function(d, i) {
                     var event = d3.event;
