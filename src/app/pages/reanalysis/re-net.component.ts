@@ -58,6 +58,14 @@ export class ReNetComponent implements OnInit {
     // delete link
     isShowDeleteModal:boolean=false;
 
+    //add link
+    isShowAddModal:boolean=false;
+    curStartNode:string;
+    curEndNode:string;
+    curScore:number;
+    scoreMin:number;
+    scoreMax:number;
+
     // table
     setAddedThead :any= [];
     defaultEntity: object;
@@ -126,6 +134,8 @@ export class ReNetComponent implements OnInit {
         this.colors = ["#0000ff", "#ff0000"];
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
+
+        console.log(this.allNodes)
 
         // this.chartUrl=`${config['javaPath']}/net/graph`; 
         this.chartUrl=`http://localhost:8086/net`;
@@ -326,13 +336,23 @@ export class ReNetComponent implements OnInit {
 
     // 图
 
+    getData(data){
+        this.allNodes=[...data.nodes];
+        this.curStartNode=this.allNodes[0]['geneID'];
+        this.curEndNode=this.allNodes[1]['geneID'];
+        let scores=[0,100];
+        this.scoreMin=scores[0];
+        this.scoreMax=scores[1];
+        this.curScore=this.scoreMax/2;
+    }
+
     //画图
     drawChart(data){
         d3.select("#netChartDiv svg").remove();
         let that  = this;
 
         //link弧度基础偏移量
-        let offsetBasic = that.radian;
+        let offsetBasic = this.radian;
 
         //关联关系
         let relations = this.storeService.getStore('relations');
@@ -391,10 +411,8 @@ export class ReNetComponent implements OnInit {
 
         let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
 
-        this.allNodes=[...nodes];
-
         //容器宽高
-        let width=700,height=700;
+        let width=800,height=700;
         
         let colors=this.colors;
 
@@ -616,11 +634,11 @@ export class ReNetComponent implements OnInit {
                 let offset;
                 //总条数为双数
                 if(d.count % 2 == 0){
-                    offset = (Math.ceil(d.tempindex / 2) + 0.5) * offsetBasic || offsetBasic;
+                    offset = (Math.floor(d.tempindex / 2) + 0.5) * offsetBasic || offsetBasic;
                 }
                 //总条数为单数
                 else{
-                    offset = (Math.ceil(d.tempindex / 2) + (d.tempindex % 2)) * offsetBasic || 0;
+                    offset = (Math.floor(d.tempindex / 2) + (d.tempindex % 2)) * offsetBasic || 0;
                 }
 
                 //同一位置反向
@@ -712,7 +730,7 @@ export class ReNetComponent implements OnInit {
 
     }
 
-    //搜索
+    //搜索 node
     searchNodeChange(){
         d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.value));
         d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
@@ -733,6 +751,7 @@ export class ReNetComponent implements OnInit {
 
     // delete link
     deleteOk(){
+        this.isShowDeleteModal=false;
         this.ajaxService
             .getDeferData({
                 url: `${config['javaPath']}/net/deleteLink`,
@@ -753,7 +772,6 @@ export class ReNetComponent implements OnInit {
                         return;
                     } else {
                         this.drawChart(data.data);
-                        this.isShowDeleteModal=false;
                     }
                 },
                 error => {
@@ -763,7 +781,44 @@ export class ReNetComponent implements OnInit {
     }
 
     deleteCancel(){
+        this.isShowDeleteModal=false;
+    }
 
+    //add link
+    addOk(){
+        this.isShowAddModal=false;
+        this.ajaxService
+            .getDeferData({
+                url: `${config['javaPath']}/net/addLink`,
+                data: {
+                    "LCID": this.storeService.getStore('LCID'),
+                    "id": this.tid,
+                    "quantity":{},
+                    "source":this.curStartNode,
+                    "target":this.curEndNode,
+                    "score":this.curScore
+                }
+            })
+            .subscribe(
+                (data: any) => {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                        return;
+                    } else if (data.status === "-1") {
+                        return;
+                    } else if (data.status === "-2") {
+                        return;
+                    } else {
+                        this.drawChart(data.data);
+                    }
+                },
+                error => {
+                    console.log(error);
+                }
+            )
+    }
+
+    addCancel(){
+        this.isShowAddModal=false;
     }
 
     colorChange(color){
