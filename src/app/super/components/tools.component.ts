@@ -500,19 +500,31 @@ export class ToolsComponent implements OnInit {
 							this.kaFunGroupSelect.length = 0;
 
                             let m_list = data['data']['Classification'].map((v,index)=>{
-                                let status = index?false:true;
-								if(status)
+                                // let status = index?false:true;
+								// if(status)
+								// this.kaFunGroupSelect.push({
+								// 	name:v.name,
+								// 	key:v.key,
+								// 	category:v.category,
+								// 	checked:true
+								// });
+                                // return {
+								// 	name:v.name,
+								// 	key:v.key,
+								// 	category:v.category,
+								// 	checked:status
+								// };
 								this.kaFunGroupSelect.push({
 									name:v.name,
 									key:v.key,
 									category:v.category,
-									checked:status
+									checked:true
 								});
                                 return {
 									name:v.name,
 									key:v.key,
 									category:v.category,
-									checked:status
+									checked:true
 								};
                             });
 
@@ -563,6 +575,13 @@ export class ToolsComponent implements OnInit {
 	}
 
 	kaFunConfirm(reanalysisType) {
+		if(this.kaFunGroupSelect.length<2){
+			this.notify.blank('tips：', '请至少选择2个', {
+				nzStyle: { width: '200px' },
+				nzDuration: 2000
+			});
+			return;
+		}
 		this.isSubmitReanalysis = true;
 		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 		this.ajaxService

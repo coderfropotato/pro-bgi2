@@ -36,10 +36,22 @@ export class ReNetComponent implements OnInit {
     color: string; //当前选中的color
     colors: string[];
 
-    selectGeneList:any[] = [];
+    nodeColorScale:any;
+
+    // 选中的节点、线
+    selectGeneList:string[] = []; // 选择的节点geneID
+    selectLinkList:string[]=[]; // 选择的线ID
+    selectedNodes:object[]=[]; //选中的节点
+    selectedLinks:object[]=[];  //选择的线
+
+    // 设置
     force:number=600; //斥力
     radian:number=10; //弧度
     symbolType:string='selected'; // gene symbol 显示: hidden all selected
+
+    //serach
+    allNodes:any[]=[];
+    curSearchNode:string;
 
     // table
     setAddedThead :any= [];
@@ -305,6 +317,8 @@ export class ReNetComponent implements OnInit {
 		} catch (error) {}
     }
 
+    // 图
+
     //画图
     drawChart(data){
         d3.select("#netChartDiv svg").remove();
@@ -360,16 +374,14 @@ export class ReNetComponent implements OnInit {
             d.selected=false;
             linkRelations.forEach(m=>{
                 if(d.type===m.type){
-                    d.min=m.scores[0];
                     d.scale=m.scale;
                 }
             })
         })
 
-        let selectedNodes=[]; //选中的节点
-        let selectedLinks=[];  //选择的线
+        let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
 
-        let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }];
+        this.allNodes=[...nodes];
 
         //容器宽高
         let width=700,height=700;
@@ -395,10 +407,10 @@ export class ReNetComponent implements OnInit {
         //大小
         let sizeScale=d3.scaleLinear()
             .range([min*10+20, max*10+20])
-            .domain([min, max]).clamp(true);
+            .domain([min, max]).clamp(true).nice();
 
         //颜色
-        let nodeColorScale=d3.scaleLinear()
+        this.nodeColorScale=d3.scaleLinear()
             .range(colors)
             .domain([min,max]).clamp(true).nice();
 
@@ -454,7 +466,7 @@ export class ReNetComponent implements OnInit {
             .enter()
             .append('path')
             .attr('class', 'link')
-            .attr('stroke', d=>d.score===null ? d.scale(d.min) : d.scale(d.score))
+            .attr('stroke', d=> d.scale(d.score))
             .attr('stroke-width', 2)
             .attr("fill", "none")
             .style('cursor','pointer')
@@ -473,12 +485,16 @@ export class ReNetComponent implements OnInit {
                 //选中link加到list中，反选link中从list中去掉
                 if (d.selected) {
                     d3.select(this).attr('stroke',"#000000");
-                    selectedLinks.push(d);
+                    that.selectedLinks.push(d);
                 } else {
-                    d3.select(this).attr('stroke',d.score===null ? d.scale(d.min) : d.scale(d.score));
+                    d3.select(this).attr('stroke',d.scale(d.score));
                 }
 
-                selectedLinks=selectedLinks.filter(k=>k.selected===true);
+                that.selectedLinks=that.selectedLinks.filter(k=>k['selected']===true);
+                that.selectLinkList.length=0;
+                that.selectedLinks.forEach(m=>{
+                    that.selectLinkList.push(m['id']);
+                })
             });
 
 
@@ -491,17 +507,12 @@ export class ReNetComponent implements OnInit {
 
         let node = g_node.append("path")
             .attr('class',"node")
+            .attr('id',d=>d.geneID)
             .attr("d",d3.symbol()
                 .type(d=>symbolScale(d.type))
                 .size(d=>sizeScale(d.value))
             )
-            .attr('fill', d=>{
-                if(d.selected){
-                    return "#167C80";
-                }else{
-                    return  d.value === null ? nodeColorScale(min) : nodeColorScale(d.value);
-                }
-            })
+            .attr('fill', d=>d.selected ? "#167C80" : that.nodeColorScale(d.value))
             .attr("cursor", "pointer")
             .on("mouseover", m => {
                 let text = `geneID：${m.geneID}<br>type：${m.type}<br>linkNum：${m.value}<br>geneSymbol：${m.symbol}`;
@@ -517,16 +528,17 @@ export class ReNetComponent implements OnInit {
                 //选中node加到list中，反选node中从list中去掉
                 if (d.selected) {
                     d3.select(this).attr('fill',"#167C80");
-                    selectedNodes.push(d);
+                    that.selectedNodes.push(d);
                 } else {
-                    d3.select(this).attr('fill',d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
+                    d3.select(this).attr('fill',that.nodeColorScale(d.value));
                 }
 
-                selectedNodes=selectedNodes.filter(k=>k.selected===true);
+                that.selectedNodes=that.selectedNodes.filter(k=>k['selected']===true);
                 that.selectGeneList.length=0;
-                selectedNodes.forEach(m=>{
-                    that.selectGeneList.push(m.geneID);
+                that.selectedNodes.forEach(m=>{
+                    that.selectGeneList.push(m['geneID']);
                 })
+
             })
 
         g_node.call(d3.drag()
@@ -549,11 +561,13 @@ export class ReNetComponent implements OnInit {
 
         // svg 点击清空选择
         d3.select("#netChartDiv svg").on('click',function(){
-            d3.selectAll('path.node').attr('fill',d=>d.value === null ? nodeColorScale(min) : nodeColorScale(d.value));
-            d3.selectAll('path.link').attr('stroke',d=>d.score===null ? d.scale(d.min) : d.scale(d.score));
-            selectedNodes.length=0;
-            selectedLinks.length=0;
+            d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
+            d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
+            that.selectedNodes.length=0;
+            that.selectedLinks.length=0;
             that.selectGeneList.length=0;
+            that.selectLinkList.length=0;
+            that.curSearchNode=null;
         })
 
         function drawText(){
@@ -689,6 +703,25 @@ export class ReNetComponent implements OnInit {
 
             console.log(that.selectGeneList)
         })
+
+    }
+
+    //搜索
+    searchNodeChange(){
+        d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.value));
+        d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
+        this.selectedNodes.length=0;
+        this.selectedLinks.length=0;
+        this.selectGeneList.length=0;
+        this.selectLinkList.length=0;
+
+        d3.select("path#"+this.curSearchNode).attr('fill',"#167C80");
+        this.allNodes.forEach(d=>{
+            if(d.geneID === this.curSearchNode){
+                this.selectedNodes.push(d);
+            }
+        })
+        this.selectGeneList.push(this.curSearchNode);
 
     }
 
