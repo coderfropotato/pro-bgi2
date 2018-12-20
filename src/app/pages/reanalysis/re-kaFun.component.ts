@@ -190,7 +190,11 @@ export class KaFunComponent implements OnInit {
 
     // 表
     addThead(thead) {
+        this.transformTable._initCheckStatus();
+
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._setParamsNoRequest('pageIndex', 1);
+
 		this.transformTable._addThead(thead['add']);
     }
 
@@ -252,13 +256,16 @@ export class KaFunComponent implements OnInit {
     chartBackStatus(){
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
+        this.transformTable._initCheckStatus();
         if(!this.first){
+            this.defaultEntity['pageIndex'] = 1;
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['searchList']= [] ;
             this.first = true;
         }else{
+            this.transformTable._setParamsNoRequest('pageIndex',1);
             this.transformTable._getData();
         }
     }
@@ -349,10 +356,10 @@ export class KaFunComponent implements OnInit {
                 }
 
                 .axis_x1{
-                   
+
                 }
                 .axis_y1{
-                   
+
                 }
 
                 .axis_yname{
@@ -392,7 +399,7 @@ export class KaFunComponent implements OnInit {
         function drawSvg(){
             let width = x_length;
             let height = y_length;
-    
+
             let svg1 = svg
                 .append('g')
                 .attr('transform', 'translate(' + left_name_length + ',' + 0 + ')')
@@ -404,10 +411,10 @@ export class KaFunComponent implements OnInit {
             let yScale = d3.scaleBand().domain(k_dataName).range([ 0, height ]);
 
             name_yScale = yScale;
-    
+
             let xAxis = d3.axisTop(xScale);
             let yAxis = d3.axisLeft(yScale);
-    
+
             svg1.append('g')
                 .attr('class', 'axis_x1')
                 .attr('transform', 'translate(' + 0 + ',' + t_height + ')')
@@ -421,7 +428,7 @@ export class KaFunComponent implements OnInit {
         function drawLeftName(){
             let width = left_name_length;
             let height = y_length;
-    
+
             let svg2 = svg
                 .append('g')
                 .attr('transform', 'translate(' + 0 + ',' + t_height + ')')
@@ -431,7 +438,7 @@ export class KaFunComponent implements OnInit {
                 .attr('width', width)
                 .attr('height', height)
                 .attr('class', 'svg2');
-            
+
             let yAxis = d3.axisRight(name_yScale);
 
             let textsk = svg2
@@ -455,7 +462,7 @@ export class KaFunComponent implements OnInit {
                     event.stopPropagation();
 					///sortName(d, d3.select(this));
                 });
-                
+
             svg2.append('g').attr('class', 'axis_yname').attr('transform', 'translate(' + left_name_length + ',' + 0 + ')').call(yAxis);
         }
 

@@ -23,7 +23,6 @@ export class ReLineComponent implements OnInit {
     @ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
-	@ViewChild('tableSwitchChart') tableSwitchChart;
     @ViewChild('transformTable') transformTable;
     @ViewChild('addColumn') addColumn;
 
@@ -186,7 +185,11 @@ export class ReLineComponent implements OnInit {
 
     // 表
     addThead(thead) {
+        this.transformTable._initCheckStatus();
+
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._setParamsNoRequest('pageIndex', 1);
+
 		this.transformTable._addThead(thead['add']);
     }
 
@@ -248,13 +251,16 @@ export class ReLineComponent implements OnInit {
     chartBackStatus(){
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
+        this.transformTable._initCheckStatus();
         if(!this.first){
+            this.defaultEntity['pageIndex'] = 1;
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['searchList']= [] ;
             this.first = true;
         }else{
+            this.transformTable._setParamsNoRequest('pageIndex',1);
             this.transformTable._getData();
         }
     }
@@ -275,7 +281,7 @@ export class ReLineComponent implements OnInit {
 	switchChange(status) {
         this.switch = status;
         setTimeout(()=>{
-            this.tableSwitchChart.scrollHeight();
+            this.lineChart.scrollHeight();
             this.computedTableHeight();
         },320)
     }

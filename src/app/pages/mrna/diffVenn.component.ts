@@ -307,19 +307,25 @@ export class DiffVennComponent implements OnInit {
             // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
             this.defaultEntity['compareGroup'] = this.selectConfirmData;
             this.defaultEntity['searchList'] = [];
+            this.defaultEntity['pageIndex'] = 1;
             this.defaultEntity['rootSearchContentList'] = [];
             setTimeout(()=>{
                 this.first = true;
             },30)
         }else{
             this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+            this.transformTable._setParamsNoRequest('pageIndex',1);
             this.transformTable._getData();
         }
     }
 
 	// {add:[],remove:[{}]}
 	addThead(thead) {
-		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._initCheckStatus();
+
+        this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._setParamsNoRequest('pageIndex', 1);
+
 		this.transformTable._addThead(thead['add']);
 	}
 
