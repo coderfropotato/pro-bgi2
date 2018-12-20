@@ -163,39 +163,59 @@ export class PaginationComponent implements OnInit, OnChanges {
                 this.pageIndexChange.emit(this.pageIndex);
             }
 
-            if (this.pageCount > this.defaultPageIndexSize) {
-                // 靠右
-                if (this.pageCount - this.pageIndex <= 1) {
-                    // 5=>2 3=>1
-                    for (let i = this.defaultPageIndexSize - 1; i > -1; i--) {
-                        this.pageIndexList.push(this.pageCount - i);
-                    }
-                    this.isLeft = false;
-                    this.isRight = true;
-                } else if (this.pageIndex <= 1) {
-                    // 5 => 3   3 =>1
-                    // 靠左
-                    for (let i = 1; i < this.defaultPageIndexSize + 1; i++) {
-                        this.pageIndexList.push(i);
-                    }
-                    this.isLeft = true;
-                    this.isRight = false;
-                } else {
-                    // 正常情况 不靠边
-                    this.pageIndexList = [
-                        // +this.pageIndex - 1,    // defaultPageIndexSize 不为1需要打开
-                        +this.pageIndex,
-                        // +this.pageIndex + 1      // defaultPageIndexSize 不为1需要打开
-                    ];
-                    this.isLeft = this.isRight = false;
-                }
-            } else {
-                for (let i = 1; i < this.pageCount + 1; i++) {
-                    this.pageIndexList.push(i);
-                }
+            /* defaultPageIndexSize 等于1 */
+            this.pageIndexList.push(this.pageIndex);
+            if(this.pageIndex==1 ){
+                this.isLeft = true;
+                this.isRight = false;
+            }else if(this.pageIndex>=this.pageCount){
+                this.isRight = true;
+                this.isLeft = false;
+            }else{
+                this.isLeft =false;
+                this.isRight = false;
+            }
+
+            if(this.pageIndex === this.pageCount) {
                 this.isLeft = true;
                 this.isRight = true;
             }
+
+
+            /* defaultPageIndexSize 不为1 */
+            // if (this.pageCount > this.defaultPageIndexSize) {
+            //     // 靠右
+            //     if (this.pageCount - this.pageIndex <= 1) {
+            //         // 5=>2 3=>1
+            //         for (let i = this.defaultPageIndexSize - 1; i > -1; i--) {
+            //             this.pageIndexList.push(this.pageCount - i);
+            //         }
+            //         this.isLeft = false;
+            //         this.isRight = true;
+            //     } else if (this.pageIndex <= 1) {
+            //         // 5 => 3   3 =>1
+            //         // 靠左
+            //         for (let i = 1; i < this.defaultPageIndexSize + 1; i++) {
+            //             this.pageIndexList.push(i);
+            //         }
+            //         this.isLeft = true;
+            //         this.isRight = false;
+            //     } else {
+            //         // 正常情况 不靠边
+            //         this.pageIndexList = [
+            //             // +this.pageIndex - 1,    // defaultPageIndexSize 不为1需要打开
+            //             +this.pageIndex,
+            //             // +this.pageIndex + 1      // defaultPageIndexSize 不为1需要打开
+            //         ];
+            //         this.isLeft = this.isRight = false;
+            //     }
+            // } else {
+            //     for (let i = 1; i < this.pageCount + 1; i++) {
+            //         this.pageIndexList.push(i);
+            //     }
+            //     this.isLeft = true;
+            //     this.isRight = true;
+            // }
         }
     }
 }
