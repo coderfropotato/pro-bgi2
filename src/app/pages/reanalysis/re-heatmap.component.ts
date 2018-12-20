@@ -205,7 +205,11 @@ export class ReHeatmapComponent implements OnInit {
 
     // 表
     addThead(thead) {
+        this.transformTable._initCheckStatus();
+
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._setParamsNoRequest('pageIndex', 1);
+
 		this.transformTable._addThead(thead['add']);
     }
 
@@ -268,10 +272,12 @@ export class ReHeatmapComponent implements OnInit {
     chartBackStatus(){
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
+        this.transformTable._initCheckStatus();
         if(!this.first){
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
+            this.defaultEntity['pageIndex'] = 1;
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
                     {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
@@ -281,6 +287,7 @@ export class ReHeatmapComponent implements OnInit {
             }
             this.first = true;
         }else{
+            this.transformTable._setParamsNoRequest('pageIndex',1);
             /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
             if(this.selectGeneList.length) {
                 this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);

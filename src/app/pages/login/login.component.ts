@@ -62,6 +62,7 @@ export class LoginComponent implements OnInit {
 
     handlerVerificationClick() {
         this.uuid = this.generateUuid();
+        this.imgUrl = `${this.config['javaPath']}/checkImg/${this.uuid}`;
     }
 
     // 登录

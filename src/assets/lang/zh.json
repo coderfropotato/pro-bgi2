@@ -42,6 +42,7 @@
         "confirmButton": "确定",
         "clearButton": "清除",
         "cancelButton": "取消",
+        "resetButton":"重置",
         "noData":"无数据"
     },
     "tableButton":{

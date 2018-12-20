@@ -190,7 +190,11 @@ export class KaFunComponent implements OnInit {
 
     // 表
     addThead(thead) {
+        this.transformTable._initCheckStatus();
+
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._setParamsNoRequest('pageIndex', 1);
+
 		this.transformTable._addThead(thead['add']);
     }
 
@@ -252,13 +256,16 @@ export class KaFunComponent implements OnInit {
     chartBackStatus(){
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
+        this.transformTable._initCheckStatus();
         if(!this.first){
+            this.defaultEntity['pageIndex'] = 1;
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['searchList']= [] ;
             this.first = true;
         }else{
+            this.transformTable._setParamsNoRequest('pageIndex',1);
             this.transformTable._getData();
         }
     }
@@ -330,7 +337,7 @@ export class KaFunComponent implements OnInit {
                 }
 
                 .axis_yname{
-                   
+
                 }
 
                 .nameText{
@@ -473,7 +480,7 @@ export class KaFunComponent implements OnInit {
     
             let xAxis = d3.axisBottom(xScale);
             let yAxis = d3.axisRight(yScale);
-            
+
             drawMiddleLine(svg1);
 
             svg1.append('g')
@@ -502,10 +509,10 @@ export class KaFunComponent implements OnInit {
                 .attr('width', width)
                 .attr('height', height)
                 .attr('class', 'svg2');
-            
+
             let ynScale = d3.scaleBand().domain(k_dataName).range([ 0, height ]);
             let ynAxis = d3.axisLeft(ynScale);
-                
+
             svg2.append('g').attr('class', 'axis_yname').attr('transform', 'translate(' + width + ',' + 0 + ')').call(ynAxis);
         }
 
@@ -513,7 +520,7 @@ export class KaFunComponent implements OnInit {
         function drawXaxisName(){
             let width = x_length;
             let height = t_height;
-    
+
             let svg3 = svg
                 .append('g')
                 .attr('transform', 'translate(' + left_name_length + ',' + top_name + ')')
@@ -521,7 +528,7 @@ export class KaFunComponent implements OnInit {
                 .attr('width', width)
                 .attr('height', height+0.5)
                 .attr('class', 'svg3');
-            
+
             let xtScale = d3.scaleBand().domain(k_baseThead).range([ 0, width ]);
             let xtAxis = d3.axisTop(xtScale);
 
@@ -557,7 +564,7 @@ export class KaFunComponent implements OnInit {
                 columGroup.push(temp1);
                 columGroup.push(temp2);
             }
-            
+
             let line = d3
 				.line()
 				.x(function(d) {
@@ -566,7 +573,7 @@ export class KaFunComponent implements OnInit {
 				.y(function(d) {
 					return d.y_axis;
                 });
-                
+
             let tempGroup1 = sortArr(rowGroup,'x_axis');
             for (let i = 0; i < tempGroup1.length; i++) {
                 let path = tempThatone
