@@ -638,6 +638,15 @@ export class KaFunComponent implements OnInit {
         }
 
         function setBubble(data,r_legend){ 
+            // {
+            //     x:s_width/2,
+            //     y:s_width*(2*index+1)/2,
+            //     r:5,
+            //     color:'red',
+            //     value:tempData.high,
+            //     name:element.name,
+            //     type:"high"
+            // },
             let r_min = d3.min(data, function(d) {
                 return d.value;
             });
@@ -645,12 +654,12 @@ export class KaFunComponent implements OnInit {
                 return d.value;
             });
 
-            let Rmin=4,Rmax=8;
+            let Rmin=10,Rmax=s_width/2;
             let Rsize_arr = [Rmin, Rmax];
             let rScale = d3.scaleLinear().domain([r_min, r_max]).range(Rsize_arr).clamp(true);
 
             let rData = [];
-            let rLen = 5;
+            let rLen = 3;
             for (let i = 0; i < rLen; i++) {
                 let r = r_min + i * ((r_max - r_min) / (rLen - 1));
                 rData.push(Math.round(r));
@@ -663,15 +672,15 @@ export class KaFunComponent implements OnInit {
                 let r_size = 2 * rScale(d);
                 r_sum += r_size;
                 circle_legend.append("circle")
-                    .attr("r", rScale(d))
-                    .attr("cy", r_sum + i * space);
+                    .attr("r", rScale(d)/4)
+                    .attr("cy", r_sum/4 + i * space);
                 circle_legend.append("text")
-                    .attr("dx", rScale(resultarr[resultarr.length - 1]) + 10)
-                    .attr("dy", r_sum + i * space)
+                    .attr("dx", rScale(resultarr[resultarr.length - 1])/4 + 10)
+                    .attr("dy", r_sum/4 + i * space)
                     .style("font-size", "12")
                     .attr("text-anchor", "start")
                     .attr("dominant-baseline", "middle")
-                    .text(d)
+                    .text(d);
             })
 
             tempSvg.selectAll('.MyCircle')
@@ -679,7 +688,7 @@ export class KaFunComponent implements OnInit {
             .enter()
             .append("circle")
             .attr("r", function(d, i) {
-                return rScale(d['r']);
+                return rScale(d['value'])-1;
             })
             .attr("cx", function(d, i) {
                 return d['x'];
@@ -692,18 +701,12 @@ export class KaFunComponent implements OnInit {
             // .attr("stroke", d => colorScale(d.color))
             // .attr("stroke-opacity", 0.7)
             .on("mouseover", function(d) {
-                // d3.select(this).transition().attr("r", rScale(d.r) + 2);
-                // if ("tooltip" in that && that.tooltip) {
-                //     var html = that.tooltip(d);
-                // }
-                // tooltip.show(d3.event.pageX, d3.event.pageY, html ? html : `x：${d.x}<br>y：${d.y}`);
-            })
-            .on("mousemove", function() {
-                //tooltip.update(d3.event.pageX, d3.event.pageY);
+                console.log(d)
+                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}<br> color:  ${d.color}`;
+                that.globalService.showPopOver(d3.event, tipText);
             })
             .on("mouseout", function(d) {
-                // d3.select(this).transition().attr("r", rScale(d.r));
-                // tooltip.hide();
+                that.globalService.hidePopOver();
             })
             .on('click', function(d) {
                 // if (that.selectedModule) {
