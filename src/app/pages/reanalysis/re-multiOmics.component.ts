@@ -1,3 +1,4 @@
+import { AddColumnService } from './../../super/service/addColumnService';
 import { StoreService } from './../../super/service/storeService';
 import { PageModuleService } from './../../super/service/pageModuleService';
 import { MessageService } from './../../super/service/messageService';
@@ -91,7 +92,8 @@ export class ReMultiOmicsComponent implements OnInit {
 		private storeService: StoreService,
 		public pageModuleService: PageModuleService,
         private router: Router,
-        private routes:ActivatedRoute
+        private routes:ActivatedRoute,
+        private addColumnService:AddColumnService
     ) {
         // 订阅windowResize 重新计算表格滚动高度
 		this.message.getResize().subscribe((res) => {
@@ -148,7 +150,8 @@ export class ReMultiOmicsComponent implements OnInit {
 			geneType: this.geneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
-			searchList: []
+            searchList: [],
+            sortThead:this.addColumnService['sortThead']
 		};
 		this.defaultTableId = 'default-multi-omics';
 		this.defaultDefaultChecked = true;
@@ -175,7 +178,8 @@ export class ReMultiOmicsComponent implements OnInit {
 			geneType: this.geneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
-			searchList: []
+            searchList: [],
+            sortThead:this.addColumnService['sortThead']
 		};
 		this.extendTableId = 'extend-multi-omics';
 		this.extendDefaultChecked = true;
@@ -265,6 +269,7 @@ export class ReMultiOmicsComponent implements OnInit {
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
+        this.addColumnService.setSortThead([]);
         if(!this.first){
             if(!this.showBackButton){  // 如果是通过定量信息转的矩阵 那就需要保存增删列的激活状态
                 let {add,remove} = this.addColumn._confirmWithoutEvent();
