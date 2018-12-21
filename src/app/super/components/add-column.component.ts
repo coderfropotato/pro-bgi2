@@ -51,6 +51,8 @@ export class AddColumnComponent implements OnInit {
         this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) {
                 this.thead = this.addColumnService.get();
+                // 每次进路由 把当前选中的增删列的顺序保存到服务
+                this.addColumnService.setSortThead(this.selected);
                 this.applyCheckedStatus();
             }
 		});
@@ -58,6 +60,7 @@ export class AddColumnComponent implements OnInit {
 
 	ngOnInit() {
         this.thead = this.addColumnService.get();
+        this.addColumnService.setSortThead([]);
 		this.initIndexAndChecked();
 		// 生成 点击选择 容器
 		this.initSelected();
