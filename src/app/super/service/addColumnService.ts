@@ -11,6 +11,7 @@ import { Injectable } from "@angular/core";
 })
 export class AddColumnService {
     thead:object[] = [];
+    public sortThead:string[] = [];  // 每次保存增删列的时候  都需要把增删列添加的头的顺序保存下来
 
     constructor(){}
 
@@ -20,5 +21,16 @@ export class AddColumnService {
 
     set(thead){
         this.thead = thead;
+    }
+
+    setSortThead(thead){  // thead:[[],[],[]]
+        this.sortThead.length = 0;
+        if(thead.length){
+            let temp = [];
+            thead.forEach(v=>temp = temp.concat(v));
+            temp.forEach(v=>{
+                this.sortThead.push(v['key']);
+            })
+        }
     }
 }
