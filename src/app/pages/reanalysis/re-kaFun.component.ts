@@ -69,7 +69,10 @@ export class KaFunComponent implements OnInit {
     k_pvalue:number;
     k_stat:number;
 
-    isMultiSelect: boolean;
+    //单选
+    singleMultiSelect: object = {};
+	//多选
+	doubleMultiSelect: any[] = [];
 
     tableUrl: string;
     tableEntity: object = {};
@@ -81,6 +84,10 @@ export class KaFunComponent implements OnInit {
 
     textContent:string="气泡统计图";
     geneNum:number;
+
+    isHasMultiSelectFlag:boolean;   //是否有多选和单选
+
+    isMultiSelect: boolean;
 
     constructor(
         private message: MessageService,
@@ -116,7 +123,12 @@ export class KaFunComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.geneNum = this.toolsService.get("geneCount"); //选择基因数量
+
+        this.isHasMultiSelectFlag = this.geneNum == 1?false:true;
+        //this.isHasMultiSelectFlag = false;
         this.isMultiSelect = false;
+
         this.tableUrl=`${config['javaPath']}/chiSquare/switchTable`;
         this.tableEntity = {
             LCID: sessionStorage.getItem('LCID'),
@@ -124,8 +136,6 @@ export class KaFunComponent implements OnInit {
         };
 
         this.colors = ["#4575B4", "#FEF6B2", "#D9352A"];
-
-        this.geneNum = this.toolsService["geneCount"]; //选择基因数量
 
         // this.chartEntity = {
         //     LCID: sessionStorage.getItem('LCID'),
@@ -333,17 +343,53 @@ export class KaFunComponent implements OnInit {
 		} catch (error) {}
     }
 
-    //单、多选change
+    //kaFun图二次更新
+	updateKaFun() {
+        this.kaFunChart.reGetData();
+        // this.tableEntity['compareGroup'] = this.selectConfirmData;
+		// this.tableSwitchChart.reGetData();
+
+		// this.singleMultiSelect={
+		// 	bar_name: '',
+		// 	total_name: '',
+		// 	venn_name: ''
+		// };
+
+		// this.doubleMultiSelect= {
+		// 	bar_name: [],
+		// 	total_name: []
+        // };
+        // console.log(this.singleMultiSelect)
+        // console.log(this.doubleMultiSelect)
+    }
+    
+    
+    
+    //切换单、多选change
 	multiSelectChange() {
         // this.upSelect.length = 0;
         // this.leftSelect.length = 0;
-        // // this.first?this.transformTable._getData():this.first = true;
-        // this.chartBackStatus()
-        // this.updateVenn();
+        this.chartBackStatus()
+        this.updateKaFun();
 	}
+
+    //单选
+    doSingleData() {
+        // {
+        //     x: 135, 
+        //     y: 45, 
+        //     value: 27, 
+        //     name: "Thymus||Cholangiocarcinoma||male", 
+        //     type: "middle"
+        // }
+        console.log(this.singleMultiSelect)
+    }
 
     //多选确定时候,提交的数据
 	multipleConfirm() {
+
+        console.log(this.doubleMultiSelect)
+
 		// let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData;
 		// this.leftSelect.length = 0;
 		// this.upSelect.length = 0;
@@ -369,8 +415,8 @@ export class KaFunComponent implements OnInit {
         that.k_pvalue=data.pvalue;
         that.k_stat=data.stat;
 
-        let k_baseThead = data.baseThead;//["high", "middle", "low", "sum"]
-        let k_dataRow = data.row;
+        let k_baseThead = data.mThead;//["high", "middle", "low", "sum"]
+        let k_dataRow = data.rows;
         let k_dataName = [];
         k_dataRow.forEach(val => {
             k_dataName.push(val.name);
@@ -413,7 +459,9 @@ export class KaFunComponent implements OnInit {
 
             </style>
         </svg>`;
-		t_chartID.innerHTML = str;
+        t_chartID.innerHTML = str;
+        
+        let sName = {};
         
         let tempSvg = null;         //中间网格svg
         let tempSvg_xScale = null;  //中间网格X轴比例尺
@@ -440,17 +488,23 @@ export class KaFunComponent implements OnInit {
                 .attr('width', svg_width)
                 .attr('height', svg_height)
                 .on('click', function(d) {
+                    
+                    that.updateKaFun();
+                    // _self.leftSelect.length = 0;
+                    // _self.upSelect.length = 0;
+                    // _self.first ? _self.transformTable._getData() : (_self.first = true);
+                    that.chartBackStatus();
+
 
                 },false);
 
         for (let index = 0; index < k_dataRow.length; index++) {
             const element = k_dataRow[index];
-            let tempData = element.data;
+            let tempData = element;
             k_dataCircle.push(
                 {
                     x:s_width/2,
                     y:s_width*(2*index+1)/2,
-                    r:5,
                     value:tempData.high,
                     name:element.name,
                     type:"high"
@@ -458,7 +512,6 @@ export class KaFunComponent implements OnInit {
                 {
                     x:s_width*3/2,
                     y:s_width*(2*index+1)/2,
-                    r:5,
                     value:tempData.middle,
                     name:element.name,
                     type:"middle"
@@ -466,7 +519,6 @@ export class KaFunComponent implements OnInit {
                 {
                     x:s_width*5/2,
                     y:s_width*(2*index+1)/2,
-                    r:5,
                     value:tempData.low,
                     name:element.name,
                     type:"low"
@@ -474,7 +526,6 @@ export class KaFunComponent implements OnInit {
                 {
                     x:s_width*7/2,
                     y:s_width*(2*index+1)/2,
-                    r:5,
                     value:tempData.sum,
                     name:element.name,
                     type:"sum"
@@ -510,9 +561,12 @@ export class KaFunComponent implements OnInit {
 				.on('click', function(d, i) {
                     let self = that;
                     that.promptService.open(d,(data)=>{
-                        self.textContent = data;
-                        svgTitle.remove();
-                        drawTopTitle();
+                        if(data!=""){
+                            self.textContent = data;
+                            svgTitle.remove();
+                            drawTopTitle();
+                        }
+                        
                     })
 				});
         }
@@ -638,7 +692,7 @@ export class KaFunComponent implements OnInit {
                     .attr('class', 'line')
                     .attr('d', line(tempGroup1[i]))
                     .attr('stroke', '#333')
-                    .attr('stroke-width', 1);
+                    .attr('stroke-width', 0.5);
             }
 
             let tempGroup2 = sortArr(columGroup,'y_axis');
@@ -648,7 +702,7 @@ export class KaFunComponent implements OnInit {
                     .attr('class', 'line')
                     .attr('d', line(tempGroup2[i]))
                     .attr('stroke', '#333')
-                    .attr('stroke-width', 1);
+                    .attr('stroke-width', 0.5);
             }
         }
 
@@ -720,10 +774,6 @@ export class KaFunComponent implements OnInit {
                 })
                 .attr("fill", "transparent")
                 .on("dblclick", function (d, i) {
-                    // console.log(d)
-                    // console.log(i)
-                    //that.legend.dblclick && that.legend.dblclick.call(that, d, i);
-                    //console.log(1111);
                     that.clearEventBubble(d3.event);
                     that.color = colorScale(d);
                     that.isShowColorPanel = true;
@@ -797,6 +847,7 @@ export class KaFunComponent implements OnInit {
             .data(data)
             .enter()
             .append("circle")
+            .attr("class","MyCircle")
             .attr("r", function(d, i) {
                 return rScale(d['value'])>13?rScale(d['value'])-5:8;
             })
@@ -809,11 +860,6 @@ export class KaFunComponent implements OnInit {
             .attr("fill", function(d, i) {
                 return colorScale(d['value']);
             })
-            // .attr("fill-opacity", 0.3)
-            // .attr("stroke", function(d, i) {
-            //     return colorScale(d.color);
-            // })
-            // .attr("stroke-opacity", 0.7)
             .on("mouseover", function(d) {
                 let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}`;
                 that.globalService.showPopOver(d3.event, tipText);
@@ -822,15 +868,54 @@ export class KaFunComponent implements OnInit {
                 that.globalService.hidePopOver();
             })
             .on('click', function(d) {
-                // if (that.selectedModule) {
-                //     that._applyChartSelect(d, d3.select(this), colorScale(d.color));
-                //     d3.event.stopPropagation();
-                // } else {
-                //     return false;
-                // }
+                var event = d3.event;
+                    event.stopPropagation();
+                //如果长度不是1的话，可以单选或者多选
+                if(that.isHasMultiSelectFlag){
+                    if(that.isMultiSelect){//
+                        if(d3.select(this).attr("stroke-opacity")==0.6){
+                            d3.select(this).attr("stroke","black").attr("stroke-width", 1.5).attr("stroke-opacity", 0.1);
+                        }else{
+                            d3.select(this).attr("stroke","black").attr("stroke-width", 1.5).attr("stroke-opacity", 0.6);
+                        }
+                        
+                        selectName(that.doubleMultiSelect,d)
+                    }else{//单选
+                        //console.log(d)
+
+                        d3.selectAll('.MyCircle').attr('stroke', "black").attr("stroke-width", 1.5).attr("stroke-opacity", 0.1);
+                        d3.select(this).attr("stroke","black").attr("stroke-width", 1.5).attr("stroke-opacity", 0.6);
+
+                        that.singleMultiSelect.length = 0;
+                        that.singleMultiSelect = d;
+                        that.doSingleData();
+                    }
+                }
             })
 
         }
+
+        function selectName(sList,d) {
+            let mkey = d.name+d.type;
+			if (sList.length == 0) {
+                sList.push(d);
+				sName[mkey] = true;
+			} else {
+				if (sName[mkey]) {
+					for (let i = 0; i < sList.length; i++) {
+                        let temp = sList[i].name+sList[i].type;
+						if (temp == mkey) {
+							sList.splice(i, 1);
+							sName[mkey] = false;
+						}
+					}
+				} else {
+					sList.push(d);
+					sName[mkey] = true;
+				}
+			}
+			return sList;
+		}
 
         function uniq(array){
             let temp = [];
