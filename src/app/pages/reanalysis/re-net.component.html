@@ -3,6 +3,49 @@
     <app-menu [menu]="[]" [geneSwitch]="false">
         <p class="menu-slot-text">重分析id：{{tid}}</p>
     </app-menu>
+
+    <!-- delete link -->
+    <nz-modal [(nzVisible)]="isShowDeleteModal" nzTitle="delete link" (nzOnCancel)="deleteCancel()" (nzOnOk)="deleteOk()">
+        <p>删除结果将会保存，且不可撤销。是否确认删除？</p>
+    </nz-modal>
+
+    <!-- add link -->
+    <nz-modal [(nzVisible)]="isShowAddModal" nzTitle="add link" (nzOnCancel)="addCancel()" (nzOnOk)="addOk()">
+            <nz-row style="margin-bottom: 10px;">
+                <nz-col nzSpan="4" style="margin-top: 5px;">
+                    <span>Start</span>
+                </nz-col>
+                <nz-col nzSpan="13">
+                    <nz-select style="width: 200px;margin-left: 10px" [(ngModel)]="curStartNode" nzShowSearch>
+                        <nz-option *ngFor="let node of allNodes" [nzDisabled]="node.geneID===curEndNode" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
+                    </nz-select>
+                </nz-col>
+            </nz-row>
+
+            <nz-row style="margin-bottom: 10px;">
+                <nz-col nzSpan="4" style="margin-top: 5px;">
+                    <span>End</span>
+                </nz-col>
+                <nz-col nzSpan="13">
+                    <nz-select style="width: 200px;margin-left: 10px" [(ngModel)]="curEndNode" nzShowSearch>
+                        <nz-option *ngFor="let node of allNodes" [nzDisabled]="node.geneID===curStartNode" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
+                    </nz-select>
+                </nz-col>
+            </nz-row>
+
+            <nz-row style="margin-bottom: 10px;">
+                <nz-col nzSpan="4" style="margin-top: 5px;">
+                    <span>Score</span>
+                </nz-col>
+                <nz-col nzSpan="13">
+                    <nz-slider [nzMin]="scoreMin" [nzMax]="scoreMax" [(ngModel)]="curScore"></nz-slider>
+                </nz-col>
+                <nz-col nzSpan="4" nzOffset="1">
+                    <nz-input-number  [nzMin]="scoreMin" [nzMax]="scoreMax" [(ngModel)]="curScore"></nz-input-number>
+                </nz-col>
+            </nz-row>
+    </nz-modal>
+
     <div class="content reanalysis-content row">
         <div #left class="left-layout column" [class.unexpand]="switch" [class.table-only]="onlyTable">
             <!-- <div class="left-top-layout">
@@ -15,13 +58,13 @@
                     </ng-template>
 
                     <ng-template #funcBtnsTemplate>
-                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px">add link</button>
-                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length">delete link</button>
+                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" (click)='isShowAddModal=true'>add link</button>
+                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length" (click)="isShowDeleteModal=true">delete link</button>
                         <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" id="expand">expand</button>
                     </ng-template>
 
                     <ng-template #searchTemplate>
-                        <nz-select style="width: 140px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
+                        <nz-select style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
                             <nz-option *ngFor="let node of allNodes" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                         </nz-select>
                     </ng-template>

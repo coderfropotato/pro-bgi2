@@ -36,7 +36,9 @@ export class ReNetComponent implements OnInit {
     color: string; //当前选中的color
     colors: string[];
 
-    nodeColorScale:any;
+    nodeColorScale:any; //节点比例尺
+
+    idReq:any; //id 正则
 
     // 选中的节点、线
     selectGeneList:string[] = []; // 选择的节点geneID
@@ -47,11 +49,22 @@ export class ReNetComponent implements OnInit {
     // 设置
     force:number=600; //斥力
     radian:number=10; //弧度
-    symbolType:string='selected'; // gene symbol 显示: hidden all selected
+    symbolType:string='all'; // gene symbol 显示: hidden all selected
 
     //serach
     allNodes:any[]=[];
     curSearchNode:string;
+
+    // delete link
+    isShowDeleteModal:boolean=false;
+
+    //add link
+    isShowAddModal:boolean=false;
+    curStartNode:string;
+    curEndNode:string;
+    curScore:number;
+    scoreMin:number;
+    scoreMax:number;
 
     // table
     setAddedThead :any= [];
@@ -119,6 +132,8 @@ export class ReNetComponent implements OnInit {
     ngOnInit() {
         // chart
         this.colors = ["#0000ff", "#ff0000"];
+
+        this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
 
         // this.chartUrl=`${config['javaPath']}/net/graph`; 
         this.chartUrl=`http://localhost:8086/net`;
@@ -324,6 +339,9 @@ export class ReNetComponent implements OnInit {
         d3.select("#netChartDiv svg").remove();
         let that  = this;
 
+        //link弧度基础偏移量
+        let offsetBasic = this.radian;
+
         //关联关系
         let relations = this.storeService.getStore('relations');
         let colorArr = [["#FF8B8B", "#167C80"], ["#005397", "#FACA0C"], ["#F3C9DD", "#0BBCD6"], ["#BFB5D7", "#BEA1A5"], ["#0E38B1", "#A6CFE2"], ["#371722", "#C7C6C4"]];
@@ -382,9 +400,16 @@ export class ReNetComponent implements OnInit {
         let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
 
         this.allNodes=[...nodes];
+        // add link
+        this.curStartNode=this.allNodes[0]['geneID'];
+        this.curEndNode=this.allNodes[1]['geneID'];
+        let scores=[0,100];
+        this.scoreMin=scores[0];
+        this.scoreMax=scores[1];
+        this.curScore=this.scoreMax/2;
 
         //容器宽高
-        let width=700,height=700;
+        let width=800,height=700;
         
         let colors=this.colors;
 
@@ -434,18 +459,18 @@ export class ReNetComponent implements OnInit {
 
         //箭头
         svg.append("defs").selectAll("marker")
-        .data(arrows).enter()
-        .append("marker")
-        .attr("id", d => d.id)
-        .attr("viewBox", '0 0 10 10')
-        .attr("refX", 20)
-        .attr("refY", 5)
-        .attr("markerWidth", 4)
-        .attr("markerHeight", 4)
-        .attr("orient", "auto")
-        .append("path")
-        .attr("d", 'M0,0 L0,10 L10,5 z')
-        .attr("opacity", d => d.opacity);
+            .data(arrows).enter()
+            .append("marker")
+            .attr("id", d => d.id)
+            .attr("viewBox", '0 0 10 10')
+            .attr("refX", 20)
+            .attr("refY", 5)
+            .attr("markerWidth", 4)
+            .attr("markerHeight", 4)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", 'M0,0 L0,10 L10,5 z')
+            .attr("opacity", d => d.opacity);
 
         let g = svg .append("g");
 
@@ -507,7 +532,7 @@ export class ReNetComponent implements OnInit {
 
         let node = g_node.append("path")
             .attr('class',"node")
-            .attr('id',d=>d.geneID)
+            .attr('id',d=>d.geneID.replace(that.idReq,""))
             .attr("d",d3.symbol()
                 .type(d=>symbolScale(d.type))
                 .size(d=>sizeScale(d.value))
@@ -541,23 +566,23 @@ export class ReNetComponent implements OnInit {
 
             })
 
-        g_node.call(d3.drag()
+            g_node.call(d3.drag()
                 .on('start', dragstarted)
                 .on('drag', dragged)
                 .on('end', dragended))
 
-
-        simulation
-            .nodes(nodes)
-            .on('tick', ticked);
-
-        simulation.force('link')
-            .links(links);
-
-        //node text
-        if(that.symbolType !=='hidden'){
-            drawText();
-        }
+            simulation
+                .nodes(nodes)
+                .on('tick', ticked);
+            
+            simulation
+                .force('link')
+                .links(links);
+                
+            //node text
+            if(that.symbolType !=='hidden'){
+                drawText();
+            }
 
         // svg 点击清空选择
         d3.select("#netChartDiv svg").on('click',function(){
@@ -592,36 +617,32 @@ export class ReNetComponent implements OnInit {
 
         function ticked() {
             link.attr("d", function (d) {
-                //基础偏移量
-                let offsetBasic = that.radian;
                 //中点
                 let midpoint_x = (d.source.x + d.target.x) / 2;
                 let midpoint_y = (d.source.y + d.target.y) / 2;
                 //相对位置计算
-                let dx = (d.target.x - d.source.x);
-                let dy = (d.target.y - d.source.y);
+                let dx = d.target.x - d.source.x;
+                let dy = d.target.y - d.source.y;
                 let normalise = Math.sqrt((dx * dx) + (dy * dy));
 
-                //根据总条目和当前条目层次，计算offset。根据source和target顺序计算符号
+                //根据同source、target的条目和当前条目顺序，计算offset。
+                //根据source和target顺序计算符号
                 // 总数 count   顺序 tempindex
                 let offset;
-                if(d.count){
-                    //总条数为双数
-                    if(d.count % 2 == 0){
-                       offset =  (parseInt(''+d['tempindex'] / 2) + 0.5) * offsetBasic || offsetBasic;
-                        //同一位置反向
-                        if(d['tempindex'] % 2 == 1){
-                            offset =  offset*(-1);
-                        }
-                    }
-                    //总条数为单数
-                    else{
-                       offset =  (parseInt(''+d['tempindex'] / 2) + (d['tempindex'] % 2)) * offsetBasic || 0;
-                        if(d['tempindex'] % 2 == 1){
-                            offset =  offset*(-1);
-                        }
-                    }
+                //总条数为双数
+                if(d.count % 2 == 0){
+                    offset = (Math.floor(d.tempindex / 2) + 0.5) * offsetBasic || offsetBasic;
                 }
+                //总条数为单数
+                else{
+                    offset = (Math.floor(d.tempindex / 2) + (d.tempindex % 2)) * offsetBasic || 0;
+                }
+
+                //同一位置反向
+                if(d['tempindex'] % 2 == 1){
+                    offset =  offset*(-1);
+                }
+                
                 //修正source target反序导致的位置统一
                 if(d.source.geneID > d.target.geneID) {
                     offset = offset*(-1);
@@ -706,7 +727,7 @@ export class ReNetComponent implements OnInit {
 
     }
 
-    //搜索
+    //搜索 node
     searchNodeChange(){
         d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.value));
         d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
@@ -715,7 +736,7 @@ export class ReNetComponent implements OnInit {
         this.selectGeneList.length=0;
         this.selectLinkList.length=0;
 
-        d3.select("path#"+this.curSearchNode).attr('fill',"#167C80");
+        d3.select("path#"+this.curSearchNode.replace(this.idReq,"")).attr('fill',"#167C80");
         this.allNodes.forEach(d=>{
             if(d.geneID === this.curSearchNode){
                 this.selectedNodes.push(d);
@@ -723,6 +744,78 @@ export class ReNetComponent implements OnInit {
         })
         this.selectGeneList.push(this.curSearchNode);
 
+    }
+
+    // delete link
+    deleteOk(){
+        this.isShowDeleteModal=false;
+        this.ajaxService
+            .getDeferData({
+                url: `${config['javaPath']}/net/deleteLink`,
+                data: {
+                    "LCID": this.storeService.getStore('LCID'),
+                    "id": this.tid,
+                    "quantity":{},
+                    "links":this.selectLinkList
+                }
+            })
+            .subscribe(
+                (data: any) => {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                        return;
+                    } else if (data.status === "-1") {
+                        return;
+                    } else if (data.status === "-2") {
+                        return;
+                    } else {
+                        this.drawChart(data.data);
+                    }
+                },
+                error => {
+                    console.log(error);
+                }
+            )
+    }
+
+    deleteCancel(){
+        this.isShowDeleteModal=false;
+    }
+
+    //add link
+    addOk(){
+        this.isShowAddModal=false;
+        this.ajaxService
+            .getDeferData({
+                url: `${config['javaPath']}/net/addLink`,
+                data: {
+                    "LCID": this.storeService.getStore('LCID'),
+                    "id": this.tid,
+                    "quantity":{},
+                    "source":this.curStartNode,
+                    "target":this.curEndNode,
+                    "score":this.curScore
+                }
+            })
+            .subscribe(
+                (data: any) => {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                        return;
+                    } else if (data.status === "-1") {
+                        return;
+                    } else if (data.status === "-2") {
+                        return;
+                    } else {
+                        this.drawChart(data.data);
+                    }
+                },
+                error => {
+                    console.log(error);
+                }
+            )
+    }
+
+    addCancel(){
+        this.isShowAddModal=false;
     }
 
     colorChange(color){

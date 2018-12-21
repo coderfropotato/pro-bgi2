@@ -74,6 +74,7 @@ export class TableSwitchChartComponent implements OnInit {
     // 刷新
     @Output() refresh:EventEmitter<any> = new EventEmitter();
 
+
     scroll: object = { y: '400px' };
     isShowTable: boolean = false;
     tableData: any;
@@ -156,7 +157,7 @@ export class TableSwitchChartComponent implements OnInit {
             }
         }
 
-
+        
     }
 
     //获取默认值
@@ -344,6 +345,7 @@ export class TableSwitchChartComponent implements OnInit {
                             this.chartData = data.data;
                             this.drawChart(data.data);
                         }
+
                     }
                     this.isLoading = false;
 
