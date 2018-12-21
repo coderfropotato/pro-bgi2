@@ -409,7 +409,9 @@ export class ReNetComponent implements OnInit {
         this.curScore=this.scoreMax/2;
 
         //容器宽高
-        let width=800,height=700;
+        let legendHeight=70;
+        let width=800,height=600; //图主体
+        let padding=20;
         
         let colors=this.colors;
 
@@ -445,6 +447,9 @@ export class ReNetComponent implements OnInit {
             .domain(typeArr)
             .range(shapeArr);
 
+        //图例svg
+        let legendSvg=d3.select("#netChartDiv").append('svg').attr("width", width).attr("height", legendHeight);
+
         //svg  点击空白处，所有的node和link清除选中
         let svg = d3.select("#netChartDiv").append('svg').attr("width", width).attr("height", height)
             .call(
@@ -472,7 +477,7 @@ export class ReNetComponent implements OnInit {
             .attr("d", 'M0,0 L0,10 L10,5 z')
             .attr("opacity", d => d.opacity);
 
-        let g = svg .append("g");
+        let g = svg.append("g");
 
         //力图
         let simulation = d3.forceSimulation()
@@ -566,24 +571,39 @@ export class ReNetComponent implements OnInit {
 
             })
 
-            g_node.call(d3.drag()
-                .on('start', dragstarted)
-                .on('drag', dragged)
-                .on('end', dragended))
+        g_node.call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended))
 
-            simulation
-                .nodes(nodes)
-                .on('tick', ticked);
+        simulation
+            .nodes(nodes)
+            .on('tick', ticked);
+        
+        simulation
+            .force('link')
+            .links(links);
             
-            simulation
-                .force('link')
-                .links(links);
-                
-            //node text
-            if(that.symbolType !=='hidden'){
-                drawText();
-            }
+        //node text
+        if(that.symbolType !=='hidden'){
+            drawText();
+        }
 
+        //图例
+        //node 形状
+        legendSvg.append("g")
+            .attr("class", "legendShape")
+            .attr("transform", `translate(${padding}, 10)`);
+
+        let legendShape = d3.legendSymbol()
+            .scale(shapeLegendScale)
+            .orient("horizontal")
+            .labelWrap(30)
+            .shapePadding(40);
+
+        legendSvg.select(".legendShape")
+        .call(legendShape);
+        
         // svg 点击清空选择
         d3.select("#netChartDiv svg").on('click',function(){
             d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
