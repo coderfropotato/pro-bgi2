@@ -13,14 +13,18 @@
                 <app-table-switch-chart
                     #kaFunChart
                     [id]="'kaFun'"
-                    [isOnlyChart]="true"
-                    [chartUrl]="chartUrl"
-                    [apiEntity]="chartEntity"
+                    [isOnlyChart]="false"
+                    [tableUrl]="tableUrl"
+                    [apiEntity]="tableEntity"
                     (drawChartEmit)="drawChart($event)"
                     [chartId]="'kaFunChartDiv'"
                     [chartName]="'kaFun图'"
                     [flex]="true"
                     (refresh)="handlerRefresh()"
+                    [isHasMultiSelect]="true"
+                    [(isMultiSelect)]="isMultiSelect"
+                    (isMultiSelectChange)="multiSelectChange()"
+                    (multipleConfirmEmit)="multipleConfirm()"
                 >
                 </app-table-switch-chart>
 

@@ -7,6 +7,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import config from '../../../config';
 import {PromptService} from './../../super/service/promptService';
+import { ToolsService } from './../../super/service/toolsService';
 
 declare const d3: any;
 declare const d4:any;
@@ -29,12 +30,7 @@ export class KaFunComponent implements OnInit {
 
     chartUrl: string;
     chartEntity: object;
-
     chart:any;
-
-    isShowColorPanel: boolean = false;
-    legendIndex: number = 0; //当前点击图例的索引
-    color: string; //当前选中的color
 
     // table
     defaultEntity: object;
@@ -66,6 +62,25 @@ export class KaFunComponent implements OnInit {
     geneType:string = '';
     version:string = null;
 
+    //参数
+    k_degree:number;
+    k_explain:string;
+    k_pvalue:number;
+    k_stat:number;
+
+    isMultiSelect: boolean;
+
+    tableUrl: string;
+    tableEntity: object = {};
+
+    colors: string[] = [];
+    legendIndex: number = 0; //当前点击图例的索引
+    color: string; //当前选中的color
+    isShowColorPanel: boolean = false;
+
+    textContent:string="气泡统计图";
+    geneNum:number;
+
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -75,7 +90,8 @@ export class KaFunComponent implements OnInit {
 		public pageModuleService: PageModuleService,
         private router: Router,
         private routes:ActivatedRoute,
-        private promptService:PromptService
+        private promptService:PromptService,
+        public toolsService: ToolsService
     ) {
         // 订阅windowResize 重新计算表格滚动高度
 		this.message.getResize().subscribe((res) => {
@@ -98,12 +114,17 @@ export class KaFunComponent implements OnInit {
     }
 
     ngOnInit() {
-        // chart
-        this.chartUrl=`${config['javaPath']}/chiSquare/switchTable`;
-        this.chartEntity = {
+        this.isMultiSelect = false;
+        this.tableUrl=`${config['javaPath']}/chiSquare/switchTable`;
+        this.tableEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid
         };
+
+        this.colors = ["#4575B4", "#FEF6B2", "#D9352A"];
+
+        this.geneNum = this.toolsService["geneCount"]; //选择基因数量
+
         // this.chartEntity = {
         //     LCID: sessionStorage.getItem('LCID'),
         //     tid:this.tid,
@@ -307,11 +328,42 @@ export class KaFunComponent implements OnInit {
 		} catch (error) {}
     }
 
+    //单、多选change
+	multiSelectChange() {
+        // this.upSelect.length = 0;
+        // this.leftSelect.length = 0;
+        // // this.first?this.transformTable._getData():this.first = true;
+        // this.chartBackStatus()
+        // this.updateVenn();
+	}
+
+    //多选确定时候,提交的数据
+	multipleConfirm() {
+		// let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData;
+		// this.leftSelect.length = 0;
+		// this.upSelect.length = 0;
+
+		// if (tempData instanceof Array) {
+		// 	this.upSelect.push(...tempData);
+		// } else {
+		// 	this.upSelect.push(...tempData['bar_name']);
+		// 	this.leftSelect.push(...tempData['total_name']);
+		// }
+
+        // this.chartBackStatus()
+	}
+
     //画图
     drawChart(data) {
         document.getElementById('kaFunChartDiv').innerHTML = '';
 
         let that = this;
+
+        that.k_degree=data.degree;
+        that.k_explain=data.explain;
+        that.k_pvalue=data.pvalue;
+        that.k_stat=data.stat;
+
         let k_baseThead = data.baseThead;//["high", "middle", "low", "sum"]
         let k_dataRow = data.row;
         let k_dataName = [];
@@ -358,18 +410,23 @@ export class KaFunComponent implements OnInit {
         </svg>`;
 		t_chartID.innerHTML = str;
         
-        let tempSvg = null;
-        let tempSvg_xScale = null;
-        let tempSvg_yScale = null;
+        let tempSvg = null;         //中间网格svg
+        let tempSvg_xScale = null;  //中间网格X轴比例尺
+        let tempSvg_yScale = null;  //中间网格y轴比例尺
+        let colorScale = null;      //颜色比例尺
 
         let top_name = 50; //上侧标题高度
         let left_name = 20;//左侧标题
-        let s_width = 80;  //正方体宽高
         let r_width = 80;  //右侧图例宽度
         let t_height = 20;  //上图例宽度
 
+        let s_width = k_dataRow.length>3?90:120;  //正方体宽高
+
         let x_length = k_baseThead.length*s_width;
         let y_length = k_dataRow.length*s_width;
+
+        let top_length = top_name+t_height; //x轴偏移上方距离
+        let leftLength = left_name_length+x_length; //左方图例偏移位置
 
         let svg_width = left_name_length+x_length+r_width; //计算最外层svg宽度
         let svg_height = y_length+t_height+top_name; //计算最外层svg高度
@@ -389,7 +446,6 @@ export class KaFunComponent implements OnInit {
                     x:s_width/2,
                     y:s_width*(2*index+1)/2,
                     r:5,
-                    color:'red',
                     value:tempData.high,
                     name:element.name,
                     type:"high"
@@ -398,7 +454,6 @@ export class KaFunComponent implements OnInit {
                     x:s_width*3/2,
                     y:s_width*(2*index+1)/2,
                     r:5,
-                    color:'red',
                     value:tempData.middle,
                     name:element.name,
                     type:"middle"
@@ -407,7 +462,6 @@ export class KaFunComponent implements OnInit {
                     x:s_width*5/2,
                     y:s_width*(2*index+1)/2,
                     r:5,
-                    color:'red',
                     value:tempData.low,
                     name:element.name,
                     type:"low"
@@ -416,7 +470,6 @@ export class KaFunComponent implements OnInit {
                     x:s_width*7/2,
                     y:s_width*(2*index+1)/2,
                     r:5,
-                    color:'red',
                     value:tempData.sum,
                     name:element.name,
                     type:"sum"
@@ -424,7 +477,6 @@ export class KaFunComponent implements OnInit {
             )
 
         }
-        //console.log(k_dataCircle);
         drawTopTitle();//上侧标题
         drawSvg();  //画中间主题
         drawYaxisName();//y轴名字
@@ -435,9 +487,12 @@ export class KaFunComponent implements OnInit {
         function drawTopTitle(){
             let width = x_length/2;
             let height = y_length;
+            let padding_left = leftLength/2-30;
+
             let svgTitle = svg
                 .append('g')
-                .attr('transform', 'translate(' + left_name_length + ',' + 0 + ')')
+                .attr('transform', 'translate(' + padding_left + ',' + 0 + ')');
+            svgTitle
                 .append('text')
                 .attr("class","titleText")
                 .attr('width', width)
@@ -445,12 +500,15 @@ export class KaFunComponent implements OnInit {
                 .attr('dx', '60')
 				.attr('dy', '30')
 				.text(function(d, i) {
-					return "气泡统计图";
+					return that.textContent;
 				})
 				.on('click', function(d, i) {
-                    let event = d3.event;
-                    event.stopPropagation();
-					console.log(1111)
+                    let self = that;
+                    that.promptService.open(d,(data)=>{
+                        self.textContent = data;
+                        svgTitle.remove();
+                        drawTopTitle();
+                    })
 				});
         }
 
@@ -458,8 +516,6 @@ export class KaFunComponent implements OnInit {
         function drawSvg(){
             let width = x_length;
             let height = y_length;
-
-            let top_length = top_name+t_height;
     
             let svg1 = svg
                 .append('g')
@@ -468,9 +524,7 @@ export class KaFunComponent implements OnInit {
                 .attr('width', width)
                 .attr('height', height)
                 .attr('class', 'svg1');
-
             
-
             let xScale = d3.scaleBand().domain(k_baseThead).range([ 0, width ]);
             let yScale = d3.scaleBand().domain(k_dataName).range([ 0, height ]);
 
@@ -497,8 +551,6 @@ export class KaFunComponent implements OnInit {
         function drawYaxisName(){
             let width = left_name_length;
             let height = y_length;
-            
-            let top_length = top_name+t_height;
 
             let svg2 = svg
                 .append('g')
@@ -595,36 +647,97 @@ export class KaFunComponent implements OnInit {
             }
         }
 
-        function drawRightTopLegend(){
-            // t_height
-            // y_length  //高度
-            // left_name_length+x_length //偏移位置
-            // let r_width = 60;  //右侧图例宽度
+        function drawRightTopLegend(){ //画右侧上方图例
 
-            // let width = x_length/2;
-            // let height = y_length;
+            let data = k_dataCircle;
+            let rectWidth = 30;     //y轴偏移距离
+            let legendHeight = 120; //上侧图例高度
+            //color
+            let valuemin = d3.min(data, function(d) {
+                return d.value;
+            });
+            let valuemax = d3.max(data, function(d) {
+                return d.value;
+            });
 
-            let leftLength = left_name_length+x_length;
-            let topLength = top_name + t_height;
-            let rectWidth = 40;     //y轴偏移距离
-            let legendHeight = 100; //上侧图例高度
-            let legend_g = svg
-                .append('g')
-                .attr('transform', 'translate(' + leftLength + ',' + top_name + ')');
+            let colorDomainArr = [];
+            for (let i = 0; i < that.colors.length; i++) {
+                let obj = valuemin + i * ((valuemax - valuemin) / (that.colors.length - 1));
+                colorDomainArr.push(obj);
+            }
 
+            let legend_g = svg.append('g').attr('transform', 'translate(' + leftLength + ',' + top_name + ')');
             legend_g.append('text').attr("class","titleText").attr('dx', '15').attr('dy', '10').text("num");
 
+            //气泡颜色比例尺
+            colorScale = d3.scaleLinear().domain(colorDomainArr).range(that.colors).interpolate(d3.interpolateRgb);
+            legend_g.append('g').attr('class', 'gradient-legend').attr('transform', "translate(" + 0 + "," + t_height + ")");
+
+            let linearGradient = legend_g.append("defs")
+                .append("linearGradient")
+                .attr("id", "gradientLinear_Color")
+                .attr("x1", "0%")
+                .attr("y1", "0%")
+                .attr("x2", "0%")
+                .attr("y2", "100%");
+
+            let colorsLen = that.colors.length;
+
+            for (let i = 0; i < colorsLen; i++) {
+                linearGradient.append("stop")
+                    .attr("offset", i * (100 / (colorsLen - 1)) + "%")
+                    .style("stop-color", that.colors[i]);
+            }
+
+            //画图例矩形
+            legend_g.append("rect").attr("width", (rectWidth-10)).attr("height", legendHeight)
+                .attr("fill", "url(#" + linearGradient.attr("id") + ")")
+                .attr("x", 10)
+                .attr("y",t_height);
+
+            //图例交互
+            let legendClickRect_h = legendHeight / colorsLen;
+            let legendClick_g = legend_g.append("g").attr("class", "click-gradient-legend")
+                .attr('transform', "translate(" + 10 + "," + t_height + ")")
+                .style("cursor", "pointer")
+
+            legendClick_g.append('title')
+                .text('双击修改颜色')
+
+            legendClick_g.selectAll(".legendClick_Rect")
+                .data(that.colors)
+                .enter()
+                .append("rect")
+                .attr("width", (rectWidth-10))
+                .attr("height", legendClickRect_h)
+                .attr("y", function (d, i) {
+                    return i * legendClickRect_h;
+                })
+                .attr("fill", "transparent")
+                .on("dblclick", function (d, i) {
+                    // console.log(d)
+                    // console.log(i)
+                    //that.legend.dblclick && that.legend.dblclick.call(that, d, i);
+                    //console.log(1111);
+                    that.clearEventBubble(d3.event);
+                    that.color = colorScale(d);
+                    that.isShowColorPanel = true;
+                    that.legendIndex = i;
+                    console.log(that.isShowColorPanel);
+                });
+
             let legendScale = d3.scaleLinear().range([0, legendHeight]) //定义图例比例尺
-            .domain([0, 1]).nice().clamp(true);
-            let yAxis = d3.axisRight(legendScale).tickSizeOuter(0).ticks(5); //设置Y轴
+            .domain([valuemin, valuemax]).nice().clamp(true);
+            let yAxis = d3.axisRight(legendScale).tickSizeOuter(0).ticks(3); //设置Y轴
             legend_g.append("g").attr("class", "gradient_legendAxis")
                 .attr("transform", 'translate(' + rectWidth + ',' + t_height + ')')
                 .call(yAxis);
         }
 
+
         function drawRightBottomLegend(){
-            let leftLength = left_name_length+x_length;
-            let legendHeight = 100; //上侧图例高度
+            
+            let legendHeight = 120; //上侧图例高度
             let topLength = top_name + t_height+legendHeight+20;//20为上侧图例的title高度
 
             let r_legend = svg
@@ -633,20 +746,12 @@ export class KaFunComponent implements OnInit {
             
             r_legend.append('text').attr("class","titleText").attr('dx', '15').attr('dy', '10').text("radius");
 
-            setBubble(k_dataCircle,r_legend);
+            setBubble(r_legend);
 
         }
 
-        function setBubble(data,r_legend){ 
-            // {
-            //     x:s_width/2,
-            //     y:s_width*(2*index+1)/2,
-            //     r:5,
-            //     color:'red',
-            //     value:tempData.high,
-            //     name:element.name,
-            //     type:"high"
-            // },
+        function setBubble(r_legend){ 
+            let data = k_dataCircle;
             let r_min = d3.min(data, function(d) {
                 return d.value;
             });
@@ -673,10 +778,10 @@ export class KaFunComponent implements OnInit {
                 r_sum += r_size;
                 circle_legend.append("circle")
                     .attr("r", rScale(d)/4)
-                    .attr("cy", r_sum/4 + i * space);
+                    .attr("cy", r_sum/5 + i * space);
                 circle_legend.append("text")
                     .attr("dx", rScale(resultarr[resultarr.length - 1])/4 + 10)
-                    .attr("dy", r_sum/4 + i * space)
+                    .attr("dy", r_sum/5 + i * space)
                     .style("font-size", "12")
                     .attr("text-anchor", "start")
                     .attr("dominant-baseline", "middle")
@@ -688,7 +793,7 @@ export class KaFunComponent implements OnInit {
             .enter()
             .append("circle")
             .attr("r", function(d, i) {
-                return rScale(d['value'])-1;
+                return rScale(d['value'])>13?rScale(d['value'])-5:8;
             })
             .attr("cx", function(d, i) {
                 return d['x'];
@@ -696,13 +801,16 @@ export class KaFunComponent implements OnInit {
             .attr("cy", function(d, i) {
                 return d['y'];
             })
-            // .attr("fill", d => colorScale(d.color))
+            .attr("fill", function(d, i) {
+                return colorScale(d['value']);
+            })
             // .attr("fill-opacity", 0.3)
-            // .attr("stroke", d => colorScale(d.color))
+            // .attr("stroke", function(d, i) {
+            //     return colorScale(d.color);
+            // })
             // .attr("stroke-opacity", 0.7)
             .on("mouseover", function(d) {
-                console.log(d)
-                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}<br> color:  ${d.color}`;
+                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}`;
                 that.globalService.showPopOver(d3.event, tipText);
             })
             .on("mouseout", function(d) {
@@ -716,18 +824,15 @@ export class KaFunComponent implements OnInit {
                 //     return false;
                 // }
             })
-            // .transition()
-            // .duration(800)
-            // .attr("r", d => rScale(d.r));
 
         }
         
         function uniq(array){
-            var temp = [];
-            var index = [];
-            var l = array.length;
-            for(var i = 0; i < l; i++) {
-                for(var j = i + 1; j < l; j++){
+            let temp = [];
+            let index = [];
+            let l = array.length;
+            for(let i = 0; i < l; i++) {
+                for(let j = i + 1; j < l; j++){
                     if (array[i] === array[j]){
                         i++;
                         j = i;
@@ -736,7 +841,6 @@ export class KaFunComponent implements OnInit {
                 temp.push(array[i]);
                 index.push(i);
             }
-            console.log(index);
             return temp;
         }
 
@@ -817,12 +921,28 @@ export class KaFunComponent implements OnInit {
 
     }
 
-    colorChange(curColor) {
-		this.chart.setColor(curColor, this.legendIndex);
-        this.chart.redraw();
+    //阻止冒泡
+    clearEventBubble(evt) {
+        if (evt.stopPropagation) {
+            evt.stopPropagation();
+        } else {
+            evt.cancelBubble = true;
+        }
+
+        if (evt.preventDefault) {
+            evt.preventDefault();
+        } else {
+            evt.returnValue = false;
+        }
+
     }
 
-
+    //color change 回调函数
+    colorChange(curColor) {
+        this.color = curColor;
+        this.colors.splice(this.legendIndex, 1, curColor);
+        this.kaFunChart.redraw();
+    }
 
 }
 
