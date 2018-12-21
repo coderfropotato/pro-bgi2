@@ -38,7 +38,7 @@ export class ReNetComponent implements OnInit {
 
     nodeColorScale:any; //节点比例尺
 
-    idReq:any;
+    idReq:any; //id 正则
 
     // 选中的节点、线
     selectGeneList:string[] = []; // 选择的节点geneID
@@ -134,8 +134,6 @@ export class ReNetComponent implements OnInit {
         this.colors = ["#0000ff", "#ff0000"];
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
-
-        console.log(this.allNodes)
 
         // this.chartUrl=`${config['javaPath']}/net/graph`; 
         this.chartUrl=`http://localhost:8086/net`;
@@ -336,16 +334,6 @@ export class ReNetComponent implements OnInit {
 
     // 图
 
-    getData(data){
-        this.allNodes=[...data.nodes];
-        this.curStartNode=this.allNodes[0]['geneID'];
-        this.curEndNode=this.allNodes[1]['geneID'];
-        let scores=[0,100];
-        this.scoreMin=scores[0];
-        this.scoreMax=scores[1];
-        this.curScore=this.scoreMax/2;
-    }
-
     //画图
     drawChart(data){
         d3.select("#netChartDiv svg").remove();
@@ -410,6 +398,15 @@ export class ReNetComponent implements OnInit {
         })
 
         let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
+
+        this.allNodes=[...nodes];
+        // add link
+        this.curStartNode=this.allNodes[0]['geneID'];
+        this.curEndNode=this.allNodes[1]['geneID'];
+        let scores=[0,100];
+        this.scoreMin=scores[0];
+        this.scoreMax=scores[1];
+        this.curScore=this.scoreMax/2;
 
         //容器宽高
         let width=800,height=700;

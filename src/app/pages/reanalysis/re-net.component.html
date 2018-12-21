@@ -64,7 +64,7 @@
                     </ng-template>
 
                     <ng-template #searchTemplate>
-                        <nz-select style="width: 140px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
+                        <nz-select style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
                             <nz-option *ngFor="let node of allNodes" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                         </nz-select>
                     </ng-template>
@@ -84,7 +84,6 @@
                         [chartName]="'网络图'"
                         [flex]="true"
                         (refresh)="handlerRefresh()"
-                        (getData)="getData($event)"
                     >
                     </app-table-switch-chart>
 
