@@ -1093,3 +1093,9 @@ button.btnActive {
 .disabled{
     cursor: not-allowed!important;
 }
+
+// popover service
+.popover-service{
+    max-width: 320px;
+    word-break: break-all;
+}

@@ -243,10 +243,10 @@ export class GlobalService {
      * @memberof GlobalService
      */
     showPopOver(event, text) {
-        if ($(".ng-popover").length) $(".ng-popover").remove();
+        if ($(".popover-service").length) $(".popover-service").remove();
 
         let pop = $(
-            `<div class='ng-popover'>${text}<i class="arrow-outer"></i><i class="arrow-inner"></i></div>`
+            `<div class='ng-popover popover-service'>${text}<i class="arrow-outer"></i><i class="arrow-inner"></i></div>`
         );
 
         $("body")
@@ -276,7 +276,6 @@ export class GlobalService {
     }
 
     hidePopOver() {
-
-        $(".ng-popover").remove();
+        $(".popover-service").remove();
     }
 }
