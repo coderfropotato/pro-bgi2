@@ -38,7 +38,7 @@ export class ReNetComponent implements OnInit {
 
     nodeColorScale:any; //节点比例尺
 
-    idReq:any;
+    idReq:any; //id 正则
 
     // 选中的节点、线
     selectGeneList:string[] = []; // 选择的节点geneID
@@ -49,7 +49,7 @@ export class ReNetComponent implements OnInit {
     // 设置
     force:number=600; //斥力
     radian:number=10; //弧度
-    symbolType:string='selected'; // gene symbol 显示: hidden all selected
+    symbolType:string='all'; // gene symbol 显示: hidden all selected
 
     //serach
     allNodes:any[]=[];
@@ -134,8 +134,6 @@ export class ReNetComponent implements OnInit {
         this.colors = ["#0000ff", "#ff0000"];
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
-
-        console.log(this.allNodes)
 
         // this.chartUrl=`${config['javaPath']}/net/graph`; 
         this.chartUrl=`http://localhost:8086/net`;
@@ -336,16 +334,6 @@ export class ReNetComponent implements OnInit {
 
     // 图
 
-    getData(data){
-        this.allNodes=[...data.nodes];
-        this.curStartNode=this.allNodes[0]['geneID'];
-        this.curEndNode=this.allNodes[1]['geneID'];
-        let scores=[0,100];
-        this.scoreMin=scores[0];
-        this.scoreMax=scores[1];
-        this.curScore=this.scoreMax/2;
-    }
-
     //画图
     drawChart(data){
         d3.select("#netChartDiv svg").remove();
@@ -411,8 +399,19 @@ export class ReNetComponent implements OnInit {
 
         let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
 
+        this.allNodes=[...nodes];
+        // add link
+        this.curStartNode=this.allNodes[0]['geneID'];
+        this.curEndNode=this.allNodes[1]['geneID'];
+        let scores=[0,100];
+        this.scoreMin=scores[0];
+        this.scoreMax=scores[1];
+        this.curScore=this.scoreMax/2;
+
         //容器宽高
-        let width=800,height=700;
+        let legendHeight=70;
+        let width=800,height=600; //图主体
+        let padding=20;
         
         let colors=this.colors;
 
@@ -448,6 +447,9 @@ export class ReNetComponent implements OnInit {
             .domain(typeArr)
             .range(shapeArr);
 
+        //图例svg
+        let legendSvg=d3.select("#netChartDiv").append('svg').attr("width", width).attr("height", legendHeight);
+
         //svg  点击空白处，所有的node和link清除选中
         let svg = d3.select("#netChartDiv").append('svg').attr("width", width).attr("height", height)
             .call(
@@ -462,20 +464,20 @@ export class ReNetComponent implements OnInit {
 
         //箭头
         svg.append("defs").selectAll("marker")
-        .data(arrows).enter()
-        .append("marker")
-        .attr("id", d => d.id)
-        .attr("viewBox", '0 0 10 10')
-        .attr("refX", 20)
-        .attr("refY", 5)
-        .attr("markerWidth", 4)
-        .attr("markerHeight", 4)
-        .attr("orient", "auto")
-        .append("path")
-        .attr("d", 'M0,0 L0,10 L10,5 z')
-        .attr("opacity", d => d.opacity);
+            .data(arrows).enter()
+            .append("marker")
+            .attr("id", d => d.id)
+            .attr("viewBox", '0 0 10 10')
+            .attr("refX", 20)
+            .attr("refY", 5)
+            .attr("markerWidth", 4)
+            .attr("markerHeight", 4)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", 'M0,0 L0,10 L10,5 z')
+            .attr("opacity", d => d.opacity);
 
-        let g = svg .append("g");
+        let g = svg.append("g");
 
         //力图
         let simulation = d3.forceSimulation()
@@ -569,24 +571,39 @@ export class ReNetComponent implements OnInit {
 
             })
 
-            g_node.call(d3.drag()
-                .on('start', dragstarted)
-                .on('drag', dragged)
-                .on('end', dragended))
+        g_node.call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended))
 
+        simulation
+            .nodes(nodes)
+            .on('tick', ticked);
+        
+        simulation
+            .force('link')
+            .links(links);
+            
         //node text
         if(that.symbolType !=='hidden'){
             drawText();
         }
 
-        simulation
-            .nodes(nodes)
-            .on('tick', ticked);
+        //图例
+        //node 形状
+        legendSvg.append("g")
+            .attr("class", "legendShape")
+            .attr("transform", `translate(${padding}, 10)`);
 
-        simulation.force('link')
-            .links(links);
+        let legendShape = d3.legendSymbol()
+            .scale(shapeLegendScale)
+            .orient("horizontal")
+            .labelWrap(30)
+            .shapePadding(40);
 
-
+        legendSvg.select(".legendShape")
+        .call(legendShape);
+        
         // svg 点击清空选择
         d3.select("#netChartDiv svg").on('click',function(){
             d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
@@ -659,7 +676,7 @@ export class ReNetComponent implements OnInit {
                     " " + d.target.x + "," + d.target.y;
             })
             //node位置进行了修改
-            node.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+            g_node.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         }
 
         // 拖拽

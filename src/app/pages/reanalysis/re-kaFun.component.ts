@@ -1,3 +1,4 @@
+import { AddColumnService } from './../../super/service/addColumnService';
 import { StoreService } from './../../super/service/storeService';
 import { PageModuleService } from './../../super/service/pageModuleService';
 import { MessageService } from './../../super/service/messageService';
@@ -92,6 +93,7 @@ export class KaFunComponent implements OnInit {
         private routes:ActivatedRoute,
         private promptService:PromptService,
         public toolsService: ToolsService
+        private addColumnService:AddColumnService
     ) {
         // 订阅windowResize 重新计算表格滚动高度
 		this.message.getResize().subscribe((res) => {
@@ -166,7 +168,8 @@ export class KaFunComponent implements OnInit {
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
-            searchList: []
+            searchList: [],
+            sortThead:this.addColumnService['sortThead']
         };
         this.defaultTableId = 'default_kafun';
         this.defaultDefaultChecked = true;
@@ -191,7 +194,8 @@ export class KaFunComponent implements OnInit {
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
-            searchList: []
+            searchList: [],
+            sortThead:this.addColumnService['sortThead']
         };
         this.extendTableId = 'extend_kafun';
         this.extendDefaultChecked = true;
@@ -278,6 +282,7 @@ export class KaFunComponent implements OnInit {
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
+        this.addColumnService.setSortThead([]);
         if(!this.first){
             this.defaultEntity['pageIndex'] = 1;
             this.defaultEntity['addThead'] = [];
@@ -371,7 +376,7 @@ export class KaFunComponent implements OnInit {
             k_dataName.push(val.name);
         });
         let k_dataCircle = [];
-        
+
         let left_name_length = getNameLength(k_dataName);//获取左侧名字最大长度
 
         let t_chartID = document.getElementById('kaFunChartDiv');
@@ -405,7 +410,7 @@ export class KaFunComponent implements OnInit {
                     font-size:16px;
                     cursor: pointer;
                 }
-                
+
             </style>
         </svg>`;
 		t_chartID.innerHTML = str;
@@ -531,7 +536,7 @@ export class KaFunComponent implements OnInit {
             tempSvg = svg1;
             tempSvg_xScale = xScale;
             tempSvg_yScale = yScale;
-    
+
             let xAxis = d3.axisBottom(xScale);
             let yAxis = d3.axisRight(yScale);
 
@@ -743,7 +748,7 @@ export class KaFunComponent implements OnInit {
             let r_legend = svg
                 .append('g')
                 .attr('transform', 'translate(' + leftLength + ',' + topLength + ')');
-            
+
             r_legend.append('text').attr("class","titleText").attr('dx', '15').attr('dy', '10').text("radius");
 
             setBubble(r_legend);
@@ -826,7 +831,7 @@ export class KaFunComponent implements OnInit {
             })
 
         }
-        
+
         function uniq(array){
             let temp = [];
             let index = [];
@@ -895,7 +900,7 @@ export class KaFunComponent implements OnInit {
 			}
 			return tempArr;
         }
-        
+
         function getNameLength(k_dataName){
             //计算左侧最大的名字长度
             let k_name_max = [];

@@ -143,8 +143,8 @@ export class DiffVennComponent implements OnInit {
 		private storeService: StoreService,
 		public pageModuleService: PageModuleService,
 		private translate: TranslateService,
-		private promptService:PromptService,
-        // private addColumnService:AddColumnService,
+        private promptService:PromptService,
+        private addColumnService:AddColumnService,
 		private router: Router
 	) {
 		// 订阅windowResize 重新计算表格滚动高度
@@ -237,7 +237,8 @@ export class DiffVennComponent implements OnInit {
 				PossionDis: this.PossionDis
 			},
 			version: this.storeService.getStore('version'),
-			searchList: []
+            searchList: [],
+            sortThead:this.addColumnService['sortThead']
 		};
 		this.defaultTableId = 'diff_venn_default_gene';
 		this.defaultDefaultChecked = true;
@@ -267,7 +268,8 @@ export class DiffVennComponent implements OnInit {
 				PossionDis: this.PossionDis
 			},
 			version: this.storeService.getStore('version'),
-			searchList: []
+            searchList: [],
+            sortThead:this.addColumnService['sortThead']
 		};
 		this.extendTableId = 'diff_venn_extend_gene';
 		this.extendDefaultChecked = true;
@@ -302,6 +304,8 @@ export class DiffVennComponent implements OnInit {
         this.showBackButton = false;
         // 初始化表的选中状态
         this.transformTable._initCheckStatus();
+        // 初始化增删列的顺序
+        this.addColumnService.setSortThead([]);
         if(!this.first){
             // 比较组  引用无需考=>虑图选中/阈值
             // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);

@@ -51,6 +51,8 @@ export class AddColumnComponent implements OnInit {
         this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) {
                 this.thead = this.addColumnService.get();
+                // 每次进路由 把当前选中的增删列的顺序保存到服务
+                this.addColumnService.setSortThead(this.selected);
                 this.applyCheckedStatus();
             }
 		});
@@ -58,6 +60,7 @@ export class AddColumnComponent implements OnInit {
 
 	ngOnInit() {
         this.thead = this.addColumnService.get();
+        this.addColumnService.setSortThead([]);
 		this.initIndexAndChecked();
 		// 生成 点击选择 容器
 		this.initSelected();
@@ -68,16 +71,32 @@ export class AddColumnComponent implements OnInit {
 	ngOnChanges(changes: SimpleChanges) {
 		if ('baseThead' in changes && !changes['baseThead'].firstChange && changes['baseThead'].currentValue.length) {
 			this.theadInBase = [];
-			this.initSelected();
-			this.forLeaves(this.thead, (item) => {
-				if (this.baseThead.includes(item['key'])) {
-					item['checked'] = true;
-					this.selected[item['index']].push(item);
-					this.theadInBase.push(item);
-				} else {
-					item['checked'] = false;
-				}
-			});
+            this.initSelected();
+
+            this.forLeaves(this.thead, (item) => {
+                item['checked'] = false;
+            });
+
+            this.baseThead.forEach(v=>{
+                this.forLeaves(this.thead,item=>{
+                    if (v.includes(item['key'])) {
+                        item['checked'] = true;
+                        this.selected[item['index']].push(item);
+                        this.theadInBase.push(item);
+                        return;
+                    }
+                })
+            })
+
+			// this.forLeaves(this.thead, (item) => {
+			// 	if (this.baseThead.includes(item['key'])) {
+			// 		item['checked'] = true;
+			// 		this.selected[item['index']].push(item);
+			// 		this.theadInBase.push(item);
+			// 	} else {
+			// 		item['checked'] = false;
+			// 	}
+			// });
 
 			this.getCheckCount();
 			this.beforeSelected = this.copy(this.selected);
@@ -209,7 +228,11 @@ export class AddColumnComponent implements OnInit {
 		if (tempTheadInBase.length) remove = tempTheadInBase.concat([]);
 
 		this.addThead.emit({ add, remove });
-		this.show = false;
+
+        // 保存已经添加的列的顺序
+        this.addColumnService.setSortThead(this.selected);
+
+        this.show = false;
 		setTimeout(() => {
 			this.toggle.emit(this.show);
 		}, 0);
@@ -225,7 +248,8 @@ export class AddColumnComponent implements OnInit {
 	}
 
 	initSelected() {
-		this.selected = this.thead.map((v) => []);
+        this.selected = this.thead.map((v) => []);
+        this.addColumnService.setSortThead([]);
 	}
 
 	initBeforeSelected() {
@@ -257,14 +281,29 @@ export class AddColumnComponent implements OnInit {
         this.initSelected();
 
         this.forLeaves(this.thead, (item) => {
-            if (this.baseThead.includes(item['key'])) {
-                item['checked'] = true;
-                this.selected[item['index']].push(item);
-                this.theadInBase.push(item);
-            } else {
-                item['checked'] = false;
-            }
+            item['checked'] = false;
         });
+
+        this.baseThead.forEach(v=>{
+            this.forLeaves(this.thead,item=>{
+                if (v.includes(item['key'])) {
+                    item['checked'] = true;
+                    this.selected[item['index']].push(item);
+                    this.theadInBase.push(item);
+                    return;
+                }
+            })
+        })
+
+        // this.forLeaves(this.thead, (item) => {
+        //     if (this.baseThead.includes(item['key'])) {
+        //         item['checked'] = true;
+        //         this.selected[item['index']].push(item);
+        //         this.theadInBase.push(item);
+        //     } else {
+        //         item['checked'] = false;
+        //     }
+        // });
 
         this.getCheckCount();
         this.beforeSelected = this.copy(this.selected);
