@@ -49,7 +49,7 @@ export class ReNetComponent implements OnInit {
     // 设置
     force:number=600; //斥力
     radian:number=10; //弧度
-    symbolType:string='selected'; // gene symbol 显示: hidden all selected
+    symbolType:string='all'; // gene symbol 显示: hidden all selected
 
     //serach
     allNodes:any[]=[];
@@ -459,18 +459,18 @@ export class ReNetComponent implements OnInit {
 
         //箭头
         svg.append("defs").selectAll("marker")
-        .data(arrows).enter()
-        .append("marker")
-        .attr("id", d => d.id)
-        .attr("viewBox", '0 0 10 10')
-        .attr("refX", 20)
-        .attr("refY", 5)
-        .attr("markerWidth", 4)
-        .attr("markerHeight", 4)
-        .attr("orient", "auto")
-        .append("path")
-        .attr("d", 'M0,0 L0,10 L10,5 z')
-        .attr("opacity", d => d.opacity);
+            .data(arrows).enter()
+            .append("marker")
+            .attr("id", d => d.id)
+            .attr("viewBox", '0 0 10 10')
+            .attr("refX", 20)
+            .attr("refY", 5)
+            .attr("markerWidth", 4)
+            .attr("markerHeight", 4)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", 'M0,0 L0,10 L10,5 z')
+            .attr("opacity", d => d.opacity);
 
         let g = svg .append("g");
 
@@ -571,18 +571,18 @@ export class ReNetComponent implements OnInit {
                 .on('drag', dragged)
                 .on('end', dragended))
 
-        //node text
-        if(that.symbolType !=='hidden'){
-            drawText();
-        }
-
-        simulation
-            .nodes(nodes)
-            .on('tick', ticked);
-
-        simulation.force('link')
-            .links(links);
-
+            simulation
+                .nodes(nodes)
+                .on('tick', ticked);
+            
+            simulation
+                .force('link')
+                .links(links);
+                
+            //node text
+            if(that.symbolType !=='hidden'){
+                drawText();
+            }
 
         // svg 点击清空选择
         d3.select("#netChartDiv svg").on('click',function(){
@@ -656,7 +656,7 @@ export class ReNetComponent implements OnInit {
                     " " + d.target.x + "," + d.target.y;
             })
             //node位置进行了修改
-            node.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+            g_node.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         }
 
         // 拖拽
