@@ -99,7 +99,7 @@ export class KaFunComponent implements OnInit {
         private router: Router,
         private routes:ActivatedRoute,
         private promptService:PromptService,
-        public toolsService: ToolsService
+        public toolsService: ToolsService,
         private addColumnService:AddColumnService
     ) {
         // 订阅windowResize 重新计算表格滚动高度
