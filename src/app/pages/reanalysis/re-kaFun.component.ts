@@ -886,7 +886,6 @@ export class KaFunComponent implements OnInit {
                         d3.selectAll('.MyCircle').attr('stroke', "black").attr("stroke-width", 1.5).attr("stroke-opacity", 0.1);
                         d3.select(this).attr("stroke","black").attr("stroke-width", 1.5).attr("stroke-opacity", 0.6);
 
-                        that.singleMultiSelect.length = 0;
                         that.singleMultiSelect = d;
                         that.doSingleData();
                     }
