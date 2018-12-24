@@ -191,9 +191,13 @@ export class ToolsComponent implements OnInit {
 	}
 
 	selectParams(type) {
-		this['get' + type + 'Params']();
-		this.selectType = type;
-		this.childVisible = true;
+		if(type=="relativeSplice"){
+			this.relativeSpliceConfirm();
+		}else{
+			this['get' + type + 'Params']();
+			this.selectType = type;
+			this.childVisible = true;
+		}
 	}
 
 	/**
@@ -788,6 +792,62 @@ export class ToolsComponent implements OnInit {
 				}
 			);
 	}
+
+	//可变剪切提交
+	relativeSpliceConfirm(){
+		this.isSubmitReanalysis = true;
+		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+		this.ajaxService
+			.getDeferData({
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					reanalysisType: "as",
+					needReanalysis: 2,
+					version: this.storeService.getStore('version'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.storeService.getStore('genome'),
+					...this.toolsService.get('tableEntity')
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+                        if(data['data'].length){
+                            let href = `${window.location.href.split(
+								'report'
+							)[0]}report/reanalysis/re-relativeSplice/${this.toolsService.get('geneType')}/${data[
+								'data'
+							][0]}/${this.storeService.getStore('version')}`;
+							newWindow.location.href = href;
+                        }else{
+                            this.notify.blank('tips：', '重分析提交失败，请重试', {
+                                nzStyle: { width: '200px' },
+                                nzDuration: 2000
+                            });
+                        }
+						this.selectType = '';
+						this.childVisible = false;
+						this.toolsService.hide();
+					} else {
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+							nzDuration: 2000
+						});
+					}
+				},
+				(err) => {
+					this.notify.blank('tips：', '重分析提交失败，请重试', {
+						nzStyle: { width: '200px' },
+						nzDuration: 2000
+					});
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
+	}
+
 
 	// 网路图
 	getnetParams() {
