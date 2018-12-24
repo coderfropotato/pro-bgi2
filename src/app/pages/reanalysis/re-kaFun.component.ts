@@ -350,7 +350,7 @@ export class KaFunComponent implements OnInit {
         this.singleMultiSelect = {};
 
         this.kaFunChart.reGetData();
-        
+
         // this.tableEntity['compareGroup'] = this.selectConfirmData;
 		// this.tableSwitchChart.reGetData();
 
@@ -396,8 +396,12 @@ export class KaFunComponent implements OnInit {
 
     //多选确定时候,提交的数据
 	multipleConfirm() {
-
-        console.log(this.doubleMultiSelect)
+        let tempArray = [];
+        for (let index = 0; index < this.doubleMultiSelect.length; index++) {
+            const element = this.doubleMultiSelect[index];
+            tempArray.push(...element.bucket);
+        }
+        console.log(Array.from(new Set(tempArray)))
 
 		// let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData;
 		// this.leftSelect.length = 0;
