@@ -345,7 +345,12 @@ export class KaFunComponent implements OnInit {
 
     //kaFun图二次更新
 	updateKaFun() {
+
+        this.doubleMultiSelect.length = 0;
+        this.singleMultiSelect = {};
+
         this.kaFunChart.reGetData();
+        
         // this.tableEntity['compareGroup'] = this.selectConfirmData;
 		// this.tableSwitchChart.reGetData();
 
