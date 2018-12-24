@@ -367,6 +367,9 @@ export class KaFunComponent implements OnInit {
     
     //切换单、多选change
 	multiSelectChange() {
+        this.doubleMultiSelect.length = 0;
+        this.singleMultiSelect = {};
+
         // this.upSelect.length = 0;
         // this.leftSelect.length = 0;
         this.chartBackStatus()
@@ -381,6 +384,7 @@ export class KaFunComponent implements OnInit {
         //     value: 27, 
         //     name: "Thymus||Cholangiocarcinoma||male", 
         //     type: "middle"
+        //     bucket:       //单选时基因集名称
         // }
         console.log(this.singleMultiSelect)
     }
@@ -500,35 +504,38 @@ export class KaFunComponent implements OnInit {
 
         for (let index = 0; index < k_dataRow.length; index++) {
             const element = k_dataRow[index];
-            let tempData = element;
             k_dataCircle.push(
                 {
                     x:s_width/2,
                     y:s_width*(2*index+1)/2,
-                    value:tempData.high,
+                    value:element.high,
                     name:element.name,
-                    type:"high"
+                    type:"high",
+                    bucket:element.high_bucket
                 },
                 {
                     x:s_width*3/2,
                     y:s_width*(2*index+1)/2,
-                    value:tempData.middle,
+                    value:element.middle,
                     name:element.name,
-                    type:"middle"
+                    type:"middle",
+                    bucket:element.middle_bucket
                 },
                 {
                     x:s_width*5/2,
                     y:s_width*(2*index+1)/2,
-                    value:tempData.low,
+                    value:element.low,
                     name:element.name,
-                    type:"low"
+                    type:"low",
+                    bucket:element.low_bucket
                 },
                 {
                     x:s_width*7/2,
                     y:s_width*(2*index+1)/2,
-                    value:tempData.sum,
+                    value:element.sum,
                     name:element.name,
-                    type:"sum"
+                    type:"sum",
+                    bucket:element.sum_bucket
                 }
             )
 
