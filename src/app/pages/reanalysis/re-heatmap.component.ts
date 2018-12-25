@@ -112,7 +112,7 @@ export class ReHeatmapComponent implements OnInit {
 
         this.routes.paramMap.subscribe((params)=>{
             this.tid = params['params']['tid'];
-            this.tid = '20783e1576b84867aee1a63e22716fed';
+            // this.tid = '20783e1576b84867aee1a63e22716fed';
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
             this.storeService.setTid(this.tid);
@@ -277,8 +277,8 @@ export class ReHeatmapComponent implements OnInit {
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
-        // 初始化增删列的顺序
-        this.addColumnService.setSortThead([]);
+		// 清空表的筛选
+		this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];

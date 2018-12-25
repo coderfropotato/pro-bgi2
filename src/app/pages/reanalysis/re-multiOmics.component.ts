@@ -269,7 +269,8 @@ export class ReMultiOmicsComponent implements OnInit {
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
-        this.addColumnService.setSortThead([]);
+        // 清空表的筛选
+		this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
             if(!this.showBackButton){  // 如果是通过定量信息转的矩阵 那就需要保存增删列的激活状态
                 let {add,remove} = this.addColumn._confirmWithoutEvent();

@@ -292,7 +292,8 @@ export class RelativeSpliceComponent implements OnInit {
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
-        this.addColumnService.setSortThead([]);
+        // 清空表的筛选
+		this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
             this.defaultEntity['pageIndex'] = 1;
             this.defaultEntity['addThead'] = [];
