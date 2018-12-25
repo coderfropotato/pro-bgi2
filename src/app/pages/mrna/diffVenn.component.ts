@@ -238,7 +238,7 @@ export class DiffVennComponent implements OnInit {
 			},
 			version: this.storeService.getStore('version'),
             searchList: [],
-            sortThead:this.addColumnService['sortThead']
+            sortThead:this.addColumn['sortThead']
 		};
 		this.defaultTableId = 'diff_venn_default_gene';
 		this.defaultDefaultChecked = true;
@@ -269,7 +269,7 @@ export class DiffVennComponent implements OnInit {
 			},
 			version: this.storeService.getStore('version'),
             searchList: [],
-            sortThead:this.addColumnService['sortThead']
+            sortThead:this.addColumn['sortThead']
 		};
 		this.extendTableId = 'diff_venn_extend_gene';
 		this.extendDefaultChecked = true;
@@ -303,19 +303,15 @@ export class DiffVennComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.showBackButton = false;
         // 初始化表的选中状态
-        this.transformTable._initCheckStatus();
-        // 初始化增删列的顺序
-        this.addColumnService.setSortThead([]);
+		this.transformTable._initCheckStatus();
+		// 清空表的筛选
+		this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
-            // 比较组  引用无需考=>虑图选中/阈值
-            // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
             this.defaultEntity['compareGroup'] = this.selectConfirmData;
             this.defaultEntity['searchList'] = [];
             this.defaultEntity['pageIndex'] = 1;
-            this.defaultEntity['rootSearchContentList'] = [];
-            setTimeout(()=>{
-                this.first = true;
-            },30)
+			this.defaultEntity['rootSearchContentList'] = [];
+            setTimeout(()=>{this.first = true;},30)
         }else{
             this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
             this.transformTable._setParamsNoRequest('pageIndex',1);
@@ -866,6 +862,7 @@ export class DiffVennComponent implements OnInit {
                     var event = d3.event;
                     event.stopPropagation();
 					if (!_self.isMultiSelect) {
+						debugger;
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
