@@ -501,11 +501,11 @@ export function createTranslateLoader(http: HttpClient) {
         // , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
         {
             provide: NZ_MESSAGE_CONFIG,
-            useValue: { nzDuration: 2000, nzPauseOnHover: true, nzMaxStack: 3, nzAnimate: true, }
+            useValue: { nzDuration: 3000, nzPauseOnHover: true, nzMaxStack: 3, nzAnimate: true, }
         },
         {
             provide: NZ_NOTIFICATION_CONFIG,
-            useValue: { nzTop:'40px', nzBottom:'24px', nzPlacement:'topRight', nzDuration:2000, nzMaxStack:3, nzPauseOnHover:true, nzAnimate:true }
+            useValue: { nzTop:'40px', nzBottom:'24px', nzPlacement:'topRight', nzDuration:3000, nzMaxStack:3, nzPauseOnHover:true, nzAnimate:true }
         },
         // { provide: HTTP_INTERCEPTORS, useClass: HttpInterService, multi: true },
         // enable route alive
