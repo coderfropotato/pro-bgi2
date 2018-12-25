@@ -179,7 +179,9 @@ export class ClusterSetComponent implements OnInit {
             url:`${config['javaPath']}/cluster/classification`,
             data:{
                     "geneType": this.geneType,
-                    "LCID": this.storeService.getStore('LCID')
+                    "LCID": this.storeService.getStore('LCID'),
+                    "version": this.storeService.getStore('version'),
+                    "genome": this.storeService.getStore('genome')
             }
         })
         .subscribe(
