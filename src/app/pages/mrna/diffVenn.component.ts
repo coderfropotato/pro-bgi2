@@ -31,7 +31,7 @@ export class DiffVennPage {
     }
 
     handlerSwitchChange(){
-        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transform':'gene';
+        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transcript':'gene';
         this.showModule = false;
         setTimeout(()=>{this.showModule = true},30);
     }
@@ -165,7 +165,7 @@ export class DiffVennComponent implements OnInit {
 		this.first = true;
 		this.selectedData = [];
 		this.tableUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
-
+		
 		this.p_show = this.storeService.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
 		this.PossionDis = {
 			log2FC: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '',
