@@ -859,13 +859,16 @@ export class DiffVennComponent implements OnInit {
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d, i) {
-					d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+					if(d3.select(this).select('.MyRect').attr('fill') == '#3D4871'){
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+					}
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
                     var event = d3.event;
                     event.stopPropagation();
 					if (!_self.isMultiSelect) {
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -881,6 +884,7 @@ export class DiffVennComponent implements OnInit {
 						}
 						console.log(_self.singleMultiSelect)
 					} else { //多选
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -996,13 +1000,16 @@ export class DiffVennComponent implements OnInit {
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d, i){
-					d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+					if(d3.select(this).select('.MyRect').attr('fill') == '#3D4871'){
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+					}
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
                     var event = d3.event;
                     event.stopPropagation();
 					if (!_self.isMultiSelect) {
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -1018,6 +1025,7 @@ export class DiffVennComponent implements OnInit {
 						}
 						console.log(_self.singleMultiSelect)
 					} else { //多选
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');

@@ -877,7 +877,7 @@ export class KaFunComponent implements OnInit {
                 return colorScale(d['value']);
             })
             .on("mouseover", function(d) {
-                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}`;
+                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}<br> bucket:  ${d.bucket.toString()}`;
                 that.globalService.showPopOver(d3.event, tipText);
             })
             .on("mouseout", function(d) {
