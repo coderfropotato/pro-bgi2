@@ -676,7 +676,30 @@ export class ReNetComponent implements OnInit {
             .style('dominant-baseline','middle')
             .attr('x',nodeColorLegendW+legendTitleSpace)
             .attr('y',eachLegendH/2)
-            .text('node连接数')
+            .text('node连接数');
+
+            //图例交互 修改颜色
+          let legendClick_g =  legendNodeColor_g.append('g')
+                .style("cursor", "pointer")
+                .on("mouseover", function () {
+                    d3.select(this).append("title").text("单击修改颜色");
+                })
+                .on("mouseout", function () {
+                    d3.select(this).select("title").remove();
+                });
+
+            legendClick_g.selectAll(".legnedClickRect")
+                .data(colors).enter()
+                .append('rect')
+                .attr('fill',"transparent")
+                .attr('transform',(d,i)=>`translate(${i*eachNodeLegendW},0)`)
+                .attr("width", eachNodeLegendW).attr("height", eachLegendH)
+                .on("click",(d,i)=>{
+                    clearEventBubble(d3.event);
+                    that.color=d;
+                    that.legendIndex = i;
+                    that.isShowColorPanel = true;
+                });
         }
 
         // link color scale
@@ -955,7 +978,9 @@ export class ReNetComponent implements OnInit {
     }
 
     colorChange(color){
-        console.log(color)
+        this.color = color;
+        this.colors.splice(this.legendIndex, 1, color);
+        this.netChart.redraw();
     }
 
 }
