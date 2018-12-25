@@ -109,6 +109,8 @@ export class ToolsComponent implements OnInit {
 	lineGroupError: boolean = false;
 	lineSampleError: boolean = false;
 	lineCustomData:object[] =[];
+	lineCustomSelect:object[] = [];
+	lineCustomError:boolean = false;
 
 	//卡方图参数
 	geneNum: number;
@@ -173,7 +175,9 @@ export class ToolsComponent implements OnInit {
 		this.lineSampleSelect = [];
 		this.lineGroupError = false;
 		this.lineSampleError = false;
+		this.lineCustomError = false;
 		this.lineCustomData = [];
+		this.lineCustomSelect = [];
 
 		//卡方检验
 		this.geneNum = 1;
@@ -199,6 +203,7 @@ export class ToolsComponent implements OnInit {
 	}
 
 	selectParams(type) {
+		this.init();
 		if(type=="relativeSplice"){
 			this.relativeSpliceConfirm();
 		}else{
@@ -707,7 +712,9 @@ export class ToolsComponent implements OnInit {
 							});
 
 							let custom = data['data']['userDefData'].map((v,index)=>{
-								v['checked'] = false;
+								let status = index ? false : true;
+								v['checked'] = status;
+								if (status) this.lineCustomSelect.push(v);
 								return v;
 							})
 
@@ -717,6 +724,7 @@ export class ToolsComponent implements OnInit {
 
 							this.lineGroupError = !this.lineGroupSelect.length;
 							this.lineSampleError = !this.lineSampleSelect.length;
+							this.lineCustomError = !this.lineCustomSelect.length;
 						} else {
 							this.initLineData();
 						}
@@ -732,6 +740,7 @@ export class ToolsComponent implements OnInit {
 
 	initLineData() {
 		this.lineCustomData.length = 0;
+		this.lineCustomSelect.length = 0;
 		this.lineGroupData.length = 0;
 		this.lineSampleData.length = 0;
 		this.lineGroupSelect.length = 0;
@@ -748,6 +757,9 @@ export class ToolsComponent implements OnInit {
 			case 'sample':
 				temp = this.lineSampleSelect;
 				break;
+			case 'custom':
+				temp = this.lineCustomSelect;
+				break;
 		}
 
 		item['checked'] = !item['checked'];
@@ -763,6 +775,7 @@ export class ToolsComponent implements OnInit {
 
 		this.lineGroupError = !this.lineGroupSelect.length;
 		this.lineSampleError = !this.lineSampleSelect.length;
+		this.lineCustomError = !this.lineCustomSelect.length;
 	}
 
 	// 提交折线图重分析
@@ -775,6 +788,9 @@ export class ToolsComponent implements OnInit {
 				break;
 			case 'sample':
 				tempSelect = this.lineSampleSelect;
+				break;
+			case 'custom':
+				tempSelect = this.lineCustomSelect;
 				break;
 		}
 

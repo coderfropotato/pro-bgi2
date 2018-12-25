@@ -121,11 +121,8 @@
                 <nz-tabset [nzSize]="'small'">
                     <nz-tab nzTitle="分组平均表达量" *ngIf="lineGroupData.length">
                         <div class="tool-params-tab">
-                            <p *ngIf="lineGroupData.length && lineCustomData.length">原始数据</p>
                             <button (click)="lineClick('group',line)" [class.active]="line['checked']" *ngFor="let line of lineGroupData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
-                            <p *ngIf="lineCustomData.length">上传数据</p>
-                            <button (click)="lineClick('group',line)" [class.active]="line['checked']" *ngFor="let line of lineCustomData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
-                            <p *ngIf="!lineGroupData.length && !lineCustomData.length" class="center">暂无参数</p>
+                            <p *ngIf="!lineGroupData.length " class="center">暂无参数</p>
                             <nz-alert *ngIf="lineGroupError || !lineGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
                         </div>
                         <nz-divider></nz-divider>
@@ -135,21 +132,31 @@
                         </div>
                     </nz-tab>
                     <nz-tab nzTitle="单样本表达量" *ngIf="lineSampleData.length">
-                        <div class="tool-params-tab">
-                            <p *ngIf="lineSampleData.length && lineCustomData.length">原始数据</p>
-                            <button (click)="lineClick('sample',line)" [class.active]="line['checked']" *ngFor="let line of lineSampleData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
-                            <p *ngIf="lineCustomData.length">上传数据</p>
-                            <button (click)="lineClick('sample',line)" [class.active]="line['checked']" *ngFor="let line of lineCustomData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
-                            <nz-alert *ngIf="lineSampleError || !lineSampleSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
-                            <p *ngIf="!lineSampleData.length" class="center">暂无参数</p>
-                        </div>
-                        <nz-divider></nz-divider>
-                        <div *ngIf="lineSampleData.length" class="tool-params-button-group">
-                            <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
-                            <button nz-button nzType="primary" [disabled]="lineSampleError || !lineSampleSelect.length" (click)="lineConfirm('line','sample')" nzSize="middle">确定</button>
-                        </div>
-                    </nz-tab>
-                </nz-tabset>
+                            <div class="tool-params-tab">
+                                <button (click)="lineClick('sample',line)" [class.active]="line['checked']" *ngFor="let line of lineSampleData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
+                                <nz-alert *ngIf="lineSampleError || !lineSampleSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                                <p *ngIf="!lineSampleData.length" class="center">暂无参数</p>
+                            </div>
+                            <nz-divider></nz-divider>
+                            <div *ngIf="lineSampleData.length" class="tool-params-button-group">
+                                <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                                <button nz-button nzType="primary" [disabled]="lineSampleError || !lineSampleSelect.length" (click)="lineConfirm('line','sample')" nzSize="middle">确定</button>
+                            </div>
+                        </nz-tab>
+                        <nz-tab nzTitle="用户上传数据" *ngIf="lineCustomData.length">
+                            <div class="tool-params-tab">
+                                <button (click)="lineClick('custom',line)" [class.active]="line['checked']" *ngFor="let line of lineCustomData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
+                                <nz-alert *ngIf="lineCustomError || !lineCustomSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                                <p *ngIf="!lineCustomData.length" class="center">暂无参数</p>
+                            </div>
+                            <nz-divider></nz-divider>
+                            <div *ngIf="lineCustomData.length" class="tool-params-button-group">
+                                <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                                <button nz-button nzType="primary" [disabled]="lineCustomError || !lineCustomSelect.length" (click)="lineConfirm('line','custom')" nzSize="middle">确定</button>
+                            </div>
+                        </nz-tab>
+                    </nz-tabset>
+
             </nz-spin>
         </nz-drawer>
 
