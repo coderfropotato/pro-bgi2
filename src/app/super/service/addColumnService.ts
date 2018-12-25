@@ -22,15 +22,6 @@ export class AddColumnService {
     set(thead){
         this.thead = thead;
     }
-
-    setSortThead(thead){  // thead:[[],[],[]]
-        this.sortThead.length = 0;
-        if(thead.length){
-            let temp = [];
-            thead.forEach(v=>temp = temp.concat(v));
-            temp.forEach(v=>{
-                this.sortThead.push(v['key']);
-            })
-        }
-    }
+    
+    
 }

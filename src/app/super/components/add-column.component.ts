@@ -32,7 +32,8 @@ export class AddColumnComponent implements OnInit {
 	selectCount: Array<any> = [];
 	beforeSelected: Array<any> = [];
 	theadInBase: string[] = []; // 哪些基础表头在增删列的数据里面
-    treeTempSelect:any[] = [];
+	treeTempSelect:any[] = [];
+	public sortThead:any[] = [];
 
 	config = config;
 
@@ -46,21 +47,18 @@ export class AddColumnComponent implements OnInit {
 	){
 		let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
-
         // 每次进入路由重新获取增删列 并应用之前的选中状态
         this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) {
-                this.thead = this.addColumnService.get();
-                // 每次进路由 把当前选中的增删列的顺序保存到服务
-                this.addColumnService.setSortThead(this.selected);
-                this.applyCheckedStatus();
+				this.thead = this.addColumnService.get();
+                this.applyCheckedStatus(); // 每次进路由 把当前选中的增删列的顺序保存到服务
             }
 		});
 	}
 
 	ngOnInit() {
         this.thead = this.addColumnService.get();
-        this.addColumnService.setSortThead([]);
+        this.setSortThead([]);
 		this.initIndexAndChecked();
 		// 生成 点击选择 容器
 		this.initSelected();
@@ -103,6 +101,17 @@ export class AddColumnComponent implements OnInit {
 		}
 	}
 
+	setSortThead(thead){  // thead:[[],[],[]]
+        this.sortThead.length = 0;
+        if(thead.length){
+            let temp = [];
+            thead.forEach(v=>temp = temp.concat(v));
+            temp.forEach(v=>{
+                this.sortThead.push(v['key']);
+            })
+        }
+    }
+
 	// 初始化索引和选中状态
 	initIndexAndChecked() {
 		this.thead.forEach((val, index) => {
@@ -116,7 +125,7 @@ export class AddColumnComponent implements OnInit {
 					}
 				});
 			}
-		});
+        });
 	}
 
 	// 初始化索引
@@ -173,7 +182,9 @@ export class AddColumnComponent implements OnInit {
                 })
                 item['checked'] = index!=-1;
             })
-		}
+        }
+
+        this.setSortThead(this.beforeSelected);
 		this.getCheckCount();
 
 		function everySuit(item) {
@@ -230,7 +241,7 @@ export class AddColumnComponent implements OnInit {
 		this.addThead.emit({ add, remove });
 
         // 保存已经添加的列的顺序
-        this.addColumnService.setSortThead(this.selected);
+        this.setSortThead(this.selected);
 
         this.show = false;
 		setTimeout(() => {
@@ -249,7 +260,7 @@ export class AddColumnComponent implements OnInit {
 
 	initSelected() {
         this.selected = this.thead.map((v) => []);
-        this.addColumnService.setSortThead([]);
+        this.setSortThead([]);
 	}
 
 	initBeforeSelected() {
@@ -306,7 +317,7 @@ export class AddColumnComponent implements OnInit {
         // });
 
         this.getCheckCount();
-        this.beforeSelected = this.copy(this.selected);
+		this.beforeSelected = this.copy(this.selected);
 
         this.confirm();
     }
@@ -342,6 +353,7 @@ export class AddColumnComponent implements OnInit {
 
     // 分类清空 不确定
     categoryClear(categorys){
+        console.log(categorys);
         categorys.forEach(v=>{
             if(v['children'].length){
                 v['children'].forEach(val=>{
@@ -505,6 +517,7 @@ export class AddColumnComponent implements OnInit {
 				}
 			});
 		}
+		this.setSortThead(this.selected);
 		this.getCheckCount();
 	}
 
@@ -536,6 +549,8 @@ export class AddColumnComponent implements OnInit {
 				}
 			});
 		}
+
+		this.setSortThead(this.beforeSelected);
 		this.getCheckCount();
 	}
 
@@ -568,6 +583,7 @@ export class AddColumnComponent implements OnInit {
 		// tempTheadInBase.forEach(v=>remove.push({ category:null, key:v }))
 		if (tempTheadInBase.length) remove = tempTheadInBase.concat([]);
 
+		this.setSortThead(this.selected);
 		return { add, remove };
 	}
 
