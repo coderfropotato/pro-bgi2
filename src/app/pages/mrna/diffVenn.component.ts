@@ -31,7 +31,7 @@ export class DiffVennPage {
     }
 
     handlerSwitchChange(){
-        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transform':'gene';
+        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transcript':'gene';
         this.showModule = false;
         setTimeout(()=>{this.showModule = true},30);
     }
@@ -165,7 +165,7 @@ export class DiffVennComponent implements OnInit {
 		this.first = true;
 		this.selectedData = [];
 		this.tableUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
-
+		
 		this.p_show = this.storeService.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
 		this.PossionDis = {
 			log2FC: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '',
@@ -238,7 +238,7 @@ export class DiffVennComponent implements OnInit {
 			},
 			version: this.storeService.getStore('version'),
             searchList: [],
-            sortThead:this.addColumnService['sortThead']
+            sortThead:this.addColumn['sortThead']
 		};
 		this.defaultTableId = 'diff_venn_default_gene';
 		this.defaultDefaultChecked = true;
@@ -269,7 +269,7 @@ export class DiffVennComponent implements OnInit {
 			},
 			version: this.storeService.getStore('version'),
             searchList: [],
-            sortThead:this.addColumnService['sortThead']
+            sortThead:this.addColumn['sortThead']
 		};
 		this.extendTableId = 'diff_venn_extend_gene';
 		this.extendDefaultChecked = true;
@@ -303,19 +303,15 @@ export class DiffVennComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.showBackButton = false;
         // 初始化表的选中状态
-        this.transformTable._initCheckStatus();
-        // 初始化增删列的顺序
-        this.addColumnService.setSortThead([]);
+		this.transformTable._initCheckStatus();
+		// 清空表的筛选
+		this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
-            // 比较组  引用无需考=>虑图选中/阈值
-            // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
             this.defaultEntity['compareGroup'] = this.selectConfirmData;
             this.defaultEntity['searchList'] = [];
             this.defaultEntity['pageIndex'] = 1;
-            this.defaultEntity['rootSearchContentList'] = [];
-            setTimeout(()=>{
-                this.first = true;
-            },30)
+			this.defaultEntity['rootSearchContentList'] = [];
+            setTimeout(()=>{this.first = true;},30)
         }else{
             this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
             this.transformTable._setParamsNoRequest('pageIndex',1);
