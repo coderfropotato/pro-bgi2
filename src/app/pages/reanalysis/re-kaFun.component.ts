@@ -123,10 +123,6 @@ export class KaFunComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.geneNum = this.toolsService.get("geneCount"); //选择基因数量
-
-        this.isHasMultiSelectFlag = this.geneNum == 1?false:true;
-        //this.isHasMultiSelectFlag = false;
         this.isMultiSelect = false;
 
         this.tableUrl=`${config['javaPath']}/chiSquare/switchTable`;
@@ -422,6 +418,11 @@ export class KaFunComponent implements OnInit {
         document.getElementById('kaFunChartDiv').innerHTML = '';
 
         let that = this;
+
+        that.geneNum = data.geneCount; //选择基因数量
+
+        that.isHasMultiSelectFlag = this.geneNum == 1?false:true;
+        
 
         that.k_degree=data.degree;
         that.k_explain=data.explain;
