@@ -1047,6 +1047,18 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.getRemoteData();
     }
 
+    _clearFilterWithoutRequest(){
+        this.beginFilterStatus = false;
+        this.tableEntity["searchList"] = [];
+        this.classifySearchCondition();
+
+        this.tableEntity["rootSearchContentList"] = [];
+        this.rootHtmlString = this.globalService.transformRootFilter(
+            this.tableEntity["rootSearchContentList"]
+        );
+
+    }
+
     /**
      * @description 表格的顶层筛选
      * @author Yangwd<277637411@qq.com>
