@@ -10,6 +10,7 @@ import { AjaxService } from "../service/ajaxService";
 import { NzNotificationService } from "ng-zorro-antd";
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import config from '../../../config';
 
 declare const $: any;
 /**
@@ -127,12 +128,11 @@ export class GeneTableComponent implements OnInit, OnChanges {
     isSaveGeneList:boolean=false;
     validateForm: FormGroup;
     openSelect:boolean = false;
-    labels:any[] = ['1','2','3'];
+    labels:any[] = [];
     labelSelect:any[] = [];
     labelSelectError:boolean = false;
     delSelect:any[] = [];
     textareaMaxLen:number = 100;
-
 
     constructor(
         private translate: TranslateService,
@@ -894,6 +894,24 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.isSaveGeneList = true;
         this.delSelect.length = 0;
         this.openSelect = false;
+        
+        this.getAllLabels();
+    }
+
+    getAllLabels(){
+        this.ajaxService.getDeferData({
+            url:`${config['javaPath']}/geneSet/existed`,
+            data:{
+                LCID: sessionStorage.getItem('LCID'),
+                geneType: this._getInnerStatusParams()['tableEntity']['geneType']
+            }
+        }).subscribe((res)=>{
+            if(res['status']=='0'){
+                this.labels = res['data'];
+            }else{
+                this.labels = [];
+            }
+        },)
     }
 
     handleSaveGeneConfirm(){
@@ -904,9 +922,27 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
         if(this.validateForm.controls["name"]["valid"] && !this.labelSelectError){
             this.isSaveGeneList = false;
-            let params = this._getInnerStatusParams();
+            let params = JSON.parse(JSON.stringify(this._getInnerStatusParams()['tableEntity']));
+            let formValue = this.validateForm.value;
 
-            console.log( this.validateForm.value);
+            params['tags'] = formValue['label'] || [];
+            params['setName'] = formValue['name'] || '';
+            params['setAnnot'] = formValue['mark'] || '';
+            params['saveGeneSet'] = true;
+
+            this.ajaxService.getDeferData({
+                url:this.url,
+                data:params
+            }).subscribe(res=>{
+                let msg:string;
+                if(res['status']==0){
+                    msg = `${params['setName']} 保存成功`;
+                }else{
+                    msg = `${params['setName']} ${res['message'][0]}`;
+                }
+
+                this.notify.success("基因集",msg);
+            })
         }
     }
 
