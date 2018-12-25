@@ -11,20 +11,20 @@
         </div> -->
         <div class="left-bottom-layout">
                 <app-table-switch-chart
-                    #kaFunChart
-                    [id]="'kaFun'"
-                    [isOnlyChart]="false"
-                    [tableUrl]="tableUrl"
-                    [apiEntity]="tableEntity"
+                    #relativeSpliceChart
+                    [id]="'relativeSplice'"
+                    [isOnlyChart]="true"
+                    [chartUrl]="chartUrl"
+                    [apiEntity]="chartEntity"
+                    [selectPanelData]="selectPanelData"
+                    (selectConfirmEmit)="selectConfirm($event)"
+                    [defaultSelectNum]=6
+                    (defaultSelectList)="defaultSelectList($event)"
                     (drawChartEmit)="drawChart($event)"
-                    [chartId]="'kaFunChartDiv'"
-                    [chartName]="'kaFun图'"
+                    [chartId]="'relativeSpliceDiv'"
+                    [chartName]="'可变剪切图'"
                     [flex]="true"
                     (refresh)="handlerRefresh()"
-                    [isHasMultiSelect]="isHasMultiSelectFlag"
-                    [(isMultiSelect)]="isMultiSelect"
-                    (isMultiSelectChange)="multiSelectChange()"
-                    (multipleConfirmEmit)="multipleConfirm()"
                 >
                 </app-table-switch-chart>
 

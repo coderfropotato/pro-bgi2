@@ -123,10 +123,6 @@ export class KaFunComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.geneNum = this.toolsService.get("geneCount"); //选择基因数量
-
-        this.isHasMultiSelectFlag = this.geneNum == 1?false:true;
-        //this.isHasMultiSelectFlag = false;
         this.isMultiSelect = false;
 
         this.tableUrl=`${config['javaPath']}/chiSquare/switchTable`;
@@ -292,7 +288,9 @@ export class KaFunComponent implements OnInit {
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
-        this.addColumnService.setSortThead([]);
+        // 清空表的筛选
+		this.transformTable._clearFilterWithoutRequest();
+
         if(!this.first){
             this.defaultEntity['pageIndex'] = 1;
             this.defaultEntity['addThead'] = [];
@@ -422,6 +420,11 @@ export class KaFunComponent implements OnInit {
         document.getElementById('kaFunChartDiv').innerHTML = '';
 
         let that = this;
+
+        that.geneNum = data.geneCount; //选择基因数量
+
+        that.isHasMultiSelectFlag = this.geneNum == 1?false:true;
+        
 
         that.k_degree=data.degree;
         that.k_explain=data.explain;
@@ -877,7 +880,7 @@ export class KaFunComponent implements OnInit {
                 return colorScale(d['value']);
             })
             .on("mouseover", function(d) {
-                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}`;
+                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}<br> bucket:  ${d.bucket.toString()}`;
                 that.globalService.showPopOver(d3.event, tipText);
             })
             .on("mouseout", function(d) {

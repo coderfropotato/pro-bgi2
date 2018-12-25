@@ -134,6 +134,10 @@ export class TransformationTableComponent implements OnInit {
         this.isFirst?this.defaultTable._filterWithoutRequest(filterName, filterNamezh,searchType, filterType, filterValueOne, filterValueTwo):this.extendTable._filterWithoutRequest(filterName, filterNamezh,searchType, filterType, filterValueOne, filterValueTwo);
     }
 
+    _clearFilterWithoutRequest(){
+        this.isFirst?this.defaultTable._clearFilterWithoutRequest():this.extendTable._clearFilterWithoutRequest();
+    }
+
 
     _deleteFilter(filterName,filterNamezh,filterType){
         this.isFirst?this.defaultTable._deleteFilter(filterName,filterNamezh,filterType):this.extendTable._deleteFilter(filterName,filterNamezh,filterType);

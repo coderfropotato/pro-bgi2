@@ -258,9 +258,23 @@ export class TableSwitchChartComponent implements OnInit {
                     })
                 })
             } else {
-                for (let i = 0; i < this.defaultSelectNum; i++) {
-                    this.selectPanelList[0]['data'][i]['isChecked'] = true;
-                }
+                // for (let i = 0; i < this.defaultSelectNum; i++) {   //最初
+                //     this.selectPanelList[0]['data'][i]['isChecked'] = true; 
+                // }
+                
+                let j = 0;
+                this.selectPanelList.forEach(d => {
+                    d['data'].forEach(m => {
+                        if(j<this.defaultSelectNum)
+                        {
+                            j++;
+                            m['isChecked'] = true;
+                        }else{
+                            return;
+                        }
+                    })
+                })
+            
             }
         }
 
