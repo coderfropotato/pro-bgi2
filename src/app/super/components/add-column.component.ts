@@ -98,6 +98,7 @@ export class AddColumnComponent implements OnInit {
 
 			this.getCheckCount();
 			this.beforeSelected = this.copy(this.selected);
+			this.setSortThead(this.selected);
 		}
 	}
 
