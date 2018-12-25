@@ -93,6 +93,9 @@ export class ToolsComponent implements OnInit {
 	geneTypeError: any = false;
 	selectGeneType: any[] = [];
 
+	stand:string = '';
+	standList:any[] = [];
+
 	// 多组学参数
 	multiOmicsData: any[] = [];
 	multiOmicsSelect: any[] = [];
@@ -105,6 +108,7 @@ export class ToolsComponent implements OnInit {
 	lineSampleSelect: object[] = [];
 	lineGroupError: boolean = false;
 	lineSampleError: boolean = false;
+	lineCustomData:object[] =[];
 
 	//卡方图参数
 	geneNum: number;
@@ -154,6 +158,9 @@ export class ToolsComponent implements OnInit {
 		this.selectGeneType = [];
 		this.geneTypeError = false;
 
+		this.stand = '';
+		this.standList = [];
+
 		// 多组学参数
 		this.multiOmicsData = [];
 		this.multiOmicsSelect = [];
@@ -166,6 +173,7 @@ export class ToolsComponent implements OnInit {
 		this.lineSampleSelect = [];
 		this.lineGroupError = false;
 		this.lineSampleError = false;
+		this.lineCustomData = [];
 
 		//卡方检验
 		this.geneNum = 1;
@@ -283,28 +291,44 @@ export class ToolsComponent implements OnInit {
 				(data) => {
 					if (data['status'] == '0') {
 						let res = data['data'];
-						this.expressData = [
-							...res['expression']['group'].map((val) => {
-								return { name: val, checked: false, category: 'group' };
-							}),
-							...res['expression']['sample'].map((val) => {
-								return { name: val, checked: false, category: 'sample' };
+						this.expressData = res['expression'].map((val) => {
+								val['checked'] = false;
+								return val;
 							})
-						];
 
-						if (this.expressData.length) this.expressData[0]['checked'] = true;
-						this.expressSelect = [ this.expressData[0] ];
-
-						this.diffData = res['diff']['diff_plan'].map((val) => {
-							return { name: val, checked: false, category: 'diff_plan' };
+						if (this.expressData.length) {
+							this.expressData[0]['checked'] = true;
+							this.expressSelect = [ this.expressData[0] ];
+						}
+						this.expressUpload = res['exp_user'];
+						 
+						
+						this.diffData = res['diff'].map((val) => {
+							val['checked'] = false;
+							return val
 						});
-						if (this.diffData.length) this.diffData[0]['checked'] = true;
-						this.diffSelect = [ this.diffData[0] ];
+						if (this.diffData.length) {
+							this.diffData[0]['checked'] = true;
+							this.diffSelect = [ this.diffData[0] ];
+						}
+						this.diffUpload = res['dif_user'];
 
 						this.geneType = res['verticalDefault'];
 						this.geneType.forEach((val) => {
 							val['checked'] = false;
 						});
+
+						this.customData = res['customData'].map(val=>{
+							val['checked'] = false;
+							return val;
+						});
+						if(this.customData.length) {
+							this.customData[0]['checked'] = true;
+							this.customSelect = [this.customData[0]];
+						}
+						
+						this.standList = res['standardization'];
+						this.stand = this.standList[0];
 					}
 				},
 				(err) => console.log(err)
@@ -313,21 +337,26 @@ export class ToolsComponent implements OnInit {
 
 	// 提交聚类重分析  需要生信重分析 需要1 不需要2
 	heatmapConfirm(type) {
-		this.isSubmitReanalysis = true;
-		let tempChooseList = this[`${type}Select`].map((val) => {
-			let temp = {};
-			temp[val['category']] = val['name'];
-			return temp;
-		});
+		// this.isSubmitReanalysis = true;
+		// let tempChooseList = this[`${type}Select`].map((val) => {
+		// 	let temp = {};
+		// 	temp[val['category']] = val['name'];
+		// 	return temp;
+		// });
+
 		this.ajaxService
 			.getDeferData({
 				data: {
+					LCID: sessionStorage.getItem('LCID'),
 					reanalysisType: `heatmap${type}`,
 					needReanalysis: 1,
-					chooseType: [ this.switchType(type) ],
-					chooseList: tempChooseList,
+					// chooseType: [ this.switchType(type) ],
+					chooseList: this[`${type}Select`],
 					verticalDefault: this.selectGeneType,
-					...this.toolsService.get('tableEntity')
+					...this.toolsService.get('tableEntity'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.toolsService.get('tableEntity')['species'],
+					version: this.storeService.getStore('version'),
 				},
 				url: this.toolsService.get('tableUrl')
 			})
@@ -663,20 +692,31 @@ export class ToolsComponent implements OnInit {
 							this.lineGroupSelect.length = 0;
 							this.lineSampleSelect.length = 0;
 
-							let group = data['data']['expression']['group'].map((v, index) => {
+							let group = data['data']['group'].map((v, index) => {
 								let status = index ? false : true;
-								if (status) this.lineGroupSelect.push({ name: v, checked: status, category: 'group' });
-								return { name: v, checked: status, category: 'group' };
-							});
-							let sample = data['data']['expression']['sample'].map((v, index) => {
-								let status = index ? false : true;
-								if (status)
-									this.lineSampleSelect.push({ name: v, checked: status, category: 'sample' });
-								return { name: v, checked: status, category: 'sample' };
+								v['checked'] = status;
+								if (status) this.lineGroupSelect.push(v);
+								return v;
 							});
 
+							let sample = data['data']['sample'].map((v, index) => {
+								let status = index ? false : true;
+								v['checked'] = status;
+								if (status) this.lineSampleSelect.push(v);
+								return v;
+							});
+
+							let custom = data['data']['userDefData'].map((v,index)=>{
+								v['checked'] = false;
+								return v;
+							})
+
+							this.lineCustomData  = custom;
 							this.lineGroupData = group;
 							this.lineSampleData = sample;
+
+							this.lineGroupError = !this.lineGroupSelect.length;
+							this.lineSampleError = !this.lineSampleSelect.length;
 						} else {
 							this.initLineData();
 						}
@@ -691,6 +731,7 @@ export class ToolsComponent implements OnInit {
 	}
 
 	initLineData() {
+		this.lineCustomData.length = 0;
 		this.lineGroupData.length = 0;
 		this.lineSampleData.length = 0;
 		this.lineGroupSelect.length = 0;
@@ -720,8 +761,8 @@ export class ToolsComponent implements OnInit {
 			if (index != -1) temp.splice(index, 1);
 		}
 
-		this.lineGroupError = !this.lineGroupData.length;
-		this.lineSampleError = !this.lineSampleData.length;
+		this.lineGroupError = !this.lineGroupSelect.length;
+		this.lineSampleError = !this.lineSampleSelect.length;
 	}
 
 	// 提交折线图重分析
@@ -737,11 +778,11 @@ export class ToolsComponent implements OnInit {
 				break;
 		}
 
-		let tempChooseList = tempSelect.map((val) => {
-			let temp = {};
-			temp[val['category']] = val['name'];
-			return temp;
-		});
+		// let tempChooseList = tempSelect.map((val) => {
+		// 	let temp = {};
+		// 	temp[val['category']] = val['name'];
+		// 	return temp;
+		// });
 
         let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 		this.ajaxService
@@ -749,8 +790,8 @@ export class ToolsComponent implements OnInit {
 				data: {
 					reanalysisType: reanalysisType,
 					needReanalysis: 2,
-					chooseType: [ 'expression' ],
-					chooseList: tempChooseList,
+					// chooseType: [ 'expression' ],
+					chooseList: tempSelect,
 					...this.toolsService.get('tableEntity')
 				},
 				url: this.toolsService.get('tableUrl')
