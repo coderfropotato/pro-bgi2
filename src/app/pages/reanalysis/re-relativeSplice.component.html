@@ -12,13 +12,14 @@
         <div class="left-bottom-layout">
                 <app-table-switch-chart
                     #relativeSpliceChart
+                    *ngIf="chartEntity"
                     [id]="'relativeSplice'"
                     [isOnlyChart]="true"
                     [chartUrl]="chartUrl"
                     [apiEntity]="chartEntity"
                     [selectPanelData]="selectPanelData"
                     (selectConfirmEmit)="selectConfirm($event)"
-                    [defaultSelectNum]=6
+                    [defaultSelectNum]="defaultSelectNum"
                     (defaultSelectList)="defaultSelectList($event)"
                     (drawChartEmit)="drawChart($event)"
                     [chartId]="'relativeSpliceDiv'"
@@ -49,7 +50,8 @@
                 <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i>
             </div>
             <!-- 表格转换 -->
-			<app-table-transformation
+            <app-table-transformation
+                *ngIf="defaultEntity"
 				class="no-outside-border"
 				#transformTable
 				[isFirst]="first"
