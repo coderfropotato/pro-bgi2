@@ -624,7 +624,6 @@ export class ReNetComponent implements OnInit {
             .attr("class", "legendNodeColor")
             .attr("transform", `translate(${padding+legendShapeW+padding},0)`);
 
-        console.log(linkRelations)
         drawNodeColorScale();
 
         // link 颜色
