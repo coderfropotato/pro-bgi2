@@ -349,7 +349,7 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "re-relativeSplice/:geneType/:tid/:version",
+                path: "re-as/:geneType/:tid/:version",
                 component: RelativeSpliceComponent,
                 canActivate: [SysDefendService],
                 data: {
