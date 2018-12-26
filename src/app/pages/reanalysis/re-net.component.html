@@ -54,7 +54,7 @@
             </div> -->
             <div class="left-bottom-layout">
                     <ng-template #setTemplate>
-                        <!-- <app-clusterSet *ngIf="defaultSetData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData'></app-clusterSet> -->
+                        <app-netSet (defaultSet)='defaultSet($event)' (confirm)="setConfirm($event)"></app-netSet>
                     </ng-template>
 
                     <ng-template #funcBtnsTemplate>

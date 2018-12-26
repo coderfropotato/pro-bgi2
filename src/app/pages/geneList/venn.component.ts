@@ -1,27 +1,30 @@
-import { AddColumnService } from '../../super/service/addColumnService';
-import { StoreService } from '../../super/service/storeService';
-import { PageModuleService } from '../../super/service/pageModuleService';
-import { MessageService } from '../../super/service/messageService';
+import { AddColumnService } from './../../super/service/addColumnService';
+import { StoreService } from './../../super/service/storeService';
+import { PageModuleService } from './../../super/service/pageModuleService';
+import { MessageService } from './../../super/service/messageService';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import { TranslateService } from "@ngx-translate/core";
-import {PromptService} from '../../super/service/promptService'
+import {PromptService} from './../../super/service/promptService'
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
+declare const $:any;
+
 
 @Component({
-	selector: 'app-gene-list-page',
-    template: `<gene-list-component *ngIf="showModule" [defaultGeneType]="defaultGeneType">
+	selector: 'app-gene-list-venn-page',
+    template: `<app-gene-list-venn *ngIf="showModule" [defaultGeneType]="defaultGeneType">
                     <div class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
                         <span>{{defaultGeneType['type'] | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
-                </gene-list-component>`,
+                </app-gene-list-venn>`,
 	styles: []
 })
-export class GeneListPage {
+
+export class GeneListVennPageComponent {
     showModule:boolean = true;
     defaultGeneType:object = {type:"gene"};
 
@@ -31,33 +34,35 @@ export class GeneListPage {
     }
 
     handlerSwitchChange(){
-        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transform':'gene';
+        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transcript':'gene';
         this.showModule = false;
         setTimeout(()=>{this.showModule = true},30);
     }
 
 }
 
+
 @Component({
-	selector: 'gene-list-component',
-	templateUrl: './geneList.component.html',
+	selector: 'app-gene-list-venn',
+	templateUrl: './venn.component.html',
 	styles: []
 })
-export class GeneListComponent implements OnInit {
+  
+export class GeneListVennComponent implements OnInit {
 	// 表格高度相关
 	@ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
 	@ViewChild('addColumn') addColumn;
-	@ViewChild('tableSwitchChart') tableSwitchChart;
-    @ViewChild('transformTable') transformTable;
+	@ViewChild('transformTable') transformTable;
+	@ViewChild('tableChartContent') tableChartContent;
     @Input('defaultGeneType') defaultGeneType;
 
 	switch: boolean = false;
 	tableUrl: string;
-	chartUrl: string;
+    onlyTable:boolean = false;
+	expandModuleDesc:boolean = false;
 
-	// vennEntity: object;
 	defaultEntity: object;
 	defaultUrl: string;
 	defaultTableId: string;
@@ -76,12 +81,14 @@ export class GeneListComponent implements OnInit {
 
 	venSelectAllData: string[] = [];
 	selectConfirmData: string[] = [];
+
 	panelShow: boolean = false;
+
 	tableEntity: object = {};
 	selectPanelData: object[] = [];
 	venn_or_upsetR: boolean;
 
-	singleMultiSelect: object = {
+ 	singleMultiSelect: object = {
 		bar_name: '',
 		total_name: '',
 		venn_name: ''
@@ -91,7 +98,10 @@ export class GeneListComponent implements OnInit {
 	doubleMultiSelect: object = {
 		bar_name: [],
 		total_name: []
-    };
+	};
+	pageEntity: object = {
+		pageSize: 20
+	};
 
 	chart: any;
 	isMultiSelect: boolean;
@@ -108,8 +118,19 @@ export class GeneListComponent implements OnInit {
     upSelect: any[] = [];
 
     addColumnShow:boolean = false;
-    showBackButton:boolean = false;
-    selectedGeneList:any[] = [];
+	showBackButton:boolean = false;
+	
+	// 基因集数据
+	geneListMap:object = {};
+
+	flex:boolean = true;
+	chartLoading:boolean = false;
+	chartError:string = '';
+	scroll: object = { y: '400px' };
+	tableData: any;
+	chartData:any;
+	isShowTable:boolean = true;
+	isShowSelectPanel:boolean = false;
 
 	constructor(
 		private message: MessageService,
@@ -118,13 +139,16 @@ export class GeneListComponent implements OnInit {
 		private storeService: StoreService,
 		public pageModuleService: PageModuleService,
 		private translate: TranslateService,
-		private promptService:PromptService,
-        // private addColumnService:AddColumnService,
+        private promptService:PromptService,
+        private addColumnService:AddColumnService,
 		private router: Router
 	) {
 		// 订阅windowResize 重新计算表格滚动高度
 		this.message.getResize().subscribe((res) => {
-			if (res['message'] === 'resize') this.computedTableHeight();
+			if (res['message'] === 'resize') {
+				this.computedTableHeight();
+				this.scrollHeight();
+			}
 		});
 
 		// 每次切换路由计算表格高度
@@ -139,36 +163,52 @@ export class GeneListComponent implements OnInit {
 		this.isMultiSelect = false;
 		this.first = true;
 		this.selectedData = [];
-		this.chartUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
-
-		this.selectPanelData = [
-			//差异面板的数据
-			{
-				type: '基因集',
-				data: this.storeService.getStore('diff_plan')
+		
+		this.geneListMap = {
+			"All":[
+				{
+					"setName":"genelist1",
+					"setAnnot":""
+				}
+			],
+			"tag1":[
+				{
+					"setName":"genelist2",
+					"setAnnot":"2"
+				}
+			]
+		}
+		
+		for(let key in this.geneListMap){
+			if(key.toLocaleLowerCase() === 'all'){
+				this.selectPanelData = [
+					{
+						type: 'geneList',
+						data: this.geneListMap[key]
+					}
+				]
+				break;
 			}
-        ];
+		}
 
-        // 选中的基因集
-        this.selectedGeneList = [this.storeService.getStore('diff_plan')];
-
+		// 图标切换查询参数
+		this.tableUrl = `${config['javaPath']}/geneSet/graph`;
 		this.tableEntity = {
-			//查询参数
 			LCID: this.storeService.getStore('LCID'),
-			compareGroup: this.storeService.getStore('diff_plan'),
+			setNameList:["唯一", ""],
 			geneType: this.defaultGeneType['type'],
-			species: this.storeService.getStore('genome'),
 		};
 
 		this.applyOnceSearchParams = true;
-		this.defaultUrl = `${config['javaPath']}/Venn/diffGeneTable`;
+		this.defaultUrl = `${config['javaPath']}/geneSet/table`;
 		this.defaultEntity = {
 			pageIndex: 1, //分页
 			pageSize: 20,
 			LCID: sessionStorage.getItem('LCID'),
 			leftChooseList: this.leftSelect, //upsetR参数
 			upChooseList: this.upSelect, //胜利n图选中部分参数
-            compareGroup: this.storeService.getStore('diff_plan'), //比较组
+			setNameList: ["ax","rt"],  // compareGroup
+			saveGeneSet:false,
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -181,14 +221,15 @@ export class GeneListComponent implements OnInit {
 			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			version: this.storeService.getStore('version'),
-			searchList: []
+            searchList: [],
+            sortThead:this.addColumn['sortThead']
 		};
-		this.defaultTableId = 'default_gene_list';
+		this.defaultTableId = 'diff_venn_default_gene';
 		this.defaultDefaultChecked = true;
 		this.defaultEmitBaseThead = true;
 		this.defaultCheckStatusInParams = true;
 
-		this.extendUrl = `${config['javaPath']}/Venn/diffGeneTable`;
+		this.extendUrl = `${config['javaPath']}/geneSet/table`;
 		this.extendEntity = {
 			pageIndex: 1, //分页
 			pageSize: 20,
@@ -196,7 +237,8 @@ export class GeneListComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'), //流程id
 			leftChooseList: [], //upsetR参数
 			upChooseList: [], //胜利n图选中部分参数
-			compareGroup: this.storeService.getStore('diff_plan'), //比较组
+			setNameList: ["ax","rt"],  // compareGroup
+			saveGeneSet:false,
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -208,23 +250,71 @@ export class GeneListComponent implements OnInit {
 			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			version: this.storeService.getStore('version'),
-			searchList: []
+            searchList: [],
+            sortThead:this.addColumn['sortThead']
 		};
-		this.extendTableId = 'extend_gene_list';
+		this.extendTableId = 'diff_venn_extend_gene';
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
+
+		// 获取图标切换的数据
+		this.getChartData();
+	}
+
+	ngAfterViewInit() {
+        setTimeout(() => {
+			this.scrollHeight();
+			this.computedTableHeight();
+        }, 30);
     }
+
+	getChartData(){
+		this.chartLoading = true;
+        this.ajaxService.getDeferData({
+			url:this.tableUrl,
+			data:this.tableEntity
+		})
+            .subscribe(
+                (data: any) => {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                        this.chartError = "nodata";
+                    } else if (data.status === "-1") {
+                        this.chartError = "error";
+                    } else if (data.status === "-2") {
+                        this.chartError = "dataOver";
+                    } else {
+                        this.chartError = "";
+                        this.tableData = data.data;
+						this.chartData = data.data;
+						this.drawVenn(data.data);
+                    }
+                },
+                error => {
+                    this.chartError = error;
+				},
+				()=>{ this.chartLoading = false; }
+            )
+	}
+
+	moduleDescChange(){
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(()=>{this.scrollHeight()},30)
+	}
+	
+	scrollHeight(){
+		try {
+            let tableChartContentH = this.tableChartContent.nativeElement.offsetHeight;
+            let scrollH = (tableChartContentH - 38) + 'px';
+            this.scroll['y'] = scrollH;
+        } catch (error) {
+        }
+	}
 
     toggle(status){
         this.addColumnShow = status;
     }
-
-	ngAfterViewInit() {
-		setTimeout(() => {
-			this.computedTableHeight();
-		}, 30);
-	}
 
 	handlerColorChange(color) {
 		this.venn.setColor(color);
@@ -235,24 +325,30 @@ export class GeneListComponent implements OnInit {
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
         this.showBackButton = false;
+        // 初始化表的选中状态
+		this.transformTable._initCheckStatus();
+		// 清空表的筛选
+		this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
-            // 比较组  引用无需考=>虑图选中/阈值
-            // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
             this.defaultEntity['compareGroup'] = this.selectConfirmData;
             this.defaultEntity['searchList'] = [];
-            this.defaultEntity['rootSearchContentList'] = [];
-            setTimeout(()=>{
-                this.first = true;
-            },30)
+            this.defaultEntity['pageIndex'] = 1;
+			this.defaultEntity['rootSearchContentList'] = [];
+            setTimeout(()=>{this.first = true;},30)
         }else{
             this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+            this.transformTable._setParamsNoRequest('pageIndex',1);
             this.transformTable._getData();
         }
     }
 
 	// {add:[],remove:[{}]}
 	addThead(thead) {
-		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._initCheckStatus();
+
+        this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._setParamsNoRequest('pageIndex', 1);
+
 		this.transformTable._addThead(thead['add']);
 	}
 
@@ -275,6 +371,7 @@ export class GeneListComponent implements OnInit {
 			this.extendEntity['compareGroup'] = this.selectConfirmData;
 			this.extendEntity['leftChooseList'] = checkParams['tableEntity']['leftChooseList'];
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
+            this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
             this.extendEntity['relations'] = relations;
             this.extendEntity['addThead'] = [];
 			this.first = false;
@@ -319,26 +416,41 @@ export class GeneListComponent implements OnInit {
 		let d_length=data['total'].length;
 		if (d_length > 5) {
 			this.venn_or_upsetR = true;
-			this.tableSwitchChart.isShowTable=false;
+			this.isShowTable=false;
 			this.showUpSetR(data);
 		} else if(d_length<=5&&d_length>=2){
 			this.venn_or_upsetR = false;
-			this.tableSwitchChart.isShowTable=false;
+			this.isShowTable=false;
 			this.showVenn(data);
 		}else{
 			this.venn_or_upsetR = false;
-			this.tableSwitchChart.isShowTable=true;
+			this.isShowTable=true;
 			// this.showVenn(data);
 		}
 	}
 
+    // 切换左右布局 计算左右表格的滚动高度
 	switchChange(status) {
-		this.switch = status;
+        this.switch = status;
+        setTimeout(()=>{
+            this.scrollHeight();
+            this.computedTableHeight();
+        },320)
+    }
+
+	// 展开表icon 点击事件
+    handleOnlyTable(){
+        this.onlyTable = !this.onlyTable;
+	}
+
+	// 从布局切换发出的事件
+	handlOnlyTableChange(status){
+		this.onlyTable = status;
 	}
 
 	computedTableHeight() {
 		try {
-            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
 		} catch (error) {}
 	}
 
@@ -350,10 +462,14 @@ export class GeneListComponent implements OnInit {
         this.updateVenn();
 	}
 
+	reGetData(){
+		this.getChartData();
+	}
+
 	//韦恩,upsetR图二次更新
 	updateVenn() {
         this.tableEntity['compareGroup'] = this.selectConfirmData;
-		this.tableSwitchChart.reGetData();
+		this.reGetData();
 
 		this.singleMultiSelect={
 			bar_name: '',
@@ -428,7 +544,7 @@ export class GeneListComponent implements OnInit {
 
 	//显示venn图
 	showVenn(data) {
-		let _selfV = this;
+		let that = this;
 		let tempA = data.rows.map((o) => {
 			return { CompareGroup: o.name, Count: o.value };
 		});
@@ -441,11 +557,11 @@ export class GeneListComponent implements OnInit {
 			tempR.push(tempO);
 		}
 
-		this.venn = new Venn({ id: 'genelist_venn' })
+		this.venn = new Venn({ id: 'diffVennId' })
 			.config({
 				data: tempR,
-				compareGroup: _selfV.tableEntity['compareGroup'],
-				isMultipleSelect: _selfV.isMultiSelect
+				compareGroup: that.tableEntity['compareGroup'],
+				isMultipleSelect: that.isMultiSelect
 			})
 			.drawVenn()
 			.hover(
@@ -457,41 +573,40 @@ export class GeneListComponent implements OnInit {
 				}
 			)
 			.on('click', function() {
-				if (!_selfV.isMultiSelect) {
-					_selfV.singleMultiSelect['bar_name'] = '';
-					_selfV.singleMultiSelect['total_name'] = '';
-					_selfV.singleMultiSelect['venn_name'] = this.$select.$data.result.CompareGroup;
-					_selfV.doSingleData();
+				if (!that.isMultiSelect) {
+					that.singleMultiSelect['bar_name'] = '';
+					that.singleMultiSelect['total_name'] = '';
+					that.singleMultiSelect['venn_name'] = this.$select.$data.result.CompareGroup;
+					that.doSingleData();
 				} else {
 					let tempVenn = [];
 					this.selectCollection.forEach((element) => {
 						tempVenn.push(element.result.CompareGroup);
 					});
-					_selfV.venSelectAllData = tempVenn;
+					that.venSelectAllData = tempVenn;
 				}
             })
             .legendClick(function(ev,el){
-                _selfV.color = el['$el'].getAttribute('fill');
-                _selfV.show = true;
+                that.color = el['$el'].getAttribute('fill');
+                that.show = true;
                 ev.stopPropagation();
             })
             .svgClick(function(){
-                if(_selfV.isMultiSelect){
-                    _selfV.venSelectAllData = [];
+                if(that.isMultiSelect){
+                    that.venSelectAllData = [];
                 }else{
-                    _selfV.singleMultiSelect['bar_name'] = '';
-					_selfV.singleMultiSelect['total_name'] = '';
-					_selfV.singleMultiSelect['venn_name'] = '';
+                    that.singleMultiSelect['bar_name'] = '';
+					that.singleMultiSelect['total_name'] = '';
+					that.singleMultiSelect['venn_name'] = '';
                 }
-                _selfV.upSelect.length = 0;
-                // _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
-                _selfV.chartBackStatus();
+                that.upSelect.length = 0;
+                that.chartBackStatus();
             })
 	}
 
 	//显示upsetR图
 	showUpSetR(data) {
-		document.getElementById('genelist_upsetR').innerHTML = '';
+		document.getElementById('diffVennId').innerHTML = '';
 		let _self = this;
 		let selectBar = [];
 		let tempBar = data.rows;
@@ -502,7 +617,7 @@ export class GeneListComponent implements OnInit {
 			}
 		}
 
-		let t_chartID = document.getElementById('genelist_upsetR');
+		let t_chartID = document.getElementById('diffVennId');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
          <style>
              .MyRect {
@@ -593,7 +708,7 @@ export class GeneListComponent implements OnInit {
 			}
 		}
 
-		let oSvg = d3.select('#genelist_upsetR').append('svg');
+		let oSvg = d3.select('#diffVennId').append('svg');
 		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
 		let left_name_length = mText.nodes()[0].getBBox().width;
 		//let left_name_length = document.querySelector(".mText").getBBox().width;
@@ -672,22 +787,30 @@ export class GeneListComponent implements OnInit {
 			let xAxis1 = d3.axisBottom(xScale1);
 			let yAxis1 = d3.axisLeft(yScale1).ticks(5);
 
+			let tempSelectColor = "";
+
 			let rects1 = svg1
 				.selectAll('MyRect1')
 				.data(bar_value)
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
+					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
+					d3.select(this).select('.MyRect').attr('fill',"#3D4871");
 					let tipText = `name: ${bar_name[i]}<br> value:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
-				.on('mouseout', () => {
+				.on('mouseout', function(d, i) {
+					if(d3.select(this).select('.MyRect').attr('fill') == '#3D4871'){
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+					}
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
                     var event = d3.event;
                     event.stopPropagation();
 					if (!_self.isMultiSelect) {
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -703,6 +826,7 @@ export class GeneListComponent implements OnInit {
 						}
 						console.log(_self.singleMultiSelect)
 					} else { //多选
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -803,22 +927,31 @@ export class GeneListComponent implements OnInit {
 			let xAxis2 = d3.axisBottom(xScale2).ticks(4);
 			let yAxis2 = d3.axisRight(yScale2);
 
+			let tempSelectColor = "";
+
 			let rects2 = svg2
 				.selectAll('MyRect2')
 				.data(total_value)
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
+					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
+					//console.log(tempSelectColor);
+					d3.select(this).select('.MyRect').attr('fill',"#3D4871");
 					let tipText = `name: ${total_name[i]}<br> value:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
-				.on('mouseout', () => {
+				.on('mouseout', function(d, i){
+					if(d3.select(this).select('.MyRect').attr('fill') == '#3D4871'){
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+					}
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
                     var event = d3.event;
                     event.stopPropagation();
 					if (!_self.isMultiSelect) {
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -834,6 +967,7 @@ export class GeneListComponent implements OnInit {
 						}
 						console.log(_self.singleMultiSelect)
 					} else { //多选
+						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -898,6 +1032,7 @@ export class GeneListComponent implements OnInit {
 
 			let yAxisk = d3.axisLeft(yScalek);
 
+			let tempSelectColor = "";
 			let textsk = svgk
 				.selectAll('text')
 				.data(total_name)
@@ -913,6 +1048,17 @@ export class GeneListComponent implements OnInit {
 				})
 				.text(function(d, i) {
 					return d;
+				})
+				.on('mouseover', function(d, i) {
+					if(d3.select(this).style('fill') !="red"){
+						tempSelectColor = d3.select(this).style('fill');
+						d3.select(this).style('fill',"#475FB1");
+					}
+				})
+				.on('mouseout', function(d, i){
+					if(d3.select(this).style('fill') !="red"){
+						d3.select(this).style('fill',tempSelectColor);
+					}
 				})
 				.on('click', function(d, i) {
                     var event = d3.event;
@@ -1034,28 +1180,28 @@ export class GeneListComponent implements OnInit {
 						.attr('fill', i % 2 == 0 ? '#EEE' : 'none');
 				}
 
-				let tempList = sortArr(arr, 'x_axis');
-				for (let i = 0; i < tempList.length; i++) {
-					svg_t
-						.append('rect')
-						.attr('class', 'MyRect3')
-						.attr('x', tempList[i][0]['x_axis'] - d3_rectWidth / 2)
-						.attr('y', function(d, i) {
-							return 0;
-						})
-						.attr('width', d3_rectWidth)
-						.attr('height', function(d, i) {
-							return d3_height;
-						})
-						.attr('opacity', 0)
-						.attr('fill', '#87CEFA')
-						.on('mouseover', function(d, i) {
-							d3.select(this).attr('opacity', 0.5);
-						})
-						.on('mouseout', function(d) {
-							d3.select(this).attr('opacity', 0);
-						});
-				}
+				// let tempList = sortArr(arr, 'x_axis');
+				// for (let i = 0; i < tempList.length; i++) {
+				// 	svg_t
+				// 		.append('rect')
+				// 		.attr('class', 'MyRect3')
+				// 		.attr('x', tempList[i][0]['x_axis'] - d3_rectWidth / 2)
+				// 		.attr('y', function(d, i) {
+				// 			return 0;
+				// 		})
+				// 		.attr('width', d3_rectWidth)
+				// 		.attr('height', function(d, i) {
+				// 			return d3_height;
+				// 		})
+				// 		.attr('opacity', 0)
+				// 		.attr('fill', '#87CEFA')
+				// 		.on('mouseover', function(d, i) {
+				// 			d3.select(this).attr('opacity', 0.5);
+				// 		})
+				// 		.on('mouseout', function(d) {
+				// 			d3.select(this).attr('opacity', 0);
+				// 		});
+				// }
 			}
 		}
 
@@ -1232,7 +1378,7 @@ export class GeneListComponent implements OnInit {
 					return d['y_axis'];
 				})
 				.attr('r', function(d, i) {
-					return d['r'];
+					return d['r']+0.15;
 				})
 				.style('fill', function(d) {
 					return d.color;
@@ -1248,3 +1394,4 @@ export class GeneListComponent implements OnInit {
 		}
 	}
 }
+

@@ -44,6 +44,7 @@ export class PaginationComponent implements OnInit, OnChanges {
 
     @ViewChild("pageIndexInput")
     pageIndexInput;
+    @Input() showPageSize:boolean = true;
 
     pageCount: number = 0;
     defaultPageIndexSize: number = 1;
@@ -177,7 +178,7 @@ export class PaginationComponent implements OnInit, OnChanges {
             }
 
             if(this.pageIndex === this.pageCount) {
-                this.isLeft = true;
+                this.isLeft = false;
                 this.isRight = true;
             }
 

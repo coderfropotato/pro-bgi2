@@ -448,7 +448,6 @@ export class multiOmicsComponent implements OnInit {
                 this.color = colorScale(d.type);
                 this.isShowColorPanel = true;
                 this.legendIndex = i;
-                console.log(this.isShowColorPanel);
             })
 
         // legend text

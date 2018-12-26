@@ -7,7 +7,6 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import config from '../../../config';
 import {PromptService} from './../../super/service/promptService';
-import { expand } from 'rxjs/operators';
 
 declare const d3: any;
 declare const $: any;
@@ -45,11 +44,6 @@ export class ReNetComponent implements OnInit {
     selectLinkList:string[]=[]; // 选择的线ID
     selectedNodes:object[]=[]; //选中的节点
     selectedLinks:object[]=[];  //选择的线
-
-    // 设置
-    force:number=600; //斥力
-    radian:number=10; //弧度
-    symbolType:string='all'; // gene symbol 显示: hidden all selected
 
     //serach
     allNodes:any[]=[];
@@ -139,62 +133,68 @@ export class ReNetComponent implements OnInit {
         this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
             "id": this.tid,
-            "quantity":{}
         };
 
         // table
-        // this.first = true;
-        // this.applyOnceSearchParams = true;
-        // this.defaultUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
-        // this.defaultEntity = {
-        //     LCID: sessionStorage.getItem('LCID'),
-        //     tid:this.tid,
-        //     pageIndex: 1, //分页
-        //     pageSize: 20,
-        //     mongoId: null,
-        //     addThead: [], //扩展列
-        //     transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-        //     matchAll: false,
-        //     matrix: false, //是否转化。矩阵为matrix
-        //     relations: [], //关系组（简写，索引最后一个字段）
-        //     sortValue: null,
-        //     sortKey: null, //排序
-        //     reAnaly: false,
-        //     geneType: this.geneType, //基因类型gene和transcript
-        //     species: this.storeService.getStore('genome'), //物种
-        //     version: this.version,
-        //     searchList: []
-        // };
-        // this.defaultTableId = 'default_re_net';
-        // this.defaultDefaultChecked = true;
-        // this.defaultEmitBaseThead = true;
-        // this.defaultCheckStatusInParams = true;
+        this.first = true;
+        this.applyOnceSearchParams = true;
+        this.defaultUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.defaultEntity = {
+            LCID: sessionStorage.getItem('LCID'),
+            tid:this.tid,
+            pageIndex: 1, //分页
+            pageSize: 20,
+            mongoId: null,
+            addThead: [], //扩展列
+            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+            matchAll: false,
+            matrix: false, //是否转化。矩阵为matrix
+            relations: [], //关系组（简写，索引最后一个字段）
+            sortValue: null,
+            sortKey: null, //排序
+            reAnaly: false,
+            geneType: this.geneType, //基因类型gene和transcript
+            species: this.storeService.getStore('genome'), //物种
+            version: this.version,
+            searchList: []
+        };
+        this.defaultTableId = 'default_re_net';
+        this.defaultDefaultChecked = true;
+        this.defaultEmitBaseThead = true;
+        this.defaultCheckStatusInParams = true;
 
-        // this.extendUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
-        // this.extendEntity = {
-        //     LCID: sessionStorage.getItem('LCID'),
-        //     tid:this.tid,
-        //     pageIndex: 1, //分页
-        //     pageSize: 20,
-        //     mongoId: null,
-        //     addThead: [], //扩展列
-        //     transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-        //     matchAll: false,
-        //     matrix: false, //是否转化。矩阵为matrix
-        //     relations: [], //关系组（简写，索引最后一个字段）
-        //     sortValue: null,
-        //     sortKey: null, //排序
-        //     reAnaly: false,
-        //     geneType: this.geneType, //基因类型gene和transcript
-        //     species: this.storeService.getStore('genome'), //物种
-        //     version: this.version,
-        //     searchList: []
-        // };
-        // this.extendTableId = 'extend_re_net';
-        // this.extendDefaultChecked = true;
-        // this.extendEmitBaseThead = true;
-        // this.extendCheckStatusInParams = false;
+        this.extendUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.extendEntity = {
+            LCID: sessionStorage.getItem('LCID'),
+            tid:this.tid,
+            pageIndex: 1, //分页
+            pageSize: 20,
+            mongoId: null,
+            addThead: [], //扩展列
+            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+            matchAll: false,
+            matrix: false, //是否转化。矩阵为matrix
+            relations: [], //关系组（简写，索引最后一个字段）
+            sortValue: null,
+            sortKey: null, //排序
+            reAnaly: false,
+            geneType: this.geneType, //基因类型gene和transcript
+            species: this.storeService.getStore('genome'), //物种
+            version: this.version,
+            searchList: []
+        };
+        this.extendTableId = 'extend_re_net';
+        this.extendDefaultChecked = true;
+        this.extendEmitBaseThead = true;
+        this.extendCheckStatusInParams = false;
 
+    }
+
+    defaultSet(data){
+        this.chartEntity["force"]=data['force'];
+        this.chartEntity["radian"]=data['radian']; 
+        this.chartEntity["symbolType"]=data['symbolType'];
+        this.chartEntity["quantity"]=data['value'];
     }
 
     ngAfterViewInit() {
@@ -336,11 +336,18 @@ export class ReNetComponent implements OnInit {
 
     //画图
     drawChart(data){
-        d3.select("#netChartDiv svg").remove();
+        d3.selectAll("#netChartDiv svg").remove();
         let that  = this;
 
+        let isLinkNum;
+        if($.isEmptyObject(this.chartEntity['quantity'])){
+           isLinkNum=true; 
+        }else{
+            isLinkNum=false;
+        }
+
         //link弧度基础偏移量
-        let offsetBasic = this.radian;
+        let offsetBasic = this.chartEntity['radian'];
 
         //关联关系
         let relations = this.storeService.getStore('relations');
@@ -351,7 +358,7 @@ export class ReNetComponent implements OnInit {
         })
         
         let netRelations=[];
-        let linkRelations=[];
+        let linkRelations=[]; // 用于 link color 比例尺
 
         //数据
         let nodes=data.nodes,links=data.links;
@@ -409,11 +416,15 @@ export class ReNetComponent implements OnInit {
         this.curScore=this.scoreMax/2;
 
         //容器宽高
-        let legendHeight=70;
+        let legendWidth=1000, legendHeight=100;
         let width=800,height=600; //图主体
         let padding=20;
+
+        let eachNodeLegendW=60,eachLegendH=20; //图例
+        let eachLinkLegendW=40;
         
         let colors=this.colors;
+        let colorsLen=colors.length;
 
         //node比例尺
         let typeArr=["mrna", "miRNA", "lncRNA", "other"];
@@ -426,7 +437,7 @@ export class ReNetComponent implements OnInit {
 
         let symbolArr=[d3.symbolCircle,d3.symbolWye,d3.symbolDiamond,d3.symbolTriangle];
 
-        //形状
+        //形状（用于画node）
         let symbolScale= d3.scaleOrdinal()
             .domain(typeArr)
             .range(symbolArr);
@@ -441,14 +452,13 @@ export class ReNetComponent implements OnInit {
             .range(colors)
             .domain([min,max]).clamp(true).nice();
 
-        // 图例比例尺
-        //node 形状
+        //形状 （用于画图例）
         let shapeLegendScale =  d3.scaleOrdinal()
             .domain(typeArr)
             .range(shapeArr);
 
         //图例svg
-        let legendSvg=d3.select("#netChartDiv").append('svg').attr("width", width).attr("height", legendHeight);
+        let legendSvg=d3.select("#netChartDiv").append('svg').attr("width", legendWidth).attr("height", legendHeight);
 
         //svg  点击空白处，所有的node和link清除选中
         let svg = d3.select("#netChartDiv").append('svg').attr("width", width).attr("height", height)
@@ -482,7 +492,7 @@ export class ReNetComponent implements OnInit {
         //力图
         let simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d=> d.geneID).iterations(4))
-            .force('charge', d3.forceManyBody().strength(-this.force))
+            .force('charge', d3.forceManyBody().strength(-this.chartEntity['force']))
             // .force("collide", d3.forceCollide().radius(d => sizeScale(d.value)))  // 添加碰撞检测，使节点不重叠
             .force('center', d3.forceCenter(width/2, height/2))
             .force("x", d3.forceX())
@@ -585,15 +595,16 @@ export class ReNetComponent implements OnInit {
             .links(links);
             
         //node text
-        if(that.symbolType !=='hidden'){
+        if(that.chartEntity['symbolType'] !=='hidden'){
             drawText();
         }
 
         //图例
+        let legendTitleSpace=10;
         //node 形状
         legendSvg.append("g")
             .attr("class", "legendShape")
-            .attr("transform", `translate(${padding}, 10)`);
+            .attr("transform", `translate(${padding*2}, 10)`);
 
         let legendShape = d3.legendSymbol()
             .scale(shapeLegendScale)
@@ -601,11 +612,30 @@ export class ReNetComponent implements OnInit {
             .labelWrap(30)
             .shapePadding(40);
 
-        legendSvg.select(".legendShape")
-        .call(legendShape);
+        let legendShape_g= legendSvg.select(".legendShape")
+            .call(legendShape);
+
+        legendShape_g.selectAll('path.swatch').attr('fill','#ff8b8b');
+
+        let legendShapeW=d3.select(".legendShape").node().getBBox().width;
+        
+        //node 颜色
+        let legendNodeColor_g = legendSvg.append("g")
+            .attr("class", "legendNodeColor")
+            .attr("transform", `translate(${padding+legendShapeW+padding},0)`);
+
+        drawNodeColorScale();
+
+        // link 颜色
+        let legendNodeColorH=d3.select(".legendNodeColor").node().getBBox().height;
+        let legnedLinkColor_g=legendSvg.append("g")
+            .attr('class','legendLinkColor')
+            .attr('transform',`translate(${padding},${legendNodeColorH+padding})`);
+
+        drawLinkColorScale();
         
         // svg 点击清空选择
-        d3.select("#netChartDiv svg").on('click',function(){
+        d3.selectAll("#netChartDiv svg").on('click',function(){
             d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
             d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
             that.selectedNodes.length=0;
@@ -615,6 +645,122 @@ export class ReNetComponent implements OnInit {
             that.curSearchNode=null;
         })
 
+        // node color scale
+        function drawNodeColorScale(){
+            let nodeColorLegendW= colorsLen * eachNodeLegendW;
+            //线性填充
+            let linearGradient = legendNodeColor_g.append("defs")
+                .append("linearGradient")
+                .attr("id", "nodeColorLinear")
+                .attr("x1", "0%")
+                .attr("y1", "0%")
+                .attr("x2", "100%")
+                .attr("y2", "0%");
+
+            for (let i = 0; i < colorsLen; i++) {
+                linearGradient.append("stop")
+                    .attr("offset", i * (100 / (colorsLen - 1)) + "%")
+                    .style("stop-color", colors[i]);
+            }
+
+            //画图例矩形
+            legendNodeColor_g.append("rect").attr("width", nodeColorLegendW).attr("height", eachLegendH)
+                .attr("fill", "url(#" + linearGradient.attr("id") + ")");
+
+            //画图例的轴
+            let nodeColorLegendScale = d3.scaleLinear()
+                .range([0, nodeColorLegendW])
+                .domain([min, max]).clamp(true).nice();
+
+            let nodeColorAxis = d3.axisBottom(nodeColorLegendScale).ticks(5); //设置Y轴
+            legendNodeColor_g.append("g").attr("class", "nodeColorlegendAxis")
+                .attr("transform", `translate(0,${eachLegendH})`)
+                .call(nodeColorAxis);
+
+            //图例 title
+            legendNodeColor_g.append('text')
+            .style('text-anchor','start')
+            .style('dominant-baseline','middle')
+            .attr('x',nodeColorLegendW+legendTitleSpace)
+            .attr('y',eachLegendH/2)
+            .text(isLinkNum ? 'node连接数' : that.chartEntity['quantity']['name']);
+
+            //图例交互 修改颜色
+          let legendClick_g =  legendNodeColor_g.append('g')
+                .style("cursor", "pointer")
+                .on("mouseover", function () {
+                    d3.select(this).append("title").text("单击修改颜色");
+                })
+                .on("mouseout", function () {
+                    d3.select(this).select("title").remove();
+                });
+
+            legendClick_g.selectAll(".legnedClickRect")
+                .data(colors).enter()
+                .append('rect')
+                .attr('fill',"transparent")
+                .attr('transform',(d,i)=>`translate(${i*eachNodeLegendW},0)`)
+                .attr("width", eachNodeLegendW).attr("height", eachLegendH)
+                .on("click",(d,i)=>{
+                    clearEventBubble(d3.event);
+                    that.color=d;
+                    that.legendIndex = i;
+                    that.isShowColorPanel = true;
+                });
+        }
+
+        // link color scale
+        function drawLinkColorScale(){
+            let sumLinkLegendW=0;
+            linkRelations.forEach((d,i)=>{
+                let legendW= d.colors.length * eachLinkLegendW;
+                let curLinkLegendW = legendW + legendTitleSpace + d.type.length * 7;
+                sumLinkLegendW +=curLinkLegendW;
+                let preLinkLegendW=sumLinkLegendW-curLinkLegendW;
+
+                let linkColor_g= legnedLinkColor_g.append('g').attr('class','linkColor')
+                    .attr('transform',`translate(${preLinkLegendW+i*padding},0)`);
+
+                //线性填充
+                let linearGradient = linkColor_g.append("defs")
+                    .append("linearGradient")
+                    .attr("id", "colorLinear"+i)
+                    .attr("x1", "0%")
+                    .attr("y1", "0%")
+                    .attr("x2", "100%")
+                    .attr("y2", "0%");
+
+                for (let j = 0; j < d.colors.length; j++) {
+                    linearGradient.append("stop")
+                        .attr("offset", j * (100 / (d.colors.length - 1)) + "%")
+                        .style("stop-color", d.colors[j]);
+                }
+
+                //画图例矩形
+                linkColor_g.append("rect").attr("width", legendW).attr("height", eachLegendH)
+                    .attr("fill", "url(#" + linearGradient.attr("id") + ")");
+
+                //画图例的轴
+                let linkColorLegendScale = d3.scaleLinear()
+                    .range([0, legendW])
+                    .domain([d.scores[0], d.scores[1]]).clamp(true).nice();
+
+                let linkColorAxis = d3.axisBottom(linkColorLegendScale).ticks(2); //设置Y轴
+                linkColor_g.append("g").attr("class", "linkColorlegendAxis")
+                    .attr("transform", `translate(0,${eachLegendH})`)
+                    .call(linkColorAxis);
+
+                //图例 title
+                linkColor_g.append('text')
+                .style('text-anchor','start')
+                .style('dominant-baseline','middle')
+                .attr('x',legendW+legendTitleSpace)
+                .attr('y',eachLegendH/2)
+                .text(d.type)
+            })
+        }
+
+        // node name text
         function drawText(){
             let node_text= g_node.append("text")
                 .attr("dx", 12)
@@ -622,7 +768,7 @@ export class ReNetComponent implements OnInit {
                 .attr("stroke", "black")
                 .attr("stroke-width", 0.5)
 
-            if(that.symbolType==='all'){
+            if(that.chartEntity['symbolType']==='all'){
                node_text
                 .text(function (d) {
                     return d.symbol;
@@ -838,8 +984,20 @@ export class ReNetComponent implements OnInit {
         this.isShowAddModal=false;
     }
 
+    //legend color change
     colorChange(color){
-        console.log(color)
+        this.color = color;
+        this.colors.splice(this.legendIndex, 1, color);
+        this.netChart.redraw();
+    }
+
+    // 设置 确定
+    setConfirm(data){
+        this.chartEntity["force"]=data['force'];
+        this.chartEntity["radian"]=data['radian'];
+        this.chartEntity["symbolType"]=data['symbolType'];
+        this.chartEntity['quantity']=data.value;
+        this.netChart.reGetData();
     }
 
 }

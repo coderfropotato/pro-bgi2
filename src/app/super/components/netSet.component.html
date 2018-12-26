@@ -1,0 +1,72 @@
+<nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="isShowSetPanel" (nzVisibleChange)="setClick()">
+    <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
+
+    <div class="setPanel" nz-menu>
+        <div class='netSet'>
+               <nz-row>
+                   <nz-col nzSpan='8' class="textCol">
+                       <span>斥力</span>
+                   </nz-col>
+                    <nz-col nzSpan="12">
+                        <nz-input-number [nzMin]="0" [nzMax]="2000" [(ngModel)]="force"></nz-input-number>
+                    </nz-col>
+                </nz-row>
+      
+                <nz-row>
+                    <nz-col nzSpan="8" class="textCol">
+                        <span>弧度</span>
+                    </nz-col>
+                    <nz-col nzSpan="12">
+                        <nz-input-number [nzMin]="0" [nzMax]="2000" [(ngModel)]="radian"></nz-input-number>
+                    </nz-col>
+                </nz-row>
+
+                <nz-row>
+                    <nz-col nzSpan="8"  class="textCol">gene Symbol</nz-col>
+                    <nz-col nzSpan="12">
+                        <nz-select [(ngModel)]="symbolType">
+                            <nz-option *ngFor="let gene of symbolTypeList" [nzLabel]="gene.name" [nzValue]="gene.key"></nz-option>
+                        </nz-select>
+                    </nz-col>
+                </nz-row>
+
+                <nz-row>
+                    <nz-col nzSpan="8">特征值</nz-col>
+                    <nz-col nzSpan="10" *ngIf="isDefaultValue">
+                        <span>{{defaultValue.name}}</span>
+                    </nz-col>
+                    <nz-col nzSpan="10" class="textEllipsis"  nz-tooltip [nzTitle]="rationInfo.name" *ngIf="!isDefaultValue">
+                        <span>{{rationInfo.name}}</span>
+                    </nz-col>
+                    <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="选择定量信息" (click)="addRation()">
+                        <i nz-icon class="anticon anticon-edit" theme="outline"></i>
+                    </nz-col>
+                    <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="重置" (click)="reSet()">
+                        <i nz-icon class="iconfont icon-shuaxin" theme="outline"></i>
+                    </nz-col>
+                </nz-row>
+
+        </div>
+
+        <div class="setBtns right">
+            <button nz-button nzType="default" (click)="setCancel()">取消</button>&nbsp;
+            <button nz-button nzType="primary" (click)="setConfirm()">确定</button>
+        </div>
+     </div>
+
+</nz-dropdown>
+
+<!-- 选择定量信息 弹窗 -->
+<nz-modal [(nzVisible)]="isShowAddPanel && rationClassifyList.length" nzWidth="440" nzTitle="选择定量信息" (nzOnCancel)="addCancel()" (nzOnOk)="addConfirm()">
+    <div class="rationClassifyRow">
+        <span>定量类型：</span>
+        <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curRationClassify" (ngModelChange)="rationClassifyChange()" nzShowSearch>
+            <nz-option *ngFor="let ration of rationClassifyList" [nzLabel]="ration?.name" [nzValue]="ration?.name"></nz-option>
+        </nz-select>
+    </div>
+
+    <div class="rationClassifyRow">
+        <span>定量列：</span>
+        <button [class.btnActive]='item.isChecked' (click)="rationColSelect(item)" nz-button nzType="default" *ngFor="let item of rations">{{item.name}}</button>&nbsp;
+    </div>
+</nz-modal>

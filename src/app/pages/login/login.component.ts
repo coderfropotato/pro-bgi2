@@ -106,8 +106,6 @@ export class LoginComponent implements OnInit {
                             this.router.navigateByUrl(
                                 `/report/${data["data"].LCType}`
                             );
-
-                            this.storeService.setStore("LCType", this.LCType);
                         } else {
                             this.nzMessageService.warning(data["message"]);
                             // 重新生成验证码

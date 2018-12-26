@@ -421,11 +421,20 @@ button.btnActive {
             flex:1;
         }
 	}
+
 	& .switch {
 		position: fixed;
-		right: 162px;
+		right: 248px;
 		top: 46px;
-    }
+	}
+
+	&.gene-list-content{
+		.switch{
+			position: fixed;
+			right: 160px;
+			top: 46px;
+		}
+	}
 }
 
 // 布局切换
@@ -466,6 +475,8 @@ button.btnActive {
         cursor: pointer;
     }
 }
+
+
 .bar {
 	width: 12px;
 	height: 12px;
@@ -583,6 +594,15 @@ button.btnActive {
 			.diff-venn-img {
 				background-image: url('../img/韦恩图.png');
 			}
+		}
+	}
+	.savegenelist{
+		margin-top: 7px;
+		margin-right: 16px;
+		cursor: pointer;
+		i{
+			color:rgb(90,202,255);
+			font-size:16px;
 		}
 	}
 }
@@ -848,6 +868,19 @@ button.btnActive {
 	}
 }
 
+// 树容器
+.tree-component{
+
+	.tree-head{
+		padding:12px 0;
+		display: inline-block;
+	}
+
+	.tree-content{
+		max-height: 240px;
+		overflow: auto;
+	}
+}
 // 重分析
 .report-analysis {
 	width: 100%;
@@ -866,6 +899,7 @@ button.btnActive {
 		background-color: $background_color;
 	}
 }
+
 .analysis-list {
 	padding: 100px;
 }

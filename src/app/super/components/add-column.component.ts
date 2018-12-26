@@ -25,6 +25,7 @@ export class AddColumnComponent implements OnInit {
 	@Output() addThead: EventEmitter<any> = new EventEmitter(); // 添加头的时候发出的事件
 	@Output() clearThead: EventEmitter<any> = new EventEmitter(); // 清除头的时候发出的事件 (没用  现在清除默认发出addThead事件)
 	@Output() computedTableEvent: EventEmitter<any> = new EventEmitter(); // 在树选择表头的时候，有选择的项需要重新计算表格的高度
+	@Input() geneType:object = {};
 	show: boolean = false;
 
     thead:Array<object> = [];
@@ -400,7 +401,8 @@ export class AddColumnComponent implements OnInit {
                     let res = await this.saveThead({
                         "category":it['category'],
                         "key":this.treeTempSelect[0],
-                        "name":this.treeTempSelect[0]
+						"name":this.treeTempSelect[0],
+						"geneType":this.geneType['type']
                     });
                     if(res!=='error'){
                         let tempIt = JSON.parse(JSON.stringify(it));

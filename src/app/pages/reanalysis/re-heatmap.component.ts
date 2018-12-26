@@ -506,6 +506,7 @@ export class ReHeatmapComponent implements OnInit {
                 data: legendData,
                 position: "right",
                 click: (d, i) => {
+                    this.color=d;
                     this.legendIndex = i;
                     this.isShowColorPanel = true;
                 },

@@ -19,6 +19,7 @@ export class MenuComponent implements OnChanges {
 
     @Input() menu: object[];
     @Input() geneSwitch:boolean = true;
+    @Input() showGeneList:boolean = true;
 
 
 
@@ -112,6 +113,11 @@ export class MenuComponent implements OnChanges {
             location.href.indexOf("/report")
         )}/report/reanalysis/index`;
         window.open(url);
+    }
+
+    handleSaveGeneListClick(){
+        let href = `${location.href.split('/report')[0]}/report/gene-list/venn`;
+        window.open(href)
     }
 
     /**
