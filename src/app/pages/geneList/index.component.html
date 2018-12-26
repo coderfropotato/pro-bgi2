@@ -1,5 +1,5 @@
 <div class="report-genelist report-wrap">
-    <app-top [pdf]="false" [analysis]="false" [upload]="false" [lang]="false" (logoClick)="handlerLogoClick()"></app-top>
+    <app-top [pdf]="false" [analysis]="false" [upload]="false" [lang]="false"></app-top>
     <app-menu [menu]="[]" [showGeneList]="false"></app-menu>
     <div *ngIf="ready" class="report-content">
         <router-outlet></router-outlet>

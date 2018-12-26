@@ -123,12 +123,14 @@ export class GeneListVennComponent implements OnInit {
 	// 基因集数据
 	geneListMap:object = {};
 
+	flex:boolean = true;
 	chartLoading:boolean = false;
 	chartError:string = '';
 	scroll: object = { y: '400px' };
 	tableData: any;
 	chartData:any;
 	isShowTable:boolean = true;
+	isShowSelectPanel:boolean = false;
 
 	constructor(
 		private message: MessageService,

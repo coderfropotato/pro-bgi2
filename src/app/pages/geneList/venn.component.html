@@ -41,18 +41,17 @@
                         <i class="anticon anticon-area-chart"></i>
                     </button>
                     <!-- 选择面板 显示隐藏icon -->
-                    <span *ngIf="isHasSelectPanel && selectPanelList.length" style="margin-left:10px" (click)='showSelectPanel()'>
+                    <span *ngIf="selectPanelData.length" style="margin-left:10px" (click)='showSelectPanel()'>
                         <i class="iconfont icon-zhankai"></i>
                     </span>
                 </div>
                 <div class="fRight">
                     <!-- 单选、多选 -->
-                    <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
-                    <button *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
+                    <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
+                    <button *ngIf="!isShowTable && !chartError" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
                     <!-- 刷新-->
-                    <i *ngIf="!chartUrl" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
-                    <i *ngIf="chartUrl && isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
-                    <i *ngIf="chartUrl && !isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
+                    <i *ngIf="tableUrl && isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
+                    <i *ngIf="tableUrl && !isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
                     <!--表下载  -->
                     <i class="iconfont icon-xiazai" *ngIf="isShowTable && !chartError" nz-tooltip [nzTitle]="'tableButton.download' | translate"></i>
                     <!-- 图下载 -->
@@ -60,17 +59,15 @@
                 </div>
             </div>
             
-            <div class="tableSwitchChart" [class.table-switch-chart-flex]="flex" [class.full-height]="flex" [attr.id]="id">
-                <nz-spin [nzSpinning]="isLoading" nzTip='Loading...' [class.extend-height]="flex">
+            <div class="tableSwitchChart" [class.table-switch-chart-flex]="flex" [class.full-height]="flex" [attr.id]="'geneListTableSwitchChart'">
+                <nz-spin [nzSpinning]="chartLoading" nzTip='Loading...' [class.extend-height]="flex">
                     <div class="flex column" [class.extend-height]="flex">
-                        <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate :''"></ng-container>
-            
                         <div #tableContent class="table-content" style="flex:1;display: flex;flex-direction: column;padding: 0 1px;">
                             <!-- 选择面板 -->
                             <!-- <ng-container *ngTemplateOutlet="(selectPanel && isHasSelectPanel) ? selectPanel :''"></ng-container> -->
-                            <div #selectPanel class="selectPanel" *ngIf="isShowSelectPanel && isHasSelectPanel && selectPanelList.length">
+                            <div #selectPanel class="selectPanel" *ngIf="isShowSelectPanel  && selectPanelData.length">
                                 <div class="selectContent">
-                                    <div *ngFor="let selected of selectPanelList">
+                                    <div *ngFor="let selected of selectPanelData">
                                         <span>{{selected.type}}</span>&nbsp;
                                         <button nz-button nzType="default" [nzSize]="'small'" *ngFor="let item of selected.data" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
                                     </div>
@@ -98,7 +95,7 @@
                                 </nz-table>
             
                                 <!-- chart -->
-                                <div class="center chart" style="margin: 0 auto;"  [attr.id]="chartId" [hidden]="isShowTable || chartError"></div>
+                                <div class="center chart" style="margin: 0 auto;"  [attr.id]="'geneListTableSwitchChart-chart'" [hidden]="isShowTable || chartError"></div>
             
                                 <!-- error -->
                                 <app-error [error]="chartError"></app-error>
