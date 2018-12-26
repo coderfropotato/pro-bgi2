@@ -3,21 +3,39 @@ import { StoreService } from './../../super/service/storeService';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { NzNotificationService } from "ng-zorro-antd";
 import config from '../../../config';
 
 @Component({
 	selector: 'app-re-list',
-	templateUrl: './re-list.component.html'
+	templateUrl: './re-list.component.html',
+	styles:[]
 })
 export class ReListComponent implements OnInit {
 	analysisList: any[] = [];
 	loading: boolean = false;
+	tableEntity:object = {
+		LCID: sessionStorage.getItem('LCID'),
+		pageIndex: 1,
+		pageSize: 10,
+		label: '',
+		searchContent: {
+			timeStart: '',
+			timeEnd: '',
+			reanalysisType: [],
+			status: []
+		}
+	};
+	total:number = 0;
+	error:string = '';
+
 	constructor(
 		private routes: ActivatedRoute,
 		private router: Router,
 		private storeService: StoreService,
 		private translate: TranslateService,
-		private ajaxService: AjaxService
+		private ajaxService: AjaxService,
+		private notify:NzNotificationService
 	) {
 		let langs = [ 'zh', 'en' ];
 		this.translate.addLangs(langs);
@@ -35,28 +53,23 @@ export class ReListComponent implements OnInit {
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/reAnalysis/getReanalysisList`,
-				data: {
-					LCID: sessionStorage.getItem('LCID'),
-					pageIndex: 1,
-					pageSize: 1000,
-					label: '',
-					searchContent: {
-						timeStart: '',
-						timeEnd: '',
-						reanalysisType: [],
-						status: []
-					}
-				}
+				data: this.tableEntity
 			})
 			.subscribe(
 				(data) => {
                     if(data['status']==='0'){
-                        this.analysisList = data['data']['list'];
-                        console.log(this.analysisList)
-                    }
+						this.analysisList = data['data']['list'];
+						this.total = data['data']['sumCount'];
+						this.error = '';
+                    }else{
+						this.analysisList = [];
+						this.total = 0;
+						this.error ='nodata';
+					}
 				},
 				(err) => {
-					console.log(err);
+					this.total = 0;
+					this.error = 'error';
 				},
 				() => {
 					this.loading = false;
@@ -73,5 +86,26 @@ export class ReListComponent implements OnInit {
             type = data['reanalysisType'];
         }
         this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
-    }
+	}
+	
+	handleDelete(data){
+		this.ajaxService.getDeferData({
+			url:`${config['javaPath']}/reAnalysis/deleteByTid`,
+			data:{
+				"LCID": "demo",
+				"tid": data['_id']
+			}
+		}).subscribe((res)=>{
+			if(res['status']==0){
+				this.notify.success('Delete',`重分析任务 - ${data['nickname']} 删除成功`);
+				this.tableEntity['pageIndex'] = 1;
+				this.getAnalysisList();
+			}else{
+				this.notify.warning('Delete',`重分析任务 - ${data['nickname']} 删除失败`);
+			}
+		},error=>{
+			console.log(error);
+			this.notify.warning('Delete',`重分析任务 - ${data['nickname']} 删除失败`);
+		})
+	}
 }
