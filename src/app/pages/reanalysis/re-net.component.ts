@@ -142,57 +142,57 @@ export class ReNetComponent implements OnInit {
         };
 
         // table
-        // this.first = true;
-        // this.applyOnceSearchParams = true;
-        // this.defaultUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
-        // this.defaultEntity = {
-        //     LCID: sessionStorage.getItem('LCID'),
-        //     tid:this.tid,
-        //     pageIndex: 1, //分页
-        //     pageSize: 20,
-        //     mongoId: null,
-        //     addThead: [], //扩展列
-        //     transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-        //     matchAll: false,
-        //     matrix: false, //是否转化。矩阵为matrix
-        //     relations: [], //关系组（简写，索引最后一个字段）
-        //     sortValue: null,
-        //     sortKey: null, //排序
-        //     reAnaly: false,
-        //     geneType: this.geneType, //基因类型gene和transcript
-        //     species: this.storeService.getStore('genome'), //物种
-        //     version: this.version,
-        //     searchList: []
-        // };
-        // this.defaultTableId = 'default_re_net';
-        // this.defaultDefaultChecked = true;
-        // this.defaultEmitBaseThead = true;
-        // this.defaultCheckStatusInParams = true;
+        this.first = true;
+        this.applyOnceSearchParams = true;
+        this.defaultUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.defaultEntity = {
+            LCID: sessionStorage.getItem('LCID'),
+            tid:this.tid,
+            pageIndex: 1, //分页
+            pageSize: 20,
+            mongoId: null,
+            addThead: [], //扩展列
+            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+            matchAll: false,
+            matrix: false, //是否转化。矩阵为matrix
+            relations: [], //关系组（简写，索引最后一个字段）
+            sortValue: null,
+            sortKey: null, //排序
+            reAnaly: false,
+            geneType: this.geneType, //基因类型gene和transcript
+            species: this.storeService.getStore('genome'), //物种
+            version: this.version,
+            searchList: []
+        };
+        this.defaultTableId = 'default_re_net';
+        this.defaultDefaultChecked = true;
+        this.defaultEmitBaseThead = true;
+        this.defaultCheckStatusInParams = true;
 
-        // this.extendUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
-        // this.extendEntity = {
-        //     LCID: sessionStorage.getItem('LCID'),
-        //     tid:this.tid,
-        //     pageIndex: 1, //分页
-        //     pageSize: 20,
-        //     mongoId: null,
-        //     addThead: [], //扩展列
-        //     transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-        //     matchAll: false,
-        //     matrix: false, //是否转化。矩阵为matrix
-        //     relations: [], //关系组（简写，索引最后一个字段）
-        //     sortValue: null,
-        //     sortKey: null, //排序
-        //     reAnaly: false,
-        //     geneType: this.geneType, //基因类型gene和transcript
-        //     species: this.storeService.getStore('genome'), //物种
-        //     version: this.version,
-        //     searchList: []
-        // };
-        // this.extendTableId = 'extend_re_net';
-        // this.extendDefaultChecked = true;
-        // this.extendEmitBaseThead = true;
-        // this.extendCheckStatusInParams = false;
+        this.extendUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.extendEntity = {
+            LCID: sessionStorage.getItem('LCID'),
+            tid:this.tid,
+            pageIndex: 1, //分页
+            pageSize: 20,
+            mongoId: null,
+            addThead: [], //扩展列
+            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+            matchAll: false,
+            matrix: false, //是否转化。矩阵为matrix
+            relations: [], //关系组（简写，索引最后一个字段）
+            sortValue: null,
+            sortKey: null, //排序
+            reAnaly: false,
+            geneType: this.geneType, //基因类型gene和transcript
+            species: this.storeService.getStore('genome'), //物种
+            version: this.version,
+            searchList: []
+        };
+        this.extendTableId = 'extend_re_net';
+        this.extendDefaultChecked = true;
+        this.extendEmitBaseThead = true;
+        this.extendCheckStatusInParams = false;
 
     }
 
@@ -977,10 +977,16 @@ export class ReNetComponent implements OnInit {
         this.isShowAddModal=false;
     }
 
+    //legend color change
     colorChange(color){
         this.color = color;
         this.colors.splice(this.legendIndex, 1, color);
         this.netChart.redraw();
+    }
+
+    // 设置 确定
+    setConfirm(data){
+        console.log(data);
     }
 
 }

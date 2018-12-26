@@ -35,6 +35,7 @@ import { TableSwitchChartComponent } from "./super/components/table-switch-chart
 import { LittleTableTestComponent } from "./pages/mrna/little-table-test.component";
 import { MultiOmicsSetComponent } from "./super/components/multiOmicsSet.component";
 import { ClusterSetComponent } from "./super/components/clusterSet.component";
+import { NetSetComponent } from "./super/components/netSet.component";
 import { ReanalysisIndexComponent } from "./pages/reanalysis/index.component";
 import { TransformationTableComponent } from "./super/components/transformation-table.component";
 import { GeneRelativeComponent } from "./super/components/gene-relative.component";
@@ -438,6 +439,7 @@ export function createTranslateLoader(http: HttpClient) {
         LittleTableTestComponent,
         MultiOmicsSetComponent,
         ClusterSetComponent,
+        NetSetComponent,
         AccuracyPipe,
         TransformationTableComponent,
         GeneRelativeComponent,
