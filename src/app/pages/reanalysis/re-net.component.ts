@@ -339,6 +339,13 @@ export class ReNetComponent implements OnInit {
         d3.selectAll("#netChartDiv svg").remove();
         let that  = this;
 
+        let isLinkNum;
+        if($.isEmptyObject(this.chartEntity['quantity'])){
+           isLinkNum=true; 
+        }else{
+            isLinkNum=false;
+        }
+
         //link弧度基础偏移量
         let offsetBasic = this.chartEntity['radian'];
 
@@ -677,7 +684,7 @@ export class ReNetComponent implements OnInit {
             .style('dominant-baseline','middle')
             .attr('x',nodeColorLegendW+legendTitleSpace)
             .attr('y',eachLegendH/2)
-            .text('node连接数');
+            .text(isLinkNum ? 'node连接数' : that.chartEntity['quantity']['name']);
 
             //图例交互 修改颜色
           let legendClick_g =  legendNodeColor_g.append('g')
