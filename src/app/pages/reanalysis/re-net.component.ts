@@ -986,7 +986,8 @@ export class ReNetComponent implements OnInit {
 
     // 设置 确定
     setConfirm(data){
-        console.log(data);
+        this.chartEntity['quantity']=data.value;
+        this.netChart.reGetData();
     }
 
 }

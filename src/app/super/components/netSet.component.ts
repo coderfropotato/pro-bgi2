@@ -261,4 +261,11 @@ export class NetSetComponent implements OnInit {
         }
     }
 
+    //重置
+    reSet(){
+        this.isDefaultValue=true;
+        this.curRation={};
+        this.rationInfo={};
+    }
+
 }
