@@ -45,11 +45,6 @@ export class ReNetComponent implements OnInit {
     selectedNodes:object[]=[]; //选中的节点
     selectedLinks:object[]=[];  //选择的线
 
-    // 设置
-    force:number=600; //斥力
-    radian:number=10; //弧度
-    symbolType:string='all'; // gene symbol 显示: hidden all selected
-
     //serach
     allNodes:any[]=[];
     curSearchNode:string;
@@ -138,7 +133,6 @@ export class ReNetComponent implements OnInit {
         this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
             "id": this.tid,
-            "quantity":{}
         };
 
         // table
@@ -194,6 +188,13 @@ export class ReNetComponent implements OnInit {
         this.extendEmitBaseThead = true;
         this.extendCheckStatusInParams = false;
 
+    }
+
+    defaultSet(data){
+        this.chartEntity["force"]=data['force'];
+        this.chartEntity["radian"]=data['radian']; 
+        this.chartEntity["symbolType"]=data['symbolType'];
+        this.chartEntity["quantity"]=data['value'];
     }
 
     ngAfterViewInit() {
@@ -339,7 +340,7 @@ export class ReNetComponent implements OnInit {
         let that  = this;
 
         //link弧度基础偏移量
-        let offsetBasic = this.radian;
+        let offsetBasic = this.chartEntity['radian'];
 
         //关联关系
         let relations = this.storeService.getStore('relations');
@@ -484,7 +485,7 @@ export class ReNetComponent implements OnInit {
         //力图
         let simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d=> d.geneID).iterations(4))
-            .force('charge', d3.forceManyBody().strength(-this.force))
+            .force('charge', d3.forceManyBody().strength(-this.chartEntity['force']))
             // .force("collide", d3.forceCollide().radius(d => sizeScale(d.value)))  // 添加碰撞检测，使节点不重叠
             .force('center', d3.forceCenter(width/2, height/2))
             .force("x", d3.forceX())
@@ -587,7 +588,7 @@ export class ReNetComponent implements OnInit {
             .links(links);
             
         //node text
-        if(that.symbolType !=='hidden'){
+        if(that.chartEntity['symbolType'] !=='hidden'){
             drawText();
         }
 
@@ -761,7 +762,7 @@ export class ReNetComponent implements OnInit {
                 .attr("stroke", "black")
                 .attr("stroke-width", 0.5)
 
-            if(that.symbolType==='all'){
+            if(that.chartEntity['symbolType']==='all'){
                node_text
                 .text(function (d) {
                     return d.symbol;
@@ -986,6 +987,9 @@ export class ReNetComponent implements OnInit {
 
     // 设置 确定
     setConfirm(data){
+        this.chartEntity["force"]=data['force'];
+        this.chartEntity["radian"]=data['radian'];
+        this.chartEntity["symbolType"]=data['symbolType'];
         this.chartEntity['quantity']=data.value;
         this.netChart.reGetData();
     }

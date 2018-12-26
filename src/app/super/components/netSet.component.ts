@@ -34,8 +34,10 @@ declare const $: any;
     ]
 })
 export class NetSetComponent implements OnInit {
+    @Output() defaultSet:EventEmitter<any> = new EventEmitter();
     @Output() confirm: EventEmitter<any> = new EventEmitter();
-
+    
+    defaultData:object;
     confirmData:object;
 
     geneType:string;
@@ -88,12 +90,15 @@ export class NetSetComponent implements OnInit {
 
         this.getRationClassify();
 
-        this.confirmData={
-            'force':this.force,
-            'radian':this.radian,
-            'symbolType':this.symbolType,
-            'value':{}
+        this.defaultData={
+            force:this.force,  
+            radian:this.radian, 
+            symbolType:this.symbolType, 
+            value:{}
         }
+        this.defaultSet.emit(this.defaultData);
+
+        this.confirmData={...this.defaultData};
          
     }
 
