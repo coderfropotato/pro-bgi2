@@ -3,11 +3,13 @@ declare const $: any;
 @Component({
     selector: "app-tree",
     template: `<div class="tree-component">
-                    <b style="padding:12px 0;">当前匹配的头:{{selectComposeThead.length?selectComposeThead[0]:"暂无"}}</b>
-                    <p *ngIf="showExpandAll"><button nz-button nzType="default" nzSize="small" (click)="handlerExpandAll()">ExpandAll</button></p>
-                    <ul *ngFor="let root of treeData;index as i">
-                        <app-tree-item [floder]="root" (treeItemCheckedChange)="checkedChange($event)" (treeItemExpandChange)="expandChange($event)"></app-tree-item>
-                    </ul>
+                    <b class="tree-head">当前匹配的头:{{selectComposeThead.length?selectComposeThead[0]:"暂无"}}</b>
+                    <div class="tree-content">
+                        <p *ngIf="showExpandAll"><button nz-button nzType="default" nzSize="small" (click)="handlerExpandAll()">Toggle expand</button></p>
+                        <ul *ngFor="let root of treeData;index as i">
+                            <app-tree-item [floder]="root" (treeItemCheckedChange)="checkedChange($event)" (treeItemExpandChange)="expandChange($event)"></app-tree-item>
+                        </ul>
+                    </div>
                 </div>`,
     styles: []
 })
@@ -62,7 +64,7 @@ export class TreeComponent implements OnInit, OnChanges {
     // 默认展开所有 false
     @Input() defaultExpandAll:boolean = false;
     // 是否显示”展开所有“ 按钮
-    @Input() showExpandAll:boolean = false;
+    @Input() showExpandAll:boolean = true;
     // 展开所有  发生改变的时候发出的事件
     @Output() expandAllChange: EventEmitter<any> = new EventEmitter();
 
@@ -214,7 +216,9 @@ export class TreeComponent implements OnInit, OnChanges {
         // 反向根据并集的表头字段找到可组合的字段 求并集
         // 收集匹配的集合
         this.selectData.forEach(v => {
-            temp.push(this.theadReflactMap[v["name"]]);
+            if(v['name'] in this.theadReflactMap){
+                temp.push(this.theadReflactMap[v["name"]]);
+            }
         });
         // 所有集合求交集
         // 按数组长度排序

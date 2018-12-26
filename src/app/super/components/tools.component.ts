@@ -644,7 +644,7 @@ export class ToolsComponent implements OnInit {
 						if (data['data'].length) {
 							let href = `${window.location.href.split(
 								'report'
-							)[0]}report/reanalysis/re-kaFun/${this.toolsService.get('geneType')}/${data[
+							)[0]}report/reanalysis/re-${reanalysisType}/${this.toolsService.get('geneType')}/${data[
 								'data'
 							][0]}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
