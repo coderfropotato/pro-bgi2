@@ -1,27 +1,39 @@
 <div class="analysis-list">
-    <button nz-button nzType="primary" nzSize="small" (click)="getAnalysisList()">刷新</button>
-    <nz-table #basicTable nzSize="middle" [nzData]="analysisList">
-        <thead>
-            <tr>
-            <th>名称</th>
-            <th>类型</th>
-            <th>创建时间</th>
-            <th>备注</th>
-            <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="center" *ngFor="let data of basicTable.data">
-                <td>{{data['nickname']}}</td>
-                <td>{{data['reanalysisType']}}</td>
-                <td>{{data['date']}}</td>
-                <td>{{data['remark']?data['remark']:'-'}}</td>
-                <td>
-                    <a (click)="toDetail(data)">Check</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a>Delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </nz-table>
+    <nz-spin [nzSpinning]="loading" nzTip='Loading...'>
+        <div class="table-thead tableHeader">
+            <div class="fRight">
+                <i class="iconfont icon-shuaxin" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="getAnalysisList()"></i>
+            </div>
+        </div>
+        <div class="table-content">
+            <nz-table #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"  nzSize="middle">
+                <thead>
+                    <tr>
+                    <th>名称</th>
+                    <th>类型</th>
+                    <th>创建时间</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="center" *ngFor="let data of analysisList">
+                        <td>{{data['nickname']}}</td>
+                        <td>{{data['reanalysisType']}}</td>
+                        <td>{{data['date']}}</td>
+                        <td>{{data['remark']?data['remark']:'-'}}</td>
+                        <td>
+                            <a (click)="toDetail(data)">Check</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a (click)="handleDelete(data)">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+            <div class="table-bottom">
+                <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [showPageSize]="false" [total]="total" (pageIndexChange)="getAnalysisList()"  [maxLimit]="1000"></app-pagination>
+            </div>
+            <app-error *ngIf="error" [error]="error"></app-error>
+        </div>
+    </nz-spin>
 </div>

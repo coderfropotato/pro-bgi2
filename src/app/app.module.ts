@@ -62,8 +62,9 @@ import { ReLineComponent } from './pages/reanalysis/re-line.component';
 import { KaFunComponent } from './pages/reanalysis/re-kaFun.component';
 import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.component';
 import { LayoutSwitchComponent } from './super/components/layout-switch.component';
-import { GeneListComponent,GeneListPage } from './pages/mrna/geneList.component';
 import { LoadingComponent } from './pages/reanalysis/loading.component';
+import { GeneListIndexComponent } from './pages/geneList/index.component';
+import { GeneListVennComponent,GeneListVennPageComponent } from './pages/geneList/venn.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -200,14 +201,6 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "gene-list",
-                component: GeneListPage,
-                data: {
-                    keep: true,
-                    module: "geneList"
-                }
-            },
-            {
                 path: "layout1",
                 component: Layout1Page,
                 data: {
@@ -238,6 +231,36 @@ const ROUTES: Routes = [
                     keep:false,
                     module:"upload"
                 }
+            }
+        ]
+    },
+    // 基因集
+    {
+        path: "report/gene-list",
+        component: GeneListIndexComponent,
+        data: {
+            keep: true,
+            module: "geneList"
+        },
+        canActivateChild: [SysDefendService],
+        children:[
+            {
+                path: "venn",
+                component: GeneListVennPageComponent,
+                data: {
+                    keep: true,
+                    module: "GeneListVennPage"
+                }
+            },
+            {
+                path: "",
+                redirectTo: "venn",
+                pathMatch: "full"
+            },
+            {
+                path: "**",
+                redirectTo: "venn",
+                pathMatch: "full"
             }
         ]
     },
@@ -317,7 +340,7 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "re-kaFun/:geneType/:tid/:version",
+                path: "re-chiSquare/:geneType/:tid/:version",
                 component: KaFunComponent,
                 canActivate: [SysDefendService],
                 data: {
@@ -326,7 +349,7 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "re-relativeSplice/:geneType/:tid/:version",
+                path: "re-as/:geneType/:tid/:version",
                 component: RelativeSpliceComponent,
                 canActivate: [SysDefendService],
                 data: {
@@ -409,7 +432,7 @@ export function createTranslateLoader(http: HttpClient) {
         DiffVennPage,
         ExpressVennPage,
         Layout1Page,
-        GeneListPage,
+        GeneListIndexComponent,
         SysDefendComponent,
         LoginComponent,
         IndexComponent,
@@ -466,7 +489,8 @@ export function createTranslateLoader(http: HttpClient) {
         LayoutSwitchComponent,
         ReMultiOmicsComponent,
         LoadingComponent,
-        GeneListComponent,
+        GeneListVennComponent,
+        GeneListVennPageComponent,
         PromtComponent
     ],
     // 路由模块在imports 导入

@@ -72,6 +72,11 @@ ul,ol {
 .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th {
     background: #fff;
 }
+
+.ant-table-thead > tr > th{
+    background: #fff;
+}
+
 .ant-spin-nested-loading,.ant-spin-container{
     height: inherit;
 }

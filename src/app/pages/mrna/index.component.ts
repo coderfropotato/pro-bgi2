@@ -84,6 +84,9 @@ export class IndexComponent implements OnInit {
                                     sessionStorage.setItem(key,JSON.stringify(data["data"][key]));
                                 }
                             }
+
+                            this.storeService.setStore('LCTYPE','mrna');
+                            
                             //this.menuList = data["data"].menu_list;
                             this.menuList = [
                                 {
@@ -102,6 +105,36 @@ export class IndexComponent implements OnInit {
                                         {
                                             url: "layout1",
                                             name: "布局页面",
+                                            isExport: true
+                                        }
+                                    ]
+                                },
+                                {
+                                    category: "小表_demo",
+                                    children: [
+                                        {
+                                            url: "littleTableTest",
+                                            name: "小表",
+                                            isExport: true
+                                        }
+                                    ]
+                                },
+                                {
+                                    category: "表格转换_demo",
+                                    children: [
+                                        {
+                                            url: "transformationTable",
+                                            name: "transformation-table",
+                                            isExport: true
+                                        }
+                                    ]
+                                },
+                                {
+                                    category: "普通大表_demo",
+                                    children: [
+                                        {
+                                            url: "bigTable",
+                                            name: "普通大表",
                                             isExport: true
                                         }
                                     ]
