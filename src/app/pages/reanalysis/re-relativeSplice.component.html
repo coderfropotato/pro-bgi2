@@ -16,6 +16,10 @@
                     [isOnlyChart]="true"
                     [chartUrl]="chartUrl"
                     [apiEntity]="chartEntity"
+                    [selectPanelData]="selectPanelData"
+                    (selectConfirmEmit)="selectConfirm($event)"
+                    [defaultSelectNum]=6
+                    (defaultSelectList)="defaultSelectList($event)"
                     (drawChartEmit)="drawChart($event)"
                     [chartId]="'relativeSpliceDiv'"
                     [chartName]="'可变剪切图'"

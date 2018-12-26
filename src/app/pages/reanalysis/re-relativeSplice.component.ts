@@ -69,19 +69,18 @@ export class RelativeSpliceComponent implements OnInit {
     k_pvalue:number;
     k_stat:number;
 
-    //单选
-    singleMultiSelect: object = {};
-	//多选
-	doubleMultiSelect: any[] = [];
+    
+    singleMultiSelect: object = {};//单选
+	doubleMultiSelect: any[] = [];//多选
 
     colors: string[] = [];
     legendIndex: number = 0; //当前点击图例的索引
     color: string; //当前选中的color
     isShowColorPanel: boolean = false;
-
     textContent:string="可变剪切图";
-
     geneNum:number;
+
+    selectPanelData: object[] = [];
 
     AS_type_list: string[] = [];
     diff_list: string[] = [];
@@ -119,17 +118,44 @@ export class RelativeSpliceComponent implements OnInit {
             this.geneType = params['params']['geneType'];
             this.storeService.setTid(this.tid);
         })
+        this.getRelativeSpliceParams();
     }
 
     ngOnInit() {
-        this.getRelativeSpliceParams();
+        this.selectPanelData = [
+            {
+                type: '可变剪切类型',
+                data: ["SE", "RI", "A3SS", "A5SS", "MXE"]
+            },
+            {
+                type: '选择组',
+                data: ["A1-vs-B1", "A1-vs-C1", "B1-vs-C1", "B2-vs-A2", "C2-vs-A2", "C2-vs-B2"]
+            },
+            {
+                type: 'group',
+                data: ["A", "B", "C"]
+            },
+            {
+                type: 'sample',
+                data: ["A1", "B1", "C1", "A2", "B2", "C2"]
+            }
+        ];
 
-        this.geneNum = this.toolsService.get("geneCount"); //选择基因数量
-
-        this.chartUrl=`${config['javaPath']}/chiSquare/switchTable`;
+        this.chartUrl=`${config['javaPath']}/alternativeSplice/graph`;
         this.chartEntity = {
             LCID: sessionStorage.getItem('LCID'),
-            tid:this.tid
+            tid:this.tid,
+            version: this.version,
+			geneType: this.geneType,
+			species: this.storeService.getStore('genome'),
+            AS_type: ["SE",
+            "RI",
+            "A3SS",
+            "A5SS",
+            "MXE"],
+            Group: [
+                "siRNY1_1-VS-siRNY1_1"
+            ]
         };
 
         this.colors = ["#4575B4", "#FEF6B2", "#D9352A"];
@@ -342,6 +368,7 @@ export class RelativeSpliceComponent implements OnInit {
     }
 
     getRelativeSpliceParams(){
+        let self = this;
         this.ajaxService
             .getDeferData(
                 {
@@ -368,10 +395,32 @@ export class RelativeSpliceComponent implements OnInit {
                         // diff: ["A1-vs-B1", "A1-vs-C1", "B1-vs-C1", "B2-vs-A2", "C2-vs-A2", "C2-vs-B2"]
                         // group: ["A", "B", "C"]
                         // sample: ["A1", "B1", "C1", "A2", "B2", "C2"]
-                        this.AS_type_list=data["data"].AS_type;
-                        this.diff_list=data["data"].diff;
-                        this.group_list=data["data"].group;
-                        this.sample=data["data"].sample;
+                        self.AS_type_list=data["data"].AS_type;
+                        self.diff_list=data["data"].diff;
+                        self.group_list=data["data"].group;
+                        self.sample=data["data"].sample;
+
+                       
+
+                        self.selectPanelData = [
+                            {
+                                type: '可变剪切类型',
+                                data: ["SE", "RI", "A3SS", "A5SS", "MXE"]
+                            },
+                            {
+                                type: '选择组',
+                                data: ["A1-vs-B1", "A1-vs-C1", "B1-vs-C1", "B2-vs-A2", "C2-vs-A2", "C2-vs-B2"]
+                            },
+                            {
+                                type: '123',
+                                data: this.group_list
+                            },
+                            {
+                                type: '3123',
+                                data: ["A", "B", "C","A1", "B1", "C1", "A2", "B2", "C2"]
+                            }
+                        ];
+                        console.log(self.selectPanelData)
                     }
                    
                 },
@@ -404,6 +453,17 @@ export class RelativeSpliceComponent implements OnInit {
     drawChart(data){
 
     }
+
+    //选择面板 确定筛选的数据
+	selectConfirm(data) {
+        console.log(data)
+    }
+    
+    //选择面板，默认选中数据
+	defaultSelectList(data) {
+        console.log(data)
+		//this.selectConfirmData = data;
+	}
 
     //color change 回调函数
     colorChange(curColor) {
