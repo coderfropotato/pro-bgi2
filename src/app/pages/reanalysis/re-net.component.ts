@@ -635,7 +635,7 @@ export class ReNetComponent implements OnInit {
         drawLinkColorScale();
         
         // svg 点击清空选择
-        d3.select("#netChartDiv svg").on('click',function(){
+        d3.selectAll("#netChartDiv svg").on('click',function(){
             d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
             d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
             that.selectedNodes.length=0;
