@@ -140,7 +140,8 @@ export class RelativeSpliceComponent implements OnInit {
                     Group: ['B1-vs-C1']
                 };
 
-                this.colors = ["#4575B4", "#FEF6B2", "#D9352A"];
+                this.colors=[ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"];
+                //this.colors = ["#4575B4", "#FEF6B2", "#D9352A"];
 
                 // this.chartEntity = {B1-vs-C1
                 //     LCID: sessionStorage.getItem('LCID'),
@@ -452,8 +453,8 @@ export class RelativeSpliceComponent implements OnInit {
                 }
             })
         })
-        // console.log(this.AS_type_select)
-        // console.log(this.group_select)
+        console.log(this.AS_type_select)
+        console.log(this.group_select)
     }
 
     //图二次更新
@@ -495,11 +496,6 @@ export class RelativeSpliceComponent implements OnInit {
     drawChart(data) {
         //console.log(data)
         let that = this;
-        // data: {diff: ["A1-vs-B1", "A1-vs-C1", "B1-vs-C1", "B2-vs-A2", "C2-vs-A2", "C2-vs-B2"],…}
-        // AS_type: ["SE", "RI", "A3SS", "A5SS", "MXE"]
-        // diff: ["A1-vs-B1", "A1-vs-C1", "B1-vs-C1", "B2-vs-A2", "C2-vs-A2", "C2-vs-B2"]
-        // group: ["A", "B", "C"]
-        // sample: ["A1", "B1", "C1", "A2", "B2", "C2"]
 
         let tempData = [
             {
@@ -508,8 +504,10 @@ export class RelativeSpliceComponent implements OnInit {
                 LCID: "demo",
                 st_gene_id: "STgene0008752",
                 unique: 11105,
-                x_site: 2519.146,
-                y_site: 0.972
+                x_site: 4519.146,
+                y_site: 0.972,
+                x:0,
+                y:0
             },
             {
                 AS_type: "A3SS",
@@ -518,7 +516,9 @@ export class RelativeSpliceComponent implements OnInit {
                 st_gene_id: "STgene0008752",
                 unique: 11005,
                 x_site: 3519.146,
-                y_site: 0.872
+                y_site: 0.872,
+                x:0,
+                y:0
             },
             {
                 AS_type: "RI",
@@ -527,7 +527,9 @@ export class RelativeSpliceComponent implements OnInit {
                 st_gene_id: "STgene0008752",
                 unique: 11505,
                 x_site: 4519.146,
-                y_site: 0.772
+                y_site: 0.772,
+                x:0,
+                y:0
             },
             {
                 AS_type: "RI",
@@ -536,7 +538,9 @@ export class RelativeSpliceComponent implements OnInit {
                 st_gene_id: "STgene0008752",
                 unique: 11505,
                 x_site: 4519.146,
-                y_site: 0.880
+                y_site: 0.880,
+                x:0,
+                y:0
             },
             {
                 AS_type: "A5SS",
@@ -545,7 +549,9 @@ export class RelativeSpliceComponent implements OnInit {
                 st_gene_id: "STgene0008752",
                 unique: 11305,
                 x_site: 5519.146,
-                y_site: 0.672
+                y_site: 0.672,
+                x:0,
+                y:0
             },
             {
                 AS_type: "RI",
@@ -554,7 +560,9 @@ export class RelativeSpliceComponent implements OnInit {
                 st_gene_id: "STgene0008752",
                 unique: 11605,
                 x_site: 6519.146,
-                y_site: 0.572
+                y_site: 0.572,
+                x:0,
+                y:0
             },
             {
                 AS_type: "SE",
@@ -563,9 +571,13 @@ export class RelativeSpliceComponent implements OnInit {
                 st_gene_id: "STgene0008752",
                 unique: 12005,
                 x_site: 7519.146,
-                y_site: 0.472
+                y_site: 0.472,
+                x:0,
+                y:0
             }
         ]
+
+        // let tempData = data;
 
         let x_value = [];
         let y_value = [];
@@ -578,9 +590,6 @@ export class RelativeSpliceComponent implements OnInit {
         x_value = Array.from(new Set(x_value));
         y_value = Array.from(new Set(y_value));
 
-        // console.log(x_value)
-        // console.log(y_value)
-
         let t_chartID = document.getElementById('relativeSpliceDiv');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
             <style>
@@ -591,6 +600,11 @@ export class RelativeSpliceComponent implements OnInit {
             </style>
         </svg>`;
         t_chartID.innerHTML = str;
+
+        let symbolScale = null;
+        let svg1 = null;
+        let xScale = null;
+        let yScale = null;
 
         let top_title = 30;//上侧标题
         let bottom_xlength = 20; //下侧x轴高度
@@ -614,37 +628,42 @@ export class RelativeSpliceComponent implements OnInit {
         let svg = d3.select('#svg') //最外层svg
                 .attr('width', svg_width)
                 .attr('height', svg_height)
+                // .on("mousedown",function(){
+                //     let event = d3.event;
+                //     event.stopPropagation();
+                //     console.log(6666666666666666)
+                // })
                 .on('click', function(d) {
-
+                    // let event = d3.event;
+                    // event.stopPropagation();
                 },false);
      
         let temp_add_width = 10;
         let temp_x_width = xAxis_length + left_ylength + temp_add_width;
         let temp_y_width = yAxis_length + bottom_xlength + temp_add_width;
 
-        let colors=[ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"];
-
         draw_x_y_axis();
         drawRightTopLegend();
         drawRightBottomLegend();
+        drawSquare();
         drawCenter();
     
         function draw_x_y_axis(){
             
-            let svg1 = svg
+            svg1 = svg
                 .append('g')
                 .attr('transform', 'translate(' + left_title + ',' + top_title + ')')
-                .append('svg')
-                .attr('width', temp_x_width)
-                .attr('height', temp_y_width)
+                // .append('svg')
+                // .attr('width', temp_x_width)
+                // .attr('height', temp_y_width)
                 .attr('class', 'svg1');
 
-            let xScale = d3
+            xScale = d3
 				.scaleLinear()
 				.domain([ d3.min(x_value), d3.max(x_value) ])
                 .range([ 0 , xAxis_length ])
                 .nice().clamp(true);
-            let yScale = d3
+            yScale = d3
 				.scaleLinear()
 				.domain([ d3.max(y_value), d3.min(y_value) ])
                 .range([ 0 , yAxis_length ])
@@ -690,15 +709,13 @@ export class RelativeSpliceComponent implements OnInit {
                 }
             });
 
-            var symbolScale =  d3.scaleOrdinal()
-            .domain(that.AS_type_select)
-            .range(temp_symbol_select);
+            symbolScale =  d3.scaleOrdinal().domain(that.AS_type_select).range(temp_symbol_select);
 
             r_legend.append("g")
             .attr("class", "legendSymbol")
             .attr("transform", "translate(0, 0)");
 
-            var legendPath = d3.legendSymbol()
+            let legendPath = d3.legendSymbol()
             .scale(symbolScale)
             .orient("vertical")
             .labelWrap(right_name_length)
@@ -706,6 +723,7 @@ export class RelativeSpliceComponent implements OnInit {
             .shapePadding(5)
             .title("Type")
             .titleWidth(right_name_length)
+            //.on("cellover", function(d){alert("clicked " + d);})
             .on("cellclick", function(d){alert("clicked " + d);});
 
             r_legend.select(".legendSymbol").call(legendPath);
@@ -722,9 +740,9 @@ export class RelativeSpliceComponent implements OnInit {
             let temp_symbol_length = that.group_select.length;
             let j = 0;
 
-            colors.forEach(element => {
+            that.colors.forEach(element => {
                 if(j < temp_symbol_length){
-                    temp_symbol_select.push(colors[j]);
+                    temp_symbol_select.push(that.colors[j]);
                     j++;
                 }
             });
@@ -735,7 +753,7 @@ export class RelativeSpliceComponent implements OnInit {
 
             r_legend_bottom.append('text').attr("class","titleText").attr('dx', '0').attr('dy', '0').text("Group");
 
-            var ordinal = d3.scaleOrdinal()
+            let ordinal = d3.scaleOrdinal()
             .domain(that.group_select)
             .range(temp_symbol_select);
             
@@ -743,7 +761,7 @@ export class RelativeSpliceComponent implements OnInit {
             .attr("class", "legendOrdinal")
             .attr("transform", "translate(4,20)");
             
-            var legendOrdinal = d3.legendColor()
+            let legendOrdinal = d3.legendColor()
             .shape("path", circle)
             .labelOffset(5)
             .shapePadding(5)
@@ -756,29 +774,145 @@ export class RelativeSpliceComponent implements OnInit {
 
         function drawCenter(){
             console.log(tempData);
-
-            // 0:
-            // AS_type: "SE"
-            // Group: "B1-vs-C1"
-            // LCID: "demo"
-            // st_gene_id: "STgene0008752"
-            // unique: 11105
-            // x_site: 2519.146
-            // y_site: 0.972
-            // __proto__: Object
-            // 1: {AS_type: "A3SS", Group: "A1-vs-B1", LCID: "demo", st_gene_id: "STgene0008752", unique: 11005, …}
-            // 2: {AS_type: "RI", Group: "A1-vs-C1", LCID: "demo", st_gene_id: "STgene0008752", unique: 11505, …}
-            // 3: {AS_type: "RI", Group: "A1-vs-C1", LCID: "demo", st_gene_id: "STgene0008752", unique: 11505, …}
-            // 4: {AS_type: "A5SS", Group: "B2-vs-A2", LCID: "demo", st_gene_id: "STgene0008752", unique: 11305, …}
-            // 5: {AS_type: "RI", Group: "C2-vs-A2", LCID: "demo", st_gene_id: "STgene0008752", unique: 11605, …}
-            // 6: {AS_type: "SE", Group: "C2-vs-B2", LCID: "demo", st_gene_id: "STgene0008752", unique: 12005, …}
+            tempData.forEach((d) => {
+                d.x = xScale(d['x_site'])+left_ylength;
+                d.y = yScale(d['y_site']);
+            });
 
             // 默认用图例数组
-            var categoryList = that.group_select;
+            let categoryList = that.group_select;
             // 颜色比例尺
-            var z = d3.scaleOrdinal().domain(categoryList).range(colors.slice(0, categoryList.length));
+            let z = d3.scaleOrdinal().domain(categoryList).range(that.colors.slice(0, categoryList.length));
 
+            //temp_symbol
+            svg1.selectAll('.MyCircle')
+            .data(tempData)
+            .enter()
+            .append('path')
+            .attr('transform', function(d,i){
+                return 'translate(' + d['x'] + ',' + d['y'] + ')'
+            })
+            .attr("d",function(d,i){
+                return symbolScale(d["AS_type"])
+            })
+            .attr("fill", function(d, i) {
+                return z(d['Group']);
+            })
+            .on("mouseover", function(d) {
+                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> AS_type:  ${d.AS_type}<br> Group:  ${d.Group}<br> st_gene_id:  ${d.st_gene_id}<br> unique:  ${d.unique}`;
+                that.globalService.showPopOver(d3.event, tipText);
+            })
+            .on("mouseout", function(d) {
+                that.globalService.hidePopOver();
+            })
+            .on('click', function(d) {
+                let event = d3.event;
+                    event.stopPropagation();
+                    console.log(event)
+                console.log(d);
+            })
+
+        }
+
+        let clickTime = 0;
+        let startLoc = [];
+        let endLoc = [];
+        let flag = false;
+
+        function drawSquare(){
+            var svg2 = svg1.append("rect")
+                .attr('fill','#fff')
+                .attr('width', xAxis_length)
+                .attr('height', yAxis_length)
+                .attr('transform', 'translate(' + (left_ylength+0.5) + ',' + temp_add_width + ')');
             
+            let rect = svg2.append("rect")
+                .attr("width", 0)
+                .attr("height", 0)
+                .attr("fill", "rgba(33,20,50,0.3)")
+                .attr("stroke", "#ccc")
+                .attr("stroke-width", "2px")
+                .attr("transform", "translate(0,0)")
+                .attr("id", "squareSelect");
+
+            svg2.on("mousedown", function() {
+                let event = d3.event;
+                    event.stopPropagation();
+
+                //let temp_y = 
+
+                clickTime = (new Date()).getTime();//mark start time
+                flag = true;//以flag作为可执行圈选的标记
+                rect.attr("transform", "translate(" + d3.event.offsetX + "," + d3.event.offsetY + ")");
+                startLoc = [d3.event.offsetX, d3.event.offsetY];
+                console.log(startLoc)
+            });
+
+            svg2.on("mousemove", function() {
+                let event = d3.event;
+                    event.stopPropagation();
+
+                //判断事件target
+                if (d3.event.target.localName == "svg1" && flag == true || d3.event.target.localName == "rect" && flag == true) {
+
+                let width = d3.event.offsetX - startLoc[0];
+                let height = d3.event.offsetY - startLoc[1];
+                if (width < 0) {
+                    rect.attr("transform", "translate(" + d3.event.offsetX + "," + startLoc[1] + ")");
+                }
+                if (height < 0) {
+                    rect.attr("transform", "translate(" + startLoc[0] + "," + d3.event.offsetY + ")");
+                }
+                if (height < 0 && width < 0) {
+                    rect.attr("transform", "translate(" + d3.event.offsetX + "," + d3.event.offsetY + ")");
+                }
+                rect.attr("width", Math.abs(width)).attr("height", Math.abs(height))
+                }
+
+            })
+
+            svg2.on("mouseup", function(){
+                let event = d3.event;
+                    event.stopPropagation();
+
+                if(flag == true){
+                    flag = false;
+                    endLoc = [d3.event.offsetX, d3.event.offsetY];
+                    let leftTop = [];
+                    let rightBottom = []
+                    if(endLoc[0]>=startLoc[0]){
+                        leftTop[0] = startLoc[0];
+                        rightBottom[0] = endLoc[0];
+                    }else{
+                        leftTop[0] = endLoc[0];
+                        rightBottom[0] = startLoc[0];
+                    }
+
+                    if(endLoc[1]>=startLoc[1]){
+                        leftTop[1] = startLoc[1];
+                        rightBottom[1] = endLoc[1];
+                    }else{
+                        leftTop[1] = endLoc[1];
+                        rightBottom[1] = startLoc[1];
+                    }
+
+                    console.log(endLoc)
+                    //最后通过和node的坐标比较，确定哪些点在圈选范围
+                    let nodes = d3.selectAll(".node").attr("temp", function(d){
+                        if(d.x<rightBottom[0] && d.x>leftTop[0] && d.y>leftTop[1] && d.y<rightBottom[1]){
+
+                                //d3.select(this).attr("class","node selected");
+                                console.log(d3.select(this))
+                        }
+                    })
+                    rect.attr("width",0).attr("height",0);
+                }
+                let times = (new Date()).getTime()-clickTime;
+                if (times<100 && d3.event.target.id !== "squareSelect") {
+                    let nodes = d3.selectAll(".node").attr("class", "node unselected")
+                }
+
+            })
 
         }
 
