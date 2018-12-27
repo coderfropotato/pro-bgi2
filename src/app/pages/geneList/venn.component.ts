@@ -126,7 +126,7 @@ export class GeneListVennComponent implements OnInit {
 	scroll: object = { y: '400px' };
 	tableData: any[] = [];
 	chartData:any[] = [];
-	isShowTable:boolean = true;
+	isShowTable:boolean = false;
 	isShowSelectPanel:boolean = true;
 	getGeneListDone:boolean = false;
 
@@ -531,7 +531,7 @@ export class GeneListVennComponent implements OnInit {
 			this.showVenn(data);
 		}else{
 			this.venn_or_upsetR = false;
-			this.isShowTable=true;
+			// this.isShowTable=true;
 			// this.showVenn(data);
 		}
 	}
@@ -703,7 +703,6 @@ export class GeneListVennComponent implements OnInit {
             })
 	}
 
-	//显示upsetR图
 	showUpSetR(data) {
 		document.getElementById('geneListTableSwitchChart_chart').innerHTML = '';
 		let _self = this;
@@ -787,35 +786,23 @@ export class GeneListVennComponent implements OnInit {
 			//rows:data.rows,
 			rows: selectBar
 		};
+
 		//左侧数据
 		let total_name = [];
 		let total_value = [];
 		let total_name_max = [];
 		for (let i = 0; i < List.total.length; i++) {
-			total_name_max.push(getBLen(List.total[i].name));
+			//total_name_max.push(getBLen(List.total[i].name));
 			total_name.push(List.total[i].name);
 			total_value.push(List.total[i].value);
 		}
 
-		let max_name = Math.max.apply(null, total_name_max);
-		let target_name = '';
-		for (let i = 0; i < total_name_max.length; i++) {
-			if (max_name == total_name_max[i]) {
-				target_name = total_name[i];
-				break;
-			}
+		let left_name_length=getNameLength(total_name);
+		if(left_name_length>140){
+			left_name_length = 140;
 		}
 
-		let oSvg = d3.select('#geneListTableSwitchChart_chart').append('svg');
-		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
-		let left_name_length = mText.nodes()[0].getBBox().width;
-		let maxLength = 400;
 
-		//let left_name_length = document.querySelector(".mText").getBBox().width;
-		if (left_name_length > maxLength) {
-			left_name_length = maxLength;
-		}
-		oSvg.remove();
 		let kong_name_right = 10;
 
 		//上侧数据
@@ -1491,6 +1478,35 @@ export class GeneListVennComponent implements OnInit {
 			}
 			return str.replace(/[^\x00-\xff]/g, '01').length;
 		}
+
+		function getNameLength(total_name){
+			//console.log(total_name)
+			let oSvg = d3.select('#geneListTableSwitchChart_chart').append('svg');
+			let mText = oSvg.selectAll('MyAlltext')
+			.data(total_name)
+			.enter()
+			.append('text')
+			.text(function(d,i){
+				return d;
+			})
+			.attr('class', 'aText');
+
+			let max_length = [];
+
+			mText.nodes().forEach((d) => {
+				max_length.push(d.getBBox().width);
+			});
+			//console.log(max_length)
+
+			max_length.sort(function(a,b){
+				return b-a;
+			});
+
+			oSvg.remove();
+
+			return max_length[0];
+		}
+
 	}
 }
 

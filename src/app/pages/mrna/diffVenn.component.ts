@@ -754,7 +754,7 @@ export class DiffVennComponent implements OnInit {
 		if(left_name_length>140){
 			left_name_length = 140;
 		}
-		console.log(left_name_length)
+
 
 		let kong_name_right = 10;
 

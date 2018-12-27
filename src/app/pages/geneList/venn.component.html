@@ -38,8 +38,8 @@
                     <div class="flex column" [class.extend-height]="flex">
                         <div class="table-thead tableHeader">
                             <div class="fLeft">
-                                <!-- 图表切换按钮 -->
-                                <button *ngIf="beforeSelectPanelEntity['setNameList'].length>1" nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip nzTitle="{{'view.s_view' | translate}}">
+                                <!-- 图表切换按钮 *ngIf="beforeSelectPanelEntity['setNameList'].length>1"-->
+                                <button  nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip nzTitle="{{'view.s_view' | translate}}">
                                     <i class="anticon anticon-area-chart"></i>
                                 </button>
                                 <button  nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
