@@ -31,7 +31,7 @@
                 </tbody>
             </nz-table>
             <div class="table-bottom">
-                <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [showPageSize]="false" [total]="total" (pageIndexChange)="getAnalysisList()"  [maxLimit]="1000"></app-pagination>
+                <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [showPageSize]="false" [total]="total" [pageSize]="10" (pageIndexChange)="getAnalysisList()"  [maxLimit]="1000"></app-pagination>
             </div>
             <app-error *ngIf="error" [error]="error"></app-error>
         </div>

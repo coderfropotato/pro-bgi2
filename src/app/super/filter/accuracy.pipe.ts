@@ -14,7 +14,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 })
 export class AccuracyPipe implements PipeTransform {
     transform(value: any, args?: any, type?: any): any {
-        if(!value) return 'NA';
+        if(!value && value!=0) return 'NA';
         if (type == "string") {
             return value;
         } else {

@@ -238,6 +238,11 @@ tbody > tr:nth-child(even) {
 .tableSwitchChart {
 	width: 100%;
 	margin: 0 auto;
+	.selectContent {
+		button:not(last-child){
+			margin-bottom: 12px;
+		}
+	}
 }
 
 .tableSwitchChart .ant-table-small {

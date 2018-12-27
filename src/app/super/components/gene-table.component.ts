@@ -365,7 +365,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 this.total = 0;
             },
             ()=>{
-                if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
+                // if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
                 if(this.applyOnceSearchParams){
                     // 每次应用一次设置的查询参数 然后清空恢复默认，用自己的查询参数；
                     this.tableEntity['searchList'] = [];
@@ -409,7 +409,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
             this.tableEntity['mongoId'] = this.mongoId;
 
         }
-        if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
+        // if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
     }
 
     matchAllFn(){
