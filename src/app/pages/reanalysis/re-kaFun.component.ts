@@ -133,26 +133,6 @@ export class KaFunComponent implements OnInit {
 
         this.colors = ["#4575B4", "#FEF6B2", "#D9352A"];
 
-        // this.chartEntity = {
-        //     LCID: sessionStorage.getItem('LCID'),
-        //     tid:this.tid,
-        //     pageIndex: 1,
-        //     pageSize: 100000,
-        //     mongoId: null,
-        //     addThead: [],
-        //     transform: false,
-        //     matchAll: false,
-        //     matrix: false,
-        //     sortValue: null,
-        //     sortKey: null,
-        //     reAnaly: false,
-        //     rootSearchContentList:[],
-        //     geneType: this.geneType,
-        //     species: this.storeService.getStore('genome'),
-        //     version: this.version,
-        //     searchList: []
-        // };
-
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
@@ -165,7 +145,6 @@ export class KaFunComponent implements OnInit {
             mongoId: null,
             addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-            matchAll: false,
             matrix: false, //是否转化。矩阵为matrix
             sortValue: null,
             sortKey: null, //排序
@@ -191,7 +170,6 @@ export class KaFunComponent implements OnInit {
             mongoId: null,
             addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-            matchAll: false,
             matrix: false, //是否转化。矩阵为matrix
             sortValue: null,
             sortKey: null, //排序
@@ -373,23 +351,15 @@ export class KaFunComponent implements OnInit {
         this.doubleMultiSelect.length = 0;
         this.singleMultiSelect = {};
 
-        // this.upSelect.length = 0;
-        // this.leftSelect.length = 0;
         this.chartBackStatus()
         this.updateKaFun();
 	}
 
     //单选
     doSingleData() {
-        // {
-        //     x: 135, 
-        //     y: 45, 
-        //     value: 27, 
-        //     name: "Thymus||Cholangiocarcinoma||male", 
-        //     type: "middle"
-        //     bucket:       //单选时基因集名称
-        // }
-        console.log(this.singleMultiSelect)
+        if(this.singleMultiSelect['bucket'].length){
+            this.transformTable._filter('gene_id','gene_id','string','$in',this.singleMultiSelect['bucket'].join(','),null);
+        }
     }
 
     //多选确定时候,提交的数据
@@ -399,20 +369,10 @@ export class KaFunComponent implements OnInit {
             const element = this.doubleMultiSelect[index];
             tempArray.push(...element.bucket);
         }
-        console.log(Array.from(new Set(tempArray)))
-
-		// let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData;
-		// this.leftSelect.length = 0;
-		// this.upSelect.length = 0;
-
-		// if (tempData instanceof Array) {
-		// 	this.upSelect.push(...tempData);
-		// } else {
-		// 	this.upSelect.push(...tempData['bar_name']);
-		// 	this.leftSelect.push(...tempData['total_name']);
-		// }
-
-        // this.chartBackStatus()
+        let genelist  = Array.from(new Set(tempArray));
+        if(genelist.length){
+            this.transformTable._filter('gene_id','gene_id','string','$in',genelist.join(','),null);
+        }
 	}
 
     //画图
