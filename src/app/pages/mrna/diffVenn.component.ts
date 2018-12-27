@@ -393,15 +393,12 @@ export class DiffVennComponent implements OnInit {
 		let d_length=data['total'].length;
 		if (d_length > 5) {
 			this.venn_or_upsetR = true;
-			this.tableSwitchChart.isShowTable=false;
 			this.showUpSetR(data);
 		} else if(d_length<=5&&d_length>=2){
 			this.venn_or_upsetR = false;
-			this.tableSwitchChart.isShowTable=false;
 			this.showVenn(data);
 		}else{
 			this.venn_or_upsetR = false;
-			this.tableSwitchChart.isShowTable=true;
 			// this.showVenn(data);
 		}
 	}
@@ -748,30 +745,18 @@ export class DiffVennComponent implements OnInit {
 		let total_value = [];
 		let total_name_max = [];
 		for (let i = 0; i < List.total.length; i++) {
-			total_name_max.push(getBLen(List.total[i].name));
+			//total_name_max.push(getBLen(List.total[i].name));
 			total_name.push(List.total[i].name);
 			total_value.push(List.total[i].value);
 		}
 
-		let max_name = Math.max.apply(null, total_name_max);
-		let target_name = '';
-		for (let i = 0; i < total_name_max.length; i++) {
-			if (max_name == total_name_max[i]) {
-				target_name = total_name[i];
-				break;
-			}
+		let left_name_length=getNameLength(total_name);
+		if(left_name_length>140){
+			left_name_length = 140;
 		}
+		console.log(left_name_length)
 
-		let oSvg = d3.select('#diffVennId').append('svg');
-		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
-		let left_name_length = mText.nodes()[0].getBBox().width;
-		//let left_name_length = document.querySelector(".mText").getBBox().width;
-		if (left_name_length > 100) {
-			left_name_length = 100;
-		}
-		oSvg.remove();
 		let kong_name_right = 10;
-		//console.log(left_name_length)
 
 		//上侧数据
 		let bar_name = [];
@@ -1446,5 +1431,34 @@ export class DiffVennComponent implements OnInit {
 			}
 			return str.replace(/[^\x00-\xff]/g, '01').length;
 		}
+
+		function getNameLength(total_name){
+			//console.log(total_name)
+			let oSvg = d3.select('#diffVennId').append('svg');
+			let mText = oSvg.selectAll('MyAlltext')
+			.data(total_name)
+			.enter()
+			.append('text')
+			.text(function(d,i){
+				return d;
+			})
+			.attr('class', 'aText');
+
+			let max_length = [];
+
+			mText.nodes().forEach((d) => {
+				max_length.push(d.getBBox().width);
+			});
+			//console.log(max_length)
+
+			max_length.sort(function(a,b){
+				return b-a;
+			});
+
+			oSvg.remove();
+
+			return max_length[0];
+		}
+
 	}
 }
