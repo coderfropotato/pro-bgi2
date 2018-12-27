@@ -1433,7 +1433,7 @@ export class DiffVennComponent implements OnInit {
 		}
 
 		function getNameLength(total_name){
-			console.log(total_name)
+			//console.log(total_name)
 			let oSvg = d3.select('#diffVennId').append('svg');
 			let mText = oSvg.selectAll('MyAlltext')
 			.data(total_name)
@@ -1449,7 +1449,7 @@ export class DiffVennComponent implements OnInit {
 			mText.nodes().forEach((d) => {
 				max_length.push(d.getBBox().width);
 			});
-			console.log(max_length)
+			//console.log(max_length)
 
 			max_length.sort(function(a,b){
 				return b-a;
