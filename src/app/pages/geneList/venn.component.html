@@ -10,7 +10,7 @@
             <p [hidden]="!expandModuleDesc">{{'diff_venn.diff_venn_content' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
-        <div class="left-bottom-layout">
+        <div class="left-bottom-layout" *ngIf="getGeneListDone">
             <!-- <app-table-switch-chart
                 #tableSwitchChart
                 [id]="'tableSwitchChart'"
@@ -33,53 +33,60 @@
                 (refresh)="handlerRefresh()"
             >
             </app-table-switch-chart> -->
-
-            <div class="table-thead tableHeader">
-                <div class="fLeft">
-                    <!-- 图表切换按钮 -->
-                    <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip nzTitle="{{'view.s_view' | translate}}">
-                        <i class="anticon anticon-area-chart"></i>
-                    </button>
-                    <!-- 选择面板 显示隐藏icon -->
-                    <span *ngIf="selectPanelData.length" style="margin-left:10px" (click)='showSelectPanel()'>
-                        <i class="iconfont icon-zhankai"></i>
-                    </span>
-                </div>
-                <div class="fRight">
-                    <!-- 单选、多选 -->
-                    <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
-                    <button *ngIf="!isShowTable && !chartError" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
-                    <!-- 刷新-->
-                    <i *ngIf="tableUrl && isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
-                    <i *ngIf="tableUrl && !isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
-                    <!--表下载  -->
-                    <i class="iconfont icon-xiazai" *ngIf="isShowTable && !chartError" nz-tooltip [nzTitle]="'tableButton.download' | translate"></i>
-                    <!-- 图下载 -->
-                    <app-chart-export *ngIf="!isShowTable && !chartError" [chartId]="chartId" [chartName]="chartName"></app-chart-export>
-                </div>
-            </div>
-            
-            <div class="tableSwitchChart" [class.table-switch-chart-flex]="flex" [class.full-height]="flex" [attr.id]="'geneListTableSwitchChart'">
+            <div class="tableSwitchChart" [class.table-switch-chart-flex]="flex" [class.full-height]="flex" id="geneListTableSwitchChart">
                 <nz-spin [nzSpinning]="chartLoading" nzTip='Loading...' [class.extend-height]="flex">
                     <div class="flex column" [class.extend-height]="flex">
+                        <div class="table-thead tableHeader">
+                            <div class="fLeft">
+                                <!-- 图表切换按钮 -->
+                                <button *ngIf="beforeSelectPanelEntity['setNameList'].length>1" nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip nzTitle="{{'view.s_view' | translate}}">
+                                    <i class="anticon anticon-area-chart"></i>
+                                </button>
+                                <button  nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
+                                    <i class="anticon anticon-table"></i>
+                                </button>
+                                <!-- 选择面板 显示隐藏icon -->
+                                <span *ngIf="selectPanelData.length" style="margin-left:10px" (click)='toggleSelectPanel()'>
+                                    <i class="iconfont" [class.icon-zhankai]="!isShowSelectPanel" [class.icon-shouqi]="isShowSelectPanel"></i>
+                                </span>
+                            </div>
+                            <div class="fRight">
+                                <!-- 单选、多选 -->
+                                <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="multiSelectChange()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
+                                <button *ngIf="!isShowTable && !chartError" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
+                                <!-- 下拉选择 [nzMaxMultipleCount]="3"-->
+                                <nz-select  style="max-width: 360px;min-width:140px;margin-right:6px;"  nzMode="multiple" nzPlaceHolder="please select tag" [(ngModel)]="selectPanelEntity['tag']" (ngModelChange)="handleTagSelectChange()">
+                                    <nz-option *ngFor="let tag of tagList" [nzLabel]="tag" [nzValue]="tag"></nz-option>
+                                </nz-select>
+                                <!-- 刷新-->
+                                <!-- <i *ngIf="tableUrl && isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i> 
+                                 <i *ngIf="tableUrl && !isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i> -->
+                                <!--表下载  -->
+                                <i class="iconfont icon-xiazai" *ngIf="isShowTable && !chartError" nz-tooltip [nzTitle]="'tableButton.download' | translate"></i>
+                                <!-- 图下载 -->
+                                <app-chart-export *ngIf="!isShowTable && !chartError" [chartId]="chartId" [chartName]="chartName"></app-chart-export>
+                            </div>
+                        </div>
                         <div #tableContent class="table-content" style="flex:1;display: flex;flex-direction: column;padding: 0 1px;">
                             <!-- 选择面板 -->
-                            <!-- <ng-container *ngTemplateOutlet="(selectPanel && isHasSelectPanel) ? selectPanel :''"></ng-container> -->
-                            <div #selectPanel class="selectPanel" *ngIf="isShowSelectPanel  && selectPanelData.length">
+                            <div  class="selectPanel" *ngIf="isShowSelectPanel  && selectPanelData.length">
                                 <div class="selectContent">
-                                    <div *ngFor="let selected of selectPanelData">
-                                        <span>{{selected.type}}</span>&nbsp;
-                                        <button nz-button nzType="default" [nzSize]="'small'" *ngFor="let item of selected.data" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
+                                    <div>
+                                        <span>genelist</span>&nbsp;
+                                        <ng-container *ngFor="let item of selectPanelData">
+                                            <button  nz-button *ngIf="!item['setName'].length"  nzType="default" [nzSize]="'small'"  [class.btnActive]="item['checked']" (click)="handleGeneListClick(item)">{{item['setName']}}</button>
+                                            <button nz-button *ngIf="item['setName'].length" nz-tooltip [nzTitle]="item['setAnnot']"  nzType="default" [nzSize]="'small'"  [class.btnActive]="item['checked']" (click)="handleGeneListClick(item)">{{item['setName']}}</button>
+                                        </ng-container>
                                     </div>
                                 </div>
                                 <div class="right">
-                                    <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length">{{'tableButton.confirm' | translate}}</button>
+                                    <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectPanelData.length">{{'tableButton.confirm' | translate}}</button>
                                 </div>
                             </div>
                             <!-- 图和表的容器 -->
                             <div #tableChartContent  class="table-chart-content" [class.center-flex]="!isShowTable && !chartError" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
                                 <!-- veen/upsetR表 -->
-                                <nz-table *ngIf=" isShowTable && !chartError" nzShowPagination="false" [nzData]="tableData['rows']" [nzScroll]="scroll" [nzSize]="'small'">
+                                <nz-table *ngIf=" isShowTable && !chartError && tableData['rows']" nzShowPagination="false" [nzData]="tableData['rows']" [nzScroll]="scroll" [nzSize]="'small'">
                                     <thead>
                                         <tr>
                                             <th class="center" nzWidth="120px" nz-tooltip>name</th>
@@ -95,10 +102,10 @@
                                 </nz-table>
             
                                 <!-- chart -->
-                                <div class="center chart" style="margin: 0 auto;"  [attr.id]="'geneListTableSwitchChart-chart'" [hidden]="isShowTable || chartError"></div>
+                                <div class="center chart" style="margin: 0 auto;"  id="geneListTableSwitchChart_chart" [hidden]="isShowTable || chartError"></div>
             
                                 <!-- error -->
-                                <app-error [error]="chartError"></app-error>
+                                <app-error *ngIf="chartError" [error]="chartError"></app-error>
                             </div>
                         </div>
                     </div>
@@ -107,7 +114,7 @@
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
     </div>
-    <div #right class="right-layout" [class.expand]="switch" [class.table-only]="onlyTable">
+    <div #right  class="right-layout" [class.expand]="switch" [class.table-only]="onlyTable">
         <div class="switch">
             <app-layout-switch [onlyTable]="onlyTable" (onlyTableChange)="handlOnlyTableChange($event)" [ngModel]="switch" (ngModelChange)="switchChange($event)" >
             </app-layout-switch>
@@ -124,6 +131,7 @@
         </div>
         <!-- 表格转换 -->
         <app-table-transformation
+            *ngIf="getGeneListDone"
             class="no-outside-border"
             #transformTable
             [isFirst]="first"

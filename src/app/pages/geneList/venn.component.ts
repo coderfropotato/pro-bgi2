@@ -80,12 +80,10 @@ export class GeneListVennComponent implements OnInit {
 	applyOnceSearchParams: boolean;
 
 	venSelectAllData: string[] = [];
-	selectConfirmData: string[] = [];
 
 	panelShow: boolean = false;
 
 	tableEntity: object = {};
-	selectPanelData: object[] = [];
 	venn_or_upsetR: boolean;
 
  	singleMultiSelect: object = {
@@ -105,7 +103,6 @@ export class GeneListVennComponent implements OnInit {
 
 	chart: any;
 	isMultiSelect: boolean;
-	selectedData: object[] = [];
 
 	tableHeight = 0;
 	first = true;
@@ -127,10 +124,27 @@ export class GeneListVennComponent implements OnInit {
 	chartLoading:boolean = false;
 	chartError:string = '';
 	scroll: object = { y: '400px' };
-	tableData: any;
-	chartData:any;
+	tableData: any[] = [];
+	chartData:any[] = [];
 	isShowTable:boolean = true;
-	isShowSelectPanel:boolean = false;
+	isShowSelectPanel:boolean = true;
+	getGeneListDone:boolean = false;
+
+	selectPanelData:object[] = [];
+	tagList:string[] = [];
+	selectedTag:string = '';
+	// 选中的数据
+	selectPanelEntity:object = {
+		tag:[],
+		setNameList:[],
+		gene:[]
+	};
+
+	beforeSelectPanelEntity:object = {
+		tag:[],
+		setNameList:[],
+		gene:[]
+	};
 
 	constructor(
 		private message: MessageService,
@@ -160,141 +174,87 @@ export class GeneListVennComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.isMultiSelect = false;
-		this.first = true;
-		this.selectedData = [];
+		(async()=>{
+			this.isMultiSelect = false;
+			this.first = true;
+
+			await this.getAllGeneList();
+
+			// 图标切换查询参数
+			this.tableUrl = `${config['javaPath']}/geneSet/graph`;
+			this.tableEntity = {
+				LCID: this.storeService.getStore('LCID'),
+				setNameList:this.beforeSelectPanelEntity['setNameList'],
+				geneType: this.defaultGeneType['type'],
+			};
+			this.getChartData();
+
+			this.applyOnceSearchParams = true;
+			this.defaultUrl = `${config['javaPath']}/geneSet/table`;
+			this.defaultEntity = {
+				pageIndex: 1, //分页
+				pageSize: 20,
+				LCID: sessionStorage.getItem('LCID'),
+				leftChooseList: this.leftSelect, //upsetR参数
+				upChooseList: this.upSelect, //胜利n图选中部分参数
+				setNameList:this.beforeSelectPanelEntity['setNameList'],  // compareGroup
+				saveGeneSet:false,
+				addThead: [], //扩展列
+				transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+				mongoId: null,
+				sortKey: null, //排序
+				sortValue: null,
+				matchAll: false,
+				reAnaly: false,
+				matrix: false, //是否转化。矩阵为matrix
+				relations: [], //关系组（简写，索引最后一个字段）
+				geneType: this.defaultGeneType['type'], //基因类型gene和transcript
+				species: this.storeService.getStore('genome'), //物种
+				version: this.storeService.getStore('version'),
+				searchList: [],
+				// sortThead:this.addColumn['sortThead']
+			};
+			this.defaultTableId = 'diff_venn_default_gene';
+			this.defaultDefaultChecked = true;
+			this.defaultEmitBaseThead = true;
+			this.defaultCheckStatusInParams = true;
+
+			this.extendUrl = `${config['javaPath']}/geneSet/table`;
+			this.extendEntity = {
+				pageIndex: 1, //分页
+				pageSize: 20,
+				reAnaly: false,
+				LCID: sessionStorage.getItem('LCID'), //流程id
+				leftChooseList: [], //upsetR参数
+				upChooseList: [], //胜利n图选中部分参数
+				setNameList:this.beforeSelectPanelEntity['setNameList'],  // compareGroup
+				saveGeneSet:false,
+				addThead: [], //扩展列
+				transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+				mongoId: null,
+				sortKey: null, //排序
+				sortValue: null,
+				matchAll: false,
+				matrix: true, //是否转化。矩阵为matrix
+				relations: [], //关系组（简写，索引最后一个字段）
+				geneType: this.defaultGeneType['type'], //基因类型gene和transcript
+				species: this.storeService.getStore('genome'), //物种
+				version: this.storeService.getStore('version'),
+				searchList: [],
+				// sortThead:this.addColumn['sortThead']
+			};
+			this.extendTableId = 'diff_venn_extend_gene';
+			this.extendDefaultChecked = true;
+			this.extendEmitBaseThead = true;
+			this.extendCheckStatusInParams = false;
+
+			setTimeout(() => {
+				this.scrollHeight();
+				this.computedTableHeight();
+			}, 30);
+
+		})()
 		
-		this.geneListMap = {
-			"All":[
-				{
-					"setName":"genelist1",
-					"setAnnot":""
-				}
-			],
-			"tag1":[
-				{
-					"setName":"genelist2",
-					"setAnnot":"2"
-				}
-			]
-		}
-		
-		for(let key in this.geneListMap){
-			if(key.toLocaleLowerCase() === 'all'){
-				this.selectPanelData = [
-					{
-						type: 'geneList',
-						data: this.geneListMap[key]
-					}
-				]
-				break;
-			}
-		}
-
-		// 图标切换查询参数
-		this.tableUrl = `${config['javaPath']}/geneSet/graph`;
-		this.tableEntity = {
-			LCID: this.storeService.getStore('LCID'),
-			setNameList:["唯一", ""],
-			geneType: this.defaultGeneType['type'],
-		};
-
-		this.applyOnceSearchParams = true;
-		this.defaultUrl = `${config['javaPath']}/geneSet/table`;
-		this.defaultEntity = {
-			pageIndex: 1, //分页
-			pageSize: 20,
-			LCID: sessionStorage.getItem('LCID'),
-			leftChooseList: this.leftSelect, //upsetR参数
-			upChooseList: this.upSelect, //胜利n图选中部分参数
-			setNameList: ["ax","rt"],  // compareGroup
-			saveGeneSet:false,
-			addThead: [], //扩展列
-			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-			mongoId: null,
-			sortKey: null, //排序
-			sortValue: null,
-			matchAll: false,
-			reAnaly: false,
-			matrix: false, //是否转化。矩阵为matrix
-			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
-			species: this.storeService.getStore('genome'), //物种
-			version: this.storeService.getStore('version'),
-            searchList: [],
-            sortThead:this.addColumn['sortThead']
-		};
-		this.defaultTableId = 'diff_venn_default_gene';
-		this.defaultDefaultChecked = true;
-		this.defaultEmitBaseThead = true;
-		this.defaultCheckStatusInParams = true;
-
-		this.extendUrl = `${config['javaPath']}/geneSet/table`;
-		this.extendEntity = {
-			pageIndex: 1, //分页
-			pageSize: 20,
-			reAnaly: false,
-			LCID: sessionStorage.getItem('LCID'), //流程id
-			leftChooseList: [], //upsetR参数
-			upChooseList: [], //胜利n图选中部分参数
-			setNameList: ["ax","rt"],  // compareGroup
-			saveGeneSet:false,
-			addThead: [], //扩展列
-			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-			mongoId: null,
-			sortKey: null, //排序
-			sortValue: null,
-			matchAll: false,
-			matrix: true, //是否转化。矩阵为matrix
-			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
-			species: this.storeService.getStore('genome'), //物种
-			version: this.storeService.getStore('version'),
-            searchList: [],
-            sortThead:this.addColumn['sortThead']
-		};
-		this.extendTableId = 'diff_venn_extend_gene';
-		this.extendDefaultChecked = true;
-		this.extendEmitBaseThead = true;
-		this.extendCheckStatusInParams = false;
-
-		// 获取图标切换的数据
-		this.getChartData();
-	}
-
-	ngAfterViewInit() {
-        setTimeout(() => {
-			this.scrollHeight();
-			this.computedTableHeight();
-        }, 30);
-    }
-
-	getChartData(){
-		this.chartLoading = true;
-        this.ajaxService.getDeferData({
-			url:this.tableUrl,
-			data:this.tableEntity
-		})
-            .subscribe(
-                (data: any) => {
-                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-                        this.chartError = "nodata";
-                    } else if (data.status === "-1") {
-                        this.chartError = "error";
-                    } else if (data.status === "-2") {
-                        this.chartError = "dataOver";
-                    } else {
-                        this.chartError = "";
-                        this.tableData = data.data;
-						this.chartData = data.data;
-						this.drawVenn(data.data);
-                    }
-                },
-                error => {
-                    this.chartError = error;
-				},
-				()=>{ this.chartLoading = false; }
-            )
 	}
 
 	moduleDescChange(){
@@ -307,7 +267,7 @@ export class GeneListVennComponent implements OnInit {
 		try {
             let tableChartContentH = this.tableChartContent.nativeElement.offsetHeight;
             let scrollH = (tableChartContentH - 38) + 'px';
-            this.scroll['y'] = scrollH;
+			this.scroll['y'] = scrollH;
         } catch (error) {
         }
 	}
@@ -330,13 +290,13 @@ export class GeneListVennComponent implements OnInit {
 		// 清空表的筛选
 		this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
-            this.defaultEntity['compareGroup'] = this.selectConfirmData;
+            this.defaultEntity['setNameList'] = this.beforeSelectPanelEntity['setNameList'];
             this.defaultEntity['searchList'] = [];
             this.defaultEntity['pageIndex'] = 1;
 			this.defaultEntity['rootSearchContentList'] = [];
             setTimeout(()=>{this.first = true;},30)
         }else{
-            this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+            this.transformTable._setParamsNoRequest('setNameList',this.beforeSelectPanelEntity['setNameList']);
             this.transformTable._setParamsNoRequest('pageIndex',1);
             this.transformTable._getData();
         }
@@ -368,7 +328,7 @@ export class GeneListVennComponent implements OnInit {
 			this.extendEntity['mongoId'] = checkParams['mongoId'];
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
 			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
-			this.extendEntity['compareGroup'] = this.selectConfirmData;
+			this.extendEntity['setNameList'] = this.beforeSelectPanelEntity['setNameList'];
 			this.extendEntity['leftChooseList'] = checkParams['tableEntity']['leftChooseList'];
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
             this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
@@ -383,7 +343,7 @@ export class GeneListVennComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
-            this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
+            this.transformTable._setExtendParamsWithoutRequest('setNameList', this.beforeSelectPanelEntity['setNameList']);
             this.transformTable._setExtendParamsWithoutRequest('relations', relations);
             // 每次checkStatusInParams状态变完  再去获取数据
             this.transformTable._setExtendParamsWithoutRequest('addThead',[]);
@@ -410,17 +370,164 @@ export class GeneListVennComponent implements OnInit {
 		setTimeout(()=>{
             this.computedTableHeight();
         },30)
-    }
+	}
+
+	// 获取所有基因集
+	async getAllGeneList(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService.getDeferData({
+				url:`${config['javaPath']}/geneSet/getTags`,
+				data:{
+					LCID:sessionStorage.getItem('LCID'),
+					geneType:this.defaultGeneType['type']
+				}
+			}).subscribe(res=>{
+				if(res['status']==0 && (!$.isEmptyObject(res['data']))){
+					this.geneListMap = res['data'];
+					this.tagList =  Object.keys(res['data']) || [];
+					this.selectPanelEntity['tag'] = [this.tagList[0]] || [];
+					
+					this.selectPanelData = this.geneListMap[this.selectPanelEntity['tag'][0]] || [];
+					this.selectPanelData.map((v,index)=>{
+						v['checked'] = index?false:true;
+						return v;
+					})
+
+					if(this.selectPanelData.length && 'setName' in this.selectPanelData[0]){
+						this.selectPanelEntity['gene'].push(this.selectPanelData[0]);
+						this.selectPanelEntity['setNameList'].push(this.selectPanelData[0]['setName']);
+					}else{
+						this.selectPanelEntity['gene'].length = 0;
+						this.selectPanelEntity['setNameList'].length = 0;
+					}
+				}else{
+					this.geneListMap = {};
+				}
+				this.copyPanelEntity();
+				this.getGeneListDone = true;
+				resolve('success');
+			},error=>{
+				console.log(error);
+				this.getGeneListDone = true;
+				reject('error');
+			})
+		})
+	}
+
+	// 获取图数据
+	getChartData(){
+		this.chartLoading = true;
+        this.ajaxService.getDeferData({
+			url:this.tableUrl,
+			data:this.tableEntity
+		}).subscribe(
+                (data: any) => {
+                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                        this.chartError = "nodata";
+                    } else if (data.status === "-1") {
+                        this.chartError = "error";
+                    } else if (data.status === "-2") {
+                        this.chartError = "dataOver";
+                    } else {
+                        this.chartError = "";
+                        this.tableData = data.data;
+						this.chartData = data.data;
+						this.drawVenn(data.data);
+                    }
+                },
+                error => {
+                    this.chartError = error;
+				},
+				()=>{ 
+					this.chartLoading = false; 
+					setTimeout(()=>{this.scrollHeight()},30)
+				}
+            )
+	}
+
+	// 标签多选的时候
+	handleTagSelectChange(){
+		this.ajaxService.getDeferData({
+			url:`${config['javaPath']}/geneSet/display`,
+			data:{
+				"LCID": sessionStorage.getItem('LCID'),
+				"geneType": this.defaultGeneType['type'],
+				"tags": this.selectPanelEntity['tag']
+			}
+		}).subscribe(res=>{
+			if(res['status']==0 && res['data'].length){
+				this.selectPanelData = res['data'];
+				this.selectPanelData.map((val,index)=>{
+					val['checked'] = index?false:true;
+					return val;
+				})
+
+				this.selectPanelEntity['gene'].length = 0;
+				this.selectPanelEntity['setNameList'].length = 0;
+				this.selectPanelEntity['gene'].push(this.selectPanelData[0]);
+				this.selectPanelEntity['setNameList'].push(this.selectPanelData[0]['setName']);
+			}else{
+				this.selectPanelData.length = 0;
+				this.selectPanelEntity['gene'].length = 0;
+				this.selectPanelEntity['setNameList'].length = 0;
+			}
+			this.copyPanelEntity();
+			this.chartBackStatus();
+			this.getChartData();
+		},error=>{
+			console.log(error);
+		})
+	}
+
+	// 点击选择基因集
+	handleGeneListClick(gene){
+		gene['checked'] = !gene['checked'];
+		if(gene['checked']){
+			this.selectPanelEntity['gene'].push(gene);
+			this.selectPanelEntity['setNameList'].push(gene['setName'])
+		}else{
+			let index = this.selectPanelEntity['gene'].findIndex((val,index)=>{
+				return val['setName'] === gene['setName'];
+			});
+			if(index!=-1) {
+				this.selectPanelEntity['gene'].splice(index,1);
+				this.selectPanelEntity['setNameList'].splice(index,1);
+			}
+		}
+	}
+
+	//选择面板 确定筛选的数据
+	selectConfirm(data) {
+		this.upSelect.length = 0;
+		this.leftSelect.length = 0;
+
+		this.copyPanelEntity();
+        this.chartBackStatus();
+        this.updateVenn();
+	}
+
+	copyPanelEntity(){
+		for(let name in this.selectPanelEntity){
+			if(this.selectPanelEntity[name] instanceof Array){
+				this.beforeSelectPanelEntity[name].length = 0;
+				this.beforeSelectPanelEntity[name].push(...this.selectPanelEntity[name]);
+			}else if(this.selectPanelEntity[name] instanceof Object){
+				this.beforeSelectPanelEntity[name] = JSON.parse(JSON.stringify(this.selectPanelEntity[name]));
+			}else{
+				this.beforeSelectPanelEntity[name] = this.selectPanelEntity[name];
+			}
+		}
+	}
 
 	drawVenn(data) {
 		let d_length=data['total'].length;
 		if (d_length > 5) {
 			this.venn_or_upsetR = true;
-			this.isShowTable=false;
+			// this.isShowTable=false;
 			this.showUpSetR(data);
 		} else if(d_length<=5&&d_length>=2){
 			this.venn_or_upsetR = false;
-			this.isShowTable=false;
+			// this.isShowTable=false;
 			this.showVenn(data);
 		}else{
 			this.venn_or_upsetR = false;
@@ -462,13 +569,20 @@ export class GeneListVennComponent implements OnInit {
         this.updateVenn();
 	}
 
+	toggleSelectPanel(){
+		this.isShowSelectPanel = !this.isShowSelectPanel;
+		setTimeout(()=>{
+			this.scrollHeight();
+		},30)
+	}
+
 	reGetData(){
 		this.getChartData();
 	}
 
 	//韦恩,upsetR图二次更新
 	updateVenn() {
-        this.tableEntity['compareGroup'] = this.selectConfirmData;
+        this.tableEntity['setNameList'] = this.beforeSelectPanelEntity['setNameList'];
 		this.reGetData();
 
 		this.singleMultiSelect={
@@ -487,7 +601,7 @@ export class GeneListVennComponent implements OnInit {
 	doSingleData() {
 		this.leftSelect.length = 0;
         this.upSelect.length = 0;
-		if (this.selectConfirmData.length > 5) {
+		if (this.beforeSelectPanelEntity['setNameList'].length > 5) {
             // upset
             if(this.singleMultiSelect['bar_name']) this.upSelect.push(this.singleMultiSelect['bar_name']);
             if(this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
@@ -514,22 +628,6 @@ export class GeneListVennComponent implements OnInit {
         this.chartBackStatus()
 	}
 
-	//选择面板，默认选中数据
-	defaultSelectList(data) {
-		this.selectConfirmData = data;
-	}
-
-	//选择面板 确定筛选的数据
-	selectConfirm(data) {
-        this.selectConfirmData = data;
-		this.upSelect.length = 0;
-        this.leftSelect.length = 0;
-
-        // 更新当前回来的表头为基础头
-        this.chartBackStatus();
-        this.updateVenn();
-	}
-
 	redrawChart(width, height?) {
 		this.isMultiSelect = false;
     }
@@ -538,7 +636,8 @@ export class GeneListVennComponent implements OnInit {
     handlerRefresh(){
         // 清空选择的数据
         this.upSelect.length = 0;
-        this.leftSelect.length = 0;
+		this.leftSelect.length = 0;
+		this.getChartData();
         this.chartBackStatus();
     }
 
@@ -557,10 +656,10 @@ export class GeneListVennComponent implements OnInit {
 			tempR.push(tempO);
 		}
 
-		this.venn = new Venn({ id: 'diffVennId' })
+		this.venn = new Venn({ id: 'geneListTableSwitchChart_chart' })
 			.config({
 				data: tempR,
-				compareGroup: that.tableEntity['compareGroup'],
+				compareGroup: that.beforeSelectPanelEntity['setNameList'],
 				isMultipleSelect: that.isMultiSelect
 			})
 			.drawVenn()
@@ -606,7 +705,7 @@ export class GeneListVennComponent implements OnInit {
 
 	//显示upsetR图
 	showUpSetR(data) {
-		document.getElementById('diffVennId').innerHTML = '';
+		document.getElementById('geneListTableSwitchChart_chart').innerHTML = '';
 		let _self = this;
 		let selectBar = [];
 		let tempBar = data.rows;
@@ -617,7 +716,7 @@ export class GeneListVennComponent implements OnInit {
 			}
 		}
 
-		let t_chartID = document.getElementById('diffVennId');
+		let t_chartID = document.getElementById('geneListTableSwitchChart_chart');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
          <style>
              .MyRect {
@@ -688,7 +787,6 @@ export class GeneListVennComponent implements OnInit {
 			//rows:data.rows,
 			rows: selectBar
 		};
-
 		//左侧数据
 		let total_name = [];
 		let total_value = [];
@@ -708,16 +806,17 @@ export class GeneListVennComponent implements OnInit {
 			}
 		}
 
-		let oSvg = d3.select('#diffVennId').append('svg');
+		let oSvg = d3.select('#geneListTableSwitchChart_chart').append('svg');
 		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
 		let left_name_length = mText.nodes()[0].getBBox().width;
+		let maxLength = 400;
+
 		//let left_name_length = document.querySelector(".mText").getBBox().width;
-		if (left_name_length > 100) {
-			left_name_length = 100;
+		if (left_name_length > maxLength) {
+			left_name_length = maxLength;
 		}
 		oSvg.remove();
 		let kong_name_right = 10;
-		//console.log(left_name_length)
 
 		//上侧数据
 		let bar_name = [];
