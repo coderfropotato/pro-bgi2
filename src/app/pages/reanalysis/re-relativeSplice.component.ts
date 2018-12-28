@@ -131,13 +131,15 @@ export class RelativeSpliceComponent implements OnInit {
                 this.chartUrl = `${config["javaPath"]}/alternativeSplice/graph`;
                 this.chartEntity = {
                     LCID: sessionStorage.getItem("LCID"),
-                    tid: '7fc7bf9c6db34fc0b042efc40a4db779',
+                    //tid: '7fc7bf9c6db34fc0b042efc40a4db779',
+                    tid:"f888468806f644ccaac2afed5d424f00",
+                    //tid:this.tid,
                     version: this.version,
                     geneType: this.geneType,
                     species: this.storeService.getStore("genome"),
                     AS_type: this.AS_type_select,
-                    //Group: this.group_select
-                    Group: ['B1-vs-C1']
+                    Group: this.group_select
+                    //Group: ['B1-vs-C1']
                 };
 
                 this.colors=[ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"];
@@ -477,6 +479,10 @@ export class RelativeSpliceComponent implements OnInit {
     selectConfirm(data) {
         this.selectConfirmData = data;
         this.doWithDatas();
+        this.chartEntity['AS_type'] = this.AS_type_select;
+        this.chartEntity['Group'] = this.group_select;
+        this.updateRelativeSplice();
+
     }
 
     //选择面板，默认选中数据
@@ -494,90 +500,19 @@ export class RelativeSpliceComponent implements OnInit {
 
     //画图
     drawChart(data) {
-        //console.log(data)
         let that = this;
 
-        let tempData = [
-            {
-                AS_type: "SE",
-                Group: "B1-vs-C1",
-                LCID: "demo",
-                st_gene_id: "STgene0008752",
-                unique: 11105,
-                x_site: 4519.146,
-                y_site: 0.972,
-                x:0,
-                y:0
-            },
-            {
-                AS_type: "A3SS",
-                Group: "A1-vs-B1",
-                LCID: "demo",
-                st_gene_id: "STgene0008752",
-                unique: 11005,
-                x_site: 3519.146,
-                y_site: 0.872,
-                x:0,
-                y:0
-            },
-            {
-                AS_type: "RI",
-                Group: "A1-vs-C1",
-                LCID: "demo",
-                st_gene_id: "STgene0008752",
-                unique: 11505,
-                x_site: 4519.146,
-                y_site: 0.772,
-                x:0,
-                y:0
-            },
-            {
-                AS_type: "RI",
-                Group: "A1-vs-C1",
-                LCID: "demo",
-                st_gene_id: "STgene0008752",
-                unique: 11505,
-                x_site: 4519.146,
-                y_site: 0.880,
-                x:0,
-                y:0
-            },
-            {
-                AS_type: "A5SS",
-                Group: "B2-vs-A2",
-                LCID: "demo",
-                st_gene_id: "STgene0008752",
-                unique: 11305,
-                x_site: 5519.146,
-                y_site: 0.672,
-                x:0,
-                y:0
-            },
-            {
-                AS_type: "RI",
-                Group: "C2-vs-A2",
-                LCID: "demo",
-                st_gene_id: "STgene0008752",
-                unique: 11605,
-                x_site: 6519.146,
-                y_site: 0.572,
-                x:0,
-                y:0
-            },
-            {
-                AS_type: "SE",
-                Group: "C2-vs-B2",
-                LCID: "demo",
-                st_gene_id: "STgene0008752",
-                unique: 12005,
-                x_site: 7519.146,
-                y_site: 0.472,
-                x:0,
-                y:0
-            }
-        ]
+        if(data.length == 0){
+            return;
+        }
+        let tempData = data.asGraph;
 
-        // let tempData = data;
+        tempData.forEach((d) => {
+            d.x = 0;
+            d.y = 0;
+        });
+
+        
 
         let x_value = [];
         let y_value = [];
@@ -589,6 +524,8 @@ export class RelativeSpliceComponent implements OnInit {
 
         x_value = Array.from(new Set(x_value));
         y_value = Array.from(new Set(y_value));
+
+
 
         let t_chartID = document.getElementById('relativeSpliceDiv');
 		let str = `<svg id='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
@@ -605,6 +542,7 @@ export class RelativeSpliceComponent implements OnInit {
         let svg1 = null;
         let xScale = null;
         let yScale = null;
+        let retc2 = null;
 
         let top_title = 30;//上侧标题
         let bottom_xlength = 20; //下侧x轴高度
@@ -614,15 +552,17 @@ export class RelativeSpliceComponent implements OnInit {
         let left_ylength = 30;//左侧y轴
         let right_name_length=getNameLength(this.selectConfirmData)+30;
 
-        let rect_length ={  //矩形宽高
-            x:50,
-            y:40
-        }
+        // let rect_length ={  //矩形宽高
+        //     x:50,
+        //     y:40
+        // }
 
-        let xAxis_length = x_value.length*rect_length.x;
-        let yAxis_length = y_value.length*rect_length.y;
+        // let xAxis_length = x_value.length*rect_length.x;
+        // let yAxis_length = y_value.length*rect_length.y;
+        let xAxis_length = 320;
+        let yAxis_length = 300;
 
-        let svg_width = left_title + left_ylength + xAxis_length + right_name_length; //计算最外层svg宽度
+        let svg_width = left_title + left_ylength + xAxis_length + right_name_length*2; //计算最外层svg宽度
         let svg_height = top_title + yAxis_length + bottom_xlength + bottom_UTR_CDS; //计算最外层svg高度
 
         let svg = d3.select('#svg') //最外层svg
@@ -645,8 +585,9 @@ export class RelativeSpliceComponent implements OnInit {
         draw_x_y_axis();
         drawRightTopLegend();
         drawRightBottomLegend();
-        drawSquare();
         drawCenter();
+        drawBottomLegend();
+        drawSquare();
     
         function draw_x_y_axis(){
             
@@ -660,12 +601,13 @@ export class RelativeSpliceComponent implements OnInit {
 
             xScale = d3
 				.scaleLinear()
-				.domain([ d3.min(x_value), d3.max(x_value) ])
+				.domain([ 0 , 10000 ])
                 .range([ 0 , xAxis_length ])
                 .nice().clamp(true);
             yScale = d3
 				.scaleLinear()
-				.domain([ d3.max(y_value), d3.min(y_value) ])
+                .domain([ d3.max(y_value), d3.min(y_value)])
+                //.domain([ 1 , 0 ])
                 .range([ 0 , yAxis_length ])
                 .nice().clamp(true);
                 
@@ -731,8 +673,9 @@ export class RelativeSpliceComponent implements OnInit {
 
         function drawRightBottomLegend(){
 
-            let padding_left = temp_x_width + left_title+10;
-            let padding_top = 140 + top_title +10;
+            // let padding_left = temp_x_width + left_title+10;
+            // let padding_top = 140 + top_title +10;
+            let padding_left = temp_x_width + left_title + right_name_length;
 
             let circle = d3.symbol().type(d3.symbolCircle)();
 
@@ -749,7 +692,10 @@ export class RelativeSpliceComponent implements OnInit {
 
             let r_legend_bottom = svg
                 .append('g')
-                .attr('transform', 'translate(' + padding_left + ',' + padding_top + ')');
+                .attr('transform', 'translate(' + padding_left + ',' + top_title + ')')
+                .attr('width',right_name_length)
+                .attr('height',yAxis_length)
+                ;
 
             r_legend_bottom.append('text').attr("class","titleText").attr('dx', '0').attr('dy', '0').text("Group");
 
@@ -773,7 +719,14 @@ export class RelativeSpliceComponent implements OnInit {
         }
 
         function drawCenter(){
-            console.log(tempData);
+            //console.log(tempData);
+            retc2 = svg1.append("rect")
+                .attr('fill','#fff')
+                .attr('width', xAxis_length)
+                .attr('height', yAxis_length)
+                .attr('position', 'relative')
+                .attr('transform', 'translate(' + (left_ylength+0.5) + ',' + temp_add_width + ')');
+
             tempData.forEach((d) => {
                 d.x = xScale(d['x_site'])+left_ylength;
                 d.y = yScale(d['y_site']);
@@ -799,7 +752,15 @@ export class RelativeSpliceComponent implements OnInit {
                 return z(d['Group']);
             })
             .on("mouseover", function(d) {
-                let tipText = `x: ${d.x}<br> y:  ${d.y}<br> AS_type:  ${d.AS_type}<br> Group:  ${d.Group}<br> st_gene_id:  ${d.st_gene_id}<br> unique:  ${d.unique}`;
+                let tipText = `x: ${d.x_site}
+                            <br> y:  ${d.y_site}
+                            <br> AS_type:  ${d.AS_type}
+                            <br> Group:  ${d.Group}
+                            <br> st_gene_id:  ${d.st_gene_id}
+                            <br> unique:  ${d.unique}
+                            <br> x_calculate: ${d.x}
+                            <br> y_calculate:  ${d.y}
+                            `;
                 that.globalService.showPopOver(d3.event, tipText);
             })
             .on("mouseout", function(d) {
@@ -820,64 +781,61 @@ export class RelativeSpliceComponent implements OnInit {
         let flag = false;
 
         function drawSquare(){
-            var svg2 = svg1.append("rect")
-                .attr('fill','#fff')
-                .attr('width', xAxis_length)
-                .attr('height', yAxis_length)
-                .attr('transform', 'translate(' + (left_ylength+0.5) + ',' + temp_add_width + ')');
-            
-            let rect = svg2.append("rect")
+
+            ///startLoc = [d3.event.offsetX - left_title, d3.event.offsetY - top_title];
+
+            let rect = svg1.append("rect")
                 .attr("width", 0)
                 .attr("height", 0)
                 .attr("fill", "rgba(33,20,50,0.3)")
                 .attr("stroke", "#ccc")
-                .attr("stroke-width", "2px")
+                .attr("stroke-width", "1px")
                 .attr("transform", "translate(0,0)")
                 .attr("id", "squareSelect");
 
-            svg2.on("mousedown", function() {
+            retc2.on("mousedown", function() {
                 let event = d3.event;
                     event.stopPropagation();
 
-                //let temp_y = 
-
                 clickTime = (new Date()).getTime();//mark start time
-                flag = true;//以flag作为可执行圈选的标记
-                rect.attr("transform", "translate(" + d3.event.offsetX + "," + d3.event.offsetY + ")");
-                startLoc = [d3.event.offsetX, d3.event.offsetY];
+                flag = true;      //以flag作为可执行圈选的标记
+                rect.attr("transform", "translate(" + (d3.event.offsetX - left_title) + "," + (d3.event.offsetY - top_title) + ")");
+                startLoc = [d3.event.offsetX - left_title, d3.event.offsetY - top_title];
+                // console.log(d3.event.offsetX)
+                // console.log(d3.event.layerX)
                 console.log(startLoc)
             });
 
-            svg2.on("mousemove", function() {
+            retc2.on("mousemove", function() {
                 let event = d3.event;
                     event.stopPropagation();
 
                 //判断事件target
                 if (d3.event.target.localName == "svg1" && flag == true || d3.event.target.localName == "rect" && flag == true) {
+                    let width = d3.event.offsetX - left_title - startLoc[0];
+                    let height = d3.event.offsetY - top_title - startLoc[1];
 
-                let width = d3.event.offsetX - startLoc[0];
-                let height = d3.event.offsetY - startLoc[1];
-                if (width < 0) {
-                    rect.attr("transform", "translate(" + d3.event.offsetX + "," + startLoc[1] + ")");
-                }
-                if (height < 0) {
-                    rect.attr("transform", "translate(" + startLoc[0] + "," + d3.event.offsetY + ")");
-                }
-                if (height < 0 && width < 0) {
-                    rect.attr("transform", "translate(" + d3.event.offsetX + "," + d3.event.offsetY + ")");
-                }
-                rect.attr("width", Math.abs(width)).attr("height", Math.abs(height))
+                    if (width < 0) {
+                        rect.attr("transform", "translate(" + (d3.event.offsetX - left_title) + "," + startLoc[1] + ")");
+                    }
+                    if (height < 0) {
+                        rect.attr("transform", "translate(" + startLoc[0] + "," + (d3.event.offsetY - top_title) + ")");
+                    }
+                    if (height < 0 && width < 0) {
+                        rect.attr("transform", "translate(" + (d3.event.offsetX - left_title) + "," + (d3.event.offsetY - top_title) + ")");
+                    }
+                    rect.attr("width", Math.abs(width)).attr("height", Math.abs(height))
                 }
 
             })
 
-            svg2.on("mouseup", function(){
+            retc2.on("mouseup", function(){
                 let event = d3.event;
                     event.stopPropagation();
 
                 if(flag == true){
                     flag = false;
-                    endLoc = [d3.event.offsetX, d3.event.offsetY];
+                    endLoc = [d3.event.offsetX - left_title, d3.event.offsetY - top_title];
                     let leftTop = [];
                     let rightBottom = []
                     if(endLoc[0]>=startLoc[0]){
@@ -898,13 +856,14 @@ export class RelativeSpliceComponent implements OnInit {
 
                     console.log(endLoc)
                     //最后通过和node的坐标比较，确定哪些点在圈选范围
-                    let nodes = d3.selectAll(".node").attr("temp", function(d){
-                        if(d.x<rightBottom[0] && d.x>leftTop[0] && d.y>leftTop[1] && d.y<rightBottom[1]){
+                    // let nodes = d3.selectAll(".node").attr("temp", function(d){
+                    //     if(d.x<rightBottom[0] && d.x>leftTop[0] && d.y>leftTop[1] && d.y<rightBottom[1]){
 
-                                //d3.select(this).attr("class","node selected");
-                                console.log(d3.select(this))
-                        }
-                    })
+                    //             //d3.select(this).attr("class","node selected");
+                    //             console.log(d3.select(this))
+                    //     }
+                    // })
+
                     rect.attr("width",0).attr("height",0);
                 }
                 let times = (new Date()).getTime()-clickTime;
@@ -914,6 +873,63 @@ export class RelativeSpliceComponent implements OnInit {
 
             })
 
+        }
+
+        function drawBottomLegend(){
+            // let top_title = 30;//上侧标题
+            // let bottom_xlength = 20; //下侧x轴高度
+            // let bottom_UTR_CDS = 60; //下侧UTR_CDS高度
+
+            let u_padding = top_title + bottom_xlength + yAxis_length+20;
+            let g_UTR = svg
+                .append('g')
+                .attr('transform', 'translate(' + (left_title+left_ylength) + ',' + u_padding + ')')
+                .attr('class', 'utr')
+                .attr("height",bottom_UTR_CDS)
+                ;
+            
+            g_UTR.append('rect')
+            .attr('class', 'MyRect')
+            .attr('width',xAxis_length/5)
+            .attr('height',16)
+            .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
+            .attr('fill','black')
+        
+            g_UTR.append('rect')
+            .attr('class', 'MyRect')
+            .attr('width',xAxis_length*3/5)
+            .attr('height',6)
+            .attr('transform', 'translate(' + xAxis_length/5 + ',' + 5 + ')')
+            .attr('fill','black')
+            .attr('opacity',0.5)
+            
+            g_UTR.append('rect')
+            .attr('class', 'MyRect')
+            .attr('width',xAxis_length/5)
+            .attr('height',16)
+            .attr('transform', 'translate(' + xAxis_length*4/5 + ',' + 0 + ')')
+            .attr('fill','black')
+
+            g_UTR.append('text')
+            .attr('class', 'MyText')
+            .attr('dx', function(d, i) {
+                return 10;
+            })
+            .attr('dy', function(d, i) {
+                return 30;
+            })
+            .text("5'-UTR")
+
+            g_UTR.append('text')
+            .attr('class', 'MyText')
+            .attr('dx', function(d, i) {
+                return 270;
+            })
+            .attr('dy', function(d, i) {
+                return 30;
+            })
+            .text("3'-UTR")
+            
         }
 
         function uniq(array){
