@@ -132,8 +132,8 @@ export class RelativeSpliceComponent implements OnInit {
                 this.chartEntity = {
                     LCID: sessionStorage.getItem("LCID"),
                     //tid: '7fc7bf9c6db34fc0b042efc40a4db779',
-                    tid:"f888468806f644ccaac2afed5d424f00",
-                    //tid:this.tid,
+                    // tid:"f888468806f644ccaac2afed5d424f00",
+                    tid:this.tid,
                     version: this.version,
                     geneType: this.geneType,
                     species: this.storeService.getStore("genome"),
@@ -441,24 +441,6 @@ export class RelativeSpliceComponent implements OnInit {
         });
     }
 
-    //数据筛选，默认选的数组要进行筛选
-    doWithDatas(){
-        this.selectConfirmData.forEach((d) => {
-            this.AS_type_list.forEach((m) => {
-                if (d === m) {
-                    this.AS_type_select.push(m)
-                }
-            })
-            this.Group_All_List.forEach((m) => {
-                if (d === m) {
-                    this.group_select.push(m)
-                }
-            })
-        })
-        console.log(this.AS_type_select)
-        console.log(this.group_select)
-    }
-
     //图二次更新
     updateRelativeSplice() {
         this.doubleMultiSelect.length = 0;
@@ -485,6 +467,26 @@ export class RelativeSpliceComponent implements OnInit {
 
     }
 
+    //数据筛选，默认选的数组要进行筛选
+    doWithDatas(){
+        this.AS_type_select.length = 0;
+        this.group_select.length = 0;
+        this.selectConfirmData.forEach((d) => {
+            this.AS_type_list.forEach((m) => {
+                if (d === m) {
+                    this.AS_type_select.push(m)
+                }
+            })
+            this.Group_All_List.forEach((m) => {
+                if (d === m) {
+                    this.group_select.push(m)
+                }
+            })
+        })
+        console.log(this.AS_type_select)
+        console.log(this.group_select)
+    }
+
     //选择面板，默认选中数据
     defaultSelectList(data) {
         this.selectConfirmData = data;
@@ -506,6 +508,7 @@ export class RelativeSpliceComponent implements OnInit {
             return;
         }
         let tempData = data.asGraph;
+        let tempSetting = data.as_region;
 
         tempData.forEach((d) => {
             d.x = 0;
@@ -601,13 +604,13 @@ export class RelativeSpliceComponent implements OnInit {
 
             xScale = d3
 				.scaleLinear()
-				.domain([ 0 , 10000 ])
+				.domain([ tempSetting.x_axis.start , tempSetting.x_axis.end ])
                 .range([ 0 , xAxis_length ])
                 .nice().clamp(true);
             yScale = d3
 				.scaleLinear()
-                .domain([ d3.max(y_value), d3.min(y_value)])
-                //.domain([ 1 , 0 ])
+                //.domain([ d3.max(y_value), d3.min(y_value)])
+                .domain([ tempSetting.y_axis.end , tempSetting.y_axis.start ])
                 .range([ 0 , yAxis_length ])
                 .nice().clamp(true);
                 
@@ -729,7 +732,7 @@ export class RelativeSpliceComponent implements OnInit {
 
             tempData.forEach((d) => {
                 d.x = xScale(d['x_site'])+left_ylength;
-                d.y = yScale(d['y_site']);
+                d.y = yScale(d['y_site'])+temp_add_width;
             });
 
             // 默认用图例数组
@@ -738,7 +741,7 @@ export class RelativeSpliceComponent implements OnInit {
             let z = d3.scaleOrdinal().domain(categoryList).range(that.colors.slice(0, categoryList.length));
 
             //temp_symbol
-            svg1.selectAll('.MyCircle')
+            svg1.selectAll('.mynode')
             .data(tempData)
             .enter()
             .append('path')
@@ -748,6 +751,7 @@ export class RelativeSpliceComponent implements OnInit {
             .attr("d",function(d,i){
                 return symbolScale(d["AS_type"])
             })
+            .attr("class","mynode")
             .attr("fill", function(d, i) {
                 return z(d['Group']);
             })
@@ -775,14 +779,12 @@ export class RelativeSpliceComponent implements OnInit {
 
         }
 
-        let clickTime = 0;
+        let isMouseDown = false;
+        let isMouseMove = false;
         let startLoc = [];
         let endLoc = [];
-        let flag = false;
 
         function drawSquare(){
-
-            ///startLoc = [d3.event.offsetX - left_title, d3.event.offsetY - top_title];
 
             let rect = svg1.append("rect")
                 .attr("width", 0)
@@ -793,25 +795,18 @@ export class RelativeSpliceComponent implements OnInit {
                 .attr("transform", "translate(0,0)")
                 .attr("id", "squareSelect");
 
-            retc2.on("mousedown", function() {
-                let event = d3.event;
-                    event.stopPropagation();
-
-                clickTime = (new Date()).getTime();//mark start time
-                flag = true;      //以flag作为可执行圈选的标记
+            svg1.on("mousedown", function() {
+                isMouseDown = true;
                 rect.attr("transform", "translate(" + (d3.event.offsetX - left_title) + "," + (d3.event.offsetY - top_title) + ")");
                 startLoc = [d3.event.offsetX - left_title, d3.event.offsetY - top_title];
-                // console.log(d3.event.offsetX)
-                // console.log(d3.event.layerX)
                 console.log(startLoc)
             });
 
-            retc2.on("mousemove", function() {
-                let event = d3.event;
-                    event.stopPropagation();
+            svg1.on("mousemove", function() {
 
-                //判断事件target
-                if (d3.event.target.localName == "svg1" && flag == true || d3.event.target.localName == "rect" && flag == true) {
+                if(isMouseDown){
+                    isMouseMove = true;
+
                     let width = d3.event.offsetX - left_title - startLoc[0];
                     let height = d3.event.offsetY - top_title - startLoc[1];
 
@@ -829,12 +824,11 @@ export class RelativeSpliceComponent implements OnInit {
 
             })
 
-            retc2.on("mouseup", function(){
-                let event = d3.event;
-                    event.stopPropagation();
+            svg1.on("mouseup", function(){
+                if(isMouseDown && isMouseMove){
+                    isMouseDown = false;
+                    isMouseMove = false;
 
-                if(flag == true){
-                    flag = false;
                     endLoc = [d3.event.offsetX - left_title, d3.event.offsetY - top_title];
                     let leftTop = [];
                     let rightBottom = []
@@ -855,22 +849,20 @@ export class RelativeSpliceComponent implements OnInit {
                     }
 
                     console.log(endLoc)
-                    //最后通过和node的坐标比较，确定哪些点在圈选范围
-                    // let nodes = d3.selectAll(".node").attr("temp", function(d){
-                    //     if(d.x<rightBottom[0] && d.x>leftTop[0] && d.y>leftTop[1] && d.y<rightBottom[1]){
+                    svg1.selectAll(".mynode").each(function(d){
+                        if(d.x<rightBottom[0] && d.x>leftTop[0] && d.y>leftTop[1] && d.y<rightBottom[1]){
+                                console.log(d)
+                        }
+                        //console.log(d)
+                    })
 
-                    //             //d3.select(this).attr("class","node selected");
-                    //             console.log(d3.select(this))
-                    //     }
-                    // })
+                    //rect.attr("width",0).attr("height",0);
+                }else{
+                    isMouseDown = false;
+                    isMouseMove = false;
 
-                    rect.attr("width",0).attr("height",0);
+                   console.log(66666666666666)
                 }
-                let times = (new Date()).getTime()-clickTime;
-                if (times<100 && d3.event.target.id !== "squareSelect") {
-                    let nodes = d3.selectAll(".node").attr("class", "node unselected")
-                }
-
             })
 
         }
@@ -888,16 +880,21 @@ export class RelativeSpliceComponent implements OnInit {
                 .attr("height",bottom_UTR_CDS)
                 ;
             
+            let sum = tempSetting.utr_3.end - tempSetting.utr_5.start;
+            let utr_5_scale = (tempSetting.utr_5.end-tempSetting.utr_5.start)/sum;
+            let utr_3_scale = (tempSetting.utr_3.end-tempSetting.utr_3.start)/sum;
+            let cds_scale = (tempSetting.cds.end-tempSetting.cds.start)/sum;
+
             g_UTR.append('rect')
             .attr('class', 'MyRect')
-            .attr('width',xAxis_length/5)
+            .attr('width',xAxis_length*utr_5_scale)
             .attr('height',16)
             .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
             .attr('fill','black')
         
             g_UTR.append('rect')
             .attr('class', 'MyRect')
-            .attr('width',xAxis_length*3/5)
+            .attr('width',xAxis_length*cds_scale)
             .attr('height',6)
             .attr('transform', 'translate(' + xAxis_length/5 + ',' + 5 + ')')
             .attr('fill','black')
@@ -905,7 +902,7 @@ export class RelativeSpliceComponent implements OnInit {
             
             g_UTR.append('rect')
             .attr('class', 'MyRect')
-            .attr('width',xAxis_length/5)
+            .attr('width',xAxis_length*utr_3_scale)
             .attr('height',16)
             .attr('transform', 'translate(' + xAxis_length*4/5 + ',' + 0 + ')')
             .attr('fill','black')
@@ -978,6 +975,14 @@ export class RelativeSpliceComponent implements OnInit {
                 str += '';
             }
             return str.replace(/[^\x00-\xff]/g, '01').length;
+        }
+
+        function pauseEvent(e){
+            if(e.stopPropagation) e.stopPropagation();
+            if(e.preventDefault) e.preventDefault();
+            e.cancelBubble=true;
+            e.returnValue=false;
+            return false;
         }
     }
 }
