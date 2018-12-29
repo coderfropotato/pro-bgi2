@@ -545,7 +545,7 @@ export class RelativeSpliceComponent implements OnInit {
         let svg1 = null;
         let xScale = null;
         let yScale = null;
-        let retc2 = null;
+        let rect2 = null;
 
         let top_title = 30;//上侧标题
         let bottom_xlength = 20; //下侧x轴高度
@@ -723,7 +723,7 @@ export class RelativeSpliceComponent implements OnInit {
 
         function drawCenter(){
             //console.log(tempData);
-            retc2 = svg1.append("rect")
+            rect2 = svg1.append("rect")
                 .attr('fill','#fff')
                 .attr('width', xAxis_length)
                 .attr('height', yAxis_length)
