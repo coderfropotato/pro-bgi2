@@ -5,10 +5,16 @@
     </app-menu>
     <div class="content reanalysis-content row">
     <div #left class="left-layout column" [class.unexpand]="switch" [class.table-only]="onlyTable">
-        <!-- <div class="left-top-layout">
-            <h4>title</h4>
-            <p>describe</p>
-        </div> -->
+        <div class="left-top-layout">
+            <h4>
+                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.expand' | translate" nz-tooltip class="iconfont icon-theme pointer expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.unexpand' | translate" nz-tooltip class="iconfont icon-theme pointer expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                <!-- {{'diff_venn.diff_venn_title' | translate}} -->
+                kaFun图
+            </h4>
+            <p [hidden]="!expandModuleDesc">{{k_statistic['explain']}}</p>
+            <ng-content select=".gene-switch-module"></ng-content>
+        </div>
         <div class="left-bottom-layout">
                 <app-table-switch-chart
                     #kaFunChart

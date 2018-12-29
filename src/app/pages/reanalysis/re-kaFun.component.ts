@@ -33,6 +33,9 @@ export class KaFunComponent implements OnInit {
     chartEntity: object;
     chart:any;
 
+    // 默认收起模块描述
+	expandModuleDesc:boolean = false;
+
     // table
     defaultEntity: object;
 	defaultUrl: string;
@@ -64,10 +67,12 @@ export class KaFunComponent implements OnInit {
     version:string = null;
 
     //参数
-    k_degree:number;
-    k_explain:string;
-    k_pvalue:number;
-    k_stat:number;
+    k_statistic:object={
+        degree:"",
+        explain:"",
+        pvalue:"",
+        stat:""
+    };
 
     //单选
     singleMultiSelect: object = {};
@@ -319,6 +324,12 @@ export class KaFunComponent implements OnInit {
 		} catch (error) {}
     }
 
+    moduleDescChange(){
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(()=>{this.kaFunChart.scrollHeight()},30)
+	}
+
     //kaFun图二次更新
 	updateKaFun() {
 
@@ -385,13 +396,25 @@ export class KaFunComponent implements OnInit {
 
         that.isHasMultiSelectFlag = this.geneNum == 1?false:true;
         
+        if(data.statistic){
+            that.k_statistic = {
+                degree:data.statistic.degree,
+                explain:data.statistic.explain,
+                pvalue:data.statistic.pvalue,
+                stat:data.statistic.stat
+            }
+        }
 
-        that.k_degree=data.degree;
-        that.k_explain=data.explain;
-        that.k_pvalue=data.pvalue;
-        that.k_stat=data.stat;
+        let k_baseThead = [];
 
-        let k_baseThead = data.mThead;//["high", "middle", "low", "sum"]
+        data.baseThead.forEach((d) => {
+            if(d.name != "name"){
+                k_baseThead.push(d.name)
+            }
+        });
+        
+
+        //let k_baseThead = data.mThead;//["high", "middle", "low", "sum"]
         let k_dataRow = data.rows;
         let k_dataName = [];
         k_dataRow.forEach(val => {
@@ -449,7 +472,10 @@ export class KaFunComponent implements OnInit {
         let r_width = 80;  //右侧图例宽度
         let t_height = 20;  //上图例宽度
 
-        let s_width = k_dataRow.length>3?90:120;  //正方体宽高
+        //let s_width = k_dataRow.length>3?50:120;  //正方体宽高
+        
+        let s_width = getWidth(k_dataRow.length);
+
 
         let x_length = k_baseThead.length*s_width;
         let y_length = k_dataRow.length*s_width;
@@ -476,40 +502,70 @@ export class KaFunComponent implements OnInit {
 
         for (let index = 0; index < k_dataRow.length; index++) {
             const element = k_dataRow[index];
-            k_dataCircle.push(
-                {
-                    x:s_width/2,
-                    y:s_width*(2*index+1)/2,
-                    value:element.high,
-                    name:element.name,
-                    type:"high",
-                    bucket:element.high_bucket
-                },
-                {
-                    x:s_width*3/2,
-                    y:s_width*(2*index+1)/2,
-                    value:element.middle,
-                    name:element.name,
-                    type:"middle",
-                    bucket:element.middle_bucket
-                },
-                {
-                    x:s_width*5/2,
-                    y:s_width*(2*index+1)/2,
-                    value:element.low,
-                    name:element.name,
-                    type:"low",
-                    bucket:element.low_bucket
-                },
-                {
-                    x:s_width*7/2,
-                    y:s_width*(2*index+1)/2,
-                    value:element.sum,
-                    name:element.name,
-                    type:"sum",
-                    bucket:element.sum_bucket
-                }
-            )
+            if(that.geneNum == 1){
+                k_dataCircle.push(
+                    {
+                        x:s_width/2,
+                        y:s_width*(2*index+1)/2,
+                        value:element.high,
+                        name:element.name,
+                        type:"high",
+                        bucket:element.high_bucket
+                    },
+                    {
+                        x:s_width*3/2,
+                        y:s_width*(2*index+1)/2,
+                        value:element.middle,
+                        name:element.name,
+                        type:"middle",
+                        bucket:element.middle_bucket
+                    },
+                    {
+                        x:s_width*5/2,
+                        y:s_width*(2*index+1)/2,
+                        value:element.low,
+                        name:element.name,
+                        type:"low",
+                        bucket:element.low_bucket
+                    },
+                    {
+                        x:s_width*7/2,
+                        y:s_width*(2*index+1)/2,
+                        value:element.sum,
+                        name:element.name,
+                        type:"sum",
+                        bucket:element.sum_bucket
+                    }
+                )
+            }else{
+                k_dataCircle.push(
+                    {
+                        x:s_width/2,
+                        y:s_width*(2*index+1)/2,
+                        value:element.high,
+                        name:element.name,
+                        type:"high",
+                        bucket:element.high_bucket
+                    },
+                    {
+                        x:s_width*3/2,
+                        y:s_width*(2*index+1)/2,
+                        value:element.middle,
+                        name:element.name,
+                        type:"middle",
+                        bucket:element.middle_bucket
+                    },
+                    {
+                        x:s_width*5/2,
+                        y:s_width*(2*index+1)/2,
+                        value:element.low,
+                        name:element.name,
+                        type:"low",
+                        bucket:element.low_bucket
+                    }
+                )
+            }
+            
 
         }
         drawTopTitle();//上侧标题
@@ -920,6 +976,20 @@ export class KaFunComponent implements OnInit {
             return str.replace(/[^\x00-\xff]/g, '01').length;
         }
 
+        function getWidth(num){
+            let tempNum = 0;
+            if(num<3){
+                tempNum = 120;
+            }else if(num>=3&&num<7){
+                tempNum = 70;
+            }else if(num>=7&&num<11){
+                tempNum = 55
+            }else if(num>=11){
+                tempNum = 40;
+            }
+            return tempNum;
+        }
+
         //把x轴相同的分在一起
 		function sortArr(arr, str) {
 			let _arr = [],
@@ -965,26 +1035,30 @@ export class KaFunComponent implements OnInit {
         }
 
         function getNameLength(k_dataName){
-            //计算左侧最大的名字长度
-            let k_name_max = [];
-            for (let i = 0; i < k_dataName.length; i++) {
-                k_name_max.push(getBLen(k_dataName[i]));
-            }
-
-            let max_name = Math.max.apply(null, k_name_max);
-            let target_name = '';
-            for (let i = 0; i < k_name_max.length; i++) {
-                if (max_name == k_name_max[i]) {
-                    target_name = k_dataName[i];
-                    break;
-                }
-            }
             let oSvg = d3.select('#kaFunChartDiv').append('svg');
-            let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
-            let name_length = mText.nodes()[0].getBBox().width;
-            oSvg.remove();
+			let mText = oSvg.selectAll('MyAlltext')
+			.data(k_dataName)
+			.enter()
+			.append('text')
+			.text(function(d,i){
+				return d;
+			})
+			.attr('class', 'aText');
 
-            return name_length;
+			let max_length = [];
+
+			mText.nodes().forEach((d) => {
+				max_length.push(d.getBBox().width);
+			});
+			//console.log(max_length)
+
+			max_length.sort(function(a,b){
+				return b-a;
+			});
+
+			oSvg.remove();
+
+			return max_length[0];
         }
 
     }
