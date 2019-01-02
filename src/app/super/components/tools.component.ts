@@ -68,7 +68,8 @@ export class ToolsComponent implements OnInit {
 		{ type: 'kaFun', name: '卡方检测', desc: '卡方' },
 		{ type: 'relativeSplice', name: '可变剪切', desc: '可变剪切' },
 		{ type: 'relaticeNet', name: '关联网络图', desc: '关联网络图' },
-		{ type: 'relativeHeatmap', name: '关联聚类热图', desc: '关联聚类热图' }
+		{ type: 'relativeHeatmap', name: '关联聚类热图', desc: '关联聚类热图' },
+		{ type: 'reanalysisList', name: '查看重分析列表', desc: '查看重分析列表' }
 	];
 	desc: string = '';
 	title: String = '';
@@ -909,6 +910,10 @@ export class ToolsComponent implements OnInit {
 	// 网路图
 	getnetParams() {
 		console.log('net');
+	}
+
+	getreanalysisParams() {
+		console.log('reanalysis');
 	}
 
 	handlerChildClose() {
