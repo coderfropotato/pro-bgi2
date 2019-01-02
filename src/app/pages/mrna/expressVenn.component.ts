@@ -16,7 +16,7 @@ declare const Venn: any;
 	selector: 'app-venn-page',
     template: `<app-express-venn *ngIf="showModule" [defaultGeneType]="defaultGeneType">
                     <div class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
-                        <span>{{defaultGeneType['type'] | translate}}</span><i class="iconfont icon-qiehuan"></i>
+                        <span>{{defaultGeneType | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
                 </app-express-venn>`,
 	styles: []
@@ -24,7 +24,7 @@ declare const Venn: any;
 
 export class ExpressVennPage {
 	showModule:boolean = true;
-    defaultGeneType:object = {type:"gene"};
+    defaultGeneType:string = "gene";
 
     constructor(private storeService:StoreService,private translate:TranslateService) {
         let browserLang = this.storeService.getLang();
@@ -32,7 +32,7 @@ export class ExpressVennPage {
     }
 
     handlerSwitchChange(){
-        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transform':'gene';
+        this.defaultGeneType = this.defaultGeneType==='gene'?'transform':'gene';
         this.showModule = false;
         setTimeout(()=>{this.showModule = true},30);
     }

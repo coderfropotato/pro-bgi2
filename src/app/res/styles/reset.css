@@ -135,3 +135,7 @@ ul,ol {
     padding-left: 12px;
 }
 
+/* 滑动输入条 */
+.ant-slider{
+    margin:7px 6px 0;
+}

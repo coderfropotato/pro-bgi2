@@ -18,7 +18,7 @@ declare const $:any;
 	selector: 'app-gene-list-venn-page',
     template: `<app-gene-list-venn *ngIf="showModule" [defaultGeneType]="defaultGeneType">
                     <div class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
-                        <span>{{defaultGeneType['type'] | translate}}</span><i class="iconfont icon-qiehuan"></i>
+                        <span>{{defaultGeneType | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
                 </app-gene-list-venn>`,
 	styles: []
@@ -26,7 +26,7 @@ declare const $:any;
 
 export class GeneListVennPageComponent {
     showModule:boolean = true;
-    defaultGeneType:object = {type:"gene"};
+    defaultGeneType:string = 'gene';
 
     constructor(private storeService:StoreService,private translate:TranslateService) {
         let browserLang = this.storeService.getLang();
@@ -34,7 +34,7 @@ export class GeneListVennPageComponent {
     }
 
     handlerSwitchChange(){
-        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transcript':'gene';
+        this.defaultGeneType = this.defaultGeneType==='gene'?'transcript':'gene';
         this.showModule = false;
         setTimeout(()=>{this.showModule = true},30);
     }
@@ -185,7 +185,7 @@ export class GeneListVennComponent implements OnInit {
 			this.tableEntity = {
 				LCID: this.storeService.getStore('LCID'),
 				setNameList:this.beforeSelectPanelEntity['setNameList'],
-				geneType: this.defaultGeneType['type'],
+				geneType: this.defaultGeneType,
 			};
 			this.getChartData();
 
@@ -208,7 +208,7 @@ export class GeneListVennComponent implements OnInit {
 				reAnaly: false,
 				matrix: false, //是否转化。矩阵为matrix
 				relations: [], //关系组（简写，索引最后一个字段）
-				geneType: this.defaultGeneType['type'], //基因类型gene和transcript
+				geneType: this.defaultGeneType, //基因类型gene和transcript
 				species: this.storeService.getStore('genome'), //物种
 				version: this.storeService.getStore('version'),
 				searchList: [],
@@ -237,7 +237,7 @@ export class GeneListVennComponent implements OnInit {
 				matchAll: false,
 				matrix: true, //是否转化。矩阵为matrix
 				relations: [], //关系组（简写，索引最后一个字段）
-				geneType: this.defaultGeneType['type'], //基因类型gene和transcript
+				geneType: this.defaultGeneType, //基因类型gene和transcript
 				species: this.storeService.getStore('genome'), //物种
 				version: this.storeService.getStore('version'),
 				searchList: [],
@@ -379,7 +379,7 @@ export class GeneListVennComponent implements OnInit {
 				url:`${config['javaPath']}/geneSet/getTags`,
 				data:{
 					LCID:sessionStorage.getItem('LCID'),
-					geneType:this.defaultGeneType['type']
+					geneType:this.defaultGeneType
 				}
 			}).subscribe(res=>{
 				if(res['status']==0 && (!$.isEmptyObject(res['data']))){
@@ -451,7 +451,7 @@ export class GeneListVennComponent implements OnInit {
 			url:`${config['javaPath']}/geneSet/display`,
 			data:{
 				"LCID": sessionStorage.getItem('LCID'),
-				"geneType": this.defaultGeneType['type'],
+				"geneType": this.defaultGeneType,
 				"tags": this.selectPanelEntity['tag']
 			}
 		}).subscribe(res=>{
@@ -488,6 +488,19 @@ export class GeneListVennComponent implements OnInit {
 		}else{
 			let index = this.selectPanelEntity['gene'].findIndex((val,index)=>{
 				return val['setName'] === gene['setName'];
+			});
+			if(index!=-1) {
+				this.selectPanelEntity['gene'].splice(index,1);
+				this.selectPanelEntity['setNameList'].splice(index,1);
+			}
+		}
+	}
+
+	// 删除标签
+	handleDelete(event,item){
+		if(item['checked']){
+			let index = this.selectPanelEntity['gene'].findIndex((val,index)=>{
+				return val['setName'] === item['setName'];
 			});
 			if(index!=-1) {
 				this.selectPanelEntity['gene'].splice(index,1);

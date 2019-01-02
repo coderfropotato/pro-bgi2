@@ -51,20 +51,28 @@ export class AddColumnComponent implements OnInit {
         // 每次进入路由重新获取增删列 并应用之前的选中状态
         this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) {
-				this.thead = this.addColumnService.get();
-                this.applyCheckedStatus(); // 每次进路由 把当前选中的增删列的顺序保存到服务
+				(async ()=>{
+					await this.getAddThead();
+					this.applyCheckedStatus(); // 每次进路由 把当前选中的增删列的顺序保存到服务
+				})()
+				// this.thead = this.addColumnService.get();
             }
 		});
 	}
 
 	ngOnInit() {
-        this.thead = this.addColumnService.get();
-        this.setSortThead([]);
-		this.initIndexAndChecked();
-		// 生成 点击选择 容器
-		this.initSelected();
-		this.initBeforeSelected();
-		this.initSelectCount();
+		// this.thead = this.addColumnService.get();
+		(async ()=>{
+			try {
+				await this.getAddThead();
+			} catch (error) {}
+			this.setSortThead([]);
+			this.initIndexAndChecked();
+			// 生成 点击选择 容器
+			this.initSelected();
+			this.initBeforeSelected();
+			this.initSelectCount();
+		})()
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -87,21 +95,69 @@ export class AddColumnComponent implements OnInit {
                 })
             })
 
-			// this.forLeaves(this.thead, (item) => {
-			// 	if (this.baseThead.includes(item['key'])) {
-			// 		item['checked'] = true;
-			// 		this.selected[item['index']].push(item);
-			// 		this.theadInBase.push(item);
-			// 	} else {
-			// 		item['checked'] = false;
-			// 	}
-			// });
-
 			this.getCheckCount();
 			this.beforeSelected = this.copy(this.selected);
 			this.setSortThead(this.selected);
 		}
 	}
+
+	async getAddThead() {
+        return new Promise((resolve, reject) => {
+            let LCID = sessionStorage.getItem("LCID");
+            this.ajaxService
+                .getDeferData({
+                    data: {
+						geneType:this.geneType['type']
+					},
+                    url: `${config['javaPath']}/addColumn/${LCID}`
+                })
+                .subscribe(
+                    data => {
+                        if(data['status']==='0'){
+                            let d = data['data'];
+                            d.forEach((val,index)=>{
+                                if(val['category']===config['outerDataBaseIndex']){
+                                    val['children'].forEach(v=>{
+                                        if(!('children' in v)) v['children'] = [];
+                                        v['modalVisible'] = false;
+                                        v['children'].forEach(item=>{
+                                            this.initTreeData(item['treeData']);
+                                        })
+                                    })
+                                }
+							})
+							this.thead = d;
+                            resolve("success");
+                        }else{
+                            reject('error');
+                        }
+                    },
+                    () => reject("error")
+                );
+        });
+	}
+	
+	// 初始化 增删列树节点数据
+    initTreeData(treeData){
+        if (!treeData || !treeData.length) return;
+        let stack = [];
+        for (var i = 0, len = treeData.length; i < len; i++) {
+            stack.push(treeData[i]);
+        }
+        let item;
+        while (stack.length) {
+            item = stack.shift();
+
+            if(item['isRoot']) item['isExpand'] = true;
+            item['isExpand'] = true;
+            item['isChecked'] = false;
+            item['disabled'] = false;
+
+            if (item.children && item.children.length) {
+                stack = stack.concat(item.children);
+            }
+        }
+    }
 
 	setSortThead(thead){  // thead:[[],[],[]]
         this.sortThead.length = 0;
@@ -152,6 +208,12 @@ export class AddColumnComponent implements OnInit {
 			this.toggle.emit(this.show);
 		}, 0);
 
+		if(this.show){
+			(async ()=>{
+				await this.getAddThead();
+				this.applyCheckedStatus();
+			})()
+		}
 		this.cancelStatus();
 	}
 

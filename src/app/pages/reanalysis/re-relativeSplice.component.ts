@@ -458,21 +458,28 @@ export class RelativeSpliceComponent implements OnInit {
         console.log(this.singleMultiSelect);
     }
 
-    //多选确定时候,提交的数据
-    multipleConfirm() {}
+    //框选确定时候,提交的数据
+    boxSelectConfirm() {
+        //console.log(this.selectArray);
+        let tempArray = [];
+        this.selectArray.forEach((d) => {
+            tempArray.push(d["__data__"])
+        });
+        console.log(tempArray)
+    }
 
     //选择面板 确定筛选的数据
     selectConfirm(data) {
         this.selectConfirmData = data;
-        this.doWithDatas();
+        this.doSplitData();
         this.chartEntity['AS_type'] = this.AS_type_select;
         this.chartEntity['Group'] = this.group_select;
         this.updateRelativeSplice();
 
     }
 
-    //数据筛选，默认选的数组要进行筛选
-    doWithDatas(){
+    //把数据进行分类
+    doSplitData(){
         this.AS_type_select.length = 0;
         this.group_select.length = 0;
         this.selectConfirmData.forEach((d) => {
@@ -494,7 +501,7 @@ export class RelativeSpliceComponent implements OnInit {
     //选择面板，默认选中数据
     defaultSelectList(data) {
         this.selectConfirmData = data;
-        this.doWithDatas();
+        this.doSplitData();
     }
 
     //color change 回调函数
@@ -517,6 +524,7 @@ export class RelativeSpliceComponent implements OnInit {
         tempData.forEach((d) => {
             d.x = 0;
             d.y = 0;
+            d.selected = false;
         });
 
         
@@ -550,6 +558,7 @@ export class RelativeSpliceComponent implements OnInit {
         let xScale = null;
         let yScale = null;
         let rect2 = null;
+        let node = null;
 
         let top_title = 30;//上侧标题
         let bottom_xlength = 20; //下侧x轴高度
@@ -575,11 +584,6 @@ export class RelativeSpliceComponent implements OnInit {
         let svg = d3.select('#svg') //最外层svg
                 .attr('width', svg_width)
                 .attr('height', svg_height)
-                // .on("mousedown",function(){
-                //     let event = d3.event;
-                //     event.stopPropagation();
-                //     console.log(6666666666666666)
-                // })
                 .on('click', function(d) {
                     // let event = d3.event;
                     // event.stopPropagation();
@@ -594,16 +598,12 @@ export class RelativeSpliceComponent implements OnInit {
         drawRightBottomLegend();
         drawCenter();
         drawBottomLegend();
-        drawSquare();
     
         function draw_x_y_axis(){
             
             svg1 = svg
                 .append('g')
                 .attr('transform', 'translate(' + left_title + ',' + top_title + ')')
-                // .append('svg')
-                // .attr('width', temp_x_width)
-                // .attr('height', temp_y_width)
                 .attr('class', 'svg1');
 
             xScale = d3
@@ -613,7 +613,6 @@ export class RelativeSpliceComponent implements OnInit {
                 .nice().clamp(true);
             yScale = d3
 				.scaleLinear()
-                //.domain([ d3.max(y_value), d3.min(y_value)])
                 .domain([ tempSetting.y_axis.end , tempSetting.y_axis.start ])
                 .range([ 0 , yAxis_length ])
                 .nice().clamp(true);
@@ -726,13 +725,16 @@ export class RelativeSpliceComponent implements OnInit {
         }
 
         function drawCenter(){
-            //console.log(tempData);
-            rect2 = svg1.append("rect")
-                .attr('fill','#fff')
-                .attr('width', xAxis_length)
-                .attr('height', yAxis_length)
-                .attr('position', 'relative')
-                .attr('transform', 'translate(' + (left_ylength+0.5) + ',' + temp_add_width + ')');
+
+            let svg2 = svg1.append("g").attr('transform', 'translate(' + (left_ylength) + ',' + temp_add_width + ')');
+
+            let brush = svg2.append("g").attr("class", "brush")
+            .call(d3.brush()
+                .extent([[0, 0], [xAxis_length, yAxis_length]])
+                .on("start", brushStart)
+                .on("brush", brushed)
+                .on("end", brushEnd)
+            );
 
             tempData.forEach((d) => {
                 d.x = xScale(d['x_site'])+left_ylength;
@@ -745,7 +747,7 @@ export class RelativeSpliceComponent implements OnInit {
             let z = d3.scaleOrdinal().domain(categoryList).range(that.colors.slice(0, categoryList.length));
 
             //temp_symbol
-            svg1.selectAll('.mynode')
+            node = svg1.selectAll('.mynode')
             .data(tempData)
             .enter()
             .append('path')
@@ -783,94 +785,33 @@ export class RelativeSpliceComponent implements OnInit {
 
         }
 
-        let isMouseDown = false;
-        let isMouseMove = false;
-        let startLoc = [];
-        let endLoc = [];
+        // node 拖选
+        function brushStart() {
+            if (d3.event.sourceEvent.type != "end") {
+                node.classed("selected", d => d.selected);
+            }
+        }
 
-        function drawSquare(){
+        function brushed() {
+            if (d3.event.sourceEvent.type != "end") {
+                let selection = d3.event.selection;
+                //console.log(d3.event)
+                node.classed("selected", d => {
+                    return (selection != null
+                        && selection[0][0] <= (d.x - left_ylength) && (d.x - left_ylength) <= selection[1][0]
+                        && selection[0][1] <= (d.y - temp_add_width) && (d.y - temp_add_width) <= selection[1][1]);
+                })
+            }
+        }
 
-            let rect = svg1.append("rect")
-                .attr("width", 0)
-                .attr("height", 0)
-                .attr("fill", "rgba(33,20,50,0.3)")
-                .attr("stroke", "#ccc")
-                .attr("stroke-width", "1px")
-                .attr("transform", "translate(0,0)")
-                .attr("id", "squareSelect");
-
-            svg1.on("mousedown", function() {
-                isMouseDown = true;
-                rect.attr("transform", "translate(" + (d3.event.offsetX - left_title) + "," + (d3.event.offsetY - top_title) + ")");
-                startLoc = [d3.event.offsetX - left_title, d3.event.offsetY - top_title];
-                console.log(startLoc)
-            });
-
-            svg1.on("mousemove", function() {
-
-                if(isMouseDown){
-                    isMouseMove = true;
-
-                    let width = d3.event.offsetX - left_title - startLoc[0];
-                    let height = d3.event.offsetY - top_title - startLoc[1];
-
-                    if (width < 0) {
-                        rect.attr("transform", "translate(" + (d3.event.offsetX - left_title) + "," + startLoc[1] + ")");
-                    }
-                    if (height < 0) {
-                        rect.attr("transform", "translate(" + startLoc[0] + "," + (d3.event.offsetY - top_title) + ")");
-                    }
-                    if (height < 0 && width < 0) {
-                        rect.attr("transform", "translate(" + (d3.event.offsetX - left_title) + "," + (d3.event.offsetY - top_title) + ")");
-                    }
-                    rect.attr("width", Math.abs(width)).attr("height", Math.abs(height))
-                }
-
-            })
-
-            svg1.on("mouseup", function(){
-                if(isMouseDown && isMouseMove){
-                    isMouseDown = false;
-                    isMouseMove = false;
-
-                    endLoc = [d3.event.offsetX - left_title, d3.event.offsetY - top_title];
-                    let leftTop = [];
-                    let rightBottom = []
-                    if(endLoc[0]>=startLoc[0]){
-                        leftTop[0] = startLoc[0];
-                        rightBottom[0] = endLoc[0];
-                    }else{
-                        leftTop[0] = endLoc[0];
-                        rightBottom[0] = startLoc[0];
-                    }
-
-                    if(endLoc[1]>=startLoc[1]){
-                        leftTop[1] = startLoc[1];
-                        rightBottom[1] = endLoc[1];
-                    }else{
-                        leftTop[1] = endLoc[1];
-                        rightBottom[1] = startLoc[1];
-                    }
-
-                    console.log(endLoc)
-                    that.selectArray.length = 0;
-                    svg1.selectAll(".mynode").each(function(d){
-                        if(d.x<rightBottom[0] && d.x>leftTop[0] && d.y>leftTop[1] && d.y<rightBottom[1]){
-                                //console.log(d)
-                                that.selectArray.push(d);
-                        }
-                        //console.log(d)
-                    })
-                    console.log(that.selectArray);
-                    //rect.attr("width",0).attr("height",0);
-                }else{
-                    isMouseDown = false;
-                    isMouseMove = false;
-
-                   console.log(66666666666666)
-                }
-            })
-
+        function brushEnd() {
+            let selection = d3.event.selection;
+            if (selection != null) {
+                d3.select(this).call(d3.event.target.move, null);
+                //console.log(d3.selectAll(".mynode.selected").nodes());
+                that.selectArray = d3.selectAll(".mynode.selected").nodes();
+                that.boxSelectConfirm();
+            }
         }
 
         function drawBottomLegend(){

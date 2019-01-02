@@ -806,7 +806,7 @@ button.btnActive {
 				.relativeSplice-img {
 					background-image:url('../img/可变剪切.png');
 				}
-				.relaticeNet-img {
+				.relativeNet-img {
 					background-image:url('../img/关联网络图.png');
 				}
 				.relativeHeatmap-img {
@@ -1015,6 +1015,23 @@ button.btnActive {
 .mb12 {
 	margin-bottom: 12px;
 }
+.mr12{
+	margin-right:12px;
+}
+
+.ml6 {
+	margin-left: 6px;
+}
+.mt6 {
+	margin-top: 6px;
+}
+.mb6 {
+	margin-bottom: 6px;
+}
+.mr6{
+	margin-right:6px;
+}
+
 
 .top {
 	.top_left {
@@ -1141,4 +1158,21 @@ button.btnActive {
 .popover-service{
     max-width: 320px;
     word-break: break-all;
+}
+
+// 带删除图标的按钮
+.closeable-button{
+	padding-right:8px;
+	text-align: center;
+	position: relative;
+	i{
+		position: absolute;
+		top: 4px;
+		right: 0px;
+		transition: .3s all ease;
+		z-index: 2;
+		&:hover{
+			transform: scale(1.2);
+		}
+	} 
 }
