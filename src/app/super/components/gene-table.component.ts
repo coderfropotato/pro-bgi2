@@ -852,6 +852,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
     }
 
     pageSizeChange() {
+        this._initCheckStatus();
         this.tableEntity["pageIndex"] = 1;
         this.getRemoteData(true);
     }
