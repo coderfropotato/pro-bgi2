@@ -92,6 +92,8 @@ export class RelativeSpliceComponent implements OnInit {
 
     defaultSelectNum:number;
 
+    selectUniqueList:string[] = [];
+
     constructor(
         private message: MessageService,
         private store: StoreService,
@@ -185,13 +187,14 @@ export class RelativeSpliceComponent implements OnInit {
                     matrix: false, //是否转化。矩阵为matrix
                     sortValue: null,
                     sortKey: null, //排序
-                    reAnaly: false,
                     rootSearchContentList: [],
                     geneType: this.geneType, //基因类型gene和transcript
                     species: this.storeService.getStore("genome"), //物种
                     version: this.version,
                     searchList: [],
-                    sortThead: this.addColumnService["sortThead"]
+                    sortThead: this.addColumnService["sortThead"],
+                    AS_type: this.AS_type_select,
+                    Group: this.group_select
                 };
                 this.defaultTableId = "default_kafun";
                 this.defaultDefaultChecked = true;
@@ -211,13 +214,14 @@ export class RelativeSpliceComponent implements OnInit {
                     matrix: false, //是否转化。矩阵为matrix
                     sortValue: null,
                     sortKey: null, //排序
-                    reAnaly: false,
                     rootSearchContentList: [],
                     geneType: this.geneType, //基因类型gene和transcript
                     species: this.storeService.getStore("genome"), //物种
                     version: this.version,
                     searchList: [],
-                    sortThead: this.addColumnService["sortThead"]
+                    sortThead: this.addColumnService["sortThead"],
+                    AS_type: this.AS_type_select,
+                    Group: this.group_select
                 };
                 this.extendTableId = "extend_kafun";
                 this.extendDefaultChecked = true;
@@ -337,16 +341,29 @@ export class RelativeSpliceComponent implements OnInit {
         this.transformTable._initCheckStatus();
         // 清空表的筛选
         this.transformTable._clearFilterWithoutRequest();
-        if (!this.first) {
-            this.defaultEntity["pageIndex"] = 1;
+        if(!this.first){
+            this.defaultEntity['addThead'] = [];
+            this.defaultEntity['removeColumns'] = [];
+            this.defaultEntity['rootSearchContentList'] = [];
+            this.defaultEntity['pageIndex'] = 1;
             this.defaultEntity["addThead"] = [];
-            this.defaultEntity["removeColumns"] = [];
-            this.defaultEntity["rootSearchContentList"] = [];
-            this.defaultEntity["searchList"] = [];
+            // that.transformTable._filter('unique', "unique", "double","$in", d['unique'],null)
+            if(this.selectUniqueList.length){
+                this.defaultEntity['searchList'] = [
+                    {"filterName":"unique","filterNamezh":"unique","searchType":"double","filterType":"$in","valueOne":this.selectUniqueList.join(','),"valueTwo":null}
+                ];
+            }else{
+                this.defaultEntity['searchList']= [] ;
+            }
             this.first = true;
-        } else {
-            this.transformTable._setParamsNoRequest("pageIndex", 1);
-            this.transformTable._getData();
+        }else{
+            this.transformTable._setParamsNoRequest('pageIndex',1);
+            if(this.selectUniqueList.length) {
+                this.transformTable._filter('unique', "unique", "double","$in",this.selectUniqueList.join(','),null);
+            }else{
+                this.transformTable._deleteFilterWithoutRequest("unique","unique","$in");
+                this.transformTable._getData();
+            }
         }
     }
 
@@ -465,7 +482,16 @@ export class RelativeSpliceComponent implements OnInit {
         this.selectArray.forEach((d) => {
             tempArray.push(d["__data__"])
         });
-        console.log(tempArray)
+        console.log(tempArray);
+        // 筛选表格
+        let gene = tempArray.map(v=>v['unique']);
+        this.selectUniqueList.length = 0;
+        this.selectUniqueList.push(...gene);
+        if(this.selectUniqueList.length){
+            this.transformTable._filter('unique', "unique", "double","$in", this.selectUniqueList.join(','),null)
+        }else{
+            this.transformTable._deleteFilter("unique","unique","$in");
+        }
     }
 
     //选择面板 确定筛选的数据
@@ -784,6 +810,11 @@ export class RelativeSpliceComponent implements OnInit {
                 let event = d3.event;
                     event.stopPropagation();
                     console.log(event)
+
+                // 筛选表格
+                that.selectUniqueList.length = 0;
+                that.selectUniqueList.push(d['unique']);
+                that.transformTable._filter('unique', "unique", "double","$in", d['unique'],null);
                 console.log(d);
             })
 
