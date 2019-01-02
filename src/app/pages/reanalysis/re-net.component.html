@@ -60,7 +60,7 @@
                     <ng-template #funcBtnsTemplate>
                         <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" (click)='isShowAddModal=true'>add link</button>
                         <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length" (click)="isShowDeleteModal=true">delete link</button>
-                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" id="expand">expand</button>
+                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" (click)="expandNode()">expand</button>
                     </ng-template>
 
                     <ng-template #searchTemplate>

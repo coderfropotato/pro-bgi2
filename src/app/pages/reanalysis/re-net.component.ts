@@ -40,14 +40,16 @@ export class ReNetComponent implements OnInit {
     idReq:any; //id 正则
 
     // 选中的节点、线
-    selectGeneList:string[] = []; // 选择的节点geneID
-    selectLinkList:string[]=[]; // 选择的线ID
+    selectGeneList:string[] = []; // 选中的节点geneID
+    selectLinkList:string[]=[]; // 选中的线id
     selectedNodes:object[]=[]; //选中的节点
-    selectedLinks:object[]=[];  //选择的线
+    selectedLinks:object[]=[];  //选中的线
 
     //serach
     allNodes:any[]=[];
     curSearchNode:string;
+
+    allLinks:any[]=[];
 
     // delete link
     isShowDeleteModal:boolean=false;
@@ -129,8 +131,8 @@ export class ReNetComponent implements OnInit {
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
 
-        this.chartUrl=`${config['javaPath']}/net/graph`; 
-        // this.chartUrl=`http://localhost:8086/net`;
+        // this.chartUrl=`${config['javaPath']}/net/graph`; 
+        this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
             "id": this.tid,
         };
@@ -415,6 +417,8 @@ export class ReNetComponent implements OnInit {
         this.scoreMax=scores[1];
         this.curScore=this.scoreMax/2;
 
+        this.allLinks=[...links];
+
         //容器宽高
         let legendWidth=1000, legendHeight=100;
         let width=800,height=600; //图主体
@@ -526,8 +530,18 @@ export class ReNetComponent implements OnInit {
                 if (d.selected) {
                     d3.select(this).attr('stroke',"#000000");
                     that.selectedLinks.push(d);
+                    that.allLinks.forEach(m=>{
+                        if(d.id===m.id){
+                            m.selected=true;
+                        }
+                    })
                 } else {
                     d3.select(this).attr('stroke',d.scale(d.score));
+                    that.allLinks.forEach(m=>{
+                        if(d.id===m.id){
+                            m.selected=false;
+                        }
+                    })
                 }
 
                 that.selectedLinks=that.selectedLinks.filter(k=>k['selected']===true);
@@ -569,8 +583,18 @@ export class ReNetComponent implements OnInit {
                 if (d.selected) {
                     d3.select(this).attr('fill',"#167C80");
                     that.selectedNodes.push(d);
+                    that.allNodes.forEach(m=>{
+                        if(d.geneID===m.geneID){
+                            m.selected=true;
+                        }
+                    })
                 } else {
                     d3.select(this).attr('fill',that.nodeColorScale(d.value));
+                    that.allNodes.forEach(m=>{
+                        if(d.geneID===m.geneID){
+                            m.selected=false;
+                        }
+                    })
                 }
 
                 that.selectedNodes=that.selectedNodes.filter(k=>k['selected']===true);
@@ -643,6 +667,12 @@ export class ReNetComponent implements OnInit {
             that.selectGeneList.length=0;
             that.selectLinkList.length=0;
             that.curSearchNode=null;
+            that.allNodes.forEach(m=>{
+                m.selected=false;
+            })
+            that.allLinks.forEach(m=>{
+                m.selected=false;
+            })
         })
 
         // node color scale
@@ -859,38 +889,6 @@ export class ReNetComponent implements OnInit {
 			}
 		}
 
-        //expand 点击 支持扩展，所有已选中node进行扩展一级。
-        d3.select("#expand").on("click", function () {
-            // 本次扩展的nodeList
-            let expandNodeList = [];
-            // 扩展node
-            link.each(function (d) {
-                //link的起点在已选择的list中，终点不在已选择的list中，且不在临时扩展的list中。
-                if ((that.selectGeneList.indexOf(d.source) > -1) && (that.selectGeneList.indexOf(d.target) == -1) && (expandNodeList.indexOf(d.target) == -1)) {
-                    d.target.selected = true;
-                    console.log(d)
-                    expandNodeList.push(d.target.geneID);
-                }
-                if ((that.selectGeneList.indexOf(d.target) > -1) && (that.selectGeneList.indexOf(d.source) == -1) && (expandNodeList.indexOf(d.source) == -1)) {
-                    d.source.selected = true;
-                    console.log(d)
-                    expandNodeList.push(d.source.geneID);
-                }
-            })
-
-            console.log(expandNodeList)
-            //更新扩展selectNodesList
-            that.selectGeneList = [...that.selectGeneList,...expandNodeList];
-            //更新颜色、获取List
-            node.each(function (d) {
-                if (d.selected) {
-                    d3.select(this).attr("fill", "#167C80");
-                }
-            })
-
-            console.log(that.selectGeneList)
-        })
-
     }
 
     //搜索 node
@@ -902,9 +900,14 @@ export class ReNetComponent implements OnInit {
         this.selectGeneList.length=0;
         this.selectLinkList.length=0;
 
+        this.allLinks.forEach(m=>{
+            m.selected=false;
+        })
+
         d3.select("path#"+this.curSearchNode.replace(this.idReq,"")).attr('fill',"#167C80");
         this.allNodes.forEach(d=>{
             if(d.geneID === this.curSearchNode){
+                d.selected=true;
                 this.selectedNodes.push(d);
             }
         })
@@ -982,6 +985,35 @@ export class ReNetComponent implements OnInit {
 
     addCancel(){
         this.isShowAddModal=false;
+    }
+    
+    // expand node
+    expandNode(){
+        // 本次扩展的nodeList
+        let expandNodeList = [];
+        // 扩展node
+        this.allLinks.forEach(d=> {
+            //link的起点在已选择的list中，终点不在已选择的list中，且不在临时扩展的list中。
+            if ((this.selectedNodes.indexOf(d.source) > -1) && (this.selectedNodes.indexOf(d.target) == -1) && (expandNodeList.indexOf(d.target) == -1)) {
+                d.target.selected = true;
+                expandNodeList.push(d.target);
+            }
+            if ((this.selectedNodes.indexOf(d.target) > -1) && (this.selectedNodes.indexOf(d.source) == -1) && (expandNodeList.indexOf(d.source) == -1)) {
+                d.source.selected = true;
+                expandNodeList.push(d.source);
+            }
+        })
+
+        this.selectedNodes = [...this.selectedNodes,...expandNodeList];
+
+        this.selectGeneList.length=0;
+        this.allNodes.forEach(d=> {
+            if (d.selected) {
+                d3.selectAll("path#"+d.geneID.replace(this.idReq,"")).attr('fill',"#167C80");
+                this.selectGeneList.push(d.geneID);
+            }
+        })
+
     }
 
     //legend color change
