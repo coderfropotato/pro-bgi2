@@ -64,7 +64,7 @@
                                 <!--表下载  -->
                                 <i class="iconfont icon-xiazai" *ngIf="isShowTable && !chartError" nz-tooltip [nzTitle]="'tableButton.download' | translate"></i>
                                 <!-- 图下载 -->
-                                <app-chart-export *ngIf="!isShowTable && !chartError" [chartId]="'geneListTableSwitchChart_chart'" [chartName]="chartName"></app-chart-export>
+                                <app-chart-export *ngIf="!isShowTable && !chartError" [chartId]="'geneListTableSwitchChart_chart'" chartName="基因集"></app-chart-export>
                             </div>
                         </div>
                         <div #tableContent class="table-content" style="flex:1;display: flex;flex-direction: column;padding: 0 1px;">
@@ -106,7 +106,7 @@
                                 </nz-table>
             
                                 <!-- chart -->
-                                <div class="center chart" style="margin: 0 auto;"  id="geneListTableSwitchChart_chart" [hidden]="isShowTable || chartError"></div>
+                                <div class="center chart" style="margin: 0 auto;min-width:480px;"  id="geneListTableSwitchChart_chart" [hidden]="isShowTable || chartError"></div>
             
                                 <!-- error -->
                                 <app-error *ngIf="chartError" [error]="chartError"></app-error>
