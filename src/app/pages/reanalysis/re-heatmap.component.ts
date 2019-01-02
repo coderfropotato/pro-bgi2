@@ -439,6 +439,7 @@ export class ReHeatmapComponent implements OnInit {
                 },
                 left: {
                     show: true, //控制折线是否显示
+                    isBlockClick:true
                     // simple:{
                     //     tooltip:function(d){
                     //         return `left name:${d.name}`;
