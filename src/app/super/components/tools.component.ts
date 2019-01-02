@@ -964,7 +964,7 @@ export class ToolsComponent implements OnInit {
 					version: this.storeService.getStore('version'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
-					netParams:this.netSelect.map(v=>{v['limit'] = false; return v;})
+					netParams:this.netSelect.map(v=>{v['limit'] = false; return v;}),
 					...this.toolsService.get('tableEntity')
 				},
 				url: this.toolsService.get('tableUrl')
