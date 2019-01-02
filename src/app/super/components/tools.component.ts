@@ -59,7 +59,7 @@ export class ToolsComponent implements OnInit {
 		},
 		{
 			type: 'net',
-			name: '蛋白网络互作用',
+			name: '蛋白网络互作',
 			desc: '图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。'
 		},
 		{ type: 'line', name: '折线图', desc: '以折线图方式呈现数据' },
@@ -67,7 +67,7 @@ export class ToolsComponent implements OnInit {
 		{ type: 'multiOmics', name: '多组学关联', desc: '多组学' },
 		{ type: 'kaFun', name: '卡方检测', desc: '卡方' },
 		{ type: 'relativeSplice', name: '可变剪切', desc: '可变剪切' },
-		{ type: 'relaticeNet', name: '关联网络图', desc: '关联网络图' },
+		{ type: 'relativeNet', name: '关联网络图', desc: '关联网络图' },
 		{ type: 'relativeHeatmap', name: '关联聚类热图', desc: '关联聚类热图' }
 		// { type: 'reanalysisList', name: '查看重分析列表', desc: '查看重分析列表' }
 	];
@@ -121,6 +121,17 @@ export class ToolsComponent implements OnInit {
 	kaFunGroupData: object[] = [];
 	kaFunGroupSelect: object[] = [];
 	kaFunGroupError: boolean = false;
+
+	// 网络图参数
+	netData:object[] = [];
+	netError:boolean = false;
+	netSelect:object[] = [];
+
+	// 关联网络图参数
+	relativeNetData:object[] = [];
+	relativeNetError:boolean = false;
+	relativeNetSelect:object[] = [];
+	
 
 	// 当前选择的重分析类型
 	selectType: string = '';
@@ -186,6 +197,16 @@ export class ToolsComponent implements OnInit {
 		this.kaFunGroupData = [];
 		this.kaFunGroupSelect = [];
 		this.kaFunGroupError = false;
+
+		// 网络图
+		this.netData = [];
+		this.netError = false;
+		this.netSelect = [];
+
+		// 关联网络图
+		this.relativeNetData = [];
+		this.relativeNetError = false;
+		this.relativeNetSelect = [];
 
 		// 页面参数
 		this.selectType = '';
@@ -374,19 +395,16 @@ export class ToolsComponent implements OnInit {
 						this.toolsService.hide();
 						this.notify.blank('tips：', '聚类重分析提交成功', {
 							nzStyle: { width: '200px' },
-							nzDuration: 2000
 						});
 					} else {
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
 							nzStyle: { width: '200px' },
-							nzDuration: 2000
 						});
 					}
 				},
 				(err) => {
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
 						nzStyle: { width: '200px' },
-						nzDuration: 2000
 					});
 				},
 				() => {
@@ -473,26 +491,26 @@ export class ToolsComponent implements OnInit {
 								'data'
 							][0]}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
 						} else {
+							newWindow.close();
 							this.notify.blank('tips：', '重分析提交失败，请重试', {
 								nzStyle: { width: '200px' },
-								nzDuration: 2000
 							});
 						}
-						this.selectType = '';
-						this.childVisible = false;
-						this.toolsService.hide();
 					} else {
+						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
 							nzStyle: { width: '200px' },
-							nzDuration: 2000
 						});
 					}
 				},
 				(err) => {
+					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
 						nzStyle: { width: '200px' },
-						nzDuration: 2000
 					});
 				},
 				() => {
@@ -617,7 +635,6 @@ export class ToolsComponent implements OnInit {
 		if(this.kaFunGroupSelect.length<2){
 			this.notify.blank('tips：', '请至少选择2个', {
 				nzStyle: { width: '200px' },
-				nzDuration: 2000
 			});
 			return;
 		}
@@ -649,26 +666,26 @@ export class ToolsComponent implements OnInit {
 								'data'
 							][0]}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
 						} else {
+							newWindow.close();
 							this.notify.blank('tips：', '重分析提交失败，请重试', {
 								nzStyle: { width: '200px' },
-								nzDuration: 2000
 							});
 						}
-						this.selectType = '';
-						this.childVisible = false;
-						this.toolsService.hide();
 					} else {
+						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
 							nzStyle: { width: '200px' },
-							nzDuration: 2000
 						});
 					}
 				},
 				(err) => {
+					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
 						nzStyle: { width: '200px' },
-						nzDuration: 2000
 					});
 				},
 				() => {
@@ -823,26 +840,26 @@ export class ToolsComponent implements OnInit {
 								'data'
 							][0]}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
                         }else{
+							newWindow.close();
                             this.notify.blank('tips：', '重分析提交失败，请重试', {
                                 nzStyle: { width: '200px' },
-                                nzDuration: 2000
                             });
                         }
-						this.selectType = '';
-						this.childVisible = false;
-						this.toolsService.hide();
 					} else {
+						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
 							nzStyle: { width: '200px' },
-							nzDuration: 2000
 						});
 					}
 				},
 				(err) => {
+					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
 						nzStyle: { width: '200px' },
-						nzDuration: 2000
 					});
 				},
 				() => {
@@ -878,26 +895,26 @@ export class ToolsComponent implements OnInit {
 								'data'
 							][0]}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
                         }else{
+							newWindow.close();
                             this.notify.blank('tips：', '重分析提交失败，请重试', {
                                 nzStyle: { width: '200px' },
-                                nzDuration: 2000
                             });
                         }
-						this.selectType = '';
-						this.childVisible = false;
-						this.toolsService.hide();
 					} else {
+						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
 							nzStyle: { width: '200px' },
-							nzDuration: 2000
 						});
 					}
 				},
 				(err) => {
+					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
 						nzStyle: { width: '200px' },
-						nzDuration: 2000
 					});
 				},
 				() => {
@@ -909,8 +926,173 @@ export class ToolsComponent implements OnInit {
 
 	// 网路图
 	getnetParams() {
-		console.log('net');
+		this.netData = this.copy(this.storeService.getStore('relations'));
+		this.netData.forEach((v,index)=>{
+			v['checked'] = index?false:true;
+		})
+		this.netSelect.push(this.copy(this.netData[0]));
 	}
+
+	netClick(item){
+		item['checked'] = !item['checked'];
+
+		if(item['checked']){
+			this.netSelect.length = 0;
+			this.netData.forEach(v=>{
+				if(v['checked']) this.netSelect.push(this.copy(v));
+			})
+		}else{
+			let index = this.netSelect.findIndex((v,index)=>{
+				return v['key'] === item['key'];
+			})
+
+			if(index!=-1){
+				this.netSelect.splice(index,1);
+			}
+		}
+	}
+
+	netConfirm(){
+		this.isSubmitReanalysis = true;
+		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+		this.ajaxService
+			.getDeferData({
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					reanalysisType: "net",
+					needReanalysis: 2,
+					version: this.storeService.getStore('version'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.storeService.getStore('genome'),
+					netParams:this.netSelect.map(v=>{v['limit'] = false; return v;})
+					...this.toolsService.get('tableEntity')
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+                        if(data['data'].length){
+                            let href = `${window.location.href.split(
+								'report'
+							)[0]}report/reanalysis/re-net/${this.toolsService.get('geneType')}/${data[
+								'data'
+							][0]}/${this.storeService.getStore('version')}`;
+							newWindow.location.href = href;
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
+                        }else{
+							newWindow.close();
+                            this.notify.blank('tips：', '重分析提交失败，请重试', {
+                                nzStyle: { width: '200px' },
+                            });
+						}
+					} else {
+						newWindow.close();
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+						});
+					}
+				},
+				(err) => {
+					newWindow.close();
+					this.notify.blank('tips：', '重分析提交失败，请重试', {
+						nzStyle: { width: '200px' },
+					});
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
+
+	}
+
+	// 关联网路图
+	getrelativeNetParams() {
+		this.relativeNetData = this.copy(this.storeService.getStore('relations'));
+		this.relativeNetData.forEach((v,index)=>{
+			v['checked'] = index?false:true;
+		})
+		this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
+	}
+
+	relativeNetClick(item){
+		item['checked'] = !item['checked'];
+
+		if(item['checked']){
+			this.relativeNetSelect.length = 0;
+			this.relativeNetData.forEach(v=>{
+				if(v['checked']) this.relativeNetSelect.push(this.copy(v));
+			})
+		}else{
+			let index = this.relativeNetSelect.findIndex((v,index)=>{
+				return v['key'] === item['key'];
+			})
+
+			if(index!=-1){
+				this.relativeNetSelect.splice(index,1);
+			}
+		}
+	}
+
+	relativeNetConfirm(){
+		this.isSubmitReanalysis = true;
+		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+		let entity = this.toolsService.get('tableEntity');
+		entity['relations'] = this.relativeNetSelect;
+		this.ajaxService
+			.getDeferData({
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					reanalysisType: "linkedNetwork",
+					needReanalysis: 2,
+					version: this.storeService.getStore('version'),
+					geType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.storeService.getStore('genome'),
+					...entity
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						if(data['data'].length){
+							let href = `${window.location.href.split(
+								'report'
+							)[0]}report/reanalysis/re-relativeNet/${this.toolsService.get('geneType')}/${data[
+								'data'
+							][0]}/${this.storeService.getStore('version')}`;
+							newWindow.location.href = href;
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
+						}else{
+							newWindow.close();
+							this.notify.blank('tips：', '重分析提交失败，请重试', {
+								nzStyle: { width: '200px' },
+							});
+						}
+					} else {
+						newWindow.close();
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+						});
+					}
+				},
+				(err) => {
+					newWindow.close();
+					this.notify.blank('tips：', '重分析提交失败，请重试', {
+						nzStyle: { width: '200px' },
+					});
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
+
+	}
+	
 
 	getreanalysisParams() {
 		console.log('reanalysis');
@@ -920,6 +1102,16 @@ export class ToolsComponent implements OnInit {
 		if (!this.isSubmitReanalysis) {
 			this.selectType = '';
 			this.childVisible = false;
+		}
+	}
+
+	copy(object){
+		if(object instanceof Object){
+			return JSON.parse(JSON.stringify(object));
+		}else if(object instanceof Array){
+			return [...object];
+		}else{
+			return object;
 		}
 	}
 }
