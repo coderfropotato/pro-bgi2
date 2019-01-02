@@ -134,7 +134,7 @@ export class ReHeatmapComponent implements OnInit {
             "LCID": this.storeService.getStore('LCID'),
             "tid": this.tid,
             "isHorizontal": true,
-            "verticalClassification": {},
+            "verticalClassification": [],
             "horizontalClassification": [],
             "version":this.storeService.getStore('version')
         };
@@ -359,9 +359,7 @@ export class ReHeatmapComponent implements OnInit {
 
         this.chartEntity['isHorizontal']=this.isCluster;
 
-        data['verticalDefault'].forEach(d=>{
-            this.chartEntity['verticalClassification'][d.key]=d['category'];
-        })
+        this.chartEntity['verticalClassification']=data['verticalDefault'];
 
         this.defaultSetData=data;
         this.defaultEmitBaseThead = true;
@@ -388,12 +386,7 @@ export class ReHeatmapComponent implements OnInit {
         //请求参数
         this.chartEntity['isHorizontal']=data.isCluster;
         this.chartEntity['horizontalClassification']=data.horizontalList;
-        this.chartEntity['verticalClassification']={};
-        if(data['verticalList'].length){
-            data['verticalList'].forEach(d=>{
-                this.chartEntity['verticalClassification'][d.key]=d['category'];
-            })
-        }
+        this.chartEntity['verticalClassification']=data['verticalList'];
 
         // 表纵向分类
         this.verticalClass.length = 0;

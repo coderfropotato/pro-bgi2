@@ -95,7 +95,7 @@
             <div *ngIf="horizontalInfos.length">
                 <nz-row class="center" *ngFor="let horizon of horizontalInfos;let i=index">
                     <nz-col class="left textEllipsis" nzSpan="12" nzOffset="4" nz-tooltip [nzTitle]="horizon">
-                        <span>{{horizon}}</span>
+                        <span>{{horizon.name}}</span>
                     </nz-col>
                     <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="修改" (click)="editHclass(i)">
                         <i nz-icon class="anticon anticon-edit" theme="outline"></i>
@@ -138,7 +138,7 @@
      <div class="addPanel" [hidden]='!isShowAddHorizontal'>
         <div class="addTitle">添加横向分类</div>
         <div class="rationClassifyRow">
-            <button [class.btnActive]='item.isChecked' (click)="addHBtnClick(item)" nz-button nzType="default" *ngFor="let item of horizontalClassList">{{item.key}}</button>&nbsp;
+            <button [class.btnActive]='item.isChecked' (click)="addHBtnClick(item)" nz-button nzType="default" *ngFor="let item of horizontalClassList">{{item.name}}</button>&nbsp;
         </div>
         <div class="setBtns right">
             <button nz-button nzType="default" (click)="addHCance()">取消</button>&nbsp;
@@ -150,7 +150,7 @@
      <div class="addPanel" [hidden]='!isShowEditHorizontal'>
         <div class="addTitle">修改纵向分类</div>
         <div class="rationClassifyRow">
-            <button (click)="editHBtnClick(item)" nz-button nzType="default" *ngFor="let item of horizontalEditList">{{item}}</button>&nbsp;
+            <button (click)="editHBtnClick(item)" nz-button nzType="default" *ngFor="let item of horizontalEditList">{{item.name}}</button>&nbsp;
         </div>
     </div>
      

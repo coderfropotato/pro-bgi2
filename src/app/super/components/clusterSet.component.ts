@@ -68,7 +68,7 @@ export class ClusterSetComponent implements OnInit {
     verticalClassList:object[]=[];
 
     //选择的横纵向分类信息
-    horizontalInfos:string[]=[];
+    horizontalInfos:object[]=[];
     verticalInfos:object[]=[];
 
     //添加面板 显示
@@ -82,7 +82,7 @@ export class ClusterSetComponent implements OnInit {
     //修改面板数据
     verticalEditList:object[]=[];
     curVEditItem_i:number;
-    horizontalEditList:string[]=[];
+    horizontalEditList:object[]=[];
     curHEditItem_i:number;
 
     constructor(
@@ -198,7 +198,9 @@ export class ClusterSetComponent implements OnInit {
                     let horizontalClassList=trueData.horizontal;
                     horizontalClassList.forEach(d=>{
                         this.horizontalClassList.push({
-                            key:d,
+                            key:d.key,
+                            name:d.name,
+                            category:d.category,
                             isChecked:false
                         });
                     })
@@ -300,7 +302,7 @@ export class ClusterSetComponent implements OnInit {
             d['isChecked']=false;
             if(this.horizontalInfos.length){
                 this.horizontalInfos.forEach(m=>{
-                    if(d['key']===m){
+                    if(d['key']===m['key']){
                         d['isChecked']=true;
                     }
                 })
@@ -326,7 +328,7 @@ export class ClusterSetComponent implements OnInit {
             this.horizontalInfos=[];
             this.horizontalClassList.forEach(d => {
                 if (d['isChecked']) {
-                    this.horizontalInfos.push(d['key']);
+                    this.horizontalInfos.push(d);
                 }
             })
             this.isShowAddHorizontal=false;
@@ -363,8 +365,14 @@ export class ClusterSetComponent implements OnInit {
 
     //设置 确定
     setConfirm(){
+
         if(this.horizontalInfos.length){
-            if((new Set(this.horizontalInfos)).size !== this.horizontalInfos.length){
+            let horizontalInfoList=[];
+            this.horizontalInfos.forEach(d=>{
+                horizontalInfoList.push(d['key']);
+            })
+
+            if((new Set(horizontalInfoList)).size !== this.horizontalInfos.length){
                 this.notification.warning('横向分类','分类重复！');
                 return;
             }
