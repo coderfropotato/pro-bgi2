@@ -762,15 +762,19 @@ export class RelativeSpliceComponent implements OnInit {
                 return z(d['Group']);
             })
             .on("mouseover", function(d) {
-                let tipText = `x: ${d.x_site}
-                            <br> y:  ${d.y_site}
-                            <br> AS_type:  ${d.AS_type}
+                // let tipText = `x: ${d.x_site}
+                //             <br> y:  ${d.y_site}
+                //             <br> AS_type:  ${d.AS_type}
+                //             <br> Group:  ${d.Group}
+                //             <br> st_gene_id:  ${d.st_gene_id}
+                //             <br> unique:  ${d.unique}
+                //             <br> x_calculate: ${d.x}
+                //             <br> y_calculate:  ${d.y}
+                //             `;
+                let tipText = `AS_type:  ${d.AS_type}
                             <br> Group:  ${d.Group}
                             <br> st_gene_id:  ${d.st_gene_id}
-                            <br> unique:  ${d.unique}
-                            <br> x_calculate: ${d.x}
-                            <br> y_calculate:  ${d.y}
-                            `;
+                            <br> unique:  ${d.unique}`;
                 that.globalService.showPopOver(d3.event, tipText);
             })
             .on("mouseout", function(d) {
