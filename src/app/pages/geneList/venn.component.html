@@ -64,7 +64,7 @@
                                 <!--表下载  -->
                                 <i class="iconfont icon-xiazai" *ngIf="isShowTable && !chartError" nz-tooltip [nzTitle]="'tableButton.download' | translate"></i>
                                 <!-- 图下载 -->
-                                <app-chart-export *ngIf="!isShowTable && !chartError" [chartId]="chartId" [chartName]="chartName"></app-chart-export>
+                                <app-chart-export *ngIf="!isShowTable && !chartError" [chartId]="'geneListTableSwitchChart_chart'" [chartName]="chartName"></app-chart-export>
                             </div>
                         </div>
                         <div #tableContent class="table-content" style="flex:1;display: flex;flex-direction: column;padding: 0 1px;">
@@ -74,8 +74,12 @@
                                     <div>
                                         <span>genelist</span>&nbsp;
                                         <ng-container *ngFor="let item of selectPanelData">
-                                            <button  nz-button *ngIf="!item['setName'].length"  nzType="default" [nzSize]="'small'"  [class.btnActive]="item['checked']" (click)="handleGeneListClick(item)">{{item['setName']}}</button>
-                                            <button nz-button *ngIf="item['setName'].length" nz-tooltip [nzTitle]="item['setAnnot']"  nzType="default" [nzSize]="'small'"  [class.btnActive]="item['checked']" (click)="handleGeneListClick(item)">{{item['setName']}}</button>
+                                            <button class="closeable-button"  nz-button *ngIf="!item['setName'].length"  nzType="default" [nzSize]="'small'"  [class.btnActive]="item['checked']" (click)="handleGeneListClick(item)">{{item['setName']}} 
+                                                <!-- <i class="anticon anticon-close" (click)="handleDelete($event,item)"></i> -->
+                                            </button>
+                                            <button class="closeable-button" nz-button *ngIf="item['setName'].length" nz-tooltip [nzTitle]="item['setAnnot']"  nzType="default" [nzSize]="'small'"  [class.btnActive]="item['checked']" (click)="handleGeneListClick(item)">{{item['setName']}}
+                                                <!-- <i class="anticon anticon-close" (click)="handleDelete($event,item)"></i> -->
+                                            </button>
                                         </ng-container>
                                     </div>
                                 </div>
