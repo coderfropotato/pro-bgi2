@@ -88,6 +88,8 @@ export class RelativeSpliceComponent implements OnInit {
 
     selectConfirmData:string[] = []; //默认和确定时候的返回数据
 
+    selectArray: object[] = [];
+
     defaultSelectNum:number;
 
     constructor(
@@ -142,8 +144,10 @@ export class RelativeSpliceComponent implements OnInit {
                     //Group: ['B1-vs-C1']
                 };
 
-                this.colors=[ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"];
-                //this.colors = ["#4575B4", "#FEF6B2", "#D9352A"];
+                //console.log(this.storeService.colors)
+
+                //this.colors=[ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"];
+                this.colors = this.storeService.colors;
 
                 // this.chartEntity = {B1-vs-C1
                 //     LCID: sessionStorage.getItem('LCID'),
@@ -849,13 +853,15 @@ export class RelativeSpliceComponent implements OnInit {
                     }
 
                     console.log(endLoc)
+                    that.selectArray.length = 0;
                     svg1.selectAll(".mynode").each(function(d){
                         if(d.x<rightBottom[0] && d.x>leftTop[0] && d.y>leftTop[1] && d.y<rightBottom[1]){
-                                console.log(d)
+                                //console.log(d)
+                                that.selectArray.push(d);
                         }
                         //console.log(d)
                     })
-
+                    console.log(that.selectArray);
                     //rect.attr("width",0).attr("height",0);
                 }else{
                     isMouseDown = false;
