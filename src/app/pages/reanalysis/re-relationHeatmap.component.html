@@ -1,0 +1,81 @@
+
+<div class="report-analysis heatmap">
+    <app-menu [menu]="[]" [geneSwitch]="false">
+        <p class="menu-slot-text">重分析id：{{tid}}</p>
+    </app-menu>
+    <div class="content reanalysis-content row">
+    <div #left class="left-layout column" [class.unexpand]="switch" [class.table-only]="onlyTable">
+        <!-- <div class="left-top-layout">
+            <h4>title</h4>
+            <p>describe</p>
+        </div> -->
+        <div class="left-bottom-layout">
+                <ng-template #setTemplate>
+                    <app-clusterSet *ngIf="defaultSetData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData'></app-clusterSet>
+                </ng-template>
+                <!-- [selectTemplate]="selectTemplate" -->
+                <app-table-switch-chart
+                    #clusterChart
+                    [id]="'relationCluster'"
+                    [isOnlyChart]="true"
+                    [chartUrl]="chartUrl"
+                    [apiEntity]="chartEntity"
+                    [setTemplate]="setTemplate"
+                    (drawChartEmit)="drawChart($event)"
+                    [chartId]="'relationClusterChartDiv'"
+                    [chartName]="'关联聚类图'"
+                    [defaultSetUrl]='defaultSetUrl'
+                    [defaultSetEntity]='defaultSetEntity'
+                    (defaultSet)='apiEntityChange($event)'
+                    [flex]="true"
+                    (refresh)="handlerRefresh()"
+                >
+                </app-table-switch-chart>
+
+                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+                ></app-color-picker>
+        </div>
+        </div>
+        <div #right class="right-layout" [class.expand]="switch" [class.table-only]="onlyTable">
+            <div class="switch">
+                <app-layout-switch [onlyTable]="onlyTable" (onlyTableChange)="handlOnlyTableChange($event)" [ngModel]="switch" (ngModelChange)="switchChange($event)" >
+                </app-layout-switch>
+            </div>
+            <div class="func" #func (click)="resize($event)">
+                <!-- 增删列 -->
+                <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column>
+                <!-- 关系 -->
+                <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
+                <!-- 返回 -->
+                <button class="ml12" [hidden]="addColumnShow || !showBackButton" nzSize="small" nz-button nzType="Default" (click)="back()">返回</button>
+                <!-- 只看表 -->
+                <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i>
+
+            </div>
+            <!-- 表格转换 -->
+            <ng-container *ngIf="defaultSetData">
+                <app-table-transformation
+                    class="no-outside-border"
+                    #transformTable
+                    [isFirst]="first"
+                    [tableHeight]="tableHeight"
+                    [defaultTableEntity]="defaultEntity"
+                    [defaultTableUrl]="defaultUrl"
+                    [defaultTableId]="defaultTableId"
+                    [defaultTableDefaultChecked]="defaultDefaultChecked"
+                    [(defaultEmitBaseThead)]="defaultEmitBaseThead"
+                    (defaultBaseTheadChange)="baseTheadChange($event)"
+                    [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
+                    [extendTableEntity]="extendEntity"
+                    [extendTableUrl]="extendUrl"
+                    [extendTableId]="extendTableId"
+                    [extendTableDefaultChecked]="extendDefaultChecked"
+                    [(extendEmitBaseThead)]="extendEmitBaseThead"
+                    (extendBaseTheadChange)="baseTheadChange($event)"
+                    [extendTableCheckStatusInParams]="extendCheckStatusInParams"
+                    [(applyOnceSearchParams)]="applyOnceSearchParams"
+                ></app-table-transformation>
+            </ng-container>
+        </div>
+    </div>
+</div>

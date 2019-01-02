@@ -57,6 +57,7 @@ import {PromtComponent} from './super/service/promptService';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
 import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component';
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
+import { reRelationHeatmapComponent } from './pages/reanalysis/re-relationHeatmap.component';
 import { ReNetComponent } from './pages/reanalysis/re-net.component';
 import { ReLineComponent } from './pages/reanalysis/re-line.component';
 import { KaFunComponent } from './pages/reanalysis/re-kaFun.component';
@@ -322,6 +323,15 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-relationHeatmap/:geneType/:tid/:version",
+                component: reRelationHeatmapComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reRelationHeatmap"
+                }
+            },
+            {
                 path: "re-net/:geneType/:tid/:version",
                 component: ReNetComponent,
                 canActivate: [SysDefendService],
@@ -481,6 +491,7 @@ export function createTranslateLoader(http: HttpClient) {
         ColorPickerComponent,
         ReListComponent,
         ReHeatmapComponent,
+        reRelationHeatmapComponent,
         TooltipDirective,
         ReNetComponent,
         ReLineComponent,

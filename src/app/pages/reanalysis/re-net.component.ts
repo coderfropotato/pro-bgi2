@@ -131,8 +131,8 @@ export class ReNetComponent implements OnInit {
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
 
-        // this.chartUrl=`${config['javaPath']}/net/graph`; 
-        this.chartUrl=`http://localhost:8086/net`;
+        this.chartUrl=`${config['javaPath']}/net/graph`; 
+        // this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
             "id": this.tid,
         };

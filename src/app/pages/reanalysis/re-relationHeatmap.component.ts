@@ -14,12 +14,12 @@ declare const d4:any;
 declare const $: any;
 
 @Component({
-  selector: 'app-re-heatmap',
-  templateUrl: './re-heatmap.component.html',
+  selector: 'app-re-relationHeatmap',
+  templateUrl: './re-relationHeatmap.component.html',
   styles: []
 })
 
-export class ReHeatmapComponent implements OnInit {
+export class reRelationHeatmapComponent implements OnInit {
     @ViewChild('clusterChart') clusterChart;
     @ViewChild('left') left;
 	@ViewChild('right') right;
@@ -429,7 +429,7 @@ export class ReHeatmapComponent implements OnInit {
                     titleObj.attr("fill", "#333");
                     titleObj.select("title").remove();
                 },
-                el: "#clusterChartDiv",
+                el: "#relationClusterChartDiv",
                 type: "complexCluster",
                 data: data,
                 colors: that.colors,
