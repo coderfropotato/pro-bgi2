@@ -16,14 +16,14 @@ declare const Venn: any;
 	selector: 'app-venn-page',
     template: `<app-venn-component *ngIf="showModule" [defaultGeneType]="defaultGeneType">
                     <div class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
-                        <span>{{defaultGeneType['type'] | translate}}</span><i class="iconfont icon-qiehuan"></i>
+                        <span>{{defaultGeneType | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
                 </app-venn-component>`,
 	styles: []
 })
 export class DiffVennPage {
     showModule:boolean = true;
-    defaultGeneType:object = {type:"gene"};
+    defaultGeneType:string = 'gene';
 
     constructor(private storeService:StoreService,private translate:TranslateService) {
         let browserLang = this.storeService.getLang();
@@ -31,7 +31,7 @@ export class DiffVennPage {
     }
 
     handlerSwitchChange(){
-        this.defaultGeneType['type'] = this.defaultGeneType['type']==='gene'?'transcript':'gene';
+        this.defaultGeneType = this.defaultGeneType==='gene'?'transcript':'gene';
         this.showModule = false;
         setTimeout(()=>{this.showModule = true},30);
     }
@@ -195,7 +195,7 @@ export class DiffVennComponent implements OnInit {
 			//查询参数
 			LCID: this.storeService.getStore('LCID'),
 			compareGroup: this.storeService.getStore('diff_plan'),
-			geneType: this.defaultGeneType['type'],
+			geneType: this.defaultGeneType,
 			species: this.storeService.getStore('genome'),
 			diffThreshold: this.storeService.getStore('diff_threshold')
 		};
@@ -203,7 +203,7 @@ export class DiffVennComponent implements OnInit {
 		// this.vennEntity = {
 		// 	LCID: sessionStorage.getItem('LCID'),
 		// 	compareGroup: this.activedCompareGroup,
-		// 	geneType: this.defaultGeneType['type'],
+		// 	geneType: this.defaultGeneType,
 		// 	species: this.storeService.getStore('genome'),
 		// 	version: this.storeService.getStore('version'),
 		// 	diffThreshold: {
@@ -231,7 +231,7 @@ export class DiffVennComponent implements OnInit {
 			reAnaly: false,
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
+			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			diffThreshold: {
 				PossionDis: this.PossionDis
@@ -262,7 +262,7 @@ export class DiffVennComponent implements OnInit {
 			matchAll: false,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.defaultGeneType['type'], //基因类型gene和transcript
+			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			diffThreshold: {
 				PossionDis: this.PossionDis
