@@ -11,6 +11,7 @@ import { NzNotificationService } from "ng-zorro-antd";
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import config from '../../../config';
+declare const $:any;
 /**
  * @description 普通大表 没有首列选项
  * @author Yangwd<277637411@qq.com>
