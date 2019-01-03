@@ -466,7 +466,7 @@ export class RelativeSpliceComponent implements OnInit {
     updateRelativeSplice() {
         this.doubleMultiSelect.length = 0;
         this.singleMultiSelect = {};
-
+        this.selectArray.length = 0;
         this.relativeSpliceChart.reGetData();
     }
 
