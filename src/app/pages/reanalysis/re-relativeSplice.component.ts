@@ -25,7 +25,7 @@ export class RelativeSpliceComponent implements OnInit {
     @ViewChild("right") right;
     @ViewChild("func") func;
     @ViewChild("tableSwitchChart") tableSwitchChart;
-    @ViewChild("transformTable") transformTable;
+    @ViewChild("bigTable") bigTable;
     @ViewChild("addColumn") addColumn;
 
     chartUrl: string;
@@ -39,18 +39,10 @@ export class RelativeSpliceComponent implements OnInit {
     defaultDefaultChecked: boolean;
     defaultCheckStatusInParams: boolean;
     defaultEmitBaseThead: boolean;
-
-    extendEntity: object;
-    extendUrl: string;
-    extendTableId: string;
-    extendDefaultChecked: boolean;
-    extendCheckStatusInParams: boolean;
-    extendEmitBaseThead: boolean;
     baseThead: any[] = [];
     applyOnceSearchParams: boolean;
-
     tableHeight = 0;
-    first = true;
+
     switch = false;
     onlyTable: boolean = false;
 
@@ -143,38 +135,16 @@ export class RelativeSpliceComponent implements OnInit {
                     species: this.storeService.getStore("genome"),
                     AS_type: this.AS_type_select,
                     Group: this.group_select
-                    //Group: ['B1-vs-C1']
                 };
 
-                //console.log(this.storeService.colors)
+
 
                 //this.colors=[ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"];
                 this.colors = this.storeService.colors;
 
-                // this.chartEntity = {B1-vs-C1
-                //     LCID: sessionStorage.getItem('LCID'),
-                //     tid:this.tid,
-                //     pageIndex: 1,
-                //     pageSize: 100000,
-                //     mongoId: null,
-                //     addThead: [],
-                //     transform: false,
-                //     matchAll: false,
-                //     matrix: false,
-                //     sortValue: null,
-                //     sortKey: null,
-                //     reAnaly: false,
-                //     rootSearchContentList:[],
-                //     geneType: this.geneType,
-                //     species: this.storeService.getStore('genome'),
-                //     version: this.version,
-                //     searchList: []
-                // };
-
                 // table
-                this.first = true;
                 this.applyOnceSearchParams = true;
-                this.defaultUrl = `${config["javaPath"]}/chiSquare/table`;
+                this.defaultUrl = `${config["javaPath"]}/alternativeSplice/table`;
                 this.defaultEntity = {
                     LCID: sessionStorage.getItem("LCID"),
                     tid: this.tid,
@@ -196,37 +166,8 @@ export class RelativeSpliceComponent implements OnInit {
                     AS_type: this.AS_type_select,
                     Group: this.group_select
                 };
-                this.defaultTableId = "default_kafun";
-                this.defaultDefaultChecked = true;
+                this.defaultTableId = "default_splice";
                 this.defaultEmitBaseThead = true;
-                this.defaultCheckStatusInParams = true;
-
-                this.extendUrl = `${config["javaPath"]}/chiSquare/table`;
-                this.extendEntity = {
-                    LCID: sessionStorage.getItem("LCID"),
-                    tid: this.tid,
-                    pageIndex: 1, //分页
-                    pageSize: 20,
-                    mongoId: null,
-                    addThead: [], //扩展列
-                    transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-                    matchAll: false,
-                    matrix: false, //是否转化。矩阵为matrix
-                    sortValue: null,
-                    sortKey: null, //排序
-                    rootSearchContentList: [],
-                    geneType: this.geneType, //基因类型gene和transcript
-                    species: this.storeService.getStore("genome"), //物种
-                    version: this.version,
-                    searchList: [],
-                    sortThead: this.addColumnService["sortThead"],
-                    AS_type: this.AS_type_select,
-                    Group: this.group_select
-                };
-                this.extendTableId = "extend_kafun";
-                this.extendDefaultChecked = true;
-                this.extendEmitBaseThead = true;
-                this.extendCheckStatusInParams = false;
             } catch (error) {}
         })();
     }
@@ -243,92 +184,13 @@ export class RelativeSpliceComponent implements OnInit {
 
     // 表
     addThead(thead) {
-        this.transformTable._initCheckStatus();
-
-        this.transformTable._setParamsNoRequest(
+        // this.bigTable._initCheckStatus();
+        this.bigTable._setParamsOfEntityWithoutRequest(
             "removeColumns",
             thead["remove"]
         );
-        this.transformTable._setParamsNoRequest("pageIndex", 1);
-
-        this.transformTable._addThead(thead["add"]);
-    }
-
-    // 表格转换 确定
-    // 转换之前需要把图的 参数保存下来  返回的时候应用
-    confirm(relations) {
-        this.showBackButton = true;
-        // this.defaultEmitBaseThead = true;
-        this.extendEmitBaseThead = true;
-        let checkParams = this.transformTable._getInnerParams();
-        // 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
-        this.applyOnceSearchParams = true;
-        if (this.first) {
-            this.extendCheckStatusInParams = false;
-            this.extendEntity["checkStatus"] =
-                checkParams["others"]["checkStatus"];
-            this.extendEntity["unChecked"] =
-                checkParams["others"]["excludeGeneList"]["unChecked"];
-            this.extendEntity["checked"] =
-                checkParams["others"]["excludeGeneList"]["checked"];
-            this.extendEntity["mongoId"] = checkParams["mongoId"];
-            this.extendEntity["searchList"] =
-                checkParams["tableEntity"]["searchList"];
-            this.extendEntity["rootSearchContentList"] =
-                checkParams["tableEntity"]["rootSearchContentList"];
-            this.extendEntity["relations"] = relations;
-            this.extendEntity["transform"] = true;
-            this.extendEntity["matrix"] = true;
-            this.addColumn._clearThead();
-            this.extendEntity["addThead"] = [];
-            this.first = false;
-        } else {
-            this.transformTable._initTableStatus();
-            this.extendCheckStatusInParams = false;
-            this.transformTable._setExtendParamsWithoutRequest(
-                "checkStatus",
-                checkParams["others"]["checkStatus"]
-            );
-            this.transformTable._setExtendParamsWithoutRequest(
-                "checked",
-                checkParams["others"]["excludeGeneList"]["checked"].concat()
-            );
-            this.transformTable._setExtendParamsWithoutRequest(
-                "unChecked",
-                checkParams["others"]["excludeGeneList"]["unChecked"].concat()
-            );
-            this.transformTable._setExtendParamsWithoutRequest(
-                "searchList",
-                checkParams["tableEntity"]["searchList"]
-            );
-            this.transformTable._setExtendParamsWithoutRequest(
-                "rootSearchContentList",
-                checkParams["tableEntity"]["rootSearchContentList"]
-            );
-            this.transformTable._setExtendParamsWithoutRequest(
-                "relations",
-                relations
-            );
-            this.transformTable._setExtendParamsWithoutRequest(
-                "transform",
-                true
-            );
-            this.transformTable._setExtendParamsWithoutRequest("matrix", true);
-            this.transformTable._setExtendParamsWithoutRequest("addThead", []);
-            this.addColumn._clearThead();
-            // 每次checkStatusInParams状态变完  再去获取数据
-            setTimeout(() => {
-                this.transformTable._getData();
-            }, 30);
-        }
-        setTimeout(() => {
-            this.extendCheckStatusInParams = true;
-        }, 30);
-    }
-
-    back() {
-        this.showBackButton = false;
-        this.chartBackStatus();
+        this.bigTable._setParamsOfEntityWithoutRequest("pageIndex", 1);
+        this.bigTable._addThead(thead["add"]);
     }
 
     handlerRefresh() {
@@ -338,32 +200,14 @@ export class RelativeSpliceComponent implements OnInit {
     chartBackStatus() {
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
-        this.transformTable._initCheckStatus();
         // 清空表的筛选
-        this.transformTable._clearFilterWithoutRequest();
-        if(!this.first){
-            this.defaultEntity['addThead'] = [];
-            this.defaultEntity['removeColumns'] = [];
-            this.defaultEntity['rootSearchContentList'] = [];
-            this.defaultEntity['pageIndex'] = 1;
-            this.defaultEntity["addThead"] = [];
-            // that.transformTable._filter('unique', "unique", "double","$in", d['unique'],null)
-            if(this.selectUniqueList.length){
-                this.defaultEntity['searchList'] = [
-                    {"filterName":"unique","filterNamezh":"unique","searchType":"double","filterType":"$in","valueOne":this.selectUniqueList.join(','),"valueTwo":null}
-                ];
-            }else{
-                this.defaultEntity['searchList']= [] ;
-            }
-            this.first = true;
+        this.bigTable._clearFilterWithoutRequest();
+        this.bigTable._setParamsOfEntityWithoutRequest('pageIndex',1);
+        if(this.selectUniqueList.length) {
+            this.bigTable._filter('unique', "unique", "double","$in",this.selectUniqueList.join(','),null);
         }else{
-            this.transformTable._setParamsNoRequest('pageIndex',1);
-            if(this.selectUniqueList.length) {
-                this.transformTable._filter('unique', "unique", "double","$in",this.selectUniqueList.join(','),null);
-            }else{
-                this.transformTable._deleteFilterWithoutRequest("unique","unique","$in");
-                this.transformTable._getData();
-            }
+            this.bigTable._deleteFilterWithoutRequest("unique","unique","$in");
+            this.bigTable._getData();
         }
     }
 
@@ -488,9 +332,9 @@ export class RelativeSpliceComponent implements OnInit {
         this.selectUniqueList.length = 0;
         this.selectUniqueList.push(...gene);
         if(this.selectUniqueList.length){
-            this.transformTable._filter('unique', "unique", "double","$in", this.selectUniqueList.join(','),null)
+            this.bigTable._filter('unique', "unique", "double","$in", this.selectUniqueList.join(','),null)
         }else{
-            this.transformTable._deleteFilter("unique","unique","$in");
+            this.bigTable._deleteFilter("unique","unique","$in");
         }
     }
 

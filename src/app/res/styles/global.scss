@@ -369,8 +369,8 @@ button.btnActive {
 	}
 }
 
-// 转换表
-.transformation-table-component{
+// 转换表 大表
+.transformation-table-component,.big-table-component{
 	padding:12px;
 }
 
@@ -1167,7 +1167,7 @@ button.btnActive {
 	position: relative;
 	i{
 		position: absolute;
-		top: 4px;
+		top: -4px;
 		right: 0px;
 		transition: .3s all ease;
 		z-index: 2;

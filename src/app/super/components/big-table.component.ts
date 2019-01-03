@@ -1,17 +1,16 @@
+import { ToolsService } from "./../service/toolsService";
+import { MessageService } from "./../service/messageService";
+import { Observable, fromEvent } from "rxjs";
 import { StoreService } from "./../service/storeService";
-import {
-    Component,
-    OnInit,
-    Input,
-    ViewChildren,
-    TemplateRef
-} from "@angular/core";
+import { Component, OnInit, Input, ViewChildren, TemplateRef, OnChanges, SimpleChanges, AfterViewChecked, AfterViewInit, AfterContentInit, ElementRef, ViewChild, Output, EventEmitter } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { GlobalService } from "../service/globalService";
 import { LoadingService } from "../service/loadingService";
 import { AjaxService } from "../service/ajaxService";
-
-declare const $: any;
+import { NzNotificationService } from "ng-zorro-antd";
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import config from '../../../config';
 /**
  * @description 普通大表 没有首列选项
  * @author Yangwd<277637411@qq.com>
@@ -24,23 +23,28 @@ declare const $: any;
     templateUrl: "./big-table.component.html"
 })
 export class BigTableComponent implements OnInit {
-    // 表格id
-    @Input() tableId: string;
-    // 表格请求api
-    @Input() url: string;
-    // 表格查询参数可有可无  默认有 pageSize pageIndex sortValue sortKey searchList rootSearchContentList addThead
-    // 对于有超出默认参数之外的查询参数 需要放在pageEntity里传进来
+    
+    @Input() tableId: string; // 表格id 
+   
+    @Input() url: string;    // 表格查询参数可有可无  默认有 pageSize pageIndex sortValue sortKey searchList rootSearchContentList addThead 对于有超出默认参数之外的查询参数 需要放在pageEntity里传进来
     @Input() pageEntity: object;
-    // 表格下载名称
-    @Input() fileName: string;
-    // 下拉选项模板插槽 TemplateRef
-    @Input() selectItems: TemplateRef<any>;
+    @Input() fileName: string;  // 表格下载名称
+    @Input() selectItems: TemplateRef<any>; // 下拉选项模板插槽 TemplateRef
+    @Input() tableHeight: number = 0; // 计算后的表格高度?
+    @Input() tableType:string = 'common'; // 表的类型  普通 还是 transform
+    @Input() emitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
+    @Output() emitBaseTheadChange:EventEmitter<any> = new EventEmitter();
+    @Output() baseTheadChange:EventEmitter<any> = new EventEmitter();
+    @Input() applyOnceSearchParams:boolean = false;
+    // TODO 双向绑定applyOnceSearchParams 下次再次触发
+    @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
 
 
     @ViewChildren("child") children;
     tableEntity: object = {};
 
     isLoading:boolean = false;
+    scroll: any = { x: "0", y: "0" };
     // 开始排序
     beginFilterStatus: boolean = false;
     accuracy = -1;
@@ -85,6 +89,8 @@ export class BigTableComponent implements OnInit {
     tbodyOutFirstCol: object[];
     rootHtmlString: object[] = [];
 
+    isErrorDelete:boolean = false;
+
     constructor(
         private translate: TranslateService,
         private globalService: GlobalService,
@@ -98,6 +104,19 @@ export class BigTableComponent implements OnInit {
 
     ngOnInit(): void {
         this.init();
+    }
+
+    // 页面加载完成的时候会把算好的 tableHeight传进来，触发changes 然后组件内部计算表格滚动区域的高度；
+    ngOnChanges(change: SimpleChanges) {
+        if(!("tableHeight" in change) && !this.tableHeight) {
+            // 不传高度默认显示十条数据的高度 默认滚动高度388px
+            this.scroll["y"] = "388px";
+        }
+
+        if ("tableHeight" in change && change["tableHeight"]["currentValue"]) {
+            this.computedTbody(change["tableHeight"]["currentValue"]);
+        }
+
     }
 
     init() {
@@ -153,8 +172,8 @@ export class BigTableComponent implements OnInit {
 
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
             (responseData: any) => {
+                this.isLoading = false;
                 if (responseData.status == "0" ) {
-                    this.isLoading = false;
                     if(!responseData.data['rows'].length){
                         this.total = 0;
                         this.error = 'nodata';
@@ -185,13 +204,45 @@ export class BigTableComponent implements OnInit {
                     this.key = this.head[0]["children"].length
                         ? this.head[0]["children"][0]["true_key"]
                         : this.head[0]["true_key"];
+
+                    if(this.isErrorDelete){ // 如果是在无数据或者系统错误的情况下 删除了筛选条件 表格获取数据初始化以后就需要重新应用之前的筛选状态
+                        setTimeout(()=>{
+                            //如果表之前是错误的状态 筛选组件需要重新应用之前的状态
+                            this.tableEntity['searchList'].forEach(v=>{
+                                this._filterWithoutRequest(v['filterName'],v['filterNamezh'],v['searchType'],v['filterType'],v['valueOne'],v['valueTwo'])
+                            })
+                            this.isErrorDelete = false;
+                        },30)
+                    }
+                }else{
+                    this.total = 0;
+                    this.error = "error";    
                 }
+                    
+                setTimeout(() => {
+                    this.computedTbody(this.tableHeight);
+                }, 30);
             },
             err => {
                 this.isLoading = false;
                 this.total = 0;
                 this.error = 'error';
+            },
+            ()=>{
+                if(this.applyOnceSearchParams){
+                    // 每次应用一次设置的查询参数 然后清空恢复默认，用自己的查询参数；
+                    this.tableEntity['searchList'] = [];
+                    this.tableEntity['rootSearchContentList'] = [];
+                    if('leftChooseList' in this.tableEntity) this.tableEntity['leftChooseList'] = [];
+                    if('upChooseLIst' in this.tableEntity) this.tableEntity['upChooseList'] = [];
+                    if('compareGroup' in this.tableEntity) this.tableEntity['compareGroup'] = [];
+                    if('setNameList' in this.tableEntity) this.tableEntity['setNameList'] = [];
+                    if('diffThreshold' in this.tableEntity) this.tableEntity['diffThreshold'] = {};
+                    this.applyOnceSearchParams = false;
+                    this.applyOnceSearchParamsChange.emit(this.applyOnceSearchParams);
+                }
             }
+
         );
     }
 
@@ -205,16 +256,11 @@ export class BigTableComponent implements OnInit {
         this.unionSearchConditionList = [];
         this.tableEntity["sortKey"] = null;
         this.tableEntity["sortValue"] = null;
+        this.accuracy = -1;
         this.beginFilterStatus = false;
-        this.interConditionHtmlString = this.globalService.transformFilter(
-            this.interSearchConditionList
-        );
-        this.unionConditionHtmlStirng = this.globalService.transformFilter(
-            this.unionSearchConditionList
-        );
-        this.rootHtmlString = this.globalService.transformRootFilter(
-            this.tableEntity["rootSearchContentList"]
-        );
+        this.interConditionHtmlString = this.globalService.transformFilter( this.interSearchConditionList );
+        this.unionConditionHtmlStirng = this.globalService.transformFilter( this.unionSearchConditionList );
+        this.rootHtmlString = this.globalService.transformRootFilter( this.tableEntity["rootSearchContentList"] );
     }
 
     // 重置排序状态
@@ -285,7 +331,8 @@ export class BigTableComponent implements OnInit {
                     filterType: argv[2],
                     valueOne: argv[3],
                     valueTwo: argv[4],
-                    crossUnion: argv[5]
+                    searchType:argv[5]
+                    // crossUnion: argv[5]
                 }
             ];
         } else {
@@ -298,7 +345,8 @@ export class BigTableComponent implements OnInit {
                         filterType: argv[2],
                         valueOne: argv[3],
                         valueTwo: argv[4],
-                        crossUnion: argv[5]
+                        searchType:argv[5]
+                        // crossUnion: argv[5]
                     };
                     isIn = true;
                 }
@@ -311,12 +359,30 @@ export class BigTableComponent implements OnInit {
                     filterType: argv[2],
                     valueOne: argv[3],
                     valueTwo: argv[4],
-                    crossUnion: argv[5]
+                    searchType:argv[5]
+                    // crossUnion: argv[5]
                 });
         }
-
+        // 每次筛选的时候 重置选中的集合
         this.getRemoteData();
         this.classifySearchCondition();
+    }
+
+    computedTbody(tableHeight) {
+        if(tableHeight){
+            // 固定头的高度
+            let head = $(`#${this.tableId} .ant-table-fixed .ant-table-thead`).outerHeight();
+            // 分页的高度
+            let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
+            // 筛选条件的高度
+            let filter = $(`#${this.tableId} .table-filter`).outerHeight();
+            // 表头工具栏的高度
+            let tools = $(`#${this.tableId} .table-thead`).outerHeight();
+            // 首列gene的高度
+            let res = tableHeight - head - bottom - filter - tools  - 2;
+            $(`#${this.tableId} .ant-table-body`).css("height", `${res}px`);
+            this.scroll["y"] = `${res}px`;
+        }
     }
 
     // 把筛选条件 按交并集归类
@@ -324,19 +390,27 @@ export class BigTableComponent implements OnInit {
         this.unionSearchConditionList = [];
         this.interSearchConditionList = [];
         if (this.tableEntity["searchList"].length) {
-            this.tableEntity["searchList"].forEach(val => {
-                val["crossUnion"] === "union"
-                    ? this.unionSearchConditionList.push(val)
-                    : this.interSearchConditionList.push(val);
-            });
+            // this.tableEntity["searchList"].forEach(val => {
+            //     val["crossUnion"] === "union"
+            //         ? this.unionSearchConditionList.push(val)
+            //         : this.interSearchConditionList.push(val);
+            // });
+            this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
+        }else{
+            this.filterHtmlString.length = 0;
         }
 
-        this.interConditionHtmlString = this.globalService.transformFilter(
-            this.interSearchConditionList
-        );
-        this.unionConditionHtmlStirng = this.globalService.transformFilter(
-            this.unionSearchConditionList
-        );
+        // this.interConditionHtmlString = this.globalService.transformFilter(
+        //     this.interSearchConditionList
+        // );
+        // this.unionConditionHtmlStirng = this.globalService.transformFilter(
+        //     this.unionSearchConditionList
+        // );
+
+        // 每次分类筛选条件的时候 重新计算表格滚动区域高度
+        setTimeout(() => {
+            this.computedTbody(this.tableHeight);
+        }, 0);
     }
 
     // 清空搜索
@@ -357,20 +431,49 @@ export class BigTableComponent implements OnInit {
         }
     }
 
-    // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
-    setPopoverText(text, type) {
-        this.popoverSearchType = type;
-        this.popoverText = text;
+    deleteWithoutRequest(argv){
+        if (this.tableEntity["searchList"].length) {
+            this.tableEntity["searchList"].forEach((val, index) => {
+                if (
+                    val["filterName"] === argv[0] &&
+                    val["filterNamezh"] === argv[1]
+                ) {
+                    this.tableEntity["searchList"].splice(index, 1);
+                    this.classifySearchCondition();
+                    // this.getRemoteData();
+                    return;
+                }
+            });
+        }
     }
 
-    // 删除筛选条件
-    deleteFilterItem(item) {
+    // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
+    setPopoverText(text, type) {
+        this.popoverText = text;
+        this.popoverSearchType = type;
+    }
+
+   // 删除筛选条件
+   deleteFilterItem(item) {
         let filterObj = item.obj;
-        this._deleteFilter(
-            filterObj["filterName"],
-            filterObj["filterNamezh"],
-            filterObj["filterType"]
-        );
+        if(this.error){
+            this.isErrorDelete = true;
+            // 没数据的时候 在表格筛选参数里找出当前的筛选条件删除 重新获取表格数据
+            let index = this.tableEntity['searchList'].findIndex((val,i)=>{
+                return (val['filterName'] === filterObj['filterName'] && val['filterType'] === filterObj['filterType'])
+            })
+            if(index!=-1) {
+                this.tableEntity['searchList'].splice(index,1);
+                this.getRemoteData();
+            }
+            this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
+        }else{
+            this._deleteFilter(
+                filterObj["filterName"],
+                filterObj["filterNamezh"],
+                filterObj["filterType"]
+            );
+        }
     }
 
     // 删除一级筛选条件
@@ -426,7 +529,7 @@ export class BigTableComponent implements OnInit {
      * @memberof BigTableComponent
      */
     computedTheadWidth(head): object {
-        let defaultWidth = 20;
+        let defaultWidth = 12;
         let widthConfig = [];
         let twoLevelHead = [];
         let totalWidth: string;
@@ -437,18 +540,18 @@ export class BigTableComponent implements OnInit {
                 v["colspan"] = v.children.length;
                 v["rowspan"] = 1;
                 v.children.forEach(val => {
-                    singleWidth = val.name.length * defaultWidth;
+                    singleWidth = val.name.length * defaultWidth + 22;
                     widthConfig.push(singleWidth);
                     twoLevelHead.push(val);
                 });
             } else {
                 v["colspan"] = 1;
                 v["rowspan"] = 2;
-                singleWidth = defaultWidth * v.name.length;
+                singleWidth = defaultWidth * v.name.length + 22;
                 widthConfig.push(singleWidth);
             }
         });
-        widthConfig.unshift(61);
+        // widthConfig.unshift(60);
         let colLeftConfig: any[] = [];
         // 计算首列的left
         if (head[0]["children"].length) {
@@ -470,6 +573,7 @@ export class BigTableComponent implements OnInit {
         });
         colLeftConfig.map((v, i) => (colLeftConfig[i] += "px"));
         totalWidth = tempTotalWidth + "px";
+
         return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
     }
 
@@ -478,18 +582,30 @@ export class BigTableComponent implements OnInit {
         this.getRemoteData(true);
     }
 
-    /**
-     * @description  以下方法为外部调用
+    
+
+     /**
+     * @description 组件外设置内部查询参数 更新参数并发请求
      * @author Yangwd<277637411@qq.com>
-     * @memberof BigTableComponent
+     * @date 2018-11-19
+     * @param {*} object
+     * @memberof GeneTableComponent
      */
+    _setParamsOfObject(object) {
+        if (!$.isEmptyObject(object)) {
+            for (let key in object) {
+                this.tableEntity[key] = object[key];
+            }
+            this.getRemoteData();
+        }
+    }
 
     /**
      * @description  组件外设置内部查询参数 更新参数并发请求
      * @author Yangwd<277637411@qq.com>
      * @param {any} key
      * @param {any} value
-     * @memberof BigTableComponent
+     * @memberof GeneTableComponent
      */
     _setParamsOfEntity(key, value) {
         this.tableEntity[key] = value;
@@ -501,7 +617,7 @@ export class BigTableComponent implements OnInit {
      * @author Yangwd<277637411@qq.com>
      * @param {any} key
      * @param {any} value
-     * @memberof BigTableComponent
+     * @memberof GeneTableComponent
      */
     _setParamsOfEntityWithoutRequest(key, value) {
         this.tableEntity[key] = value;
@@ -527,6 +643,50 @@ export class BigTableComponent implements OnInit {
                 val._outerDelete(filterName, filterNamezh, filterType);
             }
         });
+    }
+
+    _deleteFilterWithoutRequest(filterName, filterNamezh, filterType){
+        this.children._results.forEach(val => {
+            if (
+                val.pid === this.tableId &&
+                val.filterName === filterName &&
+                val.selectType === filterType &&
+                val.filterNamezh === filterNamezh
+            ) {
+                val._outerDeleteWithoutRequest(filterName, filterNamezh, filterType);
+            }
+        });
+    }
+
+    /**
+     * @description 表格组件外部清空筛选条件
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-10-09
+     * @memberof BigTableComponent
+     */
+    _clearFilter() {
+        this.beginFilterStatus = false;
+        this.tableEntity["searchList"] = [];
+        this.classifySearchCondition();
+
+        this.tableEntity["rootSearchContentList"] = [];
+        this.rootHtmlString = this.globalService.transformRootFilter(
+            this.tableEntity["rootSearchContentList"]
+        );
+
+        this.getRemoteData();
+    }
+
+    _clearFilterWithoutRequest(){
+        this.beginFilterStatus = false;
+        this.tableEntity["searchList"] = [];
+        this.classifySearchCondition();
+
+        this.tableEntity["rootSearchContentList"] = [];
+        this.rootHtmlString = this.globalService.transformRootFilter(
+            this.tableEntity["rootSearchContentList"]
+        );
+
     }
 
     /**
@@ -568,19 +728,15 @@ export class BigTableComponent implements OnInit {
      * @date 2018-10-09
      * @param {*} filterName
      * @param {*} filterNamezh
+     * @param {string} searchType
      * @param {*} filterType
      * @param {*} filterValueOne
      * @param {*} filterValueTwo
-     * @param {string} crossUnion
      * @memberof BigTableComponent
      */
     _filter(
-        filterName,
-        filterNamezh,
-        filterType,
-        filterValueOne,
-        filterValueTwo,
-        crossUnion
+        filterName, filterNamezh, searchType, filterType, filterValueOne, filterValueTwo,
+        // crossUnion
     ) {
         /* 向filter组件传递  tableId  filterName  filterType
          找匹配tableId的filter子组件，并更新筛选状态；
@@ -590,27 +746,52 @@ export class BigTableComponent implements OnInit {
         if (!this.beginFilterStatus) this.beginFilterStatus = true;
         // 待筛选面板渲染完后找到匹配的筛选面板传数据
         setTimeout(() => {
-            this.children._results.forEach(val => {
-                if (val.pid === this.tableId && val.filterName === filterName) {
-                    val._outerUpdate(
-                        filterName,
-                        filterNamezh,
-                        filterType,
-                        filterValueOne,
-                        filterValueTwo,
-                        crossUnion
-                    );
-                    this.recive([
-                        filterName,
-                        filterNamezh,
-                        filterType,
-                        filterValueOne,
-                        filterValueTwo,
-                        crossUnion
-                    ]);
-                }
-            });
+            if(this.children._results.length){
+                this.children._results.forEach(val => {
+                    if (val.pid === this.tableId && val.filterName === filterName) {
+                        val._outerUpdate( filterName, filterNamezh, filterType, filterValueOne, filterValueTwo, searchType);// crossUnion
+                        this.recive([ filterName, filterNamezh, filterType, filterValueOne, filterValueTwo, searchType]);  // crossUnion
+                    }
+                });
+            }else{
+                this.recive([ filterName, filterNamezh, filterType, filterValueOne, filterValueTwo, searchType  ]); // crossUnion
+            }
         }, 30);
+    }
+
+    _filterWithoutRequest(filterName,
+        filterNamezh,
+        searchType,
+        filterType,
+        filterValueOne,
+        filterValueTwo,
+        // crossUnion
+    ) {
+        /* 向filter组件传递  tableId  filterName  filterType
+         找匹配tableId的filter子组件，并更新筛选状态；
+         手动调用本组件的 recive方法  模拟子组件发射的方法
+         */
+        // 没有打开筛选就打开
+        if (!this.beginFilterStatus) this.beginFilterStatus = true;
+        // 待筛选面板渲染完后找到匹配的筛选面板传数据
+        if(this.children._results.length){
+            setTimeout(() => {
+                this.children._results.forEach(val => {
+                    if (val.pid === this.tableId && val.filterName === filterName) {
+                        val._outerUpdate(
+                            filterName,
+                            filterNamezh,
+                            filterType,
+                            filterValueOne,
+                            filterValueTwo,
+                            searchType
+                        );
+
+                        this.classifySearchCondition();
+                    }
+                });
+            }, 30);
+        }
     }
 
     /**
@@ -627,73 +808,78 @@ export class BigTableComponent implements OnInit {
 
     /**
      * @description 外部增删列   字段相同的列保留筛选条件
+     * 永远都是覆盖参数的增删列
      * @author Yangwd<277637411@qq.com>
-     * @date 2018-10-15
+     * @date 2018-11-29
      * @param {string[]} addThead
-     * @memberof BigTableComponent
+     * @param {string} key
+     * @memberof GeneTableComponent
      */
     _addThead(addThead: string[]) {
-        this.addThead = addThead;
+        this.tableEntity["addThead"] = addThead;
         this.deleteSearchListItemOrderByAddThead();
-        this.beforeAddThead = this.addThead.concat();
+        this.beforeAddThead = this.tableEntity["addThead"].concat();
         this.getRemoteData();
     }
 
-    // test
-    add1() {
-        this.addThead = ["name", "age"];
+    _clearThead(){
+        this.tableEntity["addThead"] = [];
         this.deleteSearchListItemOrderByAddThead();
-        this.beforeAddThead = this.addThead.concat();
+        this.beforeAddThead = [];
         this.getRemoteData();
     }
-    add2() {
-        this.addThead = ["age", "name"];
-        this.deleteSearchListItemOrderByAddThead();
-        this.beforeAddThead = this.addThead.concat();
-        this.getRemoteData();
+
+    /**
+     * @description 外部获取表格内部状态数据
+     * @author Yangwd<277637411@qq.com>
+     * @returns
+     * @memberof GeneTableComponent
+     */
+    _getInnerStatusParams() {
+        // if('checked' in this.tableEntity) this.tableEntity['checked'] = this.checked;
+        // if('unChecked' in this.tableEntity) this.tableEntity['unChecked'] = this.unChecked;
+        // if('checkStatus' in this.tableEntity) this.tableEntity['checkStatus'] = this.checkStatus;
+        return {
+            tableEntity: this.tableEntity,
+            url: this.url,
+            baseThead:this.head
+        };
     }
-    add3() {
-        this.addThead = ["age"];
-        this.deleteSearchListItemOrderByAddThead();
-        this.beforeAddThead = this.addThead.concat();
-        this.getRemoteData();
-    }
-    add4() {
-        this.addThead = ["name"];
-        this.deleteSearchListItemOrderByAddThead();
-        this.beforeAddThead = this.addThead.concat();
+
+    _getData(){
         this.getRemoteData();
     }
 
     deleteSearchListItemOrderByAddThead() {
         if (this.beforeAddThead) {
             this.beforeAddThead.forEach(val => {
-                if (!this.isInArr(val, this.addThead)) {
+                if (!this.isInArr(val, this.tableEntity["addThead"],'key')) {
                     // 删除搜索条件
                     this.tableEntity["searchList"].forEach((v, n) => {
-                        if (v["filterName"] === `${val}`) {
+                        if (v["filterName"] === val['key']) {
                             this.tableEntity["searchList"].splice(n, 1);
                         }
                     });
                     // 删除排序
-                    if (this.sortKey === val) {
-                        this.sortKey = null;
-                        this.sortValue = null;
-                        if (val in this.sortMap) {
-                            this.sortMap[val] = null;
+                    if (this.tableEntity["sortKey"] === val['key']) {
+                        this.tableEntity["sortKey"] = null;
+                        this.tableEntity["sortValue"] = null;
+                        if (val['key'] in this.sortMap) {
+                            this.sortMap[val['key']] = null;
                         }
                     }
                 }
             });
-
             this.classifySearchCondition();
         }
     }
 
-    isInArr(x, arr) {
+    isInArr(x, arr,key?) {
         for (let i = 0; i < arr.length; i++) {
-            if (arr[i] == x) {
-                return true;
+            if(key){
+                if (arr[i][key] === x[key])  return true;
+            }else{
+                if(arr[i]==x) return true
             }
         }
         return false;
