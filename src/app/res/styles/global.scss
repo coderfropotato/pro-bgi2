@@ -393,7 +393,10 @@ button.btnActive {
         transition: 0.2s all ease;
 		&.unexpand {
 			flex: 4;
-        }
+		}
+		&.expand{
+			flex: 7;
+		}
         &.table-only{
 			flex:0;
 			margin-right: 0;
@@ -421,7 +424,10 @@ button.btnActive {
 		@include module-style;
 		&.expand {
 			flex: 7;
-        }
+		}
+		&.unexpand{
+			flex:4;
+		}
         &.table-only{
             flex:1;
         }
@@ -444,8 +450,22 @@ button.btnActive {
 
 // 布局切换
 .layout-switch-wrap{
+	.layout-src-ele{
+		position: absolute;
+		left: 0;
+		top:2px;
+		width: 100%;
+		height: 20px;
+		z-index: 10;
+		display: flex;
+		flex-direction: row;
+		cursor: pointer;
+		li{
+			flex:1;
+		}
+	}
     .layout-switch {
-        width: 72px;
+        width: 106px;
         height: 20px;
         background: $layout_switch_bgcolor;
         border-radius: 4px;
@@ -466,11 +486,14 @@ button.btnActive {
             border-radius: 2px;
             transition: .3s all ease;
             &.left{
-                transform: translateX(0);
+                transform: translateX(3px);
             }
             &.right{
-                transform: translateX(24px);
-            }
+                transform: translateX(55px);
+			}
+			&.center{
+				transform: translateX(31px)
+			}
         }
     }
     i{
