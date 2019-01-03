@@ -45,8 +45,10 @@ export class LayoutSwitchComponent implements ControlValueAccessor {
             this.onlyTableChange.emit(this.onlyTable);
         }
         if(value!==this.innerValue){
+            if(this.innerValue!=null){
+                this.ngModelChange.emit(value);
+            }
             this.innerValue = value;
-            this.ngModelChange.emit(this.innerValue);
         }
     }
 
