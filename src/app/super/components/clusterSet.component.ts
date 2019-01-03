@@ -41,6 +41,7 @@ declare const $: any;
 export class ClusterSetComponent implements OnInit {
     @Output() confirm: EventEmitter<any> = new EventEmitter();
     @Input() defaultSetData:any;
+    @Input() setData:any;
 
     confirmData:object;
 
@@ -174,48 +175,26 @@ export class ClusterSetComponent implements OnInit {
 
     //获取分类
     getClassification(){
-        this.ajaxservice
-        .getDeferData({
-            url:`${config['javaPath']}/cluster/classification`,
-            data:{
-                    "geneType": this.geneType,
-                    "LCID": this.storeService.getStore('LCID'),
-                    "version": this.storeService.getStore('version'),
-                    "genome": this.storeService.getStore('genome')
-            }
+        let trueData=this.setData;
+        //横向
+        let horizontalClassList=trueData.horizontal;
+        horizontalClassList.forEach(d=>{
+            this.horizontalClassList.push({
+                key:d.key,
+                name:d.name,
+                category:d.category,
+                isChecked:false
+            });
         })
-        .subscribe(
-            (data:any)=>{
-                if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-                    return;
-                } else if (data.status === "-1") {
-                    return;
-                } else if (data.status === "-2") {
-                    return;
-                } else {
-                    let trueData=data.data;
-                    //横向
-                    let horizontalClassList=trueData.horizontal;
-                    horizontalClassList.forEach(d=>{
-                        this.horizontalClassList.push({
-                            key:d.key,
-                            name:d.name,
-                            category:d.category,
-                            isChecked:false
-                        });
-                    })
-                    this.horizontalEditList=horizontalClassList;
+        this.horizontalEditList=horizontalClassList;
 
-                    //纵向
-                    this.verticalClassList=trueData.vertical;
-                    this.verticalEditList=trueData.vertical;
-                    this.verticalClassList.forEach(d=>{
-                        d['isChecked']=false;
-                    })
-                }
-            }
-        )
-
+        //纵向
+        this.verticalClassList=trueData.vertical;
+        this.verticalEditList=trueData.vertical;
+        this.verticalClassList.forEach(d=>{
+            d['isChecked']=false;
+        })
+        
     }
 
     //纵向分类 添加

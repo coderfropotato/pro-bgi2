@@ -71,6 +71,10 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() defaultSetEntity:object;
     @Output() defaultSet:EventEmitter<any> = new EventEmitter();
 
+    @Input() setDataUrl:string;
+    @Input() setDataEntity:object;
+    @Output() setData:EventEmitter<any>=new EventEmitter();
+
     // 刷新
     @Output() refresh:EventEmitter<any> = new EventEmitter();
 
@@ -157,7 +161,9 @@ export class TableSwitchChartComponent implements OnInit {
             }
         }
 
-        
+        if(this.setDataUrl && this.setDataEntity){
+            this.getSetData();
+        }
     }
 
     //获取默认值
@@ -184,6 +190,29 @@ export class TableSwitchChartComponent implements OnInit {
         )
     }
 
+    //获取设置所需的数据
+    getSetData(){
+        this.ajaxService
+        .getDeferData({
+            url:this.setDataUrl,
+            data:this.setDataEntity
+        })
+        .subscribe(
+            (data:any)=>{
+                if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                    return;
+                } else if (data.status === "-1") {
+                    return;
+                } else if (data.status === "-2") {
+                    return;
+                } else {
+                    let trueData=data.data;
+                    this.setData.emit(trueData);
+                }
+            }
+        )
+
+    }
 
     // 初始化计算表滚动的高度
     ngAfterViewInit() {
