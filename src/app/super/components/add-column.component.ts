@@ -67,7 +67,6 @@ export class AddColumnComponent implements OnInit {
 				await this.getAddThead();
 			} catch (error) {}
 			this.setSortThead([]);
-			this.initIndexAndChecked();
 			// 生成 点击选择 容器
 			this.initSelected();
 			this.initBeforeSelected();
@@ -127,6 +126,7 @@ export class AddColumnComponent implements OnInit {
                                 }
 							})
 							this.thead = d;
+							this.initIndexAndChecked();
                             resolve("success");
                         }else{
                             reject('error');
