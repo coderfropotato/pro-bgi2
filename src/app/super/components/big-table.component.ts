@@ -60,8 +60,9 @@ export class BigTableComponent implements OnInit {
     sortValue = null;
     sortKey = null;
 
-    popoverText = "";
+    popoverText:any[]  = [];
     popoverSearchType = "";
+    poppverThead = '';
 
     // filter html string
     filterHtmlString: object[] = [];
@@ -121,12 +122,12 @@ export class BigTableComponent implements OnInit {
 
     init() {
         this.tableEntity["pageIndex"] = 1;
-        this.tableEntity["pageSize"] = 10;
+        this.tableEntity["pageSize"] = this.pageEntity["pageSize"] || 20;
         this.tableEntity["sortValue"] = null;
         this.tableEntity["sortKey"] = null;
-        this.tableEntity["searchList"] = [];
-        this.tableEntity["rootSearchContentList"] = [];
-        this.tableEntity["addThead"] = [];
+        this.tableEntity["searchList"] = this.pageEntity["searchList"] || [];
+        this.tableEntity["rootSearchContentList"] = this.pageEntity["rootSearchContentList"] || [];
+        this.tableEntity["addThead"] = this.pageEntity["addThead"] || [];
 
         // 把其他的查询参数也放进去
         if (!$.isEmptyObject(this.pageEntity)) {
@@ -179,6 +180,14 @@ export class BigTableComponent implements OnInit {
                         this.error = 'nodata';
                         return;
                     }
+
+                    // 是否需要发射表头
+                    if(this.emitBaseThead){
+                        this.emitBaseThead = false;
+                        this.emitBaseTheadChange.emit(this.emitBaseThead);
+                        this.baseTheadChange.emit({baseThead:responseData['data']['baseThead']});
+                    }
+
                     this.error = '';
                     let arr = [];
                     this.head = responseData.data.baseThead;
@@ -448,9 +457,26 @@ export class BigTableComponent implements OnInit {
     }
 
     // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
-    setPopoverText(text, type) {
-        this.popoverText = text;
+    setPopoverText(text, type,thead) {
+        if(thead === 'splie_site'){
+            if(text.indexOf('-')!=-1){
+                this.popoverText = text.split('-');
+            }else{
+                if(!text && text!=0){
+                    this.popoverText = ['NA'];
+                }else{
+                    this.popoverText = [text];
+                }
+            }
+        }else{
+            if(!text && text!=0){
+                this.popoverText = ['NA'];
+            }else{
+                this.popoverText = [text];
+            }
+        }
         this.popoverSearchType = type;
+        this.poppverThead = thead;
     }
 
    // 删除筛选条件
@@ -569,7 +595,8 @@ export class BigTableComponent implements OnInit {
         let tempTotalWidth = 0;
         widthConfig.map((v, i) => {
             tempTotalWidth += v;
-            widthConfig[i] += "px";
+            widthConfig[i] += 29;   // 排序和筛选按钮的宽度
+            widthConfig[i] += 'px';
         });
         colLeftConfig.map((v, i) => (colLeftConfig[i] += "px"));
         totalWidth = tempTotalWidth + "px";
