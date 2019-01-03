@@ -483,6 +483,7 @@ export class reRelationHeatmapComponent implements OnInit {
                     // }
                 },
                 onselect: data => {
+                    console.log(data)
                     that.setGeneList(data);
                 }
             },
