@@ -50,28 +50,18 @@
                 <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i>
             </div>
             <!-- 表格转换 -->
-            <app-table-transformation
+            <app-big-table
                 *ngIf="defaultEntity"
 				class="no-outside-border"
-				#transformTable
-				[isFirst]="first"
+				#bigTable
 				[tableHeight]="tableHeight"
-				[defaultTableEntity]="defaultEntity"
-				[defaultTableUrl]="defaultUrl"
-				[defaultTableId]="defaultTableId"
-				[defaultTableDefaultChecked]="defaultDefaultChecked"
-				[(defaultEmitBaseThead)]="defaultEmitBaseThead"
-				(defaultBaseTheadChange)="baseTheadChange($event)"
-				[defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
-				[extendTableEntity]="extendEntity"
-				[extendTableUrl]="extendUrl"
-				[extendTableId]="extendTableId"
-				[extendTableDefaultChecked]="extendDefaultChecked"
-				[(extendEmitBaseThead)]="extendEmitBaseThead"
-				(extendBaseTheadChange)="baseTheadChange($event)"
-				[extendTableCheckStatusInParams]="extendCheckStatusInParams"
+				[pageEntity]="defaultEntity"
+				[url]="defaultUrl"
+				[tableId]="defaultTableId"
+				[(emitBaseThead)]="defaultEmitBaseThead"
+				(baseTheadChange)="baseTheadChange($event)"
 				[(applyOnceSearchParams)]="applyOnceSearchParams"
-			></app-table-transformation>
+			></app-big-table>
         </div>
     </div>
 </div>

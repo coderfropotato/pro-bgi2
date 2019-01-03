@@ -30,7 +30,8 @@ ul,ol {
     z-index:100;
 } */
 
-.ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-tbody>tr>td,
+/* gene表 */
+.gene-table-component .ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-tbody>tr>td,
 .ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th,
 .ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td,
 .ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
@@ -47,8 +48,32 @@ ul,ol {
 .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-tbody>tr>td,
 .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th {
     white-space: nowrap;
-    max-width: 120px;
-    min-width:120px;
+    /* max-width: 120px;
+    min-width:120px; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 大表 */
+.big-table-component .ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-thead>tr>th,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-tbody>tr>td,
+.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th {
+    white-space: nowrap;
+    /* max-width: 180px; 
+    min-width:180px;  */
     overflow: hidden;
     text-overflow: ellipsis;
 }
