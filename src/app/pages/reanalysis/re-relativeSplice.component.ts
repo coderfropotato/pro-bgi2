@@ -611,8 +611,9 @@ export class RelativeSpliceComponent implements OnInit {
                 .attr('width', svg_width)
                 .attr('height', svg_height)
                 .on('click', function(d) {
-                    // let event = d3.event;
-                    // event.stopPropagation();
+                    
+                    that.updateRelativeSplice();
+                    that.chartBackStatus();
                 },false);
      
         let temp_add_width = 10;
