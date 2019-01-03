@@ -38,9 +38,7 @@ export class RelativeSpliceComponent implements OnInit {
     defaultTableId: string;
     defaultDefaultChecked: boolean;
     defaultCheckStatusInParams: boolean;
-    defaultEmitBaseThead: boolean;
     baseThead: any[] = [];
-    applyOnceSearchParams: boolean;
     tableHeight = 0;
 
     switch = false;
@@ -143,7 +141,6 @@ export class RelativeSpliceComponent implements OnInit {
                 this.colors = this.storeService.colors;
 
                 // table
-                this.applyOnceSearchParams = true;
                 this.defaultUrl = `${config["javaPath"]}/alternativeSplice/table`;
                 this.defaultEntity = {
                     LCID: sessionStorage.getItem("LCID"),
@@ -166,8 +163,7 @@ export class RelativeSpliceComponent implements OnInit {
                     AS_type: this.AS_type_select,
                     Group: this.group_select
                 };
-                this.defaultTableId = "default_splice";
-                this.defaultEmitBaseThead = true;
+                this.defaultTableId = "splice";
             } catch (error) {}
         })();
     }
@@ -199,7 +195,6 @@ export class RelativeSpliceComponent implements OnInit {
 
     chartBackStatus() {
         this.showBackButton = false;
-        this.defaultEmitBaseThead = true;
         // 清空表的筛选
         this.bigTable._clearFilterWithoutRequest();
         this.bigTable._setParamsOfEntityWithoutRequest('pageIndex',1);
@@ -209,11 +204,6 @@ export class RelativeSpliceComponent implements OnInit {
             this.bigTable._deleteFilterWithoutRequest("unique","unique","$in");
             this.bigTable._getData();
         }
-    }
-
-    // 表格基础头改变  设置emitBaseThead为true的时候 表格下一次请求回来会把表头发出来 作为表格的基础表头传入增删列
-    baseTheadChange(thead) {
-        this.baseThead = thead["baseThead"].map(v => v["true_key"]);
     }
 
     // 表格上方功能区 resize重新计算表格高度
@@ -246,7 +236,6 @@ export class RelativeSpliceComponent implements OnInit {
         try {
             this.tableHeight =
                 this.right.nativeElement.offsetHeight -
-                this.func.nativeElement.offsetHeight -
                 24;
         } catch (error) {}
     }
@@ -316,7 +305,13 @@ export class RelativeSpliceComponent implements OnInit {
 
     //单选
     doSingleData() {
-        console.log(this.singleMultiSelect);
+        if($.isEmptyObject(this.singleMultiSelect)){
+            this.bigTable._deleteFilter("unique","unique","$in");
+        }else{
+            this.selectUniqueList.length = 0;
+            this.selectUniqueList.push(this.singleMultiSelect['unique']);
+            this.bigTable._filter('unique', "unique", "double","$in", this.selectUniqueList.join(','),null)
+        }
     }
 
     //框选确定时候,提交的数据
@@ -326,7 +321,6 @@ export class RelativeSpliceComponent implements OnInit {
         this.selectArray.forEach((d) => {
             tempArray.push(d["__data__"])
         });
-        console.log(tempArray);
         // 筛选表格
         let gene = tempArray.map(v=>v['unique']);
         this.selectUniqueList.length = 0;
@@ -342,10 +336,9 @@ export class RelativeSpliceComponent implements OnInit {
     selectConfirm(data) {
         this.selectConfirmData = data;
         this.doSplitData();
-        this.chartEntity['AS_type'] = this.AS_type_select;
-        this.chartEntity['Group'] = this.group_select;
         this.updateRelativeSplice();
 
+        this.bigTable._getData();
     }
 
     //把数据进行分类
@@ -364,8 +357,6 @@ export class RelativeSpliceComponent implements OnInit {
                 }
             })
         })
-        console.log(this.AS_type_select)
-        console.log(this.group_select)
     }
 
     //选择面板，默认选中数据
@@ -461,7 +452,7 @@ export class RelativeSpliceComponent implements OnInit {
                         that.doSingleData();
                     }
                     that.updateRelativeSplice();
-                    that.chartBackStatus();
+                    // that.chartBackStatus();
                 },false);
      
         let temp_add_width = 10;
@@ -661,10 +652,6 @@ export class RelativeSpliceComponent implements OnInit {
 
                 d3.selectAll(".mynode").classed("selected", false);
                 d3.select(this).classed("selected", true);
-                // 筛选表格
-                that.selectUniqueList.length = 0;
-                that.selectUniqueList.push(d['unique']);
-                that.transformTable._filter('unique', "unique", "double","$in", d['unique'],null);
                 //console.log(d);
                 that.singleMultiSelect = d;
                 that.doSingleData();
