@@ -116,7 +116,6 @@ export class reRelationHeatmapComponent implements OnInit {
 
         this.routes.paramMap.subscribe((params)=>{
             this.tid = params['params']['tid'];
-            this.tid = '20783e1576b84867aee1a63e22716fed';
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
             this.storeService.setTid(this.tid);
@@ -359,7 +358,7 @@ export class reRelationHeatmapComponent implements OnInit {
     getSetData(data){
         this.setData=data;
     }
-    
+
     //设置 默认
     apiEntityChange(data){
         let xNum=data.xNum;
@@ -377,6 +376,7 @@ export class reRelationHeatmapComponent implements OnInit {
         this.chartEntity['isHorizontal']=this.isCluster;
 
         this.chartEntity['verticalClassification']=data['verticalDefault'];
+        this.chartEntity['horizontalClassification']=data['horizontalDefault'];
 
         this.defaultSetData=data;
         this.defaultEmitBaseThead = true;
