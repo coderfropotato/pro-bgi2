@@ -458,23 +458,7 @@ export class BigTableComponent implements OnInit {
 
     // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
     setPopoverText(text, type,thead) {
-        if(thead === 'splie_site'){
-            if(text.indexOf('-')!=-1){
-                this.popoverText = text.split('-');
-            }else{
-                if(!text && text!=0){
-                    this.popoverText = ['NA'];
-                }else{
-                    this.popoverText = [text];
-                }
-            }
-        }else{
-            if(!text && text!=0){
-                this.popoverText = ['NA'];
-            }else{
-                this.popoverText = [text];
-            }
-        }
+        this.popoverText = text;
         this.popoverSearchType = type;
         this.poppverThead = thead;
     }
