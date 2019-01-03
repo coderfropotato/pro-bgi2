@@ -429,7 +429,7 @@ export class reRelationHeatmapComponent implements OnInit {
 
         let config:object={
             chart: {
-                title: "差异基因表达量聚类热图",
+                title: "关联聚类热图",
                 dblclick: function(event,title) {
                     let text = title.firstChild.nodeValue;
                     that.promptService.open(text,(data)=>{
@@ -470,6 +470,7 @@ export class reRelationHeatmapComponent implements OnInit {
                 },
                 top: {
                     show: that.isCluster,
+                    isBlockClick:true
                     // simple:{
                     //     tooltip:function(d){
                     //         return `top name:${d.name}`;
@@ -486,25 +487,25 @@ export class reRelationHeatmapComponent implements OnInit {
                 }
             },
             axis: {
-                x: {
-                    // rotate: 30,
-                    dblclick: function(event,title) {
-                        let text = title.firstChild.nodeValue;
-                        that.promptService.open(text,(data)=>{
-                            title.textContent = data;
-                        })
-                    },
-                    mouseover: function(event, title) {
-                        title
-                        .attr("fill", "blue")
-                        .append("title")
-                        .text("双击修改");
-                    },
-                    mouseout: function(event, title) {
-                        title.attr("fill", "#333");
-                        title.select("title").remove();
-                    }
-                },
+                // x: {
+                //     // rotate: 30,
+                //     dblclick: function(event,title) {
+                //         let text = title.firstChild.nodeValue;
+                //         that.promptService.open(text,(data)=>{
+                //             title.textContent = data;
+                //         })
+                //     },
+                //     mouseover: function(event, title) {
+                //         title
+                //         .attr("fill", "blue")
+                //         .append("title")
+                //         .text("双击修改");
+                //     },
+                //     mouseout: function(event, title) {
+                //         title.attr("fill", "#333");
+                //         title.select("title").remove();
+                //     }
+                // },
                 y: {
                     type:that.yName  //hidden,id,symbol
                 }
