@@ -124,7 +124,7 @@ export class reRelationHeatmapComponent implements OnInit {
 
     ngOnInit() {
         // chart
-        this.colors = ["#0070c0", "#ffffff", "#ff0000"];
+        this.colors = ["#0070c0", "#ff0000"];
         this.gaugeColors=this.storeService.getColors();
 
         this.defaultSetUrl=`${config['javaPath']}/relationCluster/defaultSet`;
@@ -416,16 +416,7 @@ export class reRelationHeatmapComponent implements OnInit {
     drawChart(data) {
         let that =this;
 
-        let legendData = [];
-        let heatmapData = data.heatmaps;
-        let dataLength = heatmapData.length;
-
-        for (let i = 0; i < dataLength; i++) {
-            let heatmapLength = heatmapData[i].heatmap.length;
-            for (let j = 0; j < heatmapLength; j++) {
-                legendData.push(heatmapData[i].heatmap[j].y);
-            }
-        }
+        let legendData = [data.min,data.max];
 
         let config:object={
             chart: {
@@ -513,7 +504,6 @@ export class reRelationHeatmapComponent implements OnInit {
             },
             legend: {
                 show: true,
-                type: "gradient",
                 min: that.domainRange[0],
                 max: that.domainRange[1],
                 data: legendData,
