@@ -101,9 +101,7 @@ export class GlobalService {
                     case "$in":
                         text = `<span>${
                             el.filterNamezh
-                        }</span>&nbsp;<font color="#f40">IN</font>&nbsp;${el.valueOne.split(
-                            ","
-                        )}&emsp;`;
+                        }</span>&nbsp;<font color="#f40">IN</font>&nbsp;${(''+el.valueOne).indexOf(',')!=-1?el.valueOne.split(","):el.valueOne}&emsp;`;
                         break;
                     case "$gt":
                         text = `<span>${
@@ -202,6 +200,10 @@ export class GlobalService {
             });
         }
         return html;
+    }
+
+    trustStringHtml(htmlString){
+        return  this.sanitizer.bypassSecurityTrustHtml(htmlString)
     }
 
     openColorPicker(
