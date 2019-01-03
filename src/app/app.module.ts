@@ -90,6 +90,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 // 管道
 import { AccuracyPipe } from "./super/filter/accuracy.pipe";
+import {TableSpecialTheadFilter} from './super/filter/tableSpecialThead.pipe';
 import config from "../config";
 
 
@@ -502,7 +503,8 @@ export function createTranslateLoader(http: HttpClient) {
         LoadingComponent,
         GeneListVennComponent,
         GeneListVennPageComponent,
-        PromtComponent
+        PromtComponent,
+        TableSpecialTheadFilter
     ],
     // 路由模块在imports 导入
     imports: [
