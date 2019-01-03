@@ -160,7 +160,13 @@ export class ClusterSetComponent implements OnInit {
         }
         this.selectedGene=this.geneList[0]['key'];
 
-        this.verticalInfos=trueData.verticalDefault;
+        if(trueData.verticalDefault){
+            this.verticalInfos=trueData.verticalDefault;
+        }
+
+        if(trueData.horizontalDefault){
+            this.horizontalInfos=trueData.horizontalDefault;
+        }
 
         this.confirmData={
             width:this.width,
