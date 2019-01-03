@@ -455,7 +455,11 @@ export class RelativeSpliceComponent implements OnInit {
                 .attr('width', svg_width)
                 .attr('height', svg_height)
                 .on('click', function(d) {
-                    
+                    ///console.log(d);
+                    if(d == undefined){
+                        that.singleMultiSelect = {};
+                        that.doSingleData();
+                    }
                     that.updateRelativeSplice();
                     that.chartBackStatus();
                 },false);
@@ -654,13 +658,16 @@ export class RelativeSpliceComponent implements OnInit {
             .on('click', function(d) {
                 let event = d3.event;
                     event.stopPropagation();
-                    console.log(event)
 
+                d3.selectAll(".mynode").classed("selected", false);
+                d3.select(this).classed("selected", true);
                 // 筛选表格
                 that.selectUniqueList.length = 0;
                 that.selectUniqueList.push(d['unique']);
-                that.bigTable._filter('unique', "unique", "double","$in", d['unique'],null);
-                console.log(d);
+                that.transformTable._filter('unique', "unique", "double","$in", d['unique'],null);
+                //console.log(d);
+                that.singleMultiSelect = d;
+                that.doSingleData();
             })
 
         }

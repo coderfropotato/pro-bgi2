@@ -90,7 +90,7 @@ export class ReNetComponent implements OnInit {
 
 
     // 路由参数
-    tid:string = "df3017e1c1ab4acca8f92b336ebc921b";
+    tid:string = "";
     geneType:string = '';
     version:string = null;
 
@@ -353,7 +353,7 @@ export class ReNetComponent implements OnInit {
 
         //关联关系
         let relations = this.storeService.getStore('relations');
-        let colorArr = [["#FF8B8B", "#167C80"], ["#005397", "#FACA0C"], ["#F3C9DD", "#0BBCD6"], ["#BFB5D7", "#BEA1A5"], ["#0E38B1", "#A6CFE2"], ["#371722", "#C7C6C4"]];
+        let colorArr = [["#FFF1F0", "#CF1322"], ["#FFF7E6", "#FA8C15"], ["#FEFFE6", "#FADB14"], ["#F6FFED", "#52C41A"], ["#E7F7FF", "#1890FF"], ["#F9F0FF", "#712ED1"]];
         let relationColors=[...relations];
         relationColors.forEach((d,i)=>{
             d.colors=[...colorArr[i]];
@@ -448,7 +448,7 @@ export class ReNetComponent implements OnInit {
 
         //大小
         let sizeScale=d3.scaleLinear()
-            .range([min*10+20, max*10+20])
+            .range([20, 520])
             .domain([min, max]).clamp(true).nice();
 
         //颜色
@@ -702,7 +702,7 @@ export class ReNetComponent implements OnInit {
                 .range([0, nodeColorLegendW])
                 .domain([min, max]).clamp(true).nice();
 
-            let nodeColorAxis = d3.axisBottom(nodeColorLegendScale).ticks(5); //设置Y轴
+            let nodeColorAxis = d3.axisBottom(nodeColorLegendScale).tickValues([min,(min+max)/2,max]); //设置Y轴
             legendNodeColor_g.append("g").attr("class", "nodeColorlegendAxis")
                 .attr("transform", `translate(0,${eachLegendH})`)
                 .call(nodeColorAxis);
@@ -775,7 +775,7 @@ export class ReNetComponent implements OnInit {
                     .range([0, legendW])
                     .domain([d.scores[0], d.scores[1]]).clamp(true).nice();
 
-                let linkColorAxis = d3.axisBottom(linkColorLegendScale).ticks(2); //设置Y轴
+                let linkColorAxis = d3.axisBottom(linkColorLegendScale).tickValues([d.scores[0], d.scores[1]]); //设置Y轴
                 linkColor_g.append("g").attr("class", "linkColorlegendAxis")
                     .attr("transform", `translate(0,${eachLegendH})`)
                     .call(linkColorAxis);

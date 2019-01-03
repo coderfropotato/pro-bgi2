@@ -53,6 +53,10 @@ export class ReHeatmapComponent implements OnInit {
     defaultSetEntity:object;
     defaultSetData:any = null;
 
+    setDataUrl:string;
+    setDataEntity:object;
+    setData:any;
+
     // table
     setAddedThead :any= [];
     defaultEntity: object;
@@ -127,6 +131,14 @@ export class ReHeatmapComponent implements OnInit {
         this.defaultSetUrl=`${config['javaPath']}/cluster/defaultSet`;
         this.defaultSetEntity={
             "tid": this.tid
+        }
+
+        this.setDataUrl=`${config['javaPath']}/cluster/classification`;
+        this.setDataEntity={
+            "geneType": this.geneType,
+            "LCID": this.storeService.getStore('LCID'),
+            "version": this.storeService.getStore('version'),
+            "genome": this.storeService.getStore('genome')
         }
 
         this.chartUrl=`${config['javaPath']}/cluster/heatmapGraph`;
@@ -343,6 +355,11 @@ export class ReHeatmapComponent implements OnInit {
     }
 
     // 图的方法
+    // 设置 所需数据
+    getSetData(data){
+        this.setData=data;
+    }
+
     //设置 默认
     apiEntityChange(data){
         let xNum=data.xNum;

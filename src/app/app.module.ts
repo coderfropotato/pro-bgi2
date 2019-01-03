@@ -323,7 +323,7 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "re-relationHeatmap/:geneType/:tid/:version",
+                path: "re-heatmaprelation/:geneType/:tid/:version",
                 component: reRelationHeatmapComponent,
                 canActivate: [SysDefendService],
                 data: {
