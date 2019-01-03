@@ -10,7 +10,8 @@ import { Pipe, PipeTransform } from "@angular/core";
  * string不处理
  */
 @Pipe({
-    name: "accuracyPipe"
+    name: "accuracyPipe",
+    pure: true
 })
 export class AccuracyPipe implements PipeTransform {
     transform(value: any, args?: any, type?: any): any {
