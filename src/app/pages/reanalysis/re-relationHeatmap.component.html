@@ -11,7 +11,7 @@
         </div> -->
         <div class="left-bottom-layout">
                 <ng-template #setTemplate>
-                    <app-clusterSet *ngIf="defaultSetData && setData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData' [setData]="setData"></app-clusterSet>
+                    <app-clusterSet *ngIf="defaultSetData && setData" [type]="'relation'" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData' [setData]="setData"></app-clusterSet>
                 </ng-template>
                 <!-- [selectTemplate]="selectTemplate" -->
                 <app-table-switch-chart

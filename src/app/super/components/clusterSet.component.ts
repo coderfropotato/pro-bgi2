@@ -43,6 +43,8 @@ export class ClusterSetComponent implements OnInit {
     @Input() defaultSetData:any;
     @Input() setData:any;
 
+    @Input() type:string;
+
     confirmData:object;
 
     isShowSetPanel:boolean=false;
