@@ -41,8 +41,7 @@ export class RelativeSpliceComponent implements OnInit {
     baseThead: any[] = [];
     tableHeight = 0;
 
-    switch = false;
-    onlyTable: boolean = false;
+    switch:string = 'right';
 
     addColumnShow: boolean = false;
     showBackButton: boolean = false;
@@ -220,16 +219,6 @@ export class RelativeSpliceComponent implements OnInit {
             this.relativeSpliceChart.scrollHeight();
             this.computedTableHeight();
         }, 320);
-    }
-
-    // 展开表icon 点击事件
-    handleOnlyTable() {
-        this.onlyTable = !this.onlyTable;
-    }
-
-    // 从布局切换发出的事件
-    handlOnlyTableChange(status) {
-        this.onlyTable = status;
     }
 
     computedTableHeight() {

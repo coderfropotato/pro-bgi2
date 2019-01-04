@@ -13,8 +13,11 @@ import { ControlValueAccessor } from '@angular/forms/src/directives';
 @Component({
 	selector: 'app-layout-switch',
     template: `<div class="layout-switch-wrap">
-                    <div class="layout-switch"  (click)="writeValue(!innerValue)">
-                        <span [class.left]="innerValue" [class.right]="!innerValue"></span>
+                    <ul class="layout-src-ele">
+                        <li *ngFor="let pos of ['left','center','right']" (click)="handleToggleLayout(pos)" nz-tooltip  [nzTitle]="pos" nzPlacement="top"></li>
+                    </ul>
+                    <div class="layout-switch">
+                        <span [class.left]="innerValue==='left'" [class.right]="innerValue==='right'" [class.center]="innerValue==='center'"></span>
                     </div>
                     <ng-content></ng-content>
                 </div>
@@ -38,12 +41,12 @@ export class LayoutSwitchComponent implements ControlValueAccessor {
 
     constructor() {}
 
+    handleToggleLayout(pos){
+        this.writeValue(pos)
+    }
+
     // 该方法用于将模型中的新值写入视图或 DOM 属性中
     writeValue(value){
-        if(this.onlyTable) {
-            this.onlyTable = false;
-            this.onlyTableChange.emit(this.onlyTable);
-        }
         if(value!==this.innerValue){
             if(this.innerValue!=null){
                 this.ngModelChange.emit(value);

@@ -53,9 +53,8 @@ export class DiffVennComponent implements OnInit {
     @ViewChild('transformTable') transformTable;
     @Input('defaultGeneType') defaultGeneType;
 
-	switch: boolean = false;
+	switch: string = 'right';
 	tableUrl: string;
-    onlyTable:boolean = false;
 	// 默认收起模块描述
 	expandModuleDesc:boolean = false;
 
@@ -411,16 +410,6 @@ export class DiffVennComponent implements OnInit {
             this.computedTableHeight();
         },320)
     }
-
-	// 展开表icon 点击事件
-    handleOnlyTable(){
-        this.onlyTable = !this.onlyTable;
-	}
-
-	// 从布局切换发出的事件
-	handlOnlyTableChange(status){
-		this.onlyTable = status;
-	}
 
 	computedTableHeight() {
 		try {

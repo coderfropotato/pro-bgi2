@@ -4,7 +4,7 @@
         <p class="menu-slot-text">重分析id：{{tid}}</p>
     </app-menu>
     <div class="content reanalysis-content row">
-    <div #left class="left-layout column" [class.unexpand]="switch" [class.table-only]="onlyTable">
+    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <!-- <div class="left-top-layout">
             <h4>title</h4>
             <p>describe</p>
@@ -34,10 +34,9 @@
 
         </div>
         </div>
-        <div #right class="right-layout" [class.expand]="switch" [class.table-only]="onlyTable">
+        <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
             <div class="switch">
-                <app-layout-switch [onlyTable]="onlyTable" (onlyTableChange)="handlOnlyTableChange($event)" [ngModel]="switch" (ngModelChange)="switchChange($event)" >
-                </app-layout-switch>
+                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
             </div>
             <!-- <div class="func" #func (click)="resize($event)"> -->
                 <!-- 增删列 -->
