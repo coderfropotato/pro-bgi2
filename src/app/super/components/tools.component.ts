@@ -65,10 +65,10 @@ export class ToolsComponent implements OnInit {
 		{ type: 'line', name: '折线图', desc: '以折线图方式呈现数据' },
 		{ type: 'KDA', name: 'KDA', desc: 'kda' },
 		{ type: 'multiOmics', name: '多组学关联', desc: '多组学' },
-		{ type: 'kaFun', name: '卡方检测', desc: '卡方' },
+		{ type: 'chiSquare', name: '卡方检测', desc: '卡方' },
 		{ type: 'relativeSplice', name: '可变剪切', desc: '可变剪切' },
 		{ type: 'relativeNet', name: '关联网络图', desc: '关联网络图' },
-		{ type: 'relativeHeatmap', name: '关联聚类热图', desc: '关联聚类热图' }
+		{ type: 'heatmaprelation', name: '关联聚类热图', desc: '关联聚类热图' }
 		// { type: 'reanalysisList', name: '查看重分析列表', desc: '查看重分析列表' }
 	];
 	desc: string = '';
@@ -138,8 +138,18 @@ export class ToolsComponent implements OnInit {
 	relativeNetError:boolean = false;
 	relativeNetSelect:object[] = [];
 	doRelativeNetAjax:boolean = false;
-	
 
+	// 关联聚类参数
+	heatmapReStand:string[] = [];
+	heatmapReSelectStand:string = '';
+	heatmapReGeneType:object[] = [];
+	heatmapReGeneTypeError:boolean = false;
+	heatmapReRelations:object= [];
+	heatmapReError:boolean = false;
+	doHeatmapRelationAjax:boolean = false;
+	heatmapReSelectRelation:any[] = [];;
+	heatmapReSelectGeneType:object[] = [];
+	
 	// 当前选择的重分析类型
 	selectType: string = '';
 	childVisible: boolean = false;
@@ -221,6 +231,17 @@ export class ToolsComponent implements OnInit {
 		this.relativeNetSelect = [];
 		this.doRelativeNetAjax = false;
 
+		// 关联聚类
+		this.heatmapReStand= [];
+		this.heatmapReSelectStand = '';
+		this.heatmapReGeneType = [];
+		this.heatmapReSelectGeneType = [];
+		this.heatmapReGeneTypeError = false;
+		this.heatmapReRelations = [];
+		this.heatmapReSelectRelation = [];
+		this.heatmapReError = false;
+		this.doHeatmapRelationAjax = false;
+	
 		// 页面参数
 		this.selectType = '';
 		this.childVisible = false;
@@ -557,7 +578,7 @@ export class ToolsComponent implements OnInit {
 		console.log('keggclass');
 	}
 
-	getkaFunParams() {
+	getchiSquareParams() {
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/chiSquare/config`,
@@ -1118,7 +1139,159 @@ export class ToolsComponent implements OnInit {
 			);
 
 	}
+
+	// 关联聚类
+	getheatmaprelationParams(){
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/relationCluster/heatmapConfig`,
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.toolsService.get('tableEntity')['species'],
+					version: this.storeService.getStore('version'),
+					baseThead: this.toolsService.get('baseThead'),
+					relations:this.toolsService.get('tableEntity')['relations']
+				}
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] == '0') {
+						this.heatmapReError = false;
+						this.heatmapReStand = data['data']['standardization'];
+						this.heatmapReGeneType = data['data']['verticalDefault'];
+						this.heatmapReRelations = data['data']['relations'];
+						if(this.heatmapReStand.length){
+							this.heatmapReSelectStand = this.heatmapReStand[0];
+						}
+						this.heatmapReRelations.forEach((v,index)=>{
+							v['checked'] = index?false:true;
+							if(!index) this.heatmapReSelectRelation.push(JSON.parse(JSON.stringify(v)));
+						})
+					}else{
+						this.heatmapReError = 'error';
+						this.initHeatmapRelationsData();
+					}
+				},
+				(err) => {
+					this.heatmapReError = 'error';
+					this.initHeattmapRelationsData();
+				}
+				()=>{
+					this.doHeatmapRelationAjax = true;
+				}
+			);
+	}
 	
+
+	initHeatmapRelationsData(){
+		this.heatmapReStand.length = 0;
+		this.heatmapReGeneType.length = 0;
+		this.heatmapReRelations.length = 0;
+		this.heatmapReSelectRelation.length = 0;
+		this.heatmapReSelectGeneType .length = 0;
+		this.heatmapReSelectStand = '';
+	}
+
+	// 关系选择
+	handlerReRelationSelect(item){
+		this.heatmapReSelectRelation.length = 0;
+
+		if(!item['checked']){
+			this.heatmapReRelations.forEach(v=>v['checked'] = false);
+			item['checked'] = true;
+			this.heatmapReSelectRelation.push(JSON.parse(JSON.stringify(item)));
+		}else{
+			item['checked'] = false;
+		}
+
+		this.heatmapReError = !this.heatmapReSelectRelation.length;
+	}
+
+	// 基因类型选择
+	handlerReGeneSelect(item){
+		if(!item['checked']){
+			if(this.heatmapReSelectGeneType.length>=2){
+				this.heatmapReGeneTypeError = true;
+			}else{
+				item['checked'] = true;
+				this.heatmapReSelectGeneType.push(item);
+				this.heatmapReGeneTypeError = false;
+			}
+		}else{
+			item['checked'] = false;
+
+			let index = this.heatmapReSelectGeneType.findIndex((val,index)=>{
+				return val['key']===item['key'];
+			})
+
+			if(index!=-1) this.heatmapReSelectGeneType.splice(index,1);
+			this.heatmapReGeneTypeError = !this.heatmapReSelectGeneType.length;
+		}
+	}
+
+	heatmapRelationConfirm(){
+		console.log(this.heatmapReSelectStand);
+		console.log(this.heatmapReSelectRelation);
+		console.log(this.heatmapReSelectGeneType);
+
+		this.isSubmitReanalysis = true;
+		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+		let entity = this.toolsService.get('tableEntity');
+		entity['relations'] = this.relativeNetSelect;
+		this.ajaxService
+			.getDeferData({
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					reanalysisType: "linkedNetwork",
+					needReanalysis: 2,
+					version: this.storeService.getStore('version'),
+					geType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.storeService.getStore('genome'),
+					...entity
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						if(data['data'].length){
+							let href = `${window.location.href.split(
+								'report'
+							)[0]}report/reanalysis/re-relativeNet/${this.toolsService.get('geneType')}/${data[
+								'data'
+							][0]}/${this.storeService.getStore('version')}`;
+							newWindow.location.href = href;
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
+						}else{
+							newWindow.close();
+							this.notify.blank('tips：', '重分析提交失败，请重试', {
+								nzStyle: { width: '200px' },
+							});
+						}
+					} else {
+						newWindow.close();
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+						});
+					}
+				},
+				(err) => {
+					newWindow.close();
+					this.notify.blank('tips：', '重分析提交失败，请重试', {
+						nzStyle: { width: '200px' },
+					});
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
+
+	}
+
+
 
 	getreanalysisParams() {
 		console.log('reanalysis');
