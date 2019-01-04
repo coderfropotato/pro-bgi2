@@ -144,7 +144,7 @@ export class ReNetComponent implements OnInit {
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.defaultUrl = `${config['javaPath']}/net/table`;
         this.defaultEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -169,7 +169,7 @@ export class ReNetComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/Cluster/getClusterGeneTable`;
+        this.extendUrl = `${config['javaPath']}/net/table`;
         this.extendEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -215,7 +215,11 @@ export class ReNetComponent implements OnInit {
 
     // 表
     addThead(thead) {
-		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._initCheckStatus();
+
+        this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._setParamsNoRequest('pageIndex',1);
+
 		this.transformTable._addThead(thead['add']);
     }
 
@@ -277,24 +281,24 @@ export class ReNetComponent implements OnInit {
     chartBackStatus(){
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
+        this.transformTable._initCheckStatus();
+        this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
-                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
+                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],"valueTwo":null}
                 ];
             }else{
                 this.defaultEntity['searchList']= [] ;
             }
             this.first = true;
         }else{
-            /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
             if(this.selectGeneList.length) {
-                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
+                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],null);
             }else{
-                // this.transformTable._setParamsNoRequest('searchList',[]);
                 this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
                 this.transformTable._getData();
             }
@@ -545,6 +549,7 @@ export class ReNetComponent implements OnInit {
                 that.selectedLinks.forEach(m=>{
                     that.selectLinkList.push(m['id']);
                 })
+
             });
 
 
@@ -598,7 +603,7 @@ export class ReNetComponent implements OnInit {
                 that.selectedNodes.forEach(m=>{
                     that.selectGeneList.push(m['geneID']);
                 })
-
+                that.chartBackStatus();
             })
 
         g_node.call(d3.drag()
@@ -669,6 +674,7 @@ export class ReNetComponent implements OnInit {
             that.allLinks.forEach(m=>{
                 m.selected=false;
             })
+            that.chartBackStatus();
         })
 
         // node color scale
@@ -908,7 +914,7 @@ export class ReNetComponent implements OnInit {
             }
         })
         this.selectGeneList.push(this.curSearchNode);
-
+        this.chartBackStatus();
     }
 
     // delete link
@@ -1009,6 +1015,7 @@ export class ReNetComponent implements OnInit {
                 this.selectGeneList.push(d.geneID);
             }
         })
+        this.chartBackStatus();
 
     }
 

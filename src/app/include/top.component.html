@@ -11,10 +11,10 @@
             <button *ngIf="analysis" nzSize="small" nz-button (click)="analysisFn()"> 我的分析</button>
             <button *ngIf="upload" nzSize="small" nz-button (click)="uploadFn()"> 上传数据</button> -->
             <div class="top_right_content">
-                <i *ngIf="pdf" class="iconfont icon-daochu-copy" title="export as pdf" (click)="exportPdf()"></i>
-                <i *ngIf="upload" class="iconfont icon-shangchuanshuju-copy" title="上传数据" (click)="uploadFn()"></i>
-                <i *ngIf="analysis" class="iconfont icon-wode-copy" title="我的分析" (click)="analysisFn()"></i>
-                <i *ngIf="lang" class="iconfont" [class.icon-yingwen]="browserLang=='en'" [class.icon-zhongwen]="browserLang=='zh'" (click)="changeLan()"></i>
+                <i *ngIf="pdf" class="iconfont icon-pdfwenjian" title="export as pdf" (click)="exportPdf()"></i>
+                <i *ngIf="upload" class="iconfont icon-shangchuanwenjian" title="上传数据" (click)="uploadFn()"></i>
+                <i *ngIf="analysis" class="iconfont icon-fenxi" title="我的分析" (click)="analysisFn()"></i>
+                <i *ngIf="lang" class="iconfont" [class.icon-yingwenqiehuan]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
             </div>
     </div>
 </div>
