@@ -22,6 +22,8 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() apiEntity: object;  //api请求参数
 
+    @Input() isBigTable:boolean; //表是否为大表（有分页）
+
     @Input() id: string;  // 当前模块id
 
     @Input() chartId: string; // 当前图容器div的id
@@ -43,9 +45,11 @@ export class TableSwitchChartComponent implements OnInit {
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
     @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter(); //多选确定
 
-    @Output() drawChartEmit: EventEmitter<any> = new EventEmitter(); //画图
+     //画图
+    @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
-    @Input() flex: boolean; // 是否flex布局
+    // 是否flex布局
+    @Input() flex: boolean; 
 
     // 特殊图表
     @Input() isVennTable:boolean=false;  // true：venn/unsetR图的表；false：是普通表
@@ -163,6 +167,10 @@ export class TableSwitchChartComponent implements OnInit {
 
         if(this.setDataUrl && this.setDataEntity){
             this.getSetData();
+        }
+
+        if(typeof(this.isBigTable)==='undefined'){
+            this.isBigTable=false;
         }
     }
 

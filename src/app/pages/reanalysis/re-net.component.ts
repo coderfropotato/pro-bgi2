@@ -30,6 +30,8 @@ export class ReNetComponent implements OnInit {
     chartEntity: object;
     chart:object;
 
+    tableUrl:string;
+
     isShowColorPanel: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
     color: string; //当前选中的color
@@ -130,10 +132,13 @@ export class ReNetComponent implements OnInit {
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
 
+        this.tableUrl=`${config['javaPath']}/net/switchTable`; 
         this.chartUrl=`${config['javaPath']}/net/graph`; 
         // this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
             "id": this.tid,
+            "pageIndex": 1,
+            "pageSize": 10
         };
 
         // table
@@ -341,8 +346,10 @@ export class ReNetComponent implements OnInit {
         let offsetBasic = this.chartEntity['radian'];
 
         //关联关系
-        let relations = this.storeService.getStore('relations');
-        let colorArr = [["#FFF1F0", "#CF1322"], ["#FFF7E6", "#FA8C15"], ["#FEFFE6", "#FADB14"], ["#F6FFED", "#52C41A"], ["#E7F7FF", "#1890FF"], ["#F9F0FF", "#712ED1"]];
+        let relations = [...this.storeService.getStore('relations')];
+        let userRelation={...this.storeService.getStore("userRelation")};
+        relations.push({...userRelation});
+        let colorArr = [["#FFF1F0", "#CF1322"], ["#FFF7E6", "#FA8C15"], ["#FEFFE6", "#FADB14"], ["#F6FFED", "#52C41A"], ["#E7F7FF", "#1890FF"], ["#F9F0FF", "#712ED1"],["#FFF0F6","#F759AC"]];
         let relationColors=[...relations];
         relationColors.forEach((d,i)=>{
             d.colors=[...colorArr[i]];

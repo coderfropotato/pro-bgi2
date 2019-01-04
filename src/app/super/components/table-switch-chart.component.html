@@ -89,8 +89,8 @@
                 <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable && !error" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
                     <!-- table：固定表头-->
 
-                    <!-- 普通表 -->
-                    <nz-table  *ngIf="!isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
+                    <!-- 普通小表  -->
+                    <nz-table  *ngIf="!isBigTable && !isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
                         <thead>
                             <tr>
                                 <th class="center" nzWidth="120px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
@@ -104,7 +104,7 @@
                     </nz-table>
 
                     <!-- veen/upsetR表 -->
-                    <nz-table *ngIf="isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
+                    <nz-table *ngIf="!isBigTable && isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
                         <thead>
                             <tr>
                                 <th class="center" nzWidth="120px" nz-tooltip>name</th>
@@ -118,6 +118,26 @@
                             </tr>
                         </tbody>
                     </nz-table>
+
+                    <!-- 普通大表  -->
+                    <nz-table  *ngIf="isBigTable && !isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
+                        <thead>
+                            <tr>
+                                <th class="center" nzWidth="120px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of tableData.rows">
+                                <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+
+                    <div #tableBottom class="table-bottom" *ngIf="isBigTable && !isVennTable && isShowTable && !error">
+                        <app-pagination style="float:left;" [(pageIndex)]="apiEntity['pageIndex']" [total]="total"
+                            [(pageSize)]="apiEntity['pageSize']" (pageIndexChange)="getTableData()" (pageSizeChange)="getTableData()">
+                        </app-pagination>
+                    </div>
 
                     <!-- chart -->
                     <div class="center chart" style="margin: 0 auto;"  [attr.id]="chartId" [hidden]="isShowTable || error"></div>

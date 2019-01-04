@@ -72,10 +72,12 @@
                     <!-- [selectTemplate]="selectTemplate" -->
                     <app-table-switch-chart
                         #netChart
+                        [isBigTable]='true'
                         [id]="'netChart'"
                         [isOnlyChart]="true"
                         [apiEntity]="chartEntity"
                         [chartUrl]="chartUrl"
+                        [tableUrl]='tableUrl'
                         [setTemplate]="setTemplate"
                         [funcBtnsTemplate]='funcBtnsTemplate'
                         [searchTemplate]='searchTemplate'
