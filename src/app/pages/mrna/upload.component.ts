@@ -21,7 +21,7 @@ export class UploadComponent implements OnInit {
     fileList2: UploadFile[] = [];
     fileList3: UploadFile[] = [];
     nfileList: UploadFile[] = [];
-    index: number = 0;
+    m_index: number = 0;
     tab1: object;
     PercentNum: number;
     T_progress: any;
@@ -32,6 +32,11 @@ export class UploadComponent implements OnInit {
 	pageSize: number;
 	selectAble:boolean;
 	fristFlag:boolean;
+	colors: string [] = [];
+	file_obj:object={
+		name:'',
+		time:''
+	};
 
     constructor(
         private modalService: NzModalService,
@@ -45,7 +50,7 @@ export class UploadComponent implements OnInit {
         this.PercentNum = 0;
         this.defaultSetEntity = {
             LCID: this.storeService.getStore("LCID"),
-            type: this.index + 1,
+            type: this.m_index + 1,
             file: ""
 		};
 		this.selectAble = true;
@@ -53,19 +58,23 @@ export class UploadComponent implements OnInit {
 		this.now_page = 1;
 		this.total_page = 0;
 		this.pageSize = 10;
+		this.file_obj={
+			name:'',
+			time:''
+		};
 		this.getHistoryList();
 		this.updateLoad();
     }
 
     beforeUpload = (file: UploadFile): boolean => {
 		this.nfileList = [];
-        if (this.index == 0) {
+        if (this.m_index == 0) {
             this.fileList.push(file);
             this.nfileList = this.fileList;
-        } else if (this.index == 1) {
+        } else if (this.m_index == 1) {
             this.fileList2.push(file);
             this.nfileList = this.fileList2;
-        } else if (this.index == 2) {
+        } else if (this.m_index == 2) {
             this.fileList3.push(file);
             this.nfileList = this.fileList3;
 		}
@@ -73,7 +82,7 @@ export class UploadComponent implements OnInit {
     };
 
     SelectedIndexChange(num) {
-        this.index = num;
+        this.m_index = num;
     }
 
 	leftPage(){
@@ -127,6 +136,7 @@ export class UploadComponent implements OnInit {
 							time:self.pattern(element.uploadTime),
 							info:self.getType(element.type),
 							status:self.getProgress(element.result),
+							color:self.getProgressColor(element.result),
 							id:element.id,
 							md5:element.md5,
 							detail:element.detail,
@@ -243,6 +253,12 @@ export class UploadComponent implements OnInit {
         this.nfileList.forEach((file: any,index) => {
 			if(nfileLength == index+1){
 				formData.append("file", file);
+				
+				self.file_obj={
+					name:self.getType(self.m_index+1),
+					time:self.pattern(file.lastModified)
+				}
+				console.log(self.file_obj);
 				fileReader.onload = function(e){
 					//console.log(e);
 					//console.log(SparkMD5.hashBinary(e.target['result']));
@@ -255,7 +271,7 @@ export class UploadComponent implements OnInit {
         });
 
 		formData.append('LCID',this.storeService.getStore('LCID'))
-		formData.append('type',(this.index+1)+'');
+		formData.append('type',(this.m_index+1)+'');
 
 		console.log(formData.get('md5'));
 
@@ -339,6 +355,28 @@ export class UploadComponent implements OnInit {
 				break;
 			case -1:
 				result = "失败";
+				break;
+			default:
+				break;
+		}
+		return result;
+	}
+
+	getProgressColor(num){ //获取进程状态
+		//this.colors = ["#7AD48A","#FF6666","#5A99F","#FFA66D"];//成功，失败，录入中，校验中
+		let result = "";
+		switch (num) {
+			case 0:
+				result = "#7AD48A";
+				break;
+			case 1:
+				result = "#FFA66D";
+				break;
+			case 2:
+				result = "#5A99F";
+				break;
+			case -1:
+				result = "#FF6666";
 				break;
 			default:
 				break;
