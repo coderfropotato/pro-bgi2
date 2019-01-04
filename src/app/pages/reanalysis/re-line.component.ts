@@ -368,7 +368,7 @@ export class ReLineComponent implements OnInit {
 				show: true,
 				position: "right",
 				click:function(d,index){
-					that.color = d[0].getAttribute("fill");
+					that.color = d3.select(d).attr('fill');
 					that.legendIndex = index;
 					that.isShowColorPanel = true;
 				}
