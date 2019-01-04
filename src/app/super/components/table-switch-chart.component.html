@@ -135,7 +135,7 @@
 
                     <div #tableBottom class="table-bottom" *ngIf="isBigTable && !isVennTable && isShowTable && !error">
                         <app-pagination style="float:left;" [(pageIndex)]="apiEntity['pageIndex']" [total]="total"
-                            [(pageSize)]="apiEntity['pageSize']" (pageIndexChange)="getTableData()" (pageSizeChange)="getTableData()">
+                            [(pageSize)]="apiEntity['pageSize']" (pageIndexChange)="getTableData()" (pageSizeChange)="pageSizeChange()">
                         </app-pagination>
                     </div>
 
