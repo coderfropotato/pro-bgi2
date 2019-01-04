@@ -85,6 +85,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     scroll: object = { y: '400px' };
     isShowTable: boolean = false;
+    total:number;
     tableData: any;
     chartData: any;
     error: string;
@@ -397,6 +398,10 @@ export class TableSwitchChartComponent implements OnInit {
                             this.drawChart(data.data);
                         }
 
+                        if(this.tableData.total){
+                            this.total=this.tableData.total;
+                        }
+
                     }
                     this.isLoading = false;
 
@@ -406,6 +411,11 @@ export class TableSwitchChartComponent implements OnInit {
                     this.error = error;
                 }
             )
+    }
+
+    pageSizeChange(){
+        this.apiEntity['pageIndex']=1;
+        this.getTableData();
     }
 
     /**
