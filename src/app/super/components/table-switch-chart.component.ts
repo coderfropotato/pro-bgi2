@@ -116,6 +116,10 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     ngOnInit() {
+        if(typeof(this.isBigTable)==='undefined'){
+            this.isBigTable=false;
+        }
+
         this.accuracyList = [
             {
                 name: "精度：1位小数",
@@ -170,9 +174,6 @@ export class TableSwitchChartComponent implements OnInit {
             this.getSetData();
         }
 
-        if(typeof(this.isBigTable)==='undefined'){
-            this.isBigTable=false;
-        }
     }
 
     //获取默认值
