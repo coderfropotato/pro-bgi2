@@ -77,8 +77,7 @@ export class ReHeatmapComponent implements OnInit {
 
     tableHeight = 0;
     first = true;
-    switch = false;
-    onlyTable:boolean = false;
+    switch = 'right';
 
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
@@ -337,16 +336,6 @@ export class ReHeatmapComponent implements OnInit {
             this.computedTableHeight();
         },320)
     }
-
-	// 展开表icon 点击事件
-    handleOnlyTable(){
-        this.onlyTable = !this.onlyTable;
-	}
-
-	// 从布局切换发出的事件
-	handlOnlyTableChange(status){
-		this.onlyTable = status;
-	}
 
     computedTableHeight() {
 		try {
