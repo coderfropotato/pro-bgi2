@@ -435,7 +435,7 @@ button.btnActive {
 
 	& .switch {
 		position: fixed;
-		right: 248px;
+		right: 218px;
 		top: 46px;
 	}
 
@@ -446,6 +446,14 @@ button.btnActive {
 			top: 46px;
 		}
 	}
+}
+
+.menufunc{
+	opacity:0.8;
+	&:hover{
+		opacity: 1.0;
+	}
+	
 }
 
 // 布局切换
@@ -774,7 +782,7 @@ button.btnActive {
 			li {
 				float: left;
 				width: 33%;
-				height: 90px;
+				height: 78px;
 				margin-bottom: 16px;
 				text-align: center;
 				cursor: pointer;

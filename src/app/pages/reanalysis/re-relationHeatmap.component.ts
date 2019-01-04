@@ -474,42 +474,23 @@ export class reRelationHeatmapComponent implements OnInit {
                     // }
                 },
                 onselect: data => {
-                    console.log(data)
                     that.setGeneList(data);
                 }
             },
             axis: {
-                // x: {
-                //     // rotate: 30,
-                //     dblclick: function(event,title) {
-                //         let text = title.firstChild.nodeValue;
-                //         that.promptService.open(text,(data)=>{
-                //             title.textContent = data;
-                //         })
-                //     },
-                //     mouseover: function(event, title) {
-                //         title
-                //         .attr("fill", "blue")
-                //         .append("title")
-                //         .text("双击修改");
-                //     },
-                //     mouseout: function(event, title) {
-                //         title.attr("fill", "#333");
-                //         title.select("title").remove();
-                //     }
-                // },
+                x:{
+                    type:that.yName
+                },
                 y: {
                     type:that.yName  //hidden,id,symbol
                 }
             },
             legend: {
                 show: true,
-                min: that.domainRange[0],
-                max: that.domainRange[1],
                 data: legendData,
                 position: "right",
                 click: (d, i) => {
-                    this.color=d;
+                    this.color=d3.select(d).attr('fill');
                     this.legendIndex = i;
                     this.isShowColorPanel = true;
                 },

@@ -720,7 +720,7 @@ export class GeneListVennComponent implements OnInit {
 				show: true,
 				position: "right",
 				click:(d, index) => {
-                    this.color = d[0].getAttribute("fill");
+                    this.color = d3.select(d).attr('fill');
                     this.show = true;
                     this.legendIndex = index;
                 }
