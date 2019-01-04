@@ -97,10 +97,13 @@ export class ToolsComponent implements OnInit {
 	stand:string = '';
 	standList:any[] = [];
 
+	doHeatmapAjax:boolean = false;
+
 	// 多组学参数
 	multiOmicsData: any[] = [];
 	multiOmicsSelect: any[] = [];
 	multiOmicsError: any = false;
+	doMultiOmicsAjax:boolean = false;
 
 	// 折线图参数
 	lineGroupData: object[] = [];
@@ -112,6 +115,7 @@ export class ToolsComponent implements OnInit {
 	lineCustomData:object[] =[];
 	lineCustomSelect:object[] = [];
 	lineCustomError:boolean = false;
+	doLineAjax:boolean = false;
 
 	//卡方图参数
 	geneNum: number;
@@ -121,16 +125,19 @@ export class ToolsComponent implements OnInit {
 	kaFunGroupData: object[] = [];
 	kaFunGroupSelect: object[] = [];
 	kaFunGroupError: boolean = false;
+	doKaFunAjax:boolean = false;
 
 	// 网络图参数
 	netData:object[] = [];
 	netError:boolean = false;
 	netSelect:object[] = [];
+	doNetAjax:boolean = false;
 
 	// 关联网络图参数
 	relativeNetData:object[] = [];
 	relativeNetError:boolean = false;
 	relativeNetSelect:object[] = [];
+	doRelativeNetAjax:boolean = false;
 	
 
 	// 当前选择的重分析类型
@@ -174,11 +181,13 @@ export class ToolsComponent implements OnInit {
 
 		this.stand = '';
 		this.standList = [];
+		this.doHeatmapAjax = false;
 
 		// 多组学参数
 		this.multiOmicsData = [];
 		this.multiOmicsSelect = [];
 		this.multiOmicsError = true;
+		this.doMultiOmicsAjax = false;
 
 		// 折线图参数
 		this.lineGroupData = [];
@@ -190,6 +199,7 @@ export class ToolsComponent implements OnInit {
 		this.lineCustomError = false;
 		this.lineCustomData = [];
 		this.lineCustomSelect = [];
+		this.doLineAjax = false;
 
 		//卡方检验
 		this.geneNum = 1;
@@ -197,16 +207,19 @@ export class ToolsComponent implements OnInit {
 		this.kaFunGroupData = [];
 		this.kaFunGroupSelect = [];
 		this.kaFunGroupError = false;
+		this.doKaFunAjax = false;
 
 		// 网络图
 		this.netData = [];
 		this.netError = false;
 		this.netSelect = [];
+		this.doNetAjax = false;
 
 		// 关联网络图
 		this.relativeNetData = [];
 		this.relativeNetError = false;
 		this.relativeNetSelect = [];
+		this.doRelativeNetAjax = false;
 
 		// 页面参数
 		this.selectType = '';
@@ -358,7 +371,10 @@ export class ToolsComponent implements OnInit {
 						this.stand = this.standList[0];
 					}
 				},
-				(err) => console.log(err)
+				(err) => console.log(err),
+				()=>{
+					this.doHeatmapAjax = true;
+				}
 			);
 	}
 
@@ -441,14 +457,18 @@ export class ToolsComponent implements OnInit {
 						if (data['data'].length) {
 							this.multiOmicsData = data['data'];
 						} else {
-							this.multiOmicsData = [];
+							this.multiOmicsData.length = 0;
 						}
 					} else {
-						this.multiOmicsData = [];
+						this.multiOmicsData.length = 0;
 					}
+					console.log(this.multiOmicsData)
 				},
 				(err) => {
-					this.multiOmicsData = [];
+					this.multiOmicsData.length = 0;
+				},
+				()=>{
+					this.doMultiOmicsAjax = true;
 				}
 			);
 	}
@@ -599,6 +619,9 @@ export class ToolsComponent implements OnInit {
 				},
 				(err) => {
 					this.initKaFunData();
+				},
+				()=>{
+					this.doKaFunAjax = true;
 				}
 			);
 	}
@@ -752,6 +775,9 @@ export class ToolsComponent implements OnInit {
 				},
 				(err) => {
 					this.initLineData();
+				},
+				()=>{
+					this.doLineAjax = true;
 				}
 			);
 	}

@@ -18,14 +18,17 @@
     </ol>
 
     <!-- 我的分析 -->
-    <div class="table-analysis-button  blue fRight" (click)="analysisFn()" style="margin-top: 4px;">
+    <!-- <div class="table-analysis-button  blue fRight" (click)="analysisFn()" style="margin-top: 4px;">
         <b>{{'myAnalysis' | translate}}</b>
         <span><i class="anticon anticon-appstore"></i></span>
+    </div> -->
+    <div class="fRight menufunc" (click)="analysisFn()" style="margin-top: 7px;">
+        <span><i class="iconfont icon-fenxi" style="color:rgb(122, 212, 138);margin-right:2px;"></i></span>
+        <b>{{'myAnalysis' | translate}}</b>
     </div>
-
     <!-- 我的基因集 -->
-    <div *ngIf="showGeneList" class="savegenelist fRight" (click)="handleSaveGeneListClick()">
-        <span style="margin-right:4px;"><i class="iconfont icon-baocunjiyin"></i></span>
+    <div *ngIf="showGeneList" class="savegenelist fRight menufunc" (click)="handleSaveGeneListClick()">
+        <span style="margin-right:4px;"><i class="iconfont icon-baocunjiyin" style="margin-right:2px;"></i></span>
         <b>{{'myGeneList' | translate}}</b>
     </div>
 

@@ -435,7 +435,7 @@ export class RelativeSpliceComponent implements OnInit {
                 .attr('width', svg_width)
                 .attr('height', svg_height)
                 .on('click', function(d) {
-                    ///console.log(d);
+                    console.log(d);
                     if(d == undefined){
                         that.singleMultiSelect = {};
                         that.doSingleData();
