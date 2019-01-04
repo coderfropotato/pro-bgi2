@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 declare const d4: any;
+declare const d3: any;
 
 @Component({
     selector: "app-cxzk2",
@@ -120,7 +121,7 @@ export class cxzk2Component implements OnInit {
                 position: "right",
                 data: ["female", "male"],
                 dblclick: (d, index) => {
-                    this.color = d[0].getAttribute('fill');
+                    this.color = d3.select(d).attr('fill');
                     this.show = true;
                     this.legendIndex = index;
                 }

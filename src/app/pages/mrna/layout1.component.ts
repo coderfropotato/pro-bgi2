@@ -4,7 +4,7 @@ import { MessageService } from "./../../super/service/messageService";
 import { Component, OnInit, ViewChild, AfterViewInit,OnChanges,SimpleChange,OnDestroy,ViewContainerRef } from "@angular/core";
 import { fromEvent } from "rxjs";
 
-declare const $: any;
+declare const d3: any;
 declare const d4: any;
 @Component({
     selector: "app-layout-page",
@@ -192,7 +192,7 @@ export class Layout1Component implements OnInit,AfterViewInit {
                 position: "right",
                 data: ["female", "male"],
                 click: (d, index) => {
-                    this.color = d[0].getAttribute("fill");
+                    this.color = d3.select(d).attr('fill');
                     this.show = true;
                     this.legendIndex = index;
                 }

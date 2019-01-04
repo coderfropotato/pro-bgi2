@@ -488,7 +488,7 @@ export class reRelationHeatmapComponent implements OnInit {
                 data: legendData,
                 position: "right",
                 click: (d, i) => {
-                    this.color=d;
+                    this.color=d3.select(d).attr('fill');
                     this.legendIndex = i;
                     this.isShowColorPanel = true;
                 },
