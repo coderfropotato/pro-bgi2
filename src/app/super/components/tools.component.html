@@ -161,7 +161,7 @@
         </nz-drawer>
 
         <!-- 卡方检验 -->
-        <nz-drawer nzTitle="卡方检验" [nzVisible]="childVisible && selectType=='kaFun'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+        <nz-drawer nzTitle="卡方检验" [nzVisible]="childVisible && selectType=='chiSquare'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
                 <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
                     <div class="tool-params-kafun">
                         <div class="tool-params-kafun-top">
@@ -302,6 +302,69 @@
                     <div class="tool-params-button-group" *ngIf="relativeNetData.length">
                         <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
                         <button nz-button nzType="primary" [disabled]="relativeNetError || !relativeNetSelect.length"  (click)="relativeNetConfirm()" nzSize="middle">确定</button>
+                    </div>
+                </nz-spin>
+            </nz-drawer>
+
+            <!-- 关联聚类 -->
+            <nz-drawer nzTitle="关联聚类" [nzVisible]="childVisible && selectType=='heatmaprelation'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+                <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+                    <div class="tool-params-tab">
+                        <p *ngIf="heatmapReStand.length">标准化</p>
+                        <nz-select *ngIf="heatmapReStand.length" style="width: 120px; margin-top:1em;margin-bottom:1em;" [(ngModel)]="heatmapReSelectStand" nzPlaceHolder="stand">
+                            <nz-option *ngFor="let s of heatmapReStand;index as i;" [nzValue]="s" [nzLabel]="s"></nz-option>
+                        </nz-select>
+
+                        <p *ngIf="heatmapReRelations.length ">关系选择</p>
+                        <div>
+                            <button (click)="handlerReRelationSelect(relation)" [class.active]="relation['checked']" *ngFor="let relation of heatmapReRelations;index as i;" nz-button nzType="default" nzSize="middle">{{relation['name']}}</button>
+                        </div>
+                        <nz-alert *ngIf="heatmapReError" nzShowIcon nzType="warning" nzMessage="请选择一个关系"></nz-alert>
+                        <div *ngIf="heatmapReSelectRelation.length">
+                            <nz-row>
+                                <nz-col nzSpan="6"><span>min Score</span></nz-col>
+                                <nz-col nzSpan="10">
+                                    <nz-slider [nzStep]="0.1" [nzMin]="heatmapReSelectRelation[0]['score'][0]" [nzMax]="heatmapReSelectRelation[0]['score'][1]"  [(ngModel)]="heatmapReSelectRelation[0]['score'][2]"></nz-slider>
+                                </nz-col>
+                                <nz-col nzSpan="6" [nzPush]="1">
+                                    <nz-input-number [nzMin]="heatmapReSelectRelation[0]['score'][0]" [nzMax]="heatmapReSelectRelation[0]['score'][1]"   [(ngModel)]="heatmapReSelectRelation[0]['score'][2]"></nz-input-number>
+                                </nz-col>
+                            </nz-row>
+                            <nz-row class="mb12">
+                                <nz-col nzSpan="6">max num</nz-col>
+                                <nz-col nzSpan="13">
+                                    <nz-row>
+                                        <nz-col>
+                                            <nz-radio-group [(ngModel)]="heatmapReSelectRelation[0]['limit']">
+                                                <label nz-radio [nzValue]="true">limit</label>
+                                                <label nz-radio [nzValue]="false">no limit</label>
+                                            </nz-radio-group>
+                                        </nz-col>
+                                    </nz-row>
+                                    <nz-row>
+                                        <nz-col nzSpan="20">
+                                            <nz-slider [nzMin]="heatmapReSelectRelation[0]['max'][0]" [nzMax]="heatmapReSelectRelation[0]['max'][1]"  [(ngModel)]="heatmapReSelectRelation[0]['max'][2]" [nzDisabled]="!heatmapReSelectRelation[0]['limit']"></nz-slider>
+                                        </nz-col>
+                                        <nz-col nzSpan="1"></nz-col>
+                                        <nz-col nzSpan="1">
+                                            <nz-input-number [nzMin]="heatmapReSelectRelation[0]['max'][0]" [nzDisabled]="!heatmapReSelectRelation[0]['limit']" [nzMax]="heatmapReSelectRelation[0]['max'][1]"   [(ngModel)]="heatmapReSelectRelation[0]['max'][2]"></nz-input-number>
+                                        </nz-col>
+                                    </nz-row>
+                                </nz-col>
+                            </nz-row>
+                        </div>
+
+                        <p *ngIf="heatmapReGeneType.length">基因分类</p>
+                        <div *ngIf="heatmapReGeneType.length">
+                            <button (click)="handlerReGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of heatmapReGeneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
+                            <nz-alert *ngIf="heatmapReGeneTypeError" nzShowIcon nzType="warning" nzMessage="基因分类不能大于2个"></nz-alert>
+                        </div>
+                        <p *ngIf="!heatmapReStand.length && !heatmapReGeneType.length && !heatmapReRelations.length && doHeatmapRelationAjax" class="center">暂无参数</p>
+                    </div>
+                    <nz-divider></nz-divider>
+                    <div *ngIf="heatmapReStand.length && heatmapReRelations.length" class="tool-params-button-group">
+                        <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                        <button nz-button nzType="primary" [disabled]="!heatmapReSelectStand || !heatmapReSelectRelation || heatmapReError" (click)="heatmapRelationConfirm()" nzSize="middle">确定</button>
                     </div>
                 </nz-spin>
             </nz-drawer>
