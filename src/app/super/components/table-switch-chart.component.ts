@@ -85,7 +85,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     scroll: object = { y: '400px' };
     isShowTable: boolean = false;
-    total:number;
+    total:number = 1;
     tableData: any;
     chartData: any;
     error: string;

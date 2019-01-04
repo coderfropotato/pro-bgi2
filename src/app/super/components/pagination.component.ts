@@ -161,7 +161,7 @@ export class PaginationComponent implements OnInit, OnChanges {
             }
             if (this.pageIndex > this.pageCount) {
                 this.pageIndex = this.pageCount;
-                this.pageIndexChange.emit(this.pageIndex);
+                // this.pageIndexChange.emit(this.pageIndex);
             }
 
             /* defaultPageIndexSize 等于1 */
@@ -169,18 +169,27 @@ export class PaginationComponent implements OnInit, OnChanges {
             if(this.pageIndex==1 ){
                 this.isLeft = true;
                 this.isRight = false;
+                if(this.pageIndex === this.pageCount){
+                    this.isLeft = true;
+                    this.isRight = true;
+                }
             }else if(this.pageIndex>=this.pageCount){
                 this.isRight = true;
                 this.isLeft = false;
+                if(this.pageIndex === this.pageCount) {
+                    this.isLeft = false;
+                    this.isRight = true;
+                }
             }else{
+                if(this.pageIndex === this.pageCount) {
+                    this.isLeft = false;
+                    this.isRight = true;
+                }
                 this.isLeft =false;
                 this.isRight = false;
             }
 
-            if(this.pageIndex === this.pageCount) {
-                this.isLeft = false;
-                this.isRight = true;
-            }
+           
 
 
             /* defaultPageIndexSize 不为1 */
