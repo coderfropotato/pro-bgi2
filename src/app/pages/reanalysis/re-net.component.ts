@@ -32,6 +32,8 @@ export class ReNetComponent implements OnInit {
 
     tableUrl:string;
 
+    isShowTable:boolean;
+
     isShowColorPanel: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
     color: string; //当前选中的color
@@ -194,6 +196,10 @@ export class ReNetComponent implements OnInit {
         this.extendEmitBaseThead = true;
         this.extendCheckStatusInParams = false;
 
+    }
+
+    showTableChange(isshowtable){
+        this.isShowTable=isshowtable;
     }
 
     defaultSet(data){

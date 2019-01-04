@@ -2,10 +2,10 @@
     <div class="table-thead tableHeader">
         <div class="fLeft">
             <!-- 图表切换按钮 -->
-            <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip nzTitle="{{'view.s_view' | translate}}">
+            <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="chartBtnClick()" nz-tooltip nzTitle="{{'view.s_view' | translate}}">
                 <i class="anticon anticon-area-chart"></i>
             </button>
-            <button *ngIf="!isOnlyChart" nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
+            <button *ngIf="!isOnlyChart" nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="tableBtnClick()" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
                 <i class="anticon anticon-table"></i>
             </button>
             <!-- 选择面板 显示隐藏icon -->
