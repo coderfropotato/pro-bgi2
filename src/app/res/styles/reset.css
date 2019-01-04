@@ -48,8 +48,8 @@ ul,ol {
 .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-tbody>tr>td,
 .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th {
     white-space: nowrap;
-    /* max-width: 120px;
-    min-width:120px; */
+    max-width: 120px;
+    min-width:120px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
