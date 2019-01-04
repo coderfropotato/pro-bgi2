@@ -1,12 +1,12 @@
 <div class="m_div">
     <div class="m_content">
-        <h4>上传数据</h4>
+        <div class="h4">上传数据</div>
         <div class="m_content_1" *ngIf="isShowTab">
             <nz-tabset [nzSelectedIndex]="index" (nzSelectedIndexChange)="SelectedIndexChange($event)">
                 <nz-tab [nzTitle]="'基因信息'" >
                     <div class="tab_content" [hidden]="fileList.length !=0">
-                        <span>基因信息数据上传说明...</span>
                         <a>数据模板下载</a>
+                        <span>基因信息数据上传说明...</span>
                     </div>
                     <div class="tab_div" [hidden]="fileList.length ==0">
                       <div *ngFor="let item of fileList; let i = index" class="tab_div_item">
@@ -16,8 +16,8 @@
                 </nz-tab>
                 <nz-tab [nzTitle]="'转录本信息'">
                     <div class="tab_content" [hidden]="fileList2.length !=0">
-                        <span>转录本信息数据上传说明...</span>
                         <a>数据模板下载</a>
+                        <span>转录本信息数据上传说明...</span>
                     </div>
                     <div class="tab_div" [hidden]="fileList2.length ==0">
                         <div *ngFor="let item of fileList2; let i = index" class="tab_div_item">
@@ -28,8 +28,9 @@
 
                 <nz-tab [nzTitle]="'样本信息'">
                     <div class="tab_content" [hidden]="fileList3.length !=0">
-                        <span>样本信息数据上传说明...</span>
                         <a>数据模板下载</a>
+                        <span>样本信息数据上传说明...</span>
+                        
                     </div>
                     <div class="tab_div" [hidden]="fileList3.length ==0">
                         <div *ngFor="let item of fileList3; let i = index" class="tab_div_item">
@@ -39,45 +40,74 @@
                 </nz-tab>
             </nz-tabset>
             <div class="tab_bottom">
-                <button nz-button nzType="default" (click)="updateLoad()">上传</button>
                 <nz-upload nzAction="${config['javaPath']}/upload/do" [(nzFileList)]="nfileList" [nzBeforeUpload]="beforeUpload">
                     <button nz-button *ngIf="selectAble"><span>选择文件</span></button>
                     <button nz-button *ngIf="!selectAble"><span>选择文件</span></button>
                 </nz-upload>
+                <button nz-button nzType="primary" (click)="updateLoad()" *ngIf="fileList.length !=0 || fileList2.length !=0 || fileList3.length !=0">上传</button>
             </div>
         </div>
 
         <div class="m_content_2" *ngIf="!isShowTab">
-            <div class="m_content_item">上传数据类型、上传时间、文件大小</div>
+            <div class="m_content_item">
+                <div style="margin-left: 10px;">
+                    上传数据类型:
+                    <span>{{file_obj.name}}</span>
+                </div>
+                <div style="margin-left: 30px;">
+                    上传时间:
+                    <span>{{file_obj.time}}</span>
+                </div>
+            </div>
 
             <div class="m_content_progress">
                 <div class="m_content_progress_left">
                     <nz-progress [nzPercent]="PercentNum" [nzStrokeWidth]=18 nzStatus="active"></nz-progress>
                 </div>
-                <button nz-button [nzSize]="small" (click)="goResult()">
-                    <span>查看结果</span>
-                </button>
+                
             </div>
+            <button nz-button nzType="primary" [nzSize]="small" (click)="goResult()" class="m_content_2_button">
+                <span>查看结果</span>
+            </button>
         </div>
     </div>
     <div class="m_result" [hidden]="resultList.length==0">
-        <h4>上传信息列表</h4>
+        <div class="h4">上传信息列表</div>
         <div class="m_result_content">
-            <div class="m_result_title">上传时间、数据类型、上传结果、查看详情、隐藏</div>
+            <div class="m_result_title">
+                <div style="width: 140px">上传时间</div>
+                <div style="width: 80px">数据类型</div>
+                <div style="width: 60px;">上传结果</div>
+                <div style="width: 60px;">查看详情</div>
+                <div style="width: 50px;">隐藏</div>
+            </div>
             <div class="m_result_scroll">
                 <div class="m_result_list" *ngFor="let item of resultList;index as i">
-                    <span style="width: 140px">{{item.time}}</span>
-                    <span style="width: 80px">{{item.info}}</span>
+                    <div style="width: 140px">{{item.time}}</div>
+                    <div style="width: 80px">{{item.info}}</div>
+                    <!-- display:inline-block;width:16px;height:12px; -->
+                    <div style="width: 60px;"><div style="display:inline-block;width:16px;height:12px;" [style.background]="item.color"></div><div style="display:inline-block;margin-left:5px;">{{item.status}}</div></div>
 
-                    <span style="width: 50px;text-align: center;">{{item.status}}</span>
-                    <span style="width: 50px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'" (click)="goDetail(item.detail,item.status)">查看</span>
-                    <span style="width: 50px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'"></span>
+                    <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'" (click)="goDetail(item.detail,item.status)">
+                        <button nz-button nzType="primary" [nzSize]="small">查看</button>
+                    </div>
+                    <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'">
+                        <button nz-button nzType="primary" disabled [nzSize]="small">查看</button>
+                    </div>
 
-                    <span style="width: 50px;cursor: pointer;" *ngIf="item.hidden" (click)="goSwitch(item.id)">隐藏</span>
-                    <span style="width: 50px;cursor: pointer;" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</span>
+                    <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'">
+                        <!-- <div style="width: 60px;cursor: pointer;" *ngIf="item.hidden" (click)="goSwitch(item.id)">隐藏</div>
+                        <div style="width: 60px;cursor: pointer;" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</div> -->
+                        <button nz-button nzType="default" [nzSize]="small" *ngIf="item.hidden" (click)="goSwitch(item.id)" style="background: #5E5B78;color: #FFFFFF;">隐藏</button>
+                        <button nz-button nzType="default" [nzSize]="small" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</button>
+                    </div>
+                    <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'">
+                        <button nz-button nzType="default" disabled [nzSize]="small">隐藏</button>
+                    </div>
+                    
                 </div>
             </div>
-            <div class="m_result_bottom">
+            <div class="m_result_bottom" *ngIf="total_page>1">
                 <button nz-button nzType="primary" *ngIf="now_page!=1" (click)="leftPage()"><span>上一页</span></button>
                 <button nz-button nzType="primary" disabled *ngIf="now_page==1"><span>上一页</span></button>
                 <button nz-button nzType="primary" *ngIf="now_page!=total_page" (click)="rightPage()"><span>下一页</span></button>
@@ -98,32 +128,33 @@
 
     .m_content {
         width: 90%;
-        height: 358px;
+        height: 280px;
         margin: 0 auto;
+        background: #FFFFFF;
+        box-shadow: 0 2px 4px 0 #C0C4CC;
+        border-radius: 4px;
     }
 
     .m_content_1 {
-        width: 100%;
-        height: 300px;
-        border: 1px solid #ccc;
+        width: 98%;
+        margin: 12px auto 0 auto;
+        height: 220px;
+        border: 1px solid rgba(0,0,0,0.07);
+        border-radius: 2px;
     }
     
     .tab_content {
-        width: 96%;
-        height: 180px;
-        margin: 20px auto 0 auto;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #ccc;
+        width: 100%;
+        height: 120px;
+        margin: 0px auto 0 auto;
+        border-bottom: 1px solid rgba(0,0,0,0.07);
     }
 
     .tab_div {
-        width: 96%;
-        height: 180px;
-        margin: 20px auto 0 auto;
-        border: 1px solid #ccc;
+        width: 100%;
+        height: 120px;
+        margin: 0px auto 0 auto;
+        border-bottom: 1px solid rgba(0,0,0,0.07);
         overflow-y: scroll;
         overflow-x: hidden;
     }
@@ -137,10 +168,15 @@
     }
 
     .tab_content a {
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
+        display: block;
         text-decoration: underline;
+        margin-top: 5px;
+        margin-left: 10px;
+    }
+    .tab_content span {
+        display: block;
+        margin-top: 5px;
+        margin-left: 10px;
     }
 
     .tab_bottom {
@@ -150,40 +186,47 @@
     }
 
     .tab_bottom nz-upload {
-        float: right;
+        float: left;
         margin-right: 20px;
     }
 
     .tab_bottom>button {
-        float: right;
+        float: left;
     }
 
     .m_content_2 {
-        width: 100%;
-        height: 300px;
-        border: 1px solid #ccc;
+        width: 98%;
+        height: 220px;
+        margin: 10px auto;
+        border: 1px solid #DBDBDB;
+        border-radius: 2px;
+        position: relative;
     }
 
+    .m_content_2_button{
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    }
     .m_content_item {
-        width: 96%;
+        width: 100%;
         height: 40px;
-        margin: 20px auto 10px auto;
-        border: 1px solid #ccc;
+        margin: 0px auto 10px auto;
+        border-bottom: 1px solid #EEEEEE;
         display: flex;
-        justify-content: space-around;
+        justify-content: flex-start;
         align-items: center;
     }
 
     .m_content_progress {
         width: 96%;
         height: 40px;
-        margin: 20px auto 10px auto;
+        margin: 40px auto 10px auto;
     }
 
     .m_content_progress_left {
-        width: 90%;
+        width: 100%;
         height: 40px;
-        float: left;
     }
 
     .m_content_progress button {
@@ -192,8 +235,11 @@
         float: right;
     }
 
-    h4 {
-        margin-top: 30px;
+    .h4 {
+        height: 40px;
+        line-height: 40px;
+        text-indent: 16px;
+        border-bottom: 1px solid #EEEEEE;
     }
 
     :host ::ng-deep .m_div .ant-tabs-bar {
@@ -210,26 +256,32 @@
 
     .m_result{
         width: 90%;
-        margin: 0 auto;
+        margin: 20px auto 0 auto;
         flex: 1;
-        height: calc(100% - 358px);
+        height: calc(100% - 300px);
+        background: #FFFFFF;
+        box-shadow: 0 2px 4px 0 #C0C4CC;
+        border-radius: 2px;
     }
 
     .m_result_content{
-        width: 100%;
-        margin: 0 auto;
-        border: 1px solid #ccc;
-        height: calc(100% - 58px);
+        width: 98%;
+        margin: 15px auto 15px auto;
+        height: calc(100% - 70px);
+        border: 1px solid #DBDBDB;
+        border-radius: 2px;
     }
 
     .m_result_title{
-        width: 96%;
+        width: calc(100% - 17px);
         min-height: 40px;
-        margin: 10px auto;
+        /* margin: 0 auto; */
         display: flex;
         justify-content: space-around;
         align-items: center;
-        border: 1px solid #ccc;
+        background: #F7F8FA;
+        border-bottom: 1px solid #DBDBDB;
+        /* border: 1px solid #ccc; */
     }
 
     .m_result_scroll{
@@ -237,26 +289,17 @@
         margin: 0 auto;
         overflow-y: scroll;
         overflow-x: hidden;
-        height: calc(100% - 100px);
+        height: calc(100% - 80px);
     }
 
     .m_result_list{
-        width: 96%;
+        width: 100%;
         height: 40px;
-        border: 1px solid #ccc;
+        margin: 0 auto;
         display: flex;
         justify-content: space-around;
         align-items: center;
-    }
-
-    .m_result_list{
-        width: 96%;
-        height: 40px;
-        margin: 8px auto;
-        border: 1px solid #ccc;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
+        border-bottom: 1px solid #DBDBDB;
     }
 
     .m_result_list span{
