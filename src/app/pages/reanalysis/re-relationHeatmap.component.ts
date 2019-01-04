@@ -474,11 +474,13 @@ export class reRelationHeatmapComponent implements OnInit {
                     // }
                 },
                 onselect: data => {
-                    console.log(data)
                     that.setGeneList(data);
                 }
             },
             axis: {
+                x:{
+                    type:that.yName
+                },
                 y: {
                     type:that.yName  //hidden,id,symbol
                 }
