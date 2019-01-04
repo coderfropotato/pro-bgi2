@@ -479,33 +479,12 @@ export class reRelationHeatmapComponent implements OnInit {
                 }
             },
             axis: {
-                // x: {
-                //     // rotate: 30,
-                //     dblclick: function(event,title) {
-                //         let text = title.firstChild.nodeValue;
-                //         that.promptService.open(text,(data)=>{
-                //             title.textContent = data;
-                //         })
-                //     },
-                //     mouseover: function(event, title) {
-                //         title
-                //         .attr("fill", "blue")
-                //         .append("title")
-                //         .text("双击修改");
-                //     },
-                //     mouseout: function(event, title) {
-                //         title.attr("fill", "#333");
-                //         title.select("title").remove();
-                //     }
-                // },
                 y: {
                     type:that.yName  //hidden,id,symbol
                 }
             },
             legend: {
                 show: true,
-                min: that.domainRange[0],
-                max: that.domainRange[1],
                 data: legendData,
                 position: "right",
                 click: (d, i) => {
