@@ -581,7 +581,7 @@ export class reRelationNetComponent implements OnInit {
 
         let node = g_node.append("path")
             .attr('class',"node")
-            .attr('id',d=>d.geneID.replace(that.idReq,""))
+            .attr('id',d=>"node"+d.geneID.replace(that.idReq,""))
             .attr("d",d3.symbol()
                 .type(d=>symbolScale(d.type))
                 .size(d=>sizeScale(d.value))
@@ -925,7 +925,7 @@ export class reRelationNetComponent implements OnInit {
             m.selected=false;
         })
 
-        d3.select("path#"+this.curSearchNode.replace(this.idReq,"")).attr('fill',"#167C80");
+        d3.select("path#node"+this.curSearchNode.replace(this.idReq,"")).attr('fill',"#167C80");
         this.allNodes.forEach(d=>{
             if(d.geneID === this.curSearchNode){
                 d.selected=true;
@@ -1030,7 +1030,7 @@ export class reRelationNetComponent implements OnInit {
         this.selectGeneList.length=0;
         this.allNodes.forEach(d=> {
             if (d.selected) {
-                d3.selectAll("path#"+d.geneID.replace(this.idReq,"")).attr('fill',"#167C80");
+                d3.selectAll("path#node"+d.geneID.replace(this.idReq,"")).attr('fill',"#167C80");
                 this.selectGeneList.push(d.geneID);
             }
         })
