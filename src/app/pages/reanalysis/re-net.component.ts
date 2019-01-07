@@ -439,7 +439,7 @@ export class ReNetComponent implements OnInit {
         this.allLinks=[...links];
 
         //容器宽高
-        let legendWidth=1000, legendHeight=100;
+        let legendWidth=0, legendHeight=60;
         let width=800,height=600; //图主体
         let padding=20;
 
@@ -481,7 +481,7 @@ export class ReNetComponent implements OnInit {
             .range(shapeArr);
 
         //图例svg
-        let legendSvg=d3.select("#netChartDiv").append('svg').attr("width", legendWidth).attr("height", legendHeight);
+        let legendSvg=d3.select("#netChartDiv").append('svg').attr('id',"legendSvg");
 
         //svg  点击空白处，所有的node和link清除选中
         let svg = d3.select("#netChartDiv").append('svg').attr("width", width).attr("height", height)
@@ -671,12 +671,18 @@ export class ReNetComponent implements OnInit {
         drawNodeColorScale();
 
         // link 颜色
-        let legendNodeColorH=d3.select(".legendNodeColor").node().getBBox().height;
+        let legendNodeColorW=d3.select(".legendNodeColor").node().getBBox().width;
+
         let legnedLinkColor_g=legendSvg.append("g")
             .attr('class','legendLinkColor')
-            .attr('transform',`translate(${padding},${legendNodeColorH+padding})`);
+            .attr('transform',`translate(${padding+legendShapeW+padding+legendNodeColorW+padding},0)`);
 
         drawLinkColorScale();
+
+        let legendLinkColorW=d3.select(".legendLinkColor").node().getBBox().width;
+
+        legendWidth=padding+legendShapeW+padding+legendNodeColorW+padding+legendLinkColorW+padding;
+        d3.select("#legendSvg").attr("width", legendWidth).attr("height", legendHeight);
         
         // svg 点击清空选择
         d3.selectAll("#netChartDiv svg").on('click',function(){
