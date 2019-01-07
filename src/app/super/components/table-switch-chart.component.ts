@@ -118,10 +118,6 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     ngOnInit() {
-        if(typeof(this.isBigTable)==='undefined'){
-            this.isBigTable=false;
-        }
-
         this.accuracyList = [
             {
                 name: "精度：1位小数",
