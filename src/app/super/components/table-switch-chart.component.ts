@@ -82,6 +82,8 @@ export class TableSwitchChartComponent implements OnInit {
     // 刷新
     @Output() refresh:EventEmitter<any> = new EventEmitter();
 
+    //table chart show
+    @Output() showTableChange:EventEmitter<any>=new EventEmitter();
 
     scroll: object = { y: '400px' };
     isShowTable: boolean = false;
@@ -116,10 +118,6 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     ngOnInit() {
-        if(typeof(this.isBigTable)==='undefined'){
-            this.isBigTable=false;
-        }
-
         this.accuracyList = [
             {
                 name: "精度：1位小数",
@@ -174,6 +172,16 @@ export class TableSwitchChartComponent implements OnInit {
             this.getSetData();
         }
 
+    }
+
+    chartBtnClick(){
+        this.isShowTable=false;
+        this.showTableChange.emit(this.isShowTable);
+    }
+
+    tableBtnClick(){
+        this.isShowTable=true;
+        this.showTableChange.emit(this.isShowTable);
     }
 
     //获取默认值
