@@ -45,7 +45,7 @@ export class NetSetComponent implements OnInit {
     isShowSetPanel:boolean=false;
     isShowAddPanel:boolean=false;
 
-    force:number=600; //斥力
+    force:number=100; //斥力
     radian:number=10; //弧度
 
     symbolType:string; //symbol
