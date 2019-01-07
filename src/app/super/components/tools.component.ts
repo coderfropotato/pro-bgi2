@@ -144,8 +144,8 @@ export class ToolsComponent implements OnInit {
 	heatmapReSelectStand:string = '';
 	heatmapReGeneType:object[] = [];
 	heatmapReGeneTypeError:boolean = false;
-	heatmapReRelations:object= [];
-	heatmapReError:boolean = false;
+	heatmapReRelations:object[]= [];
+	heatmapReError:any = false;
 	doHeatmapRelationAjax:boolean = false;
 	heatmapReSelectRelation:any[] = [];;
 	heatmapReSelectGeneType:object[] = [];
@@ -1233,6 +1233,7 @@ export class ToolsComponent implements OnInit {
 		this.isSubmitReanalysis = true;
 		let entity = this.toolsService.get('tableEntity');
 		entity['relations'] = this.heatmapReSelectRelation;
+		entity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {

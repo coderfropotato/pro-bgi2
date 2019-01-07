@@ -77,8 +77,7 @@ export class reRelationHeatmapComponent implements OnInit {
 
     tableHeight = 0;
     first = true;
-    switch = false;
-    onlyTable:boolean = false;
+    switch:string = 'right';
 
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
@@ -116,6 +115,7 @@ export class reRelationHeatmapComponent implements OnInit {
 
         this.routes.paramMap.subscribe((params)=>{
             this.tid = params['params']['tid'];
+            // this.tid = 'b3f7ff4d8c1e4e119d8c8c9ffa195ada';
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
             this.storeService.setTid(this.tid);
@@ -153,7 +153,7 @@ export class reRelationHeatmapComponent implements OnInit {
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
+        this.defaultUrl = `${config['javaPath']}/relationCluster/table`;
         this.defaultEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -180,7 +180,7 @@ export class reRelationHeatmapComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
+        this.extendUrl = `${config['javaPath']}/relationCluster/table`;
         this.extendEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -194,6 +194,7 @@ export class reRelationHeatmapComponent implements OnInit {
             relations: [], //关系组（简写，索引最后一个字段）
             sortValue: null,
             sortKey: null, //排序
+            checkGraph:true,
             reAnaly: false,
             verticalClassification:this.verticalClass,
             geneType: this.geneType, //基因类型gene和transcript
@@ -336,16 +337,6 @@ export class reRelationHeatmapComponent implements OnInit {
             this.computedTableHeight();
         },320)
     }
-
-	// 展开表icon 点击事件
-    handleOnlyTable(){
-        this.onlyTable = !this.onlyTable;
-	}
-
-	// 从布局切换发出的事件
-	handlOnlyTableChange(status){
-		this.onlyTable = status;
-	}
 
     computedTableHeight() {
 		try {

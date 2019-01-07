@@ -871,6 +871,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
             });
         } else {
             let params = this._getInnerStatusParams();
+            console.log(params);
             this.toolsService.showTools(this.total, params);
         }
     }
