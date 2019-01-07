@@ -18,7 +18,7 @@ declare const $: any;
 })
 export class reRelationNetComponent implements OnInit {
 
-    @ViewChild('netChart') netChart;
+    @ViewChild('relationNetChart') relationNetChart;
     @ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
@@ -337,7 +337,7 @@ export class reRelationNetComponent implements OnInit {
 	switchChange(status) {
         this.switch = status;
         setTimeout(()=>{
-            this.netChart.scrollHeight();
+            this.relationNetChart.scrollHeight();
             this.computedTableHeight();
         },320)
     }
@@ -1042,7 +1042,7 @@ export class reRelationNetComponent implements OnInit {
     colorChange(color){
         this.color = color;
         this.colors.splice(this.legendIndex, 1, color);
-        this.netChart.redraw();
+        this.relationNetChart.redraw();
     }
 
     // 设置 确定
@@ -1051,7 +1051,7 @@ export class reRelationNetComponent implements OnInit {
         this.chartEntity["radian"]=data['radian'];
         this.chartEntity["symbolType"]=data['symbolType'];
         this.chartEntity['quantity']=data.value;
-        this.netChart.reGetData();
+        this.relationNetChart.reGetData();
     }
 
 }

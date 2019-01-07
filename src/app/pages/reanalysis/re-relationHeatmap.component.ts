@@ -20,7 +20,7 @@ declare const $: any;
 })
 
 export class reRelationHeatmapComponent implements OnInit {
-    @ViewChild('clusterChart') clusterChart;
+    @ViewChild('relationClusterChart') relationClusterChart;
     @ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
@@ -332,7 +332,7 @@ export class reRelationHeatmapComponent implements OnInit {
 	switchChange(status) {
         this.switch = status;
         setTimeout(()=>{
-            this.clusterChart.scrollHeight();
+            this.relationClusterChart.scrollHeight();
             this.computedTableHeight();
         },320)
     }
@@ -387,7 +387,7 @@ export class reRelationHeatmapComponent implements OnInit {
     //设置 确定
     setConfirm(data){
         this.setChartSetEntity(data);
-        this.clusterChart.reGetData();
+        this.relationClusterChart.reGetData();
 
         this.chartBackStatus();
     }
@@ -517,7 +517,7 @@ export class reRelationHeatmapComponent implements OnInit {
     colorChange(curColor) {
         this.color = curColor;
         this.colors.splice(this.legendIndex, 1, curColor);
-        this.clusterChart.redraw();
+        this.relationClusterChart.redraw();
     }
 
     setGeneList(geneList) {
