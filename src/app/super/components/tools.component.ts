@@ -144,8 +144,8 @@ export class ToolsComponent implements OnInit {
 	heatmapReSelectStand:string = '';
 	heatmapReGeneType:object[] = [];
 	heatmapReGeneTypeError:boolean = false;
-	heatmapReRelations:object= [];
-	heatmapReError:boolean = false;
+	heatmapReRelations:object[]= [];
+	heatmapReError:any;
 	doHeatmapRelationAjax:boolean = false;
 	heatmapReSelectRelation:any[] = [];;
 	heatmapReSelectGeneType:object[] = [];
@@ -1175,8 +1175,8 @@ export class ToolsComponent implements OnInit {
 				},
 				(err) => {
 					this.heatmapReError = 'error';
-					this.initHeattmapRelationsData();
-				}
+					this.initHeatmapRelationsData();
+				},
 				()=>{
 					this.doHeatmapRelationAjax = true;
 				}
