@@ -1174,8 +1174,8 @@ export class ToolsComponent implements OnInit {
 				},
 				(err) => {
 					this.heatmapReError = 'error';
-					this.initHeattmapRelationsData();
-				}
+					this.initHeatmapRelationsData();
+				},
 				()=>{
 					this.doHeatmapRelationAjax = true;
 				}

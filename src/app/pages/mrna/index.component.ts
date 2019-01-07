@@ -9,6 +9,7 @@ import { MessageService } from "../../super/service/messageService";
 import { NgxSpinnerService } from "ngx-spinner";
 import config from "../../../config";
 import { routeAnimation } from "../../super/animation/animation";
+
 // import {OuterDataBaseService} from './../../super/service/outerDataBaseService';
 
 declare const window: any;
@@ -37,6 +38,8 @@ export class IndexComponent implements OnInit {
         private addColumnService:AddColumnService
         // private outerDataBaseService:OuterDataBaseService
     ) {
+        this.addColumnSubject = new Subject<any>();
+
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 this.routerState = !this.routerState;
@@ -312,6 +315,7 @@ export class IndexComponent implements OnInit {
                 );
         });
     }
+
 
     async getAddThead() {
         return new Promise((resolve, reject) => {
