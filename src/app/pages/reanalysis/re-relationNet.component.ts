@@ -32,6 +32,10 @@ export class reRelationNetComponent implements OnInit {
 
     tableUrl:string;
 
+    setDataUrl:string;
+    setDataEntity:object;
+    setData:any;
+
     isShowTable:boolean;
 
     isShowColorPanel: boolean = false;
@@ -134,8 +138,14 @@ export class reRelationNetComponent implements OnInit {
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
 
-        this.tableUrl=`${config['javaPath']}/net/switchTable`; 
-        this.chartUrl=`${config['javaPath']}/net/graph`; 
+        this.setDataUrl=`${config['javaPath']}/linkedNetwork/getQuantity`;
+        this.setDataEntity={
+            "geneType": this.geneType,
+            "LCID": this.storeService.getStore('LCID')
+        }
+
+        this.tableUrl=`${config['javaPath']}/linkedNetwork/switchTable`; 
+        this.chartUrl=`${config['javaPath']}/linkedNetwork/graph`; 
         // this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
             "id": this.tid,
@@ -339,6 +349,9 @@ export class reRelationNetComponent implements OnInit {
     }
 
     // 图
+    getSetData(data){
+        this.setData=data;
+    }
 
     //画图
     drawChart(data){
@@ -928,7 +941,7 @@ export class reRelationNetComponent implements OnInit {
         this.isShowDeleteModal=false;
         this.ajaxService
             .getDeferData({
-                url: `${config['javaPath']}/net/deleteLink`,
+                url: `${config['javaPath']}/linkedNetwork/deleteLink`,
                 data: {
                     "LCID": this.storeService.getStore('LCID'),
                     "id": this.tid,
@@ -963,7 +976,7 @@ export class reRelationNetComponent implements OnInit {
         this.isShowAddModal=false;
         this.ajaxService
             .getDeferData({
-                url: `${config['javaPath']}/net/addLink`,
+                url: `${config['javaPath']}/linkedNetwork/addLink`,
                 data: {
                     "LCID": this.storeService.getStore('LCID'),
                     "id": this.tid,

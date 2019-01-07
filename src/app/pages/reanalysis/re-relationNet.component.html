@@ -54,7 +54,7 @@
             </div> -->
             <div class="left-bottom-layout">
                     <ng-template #setTemplate>
-                        <app-netSet *ngIf="!isShowTable" (defaultSet)='defaultSet($event)' (confirm)="setConfirm($event)"></app-netSet>
+                        <app-netSet *ngIf="!isShowTable && setData" (defaultSet)='defaultSet($event)' (confirm)="setConfirm($event)" [setData]="setData"></app-netSet>
                     </ng-template>
 
                     <ng-template #funcBtnsTemplate>
@@ -84,6 +84,9 @@
                         (drawChartEmit)="drawChart($event)"
                         [chartId]="'relationNetChartDiv'"
                         [chartName]="'关联网络图'"
+                        [setDataUrl]="setDataUrl"
+                        [setDataEntity]="setDataEntity"
+                        (setData)="getSetData($event)"
                         [flex]="true"
                         (refresh)="handlerRefresh()"
                     >

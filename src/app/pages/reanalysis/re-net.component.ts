@@ -32,6 +32,10 @@ export class ReNetComponent implements OnInit {
 
     tableUrl:string;
 
+    setDataUrl:string;
+    setDataEntity:object;
+    setData:any;
+
     isShowTable:boolean;
 
     isShowColorPanel: boolean = false;
@@ -133,6 +137,12 @@ export class ReNetComponent implements OnInit {
         this.colors = ["#0000ff", "#ff0000"];
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
+
+        this.setDataUrl=`${config['javaPath']}/net/getQuantity`;
+        this.setDataEntity={
+            "geneType": this.geneType,
+            "LCID": this.storeService.getStore('LCID')
+        }
 
         this.tableUrl=`${config['javaPath']}/net/switchTable`; 
         this.chartUrl=`${config['javaPath']}/net/graph`; 
@@ -339,6 +349,9 @@ export class ReNetComponent implements OnInit {
     }
 
     // 图
+    getSetData(data){
+        this.setData=data;
+    }
 
     //画图
     drawChart(data){

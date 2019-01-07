@@ -36,6 +36,7 @@ declare const $: any;
 export class NetSetComponent implements OnInit {
     @Output() defaultSet:EventEmitter<any> = new EventEmitter();
     @Output() confirm: EventEmitter<any> = new EventEmitter();
+    @Input() setData:any;
     
     defaultData:object;
     confirmData:object;
@@ -104,46 +105,23 @@ export class NetSetComponent implements OnInit {
 
     //获取定量信息
     getRationClassify() {
-        this.ajaxService
-            .getDeferData({
-                url: `${config['javaPath']}/net/getQuantity`,
-                data: {
-                    "LCID": this.storeService.getStore('LCID'),
-                    "geneType": this.geneType  // gene 或 transcript
-                }
-            })
-            .subscribe(
-                (data: any) => {
-                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-                        return;
-                    } else if (data.status === "-1") {
-                        return;
-                    } else if (data.status === "-2") {
-                        return;
-                    } else {
-                        this.rationClassifyList = data.data;
+        this.rationClassifyList = this.setData;
 
-                        this.curRationClassify = this.rationClassifyList[0]['name'];
+        this.curRationClassify = this.rationClassifyList[0]['name'];
 
-                        this.rationClassifyList.forEach((d) => {
-                            if (d['name'] === this.curRationClassify) {
-                                this.rations = [...d['data']];
-                            }
-                        })
+        this.rationClassifyList.forEach((d) => {
+            if (d['name'] === this.curRationClassify) {
+                this.rations = [...d['data']];
+            }
+        })
 
-                        this.rations.forEach(d=>{
-                            d['isChecked']=false;
-                        })
+        this.rations.forEach(d=>{
+            d['isChecked']=false;
+        })
 
-                        this.rations[0]['isChecked']=true;
-                        this.curRation={...this.rations[0]};
+        this.rations[0]['isChecked']=true;
+        this.curRation={...this.rations[0]};
 
-                    }
-                },
-                error => {
-                    console.log(error);
-                }
-            )
     }
 
     // 判断当前选中

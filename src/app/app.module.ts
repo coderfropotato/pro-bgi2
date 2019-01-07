@@ -343,7 +343,7 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "re-netrelation/:geneType/:tid/:version",
+                path: "re-linkedNetwork/:geneType/:tid/:version",
                 component: reRelationNetComponent,
                 canActivate: [SysDefendService],
                 data: {
