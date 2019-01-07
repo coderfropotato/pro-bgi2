@@ -12,13 +12,13 @@ declare const d3: any;
 declare const $: any;
 
 @Component({
-  selector: 'app-re-net',
-  templateUrl: './re-net.component.html',
+  selector: 'app-re-relationNet',
+  templateUrl: './re-relationNet.component.html',
   styles: []
 })
-export class ReNetComponent implements OnInit {
+export class reRelationNetComponent implements OnInit {
 
-    @ViewChild('netChart') netChart;
+    @ViewChild('relationNetChart') relationNetChart;
     @ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
@@ -138,14 +138,14 @@ export class ReNetComponent implements OnInit {
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
 
-        this.setDataUrl=`${config['javaPath']}/net/getQuantity`;
+        this.setDataUrl=`${config['javaPath']}/linkedNetwork/getQuantity`;
         this.setDataEntity={
             "geneType": this.geneType,
             "LCID": this.storeService.getStore('LCID')
         }
 
-        this.tableUrl=`${config['javaPath']}/net/switchTable`; 
-        this.chartUrl=`${config['javaPath']}/net/graph`; 
+        this.tableUrl=`${config['javaPath']}/linkedNetwork/switchTable`; 
+        this.chartUrl=`${config['javaPath']}/linkedNetwork/graph`; 
         // this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
             "id": this.tid,
@@ -337,7 +337,7 @@ export class ReNetComponent implements OnInit {
 	switchChange(status) {
         this.switch = status;
         setTimeout(()=>{
-            this.netChart.scrollHeight();
+            this.relationNetChart.scrollHeight();
             this.computedTableHeight();
         },320)
     }
@@ -355,7 +355,7 @@ export class ReNetComponent implements OnInit {
 
     //画图
     drawChart(data){
-        d3.selectAll("#netChartDiv svg").remove();
+        d3.selectAll("#relationNetChartDiv svg").remove();
         let that  = this;
 
         let isLinkNum;
@@ -481,10 +481,10 @@ export class ReNetComponent implements OnInit {
             .range(shapeArr);
 
         //图例svg
-        let legendSvg=d3.select("#netChartDiv").append('svg').attr("width", legendWidth).attr("height", legendHeight);
+        let legendSvg=d3.select("#relationNetChartDiv").append('svg').attr("width", legendWidth).attr("height", legendHeight);
 
         //svg  点击空白处，所有的node和link清除选中
-        let svg = d3.select("#netChartDiv").append('svg').attr("width", width).attr("height", height)
+        let svg = d3.select("#relationNetChartDiv").append('svg').attr("width", width).attr("height", height)
             .call(
                 //缩放
                 d3.zoom()
@@ -679,7 +679,7 @@ export class ReNetComponent implements OnInit {
         drawLinkColorScale();
         
         // svg 点击清空选择
-        d3.selectAll("#netChartDiv svg").on('click',function(){
+        d3.selectAll("#relationNetChartDiv svg").on('click',function(){
             d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
             d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
             that.selectedNodes.length=0;
@@ -941,7 +941,7 @@ export class ReNetComponent implements OnInit {
         this.isShowDeleteModal=false;
         this.ajaxService
             .getDeferData({
-                url: `${config['javaPath']}/net/deleteLink`,
+                url: `${config['javaPath']}/linkedNetwork/deleteLink`,
                 data: {
                     "LCID": this.storeService.getStore('LCID'),
                     "id": this.tid,
@@ -976,7 +976,7 @@ export class ReNetComponent implements OnInit {
         this.isShowAddModal=false;
         this.ajaxService
             .getDeferData({
-                url: `${config['javaPath']}/net/addLink`,
+                url: `${config['javaPath']}/linkedNetwork/addLink`,
                 data: {
                     "LCID": this.storeService.getStore('LCID'),
                     "id": this.tid,
@@ -1042,7 +1042,7 @@ export class ReNetComponent implements OnInit {
     colorChange(color){
         this.color = color;
         this.colors.splice(this.legendIndex, 1, color);
-        this.netChart.redraw();
+        this.relationNetChart.redraw();
     }
 
     // 设置 确定
@@ -1051,7 +1051,7 @@ export class ReNetComponent implements OnInit {
         this.chartEntity["radian"]=data['radian'];
         this.chartEntity["symbolType"]=data['symbolType'];
         this.chartEntity['quantity']=data.value;
-        this.netChart.reGetData();
+        this.relationNetChart.reGetData();
     }
 
 }

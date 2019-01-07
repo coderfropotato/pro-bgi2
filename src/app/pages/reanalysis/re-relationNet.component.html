@@ -71,9 +71,9 @@
                     
                     <!-- [selectTemplate]="selectTemplate" -->
                     <app-table-switch-chart
-                        #netChart
+                        #relationNetChart
                         [isBigTable]='true'
-                        [id]="'netChart'"
+                        [id]="'relationNetChart'"
                         [apiEntity]="chartEntity"
                         [chartUrl]="chartUrl"
                         [tableUrl]='tableUrl'
@@ -82,8 +82,8 @@
                         [funcBtnsTemplate]='funcBtnsTemplate'
                         [searchTemplate]='searchTemplate'
                         (drawChartEmit)="drawChart($event)"
-                        [chartId]="'netChartDiv'"
-                        [chartName]="'网络图'"
+                        [chartId]="'relationNetChartDiv'"
+                        [chartName]="'关联网络图'"
                         [setDataUrl]="setDataUrl"
                         [setDataEntity]="setDataEntity"
                         (setData)="getSetData($event)"
