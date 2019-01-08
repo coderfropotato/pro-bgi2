@@ -36,6 +36,8 @@ export class ReNetComponent implements OnInit {
     setDataEntity:object;
     setData:any;
 
+    defaultSetData:any;
+
     isShowTable:boolean;
 
     isShowColorPanel: boolean = false;
@@ -144,13 +146,24 @@ export class ReNetComponent implements OnInit {
             "LCID": this.storeService.getStore('LCID')
         }
 
+        this.defaultSetData={
+            "force":100,
+            "radian":10,
+            "symbolType":"hidden", 
+            "value":{}
+        }
+
         this.tableUrl=`${config['javaPath']}/net/switchTable`; 
         this.chartUrl=`${config['javaPath']}/net/graph`; 
         // this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
             "id": this.tid,
             "pageIndex": 1,
-            "pageSize": 10
+            "pageSize": 10,
+            "force":this.defaultSetData['force'],
+            "radian":this.defaultSetData['radian'],
+            "symbolType":this.defaultSetData['symbolType'],
+            "quantity":this.defaultSetData['value']
         };
 
         // table
@@ -210,13 +223,6 @@ export class ReNetComponent implements OnInit {
 
     showTableChange(isshowtable){
         this.isShowTable=isshowtable;
-    }
-
-    defaultSet(data){
-        this.chartEntity["force"]=data['force'];
-        this.chartEntity["radian"]=data['radian']; 
-        this.chartEntity["symbolType"]=data['symbolType'];
-        this.chartEntity["quantity"]=data['value'];
     }
 
     ngAfterViewInit() {

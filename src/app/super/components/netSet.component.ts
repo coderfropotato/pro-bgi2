@@ -34,11 +34,10 @@ declare const $: any;
     ]
 })
 export class NetSetComponent implements OnInit {
-    @Output() defaultSet:EventEmitter<any> = new EventEmitter();
     @Output() confirm: EventEmitter<any> = new EventEmitter();
+    @Input() defaultSetData:any;
     @Input() setData:any;
     
-    defaultData:object;
     confirmData:object;
 
     geneType:string;
@@ -46,10 +45,10 @@ export class NetSetComponent implements OnInit {
     isShowSetPanel:boolean=false;
     isShowAddPanel:boolean=false;
 
-    force:number=100; //斥力
-    radian:number=10; //弧度
+    force:number; //斥力
+    radian:number; //弧度
 
-    symbolType:string; //symbol
+    symbolType:string; //hidden,all,selected
     symbolTypeList:any[]=[];
 
     //特征值 默认
@@ -91,15 +90,7 @@ export class NetSetComponent implements OnInit {
 
         this.getRationClassify();
 
-        this.defaultData={
-            force:this.force,  
-            radian:this.radian, 
-            symbolType:this.symbolType, 
-            value:{}
-        }
-        this.defaultSet.emit(this.defaultData);
-
-        this.confirmData={...this.defaultData};
+        this.confirmData={...this.defaultSetData};
          
     }
 
