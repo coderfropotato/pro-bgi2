@@ -9,9 +9,6 @@
                         <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate"
                             nz-tooltip (click)="beginFilter()"></i>
                         <!-- 下拉框 -->
-                        <!-- <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
-                                    <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
-                                </nz-select> -->
                         <ng-container *ngTemplateOutlet="selectItems ? selectItems: ''"></ng-container>
                     </div>
                     <div class="fRight">
@@ -31,18 +28,6 @@
                         <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of filterHtmlString"
                             [innerHTML]="item['html']"></span>
                     </div>
-                    <!-- 交集 interSearchConditionList -->
-                    <!-- <div class="table-top" *ngIf="interConditionHtmlString.length">
-                        <span class="filter-head">{{'interFilterTitle' | translate}}：</span>
-                        <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of interConditionHtmlString"
-                            [innerHTML]="item['html']"></span>
-                    </div> -->
-                    <!-- 并集 unionSearchConditionList  -->
-                    <!-- <div class="table-top" *ngIf="unionConditionHtmlStirng.length">
-                        <span class="filter-head">{{'unionFilterTitle' | translate}}：</span>
-                        <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of unionConditionHtmlStirng"
-                            [innerHTML]="item['html']"></span>
-                    </div> -->
                 </div>
                 <div class="table-content">
                     <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" x:head.length*150+'px'-->

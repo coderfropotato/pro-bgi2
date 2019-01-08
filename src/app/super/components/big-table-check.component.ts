@@ -39,7 +39,8 @@ export class BigTableCheckComponent implements OnInit {
 	@Input() defaultChecked: boolean = true; // 默认全选中 or 全不选中
 	@Input() checkStatusInParams: boolean = false; // 是否把选中的状态放在请求参数里
 	// TODO 双向绑定applyOnceSearchParams 下次再次触发
-	@Output() applyOnceSearchParamsChange: EventEmitter<any> = new EventEmitter();
+    @Output() applyOnceSearchParamsChange: EventEmitter<any> = new EventEmitter();
+    @Output() checkedChange:EventEmitter<any> = new EventEmitter();
 
 	@ViewChildren('child') children;
 	tableEntity: object = {};
@@ -440,8 +441,29 @@ export class BigTableCheckComponent implements OnInit {
 	}
 
 	getCollection() {
+        let checked = this.checked.concat();
 		this.checked = Object.keys(this.checkedMap);
-		this.unChecked = Object.keys(this.unCheckedMap);
+        this.unChecked = Object.keys(this.unCheckedMap);
+
+        let diff:boolean =false;
+        let count:number = 0;
+        if(checked.length !== this.checked.length) {
+            this.checkedChange.emit(this.checked);
+            return ;
+        }
+        if(checked.join(',') !== this.checked.join(',')) {
+            this.checkedChange.emit(this.checked);
+            return ;
+        }
+
+        for(let i=0;i<checked.length;i++){
+            if(checked[i]!==this.checked[i]){
+                count++;
+                break;
+            }
+        }
+        diff = !!count;
+        if(diff)  this.checkedChange.emit(this.checked);
 	}
 
 	/**
