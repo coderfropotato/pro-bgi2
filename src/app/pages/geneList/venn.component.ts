@@ -9,6 +9,7 @@ import { GlobalService } from 'src/app/super/service/globalService';
 import { TranslateService } from "@ngx-translate/core";
 import {PromptService} from './../../super/service/promptService'
 import config from '../../../config';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 declare const d4:any;
 declare const d3: any;
 declare const Venn: any;
@@ -158,7 +159,8 @@ export class GeneListVennComponent implements OnInit {
 		private translate: TranslateService,
         private promptService:PromptService,
         private addColumnService:AddColumnService,
-		private router: Router
+		private router: Router,
+		private modalService:NzModalService
 	) {
 		// 订阅windowResize 重新计算表格滚动高度
 		this.message.getResize().subscribe((res) => {
@@ -178,7 +180,7 @@ export class GeneListVennComponent implements OnInit {
 
 	ngOnInit() {
 		(async()=>{
-			this.isMultiSelect = true;
+			this.isMultiSelect = false;
 			this.first = true;
 
 			await this.getAllGeneList();
@@ -287,8 +289,8 @@ export class GeneListVennComponent implements OnInit {
 			this.chart.setColor(color, this.legendIndex);
 			this.chart.redraw();
 		}
-    }
-
+	}
+	
     // 重置图 应用图转换前的设置
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
@@ -399,6 +401,7 @@ export class GeneListVennComponent implements OnInit {
 					this.selectPanelEntity['setNameList'].length = 0;
 
 					let genelist =  Object.values(this.geneListMap);
+					this.selectPanelData.length = 0;
 					genelist.forEach(v=>{
 						// 去重
 						v.forEach(val=>{
@@ -517,16 +520,61 @@ export class GeneListVennComponent implements OnInit {
 	}
 
 	// 删除标签
-	handleDelete(event,item){
+	handleDelete(item){
+		console.log(item);
+		let reGetData:boolean = false;
 		if(item['checked']){
+			reGetData = true;
 			let index = this.selectPanelEntity['gene'].findIndex((val,index)=>{
 				return val['setName'] === item['setName'];
 			});
 			if(index!=-1) {
 				this.selectPanelEntity['gene'].splice(index,1);
 				this.selectPanelEntity['setNameList'].splice(index,1);
+				this.copyPanelEntity();
 			}
+		}else{
+			reGetData = false;
 		}
+
+		let tpl = null;
+		tpl = this.modalService.create({
+			nzTitle: '删除基因集',
+			nzContent: `是否删除${item['setName']}`,
+			nzMaskClosable: true,
+			nzClosable: true,
+			nzOnOk: () =>{
+				this.ajaxService.getDeferData({
+					url:`${config['javaPath']}/geneSet/delete`,
+					data:{
+						geneType:this.defaultGeneType,
+						LCID:sessionStorage.getItem('LCID'),
+						setName:item['setName']
+					}
+				}).subscribe(res=>{
+					if(res['status']==0){
+						if(reGetData) { 
+							(async ()=>{
+								this.selectPanelEntity['tag'].length = 0;
+								this.selectPanelEntity['gene'].length = 0;
+								this.selectPanelEntity['setNameList'].length = 0;
+								this.copyPanelEntity();
+								await this.getAllGeneList();
+								await this.getChartData();
+							})()
+						}else{
+							let index = this.selectPanelData.findIndex(v=>{
+								return v['setName'] === item['setName'];
+							})
+							if(index!=-1) this.selectPanelData.splice(index,1);
+						}
+					}
+				},error=>console.log(error))
+			},
+			nzOnCancel:()=>{
+				tpl.destroy();
+			}
+		})
 	}
 
 	//选择面板 确定筛选的数据
@@ -642,8 +690,8 @@ export class GeneListVennComponent implements OnInit {
             if(this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
 		} else {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
-        }
-
+		}
+		
         this.chartBackStatus()
 	}
 
@@ -782,7 +830,7 @@ export class GeneListVennComponent implements OnInit {
             })
             .svgClick(function(){
                 if(that.isMultiSelect){
-                    that.venSelectAllData = [];
+                    that.venSelectAllData.length = 0;
                 }else{
                     that.singleMultiSelect['bar_name'] = '';
 					that.singleMultiSelect['total_name'] = '';

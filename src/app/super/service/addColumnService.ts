@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import config from '../../../'
 import { Observable, Subject, fromEvent } from "rxjs";
 /**
  * @description 增删列的供选择数据 全局共享
@@ -23,19 +22,4 @@ export class AddColumnService {
     set(thead){
         this.thead = thead;
     }
-    
-    initIndexAndChecked(data) {
-		data.forEach((val, index) => {
-			if (val['children'] && val['children'].length) {
-				val['children'].forEach((v, i) => {
-					if (v['children'] && v['children'].length) {
-						for (let m = 0; m < v['children'].length; m++) {
-							v['children'][m]['index'] = index;
-							v['children'][m]['checked'] = false;
-						}
-					}
-				});
-			}
-        });
-	}
 }

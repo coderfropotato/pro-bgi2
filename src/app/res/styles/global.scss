@@ -25,6 +25,7 @@
 .selectPanel .selectContent {
 	max-height: 200px;
 	overflow: auto;
+	padding-top:6px;
 }
 
 .table-content {
@@ -1193,15 +1194,19 @@ button.btnActive {
 
 // 带删除图标的按钮
 .closeable-button{
-	padding-right:8px;
 	text-align: center;
 	position: relative;
+	display:inline-block;
+	padding-right:4px;
+	margin-right:6px;
 	i{
-		position: absolute;
-		top: -4px;
-		right: 0px;
+		position:absolute;
+		top:-5px;
+		right:8px;
+		font-size:12px;
 		transition: .3s all ease;
 		z-index: 2;
+		cursor: pointer;
 		&:hover{
 			transform: scale(1.2);
 		}

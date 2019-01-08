@@ -156,7 +156,7 @@ export class reRelationNetComponent implements OnInit {
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/net/table`;
+        this.defaultUrl = `${config['javaPath']}/linkedNetwork/table`;
         this.defaultEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -181,7 +181,7 @@ export class reRelationNetComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/net/table`;
+        this.extendUrl = `${config['javaPath']}/linkedNetwork/table`;
         this.extendEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
