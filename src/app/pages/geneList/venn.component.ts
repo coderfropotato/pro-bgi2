@@ -521,7 +521,6 @@ export class GeneListVennComponent implements OnInit {
 
 	// 删除标签
 	handleDelete(item){
-		console.log(item);
 		let reGetData:boolean = false;
 		if(item['checked']){
 			reGetData = true;
