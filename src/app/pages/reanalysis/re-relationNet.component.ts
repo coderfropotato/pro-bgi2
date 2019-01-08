@@ -36,6 +36,8 @@ export class reRelationNetComponent implements OnInit {
     setDataEntity:object;
     setData:any;
 
+    defaultSetData:any;
+
     isShowTable:boolean;
 
     isShowColorPanel: boolean = false;
@@ -144,6 +146,13 @@ export class reRelationNetComponent implements OnInit {
             "LCID": this.storeService.getStore('LCID')
         }
 
+        this.defaultSetData={
+            "force":100,
+            "radian":10,
+            "symbolType":"hidden", 
+            "value":{}
+        }
+
         this.tableUrl=`${config['javaPath']}/linkedNetwork/switchTable`; 
         this.chartUrl=`${config['javaPath']}/linkedNetwork/graph`; 
         // this.chartUrl=`http://localhost:8086/net`;
@@ -151,10 +160,10 @@ export class reRelationNetComponent implements OnInit {
             "id": this.tid,
             "pageIndex": 1,
             "pageSize": 10,
-            "force":0,
-            "radian":0,
-            "symbolType":"",
-            "quantity":{}
+            "force":this.defaultSetData['force'],
+            "radian":this.defaultSetData['radian'],
+            "symbolType":this.defaultSetData['symbolType'],
+            "quantity":this.defaultSetData['value']
         };
 
         // table
@@ -214,13 +223,6 @@ export class reRelationNetComponent implements OnInit {
 
     showTableChange(isshowtable){
         this.isShowTable=isshowtable;
-    }
-
-    defaultSet(data){
-        this.chartEntity["force"]=data['force'];
-        this.chartEntity["radian"]=data['radian']; 
-        this.chartEntity["symbolType"]=data['symbolType'];
-        this.chartEntity["quantity"]=data['value'];
     }
 
     ngAfterViewInit() {
