@@ -67,6 +67,7 @@ import { LayoutSwitchComponent } from './super/components/layout-switch.componen
 import { LoadingComponent } from './pages/reanalysis/loading.component';
 import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { GeneListVennComponent,GeneListVennPageComponent } from './pages/geneList/venn.component';
+import { BigTableCheckComponent } from './super/components/big-table-check.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -514,6 +515,7 @@ export function createTranslateLoader(http: HttpClient) {
         LoadingComponent,
         GeneListVennComponent,
         GeneListVennPageComponent,
+        BigTableCheckComponent,
         PromtComponent,
         TableSpecialTheadFilter
     ],
