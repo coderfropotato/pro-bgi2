@@ -150,7 +150,11 @@ export class ReNetComponent implements OnInit {
         this.chartEntity = {
             "id": this.tid,
             "pageIndex": 1,
-            "pageSize": 10
+            "pageSize": 10,
+            "force":0,
+            "radian":0,
+            "symbolType":"",
+            "quantity":{}
         };
 
         // table
