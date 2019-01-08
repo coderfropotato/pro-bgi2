@@ -60,9 +60,8 @@ export class GeneListVennComponent implements OnInit {
 	@ViewChild('tableChartContent') tableChartContent;
     @Input('defaultGeneType') defaultGeneType;
 
-	switch: boolean = false;
+	switch: string = 'right';
 	tableUrl: string;
-    onlyTable:boolean = false;
 	expandModuleDesc:boolean = false;
 
 	defaultEntity: object;
