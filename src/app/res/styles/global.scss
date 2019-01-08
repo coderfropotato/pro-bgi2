@@ -443,7 +443,7 @@ button.btnActive {
 	&.gene-list-content{
 		.switch{
 			position: fixed;
-			right: 160px;
+			right: 106px;
 			top: 46px;
 		}
 	}
@@ -454,7 +454,7 @@ button.btnActive {
 	&:hover{
 		opacity: 1.0;
 	}
-	
+
 }
 
 // 布局切换
@@ -1210,5 +1210,6 @@ button.btnActive {
 		&:hover{
 			transform: scale(1.2);
 		}
-	} 
+	}
 }
+

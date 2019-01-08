@@ -102,6 +102,7 @@ export class LoginComponent implements OnInit {
                                 this.validateForm.value.userName
                             );
                             localStorage.setItem("token", data["data"].token);
+                            sessionStorage.setItem("LCTYPE",data['data'].LCType)
                             this.LCType = data["data"].LCType;
                             this.router.navigateByUrl(
                                 `/report/${data["data"].LCType}`

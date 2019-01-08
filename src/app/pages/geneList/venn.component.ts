@@ -49,7 +49,7 @@ export class GeneListVennPageComponent {
 	templateUrl: './venn.component.html',
 	styles: []
 })
-  
+
 export class GeneListVennComponent implements OnInit {
 	// 表格高度相关
 	@ViewChild('left') left;
@@ -119,7 +119,7 @@ export class GeneListVennComponent implements OnInit {
 
     addColumnShow:boolean = false;
 	showBackButton:boolean = false;
-	
+
 	// 基因集数据
 	geneListMap:object = {};
 
@@ -259,7 +259,7 @@ export class GeneListVennComponent implements OnInit {
 			}, 30);
 
 		})()
-		
+
 	}
 
 	moduleDescChange(){
@@ -267,7 +267,7 @@ export class GeneListVennComponent implements OnInit {
 		// 重新计算表格切换组件表格的滚动高度
 		setTimeout(()=>{this.scrollHeight()},30)
 	}
-	
+
 	scrollHeight(){
 		try {
             let tableChartContentH = this.tableChartContent.nativeElement.offsetHeight;
@@ -290,7 +290,7 @@ export class GeneListVennComponent implements OnInit {
 			this.chart.redraw();
 		}
 	}
-	
+
     // 重置图 应用图转换前的设置
     chartBackStatus(){
         this.defaultEmitBaseThead = true;
@@ -460,9 +460,9 @@ export class GeneListVennComponent implements OnInit {
 					$('#geneListTableSwitchChart_chart').html('');
                     this.chartError = error;
 				},
-				()=>{ 
+				()=>{
 					$('#geneListTableSwitchChart_chart').html('');
-					this.chartLoading = false; 
+					this.chartLoading = false;
 					setTimeout(()=>{this.scrollHeight()},30)
 				}
             )
@@ -552,7 +552,7 @@ export class GeneListVennComponent implements OnInit {
 					}
 				}).subscribe(res=>{
 					if(res['status']==0){
-						if(reGetData) { 
+						if(reGetData) {
 							(async ()=>{
 								this.selectPanelEntity['tag'].length = 0;
 								this.selectPanelEntity['gene'].length = 0;
@@ -626,16 +626,6 @@ export class GeneListVennComponent implements OnInit {
         },320)
     }
 
-	// 展开表icon 点击事件
-    handleOnlyTable(){
-        this.onlyTable = !this.onlyTable;
-	}
-
-	// 从布局切换发出的事件
-	handlOnlyTableChange(status){
-		this.onlyTable = status;
-	}
-
 	computedTableHeight() {
 		try {
             this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
@@ -690,7 +680,7 @@ export class GeneListVennComponent implements OnInit {
 		} else {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
 		}
-		
+
         this.chartBackStatus()
 	}
 
@@ -722,7 +712,7 @@ export class GeneListVennComponent implements OnInit {
 		this.getChartData();
         this.chartBackStatus();
 	}
-	
+
 	// 画拼图
 	showCircle(data){
 		let _self = this;
@@ -751,15 +741,15 @@ export class GeneListVennComponent implements OnInit {
 
 					this.chartBackStatus();
 				},
-				padding:0.02,  
-				outerRadius:120, 
+				padding:0.02,
+				outerRadius:120,
 				startAngle:0,
-				endAngle:360,  
-				showLabel:true,  
+				endAngle:360,
+				showLabel:true,
 				enableChartSelect:true,
 				selectedModule:_self.isMultiSelect?'multiple':'single',
 				custom: ["name", "value"],
-				el: "#geneListTableSwitchChart_chart",  
+				el: "#geneListTableSwitchChart_chart",
 				type: "pie",
 				data: data['rows']
 			},

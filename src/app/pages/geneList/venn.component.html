@@ -1,6 +1,6 @@
 <!-- venn -->
 <div class="content gene-list-content row venn">
-    <div #left class="left-layout column" [class.unexpand]="switch" [class.table-only]="onlyTable">
+    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
             <h4>
                 <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.expand' | translate" nz-tooltip class="iconfont icon-theme pointer expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
@@ -59,7 +59,7 @@
                                     <nz-option *ngFor="let tag of tagList" [nzLabel]="tag" [nzValue]="tag"></nz-option>
                                 </nz-select>
                                 <!-- 刷新-->
-                                <!-- <i *ngIf="tableUrl && isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i> 
+                                <!-- <i *ngIf="tableUrl && isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
                                  <i *ngIf="tableUrl && !isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i> -->
                                 <!--表下载  -->
                                 <i class="iconfont icon-xiazai" *ngIf="isShowTable && !chartError" nz-tooltip [nzTitle]="'tableButton.download' | translate"></i>
@@ -108,10 +108,10 @@
                                         </tr>
                                     </tbody>
                                 </nz-table>
-            
+
                                 <!-- chart -->
                                 <div class="center chart" style="margin: 0 auto;min-width:480px;"  id="geneListTableSwitchChart_chart" [hidden]="isShowTable || chartError"></div>
-            
+
                                 <!-- error -->
                                 <app-error *ngIf="chartError" [error]="chartError"></app-error>
                             </div>
@@ -122,10 +122,9 @@
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
     </div>
-    <div #right  class="right-layout" [class.expand]="switch" [class.table-only]="onlyTable">
+    <div #right  class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
         <div class="switch">
-            <app-layout-switch [onlyTable]="onlyTable" (onlyTableChange)="handlOnlyTableChange($event)" [ngModel]="switch" (ngModelChange)="switchChange($event)" >
-            </app-layout-switch>
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"> </app-layout-switch>
         </div>
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
