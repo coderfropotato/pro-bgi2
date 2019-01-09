@@ -50,7 +50,7 @@ export class AddColumnComponent implements OnInit {
 	){
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
-		
+
 		// 每次进入路由重新获取增删列 并应用之前的选中状态
         // this.subscribtion = this.router.events.subscribe((event) => {
 		// 	if (event instanceof NavigationEnd) {
@@ -80,7 +80,7 @@ export class AddColumnComponent implements OnInit {
 	ngOnDestory(){
 		this.subscribtion.unsubscribe();
 	}
-	
+
 	ngOnChanges(changes: SimpleChanges) {
 		if ('baseThead' in changes && !changes['baseThead'].firstChange && changes['baseThead'].currentValue.length) {
 			this.theadInBase = [];
@@ -143,7 +143,7 @@ export class AddColumnComponent implements OnInit {
                 );
         });
 	}
-	
+
 	// 初始化 增删列树节点数据
     initTreeData(treeData){
         if (!treeData || !treeData.length) return;
@@ -424,7 +424,6 @@ export class AddColumnComponent implements OnInit {
 
     // 分类清空 不确定
     categoryClear(categorys){
-        console.log(categorys);
         categorys.forEach(v=>{
             if(v['children'].length){
                 v['children'].forEach(val=>{
