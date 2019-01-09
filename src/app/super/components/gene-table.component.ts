@@ -864,14 +864,13 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
     analysis() {
-        if (!this.checked.length) {
+        if (!this.checked.length && !(this.total - this.unChecked.length)) {
             this.notify.blank("tips：", "请选择需要分析的基因", {
                 nzStyle: { width: "200px" },
                 nzDuration: 2000
             });
         } else {
             let params = this._getInnerStatusParams();
-            console.log(params);
             this.toolsService.showTools(this.total, params);
         }
     }

@@ -196,7 +196,7 @@
                         [maxLimit]="1000">
                     </app-pagination>
                     <!-- 分析按钮 -->
-                    <div class="table-analysis-button green" (click)="analysis()" [class.invaild]="!checked.length" [class.active]="checked.length" style="float:right;">
+                    <div class="table-analysis-button green" (click)="analysis()" [class.invaild]="!(total - unChecked.length) &&!checked.length" [class.active]="checked.length || (total - unChecked.length)" style="float:right;">
                         <b>{{'tableButton.analysis' | translate}}</b>
                         <span>{{checkStatus?(total - unChecked.length):checked.length}}</span>
                     </div>
