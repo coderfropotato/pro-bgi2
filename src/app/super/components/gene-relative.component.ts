@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 	styles: []
 })
 export class GeneRelativeComponent implements OnInit {
+    @Input() disabled:boolean = true;
 	@Output() confirmEvent: EventEmitter<any> = new EventEmitter();
 
 	isVisible: boolean = false;

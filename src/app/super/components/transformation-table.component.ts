@@ -45,6 +45,7 @@ export class TransformationTableComponent implements OnInit {
 
     @Output() defaultBaseTheadChange:EventEmitter<any> = new EventEmitter();
     @Output() extendBaseTheadChange:EventEmitter<any> = new EventEmitter();
+    @Output() selectGeneCountChange:EventEmitter<any> = new EventEmitter();
 
     @ViewChild("defaultTable") defaultTable;
     @ViewChild("extendTable") extendTable;
@@ -90,6 +91,10 @@ export class TransformationTableComponent implements OnInit {
 
     handlerApplyOnceSearchParamsChange(status){
         this.applyOnceSearchParamsChange.emit(status);
+    }
+
+    handleSelectGeneCountChange(selectGeneCount){
+        this.selectGeneCountChange.emit(selectGeneCount);
     }
 
     /**

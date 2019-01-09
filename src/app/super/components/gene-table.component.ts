@@ -51,7 +51,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() applyOnceSearchParams:boolean = false;
     // TODO 双向绑定applyOnceSearchParams 下次再次触发
     @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
+    @Output() selectGeneCountChange:EventEmitter<any> = new EventEmitter();
 
+    count:number = 0; // 选中的基因个数
     mongoId:any = null;
     scroll: any = { x: "0", y: "0" };
     isLoading: boolean = true;
@@ -500,6 +502,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
     getCollection() {
         this.checked = Object.keys(this.checkedMap);
         this.unChecked = Object.keys(this.unCheckedMap);
+        this.count = this.checkStatus?(this.total - this.unChecked.length):this.checked.length;
+        this.selectGeneCountChange.emit(this.count);
     }
 
     /**
@@ -864,8 +868,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
     analysis() {
-        let count = this.checkStatus?(this.total - this.unChecked.length):this.checked.length;
-        if (!count) {
+        this.count = this.checkStatus?(this.total - this.unChecked.length):this.checked.length;
+        if (!this.count) {
             this.notify.blank("tips：", "请选择需要分析的基因", {
                 nzStyle: { width: "200px" },
                 nzDuration: 2000
