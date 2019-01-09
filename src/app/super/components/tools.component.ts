@@ -671,7 +671,6 @@ export class ToolsComponent implements OnInit {
 		}
 
 		this.kaFunGroupError = !this.kaFunGroupData.length;
-		console.log(this.kaFunGroupSelect);
 	}
 
 	onkaFunChange(value:any):void{
