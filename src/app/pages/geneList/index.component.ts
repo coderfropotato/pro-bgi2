@@ -33,7 +33,7 @@ export class GeneListIndexComponent implements OnInit {
         (async () => {
             try {
                 await this.getLcInfo();
-                await this.getAddThead();
+                // await this.getAddThead();
                 this.ready = true;
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
@@ -72,66 +72,66 @@ export class GeneListIndexComponent implements OnInit {
         });
     }
 
-    async getAddThead() {
-        return new Promise((resolve, reject) => {
-            let LCID = sessionStorage.getItem("LCID");
-            this.ajaxService
-                .getDeferData({
-                    data: {},
-                    url: `${config['javaPath']}/addColumn/${LCID}`
-                })
-                .subscribe(
-                    data => {
-                        if(data['status']==='0'){
-                            let d = data['data'];
-                            // let outerFlag = "006";
-                            // let outerDataBase;
+    // async getAddThead() {
+    //     return new Promise((resolve, reject) => {
+    //         let LCID = sessionStorage.getItem("LCID");
+    //         this.ajaxService
+    //             .getDeferData({
+    //                 data: {},
+    //                 url: `${config['javaPath']}/addColumn/${LCID}`
+    //             })
+    //             .subscribe(
+    //                 data => {
+    //                     if(data['status']==='0'){
+    //                         let d = data['data'];
+    //                         // let outerFlag = "006";
+    //                         // let outerDataBase;
 
-                            d.forEach((val,index)=>{
-                                if(val['category']===config['outerDataBaseIndex']){
-                                    // outerDataBase = d.splice(index,1)[0];
-                                    val['children'].forEach(v=>{
-                                        if(!('children' in v)) v['children'] = [];
-                                        v['modalVisible'] = false;
-                                        v['children'].forEach(item=>{
-                                            this.initTreeData(item['treeData']);
-                                        })
-                                    })
-                                }
-                            })
+    //                         d.forEach((val,index)=>{
+    //                             if(val['category']===config['outerDataBaseIndex']){
+    //                                 // outerDataBase = d.splice(index,1)[0];
+    //                                 val['children'].forEach(v=>{
+    //                                     if(!('children' in v)) v['children'] = [];
+    //                                     v['modalVisible'] = false;
+    //                                     v['children'].forEach(item=>{
+    //                                         this.initTreeData(item['treeData']);
+    //                                     })
+    //                                 })
+    //                             }
+    //                         })
 
-                            this.addColumnService.set(d);
-                            resolve("success");
-                        }else{
-                            reject('error');
-                        }
-                    },
-                    () => reject("error")
-                );
-        });
-    }
+    //                         this.addColumnService.set(d);
+    //                         resolve("success");
+    //                     }else{
+    //                         reject('error');
+    //                     }
+    //                 },
+    //                 () => reject("error")
+    //             );
+    //     });
+    // }
 
-    // 初始化 增删列树节点数据
-    initTreeData(treeData){
-        if (!treeData || !treeData.length) return;
-        let stack = [];
-        for (var i = 0, len = treeData.length; i < len; i++) {
-            stack.push(treeData[i]);
-        }
-        let item;
-        while (stack.length) {
-            item = stack.shift();
+    // // 初始化 增删列树节点数据
+    // initTreeData(treeData){
+    //     if (!treeData || !treeData.length) return;
+    //     let stack = [];
+    //     for (var i = 0, len = treeData.length; i < len; i++) {
+    //         stack.push(treeData[i]);
+    //     }
+    //     let item;
+    //     while (stack.length) {
+    //         item = stack.shift();
 
-            if(item['isRoot']) item['isExpand'] = true;
-            item['isExpand'] = true;
-            item['isChecked'] = false;
-            item['disabled'] = false;
+    //         if(item['isRoot']) item['isExpand'] = true;
+    //         item['isExpand'] = true;
+    //         item['isChecked'] = false;
+    //         item['disabled'] = false;
 
-            if (item.children && item.children.length) {
-                stack = stack.concat(item.children);
-            }
-        }
-    }
+    //         if (item.children && item.children.length) {
+    //             stack = stack.concat(item.children);
+    //         }
+    //     }
+    // }
 
     toAnalysisList(){
         this.router.navigateByUrl('/report/reanalysis/index');

@@ -34,10 +34,10 @@ declare const $: any;
     ]
 })
 export class NetSetComponent implements OnInit {
-    @Output() defaultSet:EventEmitter<any> = new EventEmitter();
     @Output() confirm: EventEmitter<any> = new EventEmitter();
+    @Input() defaultSetData:any;
+    @Input() setData:any;
     
-    defaultData:object;
     confirmData:object;
 
     geneType:string;
@@ -45,10 +45,10 @@ export class NetSetComponent implements OnInit {
     isShowSetPanel:boolean=false;
     isShowAddPanel:boolean=false;
 
-    force:number=600; //斥力
-    radian:number=10; //弧度
+    force:number; //斥力
+    radian:number; //弧度
 
-    symbolType:string; //symbol
+    symbolType:string; //hidden,all,selected
     symbolTypeList:any[]=[];
 
     //特征值 默认
@@ -90,60 +90,29 @@ export class NetSetComponent implements OnInit {
 
         this.getRationClassify();
 
-        this.defaultData={
-            force:this.force,  
-            radian:this.radian, 
-            symbolType:this.symbolType, 
-            value:{}
-        }
-        this.defaultSet.emit(this.defaultData);
-
-        this.confirmData={...this.defaultData};
+        this.confirmData={...this.defaultSetData};
          
     }
 
     //获取定量信息
     getRationClassify() {
-        this.ajaxService
-            .getDeferData({
-                url: `${config['javaPath']}/net/getQuantity`,
-                data: {
-                    "LCID": this.storeService.getStore('LCID'),
-                    "geneType": this.geneType  // gene 或 transcript
-                }
-            })
-            .subscribe(
-                (data: any) => {
-                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-                        return;
-                    } else if (data.status === "-1") {
-                        return;
-                    } else if (data.status === "-2") {
-                        return;
-                    } else {
-                        this.rationClassifyList = data.data;
+        this.rationClassifyList = this.setData;
 
-                        this.curRationClassify = this.rationClassifyList[0]['name'];
+        this.curRationClassify = this.rationClassifyList[0]['name'];
 
-                        this.rationClassifyList.forEach((d) => {
-                            if (d['name'] === this.curRationClassify) {
-                                this.rations = [...d['data']];
-                            }
-                        })
+        this.rationClassifyList.forEach((d) => {
+            if (d['name'] === this.curRationClassify) {
+                this.rations = [...d['data']];
+            }
+        })
 
-                        this.rations.forEach(d=>{
-                            d['isChecked']=false;
-                        })
+        this.rations.forEach(d=>{
+            d['isChecked']=false;
+        })
 
-                        this.rations[0]['isChecked']=true;
-                        this.curRation={...this.rations[0]};
+        this.rations[0]['isChecked']=true;
+        this.curRation={...this.rations[0]};
 
-                    }
-                },
-                error => {
-                    console.log(error);
-                }
-            )
     }
 
     // 判断当前选中

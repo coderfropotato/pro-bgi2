@@ -11,26 +11,22 @@ export class TableSpecialTheadFilter implements PipeTransform {
     constructor(private globalService:GlobalService){}
 
     transform(value: any,thead:any): any {
-       if(thead==='splie_site'){
-           if(!value && value!=0) return this.globalService.trustStringHtml(`<span>NA</span>`);
+        if(!value && value!=0) return this.globalService.trustStringHtml(`<span>NA</span>`);
 
-           if(value.indexOf('-')!=-1){
+        if(thead==='splie_site'){
+            if(value.indexOf('-')!=-1){
                 let strArr = value.split('-');
                 let htmlstring = '';
                 strArr.forEach((v,index)=>{
+                    htmlstring+=`<span>${v}</span>`;
                     if(index!=strArr.length-1) htmlstring+='<br>'
-                    htmlstring+='<span></span>'
                 })
                 return this.globalService.trustStringHtml(htmlstring);
-           }else{
+            }else{
                 return this.globalService.trustStringHtml(`<span>${value}</span>`);
-           }
-       }else{
-           if(!value && value!=0){
-                return this.globalService.trustStringHtml(`<span>NA</span>`);
-           }else{
-                return this.globalService.trustStringHtml(`<span>${value}</span>`);
-           }
-       }
+            }
+        }else{
+            return this.globalService.trustStringHtml(`<span>${value}</span>`);
+        }
     }
 }

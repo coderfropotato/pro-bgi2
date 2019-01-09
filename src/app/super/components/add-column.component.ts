@@ -36,6 +36,8 @@ export class AddColumnComponent implements OnInit {
 	treeTempSelect:any[] = [];
 	public sortThead:any[] = [];
 
+	subscribtion:any = null;
+
 	config = config;
 
 	constructor(
@@ -47,17 +49,18 @@ export class AddColumnComponent implements OnInit {
         private notification:NzNotificationService,
 	){
 		let browserLang = this.storeService.getLang();
-        this.translate.use(browserLang);
-        // 每次进入路由重新获取增删列 并应用之前的选中状态
-        this.router.events.subscribe((event) => {
-			if (event instanceof NavigationEnd) {
-				(async ()=>{
-					await this.getAddThead();
-					this.applyCheckedStatus(); // 每次进路由 把当前选中的增删列的顺序保存到服务
-				})()
-				// this.thead = this.addColumnService.get();
-            }
-		});
+		this.translate.use(browserLang);
+		
+		// 每次进入路由重新获取增删列 并应用之前的选中状态
+        // this.subscribtion = this.router.events.subscribe((event) => {
+		// 	if (event instanceof NavigationEnd) {
+		// 		(async ()=>{
+		// 			await this.getAddThead();
+		// 			this.applyCheckedStatus(); // 每次进路由 把当前选中的增删列的顺序保存到服务
+		// 		})()
+		// 		// this.thead = this.addColumnService.get();
+        //     }
+		// });
 	}
 
 	ngOnInit() {
@@ -74,6 +77,10 @@ export class AddColumnComponent implements OnInit {
 		})()
 	}
 
+	ngOnDestory(){
+		this.subscribtion.unsubscribe();
+	}
+	
 	ngOnChanges(changes: SimpleChanges) {
 		if ('baseThead' in changes && !changes['baseThead'].firstChange && changes['baseThead'].currentValue.length) {
 			this.theadInBase = [];

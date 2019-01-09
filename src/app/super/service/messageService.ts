@@ -41,4 +41,6 @@ export class MessageService {
     getResize(){
         return this.windowResize.asObservable();
     }
+
+   
 }

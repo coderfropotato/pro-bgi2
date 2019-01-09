@@ -16,6 +16,7 @@ export class ToolsService {
     tableUrl:string = '';
     baseThead:object[] = [];  // 多组学要表头
     geneType:string = '';
+    mongoId:string = '';
 
     constructor() {}
 
@@ -25,6 +26,7 @@ export class ToolsService {
         this.tableUrl = '';
         this.geneType = '';
         this.baseThead = [];
+        this.mongoId = '';
     }
 
     showTools(total,entity){
@@ -35,6 +37,7 @@ export class ToolsService {
             this.geneCount = entity['others']['excludeGeneList']['checked'].length;
         }
         this.tableUrl = entity['url'];
+        this.mongoId = entity['mongoId'];
         this.tableEntity = entity['tableEntity'];
         this.tableEntity['reAnaly'] = true;
         this.tableEntity['checkStatus'] = entity['others']['checkStatus'];

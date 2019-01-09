@@ -144,8 +144,8 @@ export class ToolsComponent implements OnInit {
 	heatmapReSelectStand:string = '';
 	heatmapReGeneType:object[] = [];
 	heatmapReGeneTypeError:boolean = false;
-	heatmapReRelations:object= [];
-	heatmapReError:boolean = false;
+	heatmapReRelations:object[]= [];
+	heatmapReError:any = false;
 	doHeatmapRelationAjax:boolean = false;
 	heatmapReSelectRelation:any[] = [];;
 	heatmapReSelectGeneType:object[] = [];
@@ -483,7 +483,6 @@ export class ToolsComponent implements OnInit {
 					} else {
 						this.multiOmicsData.length = 0;
 					}
-					console.log(this.multiOmicsData)
 				},
 				(err) => {
 					this.multiOmicsData.length = 0;
@@ -1175,8 +1174,8 @@ export class ToolsComponent implements OnInit {
 				},
 				(err) => {
 					this.heatmapReError = 'error';
-					this.initHeattmapRelationsData();
-				}
+					this.initHeatmapRelationsData();
+				},
 				()=>{
 					this.doHeatmapRelationAjax = true;
 				}
@@ -1231,24 +1230,22 @@ export class ToolsComponent implements OnInit {
 	}
 
 	heatmapRelationConfirm(){
-		console.log(this.heatmapReSelectStand);
-		console.log(this.heatmapReSelectRelation);
-		console.log(this.heatmapReSelectGeneType);
-
 		this.isSubmitReanalysis = true;
-		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 		let entity = this.toolsService.get('tableEntity');
-		entity['relations'] = this.relativeNetSelect;
+		entity['relations'] = this.heatmapReSelectRelation;
+		entity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: "linkedNetwork",
-					needReanalysis: 2,
+					reanalysisType: "heatmaprelation",
+					needReanalysis: 1,
 					version: this.storeService.getStore('version'),
-					geType: this.toolsService.get('tableEntity')['geneType'],
+					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
-					...entity
+					...entity,
+					standardization: this.heatmapReSelectStand,
+					verticalDefault:this.heatmapReSelectGeneType
 				},
 				url: this.toolsService.get('tableUrl')
 			})
@@ -1256,30 +1253,24 @@ export class ToolsComponent implements OnInit {
 				(data) => {
 					if (data['status'] === '0') {
 						if(data['data'].length){
-							let href = `${window.location.href.split(
-								'report'
-							)[0]}report/reanalysis/re-relativeNet/${this.toolsService.get('geneType')}/${data[
-								'data'
-							][0]}/${this.storeService.getStore('version')}`;
-							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
+							this.notify.blank('tips：', '关联聚类重分析提交成功', {
+								nzStyle: { width: '200px' },
+							});
 						}else{
-							newWindow.close();
 							this.notify.blank('tips：', '重分析提交失败，请重试', {
 								nzStyle: { width: '200px' },
 							});
 						}
 					} else {
-						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
 							nzStyle: { width: '200px' },
 						});
 					}
 				},
 				(err) => {
-					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
 						nzStyle: { width: '200px' },
 					});

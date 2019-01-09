@@ -59,6 +59,7 @@ import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component'
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
 import { reRelationHeatmapComponent } from './pages/reanalysis/re-relationHeatmap.component';
 import { ReNetComponent } from './pages/reanalysis/re-net.component';
+import {reRelationNetComponent} from './pages/reanalysis/re-relationNet.component';
 import { ReLineComponent } from './pages/reanalysis/re-line.component';
 import { KaFunComponent } from './pages/reanalysis/re-kaFun.component';
 import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.component';
@@ -66,6 +67,7 @@ import { LayoutSwitchComponent } from './super/components/layout-switch.componen
 import { LoadingComponent } from './pages/reanalysis/loading.component';
 import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { GeneListVennComponent,GeneListVennPageComponent } from './pages/geneList/venn.component';
+import { BigTableCheckComponent } from './super/components/big-table-check.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -342,6 +344,15 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-linkedNetwork/:geneType/:tid/:version",
+                component: reRelationNetComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reRelationNet"
+                }
+            },
+            {
                 path: "re-line/:geneType/:tid/:version",
                 component: ReLineComponent,
                 canActivate: [SysDefendService],
@@ -495,6 +506,7 @@ export function createTranslateLoader(http: HttpClient) {
         reRelationHeatmapComponent,
         TooltipDirective,
         ReNetComponent,
+        reRelationNetComponent,
         ReLineComponent,
         KaFunComponent,
         RelativeSpliceComponent,
@@ -503,6 +515,7 @@ export function createTranslateLoader(http: HttpClient) {
         LoadingComponent,
         GeneListVennComponent,
         GeneListVennPageComponent,
+        BigTableCheckComponent,
         PromtComponent,
         TableSpecialTheadFilter
     ],
