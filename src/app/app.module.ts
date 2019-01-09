@@ -68,6 +68,7 @@ import { LoadingComponent } from './pages/reanalysis/loading.component';
 import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { GeneListVennComponent,GeneListVennPageComponent } from './pages/geneList/venn.component';
 import { BigTableCheckComponent } from './super/components/big-table-check.component';
+import { ReClassComponent } from './pages/reanalysis/re-class.component';
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -380,6 +381,15 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-class/:geneType/:tid/:version",
+                component: ReClassComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reClass"
+                }
+            },
+            {
                 path: "",
                 redirectTo: "index",
                 pathMatch: "full"
@@ -516,6 +526,7 @@ export function createTranslateLoader(http: HttpClient) {
         GeneListVennComponent,
         GeneListVennPageComponent,
         BigTableCheckComponent,
+        ReClassComponent,
         PromtComponent,
         TableSpecialTheadFilter
     ],
