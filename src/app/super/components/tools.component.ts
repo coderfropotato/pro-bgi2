@@ -1069,11 +1069,11 @@ export class ToolsComponent implements OnInit {
 
 	// 关联网路图
 	getrelativeNetParams() {
-		this.relativeNetData = this.copy(this.storeService.getStore('relations'));
+		this.relativeNetData = this.toolsService.get('tableEntity')['relations'];
 		this.relativeNetData.forEach((v,index)=>{
 			v['checked'] = index?false:true;
 		})
-		this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
+        this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
 	}
 
 	relativeNetClick(item){
