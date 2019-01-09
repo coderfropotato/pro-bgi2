@@ -10,6 +10,7 @@ export class AppComponent {
     constructor(private message: MessageService) {}
 
     ngOnInit() {
+        console.log('Rebuild:2019-01-09 16:57');
         fromEvent(window, "resize")
             .pipe(debounceTime(300))
             .subscribe(event => {
