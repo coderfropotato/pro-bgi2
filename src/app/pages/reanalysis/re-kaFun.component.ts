@@ -92,6 +92,7 @@ export class KaFunComponent implements OnInit {
     isHasMultiSelectFlag:boolean;   //是否有多选和单选
 
     isMultiSelect: boolean;
+    selectGeneCount:number = 0;
 
     constructor(
         private message: MessageService,
@@ -199,6 +200,10 @@ export class KaFunComponent implements OnInit {
 
     toggle(status){
         this.addColumnShow = status;
+    }
+
+    handleSelectGeneCountChange(selectGeneCount){
+        this.selectGeneCount = selectGeneCount;
     }
 
     // 表
@@ -343,9 +348,9 @@ export class KaFunComponent implements OnInit {
         // console.log(this.singleMultiSelect)
         // console.log(this.doubleMultiSelect)
     }
-    
-    
-    
+
+
+
     //切换单、多选change
 	multiSelectChange() {
         this.doubleMultiSelect.length = 0;
@@ -384,7 +389,7 @@ export class KaFunComponent implements OnInit {
         that.geneNum = data.geneCount; //选择基因数量
 
         that.isHasMultiSelectFlag = this.geneNum == 1?false:true;
-        
+
         if(data.statistic){
             that.k_statistic = {
                 degree:data.statistic.degree,
@@ -401,7 +406,7 @@ export class KaFunComponent implements OnInit {
                 k_baseThead.push(d.name)
             }
         });
-        
+
 
         //let k_baseThead = data.mThead;//["high", "middle", "low", "sum"]
         let k_dataRow = data.rows;
@@ -448,9 +453,9 @@ export class KaFunComponent implements OnInit {
             </style>
         </svg>`;
         t_chartID.innerHTML = str;
-        
+
         let sName = {};
-        
+
         let tempSvg = null;         //中间网格svg
         let tempSvg_xScale = null;  //中间网格X轴比例尺
         let tempSvg_yScale = null;  //中间网格y轴比例尺
@@ -462,7 +467,7 @@ export class KaFunComponent implements OnInit {
         let t_height = 20;  //上图例宽度
 
         //let s_width = k_dataRow.length>3?50:120;  //正方体宽高
-        
+
         let s_width = getWidth(k_dataRow.length);
 
 
@@ -479,7 +484,7 @@ export class KaFunComponent implements OnInit {
                 .attr('width', svg_width)
                 .attr('height', svg_height)
                 .on('click', function(d) {
-                    
+
                     that.updateKaFun();
                     // _self.leftSelect.length = 0;
                     // _self.upSelect.length = 0;
@@ -554,7 +559,7 @@ export class KaFunComponent implements OnInit {
                     }
                 )
             }
-            
+
 
         }
         drawTopTitle();//上侧标题
@@ -590,7 +595,7 @@ export class KaFunComponent implements OnInit {
                             svgTitle.remove();
                             drawTopTitle();
                         }
-                        
+
                     })
 				});
         }
@@ -599,7 +604,7 @@ export class KaFunComponent implements OnInit {
         function drawSvg(){
             let width = x_length;
             let height = y_length;
-    
+
             let svg1 = svg
                 .append('g')
                 .attr('transform', 'translate(' + left_name_length + ',' + top_length + ')')
@@ -607,7 +612,7 @@ export class KaFunComponent implements OnInit {
                 .attr('width', width)
                 .attr('height', height)
                 .attr('class', 'svg1');
-            
+
             let xScale = d3.scaleBand().domain(k_baseThead).range([ 0, width ]);
             let yScale = d3.scaleBand().domain(k_dataName).range([ 0, height ]);
 
@@ -815,7 +820,7 @@ export class KaFunComponent implements OnInit {
 
 
         function drawRightBottomLegend(){
-            
+
             let legendHeight = 120; //上侧图例高度
             let topLength = top_name + t_height+legendHeight+20;//20为上侧图例的title高度
 
@@ -829,7 +834,7 @@ export class KaFunComponent implements OnInit {
 
         }
 
-        function setBubble(r_legend){ 
+        function setBubble(r_legend){
             let data = k_dataCircle;
             let r_min = d3.min(data, function(d) {
                 return d.value;
@@ -902,7 +907,7 @@ export class KaFunComponent implements OnInit {
                         }else{
                             d3.select(this).attr("stroke","black").attr("stroke-width", 1.5).attr("stroke-opacity", 0.6);
                         }
-                        
+
                         selectName(that.doubleMultiSelect,d)
                     }else{//单选
                         //console.log(d)

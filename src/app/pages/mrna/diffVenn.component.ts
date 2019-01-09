@@ -135,6 +135,8 @@ export class DiffVennComponent implements OnInit {
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
 
+    selectGeneCount:number = 0;
+
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -164,7 +166,7 @@ export class DiffVennComponent implements OnInit {
 		this.first = true;
 		this.selectedData = [];
 		this.tableUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
-		
+
 		this.p_show = this.storeService.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
 		this.PossionDis = {
 			log2FC: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '',
@@ -274,7 +276,11 @@ export class DiffVennComponent implements OnInit {
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
-	}
+    }
+
+    handleSelectGeneCountChange(selectGeneCount){
+        this.selectGeneCount = selectGeneCount;
+    }
 
 	moduleDescChange(){
 		this.expandModuleDesc = !this.expandModuleDesc;

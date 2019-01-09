@@ -146,7 +146,9 @@ export class GeneListVennComponent implements OnInit {
 		tag:[],
 		setNameList:[],
 		gene:[]
-	};
+    };
+
+    selectGeneCount:number = 0;
 
 
 	constructor(
@@ -259,7 +261,11 @@ export class GeneListVennComponent implements OnInit {
 
 		})()
 
-	}
+    }
+
+    handleSelectGeneCountChange(selectGeneCount){
+        this.selectGeneCount = selectGeneCount;
+    }
 
 	moduleDescChange(){
 		this.expandModuleDesc = !this.expandModuleDesc;

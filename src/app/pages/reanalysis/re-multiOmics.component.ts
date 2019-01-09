@@ -82,6 +82,8 @@ export class ReMultiOmicsComponent implements OnInit {
     tid:string = null;
     version:string = null;
 
+    selectGeneCount:number = 0;
+
     // 图的设置
     constructor(
         private message: MessageService,
@@ -191,6 +193,11 @@ export class ReMultiOmicsComponent implements OnInit {
 			this.computedTableHeight();
 		}, 30);
     }
+
+    handleSelectGeneCountChange(selectGeneCount){
+        this.selectGeneCount = selectGeneCount;
+    }
+
     toggle(status){
         this.addColumnShow = status;
     }

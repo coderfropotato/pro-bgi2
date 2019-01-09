@@ -89,6 +89,8 @@ export class reRelationHeatmapComponent implements OnInit {
     geneType:string = '';
     version:string = null;
 
+    selectGeneCount:number = 0;
+
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -213,6 +215,10 @@ export class reRelationHeatmapComponent implements OnInit {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
+    }
+
+    handleSelectGeneCountChange(selectGeneCount){
+        this.selectGeneCount = selectGeneCount;
     }
 
     toggle(status){
