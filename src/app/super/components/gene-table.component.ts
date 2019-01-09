@@ -864,7 +864,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
     analysis() {
-        if (!this.checked.length && !(this.total - this.unChecked.length)) {
+        let count = this.checkStatus?(this.total - this.unChecked.length):this.checked.length;
+        if (!count) {
             this.notify.blank("tips：", "请选择需要分析的基因", {
                 nzStyle: { width: "200px" },
                 nzDuration: 2000
