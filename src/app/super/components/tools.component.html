@@ -261,7 +261,7 @@
                         <p *ngIf="!relativeNetData.length && doRelativeNetAjax " class="center">暂无参数</p>
                         <nz-alert class="mb6" *ngIf="relativeNetError || !relativeNetSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
                         <!-- 参数选择 -->
-                        <div class="tools-prams-content">
+                        <!-- <div class="tools-prams-content">
                             <ng-container *ngFor="let par of relativeNetSelect;index as i;">
                                 <nz-row>
                                     <nz-divider nzText="{{par['name']}} 参数" nzOrientation="left"></nz-divider>
@@ -296,7 +296,7 @@
                                     </nz-col>
                                 </nz-row>
                             </ng-container>
-                        </div>
+                        </div> -->
                     </div>
                     <nz-divider></nz-divider>
                     <div class="tool-params-button-group" *ngIf="relativeNetData.length">
@@ -320,7 +320,7 @@
                             <button (click)="handlerReRelationSelect(relation)" [class.active]="relation['checked']" *ngFor="let relation of heatmapReRelations;index as i;" nz-button nzType="default" nzSize="middle">{{relation['name']}}</button>
                         </div>
                         <nz-alert *ngIf="heatmapReError" nzShowIcon nzType="warning" nzMessage="请选择一个关系"></nz-alert>
-                        <div *ngIf="heatmapReSelectRelation.length">
+                        <!-- <div *ngIf="heatmapReSelectRelation.length">
                             <nz-row>
                                 <nz-col nzSpan="6"><span>min Score</span></nz-col>
                                 <nz-col nzSpan="10">
@@ -352,7 +352,7 @@
                                     </nz-row>
                                 </nz-col>
                             </nz-row>
-                        </div>
+                        </div> -->
 
                         <p *ngIf="heatmapReGeneType.length">基因分类</p>
                         <div *ngIf="heatmapReGeneType.length">
