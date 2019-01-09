@@ -174,7 +174,7 @@
                     <tbody>
                         <tr *ngFor="let d of dataSet" style="text-align: center;">
                             <!-- checkbox -->
-                            <td nzLeft="0px" style="min-width:60px;" nzShowCheckbox [(nzChecked)]="d.checked" (nzCheckedChange)="refreshStatus($event,d)"></td>
+                            <td nzLeft="0px" style="min-width:61px;" nzShowCheckbox [(nzChecked)]="d.checked" (nzCheckedChange)="refreshStatus($event,d)"></td>
                             <!-- 首列的二级头表格数据 -->
                             <td *ngFor="let two of (head[0].children.length?head[0].children:[head[0]]);index as i;trackBy:identity"
                                 [nzLeft]="colLeftConfig[i]"

@@ -786,7 +786,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof BigTableComponent
      */
     computedTheadWidth(head): object {
-        let defaultWidth =12;
+        let defaultWidth = 12;
         let widthConfig = [];
         let twoLevelHead = [];
         let totalWidth: string;
@@ -808,7 +808,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 widthConfig.push(singleWidth);
             }
         });
-        widthConfig.unshift(60);
+        widthConfig.unshift(61);
         let colLeftConfig: any[] = [];
         // 计算首列的left
         if (head[0]["children"].length) {
@@ -897,7 +897,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
         this.isSaveGeneList = true;
         this.delSelect.length = 0;
         this.openSelect = false;
-        
+
         this.getAllLabels();
     }
 
