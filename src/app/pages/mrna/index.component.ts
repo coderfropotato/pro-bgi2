@@ -9,6 +9,7 @@ import { MessageService } from "../../super/service/messageService";
 import { NgxSpinnerService } from "ngx-spinner";
 import config from "../../../config";
 import { routeAnimation } from "../../super/animation/animation";
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 
 // import {OuterDataBaseService} from './../../super/service/outerDataBaseService';
 
@@ -35,7 +36,8 @@ export class IndexComponent implements OnInit {
         private ajaxService: AjaxService,
         private storeService: StoreService,
         private ngxSpinnerService: NgxSpinnerService,
-        private addColumnService:AddColumnService
+        private addColumnService:AddColumnService,
+        private modalService:NzModalService
         // private outerDataBaseService:OuterDataBaseService
     ) {
         this.router.events.subscribe(event => {
@@ -59,7 +61,20 @@ export class IndexComponent implements OnInit {
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
                 }, 300);
-            } catch (error) {}
+            } catch (error) {
+                this.ngxSpinnerService.hide();
+                let tpl = this.modalService.error({
+                    nzTitle: '系统错误',
+                    nzContent: '缺少必要信息，请重新登录',
+                    nzClosable: false,
+                    nzOnCancel:()=>{
+                        tpl.destroy();
+                    },
+                    nzOnOk: () => {
+                        this.router.navigate([`/report/login`])
+                    }
+                  });
+            }
         })();
     }
 
@@ -87,7 +102,7 @@ export class IndexComponent implements OnInit {
                             }
 
                             this.storeService.setStore('LCTYPE','mrna');
-                            
+
                             //this.menuList = data["data"].menu_list;
                             this.menuList = [
                                 {
@@ -141,8 +156,10 @@ export class IndexComponent implements OnInit {
                                     ]
                                 }
                             ];
+                            resolve("success");
+                        }else{
+                            reject('error');
                         }
-                        resolve("success");
                     },
                     () => reject("error")
                 );
