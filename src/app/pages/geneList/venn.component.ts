@@ -1321,6 +1321,10 @@ export class GeneListVennComponent implements OnInit {
 					})
 					.style('fill', function(d) {
 						return d.color;
+					})
+					.on('click', function(d) {
+						var event = d3.event;
+							event.stopPropagation();
 					});
 
 				let tempyList = sortArr(arr, 'y_axis');
@@ -1334,7 +1338,11 @@ export class GeneListVennComponent implements OnInit {
 						.attr('width', d3_width + padding1.right)
 						.attr('height', d3_rectWidth)
 						.attr('opacity', 0.7)
-						.attr('fill', i % 2 == 0 ? '#EEE' : 'none');
+						.attr('fill', i % 2 == 0 ? '#EEE' : 'none')
+						.on('click', function(d) {
+							var event = d3.event;
+								event.stopPropagation();
+						});
 				}
 			}
 		}
@@ -1386,6 +1394,10 @@ export class GeneListVennComponent implements OnInit {
 				})
 				.style('fill', function(d) {
 					return d.color;
+				})
+				.on('click', function(d) {
+					var event = d3.event;
+						event.stopPropagation();
 				});
 		}
 
@@ -1512,6 +1524,10 @@ export class GeneListVennComponent implements OnInit {
 				})
 				.style('fill', function(d) {
 					return d.color;
+				})
+				.on('click', function(d) {
+					var event = d3.event;
+						event.stopPropagation();
 				});
 		}
 
