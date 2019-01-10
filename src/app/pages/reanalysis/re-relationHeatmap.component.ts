@@ -91,6 +91,8 @@ export class reRelationHeatmapComponent implements OnInit {
     version:string = null;
 
     selectGeneCount:number = 0;
+    defaultMartix:boolean = true;
+    computedScrollHeight:boolean = false;
 
     constructor(
         private message: MessageService,
@@ -167,7 +169,7 @@ export class reRelationHeatmapComponent implements OnInit {
             mongoId: null,
             addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-            matchAll: false,
+            // matchAll: false,
             matrix: false, //是否转化。矩阵为matrix
             relations: [], //关系组（简写，索引最后一个字段）
             sortValue: null,
@@ -194,7 +196,7 @@ export class reRelationHeatmapComponent implements OnInit {
             mongoId: null,
             addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-            matchAll: false,
+            // matchAll: false,
             matrix: false, //是否转化。矩阵为matrix
             relations: [], //关系组（简写，索引最后一个字段）
             sortValue: null,
@@ -354,7 +356,9 @@ export class reRelationHeatmapComponent implements OnInit {
 
     computedTableHeight() {
 		try {
+            let h = this.tableHeight;
             this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
     }
 
