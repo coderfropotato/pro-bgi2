@@ -135,7 +135,8 @@ export class DiffVennComponent implements OnInit {
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
 
-    selectGeneCount:number = 0;
+	selectGeneCount:number = 0;
+	computedScrollHeight:boolean = false;
 
 	constructor(
 		private message: MessageService,
@@ -419,9 +420,11 @@ export class DiffVennComponent implements OnInit {
 
 	computedTableHeight() {
 		try {
+            let h = this.tableHeight;
             this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
-	}
+    }
 
 	OnChange(value: string): void {
 		this.PossionDis['log2FC'] = value;

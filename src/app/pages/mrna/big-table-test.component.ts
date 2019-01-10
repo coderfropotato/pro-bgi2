@@ -11,6 +11,8 @@ export class BigTableTestComponent implements OnInit {
     entity:object = {};
     tableId:string = '';
     tableHeight:number = 0;
+    computedScrollHeight:boolean = false;
+    
     @ViewChild('wrap') wrap;
 
 
@@ -43,9 +45,10 @@ export class BigTableTestComponent implements OnInit {
 
     computedTableHeight() {
 		try {
-            this.tableHeight = this.wrap.nativeElement.offsetHeight - 24;
+            let h = this.tableHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
-	}
 
 
 }

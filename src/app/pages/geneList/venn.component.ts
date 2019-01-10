@@ -148,7 +148,8 @@ export class GeneListVennComponent implements OnInit {
 		gene:[]
     };
 
-    selectGeneCount:number = 0;
+	selectGeneCount:number = 0;
+	computedScrollHeight:boolean = false;
 
 
 	constructor(
@@ -633,9 +634,10 @@ export class GeneListVennComponent implements OnInit {
 
 	computedTableHeight() {
 		try {
+            let h = this.tableHeight;
             this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
-	}
 
 	//单、多选change
 	multiSelectChange() {

@@ -128,7 +128,9 @@ export class ExpressVennComponent implements OnInit {
 	upSelect: any[] = [];
 
 	addColumnShow:boolean = false;
-    showBackButton:boolean = false;
+	showBackButton:boolean = false;
+	computedScrollHeight:boolean = false;
+	
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -388,9 +390,11 @@ export class ExpressVennComponent implements OnInit {
 
 	computedTableHeight() {
 		try {
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
+            let h = this.tableHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
-	}
+    }
 
     onAfterChange(value: string): void{
         this.expression_threshold={

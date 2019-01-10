@@ -93,6 +93,7 @@ export class KaFunComponent implements OnInit {
 
     isMultiSelect: boolean;
     selectGeneCount:number = 0;
+    computedScrollHeight:boolean = false;
 
     constructor(
         private message: MessageService,
@@ -314,7 +315,9 @@ export class KaFunComponent implements OnInit {
 
     computedTableHeight() {
 		try {
+            let h = this.tableHeight;
             this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
     }
 

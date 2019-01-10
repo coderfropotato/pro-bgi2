@@ -82,6 +82,7 @@ export class ReMultiOmicsComponent implements OnInit {
 	version: string = null;
 
 	selectGeneCount: number = 0;
+	computedScrollHeight:boolean = false;
 
 	// 图的设置
 	constructor(
@@ -341,9 +342,11 @@ export class ReMultiOmicsComponent implements OnInit {
 
 	computedTableHeight() {
 		try {
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            let h = this.tableHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
-	}
+    }
 
 	// 把选中的柱子和箱线图中的柱子 数据合并成选中的数据
 	classifyChartSelect() {

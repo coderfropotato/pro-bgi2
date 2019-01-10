@@ -54,6 +54,7 @@ export class Layout1Component implements OnInit,AfterViewInit {
     show = false; // 是否显示颜色选择器
 
     allThead = [];
+    computedScrollHeight:boolean = false;
 
     constructor(
         private message: MessageService,
@@ -108,9 +109,11 @@ export class Layout1Component implements OnInit,AfterViewInit {
     }
 
     computedTableHeight() {
-        try {
-            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight;
-        } catch (error) {}
+		try {
+            let h = this.tableHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            if(this.tableHeight===h) this.computedScrollHeight = true;
+		} catch (error) {}
     }
 
     onSelectChange1() {
