@@ -104,6 +104,7 @@ export class reRelationNetComponent implements OnInit {
     version:string = null;
 
     selectGeneCount:number = 0;
+    resetCheckGraph:boolean;
 
     constructor(
         private message: MessageService,
@@ -170,6 +171,7 @@ export class reRelationNetComponent implements OnInit {
 
         // table
         this.first = true;
+        this.resetCheckGraph = true;
         this.applyOnceSearchParams = true;
         this.defaultUrl = `${config['javaPath']}/linkedNetwork/table`;
         this.defaultEntity = {
@@ -311,6 +313,7 @@ export class reRelationNetComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
         this.transformTable._clearFilterWithoutRequest();
+        this.resetCheckGraph = true;
         if(!this.first){
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];

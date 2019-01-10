@@ -74,6 +74,7 @@ export class reRelationHeatmapComponent implements OnInit {
 	extendEmitBaseThead: boolean;
 	baseThead: any[] = [];
     applyOnceSearchParams: boolean;
+    resetCheckGraph:boolean;
 
     tableHeight = 0;
     first = true;
@@ -155,9 +156,11 @@ export class reRelationHeatmapComponent implements OnInit {
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
+        this.resetCheckGraph = true;
         this.defaultUrl = `${config['javaPath']}/relationCluster/table`;
         this.defaultEntity = {
             LCID: sessionStorage.getItem('LCID'),
+            checkGraph:true,
             tid:this.tid,
             pageIndex: 1, //分页
             pageSize: 20,
@@ -255,6 +258,7 @@ export class reRelationHeatmapComponent implements OnInit {
             this.extendEntity['relations'] = relations;
             this.extendEntity['transform'] = true;
             this.extendEntity['matrix'] = true;
+            this.extendEntity['checkGraph'] = false;
             this.addColumn._clearThead();
 			this.extendEntity['addThead'] = [];
 			this.first = false;
@@ -268,7 +272,8 @@ export class reRelationHeatmapComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
 			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
 			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
-			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
+            this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
+            this.transformTable._setExtendParamsWithoutRequest( 'checkGraph', false );
             this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
             this.addColumn._clearThead();
 			// 每次checkStatusInParams状态变完  再去获取数据
@@ -296,12 +301,14 @@ export class reRelationHeatmapComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
 		// 清空表的筛选
-		this.transformTable._clearFilterWithoutRequest();
+        this.transformTable._clearFilterWithoutRequest();
+        this.resetCheckGraph = true;
         if(!this.first){
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['pageIndex'] = 1;
+            this.defaultEntity['checkGraph'] = true;
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
                     {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
@@ -312,6 +319,7 @@ export class reRelationHeatmapComponent implements OnInit {
             this.first = true;
         }else{
             this.transformTable._setParamsNoRequest('pageIndex',1);
+            this.transformTable._setParamsNoRequest('checkGraph',true);
             /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
             if(this.selectGeneList.length) {
                 this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
