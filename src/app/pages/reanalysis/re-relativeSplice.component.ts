@@ -149,7 +149,7 @@ export class RelativeSpliceComponent implements OnInit {
                     mongoId: null,
                     addThead: [], //扩展列
                     transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-                    matchAll: false,
+                    // matchAll: false,
                     matrix: false, //是否转化。矩阵为matrix
                     sortValue: null,
                     sortKey: null, //排序
@@ -377,7 +377,7 @@ export class RelativeSpliceComponent implements OnInit {
             d.selected = false;
         });
 
-        
+
 
         let x_value = [];
         let y_value = [];
@@ -442,7 +442,7 @@ export class RelativeSpliceComponent implements OnInit {
                     that.updateRelativeSplice();
                     // that.chartBackStatus();
                 },false);
-     
+
         let temp_add_width = 10;
         let temp_x_width = xAxis_length + left_ylength + temp_add_width;
         let temp_y_width = yAxis_length + bottom_xlength + temp_add_width;
@@ -452,9 +452,9 @@ export class RelativeSpliceComponent implements OnInit {
         drawRightBottomLegend();
         drawCenter();
         drawBottomLegend();
-    
+
         function draw_x_y_axis(){
-            
+
             svg1 = svg
                 .append('g')
                 .attr('transform', 'translate(' + left_title + ',' + top_title + ')')
@@ -470,7 +470,7 @@ export class RelativeSpliceComponent implements OnInit {
                 .domain([ tempSetting.y_axis.end , tempSetting.y_axis.start ])
                 .range([ 0 , yAxis_length ])
                 .nice().clamp(true);
-                
+
             let xAxis = d3.axisBottom(xScale).ticks(5);
             let yAxis = d3.axisLeft(yScale).ticks(5);
 
@@ -562,18 +562,18 @@ export class RelativeSpliceComponent implements OnInit {
             let ordinal = d3.scaleOrdinal()
             .domain(that.group_select)
             .range(temp_symbol_select);
-            
+
             r_legend_bottom.append("g")
             .attr("class", "legendOrdinal")
             .attr("transform", "translate(4,20)");
-            
+
             let legendOrdinal = d3.legendColor()
             .shape("path", circle)
             .labelOffset(5)
             .shapePadding(5)
             // .cellFilter(function(d){ return d.label !== "e" })
             .scale(ordinal);
-            
+
             r_legend_bottom.select(".legendOrdinal")
             .call(legendOrdinal);
         }
@@ -688,7 +688,7 @@ export class RelativeSpliceComponent implements OnInit {
                 .attr('class', 'utr')
                 .attr("height",bottom_UTR_CDS)
                 ;
-            
+
             let sum = tempSetting.utr_3.end - tempSetting.utr_5.start;
             let utr_5_scale = (tempSetting.utr_5.end-tempSetting.utr_5.start)/sum;
             let utr_3_scale = (tempSetting.utr_3.end-tempSetting.utr_3.start)/sum;
@@ -700,7 +700,7 @@ export class RelativeSpliceComponent implements OnInit {
             .attr('height',16)
             .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
             .attr('fill','black')
-        
+
             g_UTR.append('rect')
             .attr('class', 'MyRect')
             .attr('width',xAxis_length*cds_scale)
@@ -708,7 +708,7 @@ export class RelativeSpliceComponent implements OnInit {
             .attr('transform', 'translate(' + xAxis_length/5 + ',' + 5 + ')')
             .attr('fill','black')
             .attr('opacity',0.5)
-            
+
             g_UTR.append('rect')
             .attr('class', 'MyRect')
             .attr('width',xAxis_length*utr_3_scale)
@@ -735,7 +735,7 @@ export class RelativeSpliceComponent implements OnInit {
                 return 30;
             })
             .text("3'-UTR")
-            
+
         }
 
         function uniq(array){

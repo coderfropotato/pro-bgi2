@@ -210,7 +210,7 @@ export class GeneListVennComponent implements OnInit {
 				mongoId: null,
 				sortKey: null, //排序
 				sortValue: null,
-				matchAll: false,
+				// matchAll: false,
 				reAnaly: false,
 				matrix: false, //是否转化。矩阵为matrix
 				relations: [], //关系组（简写，索引最后一个字段）
@@ -240,7 +240,7 @@ export class GeneListVennComponent implements OnInit {
 				mongoId: null,
 				sortKey: null, //排序
 				sortValue: null,
-				matchAll: false,
+				// matchAll: false,
 				matrix: true, //是否转化。矩阵为matrix
 				relations: [], //关系组（简写，索引最后一个字段）
 				geneType: this.defaultGeneType, //基因类型gene和transcript

@@ -164,7 +164,7 @@ export class ReClassComponent implements OnInit {
             mongoId: null,
             addThead: [], //扩展列
             transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-            matchAll: false,
+            // matchAll: false,
             matrix: false, //是否转化。矩阵为matrix
             relations: [], //关系组（简写，索引最后一个字段）
             sortValue: null,
