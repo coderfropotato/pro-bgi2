@@ -48,10 +48,15 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() emitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
     @Output() emitBaseTheadChange:EventEmitter<any> = new EventEmitter();
     @Output() baseTheadChange:EventEmitter<any> = new EventEmitter();
+
     @Input() applyOnceSearchParams:boolean = false;
     // TODO 双向绑定applyOnceSearchParams 下次再次触发
     @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
+
     @Output() selectGeneCountChange:EventEmitter<any> = new EventEmitter();
+
+    @Input() resetCheckGraph:boolean = false; // true的时候会重置checkGraph为false
+    @Output() resetCheckGraphChange:EventEmitter<any> = new EventEmitter();
 
     count:number = 0; // 选中的基因个数
     mongoId:any = null;
@@ -168,7 +173,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
         if ("tableHeight" in change && change["tableHeight"]["currentValue"]) {
             this.computedTbody(change["tableHeight"]["currentValue"]);
         }
-
     }
 
     init() {
@@ -379,6 +383,11 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     if('diffThreshold' in this.tableEntity) this.tableEntity['diffThreshold'] = {};
                     this.applyOnceSearchParams = false;
                     this.applyOnceSearchParamsChange.emit(this.applyOnceSearchParams);
+                }
+                if(this.resetCheckGraph){
+                    if('checkGraph' in this.tableEntity) this.tableEntity['checkGraph'] = false;
+                    this.resetCheckGraph = false;
+                    this.resetCheckGraphChange.emit(this.resetCheckGraph);
                 }
             }
         );
