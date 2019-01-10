@@ -188,6 +188,7 @@ export class reRelationNetComponent implements OnInit {
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
+            checkGraph:true,
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
@@ -213,6 +214,7 @@ export class reRelationNetComponent implements OnInit {
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
+            checkGraph:true,
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
@@ -272,6 +274,7 @@ export class reRelationNetComponent implements OnInit {
             this.extendEntity['relations'] = relations;
             this.extendEntity['transform'] = true;
             this.extendEntity['matrix'] = true;
+            this.extendEntity['checkGraph'] = false;
             this.addColumn._clearThead();
 			this.extendEntity['addThead'] = [];
 			this.first = false;
@@ -285,7 +288,8 @@ export class reRelationNetComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
 			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
 			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
-			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
+            this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
+            this.transformTable._setExtendParamsWithoutRequest( 'checkGraph', false );
             this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
             this.addColumn._clearThead();
 			// 每次checkStatusInParams状态变完  再去获取数据
@@ -318,6 +322,7 @@ export class reRelationNetComponent implements OnInit {
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
+            this.defaultEntity['checkGraph'] = true;
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
                     {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],"valueTwo":null}
@@ -327,6 +332,7 @@ export class reRelationNetComponent implements OnInit {
             }
             this.first = true;
         }else{
+            this.transformTable._setParamsNoRequest('checkGraph',true);
             if(this.selectGeneList.length) {
                 this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],null);
             }else{
