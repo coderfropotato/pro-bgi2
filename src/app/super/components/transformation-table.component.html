@@ -11,6 +11,7 @@
             [tableId]="defaultTableId"
             [defaultChecked]="defaultTableDefaultChecked"
             [tableHeight]="tableHeight"
+            [tableType]="defaultTableType"
             [(emitBaseThead)]="defaultEmitBaseThead"
             (emitBaseTheadChange)="handlerDefaultEmitChange($event)"
             (baseTheadChange)="handlerDefaultBaseTheadChange($event)"
@@ -18,6 +19,9 @@
             [(resetCheckGraph)]="resetCheckGraph"
             (resetCheckGraphChange)="handleResetCheckGraphChange($event)"
             (selectGeneCountChange)="handleSelectGeneCountChange($event)"
+            [defaultMartix]="defaultMartix"
+            [(computedScrollHeight)]="computedScrollHeight"
+            (computedScrollHeightChange)="handlerComputedScrollHeightChange($event)"
         ></app-geneTable>
     </div>
     <div *ngIf="!isFirst" id="extend-gene-table">
@@ -36,6 +40,8 @@
             [(applyOnceSearchParams)]="applyOnceSearchParams"
             (applyOnceSearchParamsChange)="handlerApplyOnceSearchParamsChange($event)"
             (selectGeneCountChange)="handleSelectGeneCountChange($event)"
+            [(computedScrollHeight)]="computedScrollHeight"
+            (computedScrollHeightChange)="handlerComputedScrollHeightChange($event)"
         ></app-geneTable>
     </div>
 </div>

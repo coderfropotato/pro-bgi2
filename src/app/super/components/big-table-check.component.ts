@@ -42,6 +42,9 @@ export class BigTableCheckComponent implements OnInit {
     @Output() applyOnceSearchParamsChange: EventEmitter<any> = new EventEmitter();
     @Output() checkedChange:EventEmitter<any> = new EventEmitter();
 
+	@Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
+    @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
+
 	@ViewChildren('child') children;
 	tableEntity: object = {};
 
@@ -104,6 +107,7 @@ export class BigTableCheckComponent implements OnInit {
 
 	isErrorDelete: boolean = false;
 	isFirst = true;
+	computedTimer:null;
 
 	constructor(
 		private translate: TranslateService,
@@ -130,6 +134,15 @@ export class BigTableCheckComponent implements OnInit {
 		if ('tableHeight' in change && change['tableHeight']['currentValue']) {
 			this.computedTbody(change['tableHeight']['currentValue']);
 		}
+
+		if("computedScrollHeight" in change && change["computedScrollHeight"] && !change['computedScrollHeight'].firstChange){
+            if(this.computedTimer) clearTimeout(this.computedTimer);
+            this.computedTbody(this.tableHeight);
+            this.computedTimer = setTimeout(()=>{
+                this.computedScrollHeight = false;
+                this.computedScrollHeightChange.emit(this.computedScrollHeight);
+            },30)
+        }
 	}
 
 	init() {
@@ -1000,11 +1013,12 @@ export class BigTableCheckComponent implements OnInit {
 							searchType
 						);
 
-						this.checkStatus = this.defaultChecked;
+						// 不发请求不清空选中状态
+						/*this.checkStatus = this.defaultChecked;
 						this.checkedMap = {};
 						this.unCheckedMap = {};
 						this.checked = [];
-						this.unChecked = [];
+						this.unChecked = [];*/
 
 						this.classifySearchCondition();
 					}

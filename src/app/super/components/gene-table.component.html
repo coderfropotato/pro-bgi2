@@ -1,4 +1,4 @@
-<div #geneTable class="gene-table-component" [id]="tableId">
+<div #geneTable class="gene-table-component genetable" [id]="tableId">
     <nz-spin [nzSpinning]="isLoading" nzTip='Loading...'>
         <!-- demo -->
         <!-- <button nz-button nzType="default" (click)="sort('email','descend')">{{'sortEmail' | translate}}</button> -->
@@ -98,13 +98,17 @@
             <div #tableFilter class="table-filter">
                 <div class="table-top" *ngIf="rootHtmlString.length && !error">
                     <span class="filter-head">{{'rootFilterTitle'| translate}}：</span>
-                    <span class="filter-item" (click)="deleteRootFilterItem(item)" *ngFor="let item of rootHtmlString"
-                        [innerHTML]="item['html']"></span>
+                    <span class="filter-item" *ngFor="let item of rootHtmlString">
+                        <em [innerHTML]="item['html']"></em>
+                        <i class="anticon anticon-close-circle" (click)="deleteRootFilterItem(item)"></i>
+                    </span>
                 </div>
                 <div class="table-top" *ngIf="filterHtmlString.length && !error">
                     <span class="filter-head">{{'filterTitle' | translate}}：</span>
-                    <span class="filter-item" (click)="deleteFilterItem(item)" *ngFor="let item of filterHtmlString"
-                        [innerHTML]="item['html']"></span>
+                    <span class="filter-item" *ngFor="let item of filterHtmlString">
+                        <em [innerHTML]="item['html']"></em>
+                        <i class="anticon anticon-close-circle" (click)="deleteFilterItem(item)"></i>
+                    </span>
                 </div>
                 <!-- 交集 interSearchConditionList -->
                 <!-- <div class="table-top" *ngIf="interConditionHtmlString.length">

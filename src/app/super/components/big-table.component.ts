@@ -39,6 +39,10 @@ export class BigTableComponent implements OnInit {
     @Input() applyOnceSearchParams:boolean = false;
     // TODO 双向绑定applyOnceSearchParams 下次再次触发
     @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
+    
+    @Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
+    @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
+
 
 
     @ViewChildren("child") children;
@@ -92,6 +96,7 @@ export class BigTableComponent implements OnInit {
     rootHtmlString: object[] = [];
 
     isErrorDelete:boolean = false;
+    computedTimer = null;
 
     constructor(
         private translate: TranslateService,
@@ -117,6 +122,15 @@ export class BigTableComponent implements OnInit {
 
         if ("tableHeight" in change && change["tableHeight"]["currentValue"]) {
             this.computedTbody(change["tableHeight"]["currentValue"]);
+        }
+
+        if("computedScrollHeight" in change && change["computedScrollHeight"] && !change['computedScrollHeight'].firstChange){
+            if(this.computedTimer) clearTimeout(this.computedTimer);
+            this.computedTbody(this.tableHeight);
+            this.computedTimer = setTimeout(()=>{
+                this.computedScrollHeight = false;
+                this.computedScrollHeightChange.emit(this.computedScrollHeight);
+            },30)
         }
 
     }

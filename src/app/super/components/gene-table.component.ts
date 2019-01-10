@@ -48,6 +48,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() emitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
     @Output() emitBaseTheadChange:EventEmitter<any> = new EventEmitter();
     @Output() baseTheadChange:EventEmitter<any> = new EventEmitter();
+    @Input() defaultMartix:boolean = false;  // 是否默认是矩阵表  针对关联聚类/关联网络图  默认矩阵表 表格转换的默认表是矩阵 会把默认表加上mongoId
 
     @Input() applyOnceSearchParams:boolean = false;
     // TODO 双向绑定applyOnceSearchParams 下次再次触发
@@ -57,6 +58,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
     @Input() resetCheckGraph:boolean = false; // true的时候会重置checkGraph为false
     @Output() resetCheckGraphChange:EventEmitter<any> = new EventEmitter();
+
+    @Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
+    @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
 
     count:number = 0; // 选中的基因个数
     mongoId:any = null;
@@ -141,6 +145,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
     delSelect:any[] = [];
     textareaMaxLen:number = 100;
 
+    computedTimer = null;
+
     constructor(
         private translate: TranslateService,
         private globalService: GlobalService,
@@ -165,6 +171,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
     // 页面加载完成的时候会把算好的 tableHeight传进来，触发changes 然后组件内部计算表格滚动区域的高度；
     ngOnChanges(change: SimpleChanges) {
+
         if(!("tableHeight" in change) && !this.tableHeight) {
             // 不传高度默认显示十条数据的高度 默认滚动高度388px
             this.scroll["y"] = "388px";
@@ -172,6 +179,15 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
         if ("tableHeight" in change && change["tableHeight"]["currentValue"]) {
             this.computedTbody(change["tableHeight"]["currentValue"]);
+        }
+
+        if("computedScrollHeight" in change && change["computedScrollHeight"] && !change['computedScrollHeight'].firstChange){
+            if(this.computedTimer) clearTimeout(this.computedTimer);
+            this.computedTbody(this.tableHeight);
+            this.computedTimer = setTimeout(()=>{
+                this.computedScrollHeight = false;
+                this.computedScrollHeightChange.emit(this.computedScrollHeight);
+            },30)
         }
     }
 
@@ -252,6 +268,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
         // 如果是转换表把上次的mongoid 放在下一次的参数里面
         if(this.tableType==='transform') this.tableEntity['mongoId'] = this.mongoId;
+        // 如果默认表是矩阵表 需要一直把mongoId放在请求参数里
+        if(this.defaultMartix) this.tableEntity['mongoId'] = this.mongoId;
         this.ajaxService.getDeferData(ajaxConfig).subscribe(
             (responseData: any) => {
                 // 如果需要保存基因集合id 并且 返回值有id这个key （针对转换表) 就保存下来
@@ -260,9 +278,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     if(this.tableType === 'transform'){
                         this.tableEntity['transform'] = false;
                         this.tableEntity['matrix'] = true;
-                        this.mongoId = responseData['data']['mongoId'];
                         // if(this.isFirst) this.applyOnceBeforeStatusThenReset();
                     }
+                    if('mongoId' in responseData['data']) this.mongoId = responseData['data']['mongoId'];
+
                     if (!responseData.data["rows"].length) {
                         this.total = 0;
                         this.error = "nodata";
@@ -353,6 +372,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                             this.tableEntity['searchList'].forEach(v=>{
                                 this._filterWithoutRequest(v['filterName'],v['filterNamezh'],v['searchType'],v['filterType'],v['valueOne'],v['valueTwo'])
                             })
+                            this.classifySearchCondition();
                             this.isErrorDelete = false;
                         },30)
                     }
@@ -389,6 +409,16 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     this.resetCheckGraph = false;
                     this.resetCheckGraphChange.emit(this.resetCheckGraph);
                 }
+
+                // 针对返回默认表的时候  图上如果有需要筛选的条件  就需要默认表加载完成以后初始化表上的筛选
+                setTimeout(()=>{
+                    if(this.tableEntity['searchList'].length){
+                        this.tableEntity['searchList'].forEach(v=>{
+                            this._filterWithoutRequest(v['filterName'],v['filterNamezh'],v['searchType'],v['filterType'],v['valueOne'],v['valueTwo']);
+                        })
+                        this.classifySearchCondition();
+                    }
+                },100)
             }
         );
     }
@@ -1194,34 +1224,36 @@ export class GeneTableComponent implements OnInit, OnChanges {
          手动调用本组件的 recive方法  模拟子组件发射的方法
          */
         // 没有打开筛选就打开
-        if (!this.beginFilterStatus) this.beginFilterStatus = true;
-        // 待筛选面板渲染完后找到匹配的筛选面板传数据
-        console.log(this.children._results.length);
-        if(this.children._results.length){
-            setTimeout(() => {
-                this.children._results.forEach(val => {
-                    if (val.pid === this.tableId && val.filterName === filterName) {
-                        val._outerUpdate(
-                            filterName,
-                            filterNamezh,
-                            filterType,
-                            filterValueOne,
-                            filterValueTwo,
-                            searchType
-                            // crossUnion
-                        );
-
-                        this.checkStatus = this.defaultChecked;
-                        this.checkedMap = {};
-                        this.unCheckedMap = {};
-                        this.checked = [];
-                        this.unChecked = [];
-
-                        this.classifySearchCondition();
-                    }
-                });
-            }, 30);
+        if (!this.beginFilterStatus) {
+            this.beginFilterStatus = true;
         }
+        setTimeout(()=>{
+            // 待筛选面板渲染完后找到匹配的筛选面板传数据
+            if(this.children._results.length){
+                    this.children._results.forEach(val => {
+                        if (val.pid === this.tableId && val.filterName === filterName) {
+                            val._outerUpdate(
+                                filterName,
+                                filterNamezh,
+                                filterType,
+                                filterValueOne,
+                                filterValueTwo,
+                                searchType
+                                // crossUnion
+                            );
+                                
+                            // 不发请求不清空选中状态
+                            /*this.checkStatus = this.defaultChecked;
+                            this.checkedMap = {};
+                            this.unCheckedMap = {};
+                            this.checked = [];
+                            this.unChecked = [];*/
+    
+                            this.classifySearchCondition();
+                        }
+                    });
+            }
+        },30)
     }
 
     /**

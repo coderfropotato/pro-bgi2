@@ -51,6 +51,12 @@ export class TransformationTableComponent implements OnInit {
     @Output() extendBaseTheadChange:EventEmitter<any> = new EventEmitter();
     @Output() selectGeneCountChange:EventEmitter<any> = new EventEmitter();
 
+    @Input() defaultTableType:string = 'common';
+    @Input() defaultMartix:boolean = false;
+
+    @Input() computedScrollHeight:boolean = false;
+    @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
+
     @ViewChild("defaultTable") defaultTable;
     @ViewChild("extendTable") extendTable;
 
@@ -103,6 +109,10 @@ export class TransformationTableComponent implements OnInit {
 
     handleSelectGeneCountChange(selectGeneCount){
         this.selectGeneCountChange.emit(selectGeneCount);
+    }
+
+    handlerComputedScrollHeightChange(status){
+        this.computedScrollHeightChange.emit(status);
     }
 
     /**
