@@ -107,7 +107,7 @@ export class BigTableCheckComponent implements OnInit {
 
 	isErrorDelete: boolean = false;
 	isFirst = true;
-	computedTimer:null;
+	computedTimer = null;
 
 	constructor(
 		private translate: TranslateService,

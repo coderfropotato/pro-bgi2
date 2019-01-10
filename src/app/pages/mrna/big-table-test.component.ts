@@ -46,9 +46,10 @@ export class BigTableTestComponent implements OnInit {
     computedTableHeight() {
 		try {
             let h = this.tableHeight;
-            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            this.tableHeight = this.tableHeight - 24;
             if(this.tableHeight===h) this.computedScrollHeight = true;
-		} catch (error) {}
+        } catch (error) {}
+    }
 
 
 }
