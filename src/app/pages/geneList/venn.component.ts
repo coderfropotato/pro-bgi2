@@ -638,6 +638,7 @@ export class GeneListVennComponent implements OnInit {
             this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
             if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
+	}
 
 	//单、多选change
 	multiSelectChange() {
