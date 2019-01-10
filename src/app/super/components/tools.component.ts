@@ -149,7 +149,7 @@ export class ToolsComponent implements OnInit {
 	doHeatmapRelationAjax:boolean = false;
 	heatmapReSelectRelation:any[] = [];;
 	heatmapReSelectGeneType:object[] = [];
-	
+
 	// 当前选择的重分析类型
 	selectType: string = '';
 	childVisible: boolean = false;
@@ -241,7 +241,7 @@ export class ToolsComponent implements OnInit {
 		this.heatmapReSelectRelation = [];
 		this.heatmapReError = false;
 		this.doHeatmapRelationAjax = false;
-	
+
 		// 页面参数
 		this.selectType = '';
 		this.childVisible = false;
@@ -362,8 +362,8 @@ export class ToolsComponent implements OnInit {
 							this.expressSelect = [ this.expressData[0] ];
 						}
 						this.expressUpload = res['exp_user'];
-						 
-						
+
+
 						this.diffData = res['diff'].map((val) => {
 							val['checked'] = false;
 							return val
@@ -387,7 +387,7 @@ export class ToolsComponent implements OnInit {
 							this.customData[0]['checked'] = true;
 							this.customSelect = [this.customData[0]];
 						}
-						
+
 						this.standList = res['standardization'];
 						this.stand = this.standList[0];
 					}
@@ -407,6 +407,8 @@ export class ToolsComponent implements OnInit {
 		// 	temp[val['category']] = val['name'];
 		// 	return temp;
 		// });
+        let tableEntity = this.toolsService.get('tableEntity');
+        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
 
 		this.ajaxService
 			.getDeferData({
@@ -417,7 +419,7 @@ export class ToolsComponent implements OnInit {
 					// chooseType: [ this.switchType(type) ],
 					chooseList: this[`${type}Select`],
 					verticalDefault: this.selectGeneType,
-					...this.toolsService.get('tableEntity'),
+					...tableEntity,
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
 					version: this.storeService.getStore('version'),
@@ -509,7 +511,9 @@ export class ToolsComponent implements OnInit {
 
 	multiOmicsConfirm(type) {
 		this.isSubmitReanalysis = true;
-		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+        let tableEntity = this.toolsService.get('tableEntity');
+        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -517,7 +521,7 @@ export class ToolsComponent implements OnInit {
 					reanalysisType: type,
 					needReanalysis: 2,
 					classInfo: this.multiOmicsSelect,
-					...this.toolsService.get('tableEntity')
+					...tableEntity
 				},
 				url: this.toolsService.get('tableUrl')
 			})
@@ -667,7 +671,6 @@ export class ToolsComponent implements OnInit {
 		}
 
 		this.kaFunGroupError = !this.kaFunGroupData.length;
-		console.log(this.kaFunGroupSelect);
 	}
 
 	onkaFunChange(value:any):void{
@@ -682,7 +685,9 @@ export class ToolsComponent implements OnInit {
 			return;
 		}
 		this.isSubmitReanalysis = true;
-		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+        let tableEntity = this.toolsService.get('tableEntity');
+        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -695,7 +700,7 @@ export class ToolsComponent implements OnInit {
 					statisticData:this.kaFunDataName,
 					statisticMethod:this.kaFunStatisticsName,
 					classification: this.kaFunGroupSelect,
-					...this.toolsService.get('tableEntity')
+					...tableEntity
 				},
 				url: this.toolsService.get('tableUrl')
 			})
@@ -865,6 +870,7 @@ export class ToolsComponent implements OnInit {
 		// });
 
         let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -917,7 +923,10 @@ export class ToolsComponent implements OnInit {
 	//可变剪切提交
 	relativeSpliceConfirm(){
 		this.isSubmitReanalysis = true;
-		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+        let tableEntity = this.toolsService.get('tableEntity');
+        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
+
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -927,7 +936,7 @@ export class ToolsComponent implements OnInit {
 					version: this.storeService.getStore('version'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
-					...this.toolsService.get('tableEntity')
+					...tableEntity
 				},
 				url: this.toolsService.get('tableUrl')
 			})
@@ -1000,7 +1009,10 @@ export class ToolsComponent implements OnInit {
 
 	netConfirm(){
 		this.isSubmitReanalysis = true;
-		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+        let tableEntity = this.toolsService.get('tableEntity');
+        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
+
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -1011,7 +1023,7 @@ export class ToolsComponent implements OnInit {
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
 					netParams:this.netSelect.map(v=>{v['limit'] = false; return v;}),
-					...this.toolsService.get('tableEntity')
+					...tableEntity
 				},
 				url: this.toolsService.get('tableUrl')
 			})
@@ -1056,11 +1068,11 @@ export class ToolsComponent implements OnInit {
 
 	// 关联网路图
 	getrelativeNetParams() {
-		this.relativeNetData = this.copy(this.storeService.getStore('relations'));
+		this.relativeNetData = this.toolsService.get('tableEntity')['relations'];
 		this.relativeNetData.forEach((v,index)=>{
 			v['checked'] = index?false:true;
 		})
-		this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
+        this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
 	}
 
 	relativeNetClick(item){
@@ -1086,7 +1098,8 @@ export class ToolsComponent implements OnInit {
 		this.isSubmitReanalysis = true;
 		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 		let entity = this.toolsService.get('tableEntity');
-		entity['relations'] = this.relativeNetSelect;
+        entity['relations'] = this.relativeNetSelect;
+        entity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -1181,7 +1194,7 @@ export class ToolsComponent implements OnInit {
 				}
 			);
 	}
-	
+
 
 	initHeatmapRelationsData(){
 		this.heatmapReStand.length = 0;
@@ -1232,7 +1245,7 @@ export class ToolsComponent implements OnInit {
 	heatmapRelationConfirm(){
 		this.isSubmitReanalysis = true;
 		let entity = this.toolsService.get('tableEntity');
-		entity['relations'] = this.heatmapReSelectRelation;
+        entity['relations'] = this.heatmapReSelectRelation;
 		entity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({

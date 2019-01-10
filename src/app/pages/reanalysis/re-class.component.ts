@@ -14,13 +14,13 @@ declare const d4:any;
 declare const $: any;
 
 @Component({
-  selector: 'app-re-relationHeatmap',
-  templateUrl: './re-relationHeatmap.component.html',
+  selector: 'app-re-class',
+  templateUrl: './re-class.component.html',
   styles: []
 })
+export class ReClassComponent implements OnInit {
 
-export class reRelationHeatmapComponent implements OnInit {
-    @ViewChild('relationClusterChart') relationClusterChart;
+    @ViewChild('clusterChart') clusterChart;
     @ViewChild('left') left;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
@@ -74,11 +74,10 @@ export class reRelationHeatmapComponent implements OnInit {
 	extendEmitBaseThead: boolean;
 	baseThead: any[] = [];
     applyOnceSearchParams: boolean;
-    resetCheckGraph:boolean;
 
     tableHeight = 0;
     first = true;
-    switch:string = 'right';
+    switch = 'right';
 
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
@@ -118,7 +117,7 @@ export class reRelationHeatmapComponent implements OnInit {
 
         this.routes.paramMap.subscribe((params)=>{
             this.tid = params['params']['tid'];
-            // this.tid = 'b3f7ff4d8c1e4e119d8c8c9ffa195ada';
+            this.tid = '20783e1576b84867aee1a63e22716fed';
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
             this.storeService.setTid(this.tid);
@@ -127,15 +126,15 @@ export class reRelationHeatmapComponent implements OnInit {
 
     ngOnInit() {
         // chart
-        this.colors = ["#0070c0", "#ff0000"];
+        this.colors = ["#0070c0", "#ffffff", "#ff0000"];
         this.gaugeColors=this.storeService.getColors();
 
-        this.defaultSetUrl=`${config['javaPath']}/relationCluster/defaultSet`;
+        this.defaultSetUrl=`${config['javaPath']}/cluster/defaultSet`;
         this.defaultSetEntity={
             "tid": this.tid
         }
 
-        this.setDataUrl=`${config['javaPath']}/relationCluster/classification`;
+        this.setDataUrl=`${config['javaPath']}/cluster/classification`;
         this.setDataEntity={
             "geneType": this.geneType,
             "LCID": this.storeService.getStore('LCID'),
@@ -143,7 +142,7 @@ export class reRelationHeatmapComponent implements OnInit {
             "genome": this.storeService.getStore('genome')
         }
 
-        this.chartUrl=`${config['javaPath']}/relationCluster/heatmapGraph`;
+        this.chartUrl=`${config['javaPath']}/cluster/heatmapGraph`;
         this.chartEntity = {
             "LCID": this.storeService.getStore('LCID'),
             "tid": this.tid,
@@ -156,11 +155,9 @@ export class reRelationHeatmapComponent implements OnInit {
         // table
         this.first = true;
         this.applyOnceSearchParams = true;
-        this.resetCheckGraph = true;
-        this.defaultUrl = `${config['javaPath']}/relationCluster/table`;
+        this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
         this.defaultEntity = {
             LCID: sessionStorage.getItem('LCID'),
-            checkGraph:true,
             tid:this.tid,
             pageIndex: 1, //分页
             pageSize: 20,
@@ -185,7 +182,7 @@ export class reRelationHeatmapComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/relationCluster/table`;
+        this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
         this.extendEntity = {
             LCID: sessionStorage.getItem('LCID'),
             tid:this.tid,
@@ -199,7 +196,6 @@ export class reRelationHeatmapComponent implements OnInit {
             relations: [], //关系组（简写，索引最后一个字段）
             sortValue: null,
             sortKey: null, //排序
-            checkGraph:true,
             reAnaly: false,
             verticalClassification:this.verticalClass,
             geneType: this.geneType, //基因类型gene和transcript
@@ -258,7 +254,6 @@ export class reRelationHeatmapComponent implements OnInit {
             this.extendEntity['relations'] = relations;
             this.extendEntity['transform'] = true;
             this.extendEntity['matrix'] = true;
-            this.extendEntity['checkGraph'] = false;
             this.addColumn._clearThead();
 			this.extendEntity['addThead'] = [];
 			this.first = false;
@@ -272,8 +267,7 @@ export class reRelationHeatmapComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
 			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
 			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
-            this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
-            this.transformTable._setExtendParamsWithoutRequest( 'checkGraph', false );
+			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
             this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
             this.addColumn._clearThead();
 			// 每次checkStatusInParams状态变完  再去获取数据
@@ -301,14 +295,12 @@ export class reRelationHeatmapComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
 		// 清空表的筛选
-        this.transformTable._clearFilterWithoutRequest();
-        this.resetCheckGraph = true;
+		this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['pageIndex'] = 1;
-            this.defaultEntity['checkGraph'] = true;
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
                     {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
@@ -319,7 +311,6 @@ export class reRelationHeatmapComponent implements OnInit {
             this.first = true;
         }else{
             this.transformTable._setParamsNoRequest('pageIndex',1);
-            this.transformTable._setParamsNoRequest('checkGraph',true);
             /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
             if(this.selectGeneList.length) {
                 this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
@@ -347,7 +338,7 @@ export class reRelationHeatmapComponent implements OnInit {
 	switchChange(status) {
         this.switch = status;
         setTimeout(()=>{
-            this.relationClusterChart.scrollHeight();
+            this.clusterChart.scrollHeight();
             this.computedTableHeight();
         },320)
     }
@@ -381,7 +372,6 @@ export class reRelationHeatmapComponent implements OnInit {
         this.chartEntity['isHorizontal']=this.isCluster;
 
         this.chartEntity['verticalClassification']=data['verticalDefault'];
-        this.chartEntity['horizontalClassification']=data['horizontalDefault'];
 
         this.defaultSetData=data;
         this.defaultEmitBaseThead = true;
@@ -392,7 +382,7 @@ export class reRelationHeatmapComponent implements OnInit {
     //设置 确定
     setConfirm(data){
         this.setChartSetEntity(data);
-        this.relationClusterChart.reGetData();
+        this.clusterChart.reGetData();
 
         this.chartBackStatus();
     }
@@ -421,11 +411,20 @@ export class reRelationHeatmapComponent implements OnInit {
     drawChart(data) {
         let that =this;
 
-        let legendData = [data.min,data.max];
+        let legendData = [];
+        let heatmapData = data.heatmaps;
+        let dataLength = heatmapData.length;
+
+        for (let i = 0; i < dataLength; i++) {
+            let heatmapLength = heatmapData[i].heatmap.length;
+            for (let j = 0; j < heatmapLength; j++) {
+                legendData.push(heatmapData[i].heatmap[j].y);
+            }
+        }
 
         let config:object={
             chart: {
-                title: "关联聚类热图",
+                title: "差异基因表达量聚类热图",
                 dblclick: function(event,title) {
                     let text = title.firstChild.nodeValue;
                     that.promptService.open(text,(data)=>{
@@ -442,7 +441,7 @@ export class reRelationHeatmapComponent implements OnInit {
                     titleObj.attr("fill", "#333");
                     titleObj.select("title").remove();
                 },
-                el: "#relationClusterChartDiv",
+                el: "#clusterChartDiv",
                 type: "complexCluster",
                 data: data,
                 colors: that.colors,
@@ -466,7 +465,6 @@ export class reRelationHeatmapComponent implements OnInit {
                 },
                 top: {
                     show: that.isCluster,
-                    isBlockClick:true
                     // simple:{
                     //     tooltip:function(d){
                     //         return `top name:${d.name}`;
@@ -483,8 +481,24 @@ export class reRelationHeatmapComponent implements OnInit {
                 }
             },
             axis: {
-                x:{
-                    type:that.yName
+                x: {
+                    // rotate: 30,
+                    dblclick: function(event,title) {
+                        let text = title.firstChild.nodeValue;
+                        that.promptService.open(text,(data)=>{
+                            title.textContent = data;
+                        })
+                    },
+                    mouseover: function(event, title) {
+                        title
+                        .attr("fill", "blue")
+                        .append("title")
+                        .text("双击修改");
+                    },
+                    mouseout: function(event, title) {
+                        title.attr("fill", "#333");
+                        title.select("title").remove();
+                    }
                 },
                 y: {
                     type:that.yName  //hidden,id,symbol
@@ -492,10 +506,13 @@ export class reRelationHeatmapComponent implements OnInit {
             },
             legend: {
                 show: true,
+                type: "gradient",
+                min: that.domainRange[0],
+                max: that.domainRange[1],
                 data: legendData,
                 position: "right",
                 click: (d, i) => {
-                    this.color=d3.select(d).attr('fill');
+                    this.color=d;
                     this.legendIndex = i;
                     this.isShowColorPanel = true;
                 },
@@ -522,12 +539,13 @@ export class reRelationHeatmapComponent implements OnInit {
     colorChange(curColor) {
         this.color = curColor;
         this.colors.splice(this.legendIndex, 1, curColor);
-        this.relationClusterChart.redraw();
+        this.clusterChart.redraw();
     }
 
     setGeneList(geneList) {
         this.selectGeneList = geneList;
         this.chartBackStatus();
     }
+
 
 }

@@ -103,6 +103,9 @@ export class reRelationNetComponent implements OnInit {
     geneType:string = '';
     version:string = null;
 
+    selectGeneCount:number = 0;
+    resetCheckGraph:boolean;
+
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -149,12 +152,12 @@ export class reRelationNetComponent implements OnInit {
         this.defaultSetData={
             "force":100,
             "radian":10,
-            "symbolType":"hidden", 
+            "symbolType":"hidden",
             "value":{}
         }
 
-        this.tableUrl=`${config['javaPath']}/linkedNetwork/switchTable`; 
-        this.chartUrl=`${config['javaPath']}/linkedNetwork/graph`; 
+        this.tableUrl=`${config['javaPath']}/linkedNetwork/switchTable`;
+        this.chartUrl=`${config['javaPath']}/linkedNetwork/graph`;
         // this.chartUrl=`http://localhost:8086/net`;
         this.chartEntity = {
             "id": this.tid,
@@ -168,6 +171,7 @@ export class reRelationNetComponent implements OnInit {
 
         // table
         this.first = true;
+        this.resetCheckGraph = true;
         this.applyOnceSearchParams = true;
         this.defaultUrl = `${config['javaPath']}/linkedNetwork/table`;
         this.defaultEntity = {
@@ -229,6 +233,10 @@ export class reRelationNetComponent implements OnInit {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
+    }
+
+    handleSelectGeneCountChange(selectGeneCount){
+        this.selectGeneCount = selectGeneCount;
     }
 
     toggle(status){
@@ -305,6 +313,7 @@ export class reRelationNetComponent implements OnInit {
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
         this.transformTable._clearFilterWithoutRequest();
+        this.resetCheckGraph = true;
         if(!this.first){
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
@@ -366,7 +375,7 @@ export class reRelationNetComponent implements OnInit {
 
         let isLinkNum;
         if($.isEmptyObject(this.chartEntity['quantity'])){
-           isLinkNum=true; 
+           isLinkNum=true;
         }else{
             isLinkNum=false;
         }
@@ -383,7 +392,7 @@ export class reRelationNetComponent implements OnInit {
         relationColors.forEach((d,i)=>{
             d.colors=[...colorArr[i]];
         })
-        
+
         let netRelations=[];
         let linkRelations=[]; // 用于 link color 比例尺
 
@@ -451,7 +460,7 @@ export class reRelationNetComponent implements OnInit {
 
         let eachNodeLegendW=60,eachLegendH=20; //图例
         let eachLinkLegendW=40;
-        
+
         let colors=this.colors;
         let colorsLen=colors.length;
 
@@ -550,7 +559,7 @@ export class reRelationNetComponent implements OnInit {
             .on("click", function (d) {
                 clearEventBubble(d3.event);
                 d.selected = !d.selected;
-    
+
                 //选中link加到list中，反选link中从list中去掉
                 if (d.selected) {
                     d3.select(this).attr('stroke',"#000000");
@@ -639,11 +648,11 @@ export class reRelationNetComponent implements OnInit {
         simulation
             .nodes(nodes)
             .on('tick', ticked);
-        
+
         simulation
             .force('link')
             .links(links);
-            
+
         //node text
         if(that.chartEntity['symbolType'] !=='hidden'){
             drawText();
@@ -668,7 +677,7 @@ export class reRelationNetComponent implements OnInit {
         legendShape_g.selectAll('path.swatch').attr('fill','#ff8b8b');
 
         let legendShapeW=d3.select(".legendShape").node().getBBox().width;
-        
+
         //node 颜色
         let legendNodeColor_g = legendSvg.append("g")
             .attr("class", "legendNodeColor")
@@ -689,7 +698,7 @@ export class reRelationNetComponent implements OnInit {
 
         legendWidth=padding+legendShapeW+padding+legendNodeColorW+padding+legendLinkColorW+padding;
         d3.select("#legendSvg").attr("width", legendWidth).attr("height", legendHeight);
-        
+
         // svg 点击清空选择
         d3.selectAll("#relationNetChartDiv svg").on('click',function(){
             d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
@@ -871,7 +880,7 @@ export class reRelationNetComponent implements OnInit {
                 if(d['tempindex'] % 2 == 1){
                     offset =  offset*(-1);
                 }
-                
+
                 //修正source target反序导致的位置统一
                 if(d.source.geneID > d.target.geneID) {
                     offset = offset*(-1);
@@ -1019,7 +1028,7 @@ export class reRelationNetComponent implements OnInit {
     addCancel(){
         this.isShowAddModal=false;
     }
-    
+
     // expand node
     expandNode(){
         // 本次扩展的nodeList

@@ -48,10 +48,17 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() emitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
     @Output() emitBaseTheadChange:EventEmitter<any> = new EventEmitter();
     @Output() baseTheadChange:EventEmitter<any> = new EventEmitter();
+
     @Input() applyOnceSearchParams:boolean = false;
     // TODO 双向绑定applyOnceSearchParams 下次再次触发
     @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
 
+    @Output() selectGeneCountChange:EventEmitter<any> = new EventEmitter();
+
+    @Input() resetCheckGraph:boolean = false; // true的时候会重置checkGraph为false
+    @Output() resetCheckGraphChange:EventEmitter<any> = new EventEmitter();
+
+    count:number = 0; // 选中的基因个数
     mongoId:any = null;
     scroll: any = { x: "0", y: "0" };
     isLoading: boolean = true;
@@ -166,7 +173,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
         if ("tableHeight" in change && change["tableHeight"]["currentValue"]) {
             this.computedTbody(change["tableHeight"]["currentValue"]);
         }
-
     }
 
     init() {
@@ -378,6 +384,11 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     this.applyOnceSearchParams = false;
                     this.applyOnceSearchParamsChange.emit(this.applyOnceSearchParams);
                 }
+                if(this.resetCheckGraph){
+                    if('checkGraph' in this.tableEntity) this.tableEntity['checkGraph'] = false;
+                    this.resetCheckGraph = false;
+                    this.resetCheckGraphChange.emit(this.resetCheckGraph);
+                }
             }
         );
     }
@@ -500,6 +511,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
     getCollection() {
         this.checked = Object.keys(this.checkedMap);
         this.unChecked = Object.keys(this.unCheckedMap);
+        this.count = this.checkStatus?(this.total - this.unChecked.length):this.checked.length;
+        this.selectGeneCountChange.emit(this.count);
     }
 
     /**
@@ -864,14 +877,14 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
     analysis() {
-        if (!this.checked.length) {
+        this.count = this.checkStatus?(this.total - this.unChecked.length):this.checked.length;
+        if (!this.count) {
             this.notify.blank("tips：", "请选择需要分析的基因", {
                 nzStyle: { width: "200px" },
                 nzDuration: 2000
             });
         } else {
             let params = this._getInnerStatusParams();
-            console.log(params);
             this.toolsService.showTools(this.total, params);
         }
     }

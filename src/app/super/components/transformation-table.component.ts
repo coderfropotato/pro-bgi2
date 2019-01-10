@@ -38,6 +38,10 @@ export class TransformationTableComponent implements OnInit {
     @Input() isFirst;
     @Input() applyOnceSearchParams:boolean = false;
     @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
+
+    @Input() resetCheckGraph:boolean = false;
+    @Output() resetCheckGraphChange:EventEmitter<any> = new EventEmitter();
+
     @Input() defaultEmitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
     @Output() defaultEmitBaseTheadChange:EventEmitter<any> = new EventEmitter();
     @Input() extendEmitBaseThead:boolean =false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
@@ -45,6 +49,7 @@ export class TransformationTableComponent implements OnInit {
 
     @Output() defaultBaseTheadChange:EventEmitter<any> = new EventEmitter();
     @Output() extendBaseTheadChange:EventEmitter<any> = new EventEmitter();
+    @Output() selectGeneCountChange:EventEmitter<any> = new EventEmitter();
 
     @ViewChild("defaultTable") defaultTable;
     @ViewChild("extendTable") extendTable;
@@ -90,6 +95,14 @@ export class TransformationTableComponent implements OnInit {
 
     handlerApplyOnceSearchParamsChange(status){
         this.applyOnceSearchParamsChange.emit(status);
+    }
+
+    handleResetCheckGraphChange(status){
+        this.resetCheckGraphChange.emit(status);
+    }
+
+    handleSelectGeneCountChange(selectGeneCount){
+        this.selectGeneCountChange.emit(selectGeneCount);
     }
 
     /**
