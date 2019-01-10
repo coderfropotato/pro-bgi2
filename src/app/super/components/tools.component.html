@@ -254,7 +254,7 @@
         </nz-drawer>
 
         <!-- 关联网络图 -->
-        <nz-drawer nzTitle="关联网络图" [nzVisible]="childVisible && selectType=='relativeNet'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+        <nz-drawer nzTitle="关联网络图" [nzVisible]="childVisible && selectType=='linkedNetwork'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
                 <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
                     <div class="tool-params-relativeNet">
                         <button class="mr6 mb6" (click)="relativeNetClick(relativeNet)" [class.active]="relativeNet['checked']" *ngFor="let relativeNet of relativeNetData;index as i;" nz-button nzType="default" nzSize="middle">{{relativeNet['name']}}</button>
