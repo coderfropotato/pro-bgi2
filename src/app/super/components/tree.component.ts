@@ -6,9 +6,11 @@ declare const $: any;
                     <b class="tree-head">当前匹配的头:{{selectComposeThead.length?selectComposeThead[0]:"暂无"}}</b>
                     <div class="tree-content">
                         <p *ngIf="showExpandAll"><button nz-button nzType="default" nzSize="small" (click)="handlerExpandAll()">Toggle expand</button></p>
-                        <ul *ngFor="let root of treeData;index as i">
-                            <app-tree-item [floder]="root" (treeItemCheckedChange)="checkedChange($event)" (treeItemExpandChange)="expandChange($event)"></app-tree-item>
-                        </ul>
+                        <div class="tree">
+                            <ul *ngFor="let root of treeData;index as i">
+                                <app-tree-item [floder]="root" (treeItemCheckedChange)="checkedChange($event)" (treeItemExpandChange)="expandChange($event)"></app-tree-item>
+                            </ul>
+                        </div>
                     </div>
                 </div>`,
     styles: []

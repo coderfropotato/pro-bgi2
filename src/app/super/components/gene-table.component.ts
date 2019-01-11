@@ -411,14 +411,12 @@ export class GeneTableComponent implements OnInit, OnChanges {
                 }
 
                 // 针对返回默认表的时候  图上如果有需要筛选的条件  就需要默认表加载完成以后初始化表上的筛选
-                setTimeout(()=>{
-                    if(this.tableEntity['searchList'].length){
-                        this.tableEntity['searchList'].forEach(v=>{
-                            this._filterWithoutRequest(v['filterName'],v['filterNamezh'],v['searchType'],v['filterType'],v['valueOne'],v['valueTwo']);
-                        })
-                        this.classifySearchCondition();
-                    }
-                },100)
+                if(this.tableEntity['searchList'].length){
+                    this.tableEntity['searchList'].forEach(v=>{
+                        this._filterWithoutRequest(v['filterName'],v['filterNamezh'],v['searchType'],v['filterType'],v['valueOne'],v['valueTwo']);
+                    })
+                    this.classifySearchCondition();
+                }
             }
         );
     }

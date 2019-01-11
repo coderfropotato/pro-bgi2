@@ -961,8 +961,10 @@ button.btnActive {
 	}
 
 	.tree-content{
-		max-height: 240px;
-		overflow: auto;
+		.tree{
+			overflow: auto;
+			max-height: 240px;
+		}
 	}
 }
 // 重分析
