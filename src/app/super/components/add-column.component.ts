@@ -34,6 +34,8 @@ export class AddColumnComponent implements OnInit {
 	beforeSelected: Array<any> = [];
 	theadInBase: string[] = []; // 哪些基础表头在增删列的数据里面
 	treeTempSelect:any[] = [];
+	baseTheadChangeWithoutThead:boolean = false; // 基础头改变的时候 增删列的头是否无数据
+	doAjax:boolean = false;
 	public sortThead:any[] = [];
 
 	subscribtion:any = null;
@@ -74,6 +76,11 @@ export class AddColumnComponent implements OnInit {
 			this.initSelected();
 			this.initBeforeSelected();
 			this.initSelectCount();
+
+			if(this.baseTheadChangeWithoutThead) {
+				this.baseTheadChange();
+				this.baseTheadChangeWithoutThead = false;
+			}
 		})()
 	}
 
@@ -83,28 +90,37 @@ export class AddColumnComponent implements OnInit {
 
 	ngOnChanges(changes: SimpleChanges) {
 		if ('baseThead' in changes && !changes['baseThead'].firstChange && changes['baseThead'].currentValue.length) {
-			this.theadInBase = [];
-            this.initSelected();
-
-            this.forLeaves(this.thead, (item) => {
-                item['checked'] = false;
-            });
-
-            this.baseThead.forEach(v=>{
-                this.forLeaves(this.thead,item=>{
-                    if (v.includes(item['key'])) {
-                        item['checked'] = true;
-                        this.selected[item['index']].push(item);
-                        this.theadInBase.push(item);
-                        return;
-                    }
-                })
-            })
-
-			this.getCheckCount();
-			this.beforeSelected = this.copy(this.selected);
-			this.setSortThead(this.selected);
+			if(this.thead.length){
+				this.baseTheadChange();
+				this.baseTheadChangeWithoutThead = false;
+			}else{
+				this.baseTheadChangeWithoutThead = true;
+			}
 		}
+	}
+
+	baseTheadChange(){
+		this.theadInBase = [];
+		this.initSelected();
+
+		this.forLeaves(this.thead, (item) => {
+			item['checked'] = false;
+		});
+
+		this.baseThead.forEach(v=>{
+			this.forLeaves(this.thead,item=>{
+				if (v.includes(item['key'])) {
+					item['checked'] = true;
+					this.selected[item['index']].push(item);
+					this.theadInBase.push(item);
+					return;
+				}
+			})
+		})
+
+		this.getCheckCount();
+		this.beforeSelected = this.copy(this.selected);
+		this.setSortThead(this.selected);
 	}
 
 	async getAddThead() {
@@ -134,12 +150,14 @@ export class AddColumnComponent implements OnInit {
 							})
 							this.thead = d;
 							this.initIndexAndChecked();
+							
                             resolve("success");
                         }else{
                             reject('error');
                         }
                     },
-                    () => reject("error")
+					() => reject("error"),
+					()=>{this.doAjax = true}
                 );
         });
 	}

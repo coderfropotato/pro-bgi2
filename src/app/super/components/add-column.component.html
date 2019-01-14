@@ -72,6 +72,12 @@
         <button nz-button nzType="default" (click)="reset()">{{'addThead.resetButton' | translate}}</button>
         <button nz-button nzType="primary" (click)="confirm()">{{'addThead.confirmButton' | translate}}</button>
     </div>
-
-    <button *ngIf="!thead.length" nz-button nzType="primary">{{'addThead.noData' | translate}}</button>
+    <!-- nodata -->
+    <div class="add-head" *ngIf="!thead.length && doAjax">
+        <button  nz-button nzType="primary">{{'addThead.noData' | translate}}</button>
+    </div>
+    <!-- loading -->
+    <div class="add-head" *ngIf="!doAjax">
+        <button  nz-button nzType="primary" nzLoading>loading</button>
+    </div>
 </div>
