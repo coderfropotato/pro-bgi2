@@ -34,7 +34,7 @@ export class ReanalysisIndexComponent implements OnInit {
         (async () => {
             try {
                 await this.getLcInfo();
-                await this.getAddThead();
+                // await this.getAddThead();
                 this.ready = true;
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
