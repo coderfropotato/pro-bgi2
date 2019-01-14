@@ -27,20 +27,21 @@ export class ToolsComponent implements OnInit {
     */
 
 	toolList: object[] = [
-		{ type: 'heatmap', name: '聚类重分析',  desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。' },
-		{ type: 'geneClass', name: '基因分类', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。' },
-		{ type: 'geneRich', name: '基因富集', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。' },
-		{ type: 'net', name: '蛋白网络互作', desc: '图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。' },
-		{ type: 'line', name: '折线图', desc: '以折线图方式呈现数据' },
-		{ type: 'KDA', name: 'KDA', desc: 'kda' },
-		{ type: 'multiOmics', name: '多组学关联', desc: '多组学' },
-		{ type: 'chiSquare', name: '卡方检测', desc: '卡方' },
-		{ type: 'as', name: '可变剪切', desc: '可变剪切' },
-		{ type: 'linkedNetwork', name: '关联网络图', desc: '关联网络图' },
-		{ type: 'heatmaprelation', name: '关联聚类热图', desc: '关联聚类热图' }
+		{ type: 'heatmap', name: '聚类重分析',  desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。',limit:[1],category:"common" },
+		{ type: 'geneClass', name: '基因分类', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',limit:[1,500],category:"common"  },
+		{ type: 'geneRich', name: '基因富集', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',limit:[1,500] ,category:"common" },
+		{ type: 'net', name: '蛋白网络互作', desc: '图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。',limit:[1,500] ,category:"common" },
+		{ type: 'line', name: '折线图', desc: '以折线图方式呈现数据',limit:[1,100],category:"common"  },
+		{ type: 'KDA', name: 'KDA', desc: 'kda',limit:[1,500],category:"common"  },
+		{ type: 'multiOmics', name: '多组学关联', desc: '多组学',limit:[1,500],category:"common"  },
+		{ type: 'chiSquare', name: '卡方检测', desc: '卡方',limit:[1,500] ,category:"common" },
+		{ type: 'as', name: '可变剪切', desc: '可变剪切',limit:[1,500] ,category:"common" },
+		{ type: 'linkedNetwork', name: '关联网络图', desc: '关联网络图',limit:[1,500],category:"relation"  },
+		{ type: 'heatmaprelation', name: '关联聚类热图', desc: '关联聚类热图',limit:[1,500],category:"relation" }
 	];
 	desc: string = '';
 	title: String = '';
+	disabled:boolean = false;
 
 	// 聚类参数
 	expressData: any[] = [];
@@ -122,6 +123,8 @@ export class ToolsComponent implements OnInit {
 	selectType: string = '';
 	childVisible: boolean = false;
 	isSubmitReanalysis: boolean = false; // 是否在提交重分析任务
+	geneCount:number = 0;
+	isRelation:boolean = false; // 是否是关联关系的表格
 
 	constructor(
 		public toolsService: ToolsService,
@@ -132,11 +135,19 @@ export class ToolsComponent implements OnInit {
 
 	ngOnInit() {
 		this.init();
+
+		// 订阅打开抽屉
+		this.toolsService.getOpen().subscribe(res=>{
+			this.geneCount = res[0];
+			this.isRelation = res[1];
+			this.formatTools();
+		})
 	}
 
 	init() {
 		this.desc = '';
 		this.title = '';
+		this.disabled = false;
 		// 初始化聚类参数
 		this.expressData = [];
 		this.expressUpload = [];
@@ -214,6 +225,30 @@ export class ToolsComponent implements OnInit {
 		this.selectType = '';
 		this.childVisible = false;
 		this.isSubmitReanalysis = false;
+
+	}
+
+	formatTools(){
+		this.toolList.forEach(v=>{
+			if(v['category']==='common'){
+				if(v['limit'].length===1){
+					v['disabled']=this.geneCount>=v['limit'][0]?false:true;
+				}else{
+					v['disabled'] = (this.geneCount<v['limit'][0] || this.geneCount>v['limit'][1])?true:false;
+				}
+			}else{
+				if(!this.isRelation){
+					v['disabled'] = true;
+				}else{
+					if(v['limit'].length===1){
+						v['disabled']=this.geneCount>=v['limit'][0]?false:true;
+					}else{
+						v['disabled'] = (this.geneCount<v['limit'][0] || this.geneCount>v['limit'][1])?true:false;
+					}
+				}
+			}
+			
+		})
 	}
 
 	close() {
@@ -224,9 +259,12 @@ export class ToolsComponent implements OnInit {
 	handlerMouseOver(tool) {
 		this.title = tool['name'];
 		this.desc = tool['desc'];
+		this.disabled = tool['disabled'];
 	}
 
-	selectParams(type) {
+	selectParams(tool) {
+		if(tool['disabled']) return;
+		let type = tool['type'];
 		this.init();
 		if(type=="as"){
 			this.relativeSpliceConfirm();

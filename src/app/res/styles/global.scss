@@ -831,6 +831,10 @@ button.btnActive {
 				margin-bottom: 16px;
 				text-align: center;
 				cursor: pointer;
+				&.disabled{
+					color: #ccc;
+					cursor: not-allowed;
+				}
 				.tool-imgs {
 					height: 40px;
 					width: 40px;
@@ -843,7 +847,9 @@ button.btnActive {
 					// border-width: 2px 2px 4px;
 					// border-style: solid;
 					// border-color: transparent;
-					&:hover {
+				}
+				&:not(.disabled):hover{
+					.tool-imgs{
 						transform: translate(0, -4px);
 						// border-color: $btn_active_color;
 						box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
@@ -897,6 +903,15 @@ button.btnActive {
 	.tools-desc {
 		max-height: 180px;
 		overflow-y: auto;
+		&.disabled{
+			h5 {
+				color:#ccc;
+			}
+			p {
+				color:#ccc;
+			}
+		}
+		
 		h5 {
 			font-size: 15px;
 		}
