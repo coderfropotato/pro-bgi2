@@ -834,6 +834,9 @@ button.btnActive {
 				&.disabled{
 					color: #ccc;
 					cursor: not-allowed;
+					.tool-imgs{
+						opacity: .6;
+					}
 				}
 				.tool-imgs {
 					height: 40px;
@@ -848,6 +851,7 @@ button.btnActive {
 					// border-style: solid;
 					// border-color: transparent;
 				}
+
 				&:not(.disabled):hover{
 					.tool-imgs{
 						transform: translate(0, -4px);

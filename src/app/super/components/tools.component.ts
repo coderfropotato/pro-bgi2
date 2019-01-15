@@ -868,7 +868,8 @@ export class ToolsComponent implements OnInit {
 		// });
 
         let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
-
+        let tableEntity = this.toolsService.get('tableEntity');
+        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -876,7 +877,7 @@ export class ToolsComponent implements OnInit {
 					needReanalysis: 2,
 					// chooseType: [ 'expression' ],
 					chooseList: tempSelect,
-					...this.toolsService.get('tableEntity')
+					...tableEntity
 				},
 				url: this.toolsService.get('tableUrl')
 			})
