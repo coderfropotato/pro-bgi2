@@ -967,6 +967,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
         if(this.validateForm.controls["name"]["valid"] && !this.labelSelectError){
             this.isSaveGeneList = false;
             let params = JSON.parse(JSON.stringify(this._getInnerStatusParams()['tableEntity']));
+            let mongoId = this._getInnerStatusParams()['mongoId'];
+            params['mongoId'] = mongoId;
             let formValue = this.validateForm.value;
 
             params['tags'] = formValue['label'] || [];
