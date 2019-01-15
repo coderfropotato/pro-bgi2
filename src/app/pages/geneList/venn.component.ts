@@ -398,25 +398,14 @@ export class GeneListVennComponent implements OnInit {
 					geneType:this.defaultGeneType
 				}
 			}).subscribe(res=>{
+				this.selectPanelEntity['tag'].length = 0;
+				this.selectPanelEntity['gene'].length = 0;
+				this.selectPanelEntity['setNameList'].length = 0;
+				this.selectPanelData.length = 0;
+
 				if(res['status']==0 && (!$.isEmptyObject(res['data']))){
-					this.geneListMap = res['data'];
-					this.tagList =  Object.keys(res['data']) || [];
-
-					this.selectPanelEntity['tag'].length = 0;
-					this.selectPanelEntity['gene'].length = 0;
-					this.selectPanelEntity['setNameList'].length = 0;
-
-					let genelist =  Object.values(this.geneListMap);
-					this.selectPanelData.length = 0;
-					genelist.forEach(v=>{
-						// 去重
-						v.forEach(val=>{
-							let index = this.selectPanelData.findIndex((item,i)=>{
-								return item['setName'] === val['setName'];
-							})
-							if(index==-1) this.selectPanelData.push(val);
-						})
-					})
+					this.tagList =  res['data']['tags'];
+					this.selectPanelData = res['data']['genelist'];
 
 					this.selectPanelData.map((v,index)=>{
 						v['checked'] = index?false:true;
@@ -426,9 +415,8 @@ export class GeneListVennComponent implements OnInit {
 						}
 						return v;
 					})
-				}else{
-					this.geneListMap = {};
 				}
+
 				this.copyPanelEntity();
 				this.getGeneListDone = true;
 				resolve('success');
