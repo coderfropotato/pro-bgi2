@@ -1,6 +1,6 @@
 <div class="tool-component">
     <nz-drawer [nzClosable]="true" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="请选择一个分析方案" (nzOnClose)="close()" >
-        gene:{{ toolsService["geneCount"] }}
+        <!-- gene:{{ toolsService["geneCount"] }} -->
         <ul class="clearfix">
             <li nz-tooltip [nzTitle]="tool['limit'].length>1?('基因限制：'+tool['limit'][0]+'-'+tool['limit'][1]):'基因限制：至少'+tool['limit'][0]" *ngFor="let tool of toolList; index as i" [class.disabled]="tool['disabled']" (click)="selectParams(tool)" (mouseover)="handlerMouseOver(tool)">
                 <div class="tool-imgs {{tool['type']}}-img"></div>
@@ -103,7 +103,7 @@
         <nz-drawer nzTitle="多组学" [nzVisible]="childVisible && selectType=='multiOmics'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
                 <ng-container *ngIf="multiOmicsData.length">
-                    <button class="mb12" *ngFor="let mu of multiOmicsData;index as i;" nz-button nzType="default" nzSize="middle" (click)="multiOmicsClick(mu)" [class.active]="mu['checked']">{{mu['name']}}</button>
+                    <button class="mb12 mr12" *ngFor="let mu of multiOmicsData;index as i;" nz-button nzType="default" nzSize="middle" (click)="multiOmicsClick(mu)" [class.active]="mu['checked']">{{mu['name']}}</button>
                     <nz-alert *ngIf="multiOmicsError || !multiOmicsSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
                     <nz-divider></nz-divider>
                     <div class="tool-params-button-group">
@@ -259,7 +259,7 @@
                     <div class="tool-params-relativeNet">
                         <button class="mr6 mb6" (click)="relativeNetClick(relativeNet)" [class.active]="relativeNet['checked']" *ngFor="let relativeNet of relativeNetData;index as i;" nz-button nzType="default" nzSize="middle">{{relativeNet['name']}}</button>
                         <p *ngIf="!relativeNetData.length && doRelativeNetAjax " class="center">暂无参数</p>
-                        <nz-alert class="mb6" *ngIf="relativeNetError || !relativeNetSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                        <nz-alert class="mb6" *ngIf="!relativeNetError && !relativeNetSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
                         <!-- 参数选择 -->
                         <!-- <div class="tools-prams-content">
                             <ng-container *ngFor="let par of relativeNetSelect;index as i;">

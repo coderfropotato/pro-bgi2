@@ -708,7 +708,7 @@ export class ToolsComponent implements OnInit {
 						if (data['data'].length) {
 							let href = `${window.location.href.split(
 								'report'
-							)[0]}report/reanalysis/re-${reanalysisType}/${this.toolsService.get('geneType')}/${data[
+							)[0]}report/reanalysis/re-chiSquare/${this.toolsService.get('geneType')}/${data[
 								'data'
 							][0]}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
@@ -1071,7 +1071,43 @@ export class ToolsComponent implements OnInit {
 		this.relativeNetData.forEach((v,index)=>{
 			v['checked'] = index?false:true;
 		})
-        this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
+		this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
+
+		let entity = this.toolsService.get('tableEntity');
+		this.ajaxService.getDeferData({
+			url: `${config['javaPath']}/linkedNetwork/config`,
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					tid:'tid' in entity?entity['tid']:null,
+					geneType: entity['geneType'],
+					species: entity['species'],
+					version: this.storeService.getStore('version'),
+					baseThead: this.toolsService.get('baseThead'),
+					relations:entity['relations']
+				}
+		}).subscribe(res=>{
+			if(res['status']==='0'){
+				if(!res['data'].length) {
+					
+					this.relativeNetData.length = 0;
+					this.relativeNetSelect.length = 0;
+					this.relativeNetError = true
+				}else{
+					this.relativeNetData = res['data'];
+					this.relativeNetData.forEach((v,index)=>{
+						v['checked'] = index?false:true;
+					})
+					this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
+					this.relativeNetError = false;
+				}
+
+			}
+		},err=>{
+			this.relativeNetError = true;
+		},
+		()=>{
+			this.doRelativeNetAjax = true;
+		})
 	}
 
 	relativeNetClick(item){
@@ -1118,7 +1154,7 @@ export class ToolsComponent implements OnInit {
 						if(data['data'].length){
 							let href = `${window.location.href.split(
 								'report'
-							)[0]}report/reanalysis/re-relativeNet/${this.toolsService.get('geneType')}/${data[
+							)[0]}report/reanalysis/re-linkedNetwork/${this.toolsService.get('geneType')}/${data[
 								'data'
 							][0]}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
@@ -1153,11 +1189,13 @@ export class ToolsComponent implements OnInit {
 
 	// 关联聚类
 	getheatmaprelationParams(){
+		let entity = this.toolsService.get('tableEntity');
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/relationCluster/heatmapConfig`,
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
+					tid:'tid' in entity?entity['tid']:null,
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
 					version: this.storeService.getStore('version'),
