@@ -924,9 +924,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
     initFormValue(){
-        // name reg /^[a-z0-9_]{1,12}$/gi
+        // 数字 字母 下划线  不能以数字开头 16位
         this.validateForm = this.fb.group({
-            name:["",[Validators.required,Validators.pattern("^[a-z0-9_A-Z]{1,16}$")]],
+            name:["",[Validators.required,Validators.pattern("^[a-zA-Z\_][a-zA-Z0-9]{0,15}$")]],
             label:[null],
             mark:[""]
         });
