@@ -696,7 +696,7 @@ export class ReNetComponent implements OnInit {
         let legendLinkColorW=d3.select(".legendLinkColor").node().getBBox().width;
 
         legendWidth=padding+legendShapeW+padding+legendNodeColorW+padding+legendLinkColorW+padding;
-        d3.select("#legendSvg").attr("width", legendWidth).attr("height", legendHeight);
+        d3.select("#legendSvg").attr("width", legendWidth).attr("height", legendHeight).style('display','block').style('margin','0 auto');
 
         // svg 点击清空选择
         d3.selectAll("#netChartDiv svg").on('click',function(){

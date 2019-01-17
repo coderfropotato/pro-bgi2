@@ -629,7 +629,7 @@ export class ReKdaComponent implements OnInit {
         let legendNodeColorW=d3.select(".legendNodeColor").node().getBBox().width;
 
         legendWidth=padding+legendNodeColorW+padding;
-        d3.select("#legendSvg").attr("width", legendWidth).attr("height", legendHeight);
+        d3.select("#legendSvg").attr("width", legendWidth).attr("height", legendHeight).style('display','block').style('margin','0 auto');
 
         // svg 点击清空选择
         d3.selectAll("#kdaChartDiv svg").on('click',function(){
