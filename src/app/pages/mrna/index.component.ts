@@ -288,10 +288,10 @@ export class IndexComponent implements OnInit {
                                 ]
                             },
                             {
-                                category: "图标切换_demo",
+                                category: "GO富集",
                                 children: [
                                     {
-                                        url: "cxzk2",
+                                        url: "goRich",
                                         name: "图表切换",
                                         isExport: true
                                     }
