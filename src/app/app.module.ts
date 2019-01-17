@@ -60,6 +60,7 @@ import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
 import { reRelationHeatmapComponent } from './pages/reanalysis/re-relationHeatmap.component';
 import { ReNetComponent } from './pages/reanalysis/re-net.component';
 import {reRelationNetComponent} from './pages/reanalysis/re-relationNet.component';
+import { ReKdaComponent } from './pages/reanalysis/re-kda.component';
 import { ReLineComponent } from './pages/reanalysis/re-line.component';
 import { KaFunComponent } from './pages/reanalysis/re-kaFun.component';
 import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.component';
@@ -354,6 +355,15 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-kda/:geneType/:tid/:version",
+                component: ReKdaComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reKda"
+                }
+            },
+            {
                 path: "re-line/:geneType/:tid/:version",
                 component: ReLineComponent,
                 canActivate: [SysDefendService],
@@ -516,6 +526,7 @@ export function createTranslateLoader(http: HttpClient) {
         reRelationHeatmapComponent,
         TooltipDirective,
         ReNetComponent,
+        ReKdaComponent,
         reRelationNetComponent,
         ReLineComponent,
         KaFunComponent,
