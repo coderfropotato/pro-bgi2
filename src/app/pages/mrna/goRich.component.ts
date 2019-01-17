@@ -5,11 +5,11 @@ declare const d4: any;
 declare const d3: any;
 
 @Component({
-    selector: "app-cxzk2",
-    templateUrl: "./cxzk2.component.html"
+    selector: "app-goRich",
+    templateUrl: "./goRich.component.html"
 })
 
-export class cxzk2Component implements OnInit {
+export class GoRichComponent implements OnInit {
     @ViewChild('tableSwitchChart') tableSwitchChart;
 
     tableUrl: string;

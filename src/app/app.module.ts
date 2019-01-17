@@ -12,7 +12,7 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { IndexComponent } from "./pages/mrna/index.component";
 import { cxzk1Component } from "./pages/mrna/cxzk1.component";
-import { cxzk2Component } from "./pages/mrna/cxzk2.component";
+import { GoRichComponent } from "./pages/mrna/goRich.component";
 import { netComponent } from "./pages/mrna/net.component";
 import { multiOmicsComponent } from "./pages/mrna/multiOmics.component";
 import { clusterComponent } from "./pages/mrna/cluster.component";
@@ -166,11 +166,11 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "cxzk2",
-                component: cxzk2Component,
+                path: "goRich",
+                component: GoRichComponent,
                 data: {
                     keep: true,
-                    module: "cxzk2"
+                    module: "goRich"
                 }
             },
             {
@@ -469,7 +469,7 @@ export function createTranslateLoader(http: HttpClient) {
         LoginComponent,
         IndexComponent,
         cxzk1Component,
-        cxzk2Component,
+        GoRichComponent,
         netComponent,
         multiOmicsComponent,
         clusterComponent,
