@@ -393,7 +393,7 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                    if (data.status === "0" && ((data.data.length == 0 || $.isEmptyObject(data.data) || ('rows' in data.data && !data.data['rows'].length)))) {
                         this.error = "nodata";
                     } else if (data.status === "-1") {
                         this.error = "error";

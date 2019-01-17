@@ -2,7 +2,7 @@
     <nz-drawer [nzClosable]="true" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="请选择一个分析方案" (nzOnClose)="close()" >
         <!-- gene:{{ toolsService["geneCount"] }} -->
         <ul class="clearfix">
-            <li nz-tooltip [nzTitle]="tool['limit'].length>1?('基因限制：'+tool['limit'][0]+'-'+tool['limit'][1]):'基因限制：至少'+tool['limit'][0]" *ngFor="let tool of toolList; index as i" [class.disabled]="tool['disabled']" (click)="selectParams(tool)" (mouseover)="handlerMouseOver(tool)">
+            <li nz-tooltip [nzTitle]="tool['limit'].length>1?('基因限制：'+tool['limit'][0]+'个-'+tool['limit'][1])+'个':'基因限制：至少'+tool['limit'][0]+'个'" *ngFor="let tool of toolList; index as i" [class.disabled]="tool['disabled']" (click)="selectParams(tool)" (mouseover)="handlerMouseOver(tool)">
                 <div class="tool-imgs {{tool['type']}}-img"></div>
                 <p style="margin-top:12px;">{{ tool["name"] }}</p>
             </li>
@@ -14,7 +14,7 @@
 
         <!-- 聚类 -->
         <nz-drawer nzTitle="聚类热图" [nzVisible]="childVisible && selectType=='heatmap'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
-            <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+            <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                 <nz-tabset [nzSize]="'small'">
                     <nz-tab nzTitle="表达量聚类">
                             <div class="tool-params-tab">
@@ -101,7 +101,7 @@
 
         <!-- 多组学 -->
         <nz-drawer nzTitle="多组学" [nzVisible]="childVisible && selectType=='multiOmics'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
-            <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+            <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                 <ng-container *ngIf="multiOmicsData.length">
                     <button class="mb12 mr12" *ngFor="let mu of multiOmicsData;index as i;" nz-button nzType="default" nzSize="middle" (click)="multiOmicsClick(mu)" [class.active]="mu['checked']">{{mu['name']}}</button>
                     <nz-alert *ngIf="multiOmicsError || !multiOmicsSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
@@ -117,7 +117,7 @@
 
         <!-- 折线图 -->
         <nz-drawer nzTitle="折线图" [nzVisible]="childVisible && selectType=='line'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
-            <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+            <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                 <nz-tabset [nzSize]="'small'">
                     <nz-tab nzTitle="分组平均表达量" *ngIf="lineGroupData.length">
                         <div class="tool-params-tab">
@@ -162,7 +162,7 @@
 
         <!-- 卡方检验 -->
         <nz-drawer nzTitle="卡方检验" [nzVisible]="childVisible && selectType=='chiSquare'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
-                <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+                <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                     <div class="tool-params-kafun">
                         <div class="tool-params-kafun-top">
                             <div nz-row class="my-nz-row">
@@ -194,7 +194,7 @@
 
         <!-- 可变剪切 -->
         <!-- <nz-drawer nzTitle="可变剪切" [nzVisible]="childVisible && selectType=='relativeSplice'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
-            <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+            <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-kafun">
                     <div class="tool-params-kafun-top">
                         <div nz-row class="my-nz-row">
@@ -226,7 +226,7 @@
 
         <!-- 网络图 -->
         <nz-drawer nzTitle="蛋白网络互作" [nzVisible]="childVisible && selectType=='net'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
-            <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+            <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-net">
                     <button class="mr6 mb6" (click)="netClick(net)" [class.active]="net['checked']" *ngFor="let net of netData;index as i;" nz-button nzType="default" nzSize="middle">{{net['name']}}</button>
                     <p *ngIf="!netData.length && doNetAjax" class="center">暂无参数</p>
@@ -255,7 +255,7 @@
 
         <!-- 关联网络图 -->
         <nz-drawer nzTitle="关联网络图" [nzVisible]="childVisible && selectType=='linkedNetwork'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
-                <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+                <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                     <div class="tool-params-relativeNet">
                         <button class="mr6 mb6" (click)="relativeNetClick(relativeNet)" [class.active]="relativeNet['checked']" *ngFor="let relativeNet of relativeNetData;index as i;" nz-button nzType="default" nzSize="middle">{{relativeNet['name']}}</button>
                         <p *ngIf="!relativeNetData.length && doRelativeNetAjax " class="center">暂无参数</p>
@@ -308,7 +308,7 @@
 
             <!-- 关联聚类 -->
             <nz-drawer nzTitle="关联聚类" [nzVisible]="childVisible && selectType=='heatmaprelation'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
-                <nz-spin nzTip='正在提交重分析，请稍后...' [nzDelay]="100" [nzSpinning]="isSubmitReanalysis">
+                <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                     <div class="tool-params-tab">
                         <p *ngIf="heatmapReStand.length">标准化</p>
                         <nz-select *ngIf="heatmapReStand.length" style="width: 120px; margin-top:1em;margin-bottom:1em;" [(ngModel)]="heatmapReSelectStand" nzPlaceHolder="stand">
@@ -365,6 +365,38 @@
                     <div *ngIf="heatmapReStand.length && heatmapReRelations.length" class="tool-params-button-group">
                         <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
                         <button nz-button nzType="primary" [disabled]="!heatmapReSelectStand || !heatmapReSelectRelation || heatmapReError" (click)="heatmapRelationConfirm()" nzSize="middle">确定</button>
+                    </div>
+                </nz-spin>
+            </nz-drawer>
+
+            <!-- 基因分类 -->
+            <nz-drawer nzTitle="基因分类" [nzVisible]="childVisible && selectType=='classification'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+                <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
+                    <div *ngIf="geneClassData.length">
+                        <button class="mb12 mr12" (click)="handlerGeneClassSelect(klass)" [class.active]="klass['checked']" *ngFor="let klass of geneClassData;index as i;" nz-button nzType="default" nzSize="middle">{{klass['name']}}</button>
+                        <nz-alert *ngIf="!geneClassSelect.length" nzShowIcon nzType="warning" nzMessage="请选择一个分类"></nz-alert>
+                    </div>
+                    <p *ngIf="!geneClassData.length && doGeneClassAjax" class="center">暂无参数</p>
+                    <nz-divider></nz-divider>
+                    <div *ngIf="geneClassData.length" class="tool-params-button-group">
+                        <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                        <button nz-button nzType="primary" [disabled]="!geneClassSelect.length || geneClassError" (click)="geneClassConfirm()" nzSize="middle">确定</button>
+                    </div>
+                </nz-spin>
+            </nz-drawer>
+
+            <!-- 基因富集 -->
+            <nz-drawer nzTitle="基因富集" [nzVisible]="childVisible && selectType=='enrichment'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+                <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
+                    <div *ngIf="geneRichData.length">
+                        <button class="mb12 mr12" (click)="handlerGeneRichSelect(rich)" [class.active]="rich['checked']" *ngFor="let rich of geneRichData;index as i;" nz-button nzType="default" nzSize="middle">{{rich['name']}}</button>
+                        <nz-alert *ngIf="!geneRichSelect.length" nzShowIcon nzType="warning" nzMessage="请选择一个分类"></nz-alert>
+                    </div>
+                    <p *ngIf="!geneRichData.length && doGeneRichAjax" class="center">暂无参数</p>
+                    <nz-divider></nz-divider>
+                    <div *ngIf="geneRichData.length" class="tool-params-button-group">
+                        <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                        <button nz-button nzType="primary" [disabled]="!geneRichSelect.length || geneRichError" (click)="geneRichConfirm()" nzSize="middle">确定</button>
                     </div>
                 </nz-spin>
             </nz-drawer>

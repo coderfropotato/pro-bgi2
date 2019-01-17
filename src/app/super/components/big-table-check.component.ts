@@ -29,7 +29,7 @@ export class BigTableCheckComponent implements OnInit {
 	@Input() url: string; // 表格查询参数可有可无  默认有 pageSize pageIndex sortValue sortKey searchList rootSearchContentList addThead 对于有超出默认参数之外的查询参数 需要放在pageEntity里传进来
 	@Input() pageEntity: object;
 	@Input() fileName: string; // 表格下载名称
-	@Input() selectItems: TemplateRef<any>; // 下拉选项模板插槽 TemplateRef
+	@Input() selectTemplate: TemplateRef<any>; // 下拉选项模板插槽 TemplateRef
 	@Input() tableHeight: number = 0; // 计算后的表格高度?
 	@Input() tableType: string = 'common'; // 表的类型  普通 还是 transform
 	@Input() emitBaseThead: boolean = false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
@@ -244,12 +244,16 @@ export class BigTableCheckComponent implements OnInit {
 
 					this.error = '';
 					let arr = [];
+					responseData.data.baseThead.forEach(v=>{
+						if(!('children' in v) || ('children' in v && !v['children'])) v['children'] = [];
+					})
 					this.head = responseData.data.baseThead;
 
 					responseData.data.baseThead.slice(1).forEach((val) => {
-						if ('children' in val && val.children.length) {
+						if ('children' in val && val.children && val.children.length) {
 							arr = arr.concat(val.children);
 						} else {
+							val['children'] = [];
 							arr = arr.concat(val);
 						}
 					});
@@ -497,7 +501,7 @@ export class BigTableCheckComponent implements OnInit {
 	initSortMap() {
 		this.head.forEach((val: any) => {
 			this.sortMap[val['true_key']] = null;
-			if ('children' in val && val['children'].length) {
+			if ('children' in val && val['children'] &&val['children'].length) {
 				val['children'].forEach((v) => (this.sortMap[v['true_key']] = null));
 			}
 		});
@@ -508,7 +512,7 @@ export class BigTableCheckComponent implements OnInit {
 		if ($.isEmptyObject(this.sortMap)) {
 			this.head.forEach((val: any) => {
 				this.sortMap[val['true_key']] = null;
-				if ('children' in val && val['children'].length) {
+				if ('children' in val && val['children'] && val['children'].length) {
 					val['children'].forEach((v) => (this.sortMap[v['true_key']] = null));
 				}
 			});
@@ -516,7 +520,7 @@ export class BigTableCheckComponent implements OnInit {
 			this.head.forEach((val: any) => {
 				if (!this.sortMap[val['true_key']]) {
 					this.sortMap[val['true_key']] = null;
-					if ('children' in val && val['children'].length) {
+					if ('children' in val && val['children'] && val['children'].length) {
 						val['children'].forEach((v) => {
 							if (!this.sortMap[v['true_key']]) {
 								this.sortMap[v['true_key']] = null;
@@ -756,7 +760,7 @@ export class BigTableCheckComponent implements OnInit {
 
 		head.forEach((v) => {
 			let singleWidth = 0;
-			if ('children' in v && v.children.length) {
+			if ('children' in v && v.children && v.children.length) {
 				v['colspan'] = v.children.length;
 				v['rowspan'] = 1;
 				v.children.forEach((val) => {
@@ -775,7 +779,7 @@ export class BigTableCheckComponent implements OnInit {
 
 		let colLeftConfig: any[] = [];
 		// 计算首列的left
-		if ('children' in head[0] && head[0]['children'].length) {
+		if ('children' in head[0] && head[0]['children'] && head[0]['children'].length) {
 			head[0]['children'].forEach((v, i) => {
 				let sunDis = 0;
 				for (var k = 0; k < i + 1; k++) {
@@ -1087,8 +1091,8 @@ export class BigTableCheckComponent implements OnInit {
 		};
 	}
 
-	_getData() {
-		this.getRemoteData();
+	_getData(status = false) {
+		this.getRemoteData(status);
 	}
 
 	deleteSearchListItemOrderByAddThead() {

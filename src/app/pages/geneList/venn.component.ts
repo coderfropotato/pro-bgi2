@@ -515,9 +515,7 @@ export class GeneListVennComponent implements OnInit {
 
 	// 删除标签
 	handleDelete(item){
-		let reGetData:boolean = false;
 		if(item['checked']){
-			reGetData = true;
 			let index = this.selectPanelEntity['gene'].findIndex((val,index)=>{
 				return val['setName'] === item['setName'];
 			});
@@ -526,8 +524,6 @@ export class GeneListVennComponent implements OnInit {
 				this.selectPanelEntity['setNameList'].splice(index,1);
 				this.copyPanelEntity();
 			}
-		}else{
-			reGetData = false;
 		}
 
 		let tpl = null;
@@ -546,21 +542,14 @@ export class GeneListVennComponent implements OnInit {
 					}
 				}).subscribe(res=>{
 					if(res['status']==0){
-						if(reGetData) {
-							(async ()=>{
-								this.selectPanelEntity['tag'].length = 0;
-								this.selectPanelEntity['gene'].length = 0;
-								this.selectPanelEntity['setNameList'].length = 0;
-								this.copyPanelEntity();
-								await this.getAllGeneList();
-								await this.getChartData();
-							})()
-						}else{
-							let index = this.selectPanelData.findIndex(v=>{
-								return v['setName'] === item['setName'];
-							})
-							if(index!=-1) this.selectPanelData.splice(index,1);
-						}
+						(async ()=>{
+							this.selectPanelEntity['tag'].length = 0;
+							this.selectPanelEntity['gene'].length = 0;
+							this.selectPanelEntity['setNameList'].length = 0;
+							this.copyPanelEntity();
+							await this.getAllGeneList();
+							await this.getChartData();
+						})()
 					}
 				},error=>console.log(error))
 			},

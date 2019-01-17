@@ -9,7 +9,7 @@
                         <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate"
                             nz-tooltip (click)="beginFilter()"></i>
                         <!-- 下拉框 -->
-                        <ng-container *ngTemplateOutlet="selectItems ? selectItems: ''"></ng-container>
+                        <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate: ''"></ng-container>
                     </div>
                     <div class="fRight">
                         <!-- 刷新、下载 -->
