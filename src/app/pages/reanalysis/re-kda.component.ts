@@ -138,7 +138,7 @@ export class ReKdaComponent implements OnInit {
 
     ngOnInit() {
         // chart
-        this.colors = ["#0000ff", "#ff0000"];
+        this.colors = ["#ff0000","#0000ff", '#999999'];
 
         this.idReq=/[^a-zA-Z0-9\_\u4e00-\u9fa5]/gi;
 
@@ -386,10 +386,10 @@ export class ReKdaComponent implements OnInit {
         let relations = [...this.storeService.getStore('relations')];
         let userRelation={...this.storeService.getStore("userRelation")};
         relations.push({...userRelation});
-        let colorArr = [["#FFF1F0", "#CF1322"], ["#FFF7E6", "#FA8C15"], ["#FEFFE6", "#FADB14"], ["#F6FFED", "#52C41A"], ["#E7F7FF", "#1890FF"], ["#F9F0FF", "#712ED1"],["#FFF0F6","#F759AC"]];
+        let colorArr = [["#D3D3D3", "#A9A9A9"]];
         let relationColors=[...relations];
         relationColors.forEach((d,i)=>{
-            d.colors=[...colorArr[i]];
+            d.colors=[...colorArr[0]];
         })
 
         let netRelations=[];
@@ -456,10 +456,10 @@ export class ReKdaComponent implements OnInit {
         let width=800,height=600; //图主体
         let padding=20;
 
-        let eachNodeLegendW=60,eachLegendH=20; //图例
 
         let colors=this.colors;
         let colorsLen=colors.length;
+        let nodetypes=['kda','initial','relation'];
 
 
         //大小
@@ -468,9 +468,9 @@ export class ReKdaComponent implements OnInit {
             .domain([min, max]).clamp(true).nice();
 
         //颜色
-        this.nodeColorScale=d3.scaleLinear()
+        this.nodeColorScale=d3.scaleOrdinal()
             .range(colors)
-            .domain([min,max]).clamp(true).nice();
+            .domain(nodetypes);
 
 
         //图例svg
@@ -562,7 +562,7 @@ export class ReKdaComponent implements OnInit {
                 .type(d3.symbolCircle)
                 .size(d=>sizeScale(d.value))
             )
-            .attr('fill', d=>d.selected ? "#167C80" : that.nodeColorScale(d.value))
+            .attr('fill', d=>d.selected ? "#167C80" : that.nodeColorScale(d.type))
             .attr("cursor", "pointer")
             .on("mouseover", m => {
                 let text = `geneID：${m.geneID}<br>type：${m.type}<br>linkNum：${m.value}<br>geneSymbol：${m.symbol}`;
@@ -585,7 +585,7 @@ export class ReKdaComponent implements OnInit {
                         }
                     })
                 } else {
-                    d3.select(this).attr('fill',that.nodeColorScale(d.value));
+                    d3.select(this).attr('fill',that.nodeColorScale(d.type));
                     that.allNodes.forEach(m=>{
                         if(d.geneID===m.geneID){
                             m.selected=false;
@@ -620,10 +620,9 @@ export class ReKdaComponent implements OnInit {
         }
 
         //node 颜色图例
-        let legendTitleSpace=10;
-        let legendNodeColor_g = legendSvg.append("g")
+        legendSvg.append("g")
             .attr("class", "legendNodeColor")
-            .attr("transform", `translate(${padding},0)`);
+            .attr("transform", `translate(${padding},${padding})`);
 
         drawNodeColorScale();
 
@@ -634,7 +633,7 @@ export class ReKdaComponent implements OnInit {
 
         // svg 点击清空选择
         d3.selectAll("#kdaChartDiv svg").on('click',function(){
-            d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
+            d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.type));
             d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
             that.selectedNodes.length=0;
             that.selectedLinks.length=0;
@@ -652,66 +651,30 @@ export class ReKdaComponent implements OnInit {
 
         // node color legend
         function drawNodeColorScale(){
-            let nodeColorLegendW= colorsLen * eachNodeLegendW;
-            //线性填充
-            let linearGradient = legendNodeColor_g.append("defs")
-                .append("linearGradient")
-                .attr("id", "nodeColorLinear")
-                .attr("x1", "0%")
-                .attr("y1", "0%")
-                .attr("x2", "100%")
-                .attr("y2", "0%");
-
-            for (let i = 0; i < colorsLen; i++) {
-                linearGradient.append("stop")
-                    .attr("offset", i * (100 / (colorsLen - 1)) + "%")
-                    .style("stop-color", colors[i]);
-            }
-
-            //画图例矩形
-            legendNodeColor_g.append("rect").attr("width", nodeColorLegendW).attr("height", eachLegendH)
-                .attr("fill", "url(#" + linearGradient.attr("id") + ")");
-
-            //画图例的轴
-            let nodeColorLegendScale = d3.scaleLinear()
-                .range([0, nodeColorLegendW])
-                .domain([min, max]).clamp(true).nice();
-
-            let nodeColorAxis = d3.axisBottom(nodeColorLegendScale).tickValues([min,(min+max)/2,max]); //设置Y轴
-            legendNodeColor_g.append("g").attr("class", "nodeColorlegendAxis")
-                .attr("transform", `translate(0,${eachLegendH})`)
-                .call(nodeColorAxis);
-
-            //图例 title
-            legendNodeColor_g.append('text')
-            .style('text-anchor','start')
-            .style('dominant-baseline','middle')
-            .attr('x',nodeColorLegendW+legendTitleSpace)
-            .attr('y',eachLegendH/2)
-            .text(isLinkNum ? 'node连接数' : that.chartEntity['quantity']['name']);
-
-            //图例交互 修改颜色
-          let legendClick_g =  legendNodeColor_g.append('g')
-                .style("cursor", "pointer")
-                .on("mouseover", function () {
-                    d3.select(this).append("title").text("单击修改颜色");
-                })
-                .on("mouseout", function () {
-                    d3.select(this).select("title").remove();
-                });
-
-            legendClick_g.selectAll(".legnedClickRect")
-                .data(colors).enter()
-                .append('rect')
-                .attr('fill',"transparent")
-                .attr('transform',(d,i)=>`translate(${i*eachNodeLegendW},0)`)
-                .attr("width", eachNodeLegendW).attr("height", eachLegendH)
-                .on("click",(d,i)=>{
+          
+            var legendOrdinal = d3.legendColor()
+                .shape("path", d3.symbol().type(d3.symbolCircle).size(150)())
+                .orient("horizontal")
+                .labels(['KDA','初始基因','关联基因'])
+                .labelWrap(60)
+                .shapePadding(60)
+                .scale(that.nodeColorScale)
+                .on("cellclick",function(d){
                     clearEventBubble(d3.event);
-                    that.color=d;
-                    that.legendIndex = i;
+
+                    nodetypes.forEach((m,i)=>{
+                        if(d===m){
+                            that.color=colors[i];
+                            that.legendIndex = i;
+                        }
+                    })
+
                     that.isShowColorPanel = true;
                 });
+          
+            legendSvg.select(".legendNodeColor")
+                .call(legendOrdinal);
+            
         }
 
         // node name text
@@ -817,7 +780,7 @@ export class ReKdaComponent implements OnInit {
 
     //搜索 node
     searchNodeChange(){
-        d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.value));
+        d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.type));
         d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
         this.selectedNodes.length=0;
         this.selectedLinks.length=0;
