@@ -20,8 +20,10 @@ declare const $: any;
 })
 export class ReClassComponent implements OnInit {
 
-    @ViewChild('clusterChart') clusterChart;
+    @ViewChild('switchChart') switchChart;
     @ViewChild('left') left;
+    @ViewChild('leftBottom') leftBottom;
+    @ViewChild('bigTable') bigTable;
 	@ViewChild('right') right;
 	@ViewChild('func') func;
     @ViewChild('transformTable') transformTable;
@@ -32,15 +34,7 @@ export class ReClassComponent implements OnInit {
 
     chart:any;
 
-    width: number;
-    height: number;
-    domainRange:number[]=[];
-    yName:string;
-    isCluster:boolean;
-    verticalList:object[]=[];
-    horizontalList:string[]=[];
-
-    isShowColorPanel: boolean = false;
+    show: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
     color: string; //当前选中的color
     colors: string[];
@@ -52,10 +46,6 @@ export class ReClassComponent implements OnInit {
     defaultSetUrl:string;
     defaultSetEntity:object;
     defaultSetData:any = null;
-
-    setDataUrl:string;
-    setDataEntity:object;
-    setData:any;
 
     // table
     setAddedThead :any= [];
@@ -76,12 +66,12 @@ export class ReClassComponent implements OnInit {
     applyOnceSearchParams: boolean;
 
     tableHeight = 0;
+    leftTableHeight = 0;
     first = true;
     switch = 'right';
 
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
-    verticalClass:any[] = []; // 图上设置面板选择的纵向分类
     selectGeneList:string[]=[]; // 图上选择的基因集字符串
 
     // 路由参数
@@ -91,6 +81,12 @@ export class ReClassComponent implements OnInit {
 
     selectGeneCount:number = 0;
     computedScrollHeight:boolean = false;
+    leftComputedScrollHeight:boolean = false;
+
+    isExceed:any = null;
+    selectedVal:string = '';
+
+    isMultipleSelect:boolean = false;
 
     constructor(
         private message: MessageService,
@@ -118,103 +114,122 @@ export class ReClassComponent implements OnInit {
 
         this.routes.paramMap.subscribe((params)=>{
             this.tid = params['params']['tid'];
-            this.tid = '20783e1576b84867aee1a63e22716fed';
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
+            this.annotation = params['params']['annotation']
             this.storeService.setTid(this.tid);
         })
     }
 
     ngOnInit() {
-        // chart
-        this.colors = ["#0070c0", "#ffffff", "#ff0000"];
-        this.gaugeColors=this.storeService.getColors();
+        (async ()=>{
+            this.first = true;
+            this.applyOnceSearchParams = true;
+            this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
+            this.defaultEntity = {
+                LCID: sessionStorage.getItem('LCID'),
+                tid:this.tid,
+                pageIndex: 1, 
+                pageSize: 20,
+                mongoId: null,
+                addThead: [], 
+                transform: false, 
+                matrix: false, 
+                relations: [],
+                sortValue: null,
+                sortKey: null,
+                reAnaly: false,
+                verticalClassification:this.verticalClass,
+                geneType: this.geneType, 
+                species: this.storeService.getStore('genome'),
+                version: this.version,
+                searchList: [],
+                sortThead:this.addColumnService['sortThead']
+            };
+            this.defaultTableId = 'default_heatmap';
+            this.defaultDefaultChecked = true;
+            this.defaultEmitBaseThead = true;
+            this.defaultCheckStatusInParams = true;
 
-        this.defaultSetUrl=`${config['javaPath']}/cluster/defaultSet`;
-        this.defaultSetEntity={
-            "tid": this.tid
-        }
+            this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
+            this.extendEntity = {
+                LCID: sessionStorage.getItem('LCID'),
+                tid:this.tid,
+                pageIndex: 1, 
+                pageSize: 20,
+                mongoId: null,
+                addThead: [],
+                transform: false, 
+                matchAll: false,
+                matrix: false,
+                relations: [], 
+                sortValue: null,
+                sortKey: null,
+                reAnaly: false,
+                verticalClassification:this.verticalClass,
+                geneType: this.geneType, 
+                species: this.storeService.getStore('genome'), 
+                version: this.version,
+                searchList: [],
+                sortThead:this.addColumnService['sortThead']
+            };
+            this.extendTableId = 'extend_heatmap';
+            this.extendDefaultChecked = true;
+            this.extendEmitBaseThead = true;
+            this.extendCheckStatusInParams = false;
 
-        this.setDataUrl=`${config['javaPath']}/cluster/classification`;
-        this.setDataEntity={
-            "geneType": this.geneType,
-            "LCID": this.storeService.getStore('LCID'),
-            "version": this.storeService.getStore('version'),
-            "genome": this.storeService.getStore('genome')
-        }
 
-        this.chartUrl=`${config['javaPath']}/cluster/heatmapGraph`;
-        this.chartEntity = {
-            "LCID": this.storeService.getStore('LCID'),
-            "tid": this.tid,
-            "isHorizontal": true,
-            "verticalClassification": [],
-            "horizontalClassification": [],
-            "version":this.storeService.getStore('version')
-        };
+            this.selectData = JSON.parse(sessionStorage.getItem('annotation_choice'))[this.annotation];
+            this.selectedVal = this.selectData[0];
+            this.isExceed = await this.getGeneCount();
 
-        // table
-        this.first = true;
-        this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
-        this.defaultEntity = {
-            LCID: sessionStorage.getItem('LCID'),
-            tid:this.tid,
-            pageIndex: 1, //分页
-            pageSize: 20,
-            mongoId: null,
-            addThead: [], //扩展列
-            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-            // matchAll: false,
-            matrix: false, //是否转化。矩阵为matrix
-            relations: [], //关系组（简写，索引最后一个字段）
-            sortValue: null,
-            sortKey: null, //排序
-            reAnaly: false,
-            verticalClassification:this.verticalClass,
-            geneType: this.geneType, //基因类型gene和transcript
-            species: this.storeService.getStore('genome'), //物种
-            version: this.version,
-            searchList: [],
-            sortThead:this.addColumnService['sortThead']
-        };
-        this.defaultTableId = 'default_heatmap';
-        this.defaultDefaultChecked = true;
-        this.defaultEmitBaseThead = true;
-        this.defaultCheckStatusInParams = true;
-
-        this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
-        this.extendEntity = {
-            LCID: sessionStorage.getItem('LCID'),
-            tid:this.tid,
-            pageIndex: 1, //分页
-            pageSize: 20,
-            mongoId: null,
-            addThead: [], //扩展列
-            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
-            matchAll: false,
-            matrix: false, //是否转化。矩阵为matrix
-            relations: [], //关系组（简写，索引最后一个字段）
-            sortValue: null,
-            sortKey: null, //排序
-            reAnaly: false,
-            verticalClassification:this.verticalClass,
-            geneType: this.geneType, //基因类型gene和transcript
-            species: this.storeService.getStore('genome'), //物种
-            version: this.version,
-            searchList: [],
-            sortThead:this.addColumnService['sortThead']
-        };
-        this.extendTableId = 'extend_heatmap';
-        this.extendDefaultChecked = true;
-        this.extendEmitBaseThead = true;
-        this.extendCheckStatusInParams = false;
+            this.chartUrl=`${config['javaPath']}/classification/graph`;
+            this.chartEntity = {
+                LCID: this.storeService.getStore('LCID'),
+                annotation:this.annotation,
+                geneType: this.geneType,
+                species: this.storeService.getStore('genome'), 
+                checkedClassifyType:this.selectedVal,
+                searchList:[],
+                pageIndex:1,
+                pageSize:20,
+                sortKey:null，
+                sortValue:null,
+                tid: this.tid,
+                version:this.storeService.getStore('version')
+            };
+        })()
     }
 
     ngAfterViewInit() {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
+    }
+
+    async getGeneCount():boolean{
+        return new Promise((resolve,reject)=>{
+            this.ajaxService.getDeferData({
+                url:`${config['javaPath']}/classification/graphIsExceed`,
+                data:{
+                    LCID:sessionStorage.getItem('LCID'),
+                    annotation:this.annotation,
+                    geneType: this.geneType,
+                    species: this.storeService.getStore('genome'),
+                    checkedClassifyType:this.selectedVal,
+                    tid:this.tid
+                }
+            }).subscribe(res=>{
+                if(res['data'] && !$.isEmptyObject(res['data'])){
+                    resolve(res['data']['isExceed']);
+                }else{
+                    resolve(true);
+                }
+            },
+            error=>{
+                resolve(true);
+            })
+        })
     }
 
     handleSelectGeneCountChange(selectGeneCount){
@@ -239,10 +254,8 @@ export class ReClassComponent implements OnInit {
     // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
         this.showBackButton = true;
-        // this.defaultEmitBaseThead = true;
         this.extendEmitBaseThead = true;
 		let checkParams = this.transformTable._getInnerParams();
-		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
 		if (this.first) {
             this.extendCheckStatusInParams = false;
@@ -271,7 +284,6 @@ export class ReClassComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
             this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
             this.addColumn._clearThead();
-			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {
 				this.transformTable._getData();
 			}, 30);
@@ -288,14 +300,32 @@ export class ReClassComponent implements OnInit {
 
     handlerRefresh(){
         this.selectGeneList.length = 0;
-        this.chartBackStatus();
+        // this.chartBackStatus();
+    }
+
+    handleSelectChange(){
+        (async()=>{
+            let curExceed = await this.getGeneCount();
+            if(this.isExceed != curExceed){
+                this.chartEntity['checkedClassifyType'] = this.selectedVal;
+            }else{
+                if(curExceed){
+                    this.bigTable._initCheckStatus();
+                    this.bigTable._setParamsOfEntityWithoutRequest('checkedClassifyType',this.selectedVal)
+                    this.bigTable._getData(true);
+                }else{
+                    this.chartEntity['checkedClassifyType'] = this.selectedVal;
+                    this.switchChart.reGetData();
+                }
+            }
+            this.isExceed = curExceed;
+        })()
     }
 
     chartBackStatus(){
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
-		// 清空表的筛选
 		this.transformTable._clearFilterWithoutRequest();
         if(!this.first){
             this.defaultEntity['addThead'] = [];
@@ -312,11 +342,9 @@ export class ReClassComponent implements OnInit {
             this.first = true;
         }else{
             this.transformTable._setParamsNoRequest('pageIndex',1);
-            /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
             if(this.selectGeneList.length) {
                 this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
             }else{
-                // this.transformTable._setParamsNoRequest('searchList',[]);
                 this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
                 this.transformTable._getData();
             }
@@ -339,7 +367,9 @@ export class ReClassComponent implements OnInit {
 	switchChange(status) {
         this.switch = status;
         setTimeout(()=>{
-            this.clusterChart.scrollHeight();
+            try{
+                this.switchChart.scrollHeight();
+            }catch(e){}
             this.computedTableHeight();
         },320)
     }
@@ -349,200 +379,87 @@ export class ReClassComponent implements OnInit {
             let h = this.tableHeight;
             this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
             if(this.tableHeight===h) this.computedScrollHeight = true;
-		} catch (error) {}
-    }
 
-    // 图的方法
-    // 设置 所需数据
-    getSetData(data){
-        this.setData=data;
-    }
-
-    //设置 默认
-    apiEntityChange(data){
-        let xNum=data.xNum;
-        if (xNum <= 8) {
-            this.width = 480;
-        } else {
-            let single_width = 60;
-            this.width = single_width * xNum;
-        }
-        this.height=480;
-        this.domainRange=[data.min,data.max];
-        this.yName='hidden';
-        this.isCluster=true;
-
-        this.chartEntity['isHorizontal']=this.isCluster;
-
-        this.chartEntity['verticalClassification']=data['verticalDefault'];
-
-        this.defaultSetData=data;
-        this.defaultEmitBaseThead = true;
-        this.verticalClass.length = 0;
-        this.verticalClass.push(...data['verticalDefault']);
-    }
-
-    //设置 确定
-    setConfirm(data){
-        this.setChartSetEntity(data);
-        this.clusterChart.reGetData();
-
-        this.chartBackStatus();
-    }
-
-    setChartSetEntity(data){
-        //图
-        this.width=data.width;
-        this.height=data.height;
-        this.domainRange=data.domainRange;
-        this.yName=data.yName;
-        this.isCluster=data.isCluster;
-
-        //请求参数
-        this.chartEntity['isHorizontal']=data.isCluster;
-        this.chartEntity['horizontalClassification']=data.horizontalList;
-        this.chartEntity['verticalClassification']=data['verticalList'];
-
-        // 表纵向分类
-        this.verticalClass.length = 0;
-        // 确定会重画图 清空选中的gene
-        this.selectGeneList.length = 0;
-        this.verticalClass.push(...data['verticalList']);
+            let l = this.leftTableHeight;
+            this.leftTableHeight = this.leftBottom.nativeElement.offsetHeight -24;
+            if(this.leftTableHeight===l) this.leftComputedScrollHeight = true;
+        } catch (error) {}
     }
 
     //画图
     drawChart(data) {
-        let that =this;
+        let x,y,category;
+        let _self = this;
+        x = data['baseThead'][data['baseThead'].length-1]['true_key'];
+        y = data['baseThead'][0]['true_key'];
+        if(data['baseThead'].length>2) category = data['baseThead'][1]['true_key'];
 
-        let legendData = [];
-        let heatmapData = data.heatmaps;
-        let dataLength = heatmapData.length;
-
-        for (let i = 0; i < dataLength; i++) {
-            let heatmapLength = heatmapData[i].heatmap.length;
-            for (let j = 0; j < heatmapLength; j++) {
-                legendData.push(heatmapData[i].heatmap[j].y);
-            }
-        }
-
-        let config:object={
+        let config = {
             chart: {
-                title: "差异基因表达量聚类热图",
-                dblclick: function(event,title) {
-                    let text = title.firstChild.nodeValue;
-                    that.promptService.open(text,(data)=>{
-                        title.textContent = data;
-                    })
+                title: `${this.annotation}分类`,
+                dblclick: function(event) {
+                    _self.promptService.open(event.target.innerHTML,newval=>{
+                        this.setChartTitle(newval);
+                        this.updateTitle();
+                    });
                 },
-                mouseover: function(event, titleObj) {
-                    titleObj
-                        .attr("fill", "blue")
-                        .append("title")
-                        .text("双击修改标题");
-                },
-                mouseout: function(event, titleObj) {
-                    titleObj.attr("fill", "#333");
-                    titleObj.select("title").remove();
-                },
-                el: "#clusterChartDiv",
-                type: "complexCluster",
-                data: data,
-                colors: that.colors,
-                heatmap: {
-                    width: that.width,
-                    height: that.height
-                },
-                left: {
-                    show: true, //控制折线是否显示
-                    isBlockClick:true
-                    // simple:{
-                    //     tooltip:function(d){
-                    //         return `left name:${d.name}`;
-                    //     }
-                    // },
-                    // complex:{
-                    //     tooltip:function(d){
-                    //         return `left type:${d.type}`
-                    //     }
-                    // }
-                },
-                top: {
-                    show: that.isCluster,
-                    // simple:{
-                    //     tooltip:function(d){
-                    //         return `top name:${d.name}`;
-                    //     }
-                    // },
-                    // complex:{
-                    //     tooltip:function(d){
-                    //         return `top type:${d.type}`
-                    //     }
-                    // }
-                },
-                onselect: data => {
-                    that.setGeneList(data);
+                width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
+                height: _self.leftBottom.nativeElement.offsetHeight * 0.8,
+                custom: [x, y, category],
+                el: "#geneClassChartDiv",
+                type: "bar",
+                enableChartSelect:true,
+                selectedModule: _self.isMultipleSelect?'multiple':'single',
+                direction:"horizontal", 
+                data: data['rows'],
+                onselect:data=>{
+                    console.log(data);
                 }
             },
             axis: {
                 x: {
-                    // rotate: 30,
-                    dblclick: function(event,title) {
-                        let text = title.firstChild.nodeValue;
-                        that.promptService.open(text,(data)=>{
-                            title.textContent = data;
-                        })
+                    title: "Number",
+                    dblclick: function(event) {
+                        _self.promptService.open(event.target.innerHTML,newval=>{
+                            this.setXTitle(newval);
+                            this.updateTitle();
+                        });
                     },
-                    mouseover: function(event, title) {
-                        title
-                        .attr("fill", "blue")
-                        .append("title")
-                        .text("双击修改");
-                    },
-                    mouseout: function(event, title) {
-                        title.attr("fill", "#333");
-                        title.select("title").remove();
-                    }
+                    rotate:60
                 },
                 y: {
-                    type:that.yName  //hidden,id,symbol
+                    title: "Level2",
+                    dblclick: function(event) {
+                        _self.promptService.open(event.target.innerHTML,newval=>{
+                            this.setYTitle(newval);
+                            this.updateTitle();
+                        });
+                    }
                 }
             },
             legend: {
                 show: true,
-                type: "gradient",
-                min: that.domainRange[0],
-                max: that.domainRange[1],
-                data: legendData,
                 position: "right",
-                click: (d, i) => {
-                    this.color=d;
-                    this.legendIndex = i;
-                    this.isShowColorPanel = true;
-                },
-                mouseover: function(event, legendObj) {
-                    legendObj.append("title").text("单击修改颜色");
-                },
-                mouseout: function(event, legendObj) {
-                    legendObj.select("title").remove();
-                },
-                oLegend:{
-                    show:true,
-                    data:data.gauge
+                click:(d,index)=>{
+                    this.color = d3.select(d).attr('fill');
+                    this.show = true;
+                    this.legendIndex = index;
                 }
             },
             tooltip: function(d) {
-                // return `<span>基因：${d.x}</span><br><span>y：${d.y}</span>`;
+                if(category)  return "<span>Number："+d[x]+"</span><br><span>Level1："+d[category]+"</span><br><span>Level2："+d[y]+"</span>"
+                return "<span>Number："+d[x]+"</span><br><span>Level2："+d[y]+"</span>";
             }
         }
 
-        this.chart=new d4().init(config);
+        this.chart=new d4().init(config,{minWidth:240});
     }
 
     //color change 回调函数
     colorChange(curColor) {
-        this.color = curColor;
-        this.colors.splice(this.legendIndex, 1, curColor);
-        this.clusterChart.redraw();
+        this.chart.setColor(curColor, this.legendIndex);
+        this.chart.redraw();
+
     }
 
     setGeneList(geneList) {
@@ -550,5 +467,9 @@ export class ReClassComponent implements OnInit {
         this.chartBackStatus();
     }
 
-
+    chartSelectModelChange(model){
+        console.log(this.chart);
+        this.chart.setChartSelectModule(this.isMultipleSelect?'multiple':'single');
+        // this.chart.set
+    }
 }

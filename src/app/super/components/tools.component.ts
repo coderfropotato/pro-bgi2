@@ -28,8 +28,8 @@ export class ToolsComponent implements OnInit {
 
 	toolList: object[] = [
 		{ type: 'heatmap', name: '聚类重分析',  desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。',limit:[1],category:"common" },
-		{ type: 'geneClass', name: '基因分类', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',limit:[1,500],category:"common"  },
-		{ type: 'geneRich', name: '基因富集', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',limit:[1,500] ,category:"common" },
+		{ type: 'classification', name: '基因分类', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',limit:[1],category:"common"  },
+		{ type: 'enrichment', name: '基因富集', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',limit:[1] ,category:"common" },
 		{ type: 'net', name: '蛋白网络互作', desc: '图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。',limit:[1,500] ,category:"common" },
 		{ type: 'line', name: '折线图', desc: '以折线图方式呈现数据',limit:[1,100],category:"common"  },
 		{ type: 'KDA', name: 'KDA', desc: 'kda',limit:[1,500],category:"common"  },
@@ -118,6 +118,18 @@ export class ToolsComponent implements OnInit {
 	doHeatmapRelationAjax:boolean = false;
 	heatmapReSelectRelation:any[] = [];;
 	heatmapReSelectGeneType:object[] = [];
+
+	// 基因分类参数
+	geneClassData:any[] = [];
+	geneClassSelect:any[] = [];
+	geneClassError:boolean = false;
+	doGeneClassAjax:boolean = false;
+
+	// 基因富集参数
+	geneRichData:any[] = [];
+	geneRichSelect:any[] = [];
+	geneRichError:boolean = false;
+	doGeneRichAjax:boolean = false;
 
 	// 当前选择的重分析类型
 	selectType: string = '';
@@ -220,6 +232,18 @@ export class ToolsComponent implements OnInit {
 		this.heatmapReSelectRelation = [];
 		this.heatmapReError = false;
 		this.doHeatmapRelationAjax = false;
+
+		// 基因分类参数
+		this.geneClassData = [];
+		this.geneClassSelect = [];
+		this.geneClassError = false;
+		this.doGeneClassAjax = false;
+
+		// 基因富集参数
+		this.geneRichData = [];
+		this.geneRichSelect = [];
+		this.geneRichError = false;
+		this.doGeneRichAjax = false;
 
 		// 页面参数
 		this.selectType = '';
@@ -567,16 +591,6 @@ export class ToolsComponent implements OnInit {
 					this.isSubmitReanalysis = false;
 				}
 			);
-	}
-
-	// 基因分类
-	getgeneClassParams() {
-		console.log('geneClass');
-    }
-
-	// 基因富集
-	getgeneRichParams() {
-		console.log('geneRich');
 	}
 
 	getchiSquareParams() {
@@ -1333,10 +1347,224 @@ export class ToolsComponent implements OnInit {
 
 	}
 
+	getclassificationParams(){
+		let entity = this.toolsService.get('tableEntity');
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/classification/config`,
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					geneType:entity['geneType'],
+					species: entity['species'],
+					version: this.storeService.getStore('version'),
+				}
+			}).subscribe(
+					res=>{
+						this.geneClassData.length = 0;
+						this.geneClassSelect.length = 0;
 
+						if(res['status']==0 &&res['data'].length){
+							this.geneClassData = res['data'].map((v,index)=>{
+								let obj = {
+									name:v,
+									checked:index?false:true
+								}
+								return obj;
+							})
+							this.geneClassSelect.push(this.geneClassData[0]);
+							this.geneClassError = false;
+						}else{
+							this.geneClassError = true;
+						}
+						
+					},
+					error=>{
+						this.geneClassData.length = 0;
+						this.geneClassSelect.length = 0;
+						this.geneClassError = true;
+					},
+					()=>{
+						this.doGeneClassAjax = true;
+					}
+				)
+	}
 
-	getreanalysisParams() {
-		console.log('reanalysis');
+	handlerGeneClassSelect(klass){
+		if(klass['checked']){
+			klass['checked'] = false;
+			let index = this.geneClassSelect.findIndex((val,index)=>{
+				return val['name'] === klass['name'];
+			})
+
+			if(index!=-1) this.geneClassSelect.splice(index,1);
+		}else{
+			this.geneClassSelect.forEach(v=>v['checked'] = false);
+			klass['checked'] = true;
+			this.geneClassSelect.length = 0;
+			this.geneClassSelect.push(klass);
+		}
+	}
+
+	geneClassConfirm(){
+		this.isSubmitReanalysis = true;
+		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+		let entity = this.toolsService.get('tableEntity');
+        entity['relations'] = this.heatmapReSelectRelation;
+		entity['mongoId'] = this.toolsService.get('mongoId');
+		this.ajaxService
+			.getDeferData({
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					reanalysisType: "classification",
+					needReanalysis: 2,
+					version: this.storeService.getStore('version'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.storeService.getStore('genome'),
+					...entity,
+					annotation:this.geneClassSelect[0]['name']
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						if(data['data'].length){
+							let href = `${window.location.href.split('report')[0]}report/reanalysis/re-classification/${this.toolsService.get('geneType')}/${data['data'][0]}/${this.storeService.getStore('version')}/${this.geneClassSelect[0]['name']}`;
+							newWindow.location.href = href;
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
+							this.notify.blank('tips：', '基因分类重分析提交成功', {
+								nzStyle: { width: '200px' },
+							});
+						}else{
+							this.notify.blank('tips：', '重分析提交失败，请重试', {
+								nzStyle: { width: '200px' },
+							});
+						}
+					} else {
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+						});
+					}
+				},
+				(err) => {
+					this.notify.blank('tips：', '重分析提交失败，请重试', {
+						nzStyle: { width: '200px' },
+					});
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
+	}
+
+	getenrichmentParams(){
+		let entity = this.toolsService.get('tableEntity');
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/classification/config`,
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					geneType:entity['geneType'],
+					species: entity['species'],
+					version: this.storeService.getStore('version'),
+				}
+			}).subscribe(
+					res=>{
+						this.geneRichData.length = 0;
+						this.geneRichSelect.length = 0;
+						if(res['status']==0 &&res['data'].length){
+							this.geneRichData = res['data'].map((v,index)=>{
+								let obj = {
+									name:v,
+									checked:index?false:true
+								}
+								return obj;
+							})
+							this.geneRichSelect.push(this.geneRichData[0]);
+							this.geneRichError = false;
+						}else{
+							this.geneRichError = true;
+						}
+						
+					},
+					error=>{
+						this.geneRichData.length = 0;
+						this.geneRichSelect.length = 0;
+						this.geneRichError = true;
+					},
+					()=>{
+						this.doGeneRichAjax = true;
+					}
+				)
+	}
+
+	handlerGeneRichSelect(rich){
+		if(rich['checked']){
+			rich['checked'] = false;
+			let index = this.geneRichSelect.findIndex((val,index)=>{
+				return val['name'] === rich['name'];
+			})
+
+			if(index!=-1) this.geneRichSelect.splice(index,1);
+		}else{
+			this.geneRichSelect.forEach(v=>v['checked'] = false);
+			rich['checked'] = true;
+			this.geneRichSelect.length = 0;
+			this.geneRichSelect.push(rich);
+		}
+	}
+
+	geneRichConfirm(){
+		this.isSubmitReanalysis = true;
+		let entity = this.toolsService.get('tableEntity');
+        entity['relations'] = this.heatmapReSelectRelation;
+		entity['mongoId'] = this.toolsService.get('mongoId');
+		this.ajaxService
+			.getDeferData({
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					reanalysisType: "classification",
+					needReanalysis: 1,
+					version: this.storeService.getStore('version'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.storeService.getStore('genome'),
+					...entity,
+					annotation:this.geneRichSelect[0]['name']
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						if(data['data'].length){
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
+							this.notify.blank('tips：', '基因富集重分析提交成功', {
+								nzStyle: { width: '200px' },
+							});
+						}else{
+							this.notify.blank('tips：', '重分析提交失败，请重试', {
+								nzStyle: { width: '200px' },
+							});
+						}
+					} else {
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' },
+						});
+					}
+				},
+				(err) => {
+					this.notify.blank('tips：', '重分析提交失败，请重试', {
+						nzStyle: { width: '200px' },
+					});
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
 	}
 
 	handlerChildClose() {
