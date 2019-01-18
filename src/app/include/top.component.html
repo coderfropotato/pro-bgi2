@@ -11,6 +11,8 @@
                 <i *ngIf="upload" class="iconfont icon-shangchuanwenjian" title="上传数据" (click)="uploadFn()"></i>
                 <i *ngIf="analysis" class="iconfont icon-fenxi" title="我的分析" (click)="analysisFn()"></i>
                 <i *ngIf="lang" class="iconfont" style="margin-right:16px;" [class.icon-yingwenqiehuan]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
+                <!-- 修改主题色 -->
+                <!-- <input type="color" (change)="handleColorChange($event)"> -->
                 <button style="padding: 0 7px;height: 24px;" nz-button nzType="primary" (click)="handleFullScreenClick()">切换全屏</button>
             </div>
     </div>

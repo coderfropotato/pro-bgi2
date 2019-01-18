@@ -20,7 +20,8 @@ export class TopComponent implements OnInit {
 	htmlString: string[] = [];
 	exportPdfFlag: any = false;
 	browserLang: string;
-	navigatedRoutes: Array<string> = [];
+    navigatedRoutes: Array<string> = [];
+    themeColor:string = '#5278f8';
 
 	@Input() pdf: boolean = true;
 	@Input() analysis: boolean = true;
@@ -192,5 +193,15 @@ export class TopComponent implements OnInit {
 			document['mozFullScreenElement'] ||
 			document['webkitFullscreenElement']
 		);
-	}
+    }
+
+    handleColorChange(event){
+        let color = event.target.value;
+        let style = $('head > style');
+        let reg = new RegExp(this.themeColor,'g');
+        $.each(style,(index,val)=>{
+            $(val).html($(val).html().replace(reg,color))
+        })
+        this.themeColor = color;
+    }
 }
