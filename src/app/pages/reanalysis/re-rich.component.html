@@ -1,26 +1,51 @@
 
-<div class="report-analysis geneclass">
+<div class="report-analysis geneRich">
     <app-menu [menu]="[]" [geneSwitch]="false"> <p class="menu-slot-text">重分析id：{{tid}}</p> </app-menu>
     <div class="content reanalysis-content row">
-    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
-        <div #leftBottom class="left-bottom-layout">
-            <!-- 下拉选择 -->
-            <ng-template #selectTemplate>
-                <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
-                    <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
-                </nz-select>
-            </ng-template>
-            <!-- 图标切换 -->
-            <ng-container *ngIf="isExceed!=null && !isExceed">
-                <app-table-switch-chart #switchChart [id]="'re-class'" [isOnlyChart]="false" [tableUrl]="chartUrl"  [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true"> </app-table-switch-chart>
+        <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+            <div #leftBottom class="left-bottom-layout" style=" overflow: auto; ">
+                <!-- 下拉选择 -->
+                <ng-template #selectTemplate>
+                    <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                        <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
+                    </nz-select>
+                </ng-template>
 
-                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
-            </ng-container>
-            <!-- 大表 -->
-            <ng-container *ngIf="isExceed!=null && isExceed">
-                <app-big-table-check class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl" tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight"></app-big-table-check>
-            </ng-container>
-        </div>
+                <!-- 可选择数据的大表 -->
+                <ng-container>
+                    <app-big-table-check class="no-outside-border" #bigTable
+                        [selectTemplate]="selectTemplate" 
+                        [tableHeight]="leftTableHeight / 2" 
+                        [defaultChecked]="false" 
+                        [pageEntity]="chartEntity" 
+                        [url]="chartUrl" 
+                        tableId="geneRichCheckBigTable" 
+                        [(computedScrollHeight)]="leftComputedScrollHeight">
+                    </app-big-table-check>
+                </ng-container>
+
+                <div class="text-info">最多只对qvalue较小的top60进行重新画图</div>
+
+                <!-- 图表切换 -->
+                <ng-container>
+                    <app-table-switch-chart #switchChart 
+                        [id]="'re-rich'" 
+                        [tableUrl]="chartUrl"  
+                        [apiEntity]="chartEntity" 
+                        (drawChartEmit)="drawChart($event)" 
+                        [chartId]="'geneRichChartDiv'" 
+                        [chartName]="'基因富集'" 
+                        (refresh)="handlerRefresh()" 
+                        [isHasMultiSelect]="true" 
+                        [(isMultiSelect)]="isMultipleSelect" 
+                        (isMultiSelectChange)="chartSelectModelChange($event)" 
+                        (multipleConfirmEmit)="multipleSelectConfirm()" 
+                        [flex]="true"> 
+                    </app-table-switch-chart>
+
+                    <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
+                </ng-container>
+            </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
             <div class="switch">

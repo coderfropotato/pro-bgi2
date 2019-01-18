@@ -76,7 +76,6 @@ export class ReRichComponent implements OnInit {
     computedScrollHeight:boolean = false;
     leftComputedScrollHeight:boolean = false;
 
-    isExceed:any = null;
     selectedVal:string = '';
     annotation:string = '';
     selectData:any = [];
@@ -174,7 +173,6 @@ export class ReRichComponent implements OnInit {
 
             this.selectData = JSON.parse(sessionStorage.getItem('annotation_choice'))[this.annotation];
             this.selectedVal = this.selectData[0];
-            this.isExceed = await this.getGeneCount();
 
             this.chartUrl=`${config['javaPath']}/classification/graph`;
             this.chartEntity = {
@@ -200,30 +198,6 @@ export class ReRichComponent implements OnInit {
 		}, 30);
     }
 
-    async getGeneCount(){
-        return new Promise((resolve,reject)=>{
-            this.ajaxService.getDeferData({
-                url:`${config['javaPath']}/classification/graphIsExceed`,
-                data:{
-                    LCID:sessionStorage.getItem('LCID'),
-                    annotation:this.annotation,
-                    geneType: this.geneType,
-                    species: this.storeService.getStore('genome'),
-                    checkedClassifyType:this.selectedVal,
-                    tid:this.tid
-                }
-            }).subscribe(res=>{
-                if(res['data'] && !$.isEmptyObject(res['data'])){
-                    resolve(res['data']['isExceed']);
-                }else{
-                    resolve(true);
-                }
-            },
-            error=>{
-                resolve(true);
-            })
-        })
-    }
 
     handleSelectGeneCountChange(selectGeneCount){
         this.selectGeneCount = selectGeneCount;
@@ -297,22 +271,8 @@ export class ReRichComponent implements OnInit {
     }
 
     handleSelectChange(){
-        (async()=>{
-            let curExceed = await this.getGeneCount();
-            if(this.isExceed != curExceed){
-                this.chartEntity['checkedClassifyType'] = this.selectedVal;
-            }else{
-                if(curExceed){
-                    this.bigTable._initCheckStatus();
-                    this.bigTable._setParamsOfEntityWithoutRequest('checkedClassifyType',this.selectedVal)
-                    this.bigTable._getData(true);
-                }else{
-                    this.chartEntity['checkedClassifyType'] = this.selectedVal;
-                    this.switchChart.reGetData();
-                }
-            }
-            this.isExceed = curExceed;
-        })()
+        this.chartEntity['checkedClassifyType'] = this.selectedVal;
+        this.switchChart.reGetData(); 
     }
 
     chartBackStatus(){
@@ -389,7 +349,7 @@ export class ReRichComponent implements OnInit {
 
         let config = {
             chart: {
-                title: `${this.annotation}分类`,
+                title: `${this.annotation}富集`,
                 dblclick: function(event) {
                     _self.promptService.open(event.target.innerHTML,newval=>{
                         this.setChartTitle(newval);
@@ -399,7 +359,7 @@ export class ReRichComponent implements OnInit {
                 width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
                 height: _self.leftBottom.nativeElement.offsetHeight * 0.8,
                 custom: [x, y, category],
-                el: "#geneClassChartDiv",
+                el: "#geneRichChartDiv",
                 type: "bar",
                 enableChartSelect:true,
                 selectedModule: _self.isMultipleSelect?'multiple':'single',
