@@ -466,11 +466,11 @@ export class BigTableCheckComponent implements OnInit {
         let count:number = 0;
 
         if(checked.length !== this.checked.length) {
-            this.checkedChange.emit(Object.values(this.checkedMap));
+            this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
             return ;
         }
         if(checked.join(',') !== this.checked.join(',')) {
-            this.checkedChange.emit(Object.values(this.checkedMap));
+            this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
             return ;
         }
 
@@ -481,7 +481,7 @@ export class BigTableCheckComponent implements OnInit {
             }
         }
         diff = !!count;
-        if(diff)  this.checkedChange.emit(Object.values(this.checkedMap));
+        if(diff)  this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
 	}
 
 	/**

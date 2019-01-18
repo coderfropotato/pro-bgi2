@@ -90,6 +90,9 @@ export class ReClassComponent implements OnInit {
 
     isMultipleSelect:boolean = false;
 
+    // 图表选择的数据
+    checkedList:string[] = [] ;
+
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -125,12 +128,17 @@ export class ReClassComponent implements OnInit {
 
     ngOnInit() {
         (async ()=>{
+
+            this.selectData = JSON.parse(sessionStorage.getItem('annotation_choice'))[this.annotation];
+            this.selectedVal = this.selectData[0];
+
             this.first = true;
             this.applyOnceSearchParams = true;
-            this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
+            this.defaultUrl = `${config['javaPath']}/classification/table`;
             this.defaultEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid:this.tid,
+                annotation:this.annotation,
                 pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,
@@ -145,17 +153,21 @@ export class ReClassComponent implements OnInit {
                 species: this.storeService.getStore('genome'),
                 version: this.version,
                 searchList: [],
-                sortThead:this.addColumnService['sortThead']
+                checkedClassifyType: this.selectedVal,
+                checkedClassifyList:this.checkedList,
+                sortThead:this.addColumnService['sortThead'],
+                removeColumns:[]
             };
-            this.defaultTableId = 'default_heatmap';
+            this.defaultTableId = 'default_class';
             this.defaultDefaultChecked = true;
             this.defaultEmitBaseThead = true;
             this.defaultCheckStatusInParams = true;
 
-            this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
+            this.extendUrl = `${config['javaPath']}/classification/table`;
             this.extendEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid:this.tid,
+                annotation:this.annotation,
                 pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,
@@ -171,18 +183,18 @@ export class ReClassComponent implements OnInit {
                 species: this.storeService.getStore('genome'),
                 version: this.version,
                 searchList: [],
-                sortThead:this.addColumnService['sortThead']
+                checkedClassifyType: this.selectedVal,
+                checkedClassifyList:this.checkedList,
+                sortThead:this.addColumnService['sortThead'],
+                removeColumns:[]
             };
-            this.extendTableId = 'extend_heatmap';
+            this.extendTableId = 'extend_class';
             this.extendDefaultChecked = true;
             this.extendEmitBaseThead = true;
             this.extendCheckStatusInParams = false;
 
 
-            this.selectData = JSON.parse(sessionStorage.getItem('annotation_choice'))[this.annotation];
-            this.selectedVal = this.selectData[0];
             this.isExceed = await this.getGeneCount();
-
             this.chartUrl=`${config['javaPath']}/classification/graph`;
             this.chartEntity = {
                 LCID: this.storeService.getStore('LCID'),
@@ -234,6 +246,10 @@ export class ReClassComponent implements OnInit {
 
     handleCheckChange(checked){
         console.log(checked);
+        let keys = checked[0];
+        this.checkedList.length = 0;
+        this.checkedList.push(...keys);
+        this.chartBackStatus();
     }
 
     handleSelectGeneCountChange(selectGeneCount){
@@ -272,6 +288,8 @@ export class ReClassComponent implements OnInit {
             this.extendEntity['relations'] = relations;
             this.extendEntity['transform'] = true;
             this.extendEntity['matrix'] = true;
+            this.extendEntity['checkedClassifyType'] = checkParams['tableEntity']['checkedClassifyType'];
+            this.extendEntity['checkedClassifyList'] = checkParams['tableEntity']['checkedClassifyList'];
             this.addColumn._clearThead();
 			this.extendEntity['addThead'] = [];
 			this.first = false;
@@ -283,6 +301,8 @@ export class ReClassComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
+			this.transformTable._setExtendParamsWithoutRequest( 'checkedClassifyType', checkParams['tableEntity']['checkedClassifyType'] );
+			this.transformTable._setExtendParamsWithoutRequest( 'checkedClassifyList', checkParams['tableEntity']['checkedClassifyList'] );
 			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
 			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
 			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
@@ -309,6 +329,10 @@ export class ReClassComponent implements OnInit {
 
     handleSelectChange(){
         (async()=>{
+            // 转换表重新获取数据
+            this.checkedList.length = 0;
+            this.chartBackStatus();
+            
             let curExceed = await this.getGeneCount();
             if(this.isExceed != curExceed){
                 this.chartEntity['checkedClassifyType'] = this.selectedVal;
@@ -322,6 +346,7 @@ export class ReClassComponent implements OnInit {
                     this.switchChart.reGetData();
                 }
             }
+            this.checkedList.length = 0;
             this.isExceed = curExceed;
         })()
     }
@@ -336,22 +361,12 @@ export class ReClassComponent implements OnInit {
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['pageIndex'] = 1;
-            if(this.selectGeneList.length){
-                this.defaultEntity['searchList'] = [
-                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
-                ];
-            }else{
-                this.defaultEntity['searchList']= [] ;
-            }
+            this.defaultEntity['checkedClassifyType'] = this.selectedVal;
             this.first = true;
         }else{
             this.transformTable._setParamsNoRequest('pageIndex',1);
-            if(this.selectGeneList.length) {
-                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
-            }else{
-                this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
-                this.transformTable._getData();
-            }
+			this.transformTable._setParamsNoRequest('checkedClassifyType', this.selectedVal);
+			this.transformTable._getData();
         }
     }
 
@@ -408,7 +423,7 @@ export class ReClassComponent implements OnInit {
                     });
                 },
                 width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
-                height: _self.leftBottom.nativeElement.offsetHeight * 0.8,
+                height: data['rows'].length * 20,
                 custom: [x, y, category],
                 el: "#geneClassChartDiv",
                 type: "bar",
@@ -417,7 +432,11 @@ export class ReClassComponent implements OnInit {
                 direction:"horizontal",
                 data: data['rows'],
                 onselect:data=>{
-                    console.log(data);
+                    _self.checkedList.length = 0;
+                    _self.checkedList.push(...data.map(v=>v[y]));
+                    if(!_self.isMultipleSelect){
+                        _self.chartBackStatus();
+                    }
                 }
             },
             axis: {
@@ -468,6 +487,10 @@ export class ReClassComponent implements OnInit {
 
     setGeneList(geneList) {
         this.selectGeneList = geneList;
+        this.chartBackStatus();
+    }
+
+    multipleSelectConfirm(){
         this.chartBackStatus();
     }
 

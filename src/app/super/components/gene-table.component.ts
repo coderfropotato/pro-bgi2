@@ -62,6 +62,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
     @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
 
+    // 过滤表头字段 用tid区分是报告还是小工具 isKeggClass 区分是kegg的分类还是富集
+    @Input() isKeggClass:boolean = false; // 区分是kegg的分类还是富集
+    @Input() tid:string = ''; 
+
     count:number = 0; // 选中的基因个数
     mongoId:any = null;
     scroll: any = { x: "0", y: "0" };
@@ -414,6 +418,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     this.applyOnceSearchParams = false;
                     this.applyOnceSearchParamsChange.emit(this.applyOnceSearchParams);
                 }
+
                 if(this.resetCheckGraph){
                     if('checkGraph' in this.tableEntity) this.tableEntity['checkGraph'] = false;
                     this.resetCheckGraph = false;
