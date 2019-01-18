@@ -44,6 +44,8 @@ export class ReRichComponent implements OnInit {
 
     isShowTable:boolean;
 
+    visible:boolean=false;
+
     // table
     setAddedThead :any= [];
     defaultEntity: object;

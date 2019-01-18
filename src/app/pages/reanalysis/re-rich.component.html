@@ -16,6 +16,19 @@
                     <nz-select *ngIf="!isShowTable" style="width: 120px;" class="ml12" nzSize="small" nzPlaceHolder="Select classification" [(ngModel)]="chartType" (ngModelChange)="chartTypeChange()">
                         <nz-option *ngFor="let item of chartTypeData" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
                     </nz-select>
+
+                    <nz-dropdown *ngIf="!isShowTable" [nzClickHide]="false" [(nzVisible)]="visible">
+                        <div nz-dropdown class="dropdownTitle">
+                            <span>选中的{{annotation}}</span>&nbsp;
+                            <span style="color: red">({{checkedData.length}})</span>
+                        </div>
+                        <ul nz-menu>
+                            <li nz-menu-item>Clicking me will not close the menu.</li>
+                            <li nz-menu-item>Clicking me will not close the menu also.</li>
+                            <li nz-menu-item (click)="visible = false">Clicking me will close the menu</li>
+                        </ul>
+                    </nz-dropdown>
+
                 </ng-template>
 
 
