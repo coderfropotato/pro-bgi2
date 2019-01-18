@@ -12,7 +12,7 @@
                 </ng-template>
 
                 <!-- 可选择数据的大表 -->
-                <ng-container>
+                <ng-container style="margin-bottom:20px ">
                     <app-big-table-check class="no-outside-border" #bigTable
                         [selectTemplate]="selectTemplate" 
                         [tableHeight]="leftTableHeight / 2" 
@@ -20,11 +20,14 @@
                         [pageEntity]="chartEntity" 
                         [url]="chartUrl" 
                         tableId="geneRichCheckBigTable" 
+                        (checkedChange)="checkedChange($event)"
                         [(computedScrollHeight)]="leftComputedScrollHeight">
                     </app-big-table-check>
                 </ng-container>
 
-                <div class="text-info">最多只对qvalue较小的top60进行重新画图</div>
+                <div class="text-info">
+                    <span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>
+                </div>
 
                 <!-- 图表切换 -->
                 <ng-container>

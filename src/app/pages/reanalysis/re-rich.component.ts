@@ -80,6 +80,8 @@ export class ReRichComponent implements OnInit {
     annotation:string = '';
     selectData:any = [];
 
+    checkedData:any=[];
+
     isMultipleSelect:boolean = false;
 
     constructor(
@@ -205,6 +207,10 @@ export class ReRichComponent implements OnInit {
 
     toggle(status){
         this.addColumnShow = status;
+    }
+
+    checkedChange(data){
+        this.checkedData=data;
     }
 
     // 表
