@@ -212,12 +212,31 @@ export class ReRichComponent implements OnInit {
         })()
     }
 
+    showTableChange(isshowtable){
+        this.isShowTable=isshowtable;
+    }
+
+    checkedChange(data){
+        this.checkedData=data[1];
+    }
+
+    chartTypeChange(){
+        console.log(this.chartType)
+    }
+
+    //排序
+    _sortArr(key, arr) {
+        arr.sort(function(a, b) {
+            return a[key] - b[key];
+        })
+    }
+
+
     ngAfterViewInit() {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
     }
-
 
     handleSelectGeneCountChange(selectGeneCount){
         this.selectGeneCount = selectGeneCount;
@@ -227,18 +246,6 @@ export class ReRichComponent implements OnInit {
         this.addColumnShow = status;
     }
 
-    showTableChange(isshowtable){
-        this.isShowTable=isshowtable;
-    }
-
-    checkedChange(data){
-        console.log(data)
-        this.checkedData=data;
-    }
-
-    chartTypeChange(){
-        console.log(this.chartType)
-    }
 
     // 表
     addThead(thead) {
