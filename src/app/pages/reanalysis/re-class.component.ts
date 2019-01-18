@@ -85,6 +85,8 @@ export class ReClassComponent implements OnInit {
 
     isExceed:any = null;
     selectedVal:string = '';
+    annotation:string = '';
+    selectData:any = [];
 
     isMultipleSelect:boolean = false;
 
@@ -116,7 +118,7 @@ export class ReClassComponent implements OnInit {
             this.tid = params['params']['tid'];
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
-            this.annotation = params['params']['annotation']
+            this.annotation = params['params']['annotation'];
             this.storeService.setTid(this.tid);
         })
     }
@@ -139,7 +141,6 @@ export class ReClassComponent implements OnInit {
                 sortValue: null,
                 sortKey: null,
                 reAnaly: false,
-                verticalClassification:this.verticalClass,
                 geneType: this.geneType, 
                 species: this.storeService.getStore('genome'),
                 version: this.version,
@@ -166,7 +167,6 @@ export class ReClassComponent implements OnInit {
                 sortValue: null,
                 sortKey: null,
                 reAnaly: false,
-                verticalClassification:this.verticalClass,
                 geneType: this.geneType, 
                 species: this.storeService.getStore('genome'), 
                 version: this.version,
@@ -193,7 +193,7 @@ export class ReClassComponent implements OnInit {
                 searchList:[],
                 pageIndex:1,
                 pageSize:20,
-                sortKey:null，
+                sortKey:null,
                 sortValue:null,
                 tid: this.tid,
                 version:this.storeService.getStore('version')
@@ -207,7 +207,7 @@ export class ReClassComponent implements OnInit {
 		}, 30);
     }
 
-    async getGeneCount():boolean{
+    async getGeneCount(){
         return new Promise((resolve,reject)=>{
             this.ajaxService.getDeferData({
                 url:`${config['javaPath']}/classification/graphIsExceed`,
