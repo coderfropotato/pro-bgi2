@@ -39,6 +39,8 @@ export class ReRichComponent implements OnInit {
     color: string; //当前选中的color
     colors: string[];
 
+    chartTypeData:any=[];
+    chartType:string;
 
     // table
     setAddedThead :any= [];
@@ -119,6 +121,18 @@ export class ReRichComponent implements OnInit {
 
     ngOnInit() {
         (async ()=>{
+            this.chartTypeData=[
+                {
+                    key:"bubble",
+                    value:"气泡图"
+                },
+                {
+                key:"column",
+                value:"柱状图"
+            }];
+
+            this.chartType=this.chartTypeData[0]['key'];
+
             this.first = true;
             this.applyOnceSearchParams = true;
             this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
@@ -210,7 +224,12 @@ export class ReRichComponent implements OnInit {
     }
 
     checkedChange(data){
+        console.log(data)
         this.checkedData=data;
+    }
+
+    chartTypeChange(){
+        console.log(this.chartType)
     }
 
     // 表
