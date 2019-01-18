@@ -131,17 +131,17 @@ export class ReClassComponent implements OnInit {
             this.defaultEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid:this.tid,
-                pageIndex: 1, 
+                pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,
-                addThead: [], 
-                transform: false, 
-                matrix: false, 
+                addThead: [],
+                transform: false,
+                matrix: false,
                 relations: [],
                 sortValue: null,
                 sortKey: null,
                 reAnaly: false,
-                geneType: this.geneType, 
+                geneType: this.geneType,
                 species: this.storeService.getStore('genome'),
                 version: this.version,
                 searchList: [],
@@ -156,19 +156,19 @@ export class ReClassComponent implements OnInit {
             this.extendEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid:this.tid,
-                pageIndex: 1, 
+                pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,
                 addThead: [],
-                transform: false, 
+                transform: false,
                 matchAll: false,
                 matrix: false,
-                relations: [], 
+                relations: [],
                 sortValue: null,
                 sortKey: null,
                 reAnaly: false,
-                geneType: this.geneType, 
-                species: this.storeService.getStore('genome'), 
+                geneType: this.geneType,
+                species: this.storeService.getStore('genome'),
                 version: this.version,
                 searchList: [],
                 sortThead:this.addColumnService['sortThead']
@@ -188,7 +188,7 @@ export class ReClassComponent implements OnInit {
                 LCID: this.storeService.getStore('LCID'),
                 annotation:this.annotation,
                 geneType: this.geneType,
-                species: this.storeService.getStore('genome'), 
+                species: this.storeService.getStore('genome'),
                 checkedClassifyType:this.selectedVal,
                 searchList:[],
                 pageIndex:1,
@@ -230,6 +230,10 @@ export class ReClassComponent implements OnInit {
                 resolve(true);
             })
         })
+    }
+
+    handleCheckChange(checked){
+        console.log(checked);
     }
 
     handleSelectGeneCountChange(selectGeneCount){
@@ -410,7 +414,7 @@ export class ReClassComponent implements OnInit {
                 type: "bar",
                 enableChartSelect:true,
                 selectedModule: _self.isMultipleSelect?'multiple':'single',
-                direction:"horizontal", 
+                direction:"horizontal",
                 data: data['rows'],
                 onselect:data=>{
                     console.log(data);

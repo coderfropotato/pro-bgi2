@@ -18,7 +18,7 @@
                 </ng-container>
                 <!-- 大表 -->
                 <ng-container *ngIf="isExceed!=null && isExceed">
-                    <app-big-table-check class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl" tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight"></app-big-table-check>
+                    <app-big-table-check class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl" tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight" (checkedChange)="handleCheckChange($event)"></app-big-table-check>
                 </ng-container>
             </div>
             </div>
