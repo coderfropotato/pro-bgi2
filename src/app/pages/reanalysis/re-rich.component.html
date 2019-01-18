@@ -20,11 +20,10 @@
                     <nz-dropdown *ngIf="!isShowTable" [nzClickHide]="false" [(nzVisible)]="visible">
                         <div nz-dropdown class="dropdownTitle">
                             <span>选中的{{annotation}}</span>&nbsp;
-                            <span style="color: red">({{checkedData.length}})</span>
+                            <span style="color: red">({{checkedDrawData.length}})</span>
                         </div>
                         <ul nz-menu>
-                            <li nz-menu-item>Clicking me will not close the menu.</li>
-                            <li nz-menu-item>Clicking me will not close the menu also.</li>
+                            <li nz-menu-item *ngFor="let item of checkedDrawData"></li>
                             <li nz-menu-item (click)="visible = false">Clicking me will close the menu</li>
                         </ul>
                     </nz-dropdown>

@@ -46,6 +46,9 @@ export class ReRichComponent implements OnInit {
 
     visible:boolean=false;
 
+    checkedData:any=[];
+    checkedDrawData:any=[];
+
     // table
     setAddedThead :any= [];
     defaultEntity: object;
@@ -86,7 +89,6 @@ export class ReRichComponent implements OnInit {
     annotation:string = '';
     selectData:any = [];
 
-    checkedData:any=[];
 
     isMultipleSelect:boolean = false;
 
@@ -218,6 +220,14 @@ export class ReRichComponent implements OnInit {
 
     checkedChange(data){
         this.checkedData=data[1];
+        this._sortArr('num',this.checkedData);
+
+        if(this.checkedData.length <=60){
+            this.checkedDrawData=[...this.checkedData];
+        }else{
+            this.checkedDrawData=[...this.checkedData.slice(0,60)];
+        }
+        console.log(this.checkedDrawData)
     }
 
     chartTypeChange(){
@@ -313,6 +323,7 @@ export class ReRichComponent implements OnInit {
     handleSelectChange(){
         this.chartEntity['checkedClassifyType'] = this.selectedVal;
         this.switchChart.reGetData(); 
+        this.bigTable._getData();
     }
 
     chartBackStatus(){
