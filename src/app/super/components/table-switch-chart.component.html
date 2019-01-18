@@ -14,12 +14,12 @@
             </span>
             <!-- 下拉框 -->
             <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate :''"></ng-container>
-            <!--图 搜索 -->
-            <ng-container *ngTemplateOutlet="(!isShowTable && chartLeftTemplate && !error) ? chartLeftTemplate :''"></ng-container>
+            <!--左-其他模块 -->
+            <ng-container *ngTemplateOutlet="(otherLeftTemplate && !error) ? otherLeftTemplate :''"></ng-container>     
         </div>
         <div class="fRight">
-            <!-- 图功能按钮 -->
-            <ng-container *ngTemplateOutlet="(!isShowTable && chartRightTemplate && !error) ? chartRightTemplate :''"></ng-container>
+            <!-- 右-其他模块 -->
+            <ng-container *ngTemplateOutlet="(otherRightTemplate && !error) ? otherRightTemplate :''"></ng-container>
             <!-- 单选、多选 -->
             <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && isHasMultiSelect && !error" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
             <button *ngIf="!isShowTable && isHasMultiSelect && !error" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>

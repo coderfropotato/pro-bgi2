@@ -58,13 +58,13 @@
                     </ng-template>
 
                     <ng-template #funcBtnsTemplate>
-                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" (click)='isShowAddModal=true'>add link</button>
-                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length" (click)="isShowDeleteModal=true">delete link</button>
-                        <button nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" (click)="expandNode()">expand</button>
+                        <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" (click)='isShowAddModal=true'>add link</button>
+                        <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length" (click)="isShowDeleteModal=true">delete link</button>
+                        <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" (click)="expandNode()">expand</button>
                     </ng-template>
 
                     <ng-template #searchTemplate>
-                        <nz-select style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
+                        <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
                             <nz-option *ngFor="let node of allNodes" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                         </nz-select>
                     </ng-template>
@@ -79,8 +79,8 @@
                         [tableUrl]='tableUrl'
                         [setTemplate]="setTemplate"
                         (showTableChange)="showTableChange($event)"
-                        [chartRightTemplate]='funcBtnsTemplate'
-                        [chartLeftTemplate]='searchTemplate'
+                        [otherRightTemplate]='funcBtnsTemplate'
+                        [otherLeftTemplate]='searchTemplate'
                         (drawChartEmit)="drawChart($event)"
                         [chartId]="'relationNetChartDiv'"
                         [chartName]="'关联网络图'"

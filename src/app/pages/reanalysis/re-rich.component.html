@@ -13,7 +13,7 @@
 
                 <!-- 图类型下拉 + 选中数据 -->
                 <ng-template #chartTypeTemplate>
-                    <nz-select style="width: 120px;" class="ml12" nzSize="small" nzPlaceHolder="Select classification" [(ngModel)]="chartType" (ngModelChange)="chartTypeChange()">
+                    <nz-select *ngIf="!isShowTable" style="width: 120px;" class="ml12" nzSize="small" nzPlaceHolder="Select classification" [(ngModel)]="chartType" (ngModelChange)="chartTypeChange()">
                         <nz-option *ngFor="let item of chartTypeData" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
                     </nz-select>
                 </ng-template>
@@ -51,7 +51,8 @@
                         [(isMultiSelect)]="isMultipleSelect" 
                         (isMultiSelectChange)="chartSelectModelChange($event)" 
                         (multipleConfirmEmit)="multipleSelectConfirm()" 
-                        [chartLeftTemplate]="chartTypeTemplate"
+                        (showTableChange)="showTableChange($event)"
+                        [otherLeftTemplate]="chartTypeTemplate"
                         [flex]="true"> 
                     </app-table-switch-chart>
 

@@ -42,6 +42,8 @@ export class ReRichComponent implements OnInit {
     chartTypeData:any=[];
     chartType:string;
 
+    isShowTable:boolean;
+
     // table
     setAddedThead :any= [];
     defaultEntity: object;
@@ -221,6 +223,10 @@ export class ReRichComponent implements OnInit {
 
     toggle(status){
         this.addColumnShow = status;
+    }
+
+    showTableChange(isshowtable){
+        this.isShowTable=isshowtable;
     }
 
     checkedChange(data){
