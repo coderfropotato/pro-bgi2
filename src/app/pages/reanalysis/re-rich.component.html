@@ -28,6 +28,8 @@
                         </ul>
                     </nz-dropdown>
 
+                    <button *ngIf="!isShowTable" style="margin-left:10px" nz-button nzType="primary" [nzSize]="'small'" (click)="reDraw()">重画</button>
+
                 </ng-template>
 
 
