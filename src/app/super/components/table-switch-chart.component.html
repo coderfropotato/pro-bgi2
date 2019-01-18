@@ -14,10 +14,12 @@
             </span>
             <!-- 下拉框 -->
             <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate :''"></ng-container>
-            <!--图 搜索 -->
-            <ng-container *ngTemplateOutlet="(!isShowTable && searchTemplate && !error) ? searchTemplate :''"></ng-container>
+            <!--左-其他模块 -->
+            <ng-container *ngTemplateOutlet="(otherLeftTemplate && !error) ? otherLeftTemplate :''"></ng-container>     
         </div>
         <div class="fRight">
+            <!-- 右-其他模块 -->
+            <ng-container *ngTemplateOutlet="(otherRightTemplate && !error) ? otherRightTemplate :''"></ng-container>
             <!-- 单选、多选 -->
             <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && isHasMultiSelect && !error" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
             <button *ngIf="!isShowTable && isHasMultiSelect && !error" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
@@ -35,8 +37,6 @@
                 <nz-option [nzLabel]="'accuracy.toFixedSeven' | translate" [nzValue]="7"></nz-option>
                 <nz-option [nzLabel]="'accuracy.toFixedAll' | translate" [nzValue]="-1"></nz-option>
             </nz-select>
-            <!-- 图功能按钮 -->
-            <ng-container *ngTemplateOutlet="(!isShowTable && funcBtnsTemplate && !error) ? funcBtnsTemplate :''"></ng-container>
             <!-- 设置 -->
             <ng-container *ngTemplateOutlet="(setTemplate && !error) ? setTemplate :''"></ng-container>
             <!-- 刷新-->

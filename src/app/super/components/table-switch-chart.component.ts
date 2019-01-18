@@ -35,9 +35,9 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() setTemplate: TemplateRef<any>; //可选，设置模块
 
-    @Input() funcBtnsTemplate:TemplateRef<any>;  //可选，图功能按钮模块
+    @Input() otherRightTemplate:TemplateRef<any>;  //可选，组件头部右方其他模块
 
-    @Input() searchTemplate:TemplateRef<any>;  //可选，图搜索模块
+    @Input() otherLeftTemplate:TemplateRef<any>;  //可选，组件头部左方其他模块
 
     // 单、多选
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选

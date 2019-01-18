@@ -11,8 +11,29 @@
                     </nz-select>
                 </ng-template>
 
+                <!-- 图类型下拉 + 选中数据 -->
+                <ng-template #chartTypeTemplate>
+                    <nz-select *ngIf="!isShowTable" style="width: 120px;" class="ml12" nzSize="small" nzPlaceHolder="Select classification" [(ngModel)]="chartType" (ngModelChange)="chartTypeChange()">
+                        <nz-option *ngFor="let item of chartTypeData" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+                    </nz-select>
+
+                    <nz-dropdown *ngIf="!isShowTable" [nzClickHide]="false" [(nzVisible)]="visible">
+                        <div nz-dropdown class="dropdownTitle">
+                            <span>选中的{{annotation}}</span>&nbsp;
+                            <span style="color: red">({{checkedData.length}})</span>
+                        </div>
+                        <ul nz-menu>
+                            <li nz-menu-item>Clicking me will not close the menu.</li>
+                            <li nz-menu-item>Clicking me will not close the menu also.</li>
+                            <li nz-menu-item (click)="visible = false">Clicking me will close the menu</li>
+                        </ul>
+                    </nz-dropdown>
+
+                </ng-template>
+
+
                 <!-- 可选择数据的大表 -->
-                <ng-container>
+                <ng-container style="margin-bottom:20px ">
                     <app-big-table-check class="no-outside-border" #bigTable
                         [selectTemplate]="selectTemplate" 
                         [tableHeight]="leftTableHeight / 2" 
@@ -20,11 +41,14 @@
                         [pageEntity]="chartEntity" 
                         [url]="chartUrl" 
                         tableId="geneRichCheckBigTable" 
+                        (checkedChange)="checkedChange($event)"
                         [(computedScrollHeight)]="leftComputedScrollHeight">
                     </app-big-table-check>
                 </ng-container>
 
-                <div class="text-info">最多只对qvalue较小的top60进行重新画图</div>
+                <div class="text-info">
+                    <span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>
+                </div>
 
                 <!-- 图表切换 -->
                 <ng-container>
@@ -40,6 +64,8 @@
                         [(isMultiSelect)]="isMultipleSelect" 
                         (isMultiSelectChange)="chartSelectModelChange($event)" 
                         (multipleConfirmEmit)="multipleSelectConfirm()" 
+                        (showTableChange)="showTableChange($event)"
+                        [otherLeftTemplate]="chartTypeTemplate"
                         [flex]="true"> 
                     </app-table-switch-chart>
 
