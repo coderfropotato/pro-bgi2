@@ -70,7 +70,7 @@ import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { GeneListVennComponent,GeneListVennPageComponent } from './pages/geneList/venn.component';
 import { BigTableCheckComponent } from './super/components/big-table-check.component';
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
-
+import {ReRichComponent} from './pages/reanalysis/re-rich.component';
 // 服务
 // import { HttpInterService } from './super/service/httpService';
 import { GlobalService } from "./super/service/globalService";
@@ -400,6 +400,15 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-enrichment/:geneType/:tid/:version/:annotation",
+                component: ReRichComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reRich"
+                }
+            },
+            {
                 path: "",
                 redirectTo: "index",
                 pathMatch: "full"
@@ -538,6 +547,7 @@ export function createTranslateLoader(http: HttpClient) {
         GeneListVennPageComponent,
         BigTableCheckComponent,
         ReClassComponent,
+        ReRichComponent,
         PromtComponent,
         TableSpecialTheadFilter
     ],

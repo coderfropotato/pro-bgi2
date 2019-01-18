@@ -92,7 +92,7 @@ export class ReListComponent implements OnInit {
 		// let href = location.href.split('/report');
 		// window.open(`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
 
-		if(type === 'classification'){
+		if(type === 'classification' || type==='enrichment'){
 			this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
 		}else{
 			this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
