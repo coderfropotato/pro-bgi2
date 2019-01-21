@@ -11,31 +11,31 @@
                     </nz-select>
                 </ng-template>
 
-                <!-- 图类型下拉 + 选中数据 -->
-                <ng-template #chartTypeTemplate>
-                    <nz-select *ngIf="!isShowTable" style="width: 120px;" class="ml12" nzSize="small" nzPlaceHolder="Select classification" [(ngModel)]="chartType" (ngModelChange)="chartTypeChange()">
-                        <nz-option *ngFor="let item of chartTypeData" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
-                    </nz-select>
-
-                    <nz-dropdown *ngIf="!isShowTable" [nzClickHide]="false" [(nzVisible)]="visible">
+                <!-- 选中数据 -->
+                <ng-template #checkedTemplate>
+                    <nz-dropdown *ngIf="!isShowTable" [nzClickHide]="false" [(nzVisible)]="visible" [nzTrigger]="'click'">
                         <div nz-dropdown class="dropdownTitle">
                             <span>选中的{{annotation}}</span>&nbsp;
                             <span style="color: red">({{checkedDrawGeneList.length > 60 ? 60 : checkedDrawGeneList.length}})</span>
                         </div>
-                        <ul nz-menu class="richDropdownMenu" *ngIf="checkedDrawGeneList.length">
-                            <li nz-menu-item *ngFor="let item of checkedDrawGeneList;let i = index">
-                                <nz-row style="height: 32px">
-                                    <nz-col class="left textEllipsis" nzSpan="18" nzOffset="1" nz-tooltip [nzTitle]="item">
-                                        <span>{{item}}</span>
-                                    </nz-col>
-                                    <nz-col class="right" nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteGene(i)">
-                                        <i nz-icon class="anticon anticon-close" theme="outline"></i>
-                                    </nz-col>
-                                </nz-row>
-                            </li>
-                            <li nz-menu-item class="right" (click)="clearGene()">清空</li>
-                        </ul>
-                        <ul nz-menu  *ngIf="!checkedDrawGeneList.length">
+                        <div *ngIf="checkedDrawGeneList.length" style="box-shadow: 0 2px 8px rgba(0,0,0,.15);">
+                            <ul nz-menu class="richDropdownMenu">
+                                <li nz-menu-item *ngFor="let item of checkedDrawGeneList;let i = index">
+                                    <nz-row>
+                                        <nz-col class="left textEllipsis" nzSpan="18" nzOffset="1" nz-tooltip [nzTitle]="item">
+                                            <span>{{item}}</span>
+                                        </nz-col>
+                                        <nz-col class="right" nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteGene(i)">
+                                            <i nz-icon class="anticon anticon-close-circle" theme="outline"></i>
+                                        </nz-col>
+                                    </nz-row>
+                                </li>
+                            </ul>
+                            <ul nz-menu>
+                                <li nz-menu-item class="right" (click)="clearGene()"><button nz-button nzType="default">清空</button></li>
+                            </ul>
+                        </div>
+                        <ul nz-menu *ngIf="!checkedDrawGeneList.length">
                             <li nz-menu-item>暂无选中的{{annotation}}</li>
                         </ul>
                     </nz-dropdown>
@@ -78,7 +78,8 @@
                         (isMultiSelectChange)="chartSelectModelChange($event)" 
                         (multipleConfirmEmit)="multipleSelectConfirm()" 
                         (showTableChange)="showTableChange($event)"
-                        [otherLeftTemplate]="chartTypeTemplate"
+                        [chartTypeData]="chartTypeData"
+                        [otherLeftTemplate]="checkedTemplate"
                         [flex]="true"> 
                     </app-table-switch-chart>
 
