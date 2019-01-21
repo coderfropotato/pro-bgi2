@@ -1449,81 +1449,130 @@ button.btnActive {
 }
 
 //帮助页面
-.mhelp-class{
+.title{
+	width: 98%;
+	margin: 20px auto 0 auto;
+}
+
+.mhr{//分割线
+	border: 0;
+	height: 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	margin-top: 20px;
+}
+
+.help{
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	background-color: #fff;
-	.top_title{
-        width: 98%;
-        margin: 20px auto 0 auto;
-        height: 18px;
-        font-family: MicrosoftYaHei-Bold;
-        font-size: 18px;
-        color: #333333;
-        letter-spacing: 0;
-        line-height: 18px;
-	}
-	.title_down_line{
-        width: 100%;
-        margin: 20px auto 0 auto;
-        height: 1px;
-        border: 0.5px solid #EEEEEE;
-	}
-	.option_one{
+	padding-bottom: 30px;
+	.help_option{
 		.help_content{
 			width: 100%;
 			height: auto;
-			.title_frist{
-				width: 98%;
-				margin: 20px auto 0 auto;
-				height: 16px;
-				font-family: MicrosoftYaHei;
-				font-size: 16px;
-				color: #333333;
-				letter-spacing: 0;
-				line-height: 16px;
+			
+			.img_one{
+				width: 213px;
+				height: 613px;
+				margin:  10px auto;
+				background-image: url("../img/help/mrnaLC.png");
+				background-repeat: no-repeat;
+				background-position: center;
 			}
-			.bgi_static_pic {
-				width: 98%;
-				margin: 10px auto 0 auto;
-				.bgi_static_pic_one{
-					width: 213px;
-					height: 613px;
-					margin:  0 auto;
-					background-image: url("../img/help/mrnaLC.png");
-					background-repeat: no-repeat;
-					background-position: center;
-				}
-				.bgi_static_pic_two{
-					width: 622px;
-					height: 715px;
-					margin:  0 auto;
-					background-image: url("../img/help/fxLC.png");
-					background-repeat: no-repeat;
-					background-position: center;
-				}
-				.bgi_static_pic_three{
-					width: 585px;
-					height: 692px;
-					margin:  0 auto;
-					background-image: url("../img/help/ckjyzdb.png");
-					background-repeat: no-repeat;
-					background-position: center;
-				}
+			.img_two{
+				width: 622px;
+				height: 715px;
+				margin:  10px auto;
+				background-image: url("../img/help/fxLC.png");
+				background-repeat: no-repeat;
+				background-position: center;
 			}
-			.bgi_static_normal{
+			.img_three{
+				width: 585px;
+				height: 692px;
+				margin:  10px auto;
+				background-image: url("../img/help/ckjyzdb.png");
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+			.img_four{
+				width: 380px;
+				height: 83px;
+				margin:  10px auto;
+				background-image: url("../img/help/gs.png");
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+			.img_five{
+				width: 1000px;
+				height: 800px;
+				margin:  10px auto;
+				background-image: url("../img/help/IGV.png");
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+			}
+			.img_six{
+				width: 1000px;
+				height: 800px;
+				margin:  10px auto;
+				background-image: url("../img/help/IGV2.png");
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+			}
+			.img_seven{
+				width: 773px;
+				height: 685px;
+				margin:  10px auto;
+				background-image: url("../img/help/smrna1.png");
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+			}
+			.img_eight{
+				width: 623px;
+				height: 601px;
+				margin:  10px auto;
+				background-image: url("../img/help/smrna2.png");
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+			}
+			.help_text{
 				width: 98%;
 				margin: 10px auto 0 auto;
 				text-indent:2em;
 			}
-			.bgi_static_bg {
+			.help_bg {
 				background-color: #eee;
 				width: 95%;
 				margin: 10px auto 0 auto;
 				padding: 10px;
 				border: 1px solid #dfe2e5;
 				border-radius: 4px;
+			}
+			.sjx2{
+				text-indent:2em;
+			}
+			.img_title{
+				width: 98%;
+				display: flex;
+				justify-content: center;
+				color: #000;
+			}
+
+			.table{
+				width: 95%;
+				margin: 10px auto 0 auto;
+				word-break: break-all;
+				word-wrap: break-word;
+				border: 1px solid #ddd;
+				td,tr{
+					height: 37px;
+				}
 			}
 		}
 	}
