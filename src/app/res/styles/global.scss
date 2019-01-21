@@ -1494,11 +1494,27 @@ button.btnActive {
 					background-repeat: no-repeat;
 					background-position: center;
 				}
+				.bgi_static_pic_three{
+					width: 585px;
+					height: 692px;
+					margin:  0 auto;
+					background-image: url("../img/help/ckjyzdb.png");
+					background-repeat: no-repeat;
+					background-position: center;
+				}
 			}
 			.bgi_static_normal{
 				width: 98%;
 				margin: 10px auto 0 auto;
 				text-indent:2em;
+			}
+			.bgi_static_bg {
+				background-color: #eee;
+				width: 95%;
+				margin: 10px auto 0 auto;
+				padding: 10px;
+				border: 1px solid #dfe2e5;
+				border-radius: 4px;
 			}
 		}
 	}
