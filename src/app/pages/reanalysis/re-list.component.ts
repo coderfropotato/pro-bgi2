@@ -78,7 +78,6 @@ export class ReListComponent implements OnInit {
     }
 
     toDetail(data){
-		// report/reanalysis/re-multiOmics
 		let type = '';
 		if(data['reanalysisType'].indexOf('heatmap')!=-1){
 			if(data['reanalysisType']!='heatmaprelation'){
@@ -89,7 +88,15 @@ export class ReListComponent implements OnInit {
 		}else{
 			type = data['reanalysisType'];
 		}
-        this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
+
+		// let href = location.href.split('/report');
+		// window.open(`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
+
+		if(type === 'classification' || type==='enrichment'){
+			this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
+		}else{
+			this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
+		}
 	}
 	
 	handleDelete(data){

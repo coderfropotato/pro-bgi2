@@ -1,4 +1,54 @@
 @import "./setting.scss";
+.ant-btn-primary:hover, .ant-btn-primary:focus{
+    color: #fff;
+    background-color: $them-color;
+    border-color: $them-color;
+    opacity: .6;
+}
+
+.ant-btn:hover, .ant-btn:focus{
+    color: #fff;
+    background-color:$them-color ;
+    border-color: $them-color;
+    opacity: .6;
+}
+
+.ant-btn:active, .ant-btn.active{
+    color: #fff;
+    background-color: $them-color;
+    border-color: $them-color;
+}
+
+.ant-tabs-nav .ant-tabs-tab:hover{
+    color: $them-color;
+    opacity: .8;
+}
+
+.ant-select-selection:hover{
+    border-color: $them-color;
+    opacity: .6;
+    border-right-width: 1px !important;
+}
+
+.ant-select-open .ant-select-selection{
+    border-color: $them-color;
+    box-shadow: 0 0 0 2px rgba($them-color,.2)!important;
+}
+a:hover{
+    color: $them-color;
+    opacity: .6;
+}
+
+.ant-input:hover{
+    border-color: $them-color;
+    opacity: .6;
+}
+
+.ant-input:focus{
+    border-color: $them-color;
+    box-shadow: 0 0 0 2px rgba($them-color,.2)!important;
+}
+
 // 韦恩图选中的状态
 .pathLinkArea path.active {
 	opacity: .5;
@@ -191,7 +241,13 @@
 	}
 	&::-webkit-scrollbar-corner {
 		background: #ccc;
-	}
+    }
+    .tag{
+        div{
+            background-color: $them-color;
+            opacity: 1;
+        }
+    }
 }
 .outer-tab {
 	.outer-select-wrap.tag-wrap {
@@ -227,8 +283,8 @@
 .tag-wrap .ant-tag {
 	margin: 6px;
 	margin-left: 0;
-	// background-color: $btn_active_color;
-	// color:#fff;
+	background-color: $btn_active_color;
+	color:#fff;
 }
 
 .little-table {
@@ -862,10 +918,10 @@ button.btnActive {
 				.heatmap-img {
 					background-image:url('../img/聚类热图.png');
 				}
-				.geneClass-img {
+				.classification-img {
 					background-image:url('../img/基因分类.png');
 				}
-				.geneRich-img {
+				.enrichment-img {
 					background-image:url('../img/基因富集.png');
 				}
 				.keggClass-img {
@@ -915,7 +971,7 @@ button.btnActive {
 				color:#ccc;
 			}
 		}
-		
+
 		h5 {
 			font-size: 15px;
 		}
@@ -1278,3 +1334,163 @@ button.btnActive {
 	}
 }
 
+
+.ex_container {
+    height: 360px;
+    width: 320px;
+    background: #FFFFFF;
+    position: relative;
+    background: #FFFFFF;
+    box-shadow: 0 4px 8px 0 rgba(57, 65, 79, 0.16);
+    border-radius: 4px;
+}
+
+.con_PessionDis {
+    height: auto;
+    width: 92%;
+    margin: 0 auto;
+    background: #ffffff;
+    position: relative;
+}
+
+.con_PessionDis_title {
+    height: 48px;
+    width: 100%;
+    line-height: 48px;
+    margin: 0 auto;
+}
+
+.con_PessionDis_in {
+    margin-top: 6px;
+    height: 80px;
+    width: 100%;
+}
+
+.con_PessionDis_row {
+    width: 100%;
+    height: 40px;
+}
+
+.con_PessionDis_left {
+    height: 40px;
+    width: 60px;
+    float: left;
+    margin-left: 18px;
+    line-height: 40px;
+}
+
+.con_PessionDis_right {
+    height: 40px;
+    width: 80px;
+    float: left;
+    margin-left: 15px;
+}
+
+.ex_button1 {
+    width: 80px;
+    height: 32px;
+    border: 1px solid #E1E2E6;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 20px;
+    right: 110px;
+    font-size: 14px;
+    color: #262629;
+
+}
+.ex_button2 {
+    width: 80px;
+    height: 32px;
+    background: $them-color;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    font-size: 14px;
+    color: #FFFFFF;
+}
+
+.text-info{
+	color: red;
+	height: 40px;
+	line-height: 40px;
+	text-indent: 2em;
+}
+
+.dropdownTitle{
+	margin-left: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+	height: 24px;
+    width: 140px;
+	text-align: center;
+	border-top-width: 1.02px;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+
+//帮助页面
+.mhelp-class{
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	background-color: #fff;
+	.top_title{
+        width: 98%;
+        margin: 20px auto 0 auto;
+        height: 18px;
+        font-family: MicrosoftYaHei-Bold;
+        font-size: 18px;
+        color: #333333;
+        letter-spacing: 0;
+        line-height: 18px;
+	}
+	.title_down_line{
+        width: 100%;
+        margin: 20px auto 0 auto;
+        height: 1px;
+        border: 0.5px solid #EEEEEE;
+	}
+	.option_one{
+		.help_content{
+			width: 100%;
+			height: auto;
+			.title_frist{
+				width: 98%;
+				margin: 20px auto 0 auto;
+				height: 16px;
+				font-family: MicrosoftYaHei;
+				font-size: 16px;
+				color: #333333;
+				letter-spacing: 0;
+				line-height: 16px;
+			}
+			.bgi_static_pic {
+				width: 98%;
+				margin: 10px auto 0 auto;
+				.bgi_static_pic_one{
+					width: 213px;
+					height: 613px;
+					margin:  0 auto;
+					background-image: url("../img/help/mrnaLC.png");
+					background-repeat: no-repeat;
+					background-position: center;
+				}
+				.bgi_static_pic_two{
+					width: 622px;
+					height: 715px;
+					margin:  0 auto;
+					background-image: url("../img/help/fxLC.png");
+					background-repeat: no-repeat;
+					background-position: center;
+				}
+			}
+			.bgi_static_normal{
+				width: 98%;
+				margin: 10px auto 0 auto;
+				text-indent:2em;
+			}
+		}
+	}
+}

@@ -6,7 +6,7 @@
         </button>
         <div class="tag-wrap" *ngIf="show">
             <ng-container *ngFor="let s of selected;index as i;">
-                <nz-tag class="tag" *ngFor="let d of s;" [nzColor]="'rgb(82, 120, 248)'" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d['name']}}</nz-tag>
+                <nz-tag class="tag" *ngFor="let d of s;" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d['name']}}</nz-tag>
             </ng-container>
         </div>
     </div>

@@ -14,11 +14,11 @@ declare const d4:any;
 declare const $: any;
 
 @Component({
-  selector: 'app-re-class',
-  templateUrl: './re-class.component.html',
+  selector: 'app-re-rich',
+  templateUrl: './re-rich.component.html',
   styles: []
 })
-export class ReClassComponent implements OnInit {
+export class ReRichComponent implements OnInit {
 
     @ViewChild('switchChart') switchChart;
     @ViewChild('left') left;
@@ -39,13 +39,15 @@ export class ReClassComponent implements OnInit {
     color: string; //当前选中的color
     colors: string[];
 
-    gaugeColors:string[]=[];
-    oLegendIndex:number=0;
-    oColor:string;
+    chartTypeData:any=[];
+    chartType:string;
 
-    defaultSetUrl:string;
-    defaultSetEntity:object;
-    defaultSetData:any = null;
+    isShowTable:boolean;
+
+    visible:boolean=false;
+
+    checkedData:any=[];
+    checkedDrawData:any=[];
 
     // table
     setAddedThead :any= [];
@@ -83,15 +85,12 @@ export class ReClassComponent implements OnInit {
     computedScrollHeight:boolean = false;
     leftComputedScrollHeight:boolean = false;
 
-    isExceed:any = null;
     selectedVal:string = '';
     annotation:string = '';
     selectData:any = [];
 
-    isMultipleSelect:boolean = false;
 
-    // 图表选择的数据
-    checkedList:string[] = [] ;
+    isMultipleSelect:boolean = false;
 
     constructor(
         private message: MessageService,
@@ -128,79 +127,81 @@ export class ReClassComponent implements OnInit {
 
     ngOnInit() {
         (async ()=>{
+            this.chartTypeData=[
+                {
+                    key:"bubble",
+                    value:"气泡图"
+                },
+                {
+                key:"column",
+                value:"柱状图"
+            }];
 
-            this.selectData = JSON.parse(sessionStorage.getItem('annotation_choice'))[this.annotation];
-            this.selectedVal = this.selectData[0];
+            this.chartType=this.chartTypeData[0]['key'];
 
             this.first = true;
             this.applyOnceSearchParams = true;
-            this.defaultUrl = `${config['javaPath']}/classification/table`;
+            this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
             this.defaultEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid:this.tid,
-                annotation:this.annotation,
-                pageIndex: 1,
+                pageIndex: 1, 
                 pageSize: 20,
                 mongoId: null,
-                addThead: [],
-                transform: false,
-                matrix: false,
+                addThead: [], 
+                transform: false, 
+                matrix: false, 
                 relations: [],
                 sortValue: null,
                 sortKey: null,
                 reAnaly: false,
-                geneType: this.geneType,
+                geneType: this.geneType, 
                 species: this.storeService.getStore('genome'),
                 version: this.version,
                 searchList: [],
-                checkedClassifyType: this.selectedVal,
-                checkedClassifyList:this.checkedList,
-                sortThead:this.addColumnService['sortThead'],
-                removeColumns:[]
+                sortThead:this.addColumnService['sortThead']
             };
-            this.defaultTableId = 'default_class';
+            this.defaultTableId = 'default_heatmap';
             this.defaultDefaultChecked = true;
             this.defaultEmitBaseThead = true;
             this.defaultCheckStatusInParams = true;
 
-            this.extendUrl = `${config['javaPath']}/classification/table`;
+            this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
             this.extendEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid:this.tid,
-                annotation:this.annotation,
-                pageIndex: 1,
+                pageIndex: 1, 
                 pageSize: 20,
                 mongoId: null,
                 addThead: [],
-                transform: false,
+                transform: false, 
                 matchAll: false,
                 matrix: false,
-                relations: [],
+                relations: [], 
                 sortValue: null,
                 sortKey: null,
                 reAnaly: false,
-                geneType: this.geneType,
-                species: this.storeService.getStore('genome'),
+                geneType: this.geneType, 
+                species: this.storeService.getStore('genome'), 
                 version: this.version,
                 searchList: [],
-                checkedClassifyType: this.selectedVal,
-                checkedClassifyList:this.checkedList,
-                sortThead:this.addColumnService['sortThead'],
-                removeColumns:[]
+                sortThead:this.addColumnService['sortThead']
             };
-            this.extendTableId = 'extend_class';
+            this.extendTableId = 'extend_heatmap';
             this.extendDefaultChecked = true;
             this.extendEmitBaseThead = true;
             this.extendCheckStatusInParams = false;
 
 
-            this.isExceed = await this.getGeneCount();
+            this.selectData = JSON.parse(sessionStorage.getItem('annotation_choice'))[this.annotation];
+            this.selectedVal = this.selectData[0];
+
             this.chartUrl=`${config['javaPath']}/classification/graph`;
             this.chartEntity = {
                 LCID: this.storeService.getStore('LCID'),
                 annotation:this.annotation,
                 geneType: this.geneType,
-                species: this.storeService.getStore('genome'),
+                species: this.storeService.getStore('genome'), 
                 checkedClassifyType:this.selectedVal,
                 searchList:[],
                 pageIndex:1,
@@ -213,43 +214,38 @@ export class ReClassComponent implements OnInit {
         })()
     }
 
+    showTableChange(isshowtable){
+        this.isShowTable=isshowtable;
+    }
+
+    checkedChange(data){
+        this.checkedData=data[1];
+        this._sortArr('num',this.checkedData);
+
+        if(this.checkedData.length <=60){
+            this.checkedDrawData=[...this.checkedData];
+        }else{
+            this.checkedDrawData=[...this.checkedData.slice(0,60)];
+        }
+        console.log(this.checkedDrawData)
+    }
+
+    chartTypeChange(){
+        console.log(this.chartType)
+    }
+
+    //排序
+    _sortArr(key, arr) {
+        arr.sort(function(a, b) {
+            return a[key] - b[key];
+        })
+    }
+
+
     ngAfterViewInit() {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
-    }
-
-    async getGeneCount(){
-        return new Promise((resolve,reject)=>{
-            this.ajaxService.getDeferData({
-                url:`${config['javaPath']}/classification/graphIsExceed`,
-                data:{
-                    LCID:sessionStorage.getItem('LCID'),
-                    annotation:this.annotation,
-                    geneType: this.geneType,
-                    species: this.storeService.getStore('genome'),
-                    checkedClassifyType:this.selectedVal,
-                    tid:this.tid
-                }
-            }).subscribe(res=>{
-                if(res['data'] && !$.isEmptyObject(res['data'])){
-                    resolve(res['data']['isExceed']);
-                }else{
-                    resolve(true);
-                }
-            },
-            error=>{
-                resolve(true);
-            })
-        })
-    }
-
-    handleCheckChange(checked){
-        console.log(checked);
-        let keys = checked[0];
-        this.checkedList.length = 0;
-        this.checkedList.push(...keys);
-        this.chartBackStatus();
     }
 
     handleSelectGeneCountChange(selectGeneCount){
@@ -259,6 +255,7 @@ export class ReClassComponent implements OnInit {
     toggle(status){
         this.addColumnShow = status;
     }
+
 
     // 表
     addThead(thead) {
@@ -288,8 +285,6 @@ export class ReClassComponent implements OnInit {
             this.extendEntity['relations'] = relations;
             this.extendEntity['transform'] = true;
             this.extendEntity['matrix'] = true;
-            this.extendEntity['checkedClassifyType'] = checkParams['tableEntity']['checkedClassifyType'];
-            this.extendEntity['checkedClassifyList'] = checkParams['tableEntity']['checkedClassifyList'];
             this.addColumn._clearThead();
 			this.extendEntity['addThead'] = [];
 			this.first = false;
@@ -301,8 +296,6 @@ export class ReClassComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
-			this.transformTable._setExtendParamsWithoutRequest( 'checkedClassifyType', checkParams['tableEntity']['checkedClassifyType'] );
-			this.transformTable._setExtendParamsWithoutRequest( 'checkedClassifyList', checkParams['tableEntity']['checkedClassifyList'] );
 			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
 			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
 			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
@@ -328,27 +321,9 @@ export class ReClassComponent implements OnInit {
     }
 
     handleSelectChange(){
-        (async()=>{
-            // 转换表重新获取数据
-            this.checkedList.length = 0;
-            this.chartBackStatus();
-            
-            let curExceed = await this.getGeneCount();
-            if(this.isExceed != curExceed){
-                this.chartEntity['checkedClassifyType'] = this.selectedVal;
-            }else{
-                if(curExceed){
-                    this.bigTable._initCheckStatus();
-                    this.bigTable._setParamsOfEntityWithoutRequest('checkedClassifyType',this.selectedVal)
-                    this.bigTable._getData(true);
-                }else{
-                    this.chartEntity['checkedClassifyType'] = this.selectedVal;
-                    this.switchChart.reGetData();
-                }
-            }
-            this.checkedList.length = 0;
-            this.isExceed = curExceed;
-        })()
+        this.chartEntity['checkedClassifyType'] = this.selectedVal;
+        this.switchChart.reGetData(); 
+        this.bigTable._getData();
     }
 
     chartBackStatus(){
@@ -361,12 +336,22 @@ export class ReClassComponent implements OnInit {
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['pageIndex'] = 1;
-            this.defaultEntity['checkedClassifyType'] = this.selectedVal;
+            if(this.selectGeneList.length){
+                this.defaultEntity['searchList'] = [
+                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
+                ];
+            }else{
+                this.defaultEntity['searchList']= [] ;
+            }
             this.first = true;
         }else{
             this.transformTable._setParamsNoRequest('pageIndex',1);
-			this.transformTable._setParamsNoRequest('checkedClassifyType', this.selectedVal);
-			this.transformTable._getData();
+            if(this.selectGeneList.length) {
+                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
+            }else{
+                this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
+                this.transformTable._getData();
+            }
         }
     }
 
@@ -415,7 +400,7 @@ export class ReClassComponent implements OnInit {
 
         let config = {
             chart: {
-                title: `${this.annotation}分类`,
+                title: `${this.annotation}富集`,
                 dblclick: function(event) {
                     _self.promptService.open(event.target.innerHTML,newval=>{
                         this.setChartTitle(newval);
@@ -423,20 +408,16 @@ export class ReClassComponent implements OnInit {
                     });
                 },
                 width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
-                height: data['rows'].length * 20,
+                height: _self.leftBottom.nativeElement.offsetHeight * 0.8,
                 custom: [x, y, category],
-                el: "#geneClassChartDiv",
+                el: "#geneRichChartDiv",
                 type: "bar",
                 enableChartSelect:true,
                 selectedModule: _self.isMultipleSelect?'multiple':'single',
-                direction:"horizontal",
+                direction:"horizontal", 
                 data: data['rows'],
                 onselect:data=>{
-                    _self.checkedList.length = 0;
-                    _self.checkedList.push(...data.map(v=>v[y]));
-                    if(!_self.isMultipleSelect){
-                        _self.chartBackStatus();
-                    }
+                    console.log(data);
                 }
             },
             axis: {
@@ -487,10 +468,6 @@ export class ReClassComponent implements OnInit {
 
     setGeneList(geneList) {
         this.selectGeneList = geneList;
-        this.chartBackStatus();
-    }
-
-    multipleSelectConfirm(){
         this.chartBackStatus();
     }
 

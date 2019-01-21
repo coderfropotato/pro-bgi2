@@ -12,7 +12,7 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { IndexComponent } from "./pages/mrna/index.component";
 import { cxzk1Component } from "./pages/mrna/cxzk1.component";
-import { cxzk2Component } from "./pages/mrna/cxzk2.component";
+import { GoRichComponent } from "./pages/mrna/goRich.component";
 import { netComponent } from "./pages/mrna/net.component";
 import { multiOmicsComponent } from "./pages/mrna/multiOmics.component";
 import { clusterComponent } from "./pages/mrna/cluster.component";
@@ -60,6 +60,7 @@ import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
 import { reRelationHeatmapComponent } from './pages/reanalysis/re-relationHeatmap.component';
 import { ReNetComponent } from './pages/reanalysis/re-net.component';
 import {reRelationNetComponent} from './pages/reanalysis/re-relationNet.component';
+import { ReKdaComponent } from './pages/reanalysis/re-kda.component';
 import { ReLineComponent } from './pages/reanalysis/re-line.component';
 import { KaFunComponent } from './pages/reanalysis/re-kaFun.component';
 import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.component';
@@ -71,6 +72,7 @@ import { BigTableCheckComponent } from './super/components/big-table-check.compo
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
 import { HelpComponent } from "./pages/mrna/help.component";
 
+import {ReRichComponent} from './pages/reanalysis/re-rich.component';
 // 服务
 // import { HttpInterService } from './super/service/httpService';
 import { GlobalService } from "./super/service/globalService";
@@ -175,11 +177,11 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "cxzk2",
-                component: cxzk2Component,
+                path: "goRich",
+                component: GoRichComponent,
                 data: {
                     keep: true,
-                    module: "cxzk2"
+                    module: "goRich"
                 }
             },
             {
@@ -363,6 +365,15 @@ const ROUTES: Routes = [
                 }
             },
             {
+                path: "re-kda/:geneType/:tid/:version",
+                component: ReKdaComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reKda"
+                }
+            },
+            {
                 path: "re-line/:geneType/:tid/:version",
                 component: ReLineComponent,
                 canActivate: [SysDefendService],
@@ -390,12 +401,21 @@ const ROUTES: Routes = [
                 }
             },
             {
-                path: "re-class/:geneType/:tid/:version",
+                path: "re-classification/:geneType/:tid/:version/:annotation",
                 component: ReClassComponent,
                 canActivate: [SysDefendService],
                 data: {
                     keep: false,
                     module: "reClass"
+                }
+            },
+            {
+                path: "re-enrichment/:geneType/:tid/:version/:annotation",
+                component: ReRichComponent,
+                canActivate: [SysDefendService],
+                data: {
+                    keep: false,
+                    module: "reRich"
                 }
             },
             {
@@ -478,7 +498,7 @@ export function createTranslateLoader(http: HttpClient) {
         LoginComponent,
         IndexComponent,
         cxzk1Component,
-        cxzk2Component,
+        GoRichComponent,
         netComponent,
         multiOmicsComponent,
         clusterComponent,
@@ -525,6 +545,7 @@ export function createTranslateLoader(http: HttpClient) {
         reRelationHeatmapComponent,
         TooltipDirective,
         ReNetComponent,
+        ReKdaComponent,
         reRelationNetComponent,
         ReLineComponent,
         KaFunComponent,
@@ -536,6 +557,7 @@ export function createTranslateLoader(http: HttpClient) {
         GeneListVennPageComponent,
         BigTableCheckComponent,
         ReClassComponent,
+        ReRichComponent,
         PromtComponent,
         TableSpecialTheadFilter,
         HelpComponent

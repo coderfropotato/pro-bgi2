@@ -62,6 +62,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
     @Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
     @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
 
+    // 过滤表头字段 用tid区分是报告还是小工具 isKeggClass 区分是kegg的分类还是富集
+    @Input() isKeggClass:boolean = false; // 区分是kegg的分类还是富集
+    @Input() tid:string = ''; 
+
     count:number = 0; // 选中的基因个数
     mongoId:any = null;
     scroll: any = { x: "0", y: "0" };
@@ -338,26 +342,37 @@ export class GeneTableComponent implements OnInit, OnChanges {
                             // 默认选中 就看未选中的列表里有没有当前项 有就变成未选中
                             if (this.checkStatus) {
                                 if (!$.isEmptyObject(this.unCheckedMap)) {
-                                    for (let name in this.unCheckedMap) {
-                                        if (name == val[this.key]) {
-                                            val["checked"] = false;
-                                            delete this.checkedMap[
-                                                val[this.key]
-                                            ];
-                                        }
+                                    let unCheckedKeys = Object.keys(this.unCheckedMap);
+                                    if(unCheckedKeys.includes(val[this.key])){
+                                        val["checked"] = false;
+                                        delete this.checkedMap[ val[this.key] ];
                                     }
+
+                                    // for (let name in this.unCheckedMap) {
+                                    //     if (name === val[this.key]) {
+                                    //         val["checked"] = false;
+                                    //         delete this.checkedMap[
+                                    //             val[this.key]
+                                    //         ];
+                                    //     }
+                                    // }
+
                                 }
                             } else {
                                 // 默认不选中  就看选中的列表里有没有当前项 有就变成选中
                                 if (!$.isEmptyObject(this.checkedMap)) {
-                                    for (let name in this.checkedMap) {
-                                        if (name == val[this.key]) {
-                                            val["checked"] = true;
-                                            delete this.unCheckedMap[
-                                                val[this.key]
-                                            ];
-                                        }
+                                    let checkedKeys = Object.keys(this.checkedMap);
+                                    if(checkedKeys.includes(val[this.key])){
+                                        val["checked"] = true;
+                                        delete this.unCheckedMap[ val[this.key] ];
                                     }
+
+                                    // for (let name in this.checkedMap) {
+                                    //     if (name === val[this.key]) {
+                                    //         val["checked"] = true;
+                                    //         delete this.unCheckedMap[ val[this.key] ];
+                                    //     }
+                                    // }
                                 }
                             }
                         }
@@ -376,7 +391,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
                             this.isErrorDelete = false;
                         },30)
                     }
-
                 } else {
                     this.total = 0;
                     this.error = "error";
@@ -404,6 +418,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
                     this.applyOnceSearchParams = false;
                     this.applyOnceSearchParamsChange.emit(this.applyOnceSearchParams);
                 }
+
                 if(this.resetCheckGraph){
                     if('checkGraph' in this.tableEntity) this.tableEntity['checkGraph'] = false;
                     this.resetCheckGraph = false;
@@ -1241,14 +1256,14 @@ export class GeneTableComponent implements OnInit, OnChanges {
                                 searchType
                                 // crossUnion
                             );
-                                
+
                             // 不发请求不清空选中状态
                             /*this.checkStatus = this.defaultChecked;
                             this.checkedMap = {};
                             this.unCheckedMap = {};
                             this.checked = [];
                             this.unChecked = [];*/
-    
+
                             this.classifySearchCondition();
                         }
                     });

@@ -1,0 +1,76 @@
+<div>
+    <ng-template #selectTemplate>
+        <nz-select
+            style="width: 180px;margin-left: 10px"
+            [(ngModel)]="tableEntity.sample"
+            [nzSize]="'small'"
+            (ngModelChange)="onSelectChange1()"
+            nzShowSearch
+        >
+            <nz-option
+                *ngFor="let sam of sampleList"
+                [nzLabel]="sam"
+                [nzValue]="sam"
+            ></nz-option>
+        </nz-select>
+        <nz-select
+            style="width: 180px;margin-left: 10px"
+            [(ngModel)]="tableEntity.compare"
+            [nzSize]="'small'"
+            (ngModelChange)="onSelectChange2()"
+            nzShowSearch
+        >
+            <nz-option
+                *ngFor="let com of compareList"
+                [nzLabel]="com"
+                [nzValue]="com"
+            ></nz-option>
+        </nz-select>
+    </ng-template>
+
+    <ng-template #setTemplate>
+        <nz-dropdown [nzPlacement]="'bottomRight'">
+            <i
+                class="iconfont icon-shezhi"
+                nz-tooltip
+                nzTitle="设置"
+                nz-dropdown
+            ></i>
+            <ul nz-menu>
+                <li nz-menu-item><a>1st menu item</a></li>
+                <li nz-menu-item><a>2nd menu item</a></li>
+                <li nz-menu-item><a>3rd menu item</a></li>
+            </ul>
+        </nz-dropdown>
+    </ng-template>
+    <div>
+        <app-table-switch-chart
+            #tableSwitchChart
+            [id]="'tableSwitchChart'"
+            [isHasMultiSelect]="true"
+            [(isMultiSelect)]="isMultiSelect"
+            (isMultiSelectChange)="multiSelectChange()"
+            (multipleConfirmEmit)="multipleConfirm()"
+            [tableUrl]="tableUrl"
+            [chartUrl]="chartUrl"
+            [apiEntity]="tableEntity"
+            [isShowAccuracy]="true"
+            [selectTemplate]="selectTemplate"
+            [setTemplate]="setTemplate"
+            (drawChartEmit)="drawChart($event)"
+            [chartId]="'chartId222'"
+            [chartName]="'散点图'"
+            [selectPanelUrl]="selectPanelUrl"
+            [selectPanelEntity]="selectPanelEntity"
+            (selectConfirmEmit)="selectConfirm($event)"
+            [defaultSelectNum]="2"
+            (defaultSelectList)="defaultSelectList($event)"
+        ></app-table-switch-chart>
+
+        <app-color-picker
+            [(color)]="color"
+            (colorChange)="handlerColorChange($event)"
+            [(show)]="show"
+        ></app-color-picker>
+    </div>
+</div>
