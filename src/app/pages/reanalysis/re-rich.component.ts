@@ -235,14 +235,16 @@ export class ReRichComponent implements OnInit {
 
     
     deleteGene(i){
-        this.checkedData.splice(i,1);
+        let delchecks  = this.checkedData.splice(i,1);
         this.checkedDrawGeneList.splice(i,1);
+        this.bigTable._deleteCheckedStatus(delchecks);
     }
 
     clearGene(){
         this.visible=false;
         this.checkedData.length=0;
         this.checkedDrawGeneList.length=0;
+        this.bigTable._deleteCheckedStatus(this.checkedData);
         this.reDraw();
     }
 
