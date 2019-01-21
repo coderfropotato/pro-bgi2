@@ -34,10 +34,15 @@ export class ReRichComponent implements OnInit {
 
     chart:any;
 
+    //column
     show: boolean = false;
     legendIndex: number = 0; //当前点击图例的索引
     color: string; //当前选中的color
-    colors: string[];
+
+    //bubble
+    bshow:boolean=false;
+    blegendIndex:number=0;
+    bcolor:string;
 
     chartTypeData:any=[];
 
@@ -517,7 +522,7 @@ export class ReRichComponent implements OnInit {
                       console.log(data);
                     },
                     data: realData,
-                    colors: ["#4575B4", "#FEF6B2", "#D9352A"],
+                    colors: ["#00008B", "#87CEFA"],
                     radius: {
                       min: 5,
                       max: 10
@@ -525,7 +530,7 @@ export class ReRichComponent implements OnInit {
                   },
                   axis: {
                     x: {
-                      title: "样本",
+                      title: "Rich Ratio",
                       rotate: 20,
                       min: 0,
                       // max:1,
@@ -542,18 +547,17 @@ export class ReRichComponent implements OnInit {
                     show: true,
                     data: legendData,
                     type: "gradient",
-                    title: "num",
-                    position: "right",
+                    title: "Qvalue",
                     // min: -1,
                     // max: 1,
-                    dblclick: (d, i) => {
-                    //   this.d = d;
-                    //   this.i = i;
-                    //   this.$refs.inputColor.click();
+                    click:(d,index)=>{
+                        this.bcolor = d;
+                        this.bshow = true;
+                        this.blegendIndex = index;
                     },
                     rLegend: {
                       show: true,
-                      title: "radius"
+                      title: "Gene Number"
                     }
                   },
                   tooltip: function(d) {
@@ -571,7 +575,11 @@ export class ReRichComponent implements OnInit {
     colorChange(curColor) {
         this.chart.setColor(curColor, this.legendIndex);
         this.chart.redraw();
+    }
 
+    bcolorChange(curColor) {
+        this.chart.setColor(curColor, this.blegendIndex);
+        this.chart.redraw();
     }
 
     setGeneList(geneList) {
