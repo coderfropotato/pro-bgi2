@@ -109,12 +109,12 @@ export class IndexComponent implements OnInit {
                                     category: "基础模块",
                                     children: [
                                         {
-                                            url: "pro-overview",
+                                            url: "overview",
                                             name: "项目概况",
                                             isExport: true
                                         },
                                         {
-                                            url: "ref-information",
+                                            url: "information",
                                             name: "参考信息",
                                             isExport: true
                                         },
@@ -129,7 +129,7 @@ export class IndexComponent implements OnInit {
                                             isExport: true
                                         },
                                         {
-                                            url: "rna-detection",
+                                            url: "lrna",
                                             name: "小RNA检测",
                                             isExport: true
                                         },
@@ -150,46 +150,46 @@ export class IndexComponent implements OnInit {
                                         }
                                     ]
                                 },
-                                {
-                                    category: "布局一",
-                                    children: [
-                                        {
-                                            url: "layout1",
-                                            name: "布局页面",
-                                            isExport: true
-                                        }
-                                    ]
-                                },
-                                {
-                                    category: "小表_demo",
-                                    children: [
-                                        {
-                                            url: "littleTableTest",
-                                            name: "小表",
-                                            isExport: true
-                                        }
-                                    ]
-                                },
-                                {
-                                    category: "表格转换_demo",
-                                    children: [
-                                        {
-                                            url: "transformationTable",
-                                            name: "transformation-table",
-                                            isExport: true
-                                        }
-                                    ]
-                                },
-                                {
-                                    category: "普通大表_demo",
-                                    children: [
-                                        {
-                                            url: "bigTable",
-                                            name: "普通大表",
-                                            isExport: true
-                                        }
-                                    ]
-                                }
+                                // {
+                                //     category: "布局一",
+                                //     children: [
+                                //         {
+                                //             url: "layout1",
+                                //             name: "布局页面",
+                                //             isExport: true
+                                //         }
+                                //     ]
+                                // },
+                                // {
+                                //     category: "小表_demo",
+                                //     children: [
+                                //         {
+                                //             url: "littleTableTest",
+                                //             name: "小表",
+                                //             isExport: true
+                                //         }
+                                //     ]
+                                // },
+                                // {
+                                //     category: "表格转换_demo",
+                                //     children: [
+                                //         {
+                                //             url: "transformationTable",
+                                //             name: "transformation-table",
+                                //             isExport: true
+                                //         }
+                                //     ]
+                                // },
+                                // {
+                                //     category: "普通大表_demo",
+                                //     children: [
+                                //         {
+                                //             url: "bigTable",
+                                //             name: "普通大表",
+                                //             isExport: true
+                                //         }
+                                //     ]
+                                // }
                             ];
                             resolve("success");
                         }else{

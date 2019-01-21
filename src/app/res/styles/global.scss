@@ -485,7 +485,14 @@ button.btnActive {
 	flex-direction: row;
 	&.reanalysis-content {
 		height: calc(100% - 80px);
-	}
+    }
+    &.base-content{
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        background-color: #fff;
+        display: block;
+    }
 	.left-layout {
 		overflow: hidden;
 		flex: 7;
@@ -673,7 +680,7 @@ button.btnActive {
 		left: 0;
 		top: 120px;
 		background-color: #fff;
-		z-index: 0;
+		z-index: -1;
 		&.active {
 			opacity: 1;
 			left: 0;
