@@ -47,7 +47,7 @@ export class ReRichComponent implements OnInit {
     visible:boolean=false;
 
     checkedData:any=[];
-    checkedDrawData:any=[];
+    checkedDrawGeneList:any=[];
 
     // table
     setAddedThead :any= [];
@@ -219,19 +219,39 @@ export class ReRichComponent implements OnInit {
     }
 
     checkedChange(data){
-        this.checkedData=data[1];
+        this.checkedData=[...data[1]];
         this._sortArr('num',this.checkedData);
 
-        if(this.checkedData.length <=60){
-            this.checkedDrawData=[...this.checkedData];
-        }else{
-            this.checkedDrawData=[...this.checkedData.slice(0,60)];
-        }
-        console.log(this.checkedDrawData)
+        this.checkedDrawGeneList.length=0;
+
+        this.checkedData.forEach(d=>{
+            this.checkedDrawGeneList.push(d[this.annotation+"_term"]);
+        })
+
+        // if(this.checkedData.length > 60){
+        //    this.checkedDrawGeneList = this.checkedDrawGeneList.slice(0,60);
+        // }
+        
+        console.log(this.checkedDrawGeneList)
+
     }
 
     chartTypeChange(){
         console.log(this.chartType)
+    }
+    
+    deleteGene(i){
+        this.checkedDrawGeneList.splice(i,1);
+    }
+
+    clearGene(){
+        this.visible=false;
+        this.checkedDrawGeneList.length=0;
+        this.reDraw();
+    }
+
+    reDraw(){
+
     }
 
     //排序
@@ -474,6 +494,9 @@ export class ReRichComponent implements OnInit {
     chartSelectModelChange(model){
         console.log(this.chart);
         this.chart.setChartSelectModule(this.isMultipleSelect?'multiple':'single');
-        // this.chart.set
+    }
+
+    multipleSelectConfirm(){
+        this.chartBackStatus();
     }
 }

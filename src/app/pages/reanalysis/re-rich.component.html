@@ -20,11 +20,23 @@
                     <nz-dropdown *ngIf="!isShowTable" [nzClickHide]="false" [(nzVisible)]="visible">
                         <div nz-dropdown class="dropdownTitle">
                             <span>选中的{{annotation}}</span>&nbsp;
-                            <span style="color: red">({{checkedDrawData.length}})</span>
+                            <span style="color: red">({{checkedDrawGeneList.length > 60 ? 60 : checkedDrawGeneList.length}})</span>
                         </div>
-                        <ul nz-menu>
-                            <li nz-menu-item *ngFor="let item of checkedDrawData"></li>
-                            <li nz-menu-item (click)="visible = false">Clicking me will close the menu</li>
+                        <ul nz-menu class="richDropdownMenu" *ngIf="checkedDrawGeneList.length">
+                            <li nz-menu-item *ngFor="let item of checkedDrawGeneList;let i = index">
+                                <nz-row style="height: 32px">
+                                    <nz-col class="left textEllipsis" nzSpan="18" nzOffset="1" nz-tooltip [nzTitle]="item">
+                                        <span>{{item}}</span>
+                                    </nz-col>
+                                    <nz-col class="right" nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteGene(i)">
+                                        <i nz-icon class="anticon anticon-close" theme="outline"></i>
+                                    </nz-col>
+                                </nz-row>
+                            </li>
+                            <li nz-menu-item class="right" (click)="clearGene()">清空</li>
+                        </ul>
+                        <ul nz-menu  *ngIf="!checkedDrawGeneList.length">
+                            <li nz-menu-item>暂无选中的{{annotation}}</li>
                         </ul>
                     </nz-dropdown>
 
