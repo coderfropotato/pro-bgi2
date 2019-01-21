@@ -85,6 +85,9 @@ export class TableSwitchChartComponent implements OnInit {
     //table chart show
     @Output() showTableChange:EventEmitter<any>=new EventEmitter();
 
+    // 图类型 ,形如：{key:"bubble",value:"气泡图"}
+    @Input() chartTypeData:any[];
+
     scroll: object = { y: '400px' };
     isShowTable: boolean = false;
     total:number = 1;
@@ -102,6 +105,8 @@ export class TableSwitchChartComponent implements OnInit {
     isShowSelectPanel:boolean=false;
     confirmSelects:any[]=[];
 
+    chartType:string;
+
     constructor(
         private ajaxService: AjaxService,
         private messageService: MessageService,
@@ -118,6 +123,8 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     ngOnInit() {
+        if(this.chartTypeData && this.chartTypeData.length) this.chartType=this.chartTypeData[0]['key'];
+        
         this.accuracyList = [
             {
                 name: "精度：1位小数",
@@ -172,6 +179,11 @@ export class TableSwitchChartComponent implements OnInit {
             this.getSetData();
         }
 
+    }
+
+    //图类型下拉change
+    chartTypeChange(){
+        this.drawChart(this.chartData,this.chartType);
     }
 
     chartBtnClick(){
@@ -404,7 +416,11 @@ export class TableSwitchChartComponent implements OnInit {
                         this.tableData = data.data;
                         if (!this.chartUrl) {
                             this.chartData = data.data;
-                            this.drawChart(data.data);
+                            if(this.chartTypeData && this.chartTypeData.length){
+                                this.drawChart(this.chartData,this.chartType);
+                            }else{
+                                this.drawChart(this.chartData,this.chartType=null);
+                            }
                         }
 
                         if(this.tableData.total){
@@ -450,7 +466,11 @@ export class TableSwitchChartComponent implements OnInit {
                     } else {
                         this.error = "";
                         this.chartData = data.data;
-                        this.drawChart(data.data);
+                        if(this.chartTypeData && this.chartTypeData.length){
+                            this.drawChart(this.chartData,this.chartType);
+                        }else{
+                            this.drawChart(this.chartData,this.chartType=null);
+                        }
                     }
                     this.isLoading = false;
                 },
@@ -461,12 +481,23 @@ export class TableSwitchChartComponent implements OnInit {
             )
     }
 
-    drawChart(data) {
-        this.drawChartEmit.emit(data);
+    drawChart(data,type) {
+        if(type){
+            this.drawChartEmit.emit({
+                data:data,
+                type:type
+            });
+        }else{
+            this.drawChartEmit.emit(data);
+        }
     }
 
     redraw() {
-        this.drawChart(this.chartData);
+        if(this.chartTypeData && this.chartTypeData.length){
+            this.drawChart(this.chartData,this.chartType);
+        }else{
+            this.drawChart(this.chartData,this.chartType=null);
+        }
     }
 
     reGetData() {

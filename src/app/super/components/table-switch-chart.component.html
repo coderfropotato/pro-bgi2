@@ -14,6 +14,10 @@
             </span>
             <!-- 下拉框 -->
             <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate :''"></ng-container>
+            <!-- 图类型下拉 -->
+            <nz-select *ngIf="!isShowTable && chartTypeData && chartTypeData.length" style="width: 120px;" class="ml12" nzSize="small" [(ngModel)]="chartType" (ngModelChange)="chartTypeChange()">
+                <nz-option *ngFor="let item of chartTypeData" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
+            </nz-select>
             <!--左-其他模块 -->
             <ng-container *ngTemplateOutlet="(otherLeftTemplate && !error) ? otherLeftTemplate :''"></ng-container>     
         </div>

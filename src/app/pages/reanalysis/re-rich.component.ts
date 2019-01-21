@@ -40,7 +40,6 @@ export class ReRichComponent implements OnInit {
     colors: string[];
 
     chartTypeData:any=[];
-    chartType:string;
 
     isShowTable:boolean;
 
@@ -137,8 +136,6 @@ export class ReRichComponent implements OnInit {
                 value:"柱状图"
             }];
 
-            this.chartType=this.chartTypeData[0]['key'];
-
             this.first = true;
             this.applyOnceSearchParams = true;
             this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
@@ -231,9 +228,6 @@ export class ReRichComponent implements OnInit {
 
     }
 
-    chartTypeChange(){
-        console.log(this.chartType)
-    }
     
     deleteGene(i){
         this.checkedData.splice(i,1);
@@ -247,6 +241,7 @@ export class ReRichComponent implements OnInit {
         this.reDraw();
     }
 
+    // 点击“重画”
     reDraw(){
         this.chartEntity['checkedClassifyList']=this.checkedDrawGeneList;
         this.switchChart.reGetData();
@@ -409,72 +404,179 @@ export class ReRichComponent implements OnInit {
     }
 
     //画图
-    drawChart(data) {
-        let x,y,category;
-        let _self = this;
-        x = data['baseThead'][data['baseThead'].length-1]['true_key'];
-        y = data['baseThead'][0]['true_key'];
-        if(data['baseThead'].length>2) category = data['baseThead'][1]['true_key'];
+    drawChart(obj) {
+        let data=obj.data;
+        let type=obj.type;
 
-        let config = {
-            chart: {
-                title: `${this.annotation}富集`,
-                dblclick: function(event) {
-                    _self.promptService.open(event.target.innerHTML,newval=>{
-                        this.setChartTitle(newval);
-                        this.updateTitle();
-                    });
-                },
-                width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
-                height: _self.leftBottom.nativeElement.offsetHeight * 0.8,
-                custom: [x, y, category],
-                el: "#geneRichChartDiv",
-                type: "bar",
-                enableChartSelect:true,
-                selectedModule: _self.isMultipleSelect?'multiple':'single',
-                direction:"horizontal", 
-                data: data['rows'],
-                onselect:data=>{
-                    console.log(data);
-                }
-            },
-            axis: {
-                x: {
-                    title: "Number",
+        let _self = this;
+        
+        if(type==='column'){
+            let x,y,category;
+            x = data['baseThead'][data['baseThead'].length-1]['true_key'];
+            y = data['baseThead'][0]['true_key'];
+            if(data['baseThead'].length>2) category = data['baseThead'][1]['true_key'];
+
+            let config = {
+                chart: {
+                    title: `${this.annotation}富集`,
                     dblclick: function(event) {
                         _self.promptService.open(event.target.innerHTML,newval=>{
-                            this.setXTitle(newval);
+                            this.setChartTitle(newval);
                             this.updateTitle();
                         });
                     },
-                    rotate:60
-                },
-                y: {
-                    title: "Level2",
-                    dblclick: function(event) {
-                        _self.promptService.open(event.target.innerHTML,newval=>{
-                            this.setYTitle(newval);
-                            this.updateTitle();
-                        });
+                    width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
+                    height: _self.leftBottom.nativeElement.offsetHeight * 0.8,
+                    custom: [x, y, category],
+                    el: "#geneRichChartDiv",
+                    type: "bar",
+                    enableChartSelect:true,
+                    selectedModule: _self.isMultipleSelect?'multiple':'single',
+                    direction:"horizontal", 
+                    data: data['rows'],
+                    onselect:data=>{
+                        console.log(data);
                     }
+                },
+                axis: {
+                    x: {
+                        title: "Number",
+                        dblclick: function(event) {
+                            _self.promptService.open(event.target.innerHTML,newval=>{
+                                this.setXTitle(newval);
+                                this.updateTitle();
+                            });
+                        },
+                        rotate:60
+                    },
+                    y: {
+                        title: "Level2",
+                        dblclick: function(event) {
+                            _self.promptService.open(event.target.innerHTML,newval=>{
+                                this.setYTitle(newval);
+                                this.updateTitle();
+                            });
+                        }
+                    }
+                },
+                legend: {
+                    show: true,
+                    position: "right",
+                    click:(d,index)=>{
+                        this.color = d3.select(d).attr('fill');
+                        this.show = true;
+                        this.legendIndex = index;
+                    }
+                },
+                tooltip: function(d) {
+                    if(category)  return "<span>Number："+d[x]+"</span><br><span>Level1："+d[category]+"</span><br><span>Level2："+d[y]+"</span>"
+                    return "<span>Number："+d[x]+"</span><br><span>Level2："+d[y]+"</span>";
                 }
-            },
-            legend: {
-                show: true,
-                position: "right",
-                click:(d,index)=>{
-                    this.color = d3.select(d).attr('fill');
-                    this.show = true;
-                    this.legendIndex = index;
-                }
-            },
-            tooltip: function(d) {
-                if(category)  return "<span>Number："+d[x]+"</span><br><span>Level1："+d[category]+"</span><br><span>Level2："+d[y]+"</span>"
-                return "<span>Number："+d[x]+"</span><br><span>Level2："+d[y]+"</span>";
             }
-        }
+    
+            this.chart=new d4().init(config,{minWidth:240});
+        }else if(type==='bubble'){
+            var realData = [];
+            var legendData = [];
+            data.rows.forEach(function(d, i) {
+                realData.push({
+                    x: d.num,
+                    y: d[_self.annotation+"_term"],
+                    r: d.num,
+                    color: d.num
+                });
+                legendData.push(d.num);
+            });
 
-        this.chart=new d4().init(config,{minWidth:240});
+            let config1={
+                chart: {
+                    title: "气泡图",
+                    dblclick: function(event) {
+                      var name = prompt("请输入需要修改的标题", "");
+                      if (name) {
+                        this.setChartTitle(name);
+                        this.updateTitle();
+                      }
+                    },
+                    mouseover: function(event, titleObj) {
+                      titleObj
+                        .attr("fill", "blue")
+                        .append("title")
+                        .text("custom");
+                    },
+                    mouseout: function(event, titleObj) {
+                      titleObj.attr("fill", "#333");
+                      titleObj.select("title").remove();
+                    },
+                    el: "#geneRichChartDiv",
+                    type: "bubble",
+                    //   enableChartSelect:true,
+                    //   selectedModule: "",
+                    onselect: data => {
+                      console.log(data);
+                    },
+                    data: realData,
+                    colors: ["#4575B4", "#FEF6B2", "#D9352A"],
+                    radius: {
+                      min: 5,
+                      max: 10
+                    }
+                  },
+                  axis: {
+                    x: {
+                      title: "样本",
+                      rotate: 20,
+                      min: 0,
+                      // max:1,
+                      dblclick: function(event) {
+                        var name = prompt("请输入需要修改的标题", "");
+                        if (name) {
+                          this.setXTitle(name);
+                          this.updateTitle();
+                        }
+                      }
+                    },
+                    y: {
+                      title: "log10(FPKM+1)",
+                      // min:0,
+                      // max:10,
+                      dblclick: function(event) {
+                        var name = prompt("请输入需要修改的标题", "");
+                        if (name) {
+                          this.setYTitle(name);
+                          this.updateTitle();
+                        }
+                      }
+                      // formatter: val => "$" + val
+                    }
+                  },
+                  legend: {
+                    show: true,
+                    data: legendData,
+                    type: "gradient",
+                    title: "num",
+                    position: "right",
+                    // min: -1,
+                    // max: 1,
+                    dblclick: (d, i) => {
+                    //   this.d = d;
+                    //   this.i = i;
+                    //   this.$refs.inputColor.click();
+                    },
+                    rLegend: {
+                      show: true,
+                      title: "radius"
+                    }
+                  },
+                  tooltip: function(d) {
+                    return `<span>x：${d.x}</span><br><span>y：${
+                      d.y
+                    }</span><br><span>r：${d.r}</span><br><span>color：${d.color}</span>`;
+                  }
+            }
+
+            this.chart=new d4().init(config1,{minWidth:240});
+        }
     }
 
     //color change 回调函数
