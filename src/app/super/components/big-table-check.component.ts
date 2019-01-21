@@ -1103,7 +1103,22 @@ export class BigTableCheckComponent implements OnInit {
 
 	_getData(status = false) {
 		this.getRemoteData(status);
-	}
+    }
+
+    /**
+     * @description 外部删除选中状态
+     * @author Yangwd<277637411@qq.com>
+     * @date 2019-01-21
+     * @param {Array<object>} data
+     * @returns
+     * @memberof BigTableCheckComponent
+     */
+    _deleteCheckedStatus(data:Array<object>){
+        if(!data.length) return;
+        data.forEach(v=>{
+            this.refreshStatus(false,v);
+        })
+    }
 
 	deleteSearchListItemOrderByAddThead() {
 		if (this.beforeAddThead) {
