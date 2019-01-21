@@ -1273,19 +1273,21 @@ button.btnActive {
 	.gene-switch {
 		position: absolute;
 		top: 12px;
-		right: 0px;
+        right: 0px;
+        height: 28px;
 		border-radius: 16px 0 0 16px;
 		background-color: $them_color;
 		color: #fff;
 		padding: 2px 16px;
-		font-size: 12px;
-		transition: .3s all ease;
+        font-size: 12px;
+        line-height: 24px;
+		transition: 0.1s all ease;
 		cursor: pointer;
 		&:hover {
 			@include hover-animate($them_color);
 		}
-		span {
-			margin-right: 8px;
+		i {
+			margin-left: 8px;
 		}
 	}
 }

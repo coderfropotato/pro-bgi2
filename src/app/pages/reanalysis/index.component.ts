@@ -73,52 +73,52 @@ export class ReanalysisIndexComponent implements OnInit {
         });
     }
 
-    async getAddThead() {
-        return new Promise((resolve, reject) => {
-            let LCID = sessionStorage.getItem("LCID");
-            this.ajaxService
-                .getDeferData({
-                    data: {},
-                    url: `${config['javaPath']}/addColumn/${LCID}`
-                })
-                .subscribe(
-                    data => {
-                        if(data['status']==='0'){
-                            let d = data['data'];
-                            // let outerFlag = "006";
-                            // let outerDataBase;
+    // async getAddThead() {
+    //     return new Promise((resolve, reject) => {
+    //         let LCID = sessionStorage.getItem("LCID");
+    //         this.ajaxService
+    //             .getDeferData({
+    //                 data: {},
+    //                 url: `${config['javaPath']}/addColumn/${LCID}`
+    //             })
+    //             .subscribe(
+    //                 data => {
+    //                     if(data['status']==='0'){
+    //                         let d = data['data'];
+    //                         // let outerFlag = "006";
+    //                         // let outerDataBase;
 
-                            d.forEach((val,index)=>{
-                                if(val['category']===config['outerDataBaseIndex']){
-                                    // outerDataBase = d.splice(index,1)[0];
-                                    val['children'].forEach(v=>{
-                                        if(!('children' in v)) v['children'] = [];
-                                        v['modalVisible'] = false;
-                                        v['children'].forEach(item=>{
-                                            this.initTreeData(item['treeData']);
-                                        })
-                                    })
-                                }
-                            })
+    //                         d.forEach((val,index)=>{
+    //                             if(val['category']===config['outerDataBaseIndex']){
+    //                                 // outerDataBase = d.splice(index,1)[0];
+    //                                 val['children'].forEach(v=>{
+    //                                     if(!('children' in v)) v['children'] = [];
+    //                                     v['modalVisible'] = false;
+    //                                     v['children'].forEach(item=>{
+    //                                         this.initTreeData(item['treeData']);
+    //                                     })
+    //                                 })
+    //                             }
+    //                         })
 
-                            // this.storeService.setThead(d);
-                            this.addColumnService.set(d);
-                            // outerDataBase['children'].forEach(v=>{
-                            //     v['children'].forEach((val,index)=>{
-                            //         val['generatedThead'] = [];
-                            //         this.initTreeData(val['treeData']);
-                            //     })
-                            // });
-                            // this.outerDataBaseService.set(outerDataBase);
-                            resolve("success");
-                        }else{
-                            reject('error');
-                        }
-                    },
-                    () => reject("error")
-                );
-        });
-    }
+    //                         // this.storeService.setThead(d);
+    //                         this.addColumnService.set(d);
+    //                         // outerDataBase['children'].forEach(v=>{
+    //                         //     v['children'].forEach((val,index)=>{
+    //                         //         val['generatedThead'] = [];
+    //                         //         this.initTreeData(val['treeData']);
+    //                         //     })
+    //                         // });
+    //                         // this.outerDataBaseService.set(outerDataBase);
+    //                         resolve("success");
+    //                     }else{
+    //                         reject('error');
+    //                     }
+    //                 },
+    //                 () => reject("error")
+    //             );
+    //     });
+    // }
 
     // 初始化 增删列树节点数据
     initTreeData(treeData){
