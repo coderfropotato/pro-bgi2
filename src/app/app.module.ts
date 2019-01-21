@@ -1,65 +1,65 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { ColorPickerModule, ColorPickerDirective } from "ngx-color-picker";
-import { NgxSpinnerModule } from "ngx-spinner";
-import { HashLocationStrategy, LocationStrategy, registerLocaleData } from "@angular/common";
-import { RouterModule, Routes, RouteReuseStrategy } from "@angular/router";
-import { NgModule } from "@angular/core";
-import { NgZorroAntdModule, NZ_MESSAGE_CONFIG ,NZ_NOTIFICATION_CONFIG} from "ng-zorro-antd";
-import { SimpleReuseStrategy } from "./super/service/simpleReuseStrategy";
+import { BrowserModule } from '@angular/platform-browser';
+import { ColorPickerModule, ColorPickerDirective } from 'ngx-color-picker';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { HashLocationStrategy, LocationStrategy, registerLocaleData } from '@angular/common';
+import { RouterModule, Routes, RouteReuseStrategy } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { NgZorroAntdModule, NZ_MESSAGE_CONFIG, NZ_NOTIFICATION_CONFIG } from 'ng-zorro-antd';
+import { SimpleReuseStrategy } from './super/service/simpleReuseStrategy';
 
 // 组件
-import { AppComponent } from "./app.component";
-import { LoginComponent } from "./pages/login/login.component";
-import { IndexComponent } from "./pages/mrna/index.component";
-import { cxzk1Component } from "./pages/mrna/cxzk1.component";
-import { GoRichComponent } from "./pages/mrna/goRich.component";
-import { netComponent } from "./pages/mrna/net.component";
-import { multiOmicsComponent } from "./pages/mrna/multiOmics.component";
-import { clusterComponent } from "./pages/mrna/cluster.component";
-import { NotFoundComponent } from "./pages/notFound.component";
-import { DnaIndexComponent } from "./pages/dna/index.component";
-import { JyzbdComponent } from "./pages/dna/jyzbd.component";
-import { AddColumnComponent } from "./super/components/add-column.component";
-import { ChartExportComponent } from "./super/components/chart-export.component";
-import { GeneTableComponent } from "./super/components/gene-table.component";
-import { TopComponent } from "./include/top.component";
-import { MenuComponent } from "./include/menu.component";
-import { FilterComponent } from "./super/components/filter.component";
-import { ErrorComponent } from "./super/components/error.component";
-import { SyserrorComponent } from "./pages/syserror.component";
-import { GeneTableTestComponent } from "./pages/mrna/gene-table-test.component";
-import { AddComponent } from "./pages/mrna/add.component";
-import { LittleTableComponent } from "./super/components/little-table.component";
-import { BigTableComponent } from "./super/components/big-table.component";
-import { TableSwitchChartComponent } from "./super/components/table-switch-chart.component";
-import { LittleTableTestComponent } from "./pages/mrna/little-table-test.component";
-import { MultiOmicsSetComponent } from "./super/components/multiOmicsSet.component";
-import { ClusterSetComponent } from "./super/components/clusterSet.component";
-import { NetSetComponent } from "./super/components/netSet.component";
-import { ReanalysisIndexComponent } from "./pages/reanalysis/index.component";
-import { TransformationTableComponent } from "./super/components/transformation-table.component";
-import { GeneRelativeComponent } from "./super/components/gene-relative.component";
-import { BigTableTestComponent } from "./pages/mrna/big-table-test.component";
-import { GeneTransformTableTestComponent } from "./pages/mrna/gene-transform-table-test.component";
-import { GridExportComponent } from "./super/components/grid-export.component";
-import { PaginationComponent } from "./super/components/pagination.component";
-import { TreeComponent } from "./super/components/tree.component";
-import { TreeItemComponent } from "./super/components/tree-item.component";
-import { ColorPickerComponent } from "./super/components/color-picker.component";
-import { ExpressVennComponent, ExpressVennPage } from "./pages/mrna/expressVenn.component";
-import { DiffVennComponent, DiffVennPage } from "./pages/mrna/diffVenn.component";
-import { Layout1Component, Layout1Page } from "./pages/mrna/layout1.component";
-import { Layout2Component } from "./pages/mrna/layout2.component";
-import { ToolsComponent } from "./super/components/tools.component";
-import { SysDefendComponent } from "./pages/sysDefend.component";
+import { AppComponent } from './app.component';
+import { LoginComponent } from './pages/login/login.component';
+import { IndexComponent } from './pages/mrna/index.component';
+import { cxzk1Component } from './pages/mrna/cxzk1.component';
+import { GoRichComponent } from './pages/mrna/goRich.component';
+import { netComponent } from './pages/mrna/net.component';
+import { multiOmicsComponent } from './pages/mrna/multiOmics.component';
+import { clusterComponent } from './pages/mrna/cluster.component';
+import { NotFoundComponent } from './pages/notFound.component';
+import { DnaIndexComponent } from './pages/dna/index.component';
+import { JyzbdComponent } from './pages/dna/jyzbd.component';
+import { AddColumnComponent } from './super/components/add-column.component';
+import { ChartExportComponent } from './super/components/chart-export.component';
+import { GeneTableComponent } from './super/components/gene-table.component';
+import { TopComponent } from './include/top.component';
+import { MenuComponent } from './include/menu.component';
+import { FilterComponent } from './super/components/filter.component';
+import { ErrorComponent } from './super/components/error.component';
+import { SyserrorComponent } from './pages/syserror.component';
+import { GeneTableTestComponent } from './pages/mrna/gene-table-test.component';
+import { AddComponent } from './pages/mrna/add.component';
+import { LittleTableComponent } from './super/components/little-table.component';
+import { BigTableComponent } from './super/components/big-table.component';
+import { TableSwitchChartComponent } from './super/components/table-switch-chart.component';
+import { LittleTableTestComponent } from './pages/mrna/little-table-test.component';
+import { MultiOmicsSetComponent } from './super/components/multiOmicsSet.component';
+import { ClusterSetComponent } from './super/components/clusterSet.component';
+import { NetSetComponent } from './super/components/netSet.component';
+import { ReanalysisIndexComponent } from './pages/reanalysis/index.component';
+import { TransformationTableComponent } from './super/components/transformation-table.component';
+import { GeneRelativeComponent } from './super/components/gene-relative.component';
+import { BigTableTestComponent } from './pages/mrna/big-table-test.component';
+import { GeneTransformTableTestComponent } from './pages/mrna/gene-transform-table-test.component';
+import { GridExportComponent } from './super/components/grid-export.component';
+import { PaginationComponent } from './super/components/pagination.component';
+import { TreeComponent } from './super/components/tree.component';
+import { TreeItemComponent } from './super/components/tree-item.component';
+import { ColorPickerComponent } from './super/components/color-picker.component';
+import { ExpressVennComponent, ExpressVennPage } from './pages/mrna/expressVenn.component';
+import { DiffVennComponent, DiffVennPage } from './pages/mrna/diffVenn.component';
+import { Layout1Component, Layout1Page } from './pages/mrna/layout1.component';
+import { Layout2Component } from './pages/mrna/layout2.component';
+import { ToolsComponent } from './super/components/tools.component';
+import { SysDefendComponent } from './pages/sysDefend.component';
 import { UploadComponent } from './pages/mrna/upload.component';
-import {PromtComponent} from './super/service/promptService';
+import { PromtComponent } from './super/service/promptService';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
-import {ReMultiOmicsComponent} from './pages/reanalysis/re-multiOmics.component';
+import { ReMultiOmicsComponent } from './pages/reanalysis/re-multiOmics.component';
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
 import { reRelationHeatmapComponent } from './pages/reanalysis/re-relationHeatmap.component';
 import { ReNetComponent } from './pages/reanalysis/re-net.component';
-import {reRelationNetComponent} from './pages/reanalysis/re-relationNet.component';
+import { reRelationNetComponent } from './pages/reanalysis/re-relationNet.component';
 import { ReKdaComponent } from './pages/reanalysis/re-kda.component';
 import { ReLineComponent } from './pages/reanalysis/re-line.component';
 import { KaFunComponent } from './pages/reanalysis/re-kaFun.component';
@@ -67,548 +67,601 @@ import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.co
 import { LayoutSwitchComponent } from './super/components/layout-switch.component';
 import { LoadingComponent } from './pages/reanalysis/loading.component';
 import { GeneListIndexComponent } from './pages/geneList/index.component';
-import { GeneListVennComponent,GeneListVennPageComponent } from './pages/geneList/venn.component';
+import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneList/venn.component';
 import { BigTableCheckComponent } from './super/components/big-table-check.component';
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
-import { HelpComponent } from "./pages/mrna/base/help.component";
+import { HelpComponent } from './pages/mrna/base/help.component';
+import { OverviewComponent } from './pages/mrna/base/overview.component';
+import { InformationComponent } from './pages/mrna/base/information.component';
+import { ReadsComparisonComponent } from './pages/mrna/base/reads-comparison.component';
+import { LrnaComponent } from './pages/mrna/base/lrna.component';
+import { ReadsFilterComponent } from './pages/mrna/base/reads-filter.component';
 
-import {ReRichComponent} from './pages/reanalysis/re-rich.component';
+import { ReRichComponent } from './pages/reanalysis/re-rich.component';
 // 服务
 // import { HttpInterService } from './super/service/httpService';
-import { GlobalService } from "./super/service/globalService";
-import { LoadingService } from "./super/service/loadingService";
-import { MessageService } from "./super/service/messageService";
-import { AjaxService } from "./super/service/ajaxService";
-import { StoreService } from "./super/service/storeService";
-import { TooltipDirective } from "./super/directive/tooltip.directive";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { SysDefendService } from "./super/service/sysDefendService";
-import { PageModuleService } from "./super/service/pageModuleService";
+import { GlobalService } from './super/service/globalService';
+import { LoadingService } from './super/service/loadingService';
+import { MessageService } from './super/service/messageService';
+import { AjaxService } from './super/service/ajaxService';
+import { StoreService } from './super/service/storeService';
+import { TooltipDirective } from './super/directive/tooltip.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SysDefendService } from './super/service/sysDefendService';
+import { PageModuleService } from './super/service/pageModuleService';
 import { AddColumnService } from './super/service/addColumnService';
-import {PromptService} from './super/service/promptService'
-
+import { PromptService } from './super/service/promptService';
 
 // 国际化
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // 管道
-import { AccuracyPipe } from "./super/filter/accuracy.pipe";
-import {TableSpecialTheadFilter} from './super/filter/tableSpecialThead.pipe';
-import config from "../config";
-
-
-
+import { AccuracyPipe } from './super/filter/accuracy.pipe';
+import { TableSpecialTheadFilter } from './super/filter/tableSpecialThead.pipe';
+import config from '../config';
 
 const ROUTES: Routes = [
-    // mrna
-    {
-        path: "report/mrna",
-        component: IndexComponent,
-        data: {
-            keep: true,
-            module: "mrnaIndex"
-        },
-        canActivateChild: [SysDefendService],
-        children: [
-            // demo
-            {
-                path: "",
-                redirectTo: "diff-venn",
-                pathMatch: "full"
+	// mrna
+	{
+		path: 'report/mrna',
+		component: IndexComponent,
+		data: {
+			keep: true,
+			module: 'mrnaIndex'
+		},
+		canActivateChild: [ SysDefendService ],
+		children: [
+			// demo
+			{
+				path: '',
+				redirectTo: 'diff-venn',
+				pathMatch: 'full'
+			},
+			{
+				path: 'table',
+				component: GeneTableTestComponent,
+				data: {
+					keep: true,
+					module: 'geneTableTest'
+				}
+			},
+			{
+				path: 'addColumn',
+				component: AddComponent,
+				data: {
+					keep: true,
+					module: 'addColumn'
+				}
+			},
+			{
+				path: 'transformationTable',
+				component: GeneTransformTableTestComponent,
+				data: {
+					keep: true,
+					module: 'geneTransformationTable'
+				}
+			},
+			{
+				path: 'littleTableTest',
+				component: LittleTableTestComponent,
+				data: {
+					keep: true,
+					module: 'littleTableTest'
+				}
+			},
+			{
+				path: 'bigTable',
+				component: BigTableTestComponent,
+				data: {
+					keep: true,
+					module: 'bigTable'
+				}
+			},
+			// page
+			{
+				path: 'cxzk1',
+				component: cxzk1Component,
+				data: {
+					keep: true,
+					module: 'cxzk1'
+				}
+			},
+			{
+				path: 'goRich',
+				component: GoRichComponent,
+				data: {
+					keep: true,
+					module: 'goRich'
+				}
+			},
+			{
+				path: 'net',
+				component: netComponent,
+				data: {
+					keep: true,
+					module: 'net'
+				}
+			},
+			{
+				path: 'multiOmics',
+				component: multiOmicsComponent,
+				data: {
+					keep: true,
+					module: 'multiOmics'
+				}
+			},
+			{
+				path: 'layout1',
+				component: Layout1Page,
+				data: {
+					keep: true,
+					module: 'layout1'
+				}
+			},
+			{
+				path: 'layout2',
+				component: Layout2Component,
+				data: {
+					keep: true,
+					module: 'layout2'
+				}
+			},
+			{
+				path: 'cluster',
+				component: clusterComponent,
+				data: {
+					keep: true,
+					module: 'cluster'
+				}
             },
             {
-                path: "table",
-                component: GeneTableTestComponent,
-                data: {
-                    keep: true,
-                    module: "geneTableTest"
-                }
+				path: 'express-venn',
+				component: ExpressVennPage,
+				data: {
+					keep: true,
+					module: 'expressVenn'
+				}
+			},
+			{
+				path: 'diff-venn',
+				component: DiffVennPage,
+				data: {
+					keep: true,
+					module: 'diffVenn'
+				}
+			},
+			{
+				path: 'upload',
+				component: UploadComponent,
+				data: {
+					keep: false,
+					module: 'upload'
+				}
             },
             {
-                path: "addColumn",
-                component: AddComponent,
-                data: {
-                    keep: true,
-                    module: "addColumn"
-                }
-            },
-            {
-                path: "transformationTable",
-                component: GeneTransformTableTestComponent,
-                data: {
-                    keep: true,
-                    module: "geneTransformationTable"
-                }
-            },
-            {
-                path: "littleTableTest",
-                component: LittleTableTestComponent,
-                data: {
-                    keep: true,
-                    module: "littleTableTest"
-                }
-            },
-            {
-                path: "bigTable",
-                component: BigTableTestComponent,
-                data: {
-                    keep: true,
-                    module: "bigTable"
-                }
-            },
-            {
-                path: "help",
-                component: HelpComponent,
-                data: {
-                    keep: true,
-                    module: "help"
-                }
-            },
-            // page
-            {
-                path: "cxzk1",
-                component: cxzk1Component,
-                data: {
-                    keep: true,
-                    module: "cxzk1"
-                }
-            },
-            {
-                path: "goRich",
-                component: GoRichComponent,
-                data: {
-                    keep: true,
-                    module: "goRich"
-                }
-            },
-            {
-                path: "net",
-                component: netComponent,
-                data: {
-                    keep: true,
-                    module: "net"
-                }
-            },
-            {
-                path: "multiOmics",
-                component: multiOmicsComponent,
-                data: {
-                    keep: true,
-                    module: "multiOmics"
-                }
-            },
-            {
-                path: "express-venn",
-                component: ExpressVennPage,
-                data: {
-                    keep: true,
-                    module: "expressVenn"
-                }
-            },
-            {
-                path: "diff-venn",
-                component: DiffVennPage,
-                data: {
-                    keep: true,
-                    module: "diffVenn"
-                }
-            },
-            {
-                path: "layout1",
-                component: Layout1Page,
-                data: {
-                    keep: true,
-                    module: "layout1"
-                }
-            },
-            {
-                path: "layout2",
-                component: Layout2Component,
-                data: {
-                    keep: true,
-                    module: "layout2"
-                }
-            },
-            {
-                path: "cluster",
-                component: clusterComponent,
-                data: {
-                    keep: true,
-                    module: "cluster"
-                }
-            },
-            {
-                path:"upload",
-                component:UploadComponent,
+                path:'overview',
+                component:OverviewComponent,
                 data:{
                     keep:false,
-                    module:"upload"
-                }
-            }
-        ]
-    },
-    // 基因集
-    {
-        path: "report/gene-list",
-        component: GeneListIndexComponent,
-        data: {
-            keep: true,
-            module: "geneList"
-        },
-        canActivateChild: [SysDefendService],
-        children:[
-            {
-                path: "venn",
-                component: GeneListVennPageComponent,
-                data: {
-                    keep: true,
-                    module: "GeneListVennPage"
+                    module:"overview"
                 }
             },
             {
-                path: "",
-                redirectTo: "venn",
-                pathMatch: "full"
-            },
-            {
-                path: "**",
-                redirectTo: "venn",
-                pathMatch: "full"
-            }
-        ]
-    },
-    // dna
-    {
-        path: "report/dna",
-        component: DnaIndexComponent,
-        data: {
-            keep: false,
-            module: "reportDna"
-        },
-        canActivateChild: [SysDefendService],
-        children: [
-            {
-                path: "jyzbd",
-                component: JyzbdComponent,
-                data: {
-                    keep: true,
-                    module: "jyzbd"
-                }
-            }
-        ]
-    },
-    // 重分析
-    {
-        path: "report/reanalysis",
-        component: ReanalysisIndexComponent,
-        canActivateChild: [SysDefendService],
-        data: {
-            keep: false,
-            module: "reanalysisIndex"
-        },
-        children:[
-            {
-                path:"index",
-                component:ReListComponent,
+                path:'information',
+                component:InformationComponent,
                 data:{
                     keep:false,
-                    module:"reList"
+                    module:"information"
                 }
             },
+            {
+                path:'reads-filter',
+                component:ReadsFilterComponent,
+                data:{
+                    keep:false,
+                    module:"readsFilter"
+                }
+            },
+            {
+                path:'reads-comparison',
+                component:ReadsComparisonComponent,
+                data:{
+                    keep:false,
+                    module:"readsComparison"
+                }
+            },
+            {
+                path:'lrna',
+                component:LrnaComponent,
+                data:{
+                    keep:false,
+                    module:"lrna"
+                }
+            },
+            {
+				path: 'help',
+				component: HelpComponent,
+				data: {
+					keep: true,
+					module: 'help'
+				}
+			}
+		]
+	},
+	// 基因集
+	{
+		path: 'report/gene-list',
+		component: GeneListIndexComponent,
+		data: {
+			keep: true,
+			module: 'geneList'
+		},
+		canActivateChild: [ SysDefendService ],
+		children: [
+			{
+				path: 'venn',
+				component: GeneListVennPageComponent,
+				data: {
+					keep: true,
+					module: 'GeneListVennPage'
+				}
+			},
+			{
+				path: '',
+				redirectTo: 'venn',
+				pathMatch: 'full'
+			},
+			{
+				path: '**',
+				redirectTo: 'venn',
+				pathMatch: 'full'
+			}
+		]
+	},
+	// dna
+	{
+		path: 'report/dna',
+		component: DnaIndexComponent,
+		data: {
+			keep: false,
+			module: 'reportDna'
+		},
+		canActivateChild: [ SysDefendService ],
+		children: [
+			{
+				path: 'jyzbd',
+				component: JyzbdComponent,
+				data: {
+					keep: true,
+					module: 'jyzbd'
+				}
+			}
+		]
+	},
+	// 重分析
+	{
+		path: 'report/reanalysis',
+		component: ReanalysisIndexComponent,
+		canActivateChild: [ SysDefendService ],
+		data: {
+			keep: false,
+			module: 'reanalysisIndex'
+		},
+		children: [
+			{
+				path: 'index',
+				component: ReListComponent,
+				data: {
+					keep: false,
+					module: 'reList'
+				}
+			},
 
-            {
-                path: "re-multiOmics/:geneType/:tid/:version",
-                component: ReMultiOmicsComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reMutiOmics"
-                }
-            },
-            {
-                path: "re-heatmap/:geneType/:tid/:version",
-                component: ReHeatmapComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reHeatmap"
-                }
-            },
-            {
-                path: "re-heatmaprelation/:geneType/:tid/:version",
-                component: reRelationHeatmapComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reRelationHeatmap"
-                }
-            },
-            {
-                path: "re-net/:geneType/:tid/:version",
-                component: ReNetComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reNet"
-                }
-            },
-            {
-                path: "re-linkedNetwork/:geneType/:tid/:version",
-                component: reRelationNetComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reRelationNet"
-                }
-            },
-            {
-                path: "re-kda/:geneType/:tid/:version",
-                component: ReKdaComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reKda"
-                }
-            },
-            {
-                path: "re-line/:geneType/:tid/:version",
-                component: ReLineComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reLine"
-                }
-            },
-            {
-                path: "re-chiSquare/:geneType/:tid/:version",
-                component: KaFunComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reKaFun"
-                }
-            },
-            {
-                path: "re-as/:geneType/:tid/:version",
-                component: RelativeSpliceComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reRelativeSplice"
-                }
-            },
-            {
-                path: "re-classification/:geneType/:tid/:version/:annotation",
-                component: ReClassComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reClass"
-                }
-            },
-            {
-                path: "re-enrichment/:geneType/:tid/:version/:annotation",
-                component: ReRichComponent,
-                canActivate: [SysDefendService],
-                data: {
-                    keep: false,
-                    module: "reRich"
-                }
-            },
-            {
-                path: "",
-                redirectTo: "index",
-                pathMatch: "full"
-            },
-        ]
-    },
-    {
-        path:"report/reanalysis/loading",
-        component:LoadingComponent,
-        data:{
-            keep:false,
-            module:"reLoading"
-        }
-    },
-    // common
-    {
-        path: "report/login",
-        component: LoginComponent,
-        canActivate: [SysDefendService],
-        data: {
-            keep: false,
-            module: "login"
-        }
-    },
-    {
-        path: "reprot/sysError",
-        component: SyserrorComponent,
-        canActivate: [SysDefendService],
-        data: {
-            keep: false,
-            module: "sysError"
-        }
-    },
-    {
-        path: "report/404",
-        component: NotFoundComponent,
-        canActivate: [SysDefendService],
-        data: {
-            keep: false,
-            module: "404"
-        }
-    },
-    {
-        path: "report/sysDefend",
-        component: SysDefendComponent,
-        data: {
-            keep: false,
-            module: "sysDefend"
-        }
-    },
-    {
-        path: "",
-        redirectTo: "report/login",
-        canActivate: [SysDefendService],
-        pathMatch: "full"
-    },
-    {
-        path: "**",
-        redirectTo: "report/404",
-        canActivate: [SysDefendService],
-        pathMatch: "full"
-    }
+			{
+				path: 're-multiOmics/:geneType/:tid/:version',
+				component: ReMultiOmicsComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reMutiOmics'
+				}
+			},
+			{
+				path: 're-heatmap/:geneType/:tid/:version',
+				component: ReHeatmapComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reHeatmap'
+				}
+			},
+			{
+				path: 're-heatmaprelation/:geneType/:tid/:version',
+				component: reRelationHeatmapComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reRelationHeatmap'
+				}
+			},
+			{
+				path: 're-net/:geneType/:tid/:version',
+				component: ReNetComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reNet'
+				}
+			},
+			{
+				path: 're-linkedNetwork/:geneType/:tid/:version',
+				component: reRelationNetComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reRelationNet'
+				}
+			},
+			{
+				path: 're-kda/:geneType/:tid/:version',
+				component: ReKdaComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reKda'
+				}
+			},
+			{
+				path: 're-line/:geneType/:tid/:version',
+				component: ReLineComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reLine'
+				}
+			},
+			{
+				path: 're-chiSquare/:geneType/:tid/:version',
+				component: KaFunComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reKaFun'
+				}
+			},
+			{
+				path: 're-as/:geneType/:tid/:version',
+				component: RelativeSpliceComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reRelativeSplice'
+				}
+			},
+			{
+				path: 're-classification/:geneType/:tid/:version/:annotation',
+				component: ReClassComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reClass'
+				}
+			},
+			{
+				path: 're-enrichment/:geneType/:tid/:version/:annotation',
+				component: ReRichComponent,
+				canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reRich'
+				}
+			},
+			{
+				path: '',
+				redirectTo: 'index',
+				pathMatch: 'full'
+			}
+		]
+	},
+	{
+		path: 'report/reanalysis/loading',
+		component: LoadingComponent,
+		data: {
+			keep: false,
+			module: 'reLoading'
+		}
+	},
+	// common
+	{
+		path: 'report/login',
+		component: LoginComponent,
+		canActivate: [ SysDefendService ],
+		data: {
+			keep: false,
+			module: 'login'
+		}
+	},
+	{
+		path: 'reprot/sysError',
+		component: SyserrorComponent,
+		canActivate: [ SysDefendService ],
+		data: {
+			keep: false,
+			module: 'sysError'
+		}
+	},
+	{
+		path: 'report/404',
+		component: NotFoundComponent,
+		canActivate: [ SysDefendService ],
+		data: {
+			keep: false,
+			module: '404'
+		}
+	},
+	{
+		path: 'report/sysDefend',
+		component: SysDefendComponent,
+		data: {
+			keep: false,
+			module: 'sysDefend'
+		}
+	},
+	{
+		path: '',
+		redirectTo: 'report/login',
+		canActivate: [ SysDefendService ],
+		pathMatch: 'full'
+	},
+	{
+		path: '**',
+		redirectTo: 'report/404',
+		canActivate: [ SysDefendService ],
+		pathMatch: 'full'
+	}
 ];
 
 export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, "../assets/lang/", ".json");
+	return new TranslateHttpLoader(http, '../assets/lang/', '.json');
 }
 
 @NgModule({
-    // 组件，指令，过滤器（管道） 申明在declarations 里
-    declarations: [
-        DiffVennPage,
-        ExpressVennPage,
-        Layout1Page,
-        GeneListIndexComponent,
-        SysDefendComponent,
-        LoginComponent,
-        IndexComponent,
-        cxzk1Component,
-        GoRichComponent,
-        netComponent,
-        multiOmicsComponent,
-        clusterComponent,
-        GeneTableTestComponent,
-        GeneTableComponent,
-        NotFoundComponent,
-        AppComponent,
-        TopComponent,
-        MenuComponent,
-        FilterComponent,
-        ErrorComponent,
-        DnaIndexComponent,
-        ReanalysisIndexComponent,
-        JyzbdComponent,
-        SyserrorComponent,
-        AddColumnComponent,
-        ChartExportComponent,
-        AddComponent,
-        LittleTableComponent,
-        BigTableComponent,
-        TableSwitchChartComponent,
-        LittleTableTestComponent,
-        MultiOmicsSetComponent,
-        ClusterSetComponent,
-        NetSetComponent,
-        AccuracyPipe,
-        TransformationTableComponent,
-        GeneRelativeComponent,
-        BigTableTestComponent,
-        GeneTransformTableTestComponent,
-        GridExportComponent,
-        PaginationComponent,
-        TreeItemComponent,
-        ExpressVennComponent,
-        DiffVennComponent,
-        Layout1Component,
-        Layout2Component,
-        TreeComponent,
-        ToolsComponent,
-        UploadComponent,
-        ColorPickerComponent,
-        ReListComponent,
-        ReHeatmapComponent,
-        reRelationHeatmapComponent,
-        TooltipDirective,
-        ReNetComponent,
-        ReKdaComponent,
-        reRelationNetComponent,
-        ReLineComponent,
-        KaFunComponent,
-        RelativeSpliceComponent,
-        LayoutSwitchComponent,
-        ReMultiOmicsComponent,
-        LoadingComponent,
-        GeneListVennComponent,
-        GeneListVennPageComponent,
-        BigTableCheckComponent,
-        ReClassComponent,
-        ReRichComponent,
-        PromtComponent,
-        TableSpecialTheadFilter,
-        HelpComponent
-    ],
-    // 路由模块在imports 导入
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        NgxSpinnerModule,
-        ColorPickerModule,
-        NgZorroAntdModule,
-        ReactiveFormsModule,
-        FormsModule,
-        HttpClientModule,
-        RouterModule.forRoot(ROUTES),
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: createTranslateLoader,
-                deps: [HttpClient]
-            }
-        })
-    ],
-    exports: [TranslateModule],
-    // 服务和拦截器在providers申明
-    providers: [
-        LoadingService,
-        GlobalService,
-        MessageService,
-        AjaxService,
-        StoreService,
-        SysDefendService,
-        PageModuleService,
-        AddColumnService,
-        PromptService,
-        // , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
-        {
-            provide: NZ_MESSAGE_CONFIG,
-            useValue: { nzDuration: 3000, nzPauseOnHover: true, nzMaxStack: 3, nzAnimate: true, }
-        },
-        {
-            provide: NZ_NOTIFICATION_CONFIG,
-            useValue: { nzTop:'40px', nzBottom:'24px', nzPlacement:'topRight', nzDuration:3000, nzMaxStack:3, nzPauseOnHover:true, nzAnimate:true }
-        },
-        // { provide: HTTP_INTERCEPTORS, useClass: HttpInterService, multi: true },
-        // enable route alive
-        { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy },
-        // enable hash module
-        { provide: LocationStrategy, useClass: HashLocationStrategy }
-    ],
-    entryComponents:[PromtComponent],
-    bootstrap: [AppComponent],
+	// 组件，指令，过滤器（管道） 申明在declarations 里
+	declarations: [
+		DiffVennPage,
+		ExpressVennPage,
+		Layout1Page,
+		GeneListIndexComponent,
+		SysDefendComponent,
+		LoginComponent,
+		IndexComponent,
+		cxzk1Component,
+		GoRichComponent,
+		netComponent,
+		multiOmicsComponent,
+		clusterComponent,
+		GeneTableTestComponent,
+		GeneTableComponent,
+		NotFoundComponent,
+		AppComponent,
+		TopComponent,
+		MenuComponent,
+		FilterComponent,
+		ErrorComponent,
+		DnaIndexComponent,
+		ReanalysisIndexComponent,
+		JyzbdComponent,
+		SyserrorComponent,
+		AddColumnComponent,
+		ChartExportComponent,
+		AddComponent,
+		LittleTableComponent,
+		BigTableComponent,
+		TableSwitchChartComponent,
+		LittleTableTestComponent,
+		MultiOmicsSetComponent,
+		ClusterSetComponent,
+		NetSetComponent,
+		AccuracyPipe,
+		TransformationTableComponent,
+		GeneRelativeComponent,
+		BigTableTestComponent,
+		GeneTransformTableTestComponent,
+		GridExportComponent,
+		PaginationComponent,
+		TreeItemComponent,
+		ExpressVennComponent,
+		DiffVennComponent,
+		Layout1Component,
+		Layout2Component,
+		TreeComponent,
+		ToolsComponent,
+		UploadComponent,
+		ColorPickerComponent,
+		ReListComponent,
+		ReHeatmapComponent,
+		reRelationHeatmapComponent,
+		TooltipDirective,
+		ReNetComponent,
+		ReKdaComponent,
+		reRelationNetComponent,
+		ReLineComponent,
+		KaFunComponent,
+		RelativeSpliceComponent,
+		LayoutSwitchComponent,
+		ReMultiOmicsComponent,
+		LoadingComponent,
+		GeneListVennComponent,
+		GeneListVennPageComponent,
+		BigTableCheckComponent,
+		ReClassComponent,
+		ReRichComponent,
+		PromtComponent,
+		OverviewComponent,
+		InformationComponent,
+		ReadsComparisonComponent,
+		LrnaComponent,
+		ReadsFilterComponent,
+		HelpComponent,
+		TableSpecialTheadFilter
+	],
+	// 路由模块在imports 导入
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		NgxSpinnerModule,
+		ColorPickerModule,
+		NgZorroAntdModule,
+		ReactiveFormsModule,
+		FormsModule,
+		HttpClientModule,
+		RouterModule.forRoot(ROUTES),
+		TranslateModule.forRoot({
+			loader: {
+				provide: TranslateLoader,
+				useFactory: createTranslateLoader,
+				deps: [ HttpClient ]
+			}
+		})
+	],
+	exports: [ TranslateModule ],
+	// 服务和拦截器在providers申明
+	providers: [
+		LoadingService,
+		GlobalService,
+		MessageService,
+		AjaxService,
+		StoreService,
+		SysDefendService,
+		PageModuleService,
+		AddColumnService,
+		PromptService,
+		// , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
+		{
+			provide: NZ_MESSAGE_CONFIG,
+			useValue: { nzDuration: 3000, nzPauseOnHover: true, nzMaxStack: 3, nzAnimate: true }
+		},
+		{
+			provide: NZ_NOTIFICATION_CONFIG,
+			useValue: {
+				nzTop: '40px',
+				nzBottom: '24px',
+				nzPlacement: 'topRight',
+				nzDuration: 3000,
+				nzMaxStack: 3,
+				nzPauseOnHover: true,
+				nzAnimate: true
+			}
+		},
+		// enable route alive
+		{ provide: RouteReuseStrategy, useClass: SimpleReuseStrategy },
+		// enable hash module
+		{ provide: LocationStrategy, useClass: HashLocationStrategy }
+	],
+	entryComponents: [ PromtComponent ],
+	bootstrap: [ AppComponent ]
 })
 export class AppModule {}
