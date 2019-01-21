@@ -24,9 +24,9 @@ declare const $:any;
     templateUrl: "./big-table.component.html"
 })
 export class BigTableComponent implements OnInit {
-    
-    @Input() tableId: string; // 表格id 
-   
+
+    @Input() tableId: string; // 表格id
+
     @Input() url: string;    // 表格查询参数可有可无  默认有 pageSize pageIndex sortValue sortKey searchList rootSearchContentList addThead 对于有超出默认参数之外的查询参数 需要放在pageEntity里传进来
     @Input() pageEntity: object;
     @Input() fileName: string;  // 表格下载名称
@@ -39,7 +39,7 @@ export class BigTableComponent implements OnInit {
     @Input() applyOnceSearchParams:boolean = false;
     // TODO 双向绑定applyOnceSearchParams 下次再次触发
     @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
-    
+
     @Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
     @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
 
@@ -240,9 +240,9 @@ export class BigTableComponent implements OnInit {
                     }
                 }else{
                     this.total = 0;
-                    this.error = "error";    
+                    this.error = "error";
                 }
-                    
+
                 setTimeout(() => {
                     this.computedTbody(this.tableHeight);
                 }, 30);
@@ -608,7 +608,7 @@ export class BigTableComponent implements OnInit {
         this.getRemoteData(true);
     }
 
-    
+
 
      /**
      * @description 组件外设置内部查询参数 更新参数并发请求

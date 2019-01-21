@@ -92,8 +92,12 @@ export class ReClassComponent implements OnInit {
     isMultipleSelect:boolean = false;
 
     // 图表选择的数据
-    checkedList:string[] = [] ;
-    
+    checkedList:any[] = [] ;
+
+    // level标志key
+    level1Key:string = 'level_1';
+    level2Key:string = 'level_2';
+    termKey:string = 'term';
 
     constructor(
         private message: MessageService,
@@ -250,9 +254,8 @@ export class ReClassComponent implements OnInit {
     }
 
     handleCheckChange(checked){
-        let keys = checked[0];
         this.checkedList.length = 0;
-        this.checkedList.push(...keys);
+        this.checkedList.push(...checked[1]);
         this.chartBackStatus();
     }
 
@@ -338,7 +341,7 @@ export class ReClassComponent implements OnInit {
             // 转换表重新获取数据
             this.checkedList.length = 0;
             this.chartBackStatus();
-            
+
             let curExceed = await this.getGeneCount();
             if(this.isExceed != curExceed){
                 this.chartEntity['checkedClassifyType'] = this.selectedVal;
@@ -363,6 +366,11 @@ export class ReClassComponent implements OnInit {
         this.transformTable._initCheckStatus();
         this.transformTable._clearFilterWithoutRequest();
         this.resetCheckGraph = true;
+
+        let checkedList = this.spliceKey([...this.checkedList]);
+        this.checkedList.length = 0;
+        this.checkedList.push(...checkedList);
+
         if(!this.first){
             this.defaultEntity['checkGraph'] = true;
             this.defaultEntity['addThead'] = [];
@@ -416,11 +424,18 @@ export class ReClassComponent implements OnInit {
 
     //画图
     drawChart(data) {
-        let x,y,category;
+        let x,y,category,yTitle;
         let _self = this;
         x = data['baseThead'][data['baseThead'].length-1]['true_key'];
         y = data['baseThead'][0]['true_key'];
         if(data['baseThead'].length>2) category = data['baseThead'][1]['true_key'];
+        if(y.indexOf(this.level1Key)!=-1){
+            yTitle = 'Level1'
+        }else if(y.indexOf(this.level2Key)!=-1){
+            yTitle = 'Level2'
+        }else{
+            yTitle = 'Term';
+        };
 
         let config = {
             chart: {
@@ -442,7 +457,7 @@ export class ReClassComponent implements OnInit {
                 data: data['rows'],
                 onselect:data=>{
                     _self.checkedList.length = 0;
-                    _self.checkedList.push(...data.map(v=>v[y]));
+                    _self.checkedList.push(...data);
                     if(!_self.isMultipleSelect){
                         _self.chartBackStatus();
                     }
@@ -460,7 +475,7 @@ export class ReClassComponent implements OnInit {
                     rotate:60
                 },
                 y: {
-                    title: "Level2",
+                    title: yTitle,
                     dblclick: function(event) {
                         _self.promptService.open(event.target.innerHTML,newval=>{
                             this.setYTitle(newval);
@@ -484,7 +499,7 @@ export class ReClassComponent implements OnInit {
             }
         }
 
-        this.chart=new d4().init(config,{minWidth:240});
+        this.chart=new d4().init(config,{yTitleWidth:80});
     }
 
     //color change 回调函数
@@ -505,5 +520,42 @@ export class ReClassComponent implements OnInit {
 
     chartSelectModelChange(model){
         this.chart.setChartSelectModule(this.isMultipleSelect?'multiple':'single');
+    }
+
+    spliceKey(data:Array<Object>):any{
+        if(!data.length) return data;
+
+        let temp = [];
+        if(this.selectedVal.indexOf(this.level2Key)!=-1){ // level_2
+            let level1TrueKey,level2TrueKey;
+            for(let name in data[0]){
+                if(name.indexOf(this.level1Key)!=-1) level1TrueKey = name;
+                if(name.indexOf(this.level2Key)!=-1) level2TrueKey = name;
+            }
+            data.forEach(v=>{
+                temp.push(`${v[level2TrueKey]}+${v[level1TrueKey]}`);
+            })
+            return temp;
+        }else if(this.selectedVal.indexOf(this.level1Key)!=-1){  // level1
+            let level1TrueKey;
+            for(let name in data[0]){
+                if(name.indexOf(this.level1Key)!=-1) level1TrueKey = name;
+            }
+
+            data.forEach(v=>{
+                temp.push(v[level1TrueKey]);
+            })
+            return temp;
+        }else if(this.selectedVal.endsWith(this.termKey)){  // term
+            let termTrueKey ;
+            for(let name in data[0]){
+                if(name.endsWith(this.termKey)) termTrueKey = name;
+            }
+
+            data.forEach(v=>{
+                temp.push(v[termTrueKey]);
+            })
+        }
+        return temp;
     }
 }
