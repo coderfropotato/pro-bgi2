@@ -485,7 +485,14 @@ button.btnActive {
 	flex-direction: row;
 	&.reanalysis-content {
 		height: calc(100% - 80px);
-	}
+    }
+    &.base-content{
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        background-color: #fff;
+        display: block;
+    }
 	.left-layout {
 		overflow: hidden;
 		flex: 7;
@@ -673,7 +680,7 @@ button.btnActive {
 		left: 0;
 		top: 120px;
 		background-color: #fff;
-		z-index: 0;
+		z-index: -1;
 		&.active {
 			opacity: 1;
 			left: 0;
@@ -1266,19 +1273,21 @@ button.btnActive {
 	.gene-switch {
 		position: absolute;
 		top: 12px;
-		right: 0px;
+        right: 0px;
+        height: 28px;
 		border-radius: 16px 0 0 16px;
 		background-color: $them_color;
 		color: #fff;
 		padding: 2px 16px;
-		font-size: 12px;
-		transition: .3s all ease;
+        font-size: 12px;
+        line-height: 24px;
+		transition: 0.1s all ease;
 		cursor: pointer;
 		&:hover {
 			@include hover-animate($them_color);
 		}
-		span {
-			margin-right: 8px;
+		i {
+			margin-left: 8px;
 		}
 	}
 }
@@ -1433,4 +1442,85 @@ button.btnActive {
 	border: 1px solid #ccc;
 	max-height: 400px;
 	overflow: auto;
+}
+
+//帮助页面
+.mhelp-class{
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	background-color: #fff;
+	.top_title{
+        width: 98%;
+        margin: 20px auto 0 auto;
+        height: 18px;
+        font-family: MicrosoftYaHei-Bold;
+        font-size: 18px;
+        color: #333333;
+        letter-spacing: 0;
+        line-height: 18px;
+	}
+	.title_down_line{
+        width: 100%;
+        margin: 20px auto 0 auto;
+        height: 1px;
+        border: 0.5px solid #EEEEEE;
+	}
+	.option_one{
+		.help_content{
+			width: 100%;
+			height: auto;
+			.title_frist{
+				width: 98%;
+				margin: 20px auto 0 auto;
+				height: 16px;
+				font-family: MicrosoftYaHei;
+				font-size: 16px;
+				color: #333333;
+				letter-spacing: 0;
+				line-height: 16px;
+			}
+			.bgi_static_pic {
+				width: 98%;
+				margin: 10px auto 0 auto;
+				.bgi_static_pic_one{
+					width: 213px;
+					height: 613px;
+					margin:  0 auto;
+					background-image: url("../img/help/mrnaLC.png");
+					background-repeat: no-repeat;
+					background-position: center;
+				}
+				.bgi_static_pic_two{
+					width: 622px;
+					height: 715px;
+					margin:  0 auto;
+					background-image: url("../img/help/fxLC.png");
+					background-repeat: no-repeat;
+					background-position: center;
+				}
+				.bgi_static_pic_three{
+					width: 585px;
+					height: 692px;
+					margin:  0 auto;
+					background-image: url("../img/help/ckjyzdb.png");
+					background-repeat: no-repeat;
+					background-position: center;
+				}
+			}
+			.bgi_static_normal{
+				width: 98%;
+				margin: 10px auto 0 auto;
+				text-indent:2em;
+			}
+			.bgi_static_bg {
+				background-color: #eee;
+				width: 95%;
+				margin: 10px auto 0 auto;
+				padding: 10px;
+				border: 1px solid #dfe2e5;
+				border-radius: 4px;
+			}
+		}
+	}
 }

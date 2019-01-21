@@ -6,40 +6,49 @@ import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
-import { TranslateService } from "@ngx-translate/core";
-import {PromptService} from './../../super/service/promptService'
+import { TranslateService } from '@ngx-translate/core';
+import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
 
 @Component({
 	selector: 'app-venn-page',
-    template: `<app-venn-component *ngIf="showModule" [defaultGeneType]="defaultGeneType">
-                    <div class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
+	template: `<app-diff-venn-component *ngIf="showModule" [defaultGeneType]="defaultGeneType">
+                    <div *ngIf="rootGeneType===config['geneTypeAll']" class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
                         <span>{{defaultGeneType | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
-                </app-venn-component>`,
+                    <div *ngIf="rootGeneType!==config['geneTypeAll']" class="gene-switch gene-switch-module">
+                        <span>{{defaultGeneType | translate}}</span>
+                    </div>
+                </app-diff-venn-component>`,
 	styles: []
 })
 export class DiffVennPage {
-    showModule:boolean = true;
-    defaultGeneType:string = 'gene';
+	private moduleRouteName: string = 'diff-venn'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
+	config: object = config;
+	rootGeneType: string = this.storeService.getStore('menuRouteMap')[this.moduleRouteName]['geneType']; // 来自菜单 可配置  all gene transcript
+	defaultGeneType: string = this.rootGeneType === this.config['geneTypeAll']
+		? this.config['geneTypeOfGene']
+		: this.rootGeneType;
+	showModule: boolean = true;
 
-    constructor(private storeService:StoreService,private translate:TranslateService) {
-        let browserLang = this.storeService.getLang();
-        this.translate.use(browserLang);
-    }
+	constructor(private storeService: StoreService, private translate: TranslateService) {
+		let browserLang = this.storeService.getLang();
+		this.translate.use(browserLang);
+	}
 
-    handlerSwitchChange(){
-        this.defaultGeneType = this.defaultGeneType==='gene'?'transcript':'gene';
-        this.showModule = false;
-        setTimeout(()=>{this.showModule = true},30);
-    }
-
+	handlerSwitchChange() {
+		this.defaultGeneType = this.defaultGeneType === config['geneTypeOfGene'] ? config['geneTypeOfTranscript'] : config['geneTypeOfGene'];
+		this.showModule = false;
+		setTimeout(() => {
+			this.showModule = true;
+		}, 30);
+	}
 }
 
 @Component({
-	selector: 'app-venn-component',
+	selector: 'app-diff-venn-component',
 	templateUrl: './diffVenn.component.html',
 	styles: []
 })
@@ -50,15 +59,15 @@ export class DiffVennComponent implements OnInit {
 	@ViewChild('func') func;
 	@ViewChild('addColumn') addColumn;
 	@ViewChild('tableSwitchChart') tableSwitchChart;
-    @ViewChild('transformTable') transformTable;
-    @Input('defaultGeneType') defaultGeneType;
+	@ViewChild('transformTable') transformTable;
+	@Input('defaultGeneType') defaultGeneType;
 
 	switch: string = 'right';
 	tableUrl: string;
 	// 默认收起模块描述
-	expandModuleDesc:boolean = false;
+	expandModuleDesc: boolean = false;
 
-    // vennEntity: object;
+	// vennEntity: object;
 	defaultEntity: object;
 	defaultUrl: string;
 	defaultTableId: string;
@@ -90,8 +99,8 @@ export class DiffVennComponent implements OnInit {
 		FDR: ''
 	};
 
-	p_log2FC:string;
-	p_FDR:string;
+	p_log2FC: string;
+	p_FDR: string;
 
 	n_show: boolean; //设置里面的NOIseq
 	NOIseq: object = {
@@ -99,8 +108,8 @@ export class DiffVennComponent implements OnInit {
 		probability: ''
 	};
 
-	n_log2FC:string;
-	n_probability:string;
+	n_log2FC: string;
+	n_probability: string;
 
 	activedCompareGroup: any[] = [];
 	singleMultiSelect: object = {
@@ -130,13 +139,13 @@ export class DiffVennComponent implements OnInit {
 	venn: any; // 韦恩图对象实例
 
 	leftSelect: any[] = [];
-    upSelect: any[] = [];
+	upSelect: any[] = [];
 
-    addColumnShow:boolean = false;
-    showBackButton:boolean = false;
+	addColumnShow: boolean = false;
+	showBackButton: boolean = false;
 
-	selectGeneCount:number = 0;
-	computedScrollHeight:boolean = false;
+	selectGeneCount: number = 0;
+	computedScrollHeight: boolean = false;
 
 	constructor(
 		private message: MessageService,
@@ -145,8 +154,8 @@ export class DiffVennComponent implements OnInit {
 		private storeService: StoreService,
 		public pageModuleService: PageModuleService,
 		private translate: TranslateService,
-        private promptService:PromptService,
-        private addColumnService:AddColumnService,
+		private promptService: PromptService,
+		private addColumnService: AddColumnService,
 		private router: Router
 	) {
 		// 订阅windowResize 重新计算表格滚动高度
@@ -159,7 +168,7 @@ export class DiffVennComponent implements OnInit {
 			if (event instanceof NavigationEnd) this.computedTableHeight();
 		});
 		let browserLang = this.storeService.getLang();
-        this.translate.use(browserLang);
+		this.translate.use(browserLang);
 	}
 
 	ngOnInit() {
@@ -239,8 +248,8 @@ export class DiffVennComponent implements OnInit {
 				PossionDis: this.PossionDis
 			},
 			version: this.storeService.getStore('version'),
-            searchList: [],
-            sortThead:this.addColumn['sortThead']
+			searchList: [],
+			sortThead: this.addColumn['sortThead']
 		};
 		this.defaultTableId = 'diff_venn_default_gene';
 		this.defaultDefaultChecked = true;
@@ -270,28 +279,30 @@ export class DiffVennComponent implements OnInit {
 				PossionDis: this.PossionDis
 			},
 			version: this.storeService.getStore('version'),
-            searchList: [],
-            sortThead:this.addColumn['sortThead']
+			searchList: [],
+			sortThead: this.addColumn['sortThead']
 		};
 		this.extendTableId = 'diff_venn_extend_gene';
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
-    }
-
-    handleSelectGeneCountChange(selectGeneCount){
-        this.selectGeneCount = selectGeneCount;
-    }
-
-	moduleDescChange(){
-		this.expandModuleDesc = !this.expandModuleDesc;
-		// 重新计算表格切换组件表格的滚动高度
-		setTimeout(()=>{this.tableSwitchChart.scrollHeight()},30)
 	}
 
-    toggle(status){
-        this.addColumnShow = status;
-    }
+	handleSelectGeneCountChange(selectGeneCount) {
+		this.selectGeneCount = selectGeneCount;
+	}
+
+	moduleDescChange() {
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.tableSwitchChart.scrollHeight();
+		}, 30);
+	}
+
+	toggle(status) {
+		this.addColumnShow = status;
+	}
 
 	ngAfterViewInit() {
 		setTimeout(() => {
@@ -302,47 +313,49 @@ export class DiffVennComponent implements OnInit {
 	handlerColorChange(color) {
 		this.venn.setColor(color);
 		this.venn.update();
-    }
+	}
 
-    // 重置图 应用图转换前的设置
-    chartBackStatus(){
-        this.defaultEmitBaseThead = true;
-        this.showBackButton = false;
-        // 初始化表的选中状态
+	// 重置图 应用图转换前的设置
+	chartBackStatus() {
+		this.defaultEmitBaseThead = true;
+		this.showBackButton = false;
+		// 初始化表的选中状态
 		this.transformTable._initCheckStatus();
 		// 清空表的筛选
 		this.transformTable._clearFilterWithoutRequest();
-        if(!this.first){
-            this.defaultEntity['compareGroup'] = this.selectConfirmData;
-            this.defaultEntity['searchList'] = [];
-            this.defaultEntity['pageIndex'] = 1;
+		if (!this.first) {
+			this.defaultEntity['compareGroup'] = this.selectConfirmData;
+			this.defaultEntity['searchList'] = [];
+			this.defaultEntity['pageIndex'] = 1;
 			this.defaultEntity['rootSearchContentList'] = [];
-            setTimeout(()=>{this.first = true;},30)
-        }else{
-            this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
-            this.transformTable._setParamsNoRequest('pageIndex',1);
-            this.transformTable._getData();
-        }
-    }
+			setTimeout(() => {
+				this.first = true;
+			}, 30);
+		} else {
+			this.transformTable._setParamsNoRequest('compareGroup', this.selectConfirmData);
+			this.transformTable._setParamsNoRequest('pageIndex', 1);
+			this.transformTable._getData();
+		}
+	}
 
 	// {add:[],remove:[{}]}
 	addThead(thead) {
-        this.transformTable._initCheckStatus();
+		this.transformTable._initCheckStatus();
 
-        this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
-        this.transformTable._setParamsNoRequest('pageIndex', 1);
+		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+		this.transformTable._setParamsNoRequest('pageIndex', 1);
 
 		this.transformTable._addThead(thead['add']);
 	}
 
 	// 表格转换 确定
 	confirm(relations) {
-        this.showBackButton = true;
+		this.showBackButton = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
-        this.extendEmitBaseThead = false;
-        this.addColumn._clearThead();
+		this.extendEmitBaseThead = false;
+		this.addColumn._clearThead();
 		if (this.first) {
 			this.extendCheckStatusInParams = false;
 			this.extendEntity['checkStatus'] = checkParams['others']['checkStatus'];
@@ -354,22 +367,31 @@ export class DiffVennComponent implements OnInit {
 			this.extendEntity['compareGroup'] = this.selectConfirmData;
 			this.extendEntity['leftChooseList'] = checkParams['tableEntity']['leftChooseList'];
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
-            this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
-            this.extendEntity['relations'] = relations;
-            this.extendEntity['addThead'] = [];
+			this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
+			this.extendEntity['relations'] = relations;
+			this.extendEntity['addThead'] = [];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
 			this.extendCheckStatusInParams = false;
 			this.transformTable._setExtendParamsWithoutRequest('checkStatus', checkParams['others']['checkStatus']);
-			this.transformTable._setExtendParamsWithoutRequest( 'checked', checkParams['others']['excludeGeneList']['checked'].concat() );
-			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
+			this.transformTable._setExtendParamsWithoutRequest(
+				'checked',
+				checkParams['others']['excludeGeneList']['checked'].concat()
+			);
+			this.transformTable._setExtendParamsWithoutRequest(
+				'unChecked',
+				checkParams['others']['excludeGeneList']['unChecked'].concat()
+			);
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
-			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
-            this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
-            this.transformTable._setExtendParamsWithoutRequest('relations', relations);
-            // 每次checkStatusInParams状态变完  再去获取数据
-            this.transformTable._setExtendParamsWithoutRequest('addThead',[]);
+			this.transformTable._setExtendParamsWithoutRequest(
+				'rootSearchContentList',
+				checkParams['tableEntity']['rootSearchContentList']
+			);
+			this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
+			this.transformTable._setExtendParamsWithoutRequest('relations', relations);
+			// 每次checkStatusInParams状态变完  再去获取数据
+			this.transformTable._setExtendParamsWithoutRequest('addThead', []);
 			setTimeout(() => {
 				this.transformTable._getData();
 			}, 30);
@@ -381,7 +403,7 @@ export class DiffVennComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-        this.chartBackStatus();
+		this.chartBackStatus();
 	}
 
 	// 在认为是基础头的时候发出基础头 双向绑定到增删列
@@ -390,41 +412,41 @@ export class DiffVennComponent implements OnInit {
 	}
 
 	resize(event) {
-		setTimeout(()=>{
-            this.computedTableHeight();
-        },30)
-    }
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
+	}
 
 	drawVenn(data) {
-		let d_length=data['total'].length;
+		let d_length = data['total'].length;
 		if (d_length > 5) {
 			this.venn_or_upsetR = true;
 			this.showUpSetR(data);
-		} else if(d_length<=5&&d_length>=2){
+		} else if (d_length <= 5 && d_length >= 2) {
 			this.venn_or_upsetR = false;
 			this.showVenn(data);
-		}else{
+		} else {
 			this.venn_or_upsetR = false;
 			// this.showVenn(data);
 		}
 	}
 
-    // 切换左右布局 计算左右表格的滚动高度
+	// 切换左右布局 计算左右表格的滚动高度
 	switchChange(status) {
-        this.switch = status;
-        setTimeout(()=>{
-            this.tableSwitchChart.scrollHeight();
-            this.computedTableHeight();
-        },320)
-    }
+		this.switch = status;
+		setTimeout(() => {
+			this.tableSwitchChart.scrollHeight();
+			this.computedTableHeight();
+		}, 320);
+	}
 
 	computedTableHeight() {
 		try {
-            let h = this.tableHeight;
-            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
-            if(this.tableHeight===h) this.computedScrollHeight = true;
+			let h = this.tableHeight;
+			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
-    }
+	}
 
 	OnChange(value: string): void {
 		this.PossionDis['log2FC'] = value;
@@ -444,14 +466,14 @@ export class DiffVennComponent implements OnInit {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
-		if(this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR!=this.PossionDis['FDR']){
+		if (this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR != this.PossionDis['FDR']) {
 			this.PossionDis = {
 				log2FC: this.p_show ? this.p_log2FC : '',
 				FDR: this.p_show ? this.p_FDR : ''
 			};
 		}
 
-		if(this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability!=this.NOIseq['probability']){
+		if (this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability != this.NOIseq['probability']) {
 			this.NOIseq = {
 				log2FC: this.n_show ? this.n_log2FC : '',
 				probability: this.n_show ? this.n_probability : ''
@@ -477,7 +499,7 @@ export class DiffVennComponent implements OnInit {
 			this.n_probability = this.NOIseq['probability'];
 		}
 
-		this.singleMultiSelect={
+		this.singleMultiSelect = {
 			bar_name: '',
 			total_name: '',
 			venn_name: ''
@@ -488,60 +510,60 @@ export class DiffVennComponent implements OnInit {
 			total_name: []
 		};
 
-        this.panelShow = false;
-        this.upSelect.length = 0;
-        this.leftSelect.length = 0 ;
+		this.panelShow = false;
+		this.upSelect.length = 0;
+		this.leftSelect.length = 0;
 		this.tableSwitchChart.reGetData();
 
 		// if (this.first) {
 		// 	this.transformTable._getData();
 		// } else {
-        //     this.first = true;
-        // }
-        this.chartBackStatus();
+		//     this.first = true;
+		// }
+		this.chartBackStatus();
 	}
 
 	//单、多选change
 	multiSelectChange() {
-        this.upSelect.length = 0;
-        this.leftSelect.length = 0;
-        // this.first?this.transformTable._getData():this.first = true;
-        this.chartBackStatus()
-        this.updateVenn();
+		this.upSelect.length = 0;
+		this.leftSelect.length = 0;
+		// this.first?this.transformTable._getData():this.first = true;
+		this.chartBackStatus();
+		this.updateVenn();
 	}
 
 	//韦恩,upsetR图二次更新
 	updateVenn() {
-        this.tableEntity['compareGroup'] = this.selectConfirmData;
+		this.tableEntity['compareGroup'] = this.selectConfirmData;
 		this.tableSwitchChart.reGetData();
 
-		this.singleMultiSelect={
+		this.singleMultiSelect = {
 			bar_name: '',
 			total_name: '',
 			venn_name: ''
 		};
 
-		this.doubleMultiSelect= {
+		this.doubleMultiSelect = {
 			bar_name: [],
 			total_name: []
-        };
-        // console.log(this.singleMultiSelect)
-        // console.log(this.doubleMultiSelect)
+		};
+		// console.log(this.singleMultiSelect)
+		// console.log(this.doubleMultiSelect)
 	}
 
 	//venn和upsetR只能单选时候
 	doSingleData() {
 		this.leftSelect.length = 0;
-        this.upSelect.length = 0;
+		this.upSelect.length = 0;
 		if (this.selectConfirmData.length > 5) {
-            // upset
-            if(this.singleMultiSelect['bar_name']) this.upSelect.push(this.singleMultiSelect['bar_name']);
-            if(this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
+			// upset
+			if (this.singleMultiSelect['bar_name']) this.upSelect.push(this.singleMultiSelect['bar_name']);
+			if (this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
 		} else {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
-        }
+		}
 
-        this.chartBackStatus()
+		this.chartBackStatus();
 	}
 
 	//多选确定时候,提交的数据
@@ -557,7 +579,7 @@ export class DiffVennComponent implements OnInit {
 			this.leftSelect.push(...tempData['total_name']);
 		}
 
-        this.chartBackStatus()
+		this.chartBackStatus();
 	}
 
 	//选择面板，默认选中数据
@@ -567,28 +589,28 @@ export class DiffVennComponent implements OnInit {
 
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
-        this.selectConfirmData = data;
+		this.selectConfirmData = data;
 		this.upSelect.length = 0;
-        this.leftSelect.length = 0;
+		this.leftSelect.length = 0;
 
 		// this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
-        // this.first ? this.transformTable._getData() : (this.first = true);
-        // 更新当前回来的表头为基础头
-        this.chartBackStatus();
-        this.updateVenn();
+		// this.first ? this.transformTable._getData() : (this.first = true);
+		// 更新当前回来的表头为基础头
+		this.chartBackStatus();
+		this.updateVenn();
 	}
 
 	redrawChart(width, height?) {
 		this.isMultiSelect = false;
-    }
+	}
 
-    // 图表切换刷新
-    handlerRefresh(){
-        // 清空选择的数据
-        this.upSelect.length = 0;
-        this.leftSelect.length = 0;
-        this.chartBackStatus();
-    }
+	// 图表切换刷新
+	handlerRefresh() {
+		// 清空选择的数据
+		this.upSelect.length = 0;
+		this.leftSelect.length = 0;
+		this.chartBackStatus();
+	}
 
 	//显示venn图
 	showVenn(data) {
@@ -633,24 +655,24 @@ export class DiffVennComponent implements OnInit {
 					});
 					_selfV.venSelectAllData = tempVenn;
 				}
-            })
-            .legendClick(function(ev,el){
-                _selfV.color = el['$el'].getAttribute('fill');
-                _selfV.show = true;
-                ev.stopPropagation();
-            })
-            .svgClick(function(){
-                if(_selfV.isMultiSelect){
-                    _selfV.venSelectAllData = [];
-                }else{
-                    _selfV.singleMultiSelect['bar_name'] = '';
+			})
+			.legendClick(function(ev, el) {
+				_selfV.color = el['$el'].getAttribute('fill');
+				_selfV.show = true;
+				ev.stopPropagation();
+			})
+			.svgClick(function() {
+				if (_selfV.isMultiSelect) {
+					_selfV.venSelectAllData = [];
+				} else {
+					_selfV.singleMultiSelect['bar_name'] = '';
 					_selfV.singleMultiSelect['total_name'] = '';
 					_selfV.singleMultiSelect['venn_name'] = '';
-                }
-                _selfV.upSelect.length = 0;
-                // _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
-                _selfV.chartBackStatus();
-            })
+				}
+				_selfV.upSelect.length = 0;
+				// _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
+				_selfV.chartBackStatus();
+			});
 	}
 
 	//显示upsetR图
@@ -748,11 +770,10 @@ export class DiffVennComponent implements OnInit {
 			total_value.push(List.total[i].value);
 		}
 
-		let left_name_length=getNameLength(total_name);
-		if(left_name_length>140){
+		let left_name_length = getNameLength(total_name);
+		if (left_name_length > 140) {
 			left_name_length = 140;
 		}
-
 
 		let kong_name_right = 10;
 
@@ -789,13 +810,17 @@ export class DiffVennComponent implements OnInit {
 		let svg_height = 300 + d3_height + padding1.top + padding1.bottom + padding2.top + padding2.bottom; //计算最外层svg高度
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
 
-		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on('click', function(d) {
-            _self.updateVenn();
-            _self.leftSelect.length = 0;
-            _self.upSelect.length = 0;
-            // _self.first ? _self.transformTable._getData() : (_self.first = true);
-            _self.chartBackStatus();
-        },false);
+		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on(
+			'click',
+			function(d) {
+				_self.updateVenn();
+				_self.leftSelect.length = 0;
+				_self.upSelect.length = 0;
+				// _self.first ? _self.transformTable._getData() : (_self.first = true);
+				_self.chartBackStatus();
+			},
+			false
+		);
 
 		drawSvg();
 		drawSvg2();
@@ -824,7 +849,7 @@ export class DiffVennComponent implements OnInit {
 			let xAxis1 = d3.axisBottom(xScale1);
 			let yAxis1 = d3.axisLeft(yScale1).ticks(5);
 
-			let tempSelectColor = "";
+			let tempSelectColor = '';
 
 			let rects1 = svg1
 				.selectAll('MyRect1')
@@ -833,21 +858,21 @@ export class DiffVennComponent implements OnInit {
 				.append('g')
 				.on('mouseover', function(d, i) {
 					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
-					d3.select(this).select('.MyRect').attr('fill',"#3D4871");
+					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
 					let tipText = `name: ${bar_name[i]}<br> value:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d, i) {
-					if(d3.select(this).select('.MyRect').attr('fill') == '#3D4871'){
-						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+					if (d3.select(this).select('.MyRect').attr('fill') == '#3D4871') {
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 					}
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
-                    var event = d3.event;
-                    event.stopPropagation();
+					var event = d3.event;
+					event.stopPropagation();
 					if (!_self.isMultiSelect) {
-						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -861,19 +886,26 @@ export class DiffVennComponent implements OnInit {
 							_self.singleMultiSelect['total_name'] = '';
 							_self.doSingleData();
 						}
-						console.log(_self.singleMultiSelect)
-					} else { //多选
-						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+						console.log(_self.singleMultiSelect);
+					} else {
+						//多选
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
-							_self.doubleMultiSelect['bar_name'] = selectName2(_self.doubleMultiSelect['bar_name'],bar_name[i]);
+							_self.doubleMultiSelect['bar_name'] = selectName2(
+								_self.doubleMultiSelect['bar_name'],
+								bar_name[i]
+							);
 						} else if (d3.select(this).select('.MyRect').attr('fill') == 'steelblue') {
 							//d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', '#333');
-							_self.doubleMultiSelect['bar_name'] = selectName2(_self.doubleMultiSelect['bar_name'],bar_name[i]);;
+							_self.doubleMultiSelect['bar_name'] = selectName2(
+								_self.doubleMultiSelect['bar_name'],
+								bar_name[i]
+							);
 						}
-						console.log(_self.doubleMultiSelect)
+						console.log(_self.doubleMultiSelect);
 					}
 				});
 
@@ -922,7 +954,7 @@ export class DiffVennComponent implements OnInit {
 		// 	return sList;
 		// }
 
-		function selectName2(sList,d) {
+		function selectName2(sList, d) {
 			if (sList.length == 0) {
 				sList.push(d);
 				sName[d] = true;
@@ -964,7 +996,7 @@ export class DiffVennComponent implements OnInit {
 			let xAxis2 = d3.axisBottom(xScale2).ticks(4);
 			let yAxis2 = d3.axisRight(yScale2);
 
-			let tempSelectColor = "";
+			let tempSelectColor = '';
 
 			let rects2 = svg2
 				.selectAll('MyRect2')
@@ -974,21 +1006,21 @@ export class DiffVennComponent implements OnInit {
 				.on('mouseover', function(d, i) {
 					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
 					//console.log(tempSelectColor);
-					d3.select(this).select('.MyRect').attr('fill',"#3D4871");
+					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
 					let tipText = `name: ${total_name[i]}<br> value:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
-				.on('mouseout', function(d, i){
-					if(d3.select(this).select('.MyRect').attr('fill') == '#3D4871'){
-						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+				.on('mouseout', function(d, i) {
+					if (d3.select(this).select('.MyRect').attr('fill') == '#3D4871') {
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 					}
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
-                    var event = d3.event;
-                    event.stopPropagation();
+					var event = d3.event;
+					event.stopPropagation();
 					if (!_self.isMultiSelect) {
-						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -1002,17 +1034,24 @@ export class DiffVennComponent implements OnInit {
 							_self.singleMultiSelect['bar_name'] = '';
 							_self.doSingleData();
 						}
-						console.log(_self.singleMultiSelect)
-					} else { //多选
-						d3.select(this).select('.MyRect').attr('fill',tempSelectColor);
+						console.log(_self.singleMultiSelect);
+					} else {
+						//多选
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
-							_self.doubleMultiSelect['total_name'] = selectName2(_self.doubleMultiSelect['total_name'],total_name[i]);
+							_self.doubleMultiSelect['total_name'] = selectName2(
+								_self.doubleMultiSelect['total_name'],
+								total_name[i]
+							);
 						} else if (d3.select(this).select('.MyRect').attr('fill') == 'steelblue') {
 							//d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', '#333');
-							_self.doubleMultiSelect['total_name'] = selectName2(_self.doubleMultiSelect['total_name'],total_name[i]);
+							_self.doubleMultiSelect['total_name'] = selectName2(
+								_self.doubleMultiSelect['total_name'],
+								total_name[i]
+							);
 						}
 						console.log(_self.doubleMultiSelect);
 					}
@@ -1069,7 +1108,7 @@ export class DiffVennComponent implements OnInit {
 
 			let yAxisk = d3.axisLeft(yScalek);
 
-			let tempSelectColor = "";
+			let tempSelectColor = '';
 			let textsk = svgk
 				.selectAll('text')
 				.data(total_name)
@@ -1087,19 +1126,19 @@ export class DiffVennComponent implements OnInit {
 					return d;
 				})
 				.on('mouseover', function(d, i) {
-					if(d3.select(this).style('fill') !="red"){
+					if (d3.select(this).style('fill') != 'red') {
 						tempSelectColor = d3.select(this).style('fill');
-						d3.select(this).style('fill',"#475FB1");
+						d3.select(this).style('fill', '#475FB1');
 					}
 				})
-				.on('mouseout', function(d, i){
-					if(d3.select(this).style('fill') !="red"){
-						d3.select(this).style('fill',tempSelectColor);
+				.on('mouseout', function(d, i) {
+					if (d3.select(this).style('fill') != 'red') {
+						d3.select(this).style('fill', tempSelectColor);
 					}
 				})
 				.on('click', function(d, i) {
-                    var event = d3.event;
-                    event.stopPropagation();
+					var event = d3.event;
+					event.stopPropagation();
 					sortName(d, d3.select(this));
 				});
 			svgk
@@ -1183,7 +1222,7 @@ export class DiffVennComponent implements OnInit {
 
 		//造点 这时候包含点的颜色 添加圆 基本圆
 		function makeBaseCircle(arr, svg_t) {
-			if(arr.length>0){
+			if (arr.length > 0) {
 				svg_t
 					.selectAll('.MyCircle')
 					.data(arr)
@@ -1204,7 +1243,7 @@ export class DiffVennComponent implements OnInit {
 					})
 					.on('click', function(d) {
 						var event = d3.event;
-							event.stopPropagation();
+						event.stopPropagation();
 					});
 
 				let tempyList = sortArr(arr, 'y_axis');
@@ -1221,7 +1260,7 @@ export class DiffVennComponent implements OnInit {
 						.attr('fill', i % 2 == 0 ? '#EEE' : 'none')
 						.on('click', function(d) {
 							var event = d3.event;
-								event.stopPropagation();
+							event.stopPropagation();
 						});
 				}
 
@@ -1300,7 +1339,7 @@ export class DiffVennComponent implements OnInit {
 				})
 				.on('click', function(d) {
 					var event = d3.event;
-						event.stopPropagation();
+					event.stopPropagation();
 				});
 		}
 
@@ -1427,14 +1466,14 @@ export class DiffVennComponent implements OnInit {
 					return d['y_axis'];
 				})
 				.attr('r', function(d, i) {
-					return d['r']+0.15;
+					return d['r'] + 0.15;
 				})
 				.style('fill', function(d) {
 					return d.color;
 				})
 				.on('click', function(d) {
 					var event = d3.event;
-						event.stopPropagation();
+					event.stopPropagation();
 				});
 		}
 
@@ -1446,17 +1485,18 @@ export class DiffVennComponent implements OnInit {
 			return str.replace(/[^\x00-\xff]/g, '01').length;
 		}
 
-		function getNameLength(total_name){
+		function getNameLength(total_name) {
 			//console.log(total_name)
 			let oSvg = d3.select('#diffVennId').append('svg');
-			let mText = oSvg.selectAll('MyAlltext')
-			.data(total_name)
-			.enter()
-			.append('text')
-			.text(function(d,i){
-				return d;
-			})
-			.attr('class', 'aText');
+			let mText = oSvg
+				.selectAll('MyAlltext')
+				.data(total_name)
+				.enter()
+				.append('text')
+				.text(function(d, i) {
+					return d;
+				})
+				.attr('class', 'aText');
 
 			let max_length = [];
 
@@ -1465,14 +1505,13 @@ export class DiffVennComponent implements OnInit {
 			});
 			//console.log(max_length)
 
-			max_length.sort(function(a,b){
-				return b-a;
+			max_length.sort(function(a, b) {
+				return b - a;
 			});
 
 			oSvg.remove();
 
 			return max_length[0];
 		}
-
 	}
 }

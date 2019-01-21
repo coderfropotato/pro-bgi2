@@ -1,0 +1,116 @@
+<div class="mhelp-class content base-content help">
+    <div class="top_title">
+        6.帮助
+    </div>
+
+    <div class="title_down_line"></div>
+
+    <div class="option_one">
+        <div class="help_content">
+            <div class="title_frist">
+                6.1 实验流程
+            </div>
+            <div class="bgi_static_pic">
+                <div class="bgi_static_pic_one">
+                </div>
+            </div>
+            <div class="bgi_static_normal">
+                <p>用mRNA富集法或rRNA去除法对totalRNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA；rRNA去除：用DNA探针杂交rRNA，RNaseH选择性消化DNA/RNA杂交链，再用DNaseI消化掉DNA探针，纯化后即得到所需RNA。得到的mRNA中加入适量打断试剂高温条件下使其片断化，以打断后的mRNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库用Agilent 2100 Bioanalyzer和ABI StepOnePlus Real-Time PCR System质检，合格后进行测序。</p>
+            </div>
+        </div>
+        <div class="help_content">
+            <div class="title_frist">
+                6.2 分析流程
+            </div>
+            <div class="bgi_static_pic">
+                <div class="bgi_static_pic_two">
+                </div>
+            </div>
+            <div class="bgi_static_normal">
+                <p>用mRNA富集法或rRNA去除法对totalRNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA；rRNA去除：用DNA探针杂交rRNA，RNaseH选择性消化DNA/RNA杂交链，再用DNaseI消化掉DNA探针，纯化后即得到所需RNA。得到的mRNA中加入适量打断试剂高温条件下使其片断化，以打断后的mRNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库用Agilent 2100 Bioanalyzer和ABI StepOnePlus Real-Time PCR System质检，合格后进行测序。</p>
+            </div>
+        </div>
+        <div class="help_content">
+            <div class="title_frist">
+                6.3 测序数据过滤
+            </div>
+            <div class="bgi_static_normal">
+                    <p>本项目使用华大自主研发的过滤软件SOAPnuke进行过滤，具体步骤如下:</p> 
+                    <p>1) 去除包含接头的reads(接头污染);</p> 
+                    <p>2) 去除未知碱基N含量大于10%的reads；</p> 
+                    <p>3) 去除低质量的reads (我们定义质量值低于 10 的碱基占该reads总碱基数的比例大于 20% 的reads为低质量的reads)。</p> 
+                    <p>过滤后的"Clean Reads"保存为FASTQ格式。</p> 
+                </div>
+
+            <div class="bgi_static_bg">
+                <p>软件信息：</p>
+                <p>SOAPnuke:</p>
+                <p>版本：v1.5.2</p>
+                <p>参数：-l 15 -q 0.2 -n 0.05</p>
+                <p>官网：<a href="https://github.com/BGI-flexlab/SOAPnuke" target="_blank">https://github.com/BGI-flexlab/SOAPnuke</a> </p>
+                <p>参考文献：</p>
+                <p>[1]Cock P., et al.(2010). The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants. Nucleic Acids Research, 38(6): 1767-1771.</p>
+            </div>
+        </div>
+        <div class="help_content">
+            <div class="title_frist">
+                6.4 参考基因组对比
+            </div>
+            <div class="bgi_static_normal">
+                <p>HISAT（Hierarchical Indexing for Spliced Alignment of Transcripts）是一款用于RNA-seq reads比对参考基因组的软件。相比其他软件，HISAT具有速度快、灵敏度和准确度高、内存消耗低等优势。HISAT基于Burrows-Wheeler transform和Ferragina-Manzini（FM）的索引采用全基因组和局部基因组两种索引形式，具体比对示意图详见HISAT比对示意图。基因组比对结果统计。</p> 
+            </div>
+            <div class="bgi_static_pic">
+                <div class="bgi_static_pic_three">
+                </div>
+            </div>
+            <div class="bgi_static_normal">
+                <p>首先，HISAT会用全局FM索引在基因组上锚定每个read中部分序列的位置；然后，用这些比对位置的局部索引去比对每个read的剩余序列以延长比对区域。软件信息：</p> 
+            </div>
+            <div class="bgi_static_bg">
+                    <p>软件信息：</p>
+                    <p>HISAT2:</p>
+                    <p>版本：v2.0.4</p>
+                    <p>参数：--phred64 --sensitive --no-discordant --no-mixed -I 1 -X 1000</p>
+                    <p>官网：http://www.ccb.jhu.edu/software/hisat</p>
+                    <p>参考文献：</p>
+                    <p>[1] Kim, D., Langmead, B. & Salzberg, S. L. HISAT: a fast spliced aligner with low memory requirements. Nat. Methods 12, 357-360 (2015).</p>
+            </div>
+        </div>
+        <div class="help_content">
+            <div class="title_frist">
+                6.5 随机性
+            </div>
+            <div class="bgi_static_normal">
+                <p>使用序列比对软件将质控后的clean reads分别比对到参考基因组上，从而可以对样本中的基因/转录本表达进行定量。同时对本次转录组测序进行整体分析，包括转录本的随机性。</p> 
+            </div>
+        </div>
+        <div class="help_content">
+            <div class="title_frist">
+                6.6 覆盖度
+            </div>
+            <div class="bgi_static_normal">
+                <p>使用序列比对软件将质控后的clean reads分别比对到参考基因集上，从而可以对样本中的基因/转录本表达进行定量。同时对本次转录组测序进行整体分析，包括转录本的覆盖度及分布。</p> 
+            </div>
+        </div>
+        <div class="help_content">
+            <div class="title_frist">
+                6.7 测序饱和度
+            </div>
+            <div class="bgi_static_normal">
+                <p>XXX</p> 
+            </div>
+        </div>
+        <div class="help_content">
+            <div class="title_frist">
+                6.8 常见问题
+            </div>
+            <div class="title_second">
+                什么是FASTQ格式？
+            </div>
+            <div class="bgi_static_normal">
+                <p>XXX</p> 
+            </div>
+        </div>
+
+    </div>
+</div>

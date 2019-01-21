@@ -106,56 +106,103 @@ export class IndexComponent implements OnInit {
                             //this.menuList = data["data"].menu_list;
                             this.menuList = [
                                 {
+                                    category: "基础模块",
+                                    children: [
+                                        {
+                                            url: "overview",
+                                            name: "项目概况",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "information",
+                                            name: "参考信息",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "reads-filter",
+                                            name: "Reads过滤",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "reads-comparison",
+                                            name: "Reads比对",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "lrna",
+                                            name: "小RNA检测",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "help",
+                                            name: "帮助",
+                                            isExport: true
+                                        }
+                                    ]
+                                },
+                                {
                                     category: "差异",
                                     children: [
                                         {
                                             url: "diff-venn",
+                                            geneType:"all",
                                             name: "差异venn",
                                             isExport: true
                                         }
                                     ]
                                 },
-                                {
-                                    category: "布局一",
-                                    children: [
-                                        {
-                                            url: "layout1",
-                                            name: "布局页面",
-                                            isExport: true
-                                        }
-                                    ]
-                                },
-                                {
-                                    category: "小表_demo",
-                                    children: [
-                                        {
-                                            url: "littleTableTest",
-                                            name: "小表",
-                                            isExport: true
-                                        }
-                                    ]
-                                },
-                                {
-                                    category: "表格转换_demo",
-                                    children: [
-                                        {
-                                            url: "transformationTable",
-                                            name: "transformation-table",
-                                            isExport: true
-                                        }
-                                    ]
-                                },
-                                {
-                                    category: "普通大表_demo",
-                                    children: [
-                                        {
-                                            url: "bigTable",
-                                            name: "普通大表",
-                                            isExport: true
-                                        }
-                                    ]
-                                }
+                                // {
+                                //     category: "布局一",
+                                //     children: [
+                                //         {
+                                //             url: "layout1",
+                                //             name: "布局页面",
+                                //             isExport: true
+                                //         }
+                                //     ]
+                                // },
+                                // {
+                                //     category: "小表_demo",
+                                //     children: [
+                                //         {
+                                //             url: "littleTableTest",
+                                //             name: "小表",
+                                //             isExport: true
+                                //         }
+                                //     ]
+                                // },
+                                // {
+                                //     category: "表格转换_demo",
+                                //     children: [
+                                //         {
+                                //             url: "transformationTable",
+                                //             name: "transformation-table",
+                                //             isExport: true
+                                //         }
+                                //     ]
+                                // },
+                                // {
+                                //     category: "普通大表_demo",
+                                //     children: [
+                                //         {
+                                //             url: "bigTable",
+                                //             name: "普通大表",
+                                //             isExport: true
+                                //         }
+                                //     ]
+                                // }
                             ];
+
+                            let menuRouteMap = {};
+                            this.menuList.forEach((v,index) => {
+                                if(v['children'].length){
+                                    v['children'].forEach((val,i)=>{
+                                        val['category'] = v['category'];
+                                        menuRouteMap[val['url']] = val;
+                                    })
+                                }
+                            });
+                            this.storeService.setStore('menuRouteMap',menuRouteMap);
                             resolve("success");
                         }else{
                             reject('error');

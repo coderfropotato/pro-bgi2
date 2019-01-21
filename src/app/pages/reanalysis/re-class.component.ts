@@ -82,6 +82,7 @@ export class ReClassComponent implements OnInit {
     selectGeneCount:number = 0;
     computedScrollHeight:boolean = false;
     leftComputedScrollHeight:boolean = false;
+    resetCheckGraph:boolean;
 
     isExceed:any = null;
     selectedVal:string = '';
@@ -92,6 +93,7 @@ export class ReClassComponent implements OnInit {
 
     // 图表选择的数据
     checkedList:string[] = [] ;
+    
 
     constructor(
         private message: MessageService,
@@ -133,6 +135,7 @@ export class ReClassComponent implements OnInit {
             this.selectedVal = this.selectData[0];
 
             this.first = true;
+            this.resetCheckGraph = true;
             this.applyOnceSearchParams = true;
             this.defaultUrl = `${config['javaPath']}/classification/table`;
             this.defaultEntity = {
@@ -155,6 +158,7 @@ export class ReClassComponent implements OnInit {
                 searchList: [],
                 checkedClassifyType: this.selectedVal,
                 checkedClassifyList:this.checkedList,
+                checkGraph:true,
                 sortThead:this.addColumnService['sortThead'],
                 removeColumns:[]
             };
@@ -185,6 +189,7 @@ export class ReClassComponent implements OnInit {
                 searchList: [],
                 checkedClassifyType: this.selectedVal,
                 checkedClassifyList:this.checkedList,
+                checkGraph:true,
                 sortThead:this.addColumnService['sortThead'],
                 removeColumns:[]
             };
@@ -245,7 +250,6 @@ export class ReClassComponent implements OnInit {
     }
 
     handleCheckChange(checked){
-        console.log(checked);
         let keys = checked[0];
         this.checkedList.length = 0;
         this.checkedList.push(...keys);
@@ -288,6 +292,7 @@ export class ReClassComponent implements OnInit {
             this.extendEntity['relations'] = relations;
             this.extendEntity['transform'] = true;
             this.extendEntity['matrix'] = true;
+            this.extendEntity['checkGraph'] = false;
             this.extendEntity['checkedClassifyType'] = checkParams['tableEntity']['checkedClassifyType'];
             this.extendEntity['checkedClassifyList'] = checkParams['tableEntity']['checkedClassifyList'];
             this.addColumn._clearThead();
@@ -306,6 +311,7 @@ export class ReClassComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
 			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
 			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
+			this.transformTable._setExtendParamsWithoutRequest( 'checkGraph', false );
             this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
             this.addColumn._clearThead();
 			setTimeout(() => {
@@ -355,8 +361,10 @@ export class ReClassComponent implements OnInit {
         this.showBackButton = false;
         this.defaultEmitBaseThead = true;
         this.transformTable._initCheckStatus();
-		this.transformTable._clearFilterWithoutRequest();
+        this.transformTable._clearFilterWithoutRequest();
+        this.resetCheckGraph = true;
         if(!this.first){
+            this.defaultEntity['checkGraph'] = true;
             this.defaultEntity['addThead'] = [];
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
@@ -364,6 +372,7 @@ export class ReClassComponent implements OnInit {
             this.defaultEntity['checkedClassifyType'] = this.selectedVal;
             this.first = true;
         }else{
+            this.transformTable._setParamsNoRequest('checkGraph',true);
             this.transformTable._setParamsNoRequest('pageIndex',1);
 			this.transformTable._setParamsNoRequest('checkedClassifyType', this.selectedVal);
 			this.transformTable._getData();
@@ -495,8 +504,6 @@ export class ReClassComponent implements OnInit {
     }
 
     chartSelectModelChange(model){
-        console.log(this.chart);
         this.chart.setChartSelectModule(this.isMultipleSelect?'multiple':'single');
-        // this.chart.set
     }
 }
