@@ -70,7 +70,7 @@ import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { GeneListVennComponent,GeneListVennPageComponent } from './pages/geneList/venn.component';
 import { BigTableCheckComponent } from './super/components/big-table-check.component';
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
-import { HelpComponent } from "./pages/mrna/help.component";
+import { HelpComponent } from "./pages/mrna/base/help.component";
 
 import {ReRichComponent} from './pages/reanalysis/re-rich.component';
 // 服务

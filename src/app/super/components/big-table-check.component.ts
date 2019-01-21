@@ -45,6 +45,9 @@ export class BigTableCheckComponent implements OnInit {
 	@Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
     @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
 
+    @Input() showConfirmButton: boolean = true;
+
+
 	@ViewChildren('child') children;
 	tableEntity: object = {};
 
@@ -107,8 +110,8 @@ export class BigTableCheckComponent implements OnInit {
 
 	isErrorDelete: boolean = false;
 	isFirst = true;
-	computedTimer = null;
-
+    computedTimer = null;
+    
 	constructor(
 		private translate: TranslateService,
 		private globalService: GlobalService,
@@ -462,27 +465,33 @@ export class BigTableCheckComponent implements OnInit {
 		this.checked = Object.keys(this.checkedMap);
         this.unChecked = Object.keys(this.unCheckedMap);
 
-        let diff:boolean =false;
-        let count:number = 0;
-
-        if(checked.length !== this.checked.length) {
-            this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
-            return ;
-        }
-        if(checked.join(',') !== this.checked.join(',')) {
-            this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
-            return ;
-        }
-
-        for(let i=0;i<checked.length;i++){
-            if(checked[i]!==this.checked[i]){
-                count++;
-                break;
+        if(!this.showConfirmButton){
+            let diff:boolean =false;
+            let count:number = 0;
+    
+            if(checked.length !== this.checked.length) {
+                this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
+                return ;
             }
+            if(checked.join(',') !== this.checked.join(',')) {
+                this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
+                return ;
+            }
+    
+            for(let i=0;i<checked.length;i++){
+                if(checked[i]!==this.checked[i]){
+                    count++;
+                    break;
+                }
+            }
+            diff = !!count;
+            if(diff)  this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
         }
-        diff = !!count;
-        if(diff)  this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
-	}
+    }
+    
+    handleConfirmButton(){
+        this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
+    }
 
 	/**
      * @description 外部初始化表内部选中状态

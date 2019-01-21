@@ -2,9 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpRequest } from "@angular/common/http";
 import { NzModalService, UploadFile } from "ng-zorro-antd";
 import { NzMessageService } from 'ng-zorro-antd';
-import { StoreService } from "./../../super/service/storeService";
+import { StoreService } from "../../../super/service/storeService";
 import { AjaxService } from "src/app/super/service/ajaxService";
-import config from "../../../config";
+import config from "../../../../config";
 declare const $: any;
 declare const SparkMD5:any;
 
@@ -47,7 +47,7 @@ export class HelpComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        
+
     }
 
 }
