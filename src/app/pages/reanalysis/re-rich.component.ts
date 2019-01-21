@@ -418,7 +418,7 @@ export class ReRichComponent implements OnInit {
 
             let config = {
                 chart: {
-                    title: `${this.annotation}富集`,
+                    title: `${this.annotation}富集柱状图`,
                     dblclick: function(event) {
                         _self.promptService.open(event.target.innerHTML,newval=>{
                             this.setChartTitle(newval);
@@ -426,7 +426,7 @@ export class ReRichComponent implements OnInit {
                         });
                     },
                     width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
-                    height: _self.leftBottom.nativeElement.offsetHeight * 0.8,
+                    height: data['rows'].length * 20,
                     custom: [x, y, category],
                     el: "#geneRichChartDiv",
                     type: "bar",
@@ -490,19 +490,18 @@ export class ReRichComponent implements OnInit {
 
             let config1={
                 chart: {
-                    title: "气泡图",
+                    title: `${this.annotation}富集气泡图`,
                     dblclick: function(event) {
-                      var name = prompt("请输入需要修改的标题", "");
-                      if (name) {
-                        this.setChartTitle(name);
-                        this.updateTitle();
-                      }
+                        _self.promptService.open(event.target.innerHTML,newval=>{
+                            this.setChartTitle(newval);
+                            this.updateTitle();
+                        });
                     },
                     mouseover: function(event, titleObj) {
                       titleObj
                         .attr("fill", "blue")
                         .append("title")
-                        .text("custom");
+                        .text("双击修改标题");
                     },
                     mouseout: function(event, titleObj) {
                       titleObj.attr("fill", "#333");
@@ -510,8 +509,10 @@ export class ReRichComponent implements OnInit {
                     },
                     el: "#geneRichChartDiv",
                     type: "bubble",
-                    //   enableChartSelect:true,
-                    //   selectedModule: "",
+                    width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
+                    height: data['rows'].length * 20,
+                    enableChartSelect:true,
+                    selectedModule: _self.isMultipleSelect?'multiple':'single',
                     onselect: data => {
                       console.log(data);
                     },
@@ -529,26 +530,13 @@ export class ReRichComponent implements OnInit {
                       min: 0,
                       // max:1,
                       dblclick: function(event) {
-                        var name = prompt("请输入需要修改的标题", "");
-                        if (name) {
-                          this.setXTitle(name);
-                          this.updateTitle();
-                        }
+                        _self.promptService.open(event.target.innerHTML,newval=>{
+                            this.setXTitle(newval);
+                            this.updateTitle();
+                        });
                       }
                     },
-                    y: {
-                      title: "log10(FPKM+1)",
-                      // min:0,
-                      // max:10,
-                      dblclick: function(event) {
-                        var name = prompt("请输入需要修改的标题", "");
-                        if (name) {
-                          this.setYTitle(name);
-                          this.updateTitle();
-                        }
-                      }
-                      // formatter: val => "$" + val
-                    }
+                    y: {}
                   },
                   legend: {
                     show: true,
