@@ -1439,9 +1439,13 @@ button.btnActive {
 }
 
 .richDropdownMenu{
-	border: 1px solid #ccc;
 	max-height: 400px;
+	width: 200px;
 	overflow: auto;
+}
+
+.richDropdownMenu li{
+	margin: 0!important;
 }
 
 //帮助页面

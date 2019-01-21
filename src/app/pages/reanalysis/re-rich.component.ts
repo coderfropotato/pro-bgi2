@@ -203,6 +203,7 @@ export class ReRichComponent implements OnInit {
                 geneType: this.geneType,
                 species: this.storeService.getStore('genome'), 
                 checkedClassifyType:this.selectedVal,
+                checkedClassifyList:[],
                 searchList:[],
                 pageIndex:1,
                 pageSize:20,
@@ -228,12 +229,6 @@ export class ReRichComponent implements OnInit {
             this.checkedDrawGeneList.push(d[this.annotation+"_term"]);
         })
 
-        // if(this.checkedData.length > 60){
-        //    this.checkedDrawGeneList = this.checkedDrawGeneList.slice(0,60);
-        // }
-        
-        console.log(this.checkedDrawGeneList)
-
     }
 
     chartTypeChange(){
@@ -241,17 +236,20 @@ export class ReRichComponent implements OnInit {
     }
     
     deleteGene(i){
+        this.checkedData.splice(i,1);
         this.checkedDrawGeneList.splice(i,1);
     }
 
     clearGene(){
         this.visible=false;
+        this.checkedData.length=0;
         this.checkedDrawGeneList.length=0;
         this.reDraw();
     }
 
     reDraw(){
-
+        this.chartEntity['checkedClassifyList']=this.checkedDrawGeneList;
+        this.switchChart.reGetData();
     }
 
     //排序
