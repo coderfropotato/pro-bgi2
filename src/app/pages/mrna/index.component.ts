@@ -145,6 +145,7 @@ export class IndexComponent implements OnInit {
                                     children: [
                                         {
                                             url: "diff-venn",
+                                            geneType:"all",
                                             name: "差异venn",
                                             isExport: true
                                         }
@@ -191,6 +192,17 @@ export class IndexComponent implements OnInit {
                                 //     ]
                                 // }
                             ];
+
+                            let menuRouteMap = {};
+                            this.menuList.forEach((v,index) => {
+                                if(v['children'].length){
+                                    v['children'].forEach((val,i)=>{
+                                        val['category'] = v['category'];
+                                        menuRouteMap[val['url']] = val;
+                                    })
+                                }
+                            });
+                            this.storeService.setStore('menuRouteMap',menuRouteMap);
                             resolve("success");
                         }else{
                             reject('error');

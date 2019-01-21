@@ -47,7 +47,7 @@ export class ReRichComponent implements OnInit {
     visible:boolean=false;
 
     checkedData:any=[];
-    checkedDrawData:any=[];
+    checkedDrawGeneList:any=[];
 
     // table
     setAddedThead :any= [];
@@ -203,6 +203,7 @@ export class ReRichComponent implements OnInit {
                 geneType: this.geneType,
                 species: this.storeService.getStore('genome'), 
                 checkedClassifyType:this.selectedVal,
+                checkedClassifyList:[],
                 searchList:[],
                 pageIndex:1,
                 pageSize:20,
@@ -219,19 +220,36 @@ export class ReRichComponent implements OnInit {
     }
 
     checkedChange(data){
-        this.checkedData=data[1];
+        this.checkedData=[...data[1]];
         this._sortArr('num',this.checkedData);
 
-        if(this.checkedData.length <=60){
-            this.checkedDrawData=[...this.checkedData];
-        }else{
-            this.checkedDrawData=[...this.checkedData.slice(0,60)];
-        }
-        console.log(this.checkedDrawData)
+        this.checkedDrawGeneList.length=0;
+
+        this.checkedData.forEach(d=>{
+            this.checkedDrawGeneList.push(d[this.annotation+"_term"]);
+        })
+
     }
 
     chartTypeChange(){
         console.log(this.chartType)
+    }
+    
+    deleteGene(i){
+        this.checkedData.splice(i,1);
+        this.checkedDrawGeneList.splice(i,1);
+    }
+
+    clearGene(){
+        this.visible=false;
+        this.checkedData.length=0;
+        this.checkedDrawGeneList.length=0;
+        this.reDraw();
+    }
+
+    reDraw(){
+        this.chartEntity['checkedClassifyList']=this.checkedDrawGeneList;
+        this.switchChart.reGetData();
     }
 
     //排序
@@ -474,6 +492,9 @@ export class ReRichComponent implements OnInit {
     chartSelectModelChange(model){
         console.log(this.chart);
         this.chart.setChartSelectModule(this.isMultipleSelect?'multiple':'single');
-        // this.chart.set
+    }
+
+    multipleSelectConfirm(){
+        this.chartBackStatus();
     }
 }

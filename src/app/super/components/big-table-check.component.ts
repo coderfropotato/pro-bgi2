@@ -45,7 +45,7 @@ export class BigTableCheckComponent implements OnInit {
 	@Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
     @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
 
-    @Input() showConfirmButton: boolean = true;
+    @Input() showConfirmButton: boolean = false;
 
 
 	@ViewChildren('child') children;
@@ -111,7 +111,7 @@ export class BigTableCheckComponent implements OnInit {
 	isErrorDelete: boolean = false;
 	isFirst = true;
     computedTimer = null;
-    
+
 	constructor(
 		private translate: TranslateService,
 		private globalService: GlobalService,
@@ -468,7 +468,7 @@ export class BigTableCheckComponent implements OnInit {
         if(!this.showConfirmButton){
             let diff:boolean =false;
             let count:number = 0;
-    
+
             if(checked.length !== this.checked.length) {
                 this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
                 return ;
@@ -477,7 +477,7 @@ export class BigTableCheckComponent implements OnInit {
                 this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
                 return ;
             }
-    
+
             for(let i=0;i<checked.length;i++){
                 if(checked[i]!==this.checked[i]){
                     count++;
@@ -488,7 +488,7 @@ export class BigTableCheckComponent implements OnInit {
             if(diff)  this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
         }
     }
-    
+
     handleConfirmButton(){
         this.checkedChange.emit([this.checked,Object.values(this.checkedMap)]);
     }
