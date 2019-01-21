@@ -106,6 +106,41 @@ export class IndexComponent implements OnInit {
                             //this.menuList = data["data"].menu_list;
                             this.menuList = [
                                 {
+                                    category: "基础模块",
+                                    children: [
+                                        {
+                                            url: "pro-overview",
+                                            name: "项目概况",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "ref-information",
+                                            name: "参考信息",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "reads-filter",
+                                            name: "Reads过滤",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "reads-comparison",
+                                            name: "Reads比对",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "rna-detection",
+                                            name: "小RNA检测",
+                                            isExport: true
+                                        },
+                                        {
+                                            url: "help",
+                                            name: "帮助",
+                                            isExport: true
+                                        }
+                                    ]
+                                },
+                                {
                                     category: "差异",
                                     children: [
                                         {

@@ -69,6 +69,7 @@ import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { GeneListVennComponent,GeneListVennPageComponent } from './pages/geneList/venn.component';
 import { BigTableCheckComponent } from './super/components/big-table-check.component';
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
+import { HelpComponent } from "./pages/mrna/help.component";
 
 // 服务
 // import { HttpInterService } from './super/service/httpService';
@@ -154,6 +155,14 @@ const ROUTES: Routes = [
                 data: {
                     keep: true,
                     module: "bigTable"
+                }
+            },
+            {
+                path: "help",
+                component: HelpComponent,
+                data: {
+                    keep: true,
+                    module: "help"
                 }
             },
             // page
@@ -528,7 +537,8 @@ export function createTranslateLoader(http: HttpClient) {
         BigTableCheckComponent,
         ReClassComponent,
         PromtComponent,
-        TableSpecialTheadFilter
+        TableSpecialTheadFilter,
+        HelpComponent
     ],
     // 路由模块在imports 导入
     imports: [
