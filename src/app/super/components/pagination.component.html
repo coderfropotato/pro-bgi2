@@ -5,7 +5,7 @@
         </button>
         <button *ngFor="let item of pageIndexList;index as i" nz-button nzType="default" [class.active]="item==pageIndex" (click)="handlerPageIndexClick(item)">{{item}}</button>
         <button [disabled]="isRight" (click)="handlerForward()" nz-button nzType="default" [title]="'pagination.forward' | translate">
-            <i class="anticon anticon-right" [ngClass]></i>
+            <i class="anticon anticon-right"></i>
         </button>
         <div class="fLeft" *ngIf="showPageSize">
             <!-- &emsp;{{'pagination.jump' | translate}}

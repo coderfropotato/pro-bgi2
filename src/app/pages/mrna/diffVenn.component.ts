@@ -18,7 +18,7 @@ declare const Venn: any;
                     <div *ngIf="rootGeneType===config['geneTypeAll']" class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
                         <span>{{defaultGeneType | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
-                    <div *ngIf="rootGeneType!==config['geneTypeAll']" class="gene-switch gene-switch-module">
+                    <div *ngIf="rootGeneType!==config['geneTypeAll']" class="gene-switch gene-switch-module nocursor">
                         <span>{{defaultGeneType | translate}}</span>
                     </div>
                 </app-diff-venn-component>`,

@@ -285,6 +285,9 @@ a:hover{
 	margin-left: 0;
 	background-color: $btn_active_color;
 	color:#fff;
+	i{
+		color:#fff;
+	}
 }
 
 .little-table {
@@ -1283,8 +1286,11 @@ button.btnActive {
         line-height: 24px;
 		transition: 0.1s all ease;
 		cursor: pointer;
-		&:hover {
+		&:not(.nocursor):hover {
 			@include hover-animate($them_color);
+		}
+		&.nocursor{
+			cursor:unset;
 		}
 		i {
 			margin-left: 8px;
@@ -1605,4 +1611,7 @@ button.btnActive {
             clear: both;
         }
     }
+}
+.cursor{
+	cursor:pointer;
 }
