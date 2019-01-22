@@ -14,22 +14,21 @@
 
                 <!-- 设置面板 -->
                 <ng-template #setTemplate>
-                    <nz-dropdown [nzTrigger]="'click'" [(nzVisible)]="setVisible" [nzPlacement]="'bottomRight'">
+                    <nz-dropdown [nzTrigger]="'click'" [(nzVisible)]="setVisible" (nzVisibleChange)="handleVisibleChange()" [nzPlacement]="'bottomRight'">
                         <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
                         <div nz-menu class="set-panel clearfix">
                             <ul>
                                 <li nz-row>
                                     <span >图宽度</span>
-                                    <input nz-input placeholder="600 ~ 2000" [(ngModel)]="set['width']" nzSize="default"/>
+                                    <input nz-input placeholder="600 ~ 2000" [(ngModel)]="set['width']" (blur)="handleBlur(0)" nzSize="default"/>
                                 </li>
                                 <li nz-row>
                                     <span>显示字符个数</span>
-                                    <input nz-input placeholder="20 ~ 50" [(ngModel)]="set['len']" nzSize="default"/>
+                                    <input nz-input placeholder="20 ~ 50" [(ngModel)]="set['len']" (blur)="handleBlur(1)" nzSize="default"/>
                                 </li>
                             </ul>
                             <div class="set-btn-group">
                                 <button nz-button nzType="primary" nzSize="small" (click)="setConfirm()">确定</button>
-                                <button nz-button nzType="default" nzSize="small" (click)="setReset()">重置</button>
                                 <button nz-button nzType="default" nzSize="small" (click)="setCancel()">取消</button>
                             </div>
                         </div>
