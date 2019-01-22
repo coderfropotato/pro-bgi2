@@ -574,7 +574,7 @@ export class ReClassComponent implements OnInit {
 				if (name.indexOf(this.level2Key) != -1) level2TrueKey = name;
 			}
 			data.forEach((v) => {
-				temp.push(`${v[level2TrueKey]}+${v[level1TrueKey]}`);
+				temp.push(`${v[level1TrueKey]}+${v[level2TrueKey]}`);
 			});
 			return temp;
 		} else if (this.selectedVal.indexOf(this.level1Key) != -1) {
