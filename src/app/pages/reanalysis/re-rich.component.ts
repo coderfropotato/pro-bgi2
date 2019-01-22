@@ -29,6 +29,8 @@ export class ReRichComponent implements OnInit {
     @ViewChild('transformTable') transformTable;
     @ViewChild('addColumn') addColumn;
 
+    bigtableUrl:string;
+
     chartUrl: string;
     chartEntity: object;
 
@@ -198,7 +200,8 @@ export class ReRichComponent implements OnInit {
             this.selectData = JSON.parse(sessionStorage.getItem('annotation_choice'))[this.annotation];
             this.selectedVal = this.selectData[0];
 
-            this.chartUrl=`${config['javaPath']}/classification/graph`;
+            this.bigtableUrl=`${config['javaPath']}/enrichment/generalTable`;
+            this.chartUrl=`${config['javaPath']}/enrichment/graph`;
             this.chartEntity = {
                 LCID: this.storeService.getStore('LCID'),
                 annotation:this.annotation,
@@ -211,7 +214,7 @@ export class ReRichComponent implements OnInit {
                 pageSize:20,
                 sortKey:null,
                 sortValue:null,
-                tid: this.tid,
+                tid: "04c0d1923fc746fb8188175e124ac269",
                 version:this.storeService.getStore('version')
             };
         })()
@@ -228,7 +231,8 @@ export class ReRichComponent implements OnInit {
         this.checkedDrawGeneList.length=0;
 
         this.checkedData.forEach(d=>{
-            this.checkedDrawGeneList.push(d[this.annotation+"_term"]);
+            let geneid=d[this.annotation+"_term"] ? d[this.annotation+"_term"] : d[this.annotation+"_term_id"];
+            this.checkedDrawGeneList.push(geneid);
         })
 
     }
@@ -486,9 +490,10 @@ export class ReRichComponent implements OnInit {
             var realData = [];
             var legendData = [];
             data.rows.forEach(function(d, i) {
+                let geneid=d[_self.annotation+"_term"] ? d[_self.annotation+"_term"] : d[_self.annotation+"_term_id"];
                 realData.push({
                     x: d.num,
-                    y: d[_self.annotation+"_term"],
+                    y: geneid,
                     r: d.num,
                     color: d.num
                 });
