@@ -1472,7 +1472,7 @@ button.btnActive {
 		.help_content{
 			width: 100%;
 			height: auto;
-			
+
 			.img_one{
 				width: 213px;
 				height: 613px;
@@ -1576,4 +1576,33 @@ button.btnActive {
 			}
 		}
 	}
+}
+
+// 设置面板
+.set-panel{
+    padding:24px;
+    li{
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 12px;
+        line-height: 32px;
+        span{
+            flex:1;
+            margin-right: 12px;
+        }
+        input{
+            width: 80px;
+        }
+    }
+    .set-btn-group{
+        button{
+            float:right;
+            margin-left: 12px;
+        }
+        &:after{
+            content:"";
+            display: block;
+            clear: both;
+        }
+    }
 }

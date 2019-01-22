@@ -99,6 +99,10 @@ export class ReClassComponent implements OnInit {
     level2Key:string = 'level_2';
     termKey:string = 'term';
 
+    // 设置
+    set:object = {width:600,len:40};
+    beforeSet:object = {width:600,len:40};
+
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -446,15 +450,20 @@ export class ReClassComponent implements OnInit {
                         this.updateTitle();
                     });
                 },
-                width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
+                width: _self.set['width'],
                 height: data['rows'].length * 20,
                 custom: [x, y, category],
                 el: "#geneClassChartDiv",
                 type: "bar",
+                ticks:6,
                 enableChartSelect:true,
                 selectedModule: _self.isMultipleSelect?'multiple':'single',
                 direction:"horizontal",
                 data: data['rows'],
+                clearselect:()=>{
+                    _self.checkedList.length = 0;
+                    _self.chartBackStatus();
+                },
                 onselect:data=>{
                     _self.checkedList.length = 0;
                     _self.checkedList.push(...data);
@@ -499,7 +508,7 @@ export class ReClassComponent implements OnInit {
             }
         }
 
-        this.chart=new d4().init(config,{yTitleWidth:80});
+        this.chart=new d4().init(config,{yTitleWidth:80,textMaxLength:this.set['len'],legend:{textMaxLength:this.set['len']}});
     }
 
     //color change 回调函数

@@ -1116,6 +1116,7 @@ export class BigTableCheckComponent implements OnInit {
     _deleteCheckedStatus(data:Array<object>){
         if(!data.length) return;
         data.forEach(v=>{
+            v['checked'] = false;
             this.refreshStatus(false,v);
         })
     }

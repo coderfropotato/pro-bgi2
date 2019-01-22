@@ -4,15 +4,41 @@
         <div class="content reanalysis-content row">
         <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
             <div #leftBottom class="left-bottom-layout">
+
                 <!-- 下拉选择 -->
                 <ng-template #selectTemplate>
                     <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
                         <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
                     </nz-select>
                 </ng-template>
+
+                <!-- 设置面板 -->
+                <ng-template #setTemplate>
+                    <nz-dropdown [nzTrigger]="'click'" [(nzVisible)]="setVisible" [nzPlacement]="'bottomRight'">
+                        <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
+                        <div nz-menu class="set-panel clearfix">
+                            <ul>
+                                <li nz-row>
+                                    <span >图宽度</span>
+                                    <input nz-input placeholder="600 ~ 2000" [(ngModel)]="set['width']" nzSize="default"/>
+                                </li>
+                                <li nz-row>
+                                    <span>显示字符个数</span>
+                                    <input nz-input placeholder="20 ~ 50" [(ngModel)]="set['len']" nzSize="default"/>
+                                </li>
+                            </ul>
+                            <div class="set-btn-group">
+                                <button nz-button nzType="primary" nzSize="small" (click)="setConfirm()">确定</button>
+                                <button nz-button nzType="default" nzSize="small" (click)="setReset()">重置</button>
+                                <button nz-button nzType="default" nzSize="small" (click)="setCancel()">取消</button>
+                            </div>
+                        </div>
+                    </nz-dropdown>
+                </ng-template>
+
                 <!-- 图标切换 -->
                 <ng-container *ngIf="isExceed!=null && !isExceed">
-                    <app-table-switch-chart #switchChart [id]="'re-class'" [isOnlyChart]="false" [tableUrl]="chartUrl"  [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true"> </app-table-switch-chart>
+                    <app-table-switch-chart #switchChart [id]="'re-class'" [isOnlyChart]="false" [tableUrl]="chartUrl"  [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true"> </app-table-switch-chart>
 
                     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
                 </ng-container>
