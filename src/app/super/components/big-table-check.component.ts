@@ -1117,8 +1117,10 @@ export class BigTableCheckComponent implements OnInit {
         if(!data.length) return;
         data.forEach(v=>{
             v['checked'] = false;
-            this.refreshStatus(false,v);
+            this.unCheckedMap[v[this.key]] = v;
+            delete this.checkedMap[v[this.key]];
         })
+        this.computedStatus();
     }
 
 	deleteSearchListItemOrderByAddThead() {
