@@ -271,7 +271,7 @@ export class ToolsComponent implements OnInit {
 					}
 				}
 			}
-			
+
 		})
 	}
 
@@ -1103,7 +1103,7 @@ export class ToolsComponent implements OnInit {
 		}).subscribe(res=>{
 			if(res['status']==='0'){
 				if(!res['data'].length) {
-					
+
 					this.relativeNetData.length = 0;
 					this.relativeNetSelect.length = 0;
 					this.relativeNetError = true
@@ -1376,7 +1376,7 @@ export class ToolsComponent implements OnInit {
 						}else{
 							this.geneClassError = true;
 						}
-						
+
 					},
 					error=>{
 						this.geneClassData.length = 0;
@@ -1487,7 +1487,7 @@ export class ToolsComponent implements OnInit {
 						}else{
 							this.geneRichError = true;
 						}
-						
+
 					},
 					error=>{
 						this.geneRichData.length = 0;

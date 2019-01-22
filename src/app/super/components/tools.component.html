@@ -14,6 +14,12 @@
 
         <!-- 聚类 -->
         <nz-drawer nzTitle="聚类热图" [nzVisible]="childVisible && selectType=='heatmap'" [nzClosable]="true" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+            <!-- <ng-template #title>
+                <div class="flex">
+                    <span>聚类热图</span>
+                    <i class="anticon anticon-arrow-left"></i>
+                </div>
+            </ng-template> -->
             <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                 <nz-tabset [nzSize]="'small'">
                     <nz-tab nzTitle="表达量聚类">
@@ -36,7 +42,7 @@
                                 <p *ngIf="!expressData.length && !expressUpload.length && !geneType.length && doHeatmapAjax" class="center">暂无参数</p>
                             </div>
                             <nz-divider></nz-divider>
-                            <div *ngIf="(expressData.length || expressUpload.length) && geneType.length" class="tool-params-button-group">
+                            <div *ngIf="expressData.length || expressUpload.length" class="tool-params-button-group">
                                 <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
                                 <button nz-button nzType="primary" [disabled]="expressError" (click)="heatmapConfirm('express')" nzSize="middle">确定</button>
                             </div>
@@ -61,7 +67,7 @@
                                 <p *ngIf="!diffData.length && !diffUpload.length && !geneType.length && doHeatmapAjax" class="center">暂无参数</p>
                             </div>
                             <nz-divider></nz-divider>
-                            <div *ngIf="(diffData.length || diffUpload.length) && geneType.length" class="tool-params-button-group">
+                            <div *ngIf="diffData.length || diffUpload.length" class="tool-params-button-group">
                                 <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
                                 <button nz-button nzType="primary" [disabled]="diffError" (click)="heatmapConfirm('diff')" nzSize="middle">确定</button>
                             </div>
@@ -90,7 +96,7 @@
                                 <p *ngIf="!customData.length && !customUpload.length && !geneType.length && doHeatmapAjax" class="center">暂无参数</p>
                             </div>
                             <nz-divider></nz-divider>
-                            <div *ngIf="(customData.length || customUpload.length) && geneType.length" class="tool-params-button-group">
+                            <div *ngIf="customData.length || customUpload.length" class="tool-params-button-group">
                                 <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
                                 <button nz-button nzType="primary" [disabled]="customError" (click)="heatmapConfirm('custom')" nzSize="middle">确定</button>
                             </div>
