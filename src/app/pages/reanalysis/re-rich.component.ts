@@ -226,7 +226,7 @@ export class ReRichComponent implements OnInit {
 
     checkedChange(data){
         this.checkedData=[...data[1]];
-        this._sortArr('num',this.checkedData);
+        this._sortArr(this.annotation+'_qvalue',this.checkedData);
 
         this.checkedDrawGeneList.length=0;
 
@@ -246,9 +246,9 @@ export class ReRichComponent implements OnInit {
 
     clearGene(){
         this.visible=false;
+        this.bigTable._deleteCheckedStatus(this.checkedData);
         this.checkedData.length=0;
         this.checkedDrawGeneList.length=0;
-        this.bigTable._deleteCheckedStatus(this.checkedData);
         this.reDraw();
     }
 
@@ -429,7 +429,7 @@ export class ReRichComponent implements OnInit {
 
             let config = {
                 chart: {
-                    title: `${this.annotation}富集柱状图`,
+                    title: `${this.annotation} 富集柱状图`,
                     dblclick: function(event) {
                         _self.promptService.open(event.target.innerHTML,newval=>{
                             this.setChartTitle(newval);
@@ -492,17 +492,18 @@ export class ReRichComponent implements OnInit {
             data.rows.forEach(function(d, i) {
                 let geneid=d[_self.annotation+"_term"] ? d[_self.annotation+"_term"] : d[_self.annotation+"_term_id"];
                 realData.push({
-                    x: d.num,
-                    y: geneid,
-                    r: d.num,
-                    color: d.num
+                    x: d[_self.annotation+"_rich_ratio"],
+                    y: d[_self.annotation+"_term_desc"],
+                    r: d[_self.annotation+"_term_candidate_gene_num"],
+                    color: d[_self.annotation+"_qvalue"],
+                    geneid:geneid
                 });
-                legendData.push(d.num);
+                legendData.push(d[_self.annotation+"_qvalue"]);
             });
 
             let config1={
                 chart: {
-                    title: `${this.annotation}富集气泡图`,
+                    title: `${this.annotation} 富集气泡图`,
                     dblclick: function(event) {
                         _self.promptService.open(event.target.innerHTML,newval=>{
                             this.setChartTitle(newval);
@@ -540,7 +541,6 @@ export class ReRichComponent implements OnInit {
                       title: "Rich Ratio",
                       rotate: 20,
                       min: 0,
-                      // max:1,
                       dblclick: function(event) {
                         _self.promptService.open(event.target.innerHTML,newval=>{
                             this.setXTitle(newval);
@@ -555,8 +555,6 @@ export class ReRichComponent implements OnInit {
                     data: legendData,
                     type: "gradient",
                     title: "Qvalue",
-                    // min: -1,
-                    // max: 1,
                     click:(d,index)=>{
                         this.bcolor = d;
                         this.bshow = true;
@@ -568,13 +566,15 @@ export class ReRichComponent implements OnInit {
                     }
                   },
                   tooltip: function(d) {
-                    return `<span>x：${d.x}</span><br><span>y：${
-                      d.y
-                    }</span><br><span>r：${d.r}</span><br><span>color：${d.color}</span>`;
+                    return `<span>GO Term: ${d.y}</span><br>
+                    <span>GO Term ID: ${ d.geneid }</span><br>
+                    <span>Rich Ratio: ${ d.x }</span><br>
+                    <span>Qvalue: ${d.color}</span><br>
+                    <span>Gene Number: ${d.r}</span>`;
                   }
             }
 
-            this.chart=new d4().init(config1,{minWidth:240});
+            this.chart=new d4().init(config1,{areaMinWidth:240});
         }
     }
 
