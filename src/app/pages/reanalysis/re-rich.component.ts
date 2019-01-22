@@ -346,8 +346,11 @@ export class ReRichComponent implements OnInit {
 
     handleSelectChange(){
         this.chartEntity['checkedClassifyType'] = this.selectedVal;
-        this.switchChart.reGetData(); 
-        this.bigTable._getData();
+        this.bigTable._setParamsOfEntity('checkedClassifyType',this.selectedVal);
+        this.checkedData.length=0;
+        this.checkedDrawGeneList.length=0;
+        this.bigTable._initCheckStatus();
+        this.reDraw();
     }
 
     chartBackStatus(){
