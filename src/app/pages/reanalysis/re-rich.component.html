@@ -35,7 +35,7 @@
                                 <li nz-menu-item class="right" (click)="clearGene()"><button nz-button nzType="default">清空</button></li>
                             </ul>
                         </div>
-                        <ul nz-menu *ngIf="!checkedDrawGeneList.length">
+                        <ul nz-menu *ngIf="!checkedDrawGeneList.length" style="box-shadow: 0 2px 8px rgba(0,0,0,.15);width:200px;">
                             <li nz-menu-item>暂无选中的{{annotation}}</li>
                         </ul>
                     </nz-dropdown>
@@ -52,7 +52,7 @@
                         [tableHeight]="leftTableHeight / 2" 
                         [defaultChecked]="false" 
                         [pageEntity]="chartEntity" 
-                        [url]="chartUrl" 
+                        [url]="bigtableUrl" 
                         tableId="geneRichCheckBigTable" 
                         (checkedChange)="checkedChange($event)"
                         [(computedScrollHeight)]="leftComputedScrollHeight">
