@@ -5,6 +5,8 @@ import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { GlobalService } from "src/app/super/service/globalService";
 import config from "../../../../config";
 import {PromptService} from '../../../super/service/promptService';
+import { MessageService } from '../../../super/service/messageService';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 declare const d3: any;
 declare const d4: any;
@@ -16,54 +18,108 @@ declare const $: any;
   styles: []
 })
 export class ReadsFilterComponent implements OnInit {
-
-  // table
+  @ViewChild('rawDataChart') rawDataChart;
+  @ViewChild('rawBaseChart') rawBaseChart;
+  @ViewChild('bigTable') bigTable;
+  @ViewChild('bigRNATable') bigRNATable;
+  // table one
   defaultEntity: object;
   defaultUrl: string;
   defaultTableId: string;
-  defaultDefaultChecked: boolean;
-  defaultCheckStatusInParams: boolean;
-  baseThead: any[] = [];
-  tableHeight = 0;
 
+  // table RNA
+  defaultRNAEntity: object;
+  defaultRNAUrl: string;
+  defaultRNAId: string;
+
+  tableHeight = 450;
+
+  //原始数据过滤成分统计
+  chartSelectType:any=[];
+  curSearchType:string;
   tableUrl:string;
   tableEntity:object;
+  chart:any;
 
-  computedScrollHeight:boolean = false;
+  //Clean reads 碱基含量分布
+  baseSelectType:any=[];
+  baseSearchType:string;
+  tableBaseUrl:string;
+  tableBaseEntity:object;
+  chartTwo:any;
+
+  //原始数据过滤成分统计 图例颜色
+  isShowColorPanel: boolean = false;
+  legendIndex: number = 0; //当前点击图例的索引
+  color: string; //当前选中的color
+
+  //图例颜色
+  isShowColorPanelTwo: boolean = false;
+  legendIndexTwo: number = 0; //当前点击图例的索引
+  colorTwo: string; //当前选中的color
+  
 
   constructor(
+    private message: MessageService,
     private store: StoreService,
     private ajaxService: AjaxService,
     private globalService: GlobalService,
     private storeService: StoreService,
-    private promptService:PromptService
+    private promptService:PromptService,
+    private router: Router
   ) { 
-    
+
   }
 
   ngOnInit() {
+      //Reads过滤表
+      this.defaultUrl = `${config["javaPath"]}/basicModule/filterSummary`;
+      this.defaultEntity = {
+          LCID: "DEMO_TOM_APDENOVO",
+          pageNum: 1,
+          pageSize: 10
+      };
 
-    // //Reads过滤表
-    // this.defaultUrl = `${config["javaPath"]}/basicModule/filterSummary`;
-    // this.defaultEntity = {
-    //     LCID: "DEMO_TOM_APDENOVO",
-    // };
+      //Reads过滤表 RNA
+      this.defaultRNAUrl = `${config["javaPath"]}/basicModule/filterSummaryMiRNA`;
+      this.defaultRNAEntity = {
+          LCID: "DEMO_TOM_APDENOVO",
+          pageNum: 1,
+          pageSize: 10
+      };
+
+      //原始数据过滤成分统计
+      let sample = [];
+      this.store.getStore("sample").forEach((d) => {
+        let temp = {
+          key:d,
+          value:d
+        }
+        sample.push(temp)
+      });
+      this.chartSelectType=sample;
+      this.curSearchType=sample[0].value;
+
+      this.tableUrl=`${config["javaPath"]}/basicModule/rawReadsClass`;
+      this.tableEntity={
+        LCID: "DEMO_TOM_APDENOVO",
+        sample: this.curSearchType
+      };
+
+      //Clean reads 碱基含量分布
+      this.baseSelectType=sample;
+      this.baseSearchType=sample[0].value;
+      this.tableBaseUrl=`${config["javaPath"]}/basicModule/baseContentDistribution`;
+      this.tableBaseEntity={
+        LCID: "DEMO_TOM_APDENOVO",
+        sample: this.baseSearchType
+      };
 
 
-    //原始数据过滤成分统计
-    let sample = this.store.getStore("sample");
-    this.tableUrl=`${config["javaPath"]}/basicModule/rawReadsClass`;
-    this.tableEntity={
-      LCID: "DEMO_TOM_APDENOVO",
-      sample: sample[4]
-    };
   }
 
+  //原始数据过滤成分统计图表
   drawRawReads(data){
-    //n_read_num: "872", adapter_read_num: "459", low_qual_read_num: "0", clean_read_num: "14038340"
-
-    console.log(data);
-
     let temp = data.rows[0];
     let tempArray = [
       {
@@ -84,10 +140,7 @@ export class ReadsFilterComponent implements OnInit {
       },
     ];
 
-    document.getElementById('rawDataChart').innerHTML = "";
     let that = this;
-
-    
 
     let config:object={
       chart: {
@@ -104,15 +157,17 @@ export class ReadsFilterComponent implements OnInit {
 				endAngle:360,
 				showLabel:true,
 				custom: ["name", "value"],
-				el: "#rawDataChart",
+				el: "#rawDataID",
 				type: "pie",
 				data: tempArray
 				},
 				legend: {
 					show: true,
 					position: "right",
-					dblclick:function(el){
-						console.log(el)
+					click:function(d,index){
+						that.color = d3.select(d).attr('fill');
+            that.legendIndex = index;
+            that.isShowColorPanel = true;
 					}
 				},
 				tooltip: function(d) {
@@ -120,13 +175,107 @@ export class ReadsFilterComponent implements OnInit {
 				}
 			}
 
-      new d4().init(config);
+      this.chart=new d4().init(config);
+  }
 
 
+  //Clean reads 碱基含量分布
+  drawBaseReads(data){
+    console.log(data);
+    var baseThead = data.baseThead;
+    var rows = data.rows;
+    var chartData = [];
+    for (var i = 0; i < baseThead.length; i++) {
+        for (var j = 0; j < rows.length; j++) {
+            if (baseThead[i].name != "index") {
+                chartData.push({
+                    category: baseThead[i].name,
+                    name: rows[j].index,
+                    value: rows[j][baseThead[i].true_key]
+                })
+            }
+        }
+    }
+
+    let that = this;
+
+    let config:object={
+        chart: {
+          title: "Clean reads 碱基含量分布",
+          dblclick: function(event,title) {
+            let text = title.firstChild.nodeValue;
+            that.promptService.open(text,(data)=>{
+                title.textContent = data;
+            })
+          },
+          custom: ["name", "value", "category"],
+          el: "#rawBaseID",
+          type: "categoryLine",
+          data: chartData
+        },
+        axis: {
+          x: {
+            title: "Position along reads",
+            rotate: 60,
+            dblclick: function(event,title) {
+              let text = title.firstChild.nodeValue;
+              that.promptService.open(text,(data)=>{
+                  title.textContent = data;
+              })
+            }
+          },
+          y: {
+            title: "Percentage (%)",
+            dblclick: function(event,title) {
+              let text = title.firstChild.nodeValue;
+              that.promptService.open(text,(data)=>{
+                  title.textContent = data;
+              })
+            }
+          }
+        },
+				legend: {
+					show: true,
+					position: "right",
+					click:function(d,index){
+						that.colorTwo = d3.select(d).attr('fill');
+            that.legendIndexTwo = index;
+            that.isShowColorPanelTwo = true;
+					}
+				},
+				tooltip: function(d) {
+					return "<span>name："+d.name+"</span><br><span>category："+d.category+"</span><br><span>value："+d.value+"</span>";
+				}
+    }
+    this.chartTwo=new d4().init(config);
+    
   }
 
   handlerRefresh(){
-    
+
+  }
+
+
+  searchTypeChange(){
+    this.tableEntity["sample"] = this.curSearchType;
+    this.rawDataChart.reGetData();
+  }
+
+  searchBaseTypeChange(){
+    this.tableBaseEntity["sample"] = this.baseSearchType;
+    this.rawBaseChart.reGetData();
+  }
+
+  //legend color change
+  colorChange(curColor){
+    this.chart.setColor(curColor, this.legendIndex);
+    this.chart.redraw();
+  }
+
+  //legend color change
+  colorChangeTwo(curColor){
+    this.chartTwo.setColor(curColor, this.legendIndex);
+    this.chartTwo.redraw();
   }
 
 }
