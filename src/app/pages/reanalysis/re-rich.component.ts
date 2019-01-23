@@ -80,7 +80,6 @@ export class ReRichComponent implements OnInit {
 
     addColumnShow:boolean = false;
     showBackButton:boolean = false;
-    selectGeneList:string[]=[]; // 图上选择的基因集字符串
 
     // 路由参数
     tid:string = null;
@@ -95,9 +94,13 @@ export class ReRichComponent implements OnInit {
     annotation:string = '';
     selectData:any = [];
 
+    resetCheckGraph: boolean;
 
     isMultipleSelect:boolean = false;
 
+    // 图上选择的数据
+    selectGeneList:string[] = [];
+    
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -132,92 +135,100 @@ export class ReRichComponent implements OnInit {
     }
 
     ngOnInit() {
-        (async ()=>{
-            this.chartTypeData=[
-                {
-                    key:"bubble",
-                    value:"气泡图"
-                },
-                {
-                key:"column",
-                value:"柱状图"
-            }];
+        this.chartTypeData=[
+            {
+                key:"bubble",
+                value:"气泡图"
+            },
+            {
+            key:"column",
+            value:"柱状图"
+        }];
 
-            this.first = true;
-            this.applyOnceSearchParams = true;
-            this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
-            this.defaultEntity = {
-                LCID: sessionStorage.getItem('LCID'),
-                tid:this.tid,
-                pageIndex: 1, 
-                pageSize: 20,
-                mongoId: null,
-                addThead: [], 
-                transform: false, 
-                matrix: false, 
-                relations: [],
-                sortValue: null,
-                sortKey: null,
-                reAnaly: false,
-                geneType: this.geneType, 
-                species: this.storeService.getStore('genome'),
-                version: this.version,
-                searchList: [],
-                sortThead:this.addColumnService['sortThead']
-            };
-            this.defaultTableId = 'default_heatmap';
-            this.defaultDefaultChecked = true;
-            this.defaultEmitBaseThead = true;
-            this.defaultCheckStatusInParams = true;
+        this.selectData = JSON.parse(sessionStorage.getItem('geneClassRichConfig'))[this.annotation];
+        this.selectedVal = this.selectData[0];
 
-            this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
-            this.extendEntity = {
-                LCID: sessionStorage.getItem('LCID'),
-                tid:this.tid,
-                pageIndex: 1, 
-                pageSize: 20,
-                mongoId: null,
-                addThead: [],
-                transform: false, 
-                matchAll: false,
-                matrix: false,
-                relations: [], 
-                sortValue: null,
-                sortKey: null,
-                reAnaly: false,
-                geneType: this.geneType, 
-                species: this.storeService.getStore('genome'), 
-                version: this.version,
-                searchList: [],
-                sortThead:this.addColumnService['sortThead']
-            };
-            this.extendTableId = 'extend_heatmap';
-            this.extendDefaultChecked = true;
-            this.extendEmitBaseThead = true;
-            this.extendCheckStatusInParams = false;
+        this.bigtableUrl=`${config['javaPath']}/enrichment/generalTable`;
+        this.chartUrl=`${config['javaPath']}/enrichment/graph`;
+        this.chartEntity = {
+            LCID: this.storeService.getStore('LCID'),
+            annotation:this.annotation,
+            geneType: this.geneType,
+            species: this.storeService.getStore('genome'),
+            checkedClassifyType:this.selectedVal,
+            checkedClassifyList:[],
+            searchList:[],
+            pageIndex:1,
+            pageSize:20,
+            sortKey:null,
+            sortValue:null,
+            tid: "04c0d1923fc746fb8188175e124ac269",
+            version:this.storeService.getStore('version')
+        };
 
+        this.first = true;
+        this.resetCheckGraph = true;
+        this.applyOnceSearchParams = true;
+        this.defaultUrl = `${config['javaPath']}/enrichment/table`;
+        this.defaultEntity = {
+            LCID: sessionStorage.getItem('LCID'),
+            tid: this.tid,
+            annotation: this.annotation,
+            pageIndex: 1,
+            pageSize: 20,
+            mongoId: null,
+            addThead: [],
+            transform: false,
+            matrix: false,
+            relations: [],
+            sortValue: null,
+            sortKey: null,
+            reAnaly: false,
+            geneType: this.geneType,
+            species: this.storeService.getStore('genome'),
+            version: this.version,
+            searchList: [],
+            checkedClassifyType: this.selectedVal,
+            checkedClassifyList: this.selectGeneList,
+            checkGraph: true,
+            sortThead: this.addColumnService['sortThead'],
+            removeColumns: []
+    };
+        this.defaultTableId = 'default_rich';
+        this.defaultDefaultChecked = true;
+        this.defaultEmitBaseThead = true;
+        this.defaultCheckStatusInParams = true;
 
-            this.selectData = JSON.parse(sessionStorage.getItem('annotation_choice'))[this.annotation];
-            this.selectedVal = this.selectData[0];
-
-            this.bigtableUrl=`${config['javaPath']}/enrichment/generalTable`;
-            this.chartUrl=`${config['javaPath']}/enrichment/graph`;
-            this.chartEntity = {
-                LCID: this.storeService.getStore('LCID'),
-                annotation:this.annotation,
-                geneType: this.geneType,
-                species: this.storeService.getStore('genome'), 
-                checkedClassifyType:this.selectedVal,
-                checkedClassifyList:[],
-                searchList:[],
-                pageIndex:1,
-                pageSize:20,
-                sortKey:null,
-                sortValue:null,
-                tid: "04c0d1923fc746fb8188175e124ac269",
-                version:this.storeService.getStore('version')
-            };
-        })()
+        this.extendUrl = `${config['javaPath']}/enrichment/table`;
+        this.extendEntity = {
+            LCID: sessionStorage.getItem('LCID'),
+            tid: this.tid,
+            annotation: this.annotation,
+            pageIndex: 1,
+            pageSize: 20,
+            mongoId: null,
+            addThead: [],
+            transform: false,
+            matchAll: false,
+            matrix: false,
+            relations: [],
+            sortValue: null,
+            sortKey: null,
+            reAnaly: false,
+            geneType: this.geneType,
+            species: this.storeService.getStore('genome'),
+            version: this.version,
+            searchList: [],
+            checkedClassifyType: this.selectedVal,
+            checkedClassifyList: this.selectGeneList,
+            checkGraph: true,
+            sortThead: this.addColumnService['sortThead'],
+            removeColumns: []
+    };
+        this.extendTableId = 'extend_rich';
+        this.extendDefaultChecked = true;
+        this.extendEmitBaseThead = true;
+        this.extendCheckStatusInParams = false;
     }
 
     showTableChange(isshowtable){
@@ -227,9 +238,7 @@ export class ReRichComponent implements OnInit {
     checkedChange(data){
         this.checkedData=[...data[1]];
         this._sortArr(this.annotation+'_qvalue',this.checkedData);
-
         this.checkedDrawGeneList.length=0;
-
         this.checkedData.forEach(d=>{
             let geneid=d[this.annotation+"_term"] ? d[this.annotation+"_term"] : d[this.annotation+"_term_id"];
             this.checkedDrawGeneList.push(geneid);
@@ -237,7 +246,6 @@ export class ReRichComponent implements OnInit {
 
     }
 
-    
     deleteGene(i){
         let delchecks  = this.checkedData.splice(i,1);
         this.checkedDrawGeneList.splice(i,1);
@@ -294,22 +302,25 @@ export class ReRichComponent implements OnInit {
     // 表格转换 确定
     // 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
-        this.showBackButton = true;
-        this.extendEmitBaseThead = true;
+		this.showBackButton = true;
+		this.extendEmitBaseThead = true;
 		let checkParams = this.transformTable._getInnerParams();
 		this.applyOnceSearchParams = true;
 		if (this.first) {
-            this.extendCheckStatusInParams = false;
+			this.extendCheckStatusInParams = false;
 			this.extendEntity['checkStatus'] = checkParams['others']['checkStatus'];
 			this.extendEntity['unChecked'] = checkParams['others']['excludeGeneList']['unChecked'];
 			this.extendEntity['checked'] = checkParams['others']['excludeGeneList']['checked'];
 			this.extendEntity['mongoId'] = checkParams['mongoId'];
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
-            this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
-            this.extendEntity['relations'] = relations;
-            this.extendEntity['transform'] = true;
-            this.extendEntity['matrix'] = true;
-            this.addColumn._clearThead();
+			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
+			this.extendEntity['relations'] = relations;
+			this.extendEntity['transform'] = true;
+			this.extendEntity['matrix'] = true;
+			this.extendEntity['checkGraph'] = false;
+			this.extendEntity['checkedClassifyType'] = checkParams['tableEntity']['checkedClassifyType'];
+			this.extendEntity['checkedClassifyList'] = checkParams['tableEntity']['checkedClassifyList'];
+			this.addColumn._clearThead();
 			this.extendEntity['addThead'] = [];
 			this.first = false;
 		} else {
@@ -320,11 +331,14 @@ export class ReRichComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
-			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
-			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
-			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
-            this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
-            this.addColumn._clearThead();
+			this.transformTable._setExtendParamsWithoutRequest( 'checkedClassifyType', checkParams['tableEntity']['checkedClassifyType'] );
+			this.transformTable._setExtendParamsWithoutRequest( 'checkedClassifyList', checkParams['tableEntity']['checkedClassifyList'] );
+			this.transformTable._setExtendParamsWithoutRequest('relations', relations);
+			this.transformTable._setExtendParamsWithoutRequest('transform', true);
+			this.transformTable._setExtendParamsWithoutRequest('matrix', true);
+			this.transformTable._setExtendParamsWithoutRequest('checkGraph', false);
+			this.transformTable._setExtendParamsWithoutRequest('addThead', []);
+			this.addColumn._clearThead();
 			setTimeout(() => {
 				this.transformTable._getData();
 			}, 30);
@@ -349,38 +363,35 @@ export class ReRichComponent implements OnInit {
         this.bigTable._setParamsOfEntity('checkedClassifyType',this.selectedVal);
         this.checkedData.length=0;
         this.checkedDrawGeneList.length=0;
+        this.selectGeneList.length = 0;
+
         this.bigTable._initCheckStatus();
         this.reDraw();
+        this.chartBackStatus();
     }
 
-    chartBackStatus(){
-        this.showBackButton = false;
-        this.defaultEmitBaseThead = true;
-        this.transformTable._initCheckStatus();
+    chartBackStatus() {
+		this.showBackButton = false;
+		this.defaultEmitBaseThead = true;
+		this.transformTable._initCheckStatus();
 		this.transformTable._clearFilterWithoutRequest();
-        if(!this.first){
-            this.defaultEntity['addThead'] = [];
-            this.defaultEntity['removeColumns'] = [];
-            this.defaultEntity['rootSearchContentList'] = [];
-            this.defaultEntity['pageIndex'] = 1;
-            if(this.selectGeneList.length){
-                this.defaultEntity['searchList'] = [
-                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
-                ];
-            }else{
-                this.defaultEntity['searchList']= [] ;
-            }
-            this.first = true;
-        }else{
-            this.transformTable._setParamsNoRequest('pageIndex',1);
-            if(this.selectGeneList.length) {
-                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
-            }else{
-                this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
-                this.transformTable._getData();
-            }
-        }
-    }
+		this.resetCheckGraph = true;
+
+		if (!this.first) {
+			this.defaultEntity['checkGraph'] = true;
+			this.defaultEntity['addThead'] = [];
+			this.defaultEntity['removeColumns'] = [];
+			this.defaultEntity['rootSearchContentList'] = [];
+			this.defaultEntity['pageIndex'] = 1;
+			this.defaultEntity['checkedClassifyType'] = this.selectedVal;
+			this.first = true;
+		} else {
+			this.transformTable._setParamsNoRequest('checkGraph', true);
+			this.transformTable._setParamsNoRequest('pageIndex', 1);
+			this.transformTable._setParamsNoRequest('checkedClassifyType', this.selectedVal);
+			this.transformTable._getData();
+		}
+	}
 
 	// 表格基础头改变  设置emitBaseThead为true的时候 表格下一次请求回来会把表头发出来 作为表格的基础表头传入增删列
 	baseTheadChange(thead) {
@@ -423,13 +434,14 @@ export class ReRichComponent implements OnInit {
         let type=obj.type;
 
         let _self = this;
-        
+
+        this.selectGeneList.length = 0;
         if(type==='column'){
             let bardata=[];
             let linedata=[];
             data.rows.forEach(d=>{
                 let geneid=d[this.annotation+"_term"] ? d[this.annotation+"_term"] : d[this.annotation+"_term_id"];
-                
+
                 bardata.push({
                     x:-Math.log10(d[_self.annotation+"_qvalue"]),
                     y:d[_self.annotation+"_term_desc"],
@@ -438,7 +450,7 @@ export class ReRichComponent implements OnInit {
                     qvalue:d[_self.annotation+"_qvalue"],
                     genenum:d[_self.annotation+"_term_candidate_gene_num"]
                 });
-                
+
                 linedata.push({
                     x:d[_self.annotation+"_term_candidate_gene_num"],
                     y:d[_self.annotation+"_term_desc"],
@@ -472,14 +484,22 @@ export class ReRichComponent implements OnInit {
                     types:['bar','line'],
                     enableChartSelect:true,
                     selectedModule: _self.isMultipleSelect?'multiple':'single',
-                    direction:"horizontal", 
+                    direction:"horizontal",
                     "stroke-width":2,
                     data: bardata,
                     otherData:linedata,
                     otherColors:['#fd7d27'],
                     isPoint:true,
                     onselect:data=>{
-                        console.log(data);
+                        this.selectGeneList.length = 0;
+                        this.selectGeneList.push(...data.map(v=>v['geneid']));
+                        if(!_self.isMultipleSelect){
+                            this.chartBackStatus();
+                        }
+                    },
+                    clearselect:()=>{
+                        this.selectGeneList.length = 0;
+                        this.chartBackStatus();
                     }
                 },
                 axis: {
@@ -501,7 +521,7 @@ export class ReRichComponent implements OnInit {
                             titleObj.attr("fill", "#333");
                             titleObj.select("title").remove();
                         }
-                        
+
                     },
                     x1:{
                         title:'Term Candidate Gene Num',
@@ -551,7 +571,7 @@ export class ReRichComponent implements OnInit {
                     }
                 ]
             }
-    
+
             this.chart=new d4().init(config,{areaMinWidth:240});
         }else if(type==='bubble'){
             var realData = [];
@@ -594,7 +614,15 @@ export class ReRichComponent implements OnInit {
                     enableChartSelect:true,
                     selectedModule: _self.isMultipleSelect?'multiple':'single',
                     onselect: data => {
-                      console.log(data);
+                        this.selectGeneList.length = 0;
+                        this.selectGeneList.push(...data.map(v=>v['geneid']));
+                        if(!_self.isMultipleSelect){
+                            this.chartBackStatus();
+                        }
+                    },
+                    clearselect:()=>{
+                        this.selectGeneList.length = 0;
+                        this.chartBackStatus();
                     },
                     data: realData,
                     colors: ["#00008B", "#87CEFA"],
@@ -666,14 +694,9 @@ export class ReRichComponent implements OnInit {
         this.chart.redraw();
     }
 
-    setGeneList(geneList) {
-        this.selectGeneList = geneList;
-        this.chartBackStatus();
-    }
-
     chartSelectModelChange(model){
-        console.log(this.chart);
         this.chart.setChartSelectModule(this.isMultipleSelect?'multiple':'single');
+        this.selectGeneList.length = 0;
     }
 
     multipleSelectConfirm(){
