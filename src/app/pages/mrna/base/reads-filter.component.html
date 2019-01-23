@@ -85,4 +85,27 @@
 
 
     <h3 class="title">3.4 Clean reads 碱基质量分布</h3>
+    <div class="f-content">
+        <!-- <ng-template #searchTemplateThree>
+            <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="qualitySearchType" [nzSize]="'small'" (ngModelChange)="searchQualityTypeChange()" nzShowSearch>
+                <nz-option *ngFor="let item of qualitySelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+            </nz-select>
+        </ng-template>
+        <app-table-switch-chart
+            #rawQualityChart
+            [id]="'rawQualityChart'"
+            [tableUrl]="tableQualityUrl"
+            [apiEntity]="tableQualityEntity"
+            [isOnlyChart] = "false"
+            (drawChartEmit)="drawQualityReads($event)"
+            [flex]="true"
+            [chartId]="'rawQualityID'"
+            [chartName]="'Clean reads 碱基质量分布'"
+            [otherLeftTemplate]='searchTemplateThree'
+            (refresh)="handlerRefresh()"
+        >
+        </app-table-switch-chart>
+        <app-color-picker [(color)]="colorThree" (colorChange)="colorChangeThree($event)" [(show)]="isShowColorPanelThree"
+                ></app-color-picker> -->
+    </div>
 </div>

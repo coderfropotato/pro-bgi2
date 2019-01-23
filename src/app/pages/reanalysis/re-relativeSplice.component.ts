@@ -366,27 +366,29 @@ export class RelativeSpliceComponent implements OnInit {
     drawChart(data) {
         let that = this;
 
-        if(data.length == 0){
-            return;
-        }
+        // if(data.length == 0){
+        //     return;
+        // }
         let tempData = data.asGraph;
         let tempSetting = data.as_region;
-
-        tempData.forEach((d) => {
-            d.x = 0;
-            d.y = 0;
-            d.selected = false;
-        });
-
-
 
         let x_value = [];
         let y_value = [];
 
-        tempData.forEach((d) => {
-            x_value.push(d.x_site);
-            y_value.push(d.y_site);
-        });
+        if(tempData == null){
+            return;
+        }else{
+            tempData.forEach((d) => {
+                d.x = 0;
+                d.y = 0;
+                d.selected = false;
+            });
+
+            tempData.forEach((d) => {
+                x_value.push(d.x_site);
+                y_value.push(d.y_site);
+            });
+        }
 
         x_value = Array.from(new Set(x_value));
         y_value = Array.from(new Set(y_value));

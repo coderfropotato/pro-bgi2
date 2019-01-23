@@ -20,6 +20,7 @@ declare const $: any;
 export class ReadsFilterComponent implements OnInit {
   @ViewChild('rawDataChart') rawDataChart;
   @ViewChild('rawBaseChart') rawBaseChart;
+  @ViewChild('rawQualityChart') rawQualityChart;
   @ViewChild('bigTable') bigTable;
   @ViewChild('bigRNATable') bigRNATable;
   // table one
@@ -48,15 +49,28 @@ export class ReadsFilterComponent implements OnInit {
   tableBaseEntity:object;
   chartTwo:any;
 
-  //原始数据过滤成分统计 图例颜色
+  
+  //Clean reads 碱基质量量分布
+  qualitySelectType:any=[];
+  qualitySearchType:string;
+  tableQualityUrl:string;
+  tableQualityEntity:object;
+  chartThree:any;
+
+  //图例颜色
   isShowColorPanel: boolean = false;
   legendIndex: number = 0; //当前点击图例的索引
   color: string; //当前选中的color
 
-  //图例颜色
+  //Clean reads 碱基含量分布 图例颜色
   isShowColorPanelTwo: boolean = false;
   legendIndexTwo: number = 0; //当前点击图例的索引
   colorTwo: string; //当前选中的color
+
+  //Clean reads 碱基含量分布 图例颜色
+  isShowColorPanelThree: boolean = false;
+  legendIndexThree: number = 0; //当前点击图例的索引
+  colorThree: string; //当前选中的color
   
 
   constructor(
@@ -115,6 +129,14 @@ export class ReadsFilterComponent implements OnInit {
         sample: this.baseSearchType
       };
 
+      //Clean reads 碱基质量分布
+      // this.qualitySelectType=sample;
+      // this.qualitySearchType=sample[0].value;
+      // this.tableQualityUrl=`${config["javaPath"]}/basicModule/BaseMassDistribution`;
+      // this.tableQualityEntity={
+      //   LCID: "DEMO_TOM_APDENOVO",
+      //   sample: this.qualitySearchType
+      // };
 
   }
 
@@ -251,6 +273,11 @@ export class ReadsFilterComponent implements OnInit {
     
   }
 
+  //Clean reads 碱基质量分布
+  drawQualityReads(data){
+    console.log(data)
+  }
+
   handlerRefresh(){
 
   }
@@ -266,6 +293,11 @@ export class ReadsFilterComponent implements OnInit {
     this.rawBaseChart.reGetData();
   }
 
+  searchQualityTypeChange(){
+    this.tableQualityEntity["sample"] = this.qualitySearchType;
+    this.rawQualityChart.reGetData();
+  }
+
   //legend color change
   colorChange(curColor){
     this.chart.setColor(curColor, this.legendIndex);
@@ -274,8 +306,14 @@ export class ReadsFilterComponent implements OnInit {
 
   //legend color change
   colorChangeTwo(curColor){
-    this.chartTwo.setColor(curColor, this.legendIndex);
+    this.chartTwo.setColor(curColor, this.legendIndexTwo);
     this.chartTwo.redraw();
+  }
+
+  //legend color change
+  colorChangeThree(curColor){
+    this.chartThree.setColor(curColor, this.legendIndexThree);
+    this.chartThree.redraw();
   }
 
 }
