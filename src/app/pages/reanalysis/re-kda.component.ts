@@ -824,6 +824,7 @@ export class ReKdaComponent implements OnInit {
                     } else if (data.status === "-2") {
                         return;
                     } else {
+                        this.kdaChart.getTableData();
                         this.drawChart(data.data);
                     }
                 },
@@ -861,6 +862,7 @@ export class ReKdaComponent implements OnInit {
                     } else if (data.status === "-2") {
                         return;
                     } else {
+                        this.kdaChart.getTableData();
                         this.drawChart(data.data);
                     }
                 },

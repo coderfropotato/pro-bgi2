@@ -19,14 +19,14 @@
                 <nz-option *ngFor="let item of chartTypeData" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
             </nz-select>
             <!--左-其他模块 -->
-            <ng-container *ngTemplateOutlet="(otherLeftTemplate && !error) ? otherLeftTemplate :''"></ng-container>     
+            <ng-container *ngTemplateOutlet="(otherLeftTemplate && (!chartError || !tableError)) ? otherLeftTemplate :''"></ng-container>     
         </div>
         <div class="fRight">
             <!-- 右-其他模块 -->
-            <ng-container *ngTemplateOutlet="(otherRightTemplate && !error) ? otherRightTemplate :''"></ng-container>
+            <ng-container *ngTemplateOutlet="(otherRightTemplate && (!chartError || !tableError)) ? otherRightTemplate :''"></ng-container>
             <!-- 单选、多选 -->
-            <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && isHasMultiSelect && !error" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
-            <button *ngIf="!isShowTable && isHasMultiSelect && !error" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
+            <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
+            <button *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
             <!-- 精度下拉框 -->
             <!-- <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
                 <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>
@@ -42,16 +42,16 @@
                 <nz-option [nzLabel]="'accuracy.toFixedAll' | translate" [nzValue]="-1"></nz-option>
             </nz-select>
             <!-- 设置 -->
-            <ng-container *ngTemplateOutlet="(setTemplate && !error) ? setTemplate :''"></ng-container>
+            <ng-container *ngTemplateOutlet="(setTemplate && (!chartError || !tableError)) ? setTemplate :''"></ng-container>
             <!-- 刷新-->
             <!-- getTableData getTableData getChartData -->
             <i *ngIf="!chartUrl" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
             <i *ngIf="chartUrl && isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
             <i *ngIf="chartUrl && !isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
             <!--表下载  -->
-            <i class="iconfont icon-xiazai" *ngIf="isShowTable && !error" nz-tooltip [nzTitle]="'tableButton.download' | translate"></i>
+            <i class="iconfont icon-xiazai" *ngIf="isShowTable && !tableError" nz-tooltip [nzTitle]="'tableButton.download' | translate"></i>
             <!-- 图下载 -->
-            <app-chart-export *ngIf="!isShowTable && !error" [chartId]="chartId" [chartName]="chartName"></app-chart-export>
+            <app-chart-export *ngIf="!isShowTable && !chartError" [chartId]="chartId" [chartName]="chartName"></app-chart-export>
         </div>
     </div>
 </ng-template>
@@ -90,10 +90,10 @@
                     </div>
                 </div>
                 <!-- 图和表的容器 -->
-                <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable && !error" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
+                <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable && !chartError" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
 
                     <!-- 普通表  -->
-                    <nz-table  *ngIf="!isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
+                    <nz-table  *ngIf="!isVennTable && isShowTable && !tableError" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
                         <thead>
                             <tr>
                                 <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
@@ -108,14 +108,14 @@
                     </nz-table>
 
                      <!-- 大表分页  -->
-                     <div #tableBottom class="table-bottom" *ngIf="isBigTable && !isVennTable && isShowTable && !error">
+                     <div #tableBottom class="table-bottom" *ngIf="isBigTable && !isVennTable && isShowTable && !tableError">
                         <app-pagination style="float:left;" [(pageIndex)]="apiEntity['pageIndex']" [total]="total"
                             [(pageSize)]="apiEntity['pageSize']" (pageIndexChange)="getTableData()" (pageSizeChange)="pageSizeChange()">
                         </app-pagination>
                     </div>
 
                     <!-- veen/upsetR表 -->
-                    <nz-table *ngIf="isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="{y:scroll.y}" [nzSize]="'small'">
+                    <nz-table *ngIf="isVennTable && isShowTable && !tableError" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="{y:scroll.y}" [nzSize]="'small'">
                         <thead>
                             <tr>
                                 <th class="center" nzWidth="120px">name</th>
@@ -131,10 +131,12 @@
                     </nz-table>
 
                     <!-- chart -->
-                    <div class="center chart" style="margin: 0 auto;"  [attr.id]="chartId" [hidden]="isShowTable || error"></div>
+                    <div class="center chart" style="margin: 0 auto;"  [attr.id]="chartId" [hidden]="isShowTable || chartError"></div>
 
                     <!-- error -->
-                    <app-error [error]="error"></app-error>
+                    <app-error *ngIf="!isShowTable && chartError" [error]="chartError"></app-error>
+
+                    <app-error *ngIf="isShowTable && tableError" [error]="tableError"></app-error>
                 </div>
             </div>
         </div>

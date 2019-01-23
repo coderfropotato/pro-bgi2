@@ -978,6 +978,7 @@ export class ReNetComponent implements OnInit {
                     } else if (data.status === "-2") {
                         return;
                     } else {
+                        this.netChart.getTableData();
                         this.drawChart(data.data);
                     }
                 },
@@ -1015,6 +1016,7 @@ export class ReNetComponent implements OnInit {
                     } else if (data.status === "-2") {
                         return;
                     } else {
+                        this.netChart.getTableData();
                         this.drawChart(data.data);
                     }
                 },
