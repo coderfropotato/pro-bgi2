@@ -93,7 +93,8 @@ export class TableSwitchChartComponent implements OnInit {
     total:number = 1;
     tableData: any;
     chartData: any;
-    error: string;
+    tableError: string;
+    chartError:string;
     isLoading: boolean = false;
 
     accuracyList: object[] = [];
@@ -282,7 +283,8 @@ export class TableSwitchChartComponent implements OnInit {
 
                 },
                 error => {
-                    this.error = error;
+                    this.tableError = error;
+                    this.chartError=error;
                 }
             )
     }
@@ -406,15 +408,19 @@ export class TableSwitchChartComponent implements OnInit {
             .subscribe(
                 (data: any) => {
                     if (data.status == "0" && ((data.data.length == 0 || $.isEmptyObject(data.data) || ('rows' in data.data && !data.data['rows'].length)))) {
-                        this.error = "nodata";
+                        this.tableError = "nodata";
+                        if(!this.chartUrl) this.chartError='nodata';
                     } else if (data.status == "-1") {
-                        this.error = "error";
+                        this.tableError = "error";
+                        if(!this.chartUrl) this.chartError='error';
                     } else if (data.status == "-2") {
-                        this.error = "dataOver";
+                        this.tableError = "dataOver";
+                        if(!this.chartUrl) this.chartError='dataOver';
                     } else {
-                        this.error = "";
+                        this.tableError = "";
                         this.tableData = data.data;
                         if (!this.chartUrl) {
+                            this.chartError='';
                             this.chartData = data.data;
                             if(this.chartTypeData && this.chartTypeData.length){
                                 this.drawChart(this.chartData,this.chartType);
@@ -433,7 +439,8 @@ export class TableSwitchChartComponent implements OnInit {
                 },
                 error => {
                     this.isLoading = false;
-                    this.error = error;
+                    this.tableError = error;
+                    if(!this.chartUrl) this.chartError=error;
                 }
             )
     }
@@ -458,13 +465,13 @@ export class TableSwitchChartComponent implements OnInit {
             .subscribe(
                 (data: any) => {
                     if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-                        this.error = "nodata";
+                        this.chartError = "nodata";
                     } else if (data.status == "-1") {
-                        this.error = "error";
+                        this.chartError = "error";
                     } else if (data.status == "-2") {
-                        this.error = "dataOver";
+                        this.chartError = "dataOver";
                     } else {
-                        this.error = "";
+                        this.chartError = "";
                         this.chartData = data.data;
                         if(this.chartTypeData && this.chartTypeData.length){
                             this.drawChart(this.chartData,this.chartType);
@@ -476,7 +483,7 @@ export class TableSwitchChartComponent implements OnInit {
                 },
                 error => {
                     this.isLoading = false;
-                    this.error = error;
+                    this.chartError = error;
                 }
             )
     }
