@@ -1,3 +1,48 @@
-<p>
-  reads-filter works!
-</p>
+<div class="content base-content filter">
+    <h2 class="title">3.Reads过滤</h2>
+    <hr class="mhr" />
+
+    <h4 class="title">测序平台：<span>BGISEQ-500v</span></h4>
+    <h4 class="title">测序长度：<span>PE100</span></h4>
+    <h4 class="title">文库峰值长度：<span>280bp</span></h4>
+
+    <h3 class="title">3.1 过滤后的 Reads 质量统计</h3>
+    <div class="f-content">
+        <h4 class="title">3.1.1 Reads过滤</h4>
+        <!-- <app-big-table
+          *ngIf="defaultEntity"
+          class="no-outside-border"
+          #bigTable
+          [tableHeight]="tableHeight"
+          [pageEntity]="defaultEntity"
+          [url]="defaultUrl"
+          [tableId]="defaultTableId"
+          [(computedScrollHeight)]="computedScrollHeight"
+        ></app-big-table> -->
+    </div>
+    <div class="f-content">
+        <h4 class="title">3.1.2 Reads过滤（小RNA）</h4>
+        
+    </div>
+
+    <h3 class="title">3.2 原始数据过滤成分统计</h3>
+    <div class="f-content">
+        <app-table-switch-chart
+            #rawDataChart
+            [id]="'rawDataChart'"
+            [tableUrl]="tableUrl"
+            [apiEntity]="tableEntity"
+            [isOnlyChart] = "false"
+            (drawChartEmit)="drawRawReads($event)"
+            [flex]="true"
+            [chartId]="'rawDataID'"
+            [chartName]="'原始数据过滤成分统计'"
+            (refresh)="handlerRefresh()"
+        >
+        </app-table-switch-chart>
+    </div>
+    
+    <h3 class="title">3.3 Clean reads 碱基含量分布</h3>
+
+    <h3 class="title">3.4 Clean reads 碱基质量分布</h3>
+</div>

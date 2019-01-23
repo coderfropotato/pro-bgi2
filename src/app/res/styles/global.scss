@@ -1454,7 +1454,7 @@ button.btnActive {
 	margin: 0!important;
 }
 
-//帮助页面
+//基础模块-帮助页面
 .title{
 	width: 98%;
 	margin: 20px auto 0 auto;
@@ -1469,11 +1469,6 @@ button.btnActive {
 }
 
 .help{
-	height: 100%;
-	overflow-x: hidden;
-	overflow-y: scroll;
-	background-color: #fff;
-	padding-bottom: 30px;
 	.help_option{
 		.help_content{
 			width: 100%;
@@ -1581,6 +1576,21 @@ button.btnActive {
 				}
 			}
 		}
+	}
+}
+
+//基础模块-数据过滤
+.filter{
+	.f-content{
+		width: 96%;
+		height: auto;
+		margin: 10px auto;
+		border: 1px solid #EEEEEE;
+		border-radius: 4px;
+	}
+	.title{
+		width: 98%;
+		margin: 10px auto;
 	}
 }
 
