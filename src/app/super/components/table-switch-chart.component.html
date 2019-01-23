@@ -96,12 +96,13 @@
                     <nz-table  *ngIf="!isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
                         <thead>
                             <tr>
-                                <th class="center" nzWidth="120px" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
+                                <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let row of tableData.rows">
-                                <td class="center" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
+                                <td class="center textEllipsis" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']"
+                                nz-popover [nzContent]="row[thead.true_key]">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
                             </tr>
                         </tbody>
                     </nz-table>
@@ -114,11 +115,11 @@
                     </div>
 
                     <!-- veen/upsetR表 -->
-                    <nz-table *ngIf="isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
+                    <nz-table *ngIf="isVennTable && isShowTable && !error" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="{y:scroll.y}" [nzSize]="'small'">
                         <thead>
                             <tr>
-                                <th class="center" nzWidth="120px" nz-tooltip>name</th>
-                                <th class="center" nzWidth="120px" nz-tooltip>value</th>
+                                <th class="center" nzWidth="120px">name</th>
+                                <th class="center" nzWidth="120px">value</th>
                             </tr>
                         </thead>
                         <tbody>

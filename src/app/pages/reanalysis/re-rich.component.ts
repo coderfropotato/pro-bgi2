@@ -425,10 +425,26 @@ export class ReRichComponent implements OnInit {
         let _self = this;
         
         if(type==='column'){
-            let x,y,category;
-            x = data['baseThead'][data['baseThead'].length-1]['true_key'];
-            y = data['baseThead'][0]['true_key'];
-            if(data['baseThead'].length>2) category = data['baseThead'][1]['true_key'];
+            let bardata=[];
+            let linedata=[];
+            data.rows.forEach(d=>{
+                let geneid=d[this.annotation+"_term"] ? d[this.annotation+"_term"] : d[this.annotation+"_term_id"];
+                
+                bardata.push({
+                    x:-Math.log10(d[_self.annotation+"_qvalue"]),
+                    y:d[_self.annotation+"_term_desc"],
+                    category:'-log10（Qvalue）',
+                    geneid:geneid,
+                    qvalue:d[_self.annotation+"_qvalue"],
+                    genenum:d[_self.annotation+"_term_candidate_gene_num"]
+                });
+                
+                linedata.push({
+                    x:d[_self.annotation+"_term_candidate_gene_num"],
+                    y:d[_self.annotation+"_term_desc"],
+                    category:'Term Candidate Gene Num'
+                })
+            })
 
             let config = {
                 chart: {
@@ -439,56 +455,104 @@ export class ReRichComponent implements OnInit {
                             this.updateTitle();
                         });
                     },
+                    mouseover: function(event, titleObj) {
+                        titleObj
+                            .attr("fill", "blue")
+                            .append("title")
+                            .text("双击修改标题");
+                    },
+                    mouseout: function(event, titleObj) {
+                        titleObj.attr("fill", "#333");
+                        titleObj.select("title").remove();
+                    },
                     width: _self.leftBottom.nativeElement.offsetWidth * 0.8,
                     height: data['rows'].length * 20,
-                    custom: [x, y, category],
                     el: "#geneRichChartDiv",
-                    type: "bar",
+                    type: "group",
+                    types:['bar','line'],
                     enableChartSelect:true,
                     selectedModule: _self.isMultipleSelect?'multiple':'single',
                     direction:"horizontal", 
-                    data: data['rows'],
+                    "stroke-width":2,
+                    data: bardata,
+                    otherData:linedata,
+                    otherColors:['#fd7d27'],
+                    isPoint:true,
                     onselect:data=>{
                         console.log(data);
                     }
                 },
                 axis: {
                     x: {
-                        title: "Number",
+                        title: "-log10（Q value）",
                         dblclick: function(event) {
                             _self.promptService.open(event.target.innerHTML,newval=>{
                                 this.setXTitle(newval);
                                 this.updateTitle();
                             });
                         },
-                        rotate:60
+                        mouseover: function(event, titleObj) {
+                            titleObj
+                                .attr("fill", "blue")
+                                .append("title")
+                                .text("双击修改");
+                        },
+                        mouseout: function(event, titleObj) {
+                            titleObj.attr("fill", "#333");
+                            titleObj.select("title").remove();
+                        }
+                        
                     },
-                    y: {
-                        title: "Level2",
+                    x1:{
+                        title:'Term Candidate Gene Num',
+                        min:0,
+                        rotate:30,
                         dblclick: function(event) {
                             _self.promptService.open(event.target.innerHTML,newval=>{
-                                this.setYTitle(newval);
+                                this.setXTitle(newval,'x1');
                                 this.updateTitle();
                             });
+                        },
+                        mouseover: function(event, titleObj) {
+                            titleObj
+                                .attr("fill", "blue")
+                                .append("title")
+                                .text("双击修改");
+                        },
+                        mouseout: function(event, titleObj) {
+                            titleObj.attr("fill", "#333");
+                            titleObj.select("title").remove();
                         }
-                    }
+                    },
+                    y: {}
                 },
                 legend: {
                     show: true,
-                    position: "right",
                     click:(d,index)=>{
                         this.color = d3.select(d).attr('fill');
                         this.show = true;
                         this.legendIndex = index;
                     }
                 },
-                tooltip: function(d) {
-                    if(category)  return "<span>Number："+d[x]+"</span><br><span>Level1："+d[category]+"</span><br><span>Level2："+d[y]+"</span>"
-                    return "<span>Number："+d[x]+"</span><br><span>Level2："+d[y]+"</span>";
-                }
+                otherLegend: {
+                    show: true
+                },
+                tooltip: [
+                    function(d) {
+                        return `<span>GO Term: ${d.y}</span><br>
+                        <span>GO Term ID: ${ d.geneid }</span><br>
+                        <span>Qvalue: ${d.qvalue}</span><br>
+                        <span>-log10(Qvalue): ${ d.x }</span><br>
+                        <span>Gene Number: ${d.genenum}</span>`;
+                    },
+                    function(d) {
+                        return `<span>GO Term: ${d.y}</span><br>
+                        <span>Gene Number: ${d.x}</span>`;
+                    }
+                ]
             }
     
-            this.chart=new d4().init(config,{minWidth:240});
+            this.chart=new d4().init(config,{areaMinWidth:240});
         }else if(type==='bubble'){
             var realData = [];
             var legendData = [];
@@ -542,6 +606,16 @@ export class ReRichComponent implements OnInit {
                   axis: {
                     x: {
                       title: "Rich Ratio",
+                        mouseover: function(event, titleObj) {
+                            titleObj
+                                .attr("fill", "blue")
+                                .append("title")
+                                .text("双击修改");
+                        },
+                        mouseout: function(event, titleObj) {
+                            titleObj.attr("fill", "#333");
+                            titleObj.select("title").remove();
+                        },
                       rotate: 20,
                       min: 0,
                       dblclick: function(event) {

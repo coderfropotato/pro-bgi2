@@ -88,7 +88,7 @@ export class TableSwitchChartComponent implements OnInit {
     // 图类型 ,形如：{key:"bubble",value:"气泡图"}
     @Input() chartTypeData:any[];
 
-    scroll: object = { y: '400px' };
+    scroll: object = {x:'120%', y: '400px' };
     isShowTable: boolean = false;
     total:number = 1;
     tableData: any;
