@@ -205,11 +205,11 @@ export class TableSwitchChartComponent implements OnInit {
         })
         .subscribe(
             (data:any)=>{
-                if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                     return;
-                } else if (data.status === "-1") {
+                } else if (data.status == "-1") {
                     return;
-                } else if (data.status === "-2") {
+                } else if (data.status == "-2") {
                     return;
                 } else {
                     let defaultSetData=data.data;
@@ -229,11 +229,11 @@ export class TableSwitchChartComponent implements OnInit {
         })
         .subscribe(
             (data:any)=>{
-                if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                     return;
-                } else if (data.status === "-1") {
+                } else if (data.status == "-1") {
                     return;
-                } else if (data.status === "-2") {
+                } else if (data.status == "-2") {
                     return;
                 } else {
                     let trueData=data.data;
@@ -271,7 +271,7 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                    if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                         this.selectPanelList = [];
                     } else if (data.status != "0") {
                         this.selectPanelList = [];
@@ -405,11 +405,11 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.status === "0" && ((data.data.length == 0 || $.isEmptyObject(data.data) || ('rows' in data.data && !data.data['rows'].length)))) {
+                    if (data.status == "0" && ((data.data.length == 0 || $.isEmptyObject(data.data) || ('rows' in data.data && !data.data['rows'].length)))) {
                         this.error = "nodata";
-                    } else if (data.status === "-1") {
+                    } else if (data.status == "-1") {
                         this.error = "error";
-                    } else if (data.status === "-2") {
+                    } else if (data.status == "-2") {
                         this.error = "dataOver";
                     } else {
                         this.error = "";
@@ -457,11 +457,11 @@ export class TableSwitchChartComponent implements OnInit {
             )
             .subscribe(
                 (data: any) => {
-                    if (data.status === "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                    if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
                         this.error = "nodata";
-                    } else if (data.status === "-1") {
+                    } else if (data.status == "-1") {
                         this.error = "error";
-                    } else if (data.status === "-2") {
+                    } else if (data.status == "-2") {
                         this.error = "dataOver";
                     } else {
                         this.error = "";
