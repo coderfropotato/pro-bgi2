@@ -139,7 +139,7 @@ export class ReClassComponent implements OnInit {
 
 	ngOnInit() {
 		(async () => {
-			this.selectData = JSON.parse(sessionStorage.getItem('annotation_choice'))[this.annotation];
+			this.selectData = JSON.parse(sessionStorage.getItem('geneClassRichConfig'))[this.annotation];
 			this.selectedVal = this.selectData[0];
 
 			this.first = true;

@@ -6,7 +6,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router,NavigationEnd,NavigationStart } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NgxSpinnerService } from "ngx-spinner";
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import config from '../../../config';
+
+declare const $:any;
 
 @Component({
 	selector: 'app-analysis-index',
@@ -22,7 +25,8 @@ export class ReanalysisIndexComponent implements OnInit {
         public storeService:StoreService,
         private addColumnService:AddColumnService,
         // private outerDataBaseService:OuterDataBaseService,
-        private ngxSpinnerService:NgxSpinnerService
+        private ngxSpinnerService:NgxSpinnerService,
+        private modalService:NzModalService
     ) {
         this.routes.paramMap.subscribe((params)=>{
             this.storeService.setTid(null);
@@ -34,12 +38,25 @@ export class ReanalysisIndexComponent implements OnInit {
         (async () => {
             try {
                 await this.getLcInfo();
-                // await this.getAddThead();
+                await this.getClassRichConfig();
                 this.ready = true;
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
                 }, 300);
-            } catch (error) {}
+            } catch (error) {
+                // this.ngxSpinnerService.hide();
+                // let tpl = this.modalService.error({
+                //     nzTitle: '系统错误',
+                //     nzContent: '缺少必要信息，请重新登录',
+                //     nzClosable: false,
+                //     nzOnCancel:()=>{
+                //         tpl.destroy();
+                //     },
+                //     nzOnOk: () => {
+                //         this.router.navigate([`/report/login`])
+                //     }
+                //   });
+            }
         })();
     }
 
@@ -71,6 +88,34 @@ export class ReanalysisIndexComponent implements OnInit {
                     () => reject("error")
                 );
         });
+    }
+
+    // 获取分类 富集下拉列表数据
+    async getClassRichConfig(){
+        return new Promise((resolve,reject)=>{
+            this.ajaxService
+                .getDeferData({
+                    url: `${config["javaPath"]}/classification/config`,
+                    data:{
+                        LCID:sessionStorage.getItem('LCID'),
+                        species: this.storeService.getStore('genome'),
+                        version: this.storeService.getStore('version')
+                    }
+                })
+                .subscribe(
+                    data => {
+                        console.log(data);
+                        if (data["status"] == "0" && !$.isEmptyObject(data['data'])) {
+                           this.storeService.setStore('geneClassRichConfig',data['data']);
+                           sessionStorage.setItem('geneClassRichConfig',JSON.stringify(data['data']));
+                           resolve("success");
+                        }else{
+                            resolve("error");
+                        }
+                    },
+                    () => reject("error")
+                );
+        })
     }
 
     // async getAddThead() {
