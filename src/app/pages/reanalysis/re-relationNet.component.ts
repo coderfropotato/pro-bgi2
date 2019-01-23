@@ -1026,6 +1026,7 @@ export class reRelationNetComponent implements OnInit {
                     } else if (data.status === "-2") {
                         return;
                     } else {
+                        this.relationNetChart.getTableData();
                         this.drawChart(data.data);
                     }
                 },
