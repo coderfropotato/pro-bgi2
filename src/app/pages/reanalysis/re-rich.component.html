@@ -48,12 +48,12 @@
                 <!-- 可选择数据的大表 -->
                 <ng-container>
                     <app-big-table-check class="no-outside-border" #bigTable
-                        [selectTemplate]="selectTemplate" 
-                        [tableHeight]="leftTableHeight / 2" 
-                        [defaultChecked]="false" 
-                        [pageEntity]="chartEntity" 
-                        [url]="bigtableUrl" 
-                        tableId="geneRichCheckBigTable" 
+                        [selectTemplate]="selectTemplate"
+                        [tableHeight]="leftTableHeight / 2"
+                        [defaultChecked]="false"
+                        [pageEntity]="chartEntity"
+                        [url]="bigtableUrl"
+                        tableId="geneRichCheckBigTable"
                         (checkedChange)="checkedChange($event)"
                         [(computedScrollHeight)]="leftComputedScrollHeight">
                     </app-big-table-check>
@@ -64,29 +64,29 @@
                 </div>
 
                 <!-- 图表切换 -->
-                <ng-container>
-                    <app-table-switch-chart #switchChart 
-                        [id]="'re-rich'" 
-                        [tableUrl]="chartUrl"  
-                        [apiEntity]="chartEntity" 
-                        (drawChartEmit)="drawChart($event)" 
-                        [chartId]="'geneRichChartDiv'" 
-                        [chartName]="'基因富集'" 
-                        (refresh)="handlerRefresh()" 
-                        [isHasMultiSelect]="true" 
-                        [(isMultiSelect)]="isMultipleSelect" 
-                        (isMultiSelectChange)="chartSelectModelChange($event)" 
-                        (multipleConfirmEmit)="multipleSelectConfirm()" 
+                <div>
+                    <app-table-switch-chart #switchChart
+                        [id]="'re-rich'"
+                        [tableUrl]="chartUrl"
+                        [apiEntity]="chartEntity"
+                        (drawChartEmit)="drawChart($event)"
+                        [chartId]="'geneRichChartDiv'"
+                        [chartName]="'基因富集'"
+                        (refresh)="handlerRefresh()"
+                        [isHasMultiSelect]="true"
+                        [(isMultiSelect)]="isMultipleSelect"
+                        (isMultiSelectChange)="chartSelectModelChange($event)"
+                        (multipleConfirmEmit)="multipleSelectConfirm()"
                         (showTableChange)="showTableChange($event)"
                         [chartTypeData]="chartTypeData"
                         [otherLeftTemplate]="checkedTemplate"
-                        [flex]="true"> 
+                        [flex]="true">
                     </app-table-switch-chart>
 
                     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
 
                     <app-color-picker [(color)]="bcolor" (colorChange)="bcolorChange($event)" [(show)]="bshow"></app-color-picker>
-                </ng-container>
+                </div>
             </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
@@ -100,10 +100,8 @@
                 <app-gene-relative class="ml-12" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
                 <!-- 返回 -->
                 <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button> </div>
-            <!-- 表格转换 -->
-            <ng-container *ngIf="false">
-                <app-table-transformation class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked" [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight"></app-table-transformation>
-            </ng-container>
+                <!-- 表格转换 -->
+                <app-table-transformation class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked" [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
         </div>
     </div>
 </div>

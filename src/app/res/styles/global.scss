@@ -1,53 +1,53 @@
 @import "./setting.scss";
-.ant-btn-primary:hover, .ant-btn-primary:focus{
-    color: #fff;
-    background-color: $them-color;
-    border-color: $them-color;
-    opacity: .6;
-}
-
-.ant-btn:hover, .ant-btn:focus{
-    color: #fff;
-    background-color:$them-color ;
-    border-color: $them-color;
-    opacity: .6;
-}
-
-.ant-btn:active, .ant-btn.active{
-    color: #fff;
-    background-color: $them-color;
-    border-color: $them-color;
-}
-
-.ant-tabs-nav .ant-tabs-tab:hover{
-    color: $them-color;
-    opacity: .8;
-}
-
-.ant-select-selection:hover{
-    border-color: $them-color;
-    opacity: .6;
-    border-right-width: 1px !important;
-}
-
-.ant-select-open .ant-select-selection{
-    border-color: $them-color;
-    box-shadow: 0 0 0 2px rgba($them-color,.2)!important;
-}
-a:hover{
-    color: $them-color;
-    opacity: .6;
-}
-
-.ant-input:hover{
-    border-color: $them-color;
-    opacity: .6;
-}
-
-.ant-input:focus{
-    border-color: $them-color;
-    box-shadow: 0 0 0 2px rgba($them-color,.2)!important;
-}
+// .ant-btn-primary:hover, .ant-btn-primary:focus{
+//     color: #fff;
+//     background-color: $them-color;
+//     border-color: $them-color;
+//     opacity: .6;
+// }
+//
+// .ant-btn:hover, .ant-btn:focus{
+//     color: #fff;
+//     background-color:$them-color ;
+//     border-color: $them-color;
+//     opacity: .6;
+// }
+//
+// .ant-btn:active, .ant-btn.active{
+//     color: #fff;
+//     background-color: $them-color;
+//     border-color: $them-color;
+// }
+//
+// .ant-tabs-nav .ant-tabs-tab:hover{
+//     color: $them-color;
+//     opacity: .8;
+// }
+//
+// .ant-select-selection:hover{
+//     border-color: $them-color;
+//     opacity: .6;
+//     border-right-width: 1px !important;
+// }
+//
+// .ant-select-open .ant-select-selection{
+//     border-color: $them-color;
+//     box-shadow: 0 0 0 2px rgba($them-color,.2)!important;
+// }
+// a:hover{
+//     color: $them-color;
+//     opacity: .6;
+// }
+//
+// .ant-input:hover{
+//     border-color: $them-color;
+//     opacity: .6;
+// }
+//
+// .ant-input:focus{
+//     border-color: $them-color;
+//     box-shadow: 0 0 0 2px rgba($them-color,.2)!important;
+// }
 
 // 韦恩图选中的状态
 .pathLinkArea path.active {
@@ -1624,4 +1624,7 @@ button.btnActive {
 }
 .cursor{
 	cursor:pointer;
+}
+.color-picker-mask{
+    z-index:10;
 }

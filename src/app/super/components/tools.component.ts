@@ -1,7 +1,15 @@
 import { StoreService } from './../service/storeService';
 import { AjaxService } from './../service/ajaxService';
 import { ToolsService } from './../service/toolsService';
-import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	Input,
+	Output,
+	OnChanges,
+	SimpleChanges,
+	EventEmitter
+} from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd';
 import config from '../../../config';
 declare const $: any;
@@ -27,21 +35,73 @@ export class ToolsComponent implements OnInit {
     */
 
 	toolList: object[] = [
-		{ type: 'heatmap', name: '聚类重分析',  desc: '横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。',limit:[1],category:"common" },
-		{ type: 'classification', name: '基因分类', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',limit:[1],category:"common"  },
-		{ type: 'enrichment', name: '基因富集', desc: '将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',limit:[1] ,category:"common" },
-		{ type: 'net', name: '蛋白网络互作', desc: '图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。',limit:[1,500] ,category:"common" },
-		{ type: 'line', name: '折线图', desc: '以折线图方式呈现数据',limit:[1,100],category:"common"  },
-		{ type: 'KDA', name: 'KDA', desc: 'kda',limit:[1,500],category:"common"  },
-		{ type: 'multiOmics', name: '多组学关联', desc: '多组学',limit:[1,500],category:"common"  },
-		{ type: 'chiSquare', name: '卡方检测', desc: '卡方',limit:[1,500] ,category:"common" },
-		{ type: 'as', name: '可变剪切', desc: '可变剪切',limit:[1,500] ,category:"common" },
-		{ type: 'linkedNetwork', name: '关联网络图', desc: '关联网络图',limit:[1,500],category:"relation"  },
-		{ type: 'heatmaprelation', name: '关联聚类热图', desc: '关联聚类热图',limit:[1,500],category:"relation" }
+		{
+			type: 'heatmap',
+			name: '聚类重分析',
+			desc:
+				'横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。',
+			limit: [1],
+			category: 'common'
+		},
+		{
+			type: 'classification',
+			name: '基因分类',
+			desc:
+				'将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',
+			limit: [1],
+			category: 'common'
+		},
+		{
+			type: 'enrichment',
+			name: '基因富集',
+			desc:
+				'将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。下图是所选基因集的KEGG Pathway注释分类结果。',
+			limit: [1],
+			category: 'common'
+		},
+		{
+			type: 'net',
+			name: '蛋白网络互作',
+			desc:
+				'图中的每个点代表一个基因，连线表示这两个基因间有互作关系。点的大小和颜色都表示互作连接数，点越大，连接数越多。颜色由蓝色到红色渐变，越红表示连接数越多。',
+			limit: [1, 500],
+			category: 'common'
+		},
+		{
+			type: 'line',
+			name: '折线图',
+			desc: '以折线图方式呈现数据',
+			limit: [1, 100],
+			category: 'common'
+		},
+		{ type: 'KDA', name: 'KDA', desc: 'kda', limit: [1, 500], category: 'common' },
+		{
+			type: 'multiOmics',
+			name: '多组学关联',
+			desc: '多组学',
+			limit: [1, 500],
+			category: 'common'
+		},
+		{ type: 'chiSquare', name: '卡方检测', desc: '卡方', limit: [1, 500], category: 'common' },
+		{ type: 'as', name: '可变剪切', desc: '可变剪切', limit: [1, 500], category: 'common' },
+		{
+			type: 'linkedNetwork',
+			name: '关联网络图',
+			desc: '关联网络图',
+			limit: [1, 500],
+			category: 'relation'
+		},
+		{
+			type: 'heatmaprelation',
+			name: '关联聚类热图',
+			desc: '关联聚类热图',
+			limit: [1, 500],
+			category: 'relation'
+		}
 	];
 	desc: string = '';
 	title: String = '';
-	disabled:boolean = false;
+	disabled: boolean = false;
 
 	// 聚类参数
 	expressData: any[] = [];
@@ -63,16 +123,17 @@ export class ToolsComponent implements OnInit {
 	geneTypeError: any = false;
 	selectGeneType: any[] = [];
 
-	stand:string = '';
-	standList:any[] = [];
+	stand: string = '';
+	standList: any[] = [];
 
-	doHeatmapAjax:boolean = false;
+	doHeatmapAjax: boolean = false;
+	clusterByGeneType: boolean = false;
 
 	// 多组学参数
 	multiOmicsData: any[] = [];
 	multiOmicsSelect: any[] = [];
 	multiOmicsError: any = false;
-	doMultiOmicsAjax:boolean = false;
+	doMultiOmicsAjax: boolean = false;
 
 	// 折线图参数
 	lineGroupData: object[] = [];
@@ -81,10 +142,10 @@ export class ToolsComponent implements OnInit {
 	lineSampleSelect: object[] = [];
 	lineGroupError: boolean = false;
 	lineSampleError: boolean = false;
-	lineCustomData:object[] =[];
-	lineCustomSelect:object[] = [];
-	lineCustomError:boolean = false;
-	doLineAjax:boolean = false;
+	lineCustomData: object[] = [];
+	lineCustomSelect: object[] = [];
+	lineCustomError: boolean = false;
+	doLineAjax: boolean = false;
 
 	//卡方图参数
 	geneNum: number;
@@ -94,49 +155,49 @@ export class ToolsComponent implements OnInit {
 	kaFunGroupData: object[] = [];
 	kaFunGroupSelect: object[] = [];
 	kaFunGroupError: boolean = false;
-	doKaFunAjax:boolean = false;
+	doKaFunAjax: boolean = false;
 
 	// 网络图参数
-	netData:object[] = [];
-	netError:boolean = false;
-	netSelect:object[] = [];
-	doNetAjax:boolean = false;
+	netData: object[] = [];
+	netError: boolean = false;
+	netSelect: object[] = [];
+	doNetAjax: boolean = false;
 
 	// 关联网络图参数
-	relativeNetData:object[] = [];
-	relativeNetError:boolean = false;
-	relativeNetSelect:object[] = [];
-	doRelativeNetAjax:boolean = false;
+	relativeNetData: object[] = [];
+	relativeNetError: boolean = false;
+	relativeNetSelect: object[] = [];
+	doRelativeNetAjax: boolean = false;
 
 	// 关联聚类参数
-	heatmapReStand:string[] = [];
-	heatmapReSelectStand:string = '';
-	heatmapReGeneType:object[] = [];
-	heatmapReGeneTypeError:boolean = false;
-	heatmapReRelations:object[]= [];
-	heatmapReError:any = false;
-	doHeatmapRelationAjax:boolean = false;
-	heatmapReSelectRelation:any[] = [];;
-	heatmapReSelectGeneType:object[] = [];
+	heatmapReStand: string[] = [];
+	heatmapReSelectStand: string = '';
+	heatmapReGeneType: object[] = [];
+	heatmapReGeneTypeError: boolean = false;
+	heatmapReRelations: object[] = [];
+	heatmapReError: any = false;
+	doHeatmapRelationAjax: boolean = false;
+	heatmapReSelectRelation: any[] = [];
+	heatmapReSelectGeneType: object[] = [];
 
 	// 基因分类参数
-	geneClassData:any[] = [];
-	geneClassSelect:any[] = [];
-	geneClassError:boolean = false;
-	doGeneClassAjax:boolean = false;
+	geneClassData: any[] = [];
+	geneClassSelect: any[] = [];
+	geneClassError: boolean = false;
+	doGeneClassAjax: boolean = false;
 
 	// 基因富集参数
-	geneRichData:any[] = [];
-	geneRichSelect:any[] = [];
-	geneRichError:boolean = false;
-	doGeneRichAjax:boolean = false;
+	geneRichData: any[] = [];
+	geneRichSelect: any[] = [];
+	geneRichError: boolean = false;
+	doGeneRichAjax: boolean = false;
 
 	// 当前选择的重分析类型
 	selectType: string = '';
 	childVisible: boolean = false;
 	isSubmitReanalysis: boolean = false; // 是否在提交重分析任务
-	geneCount:number = 0;
-	isRelation:boolean = false; // 是否是关联关系的表格
+	geneCount: number = 0;
+	isRelation: boolean = false; // 是否是关联关系的表格
 
 	constructor(
 		public toolsService: ToolsService,
@@ -149,11 +210,11 @@ export class ToolsComponent implements OnInit {
 		this.init();
 
 		// 订阅打开抽屉
-		this.toolsService.getOpen().subscribe(res=>{
+		this.toolsService.getOpen().subscribe(res => {
 			this.geneCount = res[0];
 			this.isRelation = res[1];
 			this.formatTools();
-		})
+		});
 	}
 
 	init() {
@@ -183,6 +244,7 @@ export class ToolsComponent implements OnInit {
 		this.stand = '';
 		this.standList = [];
 		this.doHeatmapAjax = false;
+		this.clusterByGeneType = false;
 
 		// 多组学参数
 		this.multiOmicsData = [];
@@ -223,7 +285,7 @@ export class ToolsComponent implements OnInit {
 		this.doRelativeNetAjax = false;
 
 		// 关联聚类
-		this.heatmapReStand= [];
+		this.heatmapReStand = [];
 		this.heatmapReSelectStand = '';
 		this.heatmapReGeneType = [];
 		this.heatmapReSelectGeneType = [];
@@ -249,30 +311,34 @@ export class ToolsComponent implements OnInit {
 		this.selectType = '';
 		this.childVisible = false;
 		this.isSubmitReanalysis = false;
-
 	}
 
-	formatTools(){
-		this.toolList.forEach(v=>{
-			if(v['category']==='common'){
-				if(v['limit'].length===1){
-					v['disabled']=this.geneCount>=v['limit'][0]?false:true;
-				}else{
-					v['disabled'] = (this.geneCount<v['limit'][0] || this.geneCount>v['limit'][1])?true:false;
+	formatTools() {
+		this.toolList.forEach(v => {
+			if (v['category'] === 'common') {
+				if (v['limit'].length === 1) {
+					v['disabled'] = this.geneCount >= v['limit'][0] ? false : true;
+				} else {
+					v['disabled'] =
+						this.geneCount < v['limit'][0] || this.geneCount > v['limit'][1]
+							? true
+							: false;
 				}
-			}else{
-				if(!this.isRelation){
+			} else {
+				if (!this.isRelation) {
 					v['disabled'] = true;
-				}else{
-					if(v['limit'].length===1){
-						v['disabled']=this.geneCount>=v['limit'][0]?false:true;
-					}else{
-						v['disabled'] = (this.geneCount<v['limit'][0] || this.geneCount>v['limit'][1])?true:false;
+				} else {
+					if (v['limit'].length === 1) {
+						v['disabled'] = this.geneCount >= v['limit'][0] ? false : true;
+					} else {
+						v['disabled'] =
+							this.geneCount < v['limit'][0] || this.geneCount > v['limit'][1]
+								? true
+								: false;
 					}
 				}
 			}
-
-		})
+		});
 	}
 
 	close() {
@@ -287,12 +353,12 @@ export class ToolsComponent implements OnInit {
 	}
 
 	selectParams(tool) {
-		if(tool['disabled']) return;
+		if (tool['disabled']) return;
 		let type = tool['type'];
 		this.init();
-		if(type=="as"){
+		if (type == 'as') {
 			this.relativeSpliceConfirm();
-		}else{
+		} else {
 			this['get' + type + 'Params']();
 			this.selectType = type;
 			this.childVisible = true;
@@ -300,15 +366,15 @@ export class ToolsComponent implements OnInit {
 	}
 
 	/**
-     * @description 聚类的参数选择
-     * @author Yangwd<277637411@qq.com>
-     * @date 2018-11-27
-     * @param {*} target 当前点击的对象
-     * @param {*} selected 当前分类选中的数据集合
-     * @param {*} type 当前分类类型  用于设置错误信息
-     * @returns
-     * @memberof ToolsComponent
-     */
+	 * @description 聚类的参数选择
+	 * @author Yangwd<277637411@qq.com>
+	 * @date 2018-11-27
+	 * @param {*} target 当前点击的对象
+	 * @param {*} selected 当前分类选中的数据集合
+	 * @param {*} type 当前分类类型  用于设置错误信息
+	 * @returns
+	 * @memberof ToolsComponent
+	 */
 	handlerHeatmapSelect(target, selected, type) {
 		// 选中变为不选中
 		if (target['checked']) {
@@ -331,27 +397,21 @@ export class ToolsComponent implements OnInit {
 		if (!selected.length) this[`${type}Error`] = 'nodata';
 	}
 
-	// 基因分类选择 默认不选 最多选两个
+	// 基因分类选择 默认不选 只能选一个
 	handlerGeneSelect(geneType) {
 		// 选中变未选中
 		if (geneType['checked']) {
-			geneType['checked'] = false;
+			this.geneType.forEach(v => (v['checked'] = false));
 			let index = this.findIndex(geneType['name'], this.selectGeneType, 'name');
 			if (index != -1) this.selectGeneType.splice(index, 1);
-			this.geneTypeError = false;
 		} else {
+			this.geneType.forEach(v => (v['checked'] = false));
+			this.selectGeneType.length = 0;
 			// 未选中变选中
-			if (this.selectGeneType.length >= 2) {
-				this.geneTypeError = true;
-				setTimeout(() => {
-					this.geneTypeError = false;
-				}, 2000);
-				return;
-			}
-			this.geneTypeError = false;
 			geneType['checked'] = true;
 			this.selectGeneType.push(geneType);
 		}
+		this.clusterByGeneType = false;
 	}
 
 	// 聚类取消
@@ -379,41 +439,40 @@ export class ToolsComponent implements OnInit {
 				}
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] == '0') {
 						let res = data['data'];
-						this.expressData = res['expression'].map((val) => {
-								val['checked'] = false;
-								return val;
-							})
+						this.expressData = res['expression'].map(val => {
+							val['checked'] = false;
+							return val;
+						});
 
 						if (this.expressData.length) {
 							this.expressData[0]['checked'] = true;
-							this.expressSelect = [ this.expressData[0] ];
+							this.expressSelect = [this.expressData[0]];
 						}
 						this.expressUpload = res['exp_user'];
 
-
-						this.diffData = res['diff'].map((val) => {
+						this.diffData = res['diff'].map(val => {
 							val['checked'] = false;
-							return val
+							return val;
 						});
 						if (this.diffData.length) {
 							this.diffData[0]['checked'] = true;
-							this.diffSelect = [ this.diffData[0] ];
+							this.diffSelect = [this.diffData[0]];
 						}
 						this.diffUpload = res['dif_user'];
 
 						this.geneType = res['verticalDefault'];
-						this.geneType.forEach((val) => {
+						this.geneType.forEach((val, index) => {
 							val['checked'] = false;
 						});
 
-						this.customData = res['customData'].map(val=>{
+						this.customData = res['customData'].map(val => {
 							val['checked'] = false;
 							return val;
 						});
-						if(this.customData.length) {
+						if (this.customData.length) {
 							this.customData[0]['checked'] = true;
 							this.customSelect = [this.customData[0]];
 						}
@@ -422,8 +481,8 @@ export class ToolsComponent implements OnInit {
 						this.stand = this.standList[0];
 					}
 				},
-				(err) => console.log(err),
-				()=>{
+				err => console.log(err),
+				() => {
 					this.doHeatmapAjax = true;
 				}
 			);
@@ -437,8 +496,8 @@ export class ToolsComponent implements OnInit {
 		// 	temp[val['category']] = val['name'];
 		// 	return temp;
 		// });
-        let tableEntity = this.toolsService.get('tableEntity');
-        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
+		let tableEntity = this.toolsService.get('tableEntity');
+		tableEntity['mongoId'] = this.toolsService.get('mongoId');
 
 		this.ajaxService
 			.getDeferData({
@@ -449,31 +508,32 @@ export class ToolsComponent implements OnInit {
 					// chooseType: [ this.switchType(type) ],
 					chooseList: this[`${type}Select`],
 					verticalDefault: this.selectGeneType,
+					choose:this.clusterByGeneType,
 					...tableEntity,
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
-					version: this.storeService.getStore('version'),
+					version: this.storeService.getStore('version')
 				},
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
 						this.selectType = '';
 						this.childVisible = false;
 						this.toolsService.hide();
 						this.notify.blank('tips：', '聚类重分析提交成功', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					} else {
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					}
 				},
-				(err) => {
+				err => {
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
+						nzStyle: { width: '200px' }
 					});
 				},
 				() => {
@@ -505,7 +565,7 @@ export class ToolsComponent implements OnInit {
 				url: `${config['javaPath']}/multiOmics/config`
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
 						if (data['data'].length) {
 							this.multiOmicsData = data['data'];
@@ -516,10 +576,10 @@ export class ToolsComponent implements OnInit {
 						this.multiOmicsData.length = 0;
 					}
 				},
-				(err) => {
+				err => {
 					this.multiOmicsData.length = 0;
 				},
-				()=>{
+				() => {
 					this.doMultiOmicsAjax = true;
 				}
 			);
@@ -541,9 +601,11 @@ export class ToolsComponent implements OnInit {
 
 	multiOmicsConfirm(type) {
 		this.isSubmitReanalysis = true;
-        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
-        let tableEntity = this.toolsService.get('tableEntity');
-        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
+		let newWindow = window.open(
+			`${window.location.href.split('report')[0]}report/reanalysis/loading`
+		);
+		let tableEntity = this.toolsService.get('tableEntity');
+		tableEntity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -556,14 +618,14 @@ export class ToolsComponent implements OnInit {
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
 						if (data['data'].length) {
-							let href = `${window.location.href.split(
-								'report'
-							)[0]}report/reanalysis/re-multiOmics/${this.toolsService.get('geneType')}/${data[
-								'data'
-							][0]}/${this.storeService.getStore('version')}`;
+							let href = `${
+								window.location.href.split('report')[0]
+							}report/reanalysis/re-multiOmics/${this.toolsService.get('geneType')}/${
+								data['data'][0]
+							}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -571,20 +633,20 @@ export class ToolsComponent implements OnInit {
 						} else {
 							newWindow.close();
 							this.notify.blank('tips：', '重分析提交失败，请重试', {
-								nzStyle: { width: '200px' },
+								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					}
 				},
-				(err) => {
+				err => {
 					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
+						nzStyle: { width: '200px' }
 					});
 				},
 				() => {
@@ -607,13 +669,13 @@ export class ToolsComponent implements OnInit {
 				}
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
 						if (data['data']) {
 							this.kaFunGroupSelect.length = 0;
 
-                            let m_list = data['data']['Classification'].map((v,index)=>{
-                                // let status = index?false:true;
+							let m_list = data['data']['Classification'].map((v, index) => {
+								// let status = index?false:true;
 								// if(status)
 								// this.kaFunGroupSelect.push({
 								// 	name:v.name,
@@ -621,30 +683,32 @@ export class ToolsComponent implements OnInit {
 								// 	category:v.category,
 								// 	checked:true
 								// });
-                                // return {
+								// return {
 								// 	name:v.name,
 								// 	key:v.key,
 								// 	category:v.category,
 								// 	checked:status
 								// };
 								this.kaFunGroupSelect.push({
-									name:v.name,
-									key:v.key,
-									category:v.category,
-									checked:true
+									name: v.name,
+									key: v.key,
+									category: v.category,
+									checked: true
 								});
-                                return {
-									name:v.name,
-									key:v.key,
-									category:v.category,
-									checked:true
+								return {
+									name: v.name,
+									key: v.key,
+									category: v.category,
+									checked: true
 								};
-                            });
+							});
 
 							this.kaFunDataName = data['data']['Data']; //data Name
 							this.kaFunStatistics = data['data']['Statistics'];
 
-							this.kaFunStatisticsName = this.kaFunStatistics.length?this.kaFunStatistics[0]:"";
+							this.kaFunStatisticsName = this.kaFunStatistics.length
+								? this.kaFunStatistics[0]
+								: '';
 							this.kaFunGroupData = m_list;
 						} else {
 							this.initKaFunData();
@@ -653,10 +717,10 @@ export class ToolsComponent implements OnInit {
 						this.initKaFunData();
 					}
 				},
-				(err) => {
+				err => {
 					this.initKaFunData();
 				},
-				()=>{
+				() => {
 					this.doKaFunAjax = true;
 				}
 			);
@@ -685,46 +749,48 @@ export class ToolsComponent implements OnInit {
 		this.kaFunGroupError = !this.kaFunGroupData.length;
 	}
 
-	onkaFunChange(value:any):void{
-		console.log(value)
+	onkaFunChange(value: any): void {
+		console.log(value);
 	}
 
 	kaFunConfirm(reanalysisType) {
-		if(this.kaFunGroupSelect.length<2){
+		if (this.kaFunGroupSelect.length < 2) {
 			this.notify.blank('tips：', '请至少选择2个', {
-				nzStyle: { width: '200px' },
+				nzStyle: { width: '200px' }
 			});
 			return;
 		}
 		this.isSubmitReanalysis = true;
-        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
-        let tableEntity = this.toolsService.get('tableEntity');
-        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
+		let newWindow = window.open(
+			`${window.location.href.split('report')[0]}report/reanalysis/loading`
+		);
+		let tableEntity = this.toolsService.get('tableEntity');
+		tableEntity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
 					reanalysisType: reanalysisType,
 					needReanalysis: 2,
-					version:this.storeService.getStore('version'),
-					geneType:this.toolsService.get('tableEntity')['geneType'],
-					species:this.storeService.getStore('genome'),
-					statisticData:this.kaFunDataName,
-					statisticMethod:this.kaFunStatisticsName,
+					version: this.storeService.getStore('version'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.storeService.getStore('genome'),
+					statisticData: this.kaFunDataName,
+					statisticMethod: this.kaFunStatisticsName,
 					classification: this.kaFunGroupSelect,
 					...tableEntity
 				},
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
 						if (data['data'].length) {
-							let href = `${window.location.href.split(
-								'report'
-							)[0]}report/reanalysis/re-chiSquare/${this.toolsService.get('geneType')}/${data[
-								'data'
-							][0]}/${this.storeService.getStore('version')}`;
+							let href = `${
+								window.location.href.split('report')[0]
+							}report/reanalysis/re-chiSquare/${this.toolsService.get('geneType')}/${
+								data['data'][0]
+							}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -732,20 +798,20 @@ export class ToolsComponent implements OnInit {
 						} else {
 							newWindow.close();
 							this.notify.blank('tips：', '重分析提交失败，请重试', {
-								nzStyle: { width: '200px' },
+								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					}
 				},
-				(err) => {
+				err => {
 					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
+						nzStyle: { width: '200px' }
 					});
 				},
 				() => {
@@ -769,7 +835,7 @@ export class ToolsComponent implements OnInit {
 				url: `${config['javaPath']}/line/config`
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
 						if (data['data']) {
 							this.lineGroupSelect.length = 0;
@@ -789,14 +855,14 @@ export class ToolsComponent implements OnInit {
 								return v;
 							});
 
-							let custom = data['data']['userDefData'].map((v,index)=>{
+							let custom = data['data']['userDefData'].map((v, index) => {
 								let status = index ? false : true;
 								v['checked'] = status;
 								if (status) this.lineCustomSelect.push(v);
 								return v;
-							})
+							});
 
-							this.lineCustomData  = custom;
+							this.lineCustomData = custom;
 							this.lineGroupData = group;
 							this.lineSampleData = sample;
 
@@ -810,10 +876,10 @@ export class ToolsComponent implements OnInit {
 						this.initLineData();
 					}
 				},
-				(err) => {
+				err => {
 					this.initLineData();
 				},
-				()=>{
+				() => {
 					this.doLineAjax = true;
 				}
 			);
@@ -881,9 +947,11 @@ export class ToolsComponent implements OnInit {
 		// 	return temp;
 		// });
 
-        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
-        let tableEntity = this.toolsService.get('tableEntity');
-        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
+		let newWindow = window.open(
+			`${window.location.href.split('report')[0]}report/reanalysis/loading`
+		);
+		let tableEntity = this.toolsService.get('tableEntity');
+		tableEntity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -896,35 +964,35 @@ export class ToolsComponent implements OnInit {
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
-                        if(data['data'].length){
-                            let href = `${window.location.href.split(
-								'report'
-							)[0]}report/reanalysis/re-line/${this.toolsService.get('geneType')}/${data[
-								'data'
-							][0]}/${this.storeService.getStore('version')}`;
+						if (data['data'].length) {
+							let href = `${
+								window.location.href.split('report')[0]
+							}report/reanalysis/re-line/${this.toolsService.get('geneType')}/${
+								data['data'][0]
+							}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-                        }else{
+						} else {
 							newWindow.close();
-                            this.notify.blank('tips：', '重分析提交失败，请重试', {
-                                nzStyle: { width: '200px' },
-                            });
-                        }
+							this.notify.blank('tips：', '重分析提交失败，请重试', {
+								nzStyle: { width: '200px' }
+							});
+						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					}
 				},
-				(err) => {
+				err => {
 					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
+						nzStyle: { width: '200px' }
 					});
 				},
 				() => {
@@ -934,17 +1002,19 @@ export class ToolsComponent implements OnInit {
 	}
 
 	//可变剪切提交
-	relativeSpliceConfirm(){
+	relativeSpliceConfirm() {
 		this.isSubmitReanalysis = true;
-        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
-        let tableEntity = this.toolsService.get('tableEntity');
-        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
+		let newWindow = window.open(
+			`${window.location.href.split('report')[0]}report/reanalysis/loading`
+		);
+		let tableEntity = this.toolsService.get('tableEntity');
+		tableEntity['mongoId'] = this.toolsService.get('mongoId');
 
 		this.ajaxService
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: "as",
+					reanalysisType: 'as',
 					needReanalysis: 2,
 					version: this.storeService.getStore('version'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
@@ -954,207 +1024,215 @@ export class ToolsComponent implements OnInit {
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
-                        if(data['data'].length){
-                            let href = `${window.location.href.split(
-								'report'
-							)[0]}report/reanalysis/re-as/${this.toolsService.get('geneType')}/${data[
-								'data'
-							][0]}/${this.storeService.getStore('version')}`;
+						if (data['data'].length) {
+							let href = `${
+								window.location.href.split('report')[0]
+							}report/reanalysis/re-as/${this.toolsService.get('geneType')}/${
+								data['data'][0]
+							}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-                        }else{
+						} else {
 							newWindow.close();
-                            this.notify.blank('tips：', '重分析提交失败，请重试', {
-                                nzStyle: { width: '200px' },
-                            });
-                        }
-					} else {
-						newWindow.close();
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
-						});
-					}
-				},
-				(err) => {
-					newWindow.close();
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
-					});
-				},
-				() => {
-					this.isSubmitReanalysis = false;
-				}
-			);
-	}
-
-
-	// 网路图
-	getnetParams() {
-		this.netData = this.copy(this.storeService.getStore('relations'));
-		this.netData.forEach((v,index)=>{
-			v['checked'] = index?false:true;
-		})
-		this.netSelect.push(this.copy(this.netData[0]));
-	}
-
-	netClick(item){
-		item['checked'] = !item['checked'];
-
-		if(item['checked']){
-			this.netSelect.length = 0;
-			this.netData.forEach(v=>{
-				if(v['checked']) this.netSelect.push(this.copy(v));
-			})
-		}else{
-			let index = this.netSelect.findIndex((v,index)=>{
-				return v['key'] === item['key'];
-			})
-
-			if(index!=-1){
-				this.netSelect.splice(index,1);
-			}
-		}
-	}
-
-	netConfirm(){
-		this.isSubmitReanalysis = true;
-        let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
-        let tableEntity = this.toolsService.get('tableEntity');
-        tableEntity['mongoId'] =  this.toolsService.get('mongoId');
-
-		this.ajaxService
-			.getDeferData({
-				data: {
-					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: "net",
-					needReanalysis: 2,
-					version: this.storeService.getStore('version'),
-					geneType: this.toolsService.get('tableEntity')['geneType'],
-					species: this.storeService.getStore('genome'),
-					netParams:this.netSelect.map(v=>{v['limit'] = false; return v;}),
-					...tableEntity
-				},
-				url: this.toolsService.get('tableUrl')
-			})
-			.subscribe(
-				(data) => {
-					if (data['status'] === '0') {
-                        if(data['data'].length){
-                            let href = `${window.location.href.split(
-								'report'
-							)[0]}report/reanalysis/re-net/${this.toolsService.get('geneType')}/${data[
-								'data'
-							][0]}/${this.storeService.getStore('version')}`;
-							newWindow.location.href = href;
-							this.selectType = '';
-							this.childVisible = false;
-							this.toolsService.hide();
-                        }else{
-							newWindow.close();
-                            this.notify.blank('tips：', '重分析提交失败，请重试', {
-                                nzStyle: { width: '200px' },
-                            });
+							this.notify.blank('tips：', '重分析提交失败，请重试', {
+								nzStyle: { width: '200px' }
+							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					}
 				},
-				(err) => {
+				err => {
 					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
+						nzStyle: { width: '200px' }
 					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
 				}
 			);
-
 	}
 
-	// 关联网路图
-	getlinkedNetworkParams() {
-        this.relativeNetData = this.toolsService.get('tableEntity')['relations'];
-        this.doRelativeNetAjax = true;
-		this.relativeNetData.forEach((v,index)=>{
-			v['checked'] = index?false:true;
-		})
-		this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
-
-		let entity = this.toolsService.get('tableEntity');
-		this.ajaxService.getDeferData({
-			url: `${config['javaPath']}/linkedNetwork/config`,
-				data: {
-					LCID: sessionStorage.getItem('LCID'),
-					tid:'tid' in entity?entity['tid']:null,
-					geneType: entity['geneType'],
-					species: entity['species'],
-					version: this.storeService.getStore('version'),
-					baseThead: this.toolsService.get('baseThead'),
-					relations:entity['relations']
-				}
-		}).subscribe(res=>{
-			if(res['status']==='0'){
-				if(!res['data'].length) {
-
-					this.relativeNetData.length = 0;
-					this.relativeNetSelect.length = 0;
-					this.relativeNetError = true
-				}else{
-					this.relativeNetData = res['data'];
-					this.relativeNetData.forEach((v,index)=>{
-						v['checked'] = index?false:true;
-					})
-					this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
-					this.relativeNetError = false;
-				}
-
-			}
-		},err=>{
-			this.relativeNetError = true;
-		},
-		()=>{
-			this.doRelativeNetAjax = true;
-		})
+	// 网路图
+	getnetParams() {
+		this.netData = this.copy(this.storeService.getStore('relations'));
+		this.netData.forEach((v, index) => {
+			v['checked'] = index ? false : true;
+		});
+		this.netSelect.push(this.copy(this.netData[0]));
 	}
 
-	relativeNetClick(item){
+	netClick(item) {
 		item['checked'] = !item['checked'];
 
-		if(item['checked']){
-			this.relativeNetSelect.length = 0;
-			this.relativeNetData.forEach(v=>{
-				if(v['checked']) this.relativeNetSelect.push(this.copy(v));
-			})
-		}else{
-			let index = this.relativeNetSelect.findIndex((v,index)=>{
+		if (item['checked']) {
+			this.netSelect.length = 0;
+			this.netData.forEach(v => {
+				if (v['checked']) this.netSelect.push(this.copy(v));
+			});
+		} else {
+			let index = this.netSelect.findIndex((v, index) => {
 				return v['key'] === item['key'];
-			})
+			});
 
-			if(index!=-1){
-				this.relativeNetSelect.splice(index,1);
+			if (index != -1) {
+				this.netSelect.splice(index, 1);
 			}
 		}
 	}
 
-	relativeNetConfirm(){
+	netConfirm() {
 		this.isSubmitReanalysis = true;
-		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
-		let entity = this.toolsService.get('tableEntity');
-        entity['relations'] = this.relativeNetSelect;
-        entity['mongoId'] = this.toolsService.get('mongoId');
+		let newWindow = window.open(
+			`${window.location.href.split('report')[0]}report/reanalysis/loading`
+		);
+		let tableEntity = this.toolsService.get('tableEntity');
+		tableEntity['mongoId'] = this.toolsService.get('mongoId');
+
 		this.ajaxService
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: "linkedNetwork",
+					reanalysisType: 'net',
+					needReanalysis: 2,
+					version: this.storeService.getStore('version'),
+					geneType: this.toolsService.get('tableEntity')['geneType'],
+					species: this.storeService.getStore('genome'),
+					netParams: this.netSelect.map(v => {
+						v['limit'] = false;
+						return v;
+					}),
+					...tableEntity
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				data => {
+					if (data['status'] === '0') {
+						if (data['data'].length) {
+							let href = `${
+								window.location.href.split('report')[0]
+							}report/reanalysis/re-net/${this.toolsService.get('geneType')}/${
+								data['data'][0]
+							}/${this.storeService.getStore('version')}`;
+							newWindow.location.href = href;
+							this.selectType = '';
+							this.childVisible = false;
+							this.toolsService.hide();
+						} else {
+							newWindow.close();
+							this.notify.blank('tips：', '重分析提交失败，请重试', {
+								nzStyle: { width: '200px' }
+							});
+						}
+					} else {
+						newWindow.close();
+						this.notify.blank('tips：', '重分析提交失败，请重试', {
+							nzStyle: { width: '200px' }
+						});
+					}
+				},
+				err => {
+					newWindow.close();
+					this.notify.blank('tips：', '重分析提交失败，请重试', {
+						nzStyle: { width: '200px' }
+					});
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
+	}
+
+	// 关联网路图
+	getlinkedNetworkParams() {
+		this.relativeNetData = this.toolsService.get('tableEntity')['relations'];
+		this.doRelativeNetAjax = true;
+		this.relativeNetData.forEach((v, index) => {
+			v['checked'] = index ? false : true;
+		});
+		this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
+
+		let entity = this.toolsService.get('tableEntity');
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/linkedNetwork/config`,
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					tid: 'tid' in entity ? entity['tid'] : null,
+					geneType: entity['geneType'],
+					species: entity['species'],
+					version: this.storeService.getStore('version'),
+					baseThead: this.toolsService.get('baseThead'),
+					relations: entity['relations']
+				}
+			})
+			.subscribe(
+				res => {
+					if (res['status'] === '0') {
+						if (!res['data'].length) {
+							this.relativeNetData.length = 0;
+							this.relativeNetSelect.length = 0;
+							this.relativeNetError = true;
+						} else {
+							this.relativeNetData = res['data'];
+							this.relativeNetData.forEach((v, index) => {
+								v['checked'] = index ? false : true;
+							});
+							this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
+							this.relativeNetError = false;
+						}
+					}
+				},
+				err => {
+					this.relativeNetError = true;
+				},
+				() => {
+					this.doRelativeNetAjax = true;
+				}
+			);
+	}
+
+	relativeNetClick(item) {
+		item['checked'] = !item['checked'];
+
+		if (item['checked']) {
+			this.relativeNetSelect.length = 0;
+			this.relativeNetData.forEach(v => {
+				if (v['checked']) this.relativeNetSelect.push(this.copy(v));
+			});
+		} else {
+			let index = this.relativeNetSelect.findIndex((v, index) => {
+				return v['key'] === item['key'];
+			});
+
+			if (index != -1) {
+				this.relativeNetSelect.splice(index, 1);
+			}
+		}
+	}
+
+	relativeNetConfirm() {
+		this.isSubmitReanalysis = true;
+		let newWindow = window.open(
+			`${window.location.href.split('report')[0]}report/reanalysis/loading`
+		);
+		let entity = this.toolsService.get('tableEntity');
+		entity['relations'] = this.relativeNetSelect;
+		entity['mongoId'] = this.toolsService.get('mongoId');
+		this.ajaxService
+			.getDeferData({
+				data: {
+					LCID: sessionStorage.getItem('LCID'),
+					reanalysisType: 'linkedNetwork',
 					needReanalysis: 2,
 					version: this.storeService.getStore('version'),
 					geType: this.toolsService.get('tableEntity')['geneType'],
@@ -1164,108 +1242,107 @@ export class ToolsComponent implements OnInit {
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
-						if(data['data'].length){
-							let href = `${window.location.href.split(
-								'report'
-							)[0]}report/reanalysis/re-linkedNetwork/${this.toolsService.get('geneType')}/${data[
-								'data'
-							][0]}/${this.storeService.getStore('version')}`;
+						if (data['data'].length) {
+							let href = `${
+								window.location.href.split('report')[0]
+							}report/reanalysis/re-linkedNetwork/${this.toolsService.get(
+								'geneType'
+							)}/${data['data'][0]}/${this.storeService.getStore('version')}`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-						}else{
+						} else {
 							newWindow.close();
 							this.notify.blank('tips：', '重分析提交失败，请重试', {
-								nzStyle: { width: '200px' },
+								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					}
 				},
-				(err) => {
+				err => {
 					newWindow.close();
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
+						nzStyle: { width: '200px' }
 					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
 				}
 			);
-
 	}
 
 	// 关联聚类
-	getheatmaprelationParams(){
+	getheatmaprelationParams() {
 		let entity = this.toolsService.get('tableEntity');
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/relationCluster/heatmapConfig`,
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					tid:'tid' in entity?entity['tid']:null,
+					tid: 'tid' in entity ? entity['tid'] : null,
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
 					version: this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead'),
-					relations:this.toolsService.get('tableEntity')['relations']
+					relations: this.toolsService.get('tableEntity')['relations']
 				}
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] == '0') {
 						this.heatmapReError = false;
 						this.heatmapReStand = data['data']['standardization'];
 						this.heatmapReGeneType = data['data']['verticalDefault'];
 						this.heatmapReRelations = data['data']['relations'];
-						if(this.heatmapReStand.length){
+						if (this.heatmapReStand.length) {
 							this.heatmapReSelectStand = this.heatmapReStand[0];
 						}
-						this.heatmapReRelations.forEach((v,index)=>{
-							v['checked'] = index?false:true;
-							if(!index) this.heatmapReSelectRelation.push(JSON.parse(JSON.stringify(v)));
-						})
-					}else{
+						this.heatmapReRelations.forEach((v, index) => {
+							v['checked'] = index ? false : true;
+							if (!index)
+								this.heatmapReSelectRelation.push(JSON.parse(JSON.stringify(v)));
+						});
+					} else {
 						this.heatmapReError = 'error';
 						this.initHeatmapRelationsData();
 					}
 				},
-				(err) => {
+				err => {
 					this.heatmapReError = 'error';
 					this.initHeatmapRelationsData();
 				},
-				()=>{
+				() => {
 					this.doHeatmapRelationAjax = true;
 				}
 			);
 	}
 
-
-	initHeatmapRelationsData(){
+	initHeatmapRelationsData() {
 		this.heatmapReStand.length = 0;
 		this.heatmapReGeneType.length = 0;
 		this.heatmapReRelations.length = 0;
 		this.heatmapReSelectRelation.length = 0;
-		this.heatmapReSelectGeneType .length = 0;
+		this.heatmapReSelectGeneType.length = 0;
 		this.heatmapReSelectStand = '';
 	}
 
 	// 关系选择
-	handlerReRelationSelect(item){
+	handlerReRelationSelect(item) {
 		this.heatmapReSelectRelation.length = 0;
 
-		if(!item['checked']){
-			this.heatmapReRelations.forEach(v=>v['checked'] = false);
+		if (!item['checked']) {
+			this.heatmapReRelations.forEach(v => (v['checked'] = false));
 			item['checked'] = true;
 			this.heatmapReSelectRelation.push(JSON.parse(JSON.stringify(item)));
-		}else{
+		} else {
 			item['checked'] = false;
 		}
 
@@ -1273,184 +1350,191 @@ export class ToolsComponent implements OnInit {
 	}
 
 	// 基因类型选择
-	handlerReGeneSelect(item){
-		if(!item['checked']){
-			if(this.heatmapReSelectGeneType.length>=2){
+	handlerReGeneSelect(item) {
+		if (!item['checked']) {
+			if (this.heatmapReSelectGeneType.length >= 2) {
 				this.heatmapReGeneTypeError = true;
-			}else{
+			} else {
 				item['checked'] = true;
 				this.heatmapReSelectGeneType.push(item);
 				this.heatmapReGeneTypeError = false;
 			}
-		}else{
+		} else {
 			item['checked'] = false;
 
-			let index = this.heatmapReSelectGeneType.findIndex((val,index)=>{
-				return val['key']===item['key'];
-			})
+			let index = this.heatmapReSelectGeneType.findIndex((val, index) => {
+				return val['key'] === item['key'];
+			});
 
-			if(index!=-1) this.heatmapReSelectGeneType.splice(index,1);
+			if (index != -1) this.heatmapReSelectGeneType.splice(index, 1);
 			this.heatmapReGeneTypeError = !this.heatmapReSelectGeneType.length;
 		}
 	}
 
-	heatmapRelationConfirm(){
+	heatmapRelationConfirm() {
 		this.isSubmitReanalysis = true;
 		let entity = this.toolsService.get('tableEntity');
-        entity['relations'] = this.heatmapReSelectRelation;
+		entity['relations'] = this.heatmapReSelectRelation;
 		entity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: "heatmaprelation",
+					reanalysisType: 'heatmaprelation',
 					needReanalysis: 1,
 					version: this.storeService.getStore('version'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
 					...entity,
 					standardization: this.heatmapReSelectStand,
-					verticalDefault:this.heatmapReSelectGeneType
+					verticalDefault: this.heatmapReSelectGeneType
 				},
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
-						if(data['data'].length){
+						if (data['data'].length) {
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
 							this.notify.blank('tips：', '关联聚类重分析提交成功', {
-								nzStyle: { width: '200px' },
+								nzStyle: { width: '200px' }
 							});
-						}else{
+						} else {
 							this.notify.blank('tips：', '重分析提交失败，请重试', {
-								nzStyle: { width: '200px' },
+								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					}
 				},
-				(err) => {
+				err => {
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
+						nzStyle: { width: '200px' }
 					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
 				}
 			);
-
 	}
 
-	getclassificationParams(){
+	getclassificationParams() {
 		let entity = this.toolsService.get('tableEntity');
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/classification/config`,
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					geneType:entity['geneType'],
+					geneType: entity['geneType'],
 					species: entity['species'],
-					version: this.storeService.getStore('version'),
+					version: this.storeService.getStore('version')
 				}
-			}).subscribe(
-					res=>{
-						this.geneClassData.length = 0;
-						this.geneClassSelect.length = 0;
+			})
+			.subscribe(
+				res => {
+					this.geneClassData.length = 0;
+					this.geneClassSelect.length = 0;
 
-						if(res['status']==0 &&res['data'].length){
-							this.geneClassData = res['data'].map((v,index)=>{
-								let obj = {
-									name:v,
-									checked:index?false:true
-								}
-								return obj;
-							})
-							this.geneClassSelect.push(this.geneClassData[0]);
-							this.geneClassError = false;
-						}else{
-							this.geneClassError = true;
-						}
-
-					},
-					error=>{
-						this.geneClassData.length = 0;
-						this.geneClassSelect.length = 0;
+					if (res['status'] == 0 && res['data'].length) {
+						this.geneClassData = res['data'].map((v, index) => {
+							let obj = {
+								name: v,
+								checked: index ? false : true
+							};
+							return obj;
+						});
+						this.geneClassSelect.push(this.geneClassData[0]);
+						this.geneClassError = false;
+					} else {
 						this.geneClassError = true;
-					},
-					()=>{
-						this.doGeneClassAjax = true;
 					}
-				)
+				},
+				error => {
+					this.geneClassData.length = 0;
+					this.geneClassSelect.length = 0;
+					this.geneClassError = true;
+				},
+				() => {
+					this.doGeneClassAjax = true;
+				}
+			);
 	}
 
-	handlerGeneClassSelect(klass){
-		if(klass['checked']){
+	handlerGeneClassSelect(klass) {
+		if (klass['checked']) {
 			klass['checked'] = false;
-			let index = this.geneClassSelect.findIndex((val,index)=>{
+			let index = this.geneClassSelect.findIndex((val, index) => {
 				return val['name'] === klass['name'];
-			})
+			});
 
-			if(index!=-1) this.geneClassSelect.splice(index,1);
-		}else{
-			this.geneClassSelect.forEach(v=>v['checked'] = false);
+			if (index != -1) this.geneClassSelect.splice(index, 1);
+		} else {
+			this.geneClassSelect.forEach(v => (v['checked'] = false));
 			klass['checked'] = true;
 			this.geneClassSelect.length = 0;
 			this.geneClassSelect.push(klass);
 		}
 	}
 
-	geneClassConfirm(){
+	geneClassConfirm() {
 		this.isSubmitReanalysis = true;
-		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+		let newWindow = window.open(
+			`${window.location.href.split('report')[0]}report/reanalysis/loading`
+		);
 		let entity = this.toolsService.get('tableEntity');
-        entity['relations'] = this.heatmapReSelectRelation;
+		entity['relations'] = this.heatmapReSelectRelation;
 		entity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: "classification",
+					reanalysisType: 'classification',
 					needReanalysis: 2,
 					version: this.storeService.getStore('version'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
 					...entity,
-					annotation:this.geneClassSelect[0]['name']
+					annotation: this.geneClassSelect[0]['name']
 				},
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
-						if(data['data'].length){
-							let href = `${window.location.href.split('report')[0]}report/reanalysis/re-classification/${this.toolsService.get('geneType')}/${data['data'][0]}/${this.storeService.getStore('version')}/${this.geneClassSelect[0]['name']}`;
+						if (data['data'].length) {
+							let href = `${
+								window.location.href.split('report')[0]
+							}report/reanalysis/re-classification/${this.toolsService.get(
+								'geneType'
+							)}/${data['data'][0]}/${this.storeService.getStore('version')}/${
+								this.geneClassSelect[0]['name']
+							}`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
 							this.notify.blank('tips：', '基因分类重分析提交成功', {
-								nzStyle: { width: '200px' },
+								nzStyle: { width: '200px' }
 							});
-						}else{
+						} else {
 							this.notify.blank('tips：', '重分析提交失败，请重试', {
-								nzStyle: { width: '200px' },
+								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					}
 				},
-				(err) => {
+				err => {
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
+						nzStyle: { width: '200px' }
 					});
 				},
 				() => {
@@ -1459,106 +1543,106 @@ export class ToolsComponent implements OnInit {
 			);
 	}
 
-	getenrichmentParams(){
+	getenrichmentParams() {
 		let entity = this.toolsService.get('tableEntity');
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/classification/config`,
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					geneType:entity['geneType'],
+					geneType: entity['geneType'],
 					species: entity['species'],
-					version: this.storeService.getStore('version'),
+					version: this.storeService.getStore('version')
 				}
-			}).subscribe(
-					res=>{
-						this.geneRichData.length = 0;
-						this.geneRichSelect.length = 0;
-						if(res['status']==0 &&res['data'].length){
-							this.geneRichData = res['data'].map((v,index)=>{
-								let obj = {
-									name:v,
-									checked:index?false:true
-								}
-								return obj;
-							})
-							this.geneRichSelect.push(this.geneRichData[0]);
-							this.geneRichError = false;
-						}else{
-							this.geneRichError = true;
-						}
-
-					},
-					error=>{
-						this.geneRichData.length = 0;
-						this.geneRichSelect.length = 0;
+			})
+			.subscribe(
+				res => {
+					this.geneRichData.length = 0;
+					this.geneRichSelect.length = 0;
+					if (res['status'] == 0 && res['data'].length) {
+						this.geneRichData = res['data'].map((v, index) => {
+							let obj = {
+								name: v,
+								checked: index ? false : true
+							};
+							return obj;
+						});
+						this.geneRichSelect.push(this.geneRichData[0]);
+						this.geneRichError = false;
+					} else {
 						this.geneRichError = true;
-					},
-					()=>{
-						this.doGeneRichAjax = true;
 					}
-				)
+				},
+				error => {
+					this.geneRichData.length = 0;
+					this.geneRichSelect.length = 0;
+					this.geneRichError = true;
+				},
+				() => {
+					this.doGeneRichAjax = true;
+				}
+			);
 	}
 
-	handlerGeneRichSelect(rich){
-		if(rich['checked']){
+	handlerGeneRichSelect(rich) {
+		if (rich['checked']) {
 			rich['checked'] = false;
-			let index = this.geneRichSelect.findIndex((val,index)=>{
+			let index = this.geneRichSelect.findIndex((val, index) => {
 				return val['name'] === rich['name'];
-			})
+			});
 
-			if(index!=-1) this.geneRichSelect.splice(index,1);
-		}else{
-			this.geneRichSelect.forEach(v=>v['checked'] = false);
+			if (index != -1) this.geneRichSelect.splice(index, 1);
+		} else {
+			this.geneRichSelect.forEach(v => (v['checked'] = false));
 			rich['checked'] = true;
 			this.geneRichSelect.length = 0;
 			this.geneRichSelect.push(rich);
 		}
 	}
 
-	geneRichConfirm(){
+	geneRichConfirm() {
 		this.isSubmitReanalysis = true;
 		let entity = this.toolsService.get('tableEntity');
-        entity['relations'] = this.heatmapReSelectRelation;
+		entity['relations'] = this.heatmapReSelectRelation;
 		entity['mongoId'] = this.toolsService.get('mongoId');
 		this.ajaxService
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: "classification",
+					reanalysisType: 'classification',
 					needReanalysis: 1,
 					version: this.storeService.getStore('version'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
 					...entity,
-					annotation:this.geneRichSelect[0]['name']
+					annotation: this.geneRichSelect[0]['name']
 				},
 				url: this.toolsService.get('tableUrl')
 			})
 			.subscribe(
-				(data) => {
+				data => {
 					if (data['status'] === '0') {
-						if(data['data'].length){
+						if (data['data'].length) {
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
 							this.notify.blank('tips：', '基因富集重分析提交成功', {
-								nzStyle: { width: '200px' },
+								nzStyle: { width: '200px' }
 							});
-						}else{
+						} else {
 							this.notify.blank('tips：', '重分析提交失败，请重试', {
-								nzStyle: { width: '200px' },
+								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						this.notify.blank('tips：', '重分析提交失败，请重试', {
-							nzStyle: { width: '200px' },
+							nzStyle: { width: '200px' }
 						});
 					}
 				},
-				(err) => {
+				err => {
 					this.notify.blank('tips：', '重分析提交失败，请重试', {
-						nzStyle: { width: '200px' },
+						nzStyle: { width: '200px' }
 					});
 				},
 				() => {
@@ -1574,12 +1658,12 @@ export class ToolsComponent implements OnInit {
 		}
 	}
 
-	copy(object){
-		if(object instanceof Object){
+	copy(object) {
+		if (object instanceof Object) {
 			return JSON.parse(JSON.stringify(object));
-		}else if(object instanceof Array){
+		} else if (object instanceof Array) {
 			return [...object];
-		}else{
+		} else {
 			return object;
 		}
 	}

@@ -60,6 +60,9 @@ export class TransformationTableComponent implements OnInit {
     @ViewChild("defaultTable") defaultTable;
     @ViewChild("extendTable") extendTable;
 
+    @Input() defaultShowFilterStatus:boolean = false;
+    @Input() extendShowFilterStatus:boolean = false;
+
 
     defaultUrl: string = "";
     params: object;

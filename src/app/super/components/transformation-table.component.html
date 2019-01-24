@@ -22,6 +22,7 @@
             [defaultMartix]="defaultMartix"
             [(computedScrollHeight)]="computedScrollHeight"
             (computedScrollHeightChange)="handlerComputedScrollHeightChange($event)"
+            [showFilterStatus]="defaultShowFilterStatus"
         ></app-geneTable>
     </div>
     <div *ngIf="!isFirst" id="extend-gene-table">
@@ -42,6 +43,7 @@
             (selectGeneCountChange)="handleSelectGeneCountChange($event)"
             [(computedScrollHeight)]="computedScrollHeight"
             (computedScrollHeightChange)="handlerComputedScrollHeightChange($event)"
+            [showFilterStatus]="extendShowFilterStatus"
         ></app-geneTable>
     </div>
 </div>

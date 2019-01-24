@@ -73,7 +73,8 @@ export class DiffVennComponent implements OnInit {
 	defaultTableId: string;
 	defaultDefaultChecked: boolean;
 	defaultCheckStatusInParams: boolean;
-	defaultEmitBaseThead: boolean;
+    defaultEmitBaseThead: boolean;
+    defaultShowFilterStatus:boolean = false;
 
 	extendEntity: object;
 	extendUrl: string;
@@ -512,7 +513,8 @@ export class DiffVennComponent implements OnInit {
 
 		this.panelShow = false;
 		this.upSelect.length = 0;
-		this.leftSelect.length = 0;
+        this.leftSelect.length = 0;
+        this.defaultShowFilterStatus = false;
 		this.tableSwitchChart.reGetData();
 
 		// if (this.first) {
@@ -527,7 +529,8 @@ export class DiffVennComponent implements OnInit {
 	multiSelectChange() {
 		this.upSelect.length = 0;
 		this.leftSelect.length = 0;
-		// this.first?this.transformTable._getData():this.first = true;
+        // this.first?this.transformTable._getData():this.first = true;
+        this.defaultShowFilterStatus = false;
 		this.chartBackStatus();
 		this.updateVenn();
 	}
@@ -561,8 +564,9 @@ export class DiffVennComponent implements OnInit {
 			if (this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
 		} else {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
-		}
+        }
 
+        this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chartBackStatus();
 	}
 
@@ -579,6 +583,7 @@ export class DiffVennComponent implements OnInit {
 			this.leftSelect.push(...tempData['total_name']);
 		}
 
+        this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chartBackStatus();
 	}
 
@@ -597,7 +602,8 @@ export class DiffVennComponent implements OnInit {
 		// this.first ? this.transformTable._getData() : (this.first = true);
 		// 更新当前回来的表头为基础头
 		this.chartBackStatus();
-		this.updateVenn();
+        this.updateVenn();
+        this.defaultShowFilterStatus = false;
 	}
 
 	redrawChart(width, height?) {
@@ -608,7 +614,8 @@ export class DiffVennComponent implements OnInit {
 	handlerRefresh() {
 		// 清空选择的数据
 		this.upSelect.length = 0;
-		this.leftSelect.length = 0;
+        this.leftSelect.length = 0;
+        this.defaultShowFilterStatus = false;
 		this.chartBackStatus();
 	}
 
@@ -669,7 +676,8 @@ export class DiffVennComponent implements OnInit {
 					_selfV.singleMultiSelect['total_name'] = '';
 					_selfV.singleMultiSelect['venn_name'] = '';
 				}
-				_selfV.upSelect.length = 0;
+                _selfV.upSelect.length = 0;
+                _selfV.defaultShowFilterStatus = !!_selfV.leftSelect.length || !!_selfV.upSelect.length;
 				// _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
 				_selfV.chartBackStatus();
 			});
@@ -815,7 +823,8 @@ export class DiffVennComponent implements OnInit {
 			function(d) {
 				_self.updateVenn();
 				_self.leftSelect.length = 0;
-				_self.upSelect.length = 0;
+                _self.upSelect.length = 0;
+                _self.defaultShowFilterStatus = false;
 				// _self.first ? _self.transformTable._getData() : (_self.first = true);
 				_self.chartBackStatus();
 			},
