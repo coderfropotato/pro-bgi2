@@ -33,6 +33,7 @@ export class ChartExportComponent implements OnInit {
 		type = type ? type : 'image/png';
 		var chartDiv = $('#' + this.chartId);
 		var svgObj = chartDiv.find('svg:eq(0)');
+		console.log(svgObj.siblings().length)
 
 		svgObj.attr('version', '1.1');
 		svgObj.attr('xmlns', 'http://www.w3.org/2000/svg');
@@ -53,11 +54,11 @@ export class ChartExportComponent implements OnInit {
 
             let scaleVal = 1;
             if(this.scale){
-                if (svgObj.width() + svgObj.height() < 3000) scaleVal = 1.5;
+                if (chartDiv.width() + chartDiv.height() < 3000) scaleVal = 1.5;
             }
 
-			canvas.width = svgObj.width()*scaleVal;
-            canvas.height = svgObj.height()*scaleVal;
+			canvas.width = chartDiv.width()*scaleVal;
+            canvas.height = chartDiv.height()*scaleVal;
 
 			var context = canvas.getContext('2d');
 			context.fillStyle = '#ffffff';
