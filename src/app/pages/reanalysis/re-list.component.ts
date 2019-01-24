@@ -89,16 +89,18 @@ export class ReListComponent implements OnInit {
 			type = data['reanalysisType'];
 		}
 
-		// let href = location.href.split('/report');
-		// window.open(`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
+		let href = location.href.split('/report');
+
 
 		if(type === 'classification' || type==='enrichment'){
-			this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
+            window.open(`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
+			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
 		}else{
-			this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
+            window.open(`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
+			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
 		}
 	}
-	
+
 	handleDelete(data){
 		this.ajaxService.getDeferData({
 			url:`${config['javaPath']}/reAnalysis/deleteByTid`,
