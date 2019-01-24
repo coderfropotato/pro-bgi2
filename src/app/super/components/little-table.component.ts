@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { AjaxService } from "../../super/service/ajaxService";
 import { LoadingService } from "../../super/service/loadingService";
+
+declare const $:any;
+
 @Component({
     selector: "app-little-table",
     templateUrl: "./little-table.component.html",
