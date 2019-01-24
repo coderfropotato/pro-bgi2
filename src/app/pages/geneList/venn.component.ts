@@ -146,7 +146,8 @@ export class GeneListVennComponent implements OnInit {
 	};
 
 	selectGeneCount: number = 0;
-	computedScrollHeight: boolean = false;
+    computedScrollHeight: boolean = false;
+    defaultShowFilterStatus:boolean = false;
 
 	constructor(
 		private message: MessageService,
@@ -571,7 +572,11 @@ export class GeneListVennComponent implements OnInit {
 									this.selectPanelEntity['tag'].length = 0;
 									this.selectPanelEntity['gene'].length = 0;
 									this.selectPanelEntity['setNameList'].length = 0;
-									this.copyPanelEntity();
+                                    this.copyPanelEntity();
+
+                                    this.leftSelect.length = 0;
+                                    this.upSelect.length = 0;
+                                    this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 									await this.getAllGeneList();
 									await this.getChartData();
 								})();
@@ -591,6 +596,7 @@ export class GeneListVennComponent implements OnInit {
 		this.upSelect.length = 0;
 		this.leftSelect.length = 0;
 
+        this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.copyPanelEntity();
 		this.chartBackStatus();
 		this.updateVenn();
@@ -647,7 +653,8 @@ export class GeneListVennComponent implements OnInit {
 	//单、多选change
 	multiSelectChange() {
 		this.upSelect.length = 0;
-		this.leftSelect.length = 0;
+        this.leftSelect.length = 0;
+        this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chart.setChartSelectModule(this.isMultiSelect ? 'multiple' : 'single');
 		this.chartBackStatus();
 		this.updateVenn();
@@ -684,15 +691,16 @@ export class GeneListVennComponent implements OnInit {
 	//venn和upsetR只能单选时候
 	doSingleData() {
 		this.leftSelect.length = 0;
-		this.upSelect.length = 0;
+        this.upSelect.length = 0;
 		if (this.beforeSelectPanelEntity['setNameList'].length > 5) {
-			// upset
+            // upset
 			if (this.singleMultiSelect['bar_name']) this.upSelect.push(this.singleMultiSelect['bar_name']);
 			if (this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
 		} else {
-			this.upSelect.push(this.singleMultiSelect['venn_name']);
+            this.upSelect.push(this.singleMultiSelect['venn_name']);
 		}
 
+        this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chartBackStatus();
 	}
 
@@ -709,6 +717,7 @@ export class GeneListVennComponent implements OnInit {
 			this.leftSelect.push(...tempData['total_name']);
 		}
 
+        this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chartBackStatus();
 	}
 
@@ -720,7 +729,8 @@ export class GeneListVennComponent implements OnInit {
 	handlerRefresh() {
 		// 清空选择的数据
 		this.upSelect.length = 0;
-		this.leftSelect.length = 0;
+        this.leftSelect.length = 0;
+        this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.getChartData();
 		this.chartBackStatus();
 	}
@@ -751,6 +761,7 @@ export class GeneListVennComponent implements OnInit {
 						this.upSelect.length = 0;
 					}
 
+                    this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 					this.chartBackStatus();
 				},
 				padding: 0.02,
@@ -837,7 +848,8 @@ export class GeneListVennComponent implements OnInit {
 					that.singleMultiSelect['total_name'] = '';
 					that.singleMultiSelect['venn_name'] = '';
 				}
-				that.upSelect.length = 0;
+                that.upSelect.length = 0;
+                that.defaultShowFilterStatus = !!that.leftSelect.length || !!that.upSelect.length;
 				that.chartBackStatus();
 			});
 	}
@@ -981,7 +993,8 @@ export class GeneListVennComponent implements OnInit {
 			function(d) {
 				_self.updateVenn();
 				_self.leftSelect.length = 0;
-				_self.upSelect.length = 0;
+                _self.upSelect.length = 0;
+                _self.defaultShowFilterStatus = !!_self.leftSelect.length || !!_self.upSelect.length;
 				// _self.first ? _self.transformTable._getData() : (_self.first = true);
 				_self.chartBackStatus();
 			},

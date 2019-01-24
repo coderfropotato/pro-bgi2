@@ -116,7 +116,7 @@
             <!-- 返回 -->
             <button class="ml12"  *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
         </div>
-        <!-- 表格转换 -->
+        <!-- 表格转换  [defaultShowFilterStatus]="defaultShowFilterStatus"-->
         <app-table-transformation
             class="no-outside-border"
             #transformTable
@@ -129,7 +129,6 @@
             [(defaultEmitBaseThead)]="defaultEmitBaseThead"
             (defaultBaseTheadChange)="baseTheadChange($event)"
             [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
-            [defaultShowFilterStatus]="defaultShowFilterStatus"
             [extendTableEntity]="extendEntity"
             [extendTableUrl]="extendUrl"
             [extendTableId]="extendTableId"
