@@ -50,7 +50,7 @@ export class TableSwitchChartComponent implements OnInit {
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
     // 是否flex布局
-    @Input() flex: boolean; 
+    @Input() flex: boolean;
 
     // 特殊图表
     @Input() isVennTable:boolean=false;  // true：venn/unsetR图的表；false：是普通表
@@ -115,9 +115,8 @@ export class TableSwitchChartComponent implements OnInit {
         private storeService: StoreService,
         private translate: TranslateService
     ) {
-
         this.messageService.getResize().subscribe(res => {
-            if (res["message"] === "resize") this.scrollHeight();
+            this.scrollHeight();
         });
 
         let browserLang = this.storeService.getLang();
@@ -126,7 +125,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     ngOnInit() {
         if(this.chartTypeData && this.chartTypeData.length) this.chartType=this.chartTypeData[0]['key'];
-        
+
         this.accuracyList = [
             {
                 name: "精度：1位小数",
@@ -199,7 +198,7 @@ export class TableSwitchChartComponent implements OnInit {
         this.showTableChange.emit(this.isShowTable);
         setTimeout(()=>{
             this.scrollHeight();
-        },30)
+        },0)
     }
 
     //获取默认值
@@ -260,9 +259,11 @@ export class TableSwitchChartComponent implements OnInit {
     scrollHeight() {
         try {
             let tableChartContentH = this.tableChartContent.nativeElement.offsetHeight;
-            let bottomPageH=this.tableBottom.nativeElement.offsetHeight;
-            let scrollH = (tableChartContentH - 38 - bottomPageH) + 'px';
-            console.log(tableChartContentH,bottomPageH,scrollH)
+            let bottomPageH=this.tableBottom?this.tableBottom.nativeElement.offsetHeight:0;
+            let scrollH:any = (tableChartContentH - 38 - bottomPageH) +'px';
+            if(this.isBigTable){
+                $(`#${this.id} .ant-table-body`).css("height", scrollH);
+            }
             this.scroll['y'] = scrollH;
         } catch (error) {
         }
@@ -327,9 +328,9 @@ export class TableSwitchChartComponent implements OnInit {
                 })
             } else {
                 // for (let i = 0; i < this.defaultSelectNum; i++) {   //最初
-                //     this.selectPanelList[0]['data'][i]['isChecked'] = true; 
+                //     this.selectPanelList[0]['data'][i]['isChecked'] = true;
                 // }
-                
+
                 let j = 0;
                 this.selectPanelList.forEach(d => {
                     d['data'].forEach(m => {
@@ -342,7 +343,7 @@ export class TableSwitchChartComponent implements OnInit {
                         }
                     })
                 })
-            
+
             }
         }
 

@@ -92,6 +92,8 @@ export class ReHeatmapComponent implements OnInit {
     selectGeneCount:number = 0;
     computedScrollHeight:boolean = false;
 
+    defaultShowFilterStatus:boolean = false;
+
     constructor(
         private message: MessageService,
 		private store: StoreService,

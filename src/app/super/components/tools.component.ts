@@ -498,7 +498,7 @@ export class ToolsComponent implements OnInit {
 		// });
 		let tableEntity = this.toolsService.get('tableEntity');
 		tableEntity['mongoId'] = this.toolsService.get('mongoId');
-
+        this.selectGeneType[0]['choose'] = this.clusterByGeneType;
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -508,7 +508,6 @@ export class ToolsComponent implements OnInit {
 					// chooseType: [ this.switchType(type) ],
 					chooseList: this[`${type}Select`],
 					verticalDefault: this.selectGeneType,
-					choose:this.clusterByGeneType,
 					...tableEntity,
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],

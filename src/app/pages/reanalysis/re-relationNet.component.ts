@@ -763,6 +763,7 @@ export class reRelationNetComponent implements OnInit {
 
             //图例 title
             legendNodeColor_g.append('text')
+            .attr('font-family','Arial')
             .style('text-anchor','start')
             .style('dominant-baseline','middle')
             .attr('x',nodeColorLegendW+legendTitleSpace)
@@ -836,6 +837,7 @@ export class reRelationNetComponent implements OnInit {
 
                 //图例 title
                 linkColor_g.append('text')
+                .attr('font-family','Arial')
                 .style('text-anchor','start')
                 .style('dominant-baseline','middle')
                 .attr('x',legendW+legendTitleSpace)
@@ -851,6 +853,7 @@ export class reRelationNetComponent implements OnInit {
                 .attr("dy", ".35em")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0.5)
+                .attr('font-family','Arial')
 
             if(that.chartEntity['symbolType']==='all'){
                node_text

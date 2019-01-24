@@ -64,9 +64,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
     // 过滤表头字段 用tid区分是报告还是小工具 isKeggClass 区分是kegg的分类还是富集
     @Input() isKeggClass:boolean = false; // 区分是kegg的分类还是富集
-    @Input() tid:string = ''; 
+    @Input() tid:string = '';
 
-    @Input() showFilterStatus:boolean = false;  // 是否显示 表格是否通过外部操作更新 
+    @Input() showFilterStatus:boolean = false;  // 是否显示 表格是否通过外部操作更新
 
     count:number = 0; // 选中的基因个数
     mongoId:any = null;
