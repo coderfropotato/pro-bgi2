@@ -1,25 +1,25 @@
 <div class="little-table">
-    <ng-template #titleTemplate>
-        <div class="table-thead">
-            <div class="fRight">
-                <i class="anticon anticon-sync" (click)="refresh()"></i>
-                <!-- <i class="anticon anticon-download"></i> -->
-                <i class="iconfont icon-xiazai"></i>
+    <nz-spin [nzSpinning]="isLoading" nzTip='Loading...' [class.extend-height]="flex">
+        <ng-template #titleTemplate>
+            <div class="table-thead">
+                <div class="fRight">
+                    <i class="iconfont icon-shuaxin" (click)="refresh()"></i>
+                    <!-- <i class="anticon anticon-download"></i> -->
+                    <i class="iconfont icon-xiazai"></i>
+                </div>
             </div>
-        </div>
-    </ng-template>
-
-    <nz-table [nzData]="rows" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate" *ngIf="rows.length">
-        <thead>
-            <tr>
-                <th *ngFor="let item of thead;index as i">{{item.name}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let row of rows;index as idx">
-                <td *ngFor="let item of thead;index as i">{{row[item['true_key']]}}</td>
-            </tr>
-        </tbody>
-    </nz-table>
-
+        </ng-template>
+        <nz-table *ngIf="!tableError" [nzData]="tableData['rows']" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate">
+            <thead>
+                <tr>
+                    <th style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead'];index as i">{{thead.name}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of tableData['rows'];index as idx">
+                    <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key]}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </nz-spin>
 </div>

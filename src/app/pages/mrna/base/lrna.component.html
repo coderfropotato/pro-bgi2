@@ -1,3 +1,17 @@
-<p>
-  lrna works!
-</p>
+<div class="content base-content lrna">
+    <h2 class="title">5 小RNA检测</h2>
+    <hr class="mhr" />
+
+    <h3 class="title">5.1 小RNA数量</h3>
+    <div class="f-content">
+        <app-big-table
+          *ngIf="defaultEntity"
+          class="no-outside-border"
+          #bigTable
+          [tableHeight]="tableHeight"
+          [pageEntity]="defaultEntity"
+          [url]="defaultUrl"
+          [tableId]="defaultTableId"
+        ></app-big-table>
+    </div>
+</div>

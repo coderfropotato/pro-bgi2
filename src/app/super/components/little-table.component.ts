@@ -9,8 +9,11 @@ import { LoadingService } from "../../super/service/loadingService";
 export class LittleTableComponent implements OnInit {
     @Input()
     url: string;
+    tableError: string;
 
-    tableData: object;
+    isLoading: boolean = false;
+
+    tableData: any[] = [];
     rows: any[] = [];
     thead: any[] = [];
     constructor(
@@ -23,7 +26,7 @@ export class LittleTableComponent implements OnInit {
     }
 
     getData() {
-        this.loadingService.open(".little-table");
+        this.isLoading = true;
         this.ajaxService
             .getDeferData({
                 url: this.url,
@@ -32,15 +35,26 @@ export class LittleTableComponent implements OnInit {
                 }
             })
             .subscribe(
-                data => {
-                    this.loadingService.close(".little-table");
-                    this.tableData = data;
-                    this.rows = data["rows"];
-                    this.thead = data["baseThead"];
+                (data: any) => {
+                    if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                        this.tableError = "nodata";
+                    } else if (data.status == "-1") {
+                        this.tableError = "error";
+                    } else if (data.status == "-2") {
+                        this.tableError = "dataOver";
+                    } else {
+                       this.tableError = "";
+                       this.tableData = data.data;
+                       this.rows = data["rows"];
+                       this.thead = data["baseThead"];
+                    }
+                    this.isLoading = false;
+                    console.log(data)
+
                 },
                 error => {
-                    this.loadingService.close(".little-table");
-                    console.log(error);
+                    this.tableError = error;
+                    this.isLoading = false;
                 }
             );
     }
