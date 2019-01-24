@@ -1604,8 +1604,8 @@ button.btnActive {
 	}
 }
 
-//基础模块-数据过滤
-.filter{
+//基础模块-数据过滤/对比
+.filter,.comparison{
 	.f-content{
 		width: 96%;
 		height: auto;
@@ -1616,6 +1616,11 @@ button.btnActive {
 	.title{
 		width: 98%;
 		margin: 10px auto;
+	}
+	.help_text{
+		width: 98%;
+		margin: 10px auto 0 auto;
+		text-indent:2em;
 	}
 }
 

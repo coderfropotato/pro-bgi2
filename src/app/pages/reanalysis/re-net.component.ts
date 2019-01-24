@@ -664,7 +664,7 @@ export class ReNetComponent implements OnInit {
         //node 形状
         legendSvg.append("g")
             .attr("class", "legendShape")
-            .attr("transform", `translate(${padding*2}, 10)`);
+            .attr("transform", `translate(${padding*2}, ${padding})`);
 
         let legendShape = d3.legendSymbol()
             .scale(shapeLegendScale)
@@ -682,7 +682,7 @@ export class ReNetComponent implements OnInit {
         //node 颜色
         let legendNodeColor_g = legendSvg.append("g")
             .attr("class", "legendNodeColor")
-            .attr("transform", `translate(${padding+legendShapeW+padding},0)`);
+            .attr("transform", `translate(${padding+legendShapeW+padding},${padding/2})`);
 
         drawNodeColorScale();
 
@@ -691,7 +691,7 @@ export class ReNetComponent implements OnInit {
 
         let legnedLinkColor_g=legendSvg.append("g")
             .attr('class','legendLinkColor')
-            .attr('transform',`translate(${padding+legendShapeW+padding+legendNodeColorW+padding},0)`);
+            .attr('transform',`translate(${padding+legendShapeW+padding+legendNodeColorW+padding},${padding/2})`);
 
         drawLinkColorScale();
 
@@ -752,6 +752,7 @@ export class ReNetComponent implements OnInit {
 
             //图例 title
             legendNodeColor_g.append('text')
+            .attr('font-family','Arial')
             .style('text-anchor','start')
             .style('dominant-baseline','middle')
             .attr('x',nodeColorLegendW+legendTitleSpace)
@@ -825,6 +826,7 @@ export class ReNetComponent implements OnInit {
 
                 //图例 title
                 linkColor_g.append('text')
+                .attr('font-family','Arial')
                 .style('text-anchor','start')
                 .style('dominant-baseline','middle')
                 .attr('x',legendW+legendTitleSpace)
@@ -840,6 +842,7 @@ export class ReNetComponent implements OnInit {
                 .attr("dy", ".35em")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0.5)
+                .attr('font-family','Arial')
 
             if(that.chartEntity['symbolType']==='all'){
                node_text
