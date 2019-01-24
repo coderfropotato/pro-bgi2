@@ -15,6 +15,7 @@ export class TableSwitchChartComponent implements OnInit {
     @ViewChild("tableContent") tableContent;
     @ViewChild('selectPanel') selectPanel;
     @ViewChild('tableChartContent') tableChartContent;
+    @ViewChild('tableBottom') tableBottom;
 
     @Input() tableUrl: string;  //表格api地址；isOnlyChart=true时可不传
     @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
@@ -187,6 +188,7 @@ export class TableSwitchChartComponent implements OnInit {
         this.drawChart(this.chartData,this.chartType);
     }
 
+    //图表切换按钮
     chartBtnClick(){
         this.isShowTable=false;
         this.showTableChange.emit(this.isShowTable);
@@ -195,6 +197,9 @@ export class TableSwitchChartComponent implements OnInit {
     tableBtnClick(){
         this.isShowTable=true;
         this.showTableChange.emit(this.isShowTable);
+        setTimeout(()=>{
+            this.scrollHeight();
+        },30)
     }
 
     //获取默认值
@@ -255,7 +260,9 @@ export class TableSwitchChartComponent implements OnInit {
     scrollHeight() {
         try {
             let tableChartContentH = this.tableChartContent.nativeElement.offsetHeight;
-            let scrollH = (tableChartContentH - 38) + 'px';
+            let bottomPageH=this.tableBottom.nativeElement.offsetHeight;
+            let scrollH = (tableChartContentH - 38 - bottomPageH) + 'px';
+            console.log(tableChartContentH,bottomPageH,scrollH)
             this.scroll['y'] = scrollH;
         } catch (error) {
         }

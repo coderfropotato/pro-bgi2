@@ -49,6 +49,8 @@ export class reRelationNetComponent implements OnInit {
 
     idReq:any; //id 正则
 
+    chartData:any;
+
     // 选中的节点、线
     selectGeneList:string[] = []; // 选中的节点geneID
     selectLinkList:string[]=[]; // 选中的线id
@@ -456,10 +458,10 @@ export class reRelationNetComponent implements OnInit {
         // add link
         this.curStartNode=this.allNodes[0]['geneID'];
         this.curEndNode=this.allNodes[1]['geneID'];
-        let scores=[0,100];
+        let scores=this.storeService.getStore('userRelation').score;
         this.scoreMin=scores[0];
         this.scoreMax=scores[1];
-        this.curScore=this.scoreMax/2;
+        this.curScore=scores[2];
 
         this.allLinks=[...links];
 
@@ -611,7 +613,7 @@ export class reRelationNetComponent implements OnInit {
                 .type(d=>symbolScale(d.type))
                 .size(d=>sizeScale(d.value))
             )
-            .attr('fill', d=>d.selected ? "#167C80" : that.nodeColorScale(d.value))
+            .attr('fill', d=>d.selected ? "#000000" : that.nodeColorScale(d.value))
             .attr("cursor", "pointer")
             .on("mouseover", m => {
                 let text = `geneID：${m.geneID}<br>type：${m.type}<br>linkNum：${m.value}<br>geneSymbol：${m.symbol}`;
@@ -626,7 +628,7 @@ export class reRelationNetComponent implements OnInit {
 
                 //选中node加到list中，反选node中从list中去掉
                 if (d.selected) {
-                    d3.select(this).attr('fill',"#167C80");
+                    d3.select(this).attr('fill',"#000000");
                     that.selectedNodes.push(d);
                     that.allNodes.forEach(m=>{
                         if(d.geneID===m.geneID){
@@ -896,8 +898,8 @@ export class reRelationNetComponent implements OnInit {
                     offset = offset*(-1);
                 }
 
-                let offSetX = midpoint_x - offset * (dy / normalise);
-                let offSetY = midpoint_y + offset * (dx / normalise);
+                let offSetX = normalise===0 ? midpoint_x : midpoint_x - offset * (dy / normalise);
+                let offSetY = normalise===0 ? midpoint_y : midpoint_y + offset * (dx / normalise);
 
                 return "M" + d.source.x + "," + d.source.y +
                     "S" + offSetX + "," + offSetY +
@@ -956,7 +958,7 @@ export class reRelationNetComponent implements OnInit {
             m.selected=false;
         })
 
-        d3.select("path#node"+this.curSearchNode.replace(this.idReq,"")).attr('fill',"#167C80");
+        d3.select("path#node"+this.curSearchNode.replace(this.idReq,"")).attr('fill',"#000000");
         this.allNodes.forEach(d=>{
             if(d.geneID === this.curSearchNode){
                 d.selected=true;
@@ -989,6 +991,7 @@ export class reRelationNetComponent implements OnInit {
                     } else if (data.status === "-2") {
                         return;
                     } else {
+                        this.chartData=data.data;
                         this.relationNetChart.getTableData();
                         this.drawChart(data.data);
                     }
@@ -1027,6 +1030,7 @@ export class reRelationNetComponent implements OnInit {
                     } else if (data.status === "-2") {
                         return;
                     } else {
+                        this.chartData=data.data;
                         this.relationNetChart.getTableData();
                         this.drawChart(data.data);
                     }
@@ -1043,30 +1047,25 @@ export class reRelationNetComponent implements OnInit {
 
     // expand node
     expandNode(){
-        // 本次扩展的nodeList
-        let expandNodeList = [];
-        // 扩展node
         this.allLinks.forEach(d=> {
-            //link的起点在已选择的list中，终点不在已选择的list中，且不在临时扩展的list中。
-            if ((this.selectedNodes.indexOf(d.source) > -1) && (this.selectedNodes.indexOf(d.target) == -1) && (expandNodeList.indexOf(d.target) == -1)) {
-                d.target.selected = true;
-                expandNodeList.push(d.target);
+            if(d.source.selected){
+                d.target.selected=true;
             }
-            if ((this.selectedNodes.indexOf(d.target) > -1) && (this.selectedNodes.indexOf(d.source) == -1) && (expandNodeList.indexOf(d.source) == -1)) {
-                d.source.selected = true;
-                expandNodeList.push(d.source);
+            if(d.target.selected){
+                d.source.selected=true;
             }
         })
-
-        this.selectedNodes = [...this.selectedNodes,...expandNodeList];
-
+        
+        this.selectedNodes.length=0;
         this.selectGeneList.length=0;
         this.allNodes.forEach(d=> {
             if (d.selected) {
-                d3.selectAll("path#node"+d.geneID.replace(this.idReq,"")).attr('fill',"#167C80");
+                d3.selectAll("path#node"+d.geneID.replace(this.idReq,"")).attr('fill',"#000000");
+                this.selectedNodes.push(d);
                 this.selectGeneList.push(d.geneID);
             }
         })
+
         this.chartBackStatus();
 
     }
@@ -1075,7 +1074,11 @@ export class reRelationNetComponent implements OnInit {
     colorChange(color){
         this.color = color;
         this.colors.splice(this.legendIndex, 1, color);
-        this.relationNetChart.redraw();
+        if(this.chartData){
+            this.drawChart(this.chartData);
+        }else{
+            this.relationNetChart.redraw();
+        }
     }
 
     // 设置 确定
