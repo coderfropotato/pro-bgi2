@@ -36,10 +36,7 @@ export class ChartExportComponent implements OnInit {
 
 		svgObj.attr('version', '1.1');
 		svgObj.attr('xmlns', 'http://www.w3.org/2000/svg');
-		svgObj.css(
-			'font-family',
-			" 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', Tahoma, 'Hiragino Sans GB', STHeiti, 'Microsoft YaHei'"
-		);
+		svgObj.css('font-family', "Arial" );
 
 		var svgXml = svgObj.prop('outerHTML');
 		var oDate = new Date();
