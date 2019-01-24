@@ -458,10 +458,10 @@ export class reRelationNetComponent implements OnInit {
         // add link
         this.curStartNode=this.allNodes[0]['geneID'];
         this.curEndNode=this.allNodes[1]['geneID'];
-        let scores=[0,100];
+        let scores=this.storeService.getStore('userRelation').score;
         this.scoreMin=scores[0];
         this.scoreMax=scores[1];
-        this.curScore=this.scoreMax/2;
+        this.curScore=scores[2];
 
         this.allLinks=[...links];
 
