@@ -560,6 +560,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			.attr('transform', `translate(${-(margin.left - 10)},${eachChartHeight / 2})`)
 			.append('text')
 			.attr('font-size', '14px')
+			.attr('font-family','Arial')
 			.attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
 			.attr('transform', `rotate(-90)`)
@@ -653,6 +654,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			.append('text')
 			.attr('class', 'xAxisText')
 			.style('font-size', '10px')
+			.attr('font-family','Arial')
 			.attr('text-anchor', 'end')
 			.attr('dominant-baseline', 'middle')
 			.attr(
@@ -715,6 +717,7 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('transform', `translate(${-(margin.left - 10)},${eachChartHeight / 2})`)
 					.append('text')
 					.attr('font-size', '14px')
+					.attr('font-family','Arial')
 					.attr('text-anchor', 'middle')
 					.attr('dominant-baseline', 'middle')
 					.attr('transform', `rotate(-90)`)
@@ -910,6 +913,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			.style('text-anchor', 'start')
 			.style('dominant-baseline', 'middle')
 			.style('font-size', '12px')
+			.attr('font-family','Arial')
 			.attr('x', legend_text_space + legendRectW)
 			.attr('y', (d, i) => i * (legendBottom + legendRectH) + legendRectH / 2)
 			.text((d) => d.type);

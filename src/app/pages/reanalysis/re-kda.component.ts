@@ -686,6 +686,7 @@ export class ReKdaComponent implements OnInit {
                 .attr("dy", ".35em")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0.5)
+                .attr('font-family','Arial')
 
             if(that.chartEntity['symbolType']==='all'){
                node_text
