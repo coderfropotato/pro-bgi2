@@ -95,15 +95,25 @@ export class ReadsComparisonComponent implements OnInit {
   drawRondReads(data){
 
     var rows = data.rows;
-    var chartData = [];
-    for (var j = 0; j < rows.length; j++) {
-        chartData.push({
-          window_pos: parseInt(rows[j].window_pos),
-          window_read_num: rows[j].window_read_num,
-        })
-    }
+    rows.sort((a,b)=>{
+      return a["window_pos"] - b["window_pos"]
+    })
 
-    console.log(chartData);
+    var min = rows[0]['window_pos'];
+    var max = rows[rows.length-1]['window_pos'];
+
+    let scale = d3.scaleLinear().domain([min,max]).range([0,1])
+
+    let temps = [];
+    rows.forEach((d) => {
+      temps.push({
+        window_pos:scale(d.window_pos),
+        window_read_num:d.window_read_num
+      })
+    });
+    
+
+    console.log(temps)
 
     let that = this;
     let config: object={
@@ -115,14 +125,17 @@ export class ReadsComparisonComponent implements OnInit {
               title.textContent = data;
           })
         },
+        width:660,
         el: "#rondData",
+        custom: ["window_pos", "window_read_num"],
         type: "line",
-        data: chartData
+        data: temps
       },
       axis: {
         x: {
-          title: "Reads Number of Each Window",
+          title: "Relative Position in Genes(5‘->3’)(200 windows)",
           rotate: 60,
+          ticks:5,
           dblclick: function(event,title) {
             let text = title.firstChild.nodeValue;
             that.promptService.open(text,(data)=>{
@@ -131,7 +144,7 @@ export class ReadsComparisonComponent implements OnInit {
           }
         },
         y: {
-          title: "Relative Position in Genes(5‘->3’)(200 windows)",
+          title: "Reads Number of Each Window",
           dblclick: function(event,title) {
             let text = title.firstChild.nodeValue;
             that.promptService.open(text,(data)=>{
@@ -140,8 +153,8 @@ export class ReadsComparisonComponent implements OnInit {
           }
         }
       },
-      tooltip: function(d) {
-        return "<span>window_pos："+d.window_pos+"</span><br><span>window_read_num："+d.window_read_num+"</span>";
+      tooltip: function(d,index) {
+        return "<span>Relative Position in Genes(5‘->3’)(200 windows)："+d.window_pos+"</span><br><span>Reads Number of Each Window："+d.window_read_num+"</span>";
       }
     }
 
