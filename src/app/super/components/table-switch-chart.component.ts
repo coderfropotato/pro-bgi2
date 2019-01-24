@@ -265,7 +265,6 @@ export class TableSwitchChartComponent implements OnInit {
                 $(`#${this.id} .ant-table-body`).css("height", scrollH);
             }
             this.scroll['y'] = scrollH;
-            console.count('1');
         } catch (error) {
         }
     }
