@@ -32,14 +32,13 @@ export class ChartExportComponent implements OnInit {
 	downLoadImage(type) {
 		type = type ? type : 'image/png';
 		var chartDiv = $('#' + this.chartId);
-		var svgObj = chartDiv.find('svg:eq(0)');
-		console.log(svgObj.siblings().length)
-
+		var svgObj = chartDiv.children('svg');
+		
 		svgObj.attr('version', '1.1');
 		svgObj.attr('xmlns', 'http://www.w3.org/2000/svg');
 		svgObj.css('font-family', "Arial" );
-
-		var svgXml = svgObj.prop('outerHTML');
+		
+		var svgXml = chartDiv.prop('innerHTML');
 		var oDate = new Date();
 		var date =
 			oDate.getFullYear() +
