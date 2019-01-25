@@ -71,8 +71,34 @@
             (refresh)="handlerRefresh()"
         >
         </app-table-switch-chart>
-        <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-                ></app-color-picker>
+        <!-- <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+                ></app-color-picker> -->
+    </div>
+
+
+    <h3 class="title">4.4 测序饱和度</h3>
+    <div class="f-content">
+        <ng-template #searchSaturationTemplate>
+            <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="saturationSearchType" [nzSize]="'small'" (ngModelChange)="saturationTypeChange()" nzShowSearch>
+                <nz-option *ngFor="let item of saturationSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+            </nz-select>
+        </ng-template>
+        <app-table-switch-chart
+            #saturationDataChart
+            [id]="'saturationDataChart'"
+            [tableUrl]="saturationTableUrl"
+            [apiEntity]="saturationTableEntity"
+            [isOnlyChart] = "false"
+            (drawChartEmit)="drawSaturationReads($event)"
+            [flex]="true"
+            [chartId]="'saturationData'"
+            [chartName]="'测序饱和度曲线'"
+            [otherLeftTemplate]='searchSaturationTemplate'
+            (refresh)="handlerRefresh()"
+        >
+        </app-table-switch-chart>
+        <!-- <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+                ></app-color-picker> -->
     </div>
 
 </div>
