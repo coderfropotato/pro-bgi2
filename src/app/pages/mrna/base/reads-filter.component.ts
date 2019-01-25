@@ -203,7 +203,7 @@ export class ReadsFilterComponent implements OnInit {
 
   //Clean reads 碱基含量分布
   drawBaseReads(data){
-    console.log(data);
+    
     var baseThead = data.baseThead;
     var rows = data.rows;
     var chartData = [];
@@ -219,6 +219,8 @@ export class ReadsFilterComponent implements OnInit {
         }
     }
 
+    console.log(chartData);
+
     let that = this;
 
     let config:object={
@@ -230,6 +232,7 @@ export class ReadsFilterComponent implements OnInit {
                 title.textContent = data;
             })
           },
+          width:600,
           custom: ["name", "value", "category"],
           el: "#rawBaseID",
           type: "categoryLine",
@@ -239,20 +242,22 @@ export class ReadsFilterComponent implements OnInit {
           x: {
             title: "Position along reads",
             rotate: 60,
-            dblclick: function(event,title) {
-              let text = title.firstChild.nodeValue;
-              that.promptService.open(text,(data)=>{
-                  title.textContent = data;
-              })
+            dblclick: function(event) {
+              var name = prompt("请输入需要修改的标题", "");
+              if (name) {
+                this.setYTitle(name);
+                this.updateTitle();
+              }
             }
           },
           y: {
             title: "Percentage (%)",
-            dblclick: function(event,title) {
-              let text = title.firstChild.nodeValue;
-              that.promptService.open(text,(data)=>{
-                  title.textContent = data;
-              })
+            dblclick: function(event) {
+              var name = prompt("请输入需要修改的标题", "");
+              if (name) {
+                this.setYTitle(name);
+                this.updateTitle();
+              }
             }
           }
         },
