@@ -17,7 +17,8 @@ declare const $: any;
   styles: []
 })
 export class ReadsComparisonComponent implements OnInit {
-  @ViewChild('rondDataChart') rondDataChart;
+  @ViewChild('rondDataChart') rondDataChart;//
+  @ViewChild('coverageDataChart') coverageDataChart;
 
   // table one
   defaultEntity: object;
@@ -36,7 +37,13 @@ export class ReadsComparisonComponent implements OnInit {
   tableEntity:object;
   chart:any;
 
-  tableHeight = 450;
+  //转录本的 reads 覆盖度
+  coverSelectType:any=[];
+  coverSearchType:string;
+  coverTableUrl:string;
+  coverTableEntity:object;
+  coverChart:any;
+
 
   //图例颜色
   isShowColorPanel: boolean = false;
@@ -88,6 +95,16 @@ export class ReadsComparisonComponent implements OnInit {
       sample: this.curSearchType
     };
 
+    //转录本的 reads 覆盖度
+    this.coverSelectType=sample;
+    this.coverSearchType=sample[0].value;
+
+    this.coverTableUrl=`${config["javaPath"]}/basicModule/readsCoverage`;
+    this.coverTableEntity={
+      LCID: "DEMO_TOM_APDENOVO",
+      sample: this.coverSearchType
+    };
+
 
   }
 
@@ -136,20 +153,22 @@ export class ReadsComparisonComponent implements OnInit {
           title: "Relative Position in Genes(5‘->3’)(200 windows)",
           rotate: 60,
           ticks:5,
-          dblclick: function(event,title) {
-            let text = title.firstChild.nodeValue;
-            that.promptService.open(text,(data)=>{
-                title.textContent = data;
-            })
+          dblclick: function(event) {
+            var name = prompt("请输入需要修改的标题", "");
+            if (name) {
+              this.setYTitle(name);
+              this.updateTitle();
+            }
           }
         },
         y: {
           title: "Reads Number of Each Window",
-          dblclick: function(event,title) {
-            let text = title.firstChild.nodeValue;
-            that.promptService.open(text,(data)=>{
-                title.textContent = data;
-            })
+          dblclick: function(event) {
+            var name = prompt("请输入需要修改的标题", "");
+            if (name) {
+              this.setYTitle(name);
+              this.updateTitle();
+            }
           }
         }
       },
@@ -158,8 +177,93 @@ export class ReadsComparisonComponent implements OnInit {
       }
     }
 
-    this.chart=new d4().init(config);
+    new d4().init(config);
     
+  }
+
+  //转录本的 reads 覆盖度
+  drawCoverReads(data){
+    // console.log(data);
+    // let rows = [];
+
+    // data.rows.forEach((d) => {
+    //   rows.push({
+    //     index: d["percent_covered"].split("-")[0],
+
+    //   })
+    //   d["percent_covered"].split("-")[0]
+      
+    // });
+
+    // rows.sort((a,b)=>{
+    //   return a["window_pos"] - b["window_pos"]
+    // })
+
+    // var min = rows[0]['window_pos'];
+    // var max = rows[rows.length-1]['window_pos'];
+
+    // let scale = d3.scaleLinear().domain([min,max]).range([0,1])
+
+    // let temps = [];
+    // rows.forEach((d) => {
+    //   temps.push({
+    //     window_pos:scale(d.window_pos),
+    //     window_read_num:d.window_read_num
+    //   })
+    // });
+
+    let that = this;
+    let config: object={
+        chart: {
+          title: "转录本的 reads 覆盖度",
+          dblclick: function(event,title) {
+            let text = title.firstChild.nodeValue;
+            that.promptService.open(text,(data)=>{
+                title.textContent = data;
+            })
+          },
+          width:600,
+          custom: ["percent_covered", "percent_transcript"],
+          el: "#coverageData",
+          type: "bar",
+          data: data.rows
+          },
+          axis: {
+          x: {
+            title: "Percent covered(%)",
+            dblclick: function(event) {
+              var name = prompt("请输入需要修改的标题", "");
+              if (name) {
+                this.setYTitle(name);
+                this.updateTitle();
+              }
+            }
+          },
+          y: {
+            title: "Percentage of Transcripts(%)",
+            dblclick: function(event) {
+              var name = prompt("请输入需要修改的标题", "");
+              if (name) {
+                this.setYTitle(name);
+                this.updateTitle();
+              }
+            }
+          },
+          legend: {
+            show: true,
+            position: "right",
+            click:function(d,index){
+              that.color = d3.select(d).attr('fill');
+              that.legendIndex = index;
+              that.isShowColorPanel = true;
+            }
+          },
+          "tooltip": function(d) {
+            return "<span>percent_covered:"+d.percent_covered+"</span><span>percent_transcript:"+d.percent_transcript+"</span>"
+          }
+      }
+    }
+    this.chart=new d4().init(config);
   }
 
   handlerRefresh(){
@@ -175,6 +279,11 @@ export class ReadsComparisonComponent implements OnInit {
   searchTypeChange(){
     this.tableEntity["sample"] = this.curSearchType;
     this.rondDataChart.reGetData();
+  }
+
+  searchCoverTypeChange(){
+    this.coverTableEntity["sample"] = this.coverSearchType;
+    this.coverageDataChart.reGetData();
   }
 
 }
