@@ -131,7 +131,9 @@
                     </nz-table>
 
                     <!-- chart -->
-                    <div class="center chart" style="margin: 0 auto;"  [attr.id]="chartId" [hidden]="isShowTable || chartError"></div>
+                    <div class="center chart" style="margin: 0 auto;" [hidden]="isShowTable || chartError">
+                        <div [attr.id]="chartId"></div>
+                    </div>
 
                     <!-- error -->
                     <app-error *ngIf="!isShowTable && chartError" [error]="chartError"></app-error>
