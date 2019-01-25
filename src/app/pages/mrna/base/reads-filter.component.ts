@@ -203,7 +203,7 @@ export class ReadsFilterComponent implements OnInit {
 
   //Clean reads 碱基含量分布
   drawBaseReads(data){
-    console.log(data);
+    
     var baseThead = data.baseThead;
     var rows = data.rows;
     var chartData = [];
@@ -219,6 +219,8 @@ export class ReadsFilterComponent implements OnInit {
         }
     }
 
+    console.log(chartData);
+
     let that = this;
 
     let config:object={
@@ -230,6 +232,7 @@ export class ReadsFilterComponent implements OnInit {
                 title.textContent = data;
             })
           },
+          width:600,
           custom: ["name", "value", "category"],
           el: "#rawBaseID",
           type: "categoryLine",
