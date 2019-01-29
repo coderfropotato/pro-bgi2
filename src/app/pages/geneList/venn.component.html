@@ -136,7 +136,7 @@
             <!-- 只看表 -->
             <!-- <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i> -->
         </div>
-        <!-- 表格转换 -->
+        <!-- 表格转换 [defaultShowFilterStatus]="defaultShowFilterStatus"-->
         <app-table-transformation
             *ngIf="getGeneListDone"
             class="no-outside-border"

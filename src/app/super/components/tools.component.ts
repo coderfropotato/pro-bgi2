@@ -178,7 +178,8 @@ export class ToolsComponent implements OnInit {
 	heatmapReError: any = false;
 	doHeatmapRelationAjax: boolean = false;
 	heatmapReSelectRelation: any[] = [];
-	heatmapReSelectGeneType: object[] = [];
+    heatmapReSelectGeneType: object[] = [];
+    reClusterByGeneType:boolean = false;
 
 	// 基因分类参数
 	geneClassData: any[] = [];
@@ -293,7 +294,8 @@ export class ToolsComponent implements OnInit {
 		this.heatmapReRelations = [];
 		this.heatmapReSelectRelation = [];
 		this.heatmapReError = false;
-		this.doHeatmapRelationAjax = false;
+        this.doHeatmapRelationAjax = false;
+        this.reClusterByGeneType = false;
 
 		// 基因分类参数
 		this.geneClassData = [];
@@ -498,7 +500,7 @@ export class ToolsComponent implements OnInit {
 		// });
 		let tableEntity = this.toolsService.get('tableEntity');
 		tableEntity['mongoId'] = this.toolsService.get('mongoId');
-        this.selectGeneType[0]['choose'] = this.clusterByGeneType;
+        if(this.selectGeneType.length) this.selectGeneType[0]['choose'] = this.clusterByGeneType;
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -508,7 +510,8 @@ export class ToolsComponent implements OnInit {
 					// chooseType: [ this.switchType(type) ],
 					chooseList: this[`${type}Select`],
 					verticalDefault: this.selectGeneType,
-					...tableEntity,
+                    ...tableEntity,
+                    standardization:this.stand,
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.toolsService.get('tableEntity')['species'],
 					version: this.storeService.getStore('version')
@@ -1350,31 +1353,25 @@ export class ToolsComponent implements OnInit {
 
 	// 基因类型选择
 	handlerReGeneSelect(item) {
-		if (!item['checked']) {
-			if (this.heatmapReSelectGeneType.length >= 2) {
-				this.heatmapReGeneTypeError = true;
-			} else {
-				item['checked'] = true;
-				this.heatmapReSelectGeneType.push(item);
-				this.heatmapReGeneTypeError = false;
-			}
-		} else {
-			item['checked'] = false;
-
-			let index = this.heatmapReSelectGeneType.findIndex((val, index) => {
-				return val['key'] === item['key'];
-			});
-
+		if (item['checked']) {
+			this.heatmapReGeneType.forEach(v => (v['checked'] = false));
+			let index = this.findIndex(item['name'], this.heatmapReSelectGeneType, 'name');
 			if (index != -1) this.heatmapReSelectGeneType.splice(index, 1);
-			this.heatmapReGeneTypeError = !this.heatmapReSelectGeneType.length;
+		} else {
+			this.heatmapReGeneType.forEach(v => (v['checked'] = false));
+			this.heatmapReSelectGeneType.length = 0;
+			item['checked'] = true;
+			this.heatmapReSelectGeneType.push(item);
 		}
+        this.reClusterByGeneType = false;
 	}
 
 	heatmapRelationConfirm() {
 		this.isSubmitReanalysis = true;
 		let entity = this.toolsService.get('tableEntity');
 		entity['relations'] = this.heatmapReSelectRelation;
-		entity['mongoId'] = this.toolsService.get('mongoId');
+        entity['mongoId'] = this.toolsService.get('mongoId');
+        if(this.heatmapReSelectGeneType.length) this.heatmapReSelectGeneType[0]['choose'] = this.reClusterByGeneType;
 		this.ajaxService
 			.getDeferData({
 				data: {

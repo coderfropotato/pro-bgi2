@@ -120,105 +120,73 @@ const ROUTES: Routes = [
 				redirectTo: 'diff-venn',
 				pathMatch: 'full'
 			},
-			{
-				path: 'table',
-				component: GeneTableTestComponent,
-				data: {
-					keep: true,
-					module: 'geneTableTest'
-				}
-			},
-			{
-				path: 'addColumn',
-				component: AddComponent,
-				data: {
-					keep: true,
-					module: 'addColumn'
-				}
-			},
-			{
-				path: 'transformationTable',
-				component: GeneTransformTableTestComponent,
-				data: {
-					keep: true,
-					module: 'geneTransformationTable'
-				}
-			},
-			{
-				path: 'littleTableTest',
-				component: LittleTableTestComponent,
-				data: {
-					keep: true,
-					module: 'littleTableTest'
-				}
-			},
-			{
-				path: 'bigTable',
-				component: BigTableTestComponent,
-				data: {
-					keep: true,
-					module: 'bigTable'
-				}
-			},
+			// {
+			// 	path: 'table',
+			// 	component: GeneTableTestComponent,
+			// 	data: {
+			// 		keep: true,
+			// 		module: 'geneTableTest'
+			// 	}
+			// },
+			// {
+			// 	path: 'addColumn',
+			// 	component: AddComponent,
+			// 	data: {
+			// 		keep: true,
+			// 		module: 'addColumn'
+			// 	}
+			// },
+			// {
+			// 	path: 'transformationTable',
+			// 	component: GeneTransformTableTestComponent,
+			// 	data: {
+			// 		keep: true,
+			// 		module: 'geneTransformationTable'
+			// 	}
+			// },
+			// {
+			// 	path: 'littleTableTest',
+			// 	component: LittleTableTestComponent,
+			// 	data: {
+			// 		keep: true,
+			// 		module: 'littleTableTest'
+			// 	}
+			// },
+			// {
+			// 	path: 'bigTable',
+			// 	component: BigTableTestComponent,
+			// 	data: {
+			// 		keep: true,
+			// 		module: 'bigTable'
+			// 	}
+			// },
 			// page
+			// {
+			// 	path: 'net',
+			// 	component: netComponent,
+			// 	data: {
+			// 		keep: true,
+			// 		module: 'net'
+			// 	}
+			// },
+			// {
+			// 	path: 'multiOmics',
+			// 	component: multiOmicsComponent,
+			// 	data: {
+			// 		keep: true,
+			// 		module: 'multiOmics'
+			// 	}
+			// },
 			{
-				path: 'cxzk1',
-				component: cxzk1Component,
-				data: {
-					keep: true,
-					module: 'cxzk1'
-				}
-			},
-			{
-				path: 'goRich',
-				component: GoRichComponent,
-				data: {
-					keep: true,
-					module: 'goRich'
-				}
-			},
-			{
-				path: 'net',
-				component: netComponent,
-				data: {
-					keep: true,
-					module: 'net'
-				}
-			},
-			{
-				path: 'multiOmics',
-				component: multiOmicsComponent,
-				data: {
-					keep: true,
-					module: 'multiOmics'
-				}
-			},
-			{
-				path: 'layout1',
-				component: Layout1Page,
-				data: {
-					keep: true,
-					module: 'layout1'
-				}
-			},
-			{
-				path: 'layout2',
-				component: Layout2Component,
-				data: {
-					keep: true,
-					module: 'layout2'
-				}
-			},
-			{
-				path: 'cluster',
+				path: 'cluster',   // 聚类
 				component: clusterComponent,
 				data: {
 					keep: true,
 					module: 'cluster'
 				}
-            },
-            {
-				path: 'express-venn',
+			},
+			{
+				path: 'express-venn',  // 表达量
 				component: ExpressVennPage,
 				data: {
 					keep: true,
@@ -226,7 +194,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 'diff-venn',
+				path: 'diff-venn',  // 差异
 				component: DiffVennPage,
 				data: {
 					keep: true,
@@ -234,55 +202,55 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 'upload',
+				path: 'upload', // 上传数据
 				component: UploadComponent,
 				data: {
 					keep: false,
 					module: 'upload'
 				}
-            },
-            {
-                path:'overview',
-                component:OverviewComponent,
-                data:{
-                    keep:false,
-                    module:"overview"
-                }
-            },
-            {
-                path:'information',
-                component:InformationComponent,
-                data:{
-                    keep:false,
-                    module:"information"
-                }
-            },
-            {
-                path:'reads-filter',
-                component:ReadsFilterComponent,
-                data:{
-                    keep:false,
-                    module:"readsFilter"
-                }
-            },
-            {
-                path:'reads-comparison',
-                component:ReadsComparisonComponent,
-                data:{
-                    keep:false,
-                    module:"readsComparison"
-                }
-            },
-            {
-                path:'lrna',
-                component:LrnaComponent,
-                data:{
-                    keep:false,
-                    module:"lrna"
-                }
-            },
-            {
-				path: 'help',
+			},
+			{
+				path: 'overview',   // 项目概况
+				component: OverviewComponent,
+				data: {
+					keep: false,
+					module: 'overview'
+				}
+			},
+			{
+				path: 'information', //项目信息
+				component: InformationComponent,
+				data: {
+					keep: false,
+					module: 'information'
+				}
+			},
+			{
+				path: 'reads-filter', // reads 过滤
+				component: ReadsFilterComponent,
+				data: {
+					keep: false,
+					module: 'readsFilter'
+				}
+			},
+			{
+				path: 'reads-comparison', // reads 比对
+				component: ReadsComparisonComponent,
+				data: {
+					keep: false,
+					module: 'readsComparison'
+				}
+			},
+			{
+				path: 'lrna', // 小rna
+				component: LrnaComponent,
+				data: {
+					keep: false,
+					module: 'lrna'
+				}
+			},
+			{
+				path: 'help', // 帮助
 				component: HelpComponent,
 				data: {
 					keep: true,

@@ -425,7 +425,11 @@
 					<div *ngIf="heatmapReGeneType.length">
 						<button (click)="handlerReGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of heatmapReGeneType;index as i;"
 						 nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
-						<nz-alert *ngIf="heatmapReGeneTypeError" nzShowIcon nzType="warning" nzMessage="基因分类不能大于2个"></nz-alert>
+                        <!-- <nz-alert *ngIf="heatmapReGeneTypeError" nzShowIcon nzType="warning" nzMessage="基因分类不能大于2个"></nz-alert> -->
+                        <br>
+                        <label *ngIf="heatmapReSelectGeneType.length" nz-checkbox [(ngModel)]="reClusterByGeneType" [nzDisabled]="!heatmapReSelectGeneType[0]['flag']">
+                            按照分类结果进行聚类
+                        </label>
 					</div>
 					<p *ngIf="!heatmapReStand.length && !heatmapReGeneType.length && !heatmapReRelations.length && doHeatmapRelationAjax"
 					 class="center">暂无参数</p>

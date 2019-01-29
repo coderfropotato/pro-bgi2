@@ -47,7 +47,7 @@
 
                 <!-- 可选择数据的大表 -->
                 <ng-container>
-                    <app-big-table-check class="no-outside-border" #bigTable
+                    <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable
                         [selectTemplate]="selectTemplate"
                         [tableHeight]="leftTableHeight / 2"
                         [defaultChecked]="false"
@@ -65,7 +65,7 @@
 
                 <!-- 图表切换 -->
                 <div>
-                    <app-table-switch-chart #switchChart
+                    <app-table-switch-chart *ngIf="selectedVal" #switchChart
                         [id]="'re-rich'"
                         [tableUrl]="chartUrl"
                         [apiEntity]="chartEntity"
@@ -101,7 +101,7 @@
                 <!-- 返回 -->
                 <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button> </div>
                 <!-- 表格转换 -->
-                <app-table-transformation class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked" [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
+                <app-table-transformation *ngIf="selectedVal" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked" [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
         </div>
     </div>
 </div>

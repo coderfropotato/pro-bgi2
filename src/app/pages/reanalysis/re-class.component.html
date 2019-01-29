@@ -37,13 +37,13 @@
 
                 <!-- 图标切换 -->
                 <ng-container *ngIf="isExceed!=null && !isExceed">
-                    <app-table-switch-chart #switchChart [id]="'re-class'" [isOnlyChart]="false" [tableUrl]="chartUrl"  [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true"> </app-table-switch-chart>
+                    <app-table-switch-chart #switchChart *ngIf="selectedVal" [id]="'re-class'" [isOnlyChart]="false" [tableUrl]="chartUrl"  [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true"> </app-table-switch-chart>
 
                     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
                 </ng-container>
                 <!-- 大表 -->
                 <ng-container *ngIf="isExceed!=null && isExceed">
-                    <app-big-table-check class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl" tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight" (checkedChange)="handleCheckChange($event)" [showConfirmButton]="true"></app-big-table-check>
+                    <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl" tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight" (checkedChange)="handleCheckChange($event)" [showConfirmButton]="true"></app-big-table-check>
                 </ng-container>
             </div>
             </div>
@@ -59,7 +59,7 @@
                     <!-- 返回 -->
                     <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button> </div>
                 <!-- 表格转换 -->
-                <app-table-transformation class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked" [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
+                <app-table-transformation *ngIf="selectedVal" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked" [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
             </div>
         </div>
     </div>
