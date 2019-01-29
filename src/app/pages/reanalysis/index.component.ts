@@ -38,7 +38,7 @@ export class ReanalysisIndexComponent implements OnInit {
         (async () => {
             try {
                 await this.getLcInfo();
-                await this.getClassRichConfig();
+                // await this.getClassRichConfig();
                 this.ready = true;
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
@@ -91,32 +91,32 @@ export class ReanalysisIndexComponent implements OnInit {
     }
 
     // 获取分类 富集下拉列表数据
-    async getClassRichConfig(){
-        return new Promise((resolve,reject)=>{
-            this.ajaxService
-                .getDeferData({
-                    url: `${config["javaPath"]}/classification/config`,
-                    data:{
-                        LCID:sessionStorage.getItem('LCID'),
-                        species: this.storeService.getStore('genome'),
-                        version: this.storeService.getStore('version')
-                    }
-                })
-                .subscribe(
-                    data => {
-                        console.log(data);
-                        if (data["status"] == "0" && !$.isEmptyObject(data['data'])) {
-                           this.storeService.setStore('geneClassRichConfig',data['data']);
-                           sessionStorage.setItem('geneClassRichConfig',JSON.stringify(data['data']));
-                           resolve("success");
-                        }else{
-                            resolve("error");
-                        }
-                    },
-                    () => reject("error")
-                );
-        })
-    }
+    // async getClassRichConfig(){
+    //     return new Promise((resolve,reject)=>{
+    //         this.ajaxService
+    //             .getDeferData({
+    //                 url: `${config["javaPath"]}/classification/config`,
+    //                 data:{
+    //                     LCID:sessionStorage.getItem('LCID'),
+    //                     species: this.storeService.getStore('genome'),
+    //                     version: this.storeService.getStore('version')
+    //                 }
+    //             })
+    //             .subscribe(
+    //                 data => {
+    //                     console.log(data);
+    //                     if (data["status"] == "0" && !$.isEmptyObject(data['data'])) {
+    //                        this.storeService.setStore('geneClassRichConfig',data['data']);
+    //                        sessionStorage.setItem('geneClassRichConfig',JSON.stringify(data['data']));
+    //                        resolve("success");
+    //                     }else{
+    //                         resolve("error");
+    //                     }
+    //                 },
+    //                 () => reject("error")
+    //             );
+    //     })
+    // }
 
     // async getAddThead() {
     //     return new Promise((resolve, reject) => {
