@@ -34,11 +34,21 @@ export class ChartExportComponent implements OnInit {
 		var chartDiv = $('#' + this.chartId);
 		var svgObj = chartDiv.children('svg');
 		
-		svgObj.attr('version', '1.1');
-		svgObj.attr('xmlns', 'http://www.w3.org/2000/svg');
-		svgObj.css('font-family', "Arial" );
-		
+		var svgArr=[];
+		svgObj.each((i,d)=>{
+			svgArr.push($(d).prop('outerHTML'));
+		})
+
 		var svgXml = chartDiv.prop('innerHTML');
+
+		if(svgArr.length > 1){
+			svgXml = `<svg style="font-family:Arial;" width='${chartDiv.width()}' height='${chartDiv.height()}' version="1.1" xmlns="http://www.w3.org/2000/svg">${chartDiv.prop('innerHTML')}</svg>`;
+		}else{
+			svgObj.attr('version', '1.1');
+			svgObj.attr('xmlns', 'http://www.w3.org/2000/svg');
+			svgObj.css('font-family', "Arial" );
+		}
+
 		var oDate = new Date();
 		var date =
 			oDate.getFullYear() +

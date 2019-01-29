@@ -17,8 +17,9 @@ declare const $: any;
   styles: []
 })
 export class ReadsComparisonComponent implements OnInit {
-  @ViewChild('rondDataChart') rondDataChart;//
+  @ViewChild('rondDataChart') rondDataChart;//saturationDataChart
   @ViewChild('coverageDataChart') coverageDataChart;
+  @ViewChild('saturationDataChart') saturationDataChart;
 
   // table one
   defaultEntity: object;
@@ -43,6 +44,13 @@ export class ReadsComparisonComponent implements OnInit {
   coverTableUrl:string;
   coverTableEntity:object;
   coverChart:any;
+
+  //测序饱和度曲线
+  saturationSelectType:any=[];
+  saturationSearchType:string;
+  saturationTableUrl:string;
+  saturationTableEntity:object;
+  saturationChart:any;
 
 
   //图例颜色
@@ -105,6 +113,15 @@ export class ReadsComparisonComponent implements OnInit {
       sample: this.coverSearchType
     };
 
+    //测序饱和度曲线
+    this.saturationSelectType=sample;
+    this.saturationSearchType=sample[0].value;
+
+    this.saturationTableUrl=`${config["javaPath"]}/basicModule/seqSaturation`;
+    this.saturationTableEntity={
+      LCID: "DEMO_TOM_APDENOVO",
+      sample: this.saturationSearchType
+    };
 
   }
 
@@ -263,7 +280,65 @@ export class ReadsComparisonComponent implements OnInit {
           }
       }
     }
-    this.chart=new d4().init(config);
+    new d4().init(config);
+  }
+
+  //测序饱和度曲线
+  drawSaturationReads(data){
+    console.log(data);
+
+    let rows = data.rows;
+    rows.sort((a,b)=>{
+      return a["readnum_100k"]-b["readnum_100k"]
+    })
+
+    let that = this;
+    let config: object={
+      chart: {
+        title: "测序饱和度曲线",
+        dblclick: function(event,title) {
+          let text = title.firstChild.nodeValue;
+          that.promptService.open(text,(data)=>{
+              title.textContent = data;
+          })
+        },
+        width:660,
+        interpolate:'cardinal',
+        el: "#saturationData",
+        custom: ["readnum_100k", "gene_idt_ratio"],
+        type: "line",
+        data: rows
+      },
+      axis: {
+        x: {
+          title: "Reads number(x100K)",
+          rotate: 60,
+          ticks:5,
+          dblclick: function(event) {
+            var name = prompt("请输入需要修改的标题", "");
+            if (name) {
+              this.setYTitle(name);
+              this.updateTitle();
+            }
+          }
+        },
+        y: {
+          title: "Gene Identification ratio(%)",
+          dblclick: function(event) {
+            var name = prompt("请输入需要修改的标题", "");
+            if (name) {
+              this.setYTitle(name);
+              this.updateTitle();
+            }
+          }
+        }
+      },
+      tooltip: function(d,index) {
+        return "<span>Reads number(x100K)："+d.readnum_100k+"</span><br><span>Gene Identification ratio(%)："+d.gene_idt_ratio+"</span>";
+      }
+    }
+
+    new d4().init(config);
   }
 
   handlerRefresh(){
@@ -284,6 +359,11 @@ export class ReadsComparisonComponent implements OnInit {
   searchCoverTypeChange(){
     this.coverTableEntity["sample"] = this.coverSearchType;
     this.coverageDataChart.reGetData();
+  }
+
+  saturationTypeChange(){
+    this.saturationTableEntity["sample"] = this.saturationSearchType;
+    this.saturationDataChart.reGetData();
   }
 
 }
