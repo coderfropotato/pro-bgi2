@@ -52,7 +52,7 @@ export class LittleTableComponent implements OnInit {
                        this.thead = data["baseThead"];
                     }
                     this.isLoading = false;
-                    console.log(data)
+                    //console.log(data)
 
                 },
                 error => {
