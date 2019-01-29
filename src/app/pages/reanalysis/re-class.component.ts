@@ -139,8 +139,8 @@ export class ReClassComponent implements OnInit {
 
 	ngOnInit() {
 		(async () => {
-			this.selectData = JSON.parse(sessionStorage.getItem('geneClassRichConfig'))[this.annotation];
-			this.selectedVal = this.selectData[0];
+			this.selectData = await this.getSelect();
+			this.selectedVal = this.selectData.length?this.selectData[0]:null;
 
 			this.first = true;
 			this.resetCheckGraph = true;
@@ -258,7 +258,33 @@ export class ReClassComponent implements OnInit {
 					}
 				);
 		});
-	}
+    }
+
+    async getSelect(){
+        return new Promise((resolve,reject)=>{
+            this.ajaxService
+				.getDeferData({
+					url: `${config['javaPath']}/classification/level`,
+					data: {
+						LCID: sessionStorage.getItem('LCID'),
+						annotation: this.annotation,
+						species: this.storeService.getStore('genome')
+					}
+				})
+				.subscribe(
+					(res) => {
+						if (res['data'] && res['data'].length) {
+							resolve(res['data']);
+						} else {
+							resolve([]);
+						}
+					},
+					(error) => {
+						resolve([]);
+					}
+				);
+        })
+    }
 
 	handleCheckChange(checked) {
 		this.checkedList.length = 0;

@@ -100,7 +100,7 @@ export class ReRichComponent implements OnInit {
 
     // 图上选择的数据
     selectGeneList:string[] = [];
-    
+
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -135,101 +135,130 @@ export class ReRichComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.chartTypeData=[
-            {
-                key:"bubble",
-                value:"气泡图"
-            },
-            {
-            key:"column",
-            value:"柱状图"
-        }];
+        (async ()=>{
+            this.chartTypeData=[
+                {
+                    key:"bubble",
+                    value:"气泡图"
+                },
+                {
+                key:"column",
+                value:"柱状图"
+            }];
 
-        this.selectData = JSON.parse(sessionStorage.getItem('geneClassRichConfig'))[this.annotation];
-        this.selectedVal = this.selectData[0];
+			this.selectData = await this.getSelect();
+			this.selectedVal = this.selectData.length?this.selectData[0]:null;
 
-        this.bigtableUrl=`${config['javaPath']}/enrichment/generalTable`;
-        this.chartUrl=`${config['javaPath']}/enrichment/graph`;
-        this.chartEntity = {
-            LCID: this.storeService.getStore('LCID'),
-            annotation:this.annotation,
-            geneType: this.geneType,
-            species: this.storeService.getStore('genome'),
-            checkedClassifyType:this.selectedVal,
-            checkedClassifyList:[],
-            searchList:[],
-            pageIndex:1,
-            pageSize:20,
-            sortKey:null,
-            sortValue:null,
-            tid: "04c0d1923fc746fb8188175e124ac269",
-            version:this.storeService.getStore('version')
-        };
+            this.bigtableUrl=`${config['javaPath']}/enrichment/generalTable`;
+            this.chartUrl=`${config['javaPath']}/enrichment/graph`;
+            this.chartEntity = {
+                LCID: this.storeService.getStore('LCID'),
+                annotation:this.annotation,
+                geneType: this.geneType,
+                species: this.storeService.getStore('genome'),
+                checkedClassifyType:this.selectedVal,
+                checkedClassifyList:[],
+                searchList:[],
+                pageIndex:1,
+                pageSize:20,
+                sortKey:null,
+                sortValue:null,
+                tid: "04c0d1923fc746fb8188175e124ac269",
+                version:this.storeService.getStore('version')
+            };
 
-        this.first = true;
-        this.resetCheckGraph = true;
-        this.applyOnceSearchParams = true;
-        this.defaultUrl = `${config['javaPath']}/enrichment/table`;
-        this.defaultEntity = {
-            LCID: sessionStorage.getItem('LCID'),
-            tid: this.tid,
-            annotation: this.annotation,
-            pageIndex: 1,
-            pageSize: 20,
-            mongoId: null,
-            addThead: [],
-            transform: false,
-            matrix: false,
-            relations: [],
-            sortValue: null,
-            sortKey: null,
-            reAnaly: false,
-            geneType: this.geneType,
-            species: this.storeService.getStore('genome'),
-            version: this.version,
-            searchList: [],
-            checkedClassifyType: this.selectedVal,
-            checkedClassifyList: this.selectGeneList,
-            checkGraph: true,
-            sortThead: this.addColumnService['sortThead'],
-            removeColumns: []
-    };
-        this.defaultTableId = 'default_rich';
-        this.defaultDefaultChecked = true;
-        this.defaultEmitBaseThead = true;
-        this.defaultCheckStatusInParams = true;
+            this.first = true;
+            this.resetCheckGraph = true;
+            this.applyOnceSearchParams = true;
+            this.defaultUrl = `${config['javaPath']}/enrichment/table`;
+            this.defaultEntity = {
+                LCID: sessionStorage.getItem('LCID'),
+                tid: this.tid,
+                annotation: this.annotation,
+                pageIndex: 1,
+                pageSize: 20,
+                mongoId: null,
+                addThead: [],
+                transform: false,
+                matrix: false,
+                relations: [],
+                sortValue: null,
+                sortKey: null,
+                reAnaly: false,
+                geneType: this.geneType,
+                species: this.storeService.getStore('genome'),
+                version: this.version,
+                searchList: [],
+                checkedClassifyType: this.selectedVal,
+                checkedClassifyList: this.selectGeneList,
+                checkGraph: true,
+                sortThead: this.addColumnService['sortThead'],
+                removeColumns: []
+            };
+            this.defaultTableId = 'default_rich';
+            this.defaultDefaultChecked = true;
+            this.defaultEmitBaseThead = true;
+            this.defaultCheckStatusInParams = true;
 
-        this.extendUrl = `${config['javaPath']}/enrichment/table`;
-        this.extendEntity = {
-            LCID: sessionStorage.getItem('LCID'),
-            tid: this.tid,
-            annotation: this.annotation,
-            pageIndex: 1,
-            pageSize: 20,
-            mongoId: null,
-            addThead: [],
-            transform: false,
-            matchAll: false,
-            matrix: false,
-            relations: [],
-            sortValue: null,
-            sortKey: null,
-            reAnaly: false,
-            geneType: this.geneType,
-            species: this.storeService.getStore('genome'),
-            version: this.version,
-            searchList: [],
-            checkedClassifyType: this.selectedVal,
-            checkedClassifyList: this.selectGeneList,
-            checkGraph: true,
-            sortThead: this.addColumnService['sortThead'],
-            removeColumns: []
-    };
-        this.extendTableId = 'extend_rich';
-        this.extendDefaultChecked = true;
-        this.extendEmitBaseThead = true;
-        this.extendCheckStatusInParams = false;
+            this.extendUrl = `${config['javaPath']}/enrichment/table`;
+            this.extendEntity = {
+                LCID: sessionStorage.getItem('LCID'),
+                tid: this.tid,
+                annotation: this.annotation,
+                pageIndex: 1,
+                pageSize: 20,
+                mongoId: null,
+                addThead: [],
+                transform: false,
+                matchAll: false,
+                matrix: false,
+                relations: [],
+                sortValue: null,
+                sortKey: null,
+                reAnaly: false,
+                geneType: this.geneType,
+                species: this.storeService.getStore('genome'),
+                version: this.version,
+                searchList: [],
+                checkedClassifyType: this.selectedVal,
+                checkedClassifyList: this.selectGeneList,
+                checkGraph: true,
+                sortThead: this.addColumnService['sortThead'],
+                removeColumns: []
+            };
+            this.extendTableId = 'extend_rich';
+            this.extendDefaultChecked = true;
+            this.extendEmitBaseThead = true;
+            this.extendCheckStatusInParams = false;
+        })()
     }
+
+    async getSelect(){
+        return new Promise((resolve,reject)=>{
+            this.ajaxService
+				.getDeferData({
+					url: `${config['javaPath']}/classification/level`,
+					data: {
+						LCID: sessionStorage.getItem('LCID'),
+						annotation: this.annotation,
+						species: this.storeService.getStore('genome')
+					}
+				})
+				.subscribe(
+					(res) => {
+						if (res['data'] && res['data'].length) {
+							resolve(res['data']);
+						} else {
+							resolve([]);
+						}
+					},
+					(error) => {
+						resolve([]);
+					}
+				);
+        })
+    }
+
 
     showTableChange(isshowtable){
         this.isShowTable=isshowtable;
