@@ -978,9 +978,6 @@ export class ReMultiOmicsComponent implements OnInit {
 	}
 
 	multipleConfirm() {
-		console.log(this.selectedColumn);
-		console.log(this.selectedBox);
-
 		this.classifyChartSelect();
 		this.first
 			? (this.defaultEntity['checkGraph'] = true)
@@ -1003,8 +1000,9 @@ export class ReMultiOmicsComponent implements OnInit {
 		if (setArr.length) {
 			this.graphRelations.length = 0;
 			setArr.forEach((v) => {
-				if (v['relation'] != 'false' && !this.graphRelations.includes(v['relations'])) {
-					this.graphRelations.push(v['relation']);
+                let r = this.graphRelations.map(v=>v['relations']);
+				if (v['relation'] != 'false' && !r.includes(v['relations'])) {
+					this.graphRelations.push(v);
 				}
 			});
 		} else {
