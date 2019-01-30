@@ -14,29 +14,6 @@ declare const SparkMD5:any;
     styles: []
 })
 export class HelpComponent implements OnInit {
-    // resultList: any[] = [];
-    // isShowTab: boolean = true;
-    // isVisible: boolean = false;
-    // fileList: UploadFile[] = [];
-    // fileList2: UploadFile[] = [];
-    // fileList3: UploadFile[] = [];
-    // nfileList: UploadFile[] = [];
-    // m_index: number = 0;
-    // tab1: object;
-    // PercentNum: number;
-    // T_progress: any;
-	// defaultSetEntity: object;
-	// go_ResponseText:object={};
-	// now_page:number;//当前页
-	// total_page:number;
-	// pageSize: number;
-	// selectAble:boolean;
-	// fristFlag:boolean;
-	// colors: string [] = [];
-	// file_obj:object={
-	// 	name:'',
-	// 	time:''
-    // };
 
     mflag: number = 0;
     // 第一种情况：只有lncRNA、RNAref、RNAseq，无miRNA，显示以下8项；（序号用6.1-6.8） number = 0; 
