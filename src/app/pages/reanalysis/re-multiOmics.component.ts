@@ -711,7 +711,7 @@ export class ReMultiOmicsComponent implements OnInit {
 				boxplot_g.append('g').attr('class', 'yAxis-boxplot').call(yAxisBox);
 
 				// boxplot y title
-				boxplot_g
+				let boxYtitle = boxplot_g
 					.append('g')
 					.attr('class', 'yText-boxplot')
 					.attr('transform', `translate(${-(margin.left - 10)},${eachChartHeight / 2})`)
@@ -720,8 +720,10 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('font-family','Arial')
 					.attr('text-anchor', 'middle')
 					.attr('dominant-baseline', 'middle')
-					.attr('transform', `rotate(-90)`)
-					.text(d.relation);
+					.attr('transform', `rotate(-90)`);
+					
+				boxYtitle.append('tspan').text(d.relation);
+				boxYtitle.append('tspan').attr("x",0).attr('dy',15).text(d.name);
 
 				// boxplot x
 				let xAxisBox = boxplot_g
@@ -862,17 +864,33 @@ export class ReMultiOmicsComponent implements OnInit {
 				boxplots
 					.append('g')
 					.attr('class', 'boxPoints')
-					.attr('transform', (k, i) => `translate(${(i + 1) * k.space + i * k.w + k.w / 2},0)`)
+					.attr('transform', (k, i) => `translate(${(i + 1) * k.space + i * k.w},0)`)
 					.selectAll('.allPoints')
-					.data((z) => z.scatters)
+					.data((k) =>{
+						var scatters=[];
+						k.scatters.forEach(d=>{
+							scatters.push({
+								x:Math.random(),
+								y:d,
+								w:k.w
+							})
+						})
+
+						// var domains=d3.extent(scatters,d=>d.x);
+						scatters.forEach(d=>{
+							d.xscale=d3.scaleLinear().domain([0,1]).range([0,d.w]).clamp(true).nice();
+						})
+						
+						return scatters;
+					})
 					.enter()
 					.append('circle')
 					.attr('r', radius)
 					.attr('fill', '#faca0c')
-					.attr('cx', 0)
-					.attr('cy', (m) => yScaleBox(m))
+					.attr('cx', m=>m.xscale(m.x))
+					.attr('cy', (m) => yScaleBox(m.y))
 					.on('mouseover', (m) => {
-						this.globalService.showPopOver(d3.event, m);
+						this.globalService.showPopOver(d3.event, m.y);
 					})
 					.on('mouseout', () => {
 						this.globalService.hidePopOver();

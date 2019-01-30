@@ -494,7 +494,7 @@ export class reRelationNetComponent implements OnInit {
 
         //大小
         let sizeScale=d3.scaleLinear()
-            .range([20, 520])
+            .range([40, 520])
             .domain([min, max]).clamp(true).nice();
 
         //颜色
