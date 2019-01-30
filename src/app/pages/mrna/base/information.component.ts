@@ -38,7 +38,7 @@ export class InformationComponent implements OnInit {
     //2.6 小RNA数量
     this.defaultUrl = `${config["javaPath"]}/basicModule/annotationStat`;
     this.defaultEntity = {
-        LCID: "DEMO_TOM_APDENOVO",
+        LCID: this.store.getStore('LCID'),
         pageNum: 1,
         pageSize: 10
     };

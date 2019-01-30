@@ -72,7 +72,7 @@ export class OverviewComponent implements OnInit {
       this.chartUrl=`${config["javaPath"]}/basicModule/diffExpPlan`; //暂代
       this.tableUrl=`${config["javaPath"]}/basicModule/correlationHeatmap`;
       this.tableEntity={
-        LCID: "DEMO_TOM_APDENOVO",
+        LCID: this.store.getStore('LCID'),
         correlationSampleList: this.store.getStore("sample")
       };
 
@@ -91,7 +91,7 @@ export class OverviewComponent implements OnInit {
 
       this.tablePCAUrl=`${config["javaPath"]}/basicModule/PCA`;
       this.tablePCAEntity={
-        LCID: "DEMO_TOM_APDENOVO",
+        LCID: this.store.getStore('LCID'),
         pca_info: this.PCASearchType
       };
   }
