@@ -862,17 +862,33 @@ export class ReMultiOmicsComponent implements OnInit {
 				boxplots
 					.append('g')
 					.attr('class', 'boxPoints')
-					.attr('transform', (k, i) => `translate(${(i + 1) * k.space + i * k.w + k.w / 2},0)`)
+					.attr('transform', (k, i) => `translate(${(i + 1) * k.space + i * k.w},0)`)
 					.selectAll('.allPoints')
-					.data((z) => z.scatters)
+					.data((k) =>{
+						var scatters=[];
+						k.scatters.forEach(d=>{
+							scatters.push({
+								x:Math.random(),
+								y:d,
+								w:k.w
+							})
+						})
+
+						// var domains=d3.extent(scatters,d=>d.x);
+						scatters.forEach(d=>{
+							d.xscale=d3.scaleLinear().domain([0,1]).range([0,d.w]).clamp(true).nice();
+						})
+						
+						return scatters;
+					})
 					.enter()
 					.append('circle')
 					.attr('r', radius)
 					.attr('fill', '#faca0c')
-					.attr('cx', 0)
-					.attr('cy', (m) => yScaleBox(m))
+					.attr('cx', m=>m.xscale(m.x))
+					.attr('cy', (m) => yScaleBox(m.y))
 					.on('mouseover', (m) => {
-						this.globalService.showPopOver(d3.event, m);
+						this.globalService.showPopOver(d3.event, m.y);
 					})
 					.on('mouseout', () => {
 						this.globalService.hidePopOver();
