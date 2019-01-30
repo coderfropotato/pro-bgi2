@@ -711,7 +711,7 @@ export class ReMultiOmicsComponent implements OnInit {
 				boxplot_g.append('g').attr('class', 'yAxis-boxplot').call(yAxisBox);
 
 				// boxplot y title
-				boxplot_g
+				let boxYtitle = boxplot_g
 					.append('g')
 					.attr('class', 'yText-boxplot')
 					.attr('transform', `translate(${-(margin.left - 10)},${eachChartHeight / 2})`)
@@ -720,8 +720,10 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('font-family','Arial')
 					.attr('text-anchor', 'middle')
 					.attr('dominant-baseline', 'middle')
-					.attr('transform', `rotate(-90)`)
-					.text(d.relation);
+					.attr('transform', `rotate(-90)`);
+					
+				boxYtitle.append('tspan').text(d.relation);
+				boxYtitle.append('tspan').attr("x",0).attr('dy',15).text(d.name);
 
 				// boxplot x
 				let xAxisBox = boxplot_g
