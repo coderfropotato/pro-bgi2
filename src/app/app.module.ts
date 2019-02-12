@@ -11,14 +11,8 @@ import { SimpleReuseStrategy } from './super/service/simpleReuseStrategy';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { IndexComponent } from './pages/mrna/index.component';
-import { cxzk1Component } from './pages/mrna/cxzk1.component';
-import { GoRichComponent } from './pages/mrna/goRich.component';
-import { netComponent } from './pages/mrna/net.component';
-import { multiOmicsComponent } from './pages/mrna/multiOmics.component';
-import { clusterComponent } from './pages/mrna/cluster.component';
 import { NotFoundComponent } from './pages/notFound.component';
 import { DnaIndexComponent } from './pages/dna/index.component';
-import { JyzbdComponent } from './pages/dna/jyzbd.component';
 import { AddColumnComponent } from './super/components/add-column.component';
 import { ChartExportComponent } from './super/components/chart-export.component';
 import { GeneTableComponent } from './super/components/gene-table.component';
@@ -27,59 +21,81 @@ import { MenuComponent } from './include/menu.component';
 import { FilterComponent } from './super/components/filter.component';
 import { ErrorComponent } from './super/components/error.component';
 import { SyserrorComponent } from './pages/syserror.component';
-import { GeneTableTestComponent } from './pages/mrna/gene-table-test.component';
-import { AddComponent } from './pages/mrna/add.component';
 import { LittleTableComponent } from './super/components/little-table.component';
 import { BigTableComponent } from './super/components/big-table.component';
 import { TableSwitchChartComponent } from './super/components/table-switch-chart.component';
-import { LittleTableTestComponent } from './pages/mrna/little-table-test.component';
 import { MultiOmicsSetComponent } from './super/components/multiOmicsSet.component';
 import { ClusterSetComponent } from './super/components/clusterSet.component';
 import { NetSetComponent } from './super/components/netSet.component';
-import { ReanalysisIndexComponent } from './pages/reanalysis/index.component';
 import { TransformationTableComponent } from './super/components/transformation-table.component';
 import { GeneRelativeComponent } from './super/components/gene-relative.component';
-import { BigTableTestComponent } from './pages/mrna/big-table-test.component';
-import { GeneTransformTableTestComponent } from './pages/mrna/gene-transform-table-test.component';
 import { GridExportComponent } from './super/components/grid-export.component';
 import { PaginationComponent } from './super/components/pagination.component';
 import { TreeComponent } from './super/components/tree.component';
 import { TreeItemComponent } from './super/components/tree-item.component';
 import { ColorPickerComponent } from './super/components/color-picker.component';
-import { ExpressVennComponent, ExpressVennPage } from './pages/mrna/expressVenn.component';
-import { DiffVennComponent, DiffVennPage } from './pages/mrna/diffVenn.component';
-import { Layout1Component, Layout1Page } from './pages/mrna/layout1.component';
-import { Layout2Component } from './pages/mrna/layout2.component';
 import { ToolsComponent } from './super/components/tools.component';
 import { SysDefendComponent } from './pages/sysDefend.component';
+import { LayoutSwitchComponent } from './super/components/layout-switch.component';
+import { LoadingComponent } from './pages/reanalysis/loading.component';
+import { BigTableCheckComponent } from './super/components/big-table-check.component';
+
+// 页面
+/* 基础模块 */
+import { OverviewComponent } from './pages/mrna/base/overview.component';
+import { InformationComponent } from './pages/mrna/base/information.component';
+import { ReadsFilterComponent } from './pages/mrna/base/reads-filter.component';
+import { ReadsComparisonComponent } from './pages/mrna/base/reads-comparison.component';
+import { LrnaComponent } from './pages/mrna/base/lrna.component';
+import { BasicHelpComponent } from './pages/mrna/base/help.component';
+/* 差异表达 */
+import { DiffExpressionComponent, DiffVennPage } from './pages/mrna/diff-expression.component';
+import { DiffExpressionHelpComponent } from './pages/mrna/diff-expression-help.component';
+/* 表达量 */
+import { ExpressVennComponent, ExpressVennPage } from './pages/mrna/expressVenn.component';
+import { ExpressionHelpComponent } from './pages/mrna/expression-help.component';
+/* 差异聚类 */
+import { ClusterComponent } from './pages/mrna/cluster.component';
+import { ClusterHelpComponent } from './pages/mrna/cluster-help.component';
+/* GO */
+import { GoClassComponent } from './pages/mrna/go-class.component';
+import { GoRichComponent } from './pages/mrna/go-rich.component';
+import { GoHelpComponent } from './pages/mrna/go-help.component';
+/* KEGG */
+import { KeggClassComponent } from './pages/mrna/kegg-class.component';
+import { KeggRichComponent } from './pages/mrna/kegg-rich.component';
+import { KeggHelpComponent } from './pages/mrna/kegg-help.component';
+/* 结构变异 */
+import { SnpComponent } from './pages/mrna/snp.component';
+import { IndelComponent } from './pages/mrna/indel.component';
+import { AlternativeSplicingComponent } from './pages/mrna/alternative-splicing.component';
+import { GeneFusionComponent } from './pages/mrna/gene-fusion.component';
+import { StructureVariationHelpComponent } from './pages/mrna/structure-variation-help.component';
+/* 基因总表 */
+import { GeneComponent } from './pages/mrna/gene.component';
+/* 上传模块 */
 import { UploadComponent } from './pages/mrna/upload.component';
-import { PromtComponent } from './super/service/promptService';
+
+/* 小工具 */
+import { ReanalysisIndexComponent } from './pages/reanalysis/index.component';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
 import { ReMultiOmicsComponent } from './pages/reanalysis/re-multiOmics.component';
 import { ReHeatmapComponent } from './pages/reanalysis/re-heatmap.component';
 import { reRelationHeatmapComponent } from './pages/reanalysis/re-relationHeatmap.component';
-import { ReNetComponent } from './pages/reanalysis/re-net.component';
 import { reRelationNetComponent } from './pages/reanalysis/re-relationNet.component';
+import { ReNetComponent } from './pages/reanalysis/re-net.component';
 import { ReKdaComponent } from './pages/reanalysis/re-kda.component';
 import { ReLineComponent } from './pages/reanalysis/re-line.component';
 import { KaFunComponent } from './pages/reanalysis/re-kaFun.component';
 import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.component';
-import { LayoutSwitchComponent } from './super/components/layout-switch.component';
-import { LoadingComponent } from './pages/reanalysis/loading.component';
 import { GeneListIndexComponent } from './pages/geneList/index.component';
-import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneList/venn.component';
-import { BigTableCheckComponent } from './super/components/big-table-check.component';
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
-import { HelpComponent } from './pages/mrna/base/help.component';
-import { OverviewComponent } from './pages/mrna/base/overview.component';
-import { InformationComponent } from './pages/mrna/base/information.component';
-import { ReadsComparisonComponent } from './pages/mrna/base/reads-comparison.component';
-import { LrnaComponent } from './pages/mrna/base/lrna.component';
-import { ReadsFilterComponent } from './pages/mrna/base/reads-filter.component';
-
 import { ReRichComponent } from './pages/reanalysis/re-rich.component';
+
+/* 基因集 */
+import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneList/venn.component';
+
 // 服务
-// import { HttpInterService } from './super/service/httpService';
 import { GlobalService } from './super/service/globalService';
 import { LoadingService } from './super/service/loadingService';
 import { MessageService } from './super/service/messageService';
@@ -93,6 +109,7 @@ import { SysDefendService } from './super/service/sysDefendService';
 import { PageModuleService } from './super/service/pageModuleService';
 import { AddColumnService } from './super/service/addColumnService';
 import { PromptService } from './super/service/promptService';
+import { PromtComponent } from './super/service/promptService';
 
 // 国际化
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -103,6 +120,47 @@ import { AccuracyPipe } from './super/filter/accuracy.pipe';
 import { TableSpecialTheadFilter } from './super/filter/tableSpecialThead.pipe';
 import config from '../config';
 
+
+/**
+ * 基础模块
+ * 项目概况	overview
+ * 参考信息	reference
+ * reads过滤	reads-filter
+ * reads检测	reads-alignment
+ * 小RNA检测	smallrna
+ * 帮助	basic-help
+ *
+ * 差异表达
+ * 差异表达	diff-expression
+ * 帮助	diff-expression-help
+ *
+ * 表达量
+ * 表达量	expression
+ * 帮助	expression-help
+ *
+ * 差异聚类	cluster
+ * 帮助	cluster-help
+ *
+ * GO
+ * GO分类 go-class
+ * GO富集	go-enrichment
+ * 帮助	go-help
+ *
+ * KEGG
+ * KEGG分类	kegg-class
+ * KEGG富集	kegg-enrichment
+ * 帮助	kegg-help
+ *
+ * 结构变异
+ * SNP	snp
+ * INDEL	indel
+ * 可变剪切	alternative-splicing
+ * 基因融合	gene-fusion
+ * 帮助	structure-variation-help
+ *
+ * 基因总表
+ * 基因总表	gene
+ */
 const ROUTES: Routes = [
 	// mrna
 	{
@@ -114,103 +172,14 @@ const ROUTES: Routes = [
 		},
 		canActivateChild: [ SysDefendService ],
 		children: [
-			// demo
 			{
 				path: '',
-				redirectTo: 'diff-venn',
+				redirectTo: 'diff-expression',
 				pathMatch: 'full'
 			},
-			// {
-			// 	path: 'table',
-			// 	component: GeneTableTestComponent,
-			// 	data: {
-			// 		keep: true,
-			// 		module: 'geneTableTest'
-			// 	}
-			// },
-			// {
-			// 	path: 'addColumn',
-			// 	component: AddComponent,
-			// 	data: {
-			// 		keep: true,
-			// 		module: 'addColumn'
-			// 	}
-			// },
-			// {
-			// 	path: 'transformationTable',
-			// 	component: GeneTransformTableTestComponent,
-			// 	data: {
-			// 		keep: true,
-			// 		module: 'geneTransformationTable'
-			// 	}
-			// },
-			// {
-			// 	path: 'littleTableTest',
-			// 	component: LittleTableTestComponent,
-			// 	data: {
-			// 		keep: true,
-			// 		module: 'littleTableTest'
-			// 	}
-			// },
-			// {
-			// 	path: 'bigTable',
-			// 	component: BigTableTestComponent,
-			// 	data: {
-			// 		keep: true,
-			// 		module: 'bigTable'
-			// 	}
-			// },
-			// page
-			// {
-			// 	path: 'net',
-			// 	component: netComponent,
-			// 	data: {
-			// 		keep: true,
-			// 		module: 'net'
-			// 	}
-			// },
-			// {
-			// 	path: 'multiOmics',
-			// 	component: multiOmicsComponent,
-			// 	data: {
-			// 		keep: true,
-			// 		module: 'multiOmics'
-			// 	}
-			// },
+			// 基础模块
 			{
-				path: 'cluster',   // 聚类
-				component: clusterComponent,
-				data: {
-					keep: true,
-					module: 'cluster'
-				}
-			},
-			{
-				path: 'express-venn',  // 表达量
-				component: ExpressVennPage,
-				data: {
-					keep: true,
-					module: 'expressVenn'
-				}
-			},
-			{
-				path: 'diff-venn',  // 差异
-				component: DiffVennPage,
-				data: {
-					keep: true,
-					module: 'diffVenn'
-				}
-			},
-			{
-				path: 'upload', // 上传数据
-				component: UploadComponent,
-				data: {
-					keep: false,
-					module: 'upload'
-				}
-			},
-			{
-				path: 'overview',   // 项目概况
+				path: 'overview',
 				component: OverviewComponent,
 				data: {
 					keep: false,
@@ -218,15 +187,15 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 'information', //项目信息
+				path: 'reference',
 				component: InformationComponent,
 				data: {
 					keep: false,
-					module: 'information'
+					module: 'reference'
 				}
 			},
 			{
-				path: 'reads-filter', // reads 过滤
+				path: 'reads-filter',
 				component: ReadsFilterComponent,
 				data: {
 					keep: false,
@@ -234,27 +203,150 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 'reads-comparison', // reads 比对
+				path: 'reads-alignment',
 				component: ReadsComparisonComponent,
 				data: {
 					keep: false,
-					module: 'readsComparison'
+					module: 'readsAlignment'
 				}
 			},
 			{
-				path: 'lrna', // 小rna
+				path: 'smallrna',
 				component: LrnaComponent,
 				data: {
 					keep: false,
-					module: 'lrna'
+					module: 'smallRNA'
 				}
 			},
 			{
-				path: 'help', // 帮助
-				component: HelpComponent,
+				path: 'basic-help',
+				component: BasicHelpComponent,
 				data: {
 					keep: true,
-					module: 'help'
+					module: 'basicHelp'
+				}
+			},
+			// 差异表达
+			{
+				path: 'diff-expression',
+				component: DiffVennPage,
+				data: {
+					keep: true,
+					module: 'diffExpression'
+				}
+			},
+			{
+				path: 'diff-expression-help',
+				component: DiffExpressionHelpComponent,
+				data: {
+					keep: true,
+					module: 'diffExpressionHelp'
+				}
+			},
+			// 表达量
+			{
+				path: 'expression',
+				component: ExpressVennPage,
+				data: {
+					keep: true,
+					module: 'expression'
+				}
+			},
+			{
+				path: 'expression-help',
+				component: ExpressionHelpComponent,
+				data: {
+					keep: true,
+					module: 'expressionHelp'
+				}
+			},
+			// 差异聚类
+			{
+				path: 'cluster',
+				component: ClusterComponent,
+				data: {
+					keep: true,
+					module: 'cluster'
+				}
+			},
+			{
+				path: 'cluster-help',
+				component: ClusterHelpComponent,
+				data: {
+					keep: true,
+					module: 'clusterHelp'
+				}
+			},
+			// GO
+			{
+				path:'go-class',
+				component:GoClassComponent,
+				data:{keep:true,module:'goClass'}
+			},
+			{
+				path:'go-enrichment',
+				component:GoRichComponent,
+				data:{keep:true,module:'goEnrichment'}
+			},
+			{
+				path:'go-help',
+				component:GoHelpComponent,
+				data:{keep:true,module:'goHelp'}
+			},
+			// KEGG
+			{
+				path:'kegg-class',
+				component:KeggClassComponent,
+				data:{keep:true,module:'keggClass'}
+			},
+			{
+				path:'kegg-enrichment',
+				component:KeggRichComponent,
+				data:{keep:true,module:'keggEnrichment'}
+			},
+			{
+				path:'kegg-help',
+				component:KeggHelpComponent,
+				data:{keep:true,module:'keggHelp'}
+			},
+			// 结构变异
+			{
+				path:'snp',
+				component:SnpComponent,
+				data:{keep:true,module:'SNP'}
+			},
+			{
+				path:'indel',
+				component:IndelComponent,
+				data:{keep:true,module:'INDEL'}
+			},
+			{
+				path:'alternative-splicing',
+				component:AlternativeSplicingComponent,
+				data:{keep:true,module:'alternativeSplicing'}
+			},
+			{
+				path:'gene-fusion',
+				component:GeneFusionComponent,
+				data:{keep:true,module:'geneFusion'}
+			},
+			{
+				path:'structure-variation-help',
+				component:StructureVariationHelpComponent,
+				data:{keep:true,module:'structureVariationHelp'}
+			},
+			// 基因总表
+			{
+				path:'gene',
+				component:GeneComponent,
+				data:{keep:true,module:'gene'}
+			},
+			{
+				path: 'upload', // 上传数据
+				component: UploadComponent,
+				data: {
+					keep: false,
+					module: 'upload'
 				}
 			}
 		]
@@ -289,26 +381,7 @@ const ROUTES: Routes = [
 			}
 		]
 	},
-	// dna
-	{
-		path: 'report/dna',
-		component: DnaIndexComponent,
-		data: {
-			keep: false,
-			module: 'reportDna'
-		},
-		canActivateChild: [ SysDefendService ],
-		children: [
-			{
-				path: 'jyzbd',
-				component: JyzbdComponent,
-				data: {
-					keep: true,
-					module: 'jyzbd'
-				}
-			}
-		]
-	},
+
 	// 重分析
 	{
 		path: 'report/reanalysis',
@@ -478,6 +551,17 @@ const ROUTES: Routes = [
 			module: 'sysDefend'
 		}
 	},
+	// dna
+	// {
+	// 	path: 'report/dna',
+	// 	component: DnaIndexComponent,
+	// 	data: {
+	// 		keep: false,
+	// 		module: 'reportDna'
+	// 	},
+	// 	canActivateChild: [ SysDefendService ],
+	// 	children: []
+	// },
 	{
 		path: '',
 		redirectTo: 'report/login',
@@ -501,17 +585,12 @@ export function createTranslateLoader(http: HttpClient) {
 	declarations: [
 		DiffVennPage,
 		ExpressVennPage,
-		Layout1Page,
 		GeneListIndexComponent,
 		SysDefendComponent,
 		LoginComponent,
 		IndexComponent,
-		cxzk1Component,
 		GoRichComponent,
-		netComponent,
-		multiOmicsComponent,
-		clusterComponent,
-		GeneTableTestComponent,
+		ClusterComponent,
 		GeneTableComponent,
 		NotFoundComponent,
 		AppComponent,
@@ -521,30 +600,23 @@ export function createTranslateLoader(http: HttpClient) {
 		ErrorComponent,
 		DnaIndexComponent,
 		ReanalysisIndexComponent,
-		JyzbdComponent,
 		SyserrorComponent,
 		AddColumnComponent,
 		ChartExportComponent,
-		AddComponent,
 		LittleTableComponent,
 		BigTableComponent,
 		TableSwitchChartComponent,
-		LittleTableTestComponent,
 		MultiOmicsSetComponent,
 		ClusterSetComponent,
 		NetSetComponent,
 		AccuracyPipe,
 		TransformationTableComponent,
 		GeneRelativeComponent,
-		BigTableTestComponent,
-		GeneTransformTableTestComponent,
 		GridExportComponent,
 		PaginationComponent,
 		TreeItemComponent,
 		ExpressVennComponent,
-		DiffVennComponent,
-		Layout1Component,
-		Layout2Component,
+		DiffExpressionComponent,
 		TreeComponent,
 		ToolsComponent,
 		UploadComponent,
@@ -562,7 +634,21 @@ export function createTranslateLoader(http: HttpClient) {
 		LayoutSwitchComponent,
 		ReMultiOmicsComponent,
 		LoadingComponent,
+		ExpressionHelpComponent,
+		ClusterHelpComponent,
+		GoClassComponent,
+		GoHelpComponent,
+		KeggClassComponent,
+		KeggRichComponent,
+		KeggHelpComponent,
+		SnpComponent,
+		IndelComponent,
+		AlternativeSplicingComponent,
+		GeneFusionComponent,
+		StructureVariationHelpComponent,
+		GeneComponent,
 		GeneListVennComponent,
+		DiffExpressionHelpComponent,
 		GeneListVennPageComponent,
 		BigTableCheckComponent,
 		ReClassComponent,
@@ -573,7 +659,7 @@ export function createTranslateLoader(http: HttpClient) {
 		ReadsComparisonComponent,
 		LrnaComponent,
 		ReadsFilterComponent,
-		HelpComponent,
+		BasicHelpComponent,
 		TableSpecialTheadFilter
 	],
 	// 路由模块在imports 导入

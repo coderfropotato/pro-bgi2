@@ -13,7 +13,7 @@ declare const SparkMD5:any;
     templateUrl: "./help.component.html",
     styles: []
 })
-export class HelpComponent implements OnInit {
+export class BasicHelpComponent implements OnInit {
     // resultList: any[] = [];
     // isShowTab: boolean = true;
     // isVisible: boolean = false;
