@@ -1630,7 +1630,7 @@ export class ToolsComponent implements OnInit {
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: 'classification',
+					reanalysisType: 'enrichment',
 					needReanalysis: 1,
 					version: this.storeService.getStore('version'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
