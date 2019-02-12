@@ -65,14 +65,14 @@ export class ReadsFilterComponent implements OnInit {
   color: string; //当前选中的color
 
   //Clean reads 碱基含量分布 图例颜色
-  isShowColorPanelTwo: boolean = false;
+  isShowContentColorPanel: boolean = false;
   legendIndexTwo: number = 0; //当前点击图例的索引
-  colorTwo: string; //当前选中的color
+  colorContent: string; //当前选中的color
 
   //Clean reads 碱基含量分布 图例颜色
-  isShowColorPanelThree: boolean = false;
+  isShowQualityColorPanel: boolean = false;
   legendIndexThree: number = 0; //当前点击图例的索引
-  colorThree: string; //当前选中的color
+  colorQuality: string; //当前选中的color
   
 
   constructor(
@@ -268,9 +268,9 @@ export class ReadsFilterComponent implements OnInit {
             show: true,
             position: "right",
             click:function(d,index){
-                that.colorTwo = d3.select(d).attr('fill');
+                that.colorContent = d3.select(d).attr('fill');
                 that.legendIndexTwo = index;
-                that.isShowColorPanelTwo = true;
+                that.isShowContentColorPanel = true;
             }
         },
         tooltip: function(d) {
@@ -549,8 +549,8 @@ export class ReadsFilterComponent implements OnInit {
             // this.isShowColorPanel = true;
             // this.$apply();
             that.clearEventBubble(d3.event);
-            that.colorThree = colorScale(d);
-            that.isShowColorPanelThree = true;
+            that.colorQuality = colorScale(d);
+            that.isShowQualityColorPanel = true;
             that.legendIndexThree = i;
         });
 
@@ -597,16 +597,14 @@ export class ReadsFilterComponent implements OnInit {
   }
 
   //legend color change
-  colorChangeTwo(curColor){
+  colorContentChange(curColor){
     this.chartTwo.setColor(curColor, this.legendIndexTwo);
     this.chartTwo.redraw();
   }
 
   //legend color change
-  colorChangeThree(curColor){
-    // this.chartThree.setColor(curColor, this.legendIndexThree);
-    // this.chartThree.redraw();
-    this.colorThree = curColor;
+  colorQualityChange(curColor){
+    this.colorQuality = curColor;
     this.colorArr.splice(this.legendIndex, 1, curColor);
     this.rawQualityChart.redraw();
   }

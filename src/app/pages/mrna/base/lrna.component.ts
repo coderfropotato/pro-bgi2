@@ -196,7 +196,7 @@ export class LrnaComponent implements OnInit {
 			},
 			axis: {
 				x: {
-					title: "x",
+					title: "Length (nt)",
 					dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 						if (name) {
@@ -207,15 +207,15 @@ export class LrnaComponent implements OnInit {
 					rotate:60
 				},
 				y: {
-					title: "y",
+					title: "Length distribution of small RNA in 8 libraries",
 					dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 						if (name) {
 							this.setYTitle(name);
 							this.updateTitle();
 						}
-					},
-
+          },
+          formatter:val=>val+"%"
 				}
 			},
 			legend: {
