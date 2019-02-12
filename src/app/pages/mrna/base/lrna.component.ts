@@ -34,7 +34,7 @@ export class LrnaComponent implements OnInit {
   tableEntity:object;
   chart:any;
 
-  //相关性热图
+  //小RNA长度分布
   tableRNAUrl:string;
   chartUrl:string;
   tableRNAEntity:object;
@@ -97,10 +97,10 @@ export class LrnaComponent implements OnInit {
       }
     ];
 
-    this.tableRNAUrl=`${config["javaPath"]}/basicModule/miRNALength`;
+    this.tableRNAUrl=`${config["javaPath"]}/basicModule/smallRNALengthDistribution`;
     this.tableRNAEntity={
       LCID: this.store.getStore('LCID'),
-      Sample: this.store.getStore("sample")
+      smallRNASampleList: this.store.getStore("sample")
     };
     
   }
@@ -167,11 +167,14 @@ export class LrnaComponent implements OnInit {
     var chartData = [];
     for (var i = 0; i < baseThead.length; i++) {
         for (var j = 0; j < rows.length; j++) {
-                chartData.push({
-                    key: rows[j].mirna_length,
-                    value: rows[j][baseThead[i].true_key],
-                    category: baseThead[i].name,
-                })
+          if(baseThead[i].name != "length"){
+              chartData.push({
+                key: rows[j].length,
+                value: rows[j][baseThead[i].true_key],
+                category: baseThead[i].name,
+            })
+          }
+                
         }
     }
     console.log(chartData)
@@ -190,7 +193,7 @@ export class LrnaComponent implements OnInit {
 				},
 				el: "#RNALData",
         type: "groupBar",
-        width:660,
+        width:900,
 				custom:['key','value','category'],
 				data: chartData
 			},
@@ -215,7 +218,7 @@ export class LrnaComponent implements OnInit {
 							this.updateTitle();
 						}
           },
-          formatter:val=>val+"%"
+          // formatter:val=>val+"%"
 				}
 			},
 			legend: {
