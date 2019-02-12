@@ -25,7 +25,7 @@ declare const Venn: any;
 	styles: []
 })
 export class DiffVennPage {
-	private moduleRouteName: string = 'diff-venn'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
+	private moduleRouteName: string = 'diff-expression'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
 	config: object = config;
 	rootGeneType: string = this.storeService.getStore('menuRouteMap')[this.moduleRouteName]['geneType']; // 来自菜单 可配置  all gene transcript
 	defaultGeneType: string = this.rootGeneType === this.config['geneTypeAll']
@@ -49,10 +49,10 @@ export class DiffVennPage {
 
 @Component({
 	selector: 'app-diff-venn-component',
-	templateUrl: './diffVenn.component.html',
+	templateUrl: './diff-expression.component.html',
 	styles: []
 })
-export class DiffVennComponent implements OnInit {
+export class DiffExpressionComponent implements OnInit {
 	// 表格高度相关
 	@ViewChild('left') left;
 	@ViewChild('right') right;

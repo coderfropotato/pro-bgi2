@@ -6,7 +6,7 @@ declare const d3: any;
 
 @Component({
     selector: "app-goRich",
-    templateUrl: "./goRich.component.html"
+    templateUrl: "./go-rich.component.html"
 })
 
 export class GoRichComponent implements OnInit {

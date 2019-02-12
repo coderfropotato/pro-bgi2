@@ -13,10 +13,9 @@ declare const SparkMD5:any;
     templateUrl: "./help.component.html",
     styles: []
 })
-export class HelpComponent implements OnInit {
-
+export class BasicHelpComponent implements OnInit {
     mflag: number = 0;
-    // 第一种情况：只有lncRNA、RNAref、RNAseq，无miRNA，显示以下8项；（序号用6.1-6.8） number = 0; 
+    // 第一种情况：只有lncRNA、RNAref、RNAseq，无miRNA，显示以下8项；（序号用6.1-6.8） number = 0;
     // 第二种情况：只有miRNA、无其他RNA，显示以下6项；（序号用6.1-6.6） number = 2;
     // 第三种情况：同时有miRNA和其他RNA，所有内容都要显示，显示10项。（序号用6.1-6.10）number = 3;
 

@@ -12,7 +12,7 @@ declare const $: any;
     templateUrl: './cluster.component.html'
 })
 
-export class clusterComponent implements OnInit {
+export class ClusterComponent implements OnInit {
     @ViewChild('clusterChart') clusterChart;
 
     chartUrl: string;

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-layout2',
-  templateUrl: './layout2.component.html',
+  selector: 'app-gene',
+  templateUrl: './gene.component.html',
   styles: []
 })
-export class Layout2Component implements OnInit {
+export class GeneComponent implements OnInit {
 
   constructor() { }
 
