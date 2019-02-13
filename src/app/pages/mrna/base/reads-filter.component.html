@@ -77,7 +77,7 @@
             (refresh)="handlerRefresh()"
         >
         </app-table-switch-chart>
-        <app-color-picker [(color)]="colorTwo" (colorChange)="colorChangeTwo($event)" [(show)]="isShowColorPanelTwo"
+        <app-color-picker [(color)]="colorContent" (colorChange)="colorContentChange($event)" [(show)]="isShowContentColorPanel"
                 ></app-color-picker>
     </div>
 
@@ -103,7 +103,7 @@
             (refresh)="handlerRefresh()"
         >
         </app-table-switch-chart>
-        <app-color-picker [(color)]="colorThree" (colorChange)="colorChangeThree($event)" [(show)]="isShowColorPanelThree"
+        <app-color-picker [(color)]="colorQuality" (colorChange)="colorQualityChange($event)" [(show)]="isShowQualityColorPanel"
                 ></app-color-picker>
     </div>
 </div>

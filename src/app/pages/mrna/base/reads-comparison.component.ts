@@ -72,7 +72,7 @@ export class ReadsComparisonComponent implements OnInit {
     //4.1 参考基因组比对
     this.defaultUrl = `${config["javaPath"]}/basicModule/genomeMappingSummary`;
     this.defaultEntity = {
-        LCID: "DEMO_TOM_APDENOVO",
+        LCID: this.store.getStore('LCID'),
         pageNum: 1,
         pageSize: 10
     };
@@ -80,7 +80,7 @@ export class ReadsComparisonComponent implements OnInit {
     //4.2 参考基因比对
     this.defaultgeneUrl = `${config["javaPath"]}/basicModule/geneMappingSummary`;
     this.defaultgeneEntity = {
-        LCID: "DEMO_TOM_APDENOVO",
+        LCID: this.store.getStore('LCID'),
         pageNum: 1,
         pageSize: 10
     };
@@ -99,7 +99,7 @@ export class ReadsComparisonComponent implements OnInit {
 
     this.tableUrl=`${config["javaPath"]}/basicModule/readsRandom`;
     this.tableEntity={
-      LCID: "DEMO_TOM_APDENOVO",
+      LCID: this.store.getStore('LCID'),
       sample: this.curSearchType
     };
 
@@ -109,7 +109,7 @@ export class ReadsComparisonComponent implements OnInit {
 
     this.coverTableUrl=`${config["javaPath"]}/basicModule/readsCoverage`;
     this.coverTableEntity={
-      LCID: "DEMO_TOM_APDENOVO",
+      LCID: this.store.getStore('LCID'),
       sample: this.coverSearchType
     };
 
@@ -119,7 +119,7 @@ export class ReadsComparisonComponent implements OnInit {
 
     this.saturationTableUrl=`${config["javaPath"]}/basicModule/seqSaturation`;
     this.saturationTableEntity={
-      LCID: "DEMO_TOM_APDENOVO",
+      LCID: this.store.getStore('LCID'),
       sample: this.saturationSearchType
     };
 
