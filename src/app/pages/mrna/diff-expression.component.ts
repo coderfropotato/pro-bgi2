@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
 declare const d3: any;
+declare const d4:any;
 declare const Venn: any;
 
 @Component({
@@ -39,7 +40,10 @@ export class DiffVennPage {
 	}
 
 	handlerSwitchChange() {
-		this.defaultGeneType = this.defaultGeneType === config['geneTypeOfGene'] ? config['geneTypeOfTranscript'] : config['geneTypeOfGene'];
+		this.defaultGeneType =
+			this.defaultGeneType === config['geneTypeOfGene']
+				? config['geneTypeOfTranscript']
+				: config['geneTypeOfGene'];
 		this.showModule = false;
 		setTimeout(() => {
 			this.showModule = true;
@@ -73,8 +77,8 @@ export class DiffExpressionComponent implements OnInit {
 	defaultTableId: string;
 	defaultDefaultChecked: boolean;
 	defaultCheckStatusInParams: boolean;
-    defaultEmitBaseThead: boolean;
-    defaultShowFilterStatus:boolean = false;
+	defaultEmitBaseThead: boolean;
+	defaultShowFilterStatus: boolean = false;
 
 	extendEntity: object;
 	extendUrl: string;
@@ -92,7 +96,11 @@ export class DiffExpressionComponent implements OnInit {
 
 	tableEntity: object = {};
 	selectPanelData: object[] = [];
-	venn_or_upsetR: boolean;
+    venn_or_upsetR: boolean;
+
+    legendIndex: number = 0;
+	color = '#fff'; // 默认颜色
+	show = false; // 是否显示颜色选择器
 
 	p_show: boolean; //设置里面的PossionDis
 	PossionDis: object = {
@@ -135,8 +143,6 @@ export class DiffExpressionComponent implements OnInit {
 	tableHeight = 0;
 	first = true;
 
-	color = '#fff'; // 默认颜色
-	show = false; // 是否显示颜色选择器
 	venn: any; // 韦恩图对象实例
 
 	leftSelect: any[] = [];
@@ -427,9 +433,10 @@ export class DiffExpressionComponent implements OnInit {
 			this.venn_or_upsetR = false;
 			this.showVenn(data);
 		} else {
-			this.venn_or_upsetR = false;
+            this.venn_or_upsetR = false;
+            this.showCircle(data);
 			// this.showVenn(data);
-		}
+        }
 	}
 
 	// 切换左右布局 计算左右表格的滚动高度
@@ -513,15 +520,10 @@ export class DiffExpressionComponent implements OnInit {
 
 		this.panelShow = false;
 		this.upSelect.length = 0;
-        this.leftSelect.length = 0;
-        this.defaultShowFilterStatus = false;
+		this.leftSelect.length = 0;
+		this.defaultShowFilterStatus = false;
 		this.tableSwitchChart.reGetData();
 
-		// if (this.first) {
-		// 	this.transformTable._getData();
-		// } else {
-		//     this.first = true;
-		// }
 		this.chartBackStatus();
 	}
 
@@ -529,8 +531,8 @@ export class DiffExpressionComponent implements OnInit {
 	multiSelectChange() {
 		this.upSelect.length = 0;
 		this.leftSelect.length = 0;
-        // this.first?this.transformTable._getData():this.first = true;
-        this.defaultShowFilterStatus = false;
+		// this.first?this.transformTable._getData():this.first = true;
+		this.defaultShowFilterStatus = false;
 		this.chartBackStatus();
 		this.updateVenn();
 	}
@@ -550,8 +552,6 @@ export class DiffExpressionComponent implements OnInit {
 			bar_name: [],
 			total_name: []
 		};
-		// console.log(this.singleMultiSelect)
-		// console.log(this.doubleMultiSelect)
 	}
 
 	//venn和upsetR只能单选时候
@@ -564,9 +564,9 @@ export class DiffExpressionComponent implements OnInit {
 			if (this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
 		} else {
 			this.upSelect.push(this.singleMultiSelect['venn_name']);
-        }
+		}
 
-        this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
+		this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chartBackStatus();
 	}
 
@@ -583,7 +583,7 @@ export class DiffExpressionComponent implements OnInit {
 			this.leftSelect.push(...tempData['total_name']);
 		}
 
-        this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
+		this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chartBackStatus();
 	}
 
@@ -602,8 +602,8 @@ export class DiffExpressionComponent implements OnInit {
 		// this.first ? this.transformTable._getData() : (this.first = true);
 		// 更新当前回来的表头为基础头
 		this.chartBackStatus();
-        this.updateVenn();
-        this.defaultShowFilterStatus = false;
+		this.updateVenn();
+		this.defaultShowFilterStatus = false;
 	}
 
 	redrawChart(width, height?) {
@@ -614,9 +614,65 @@ export class DiffExpressionComponent implements OnInit {
 	handlerRefresh() {
 		// 清空选择的数据
 		this.upSelect.length = 0;
-        this.leftSelect.length = 0;
-        this.defaultShowFilterStatus = false;
+		this.leftSelect.length = 0;
+		this.defaultShowFilterStatus = false;
 		this.chartBackStatus();
+    }
+
+    // 画拼图
+	showCircle(data) {
+		let _self = this;
+		let params: object = {
+			chart: {
+				title: '',
+				dblclick: function(event) {
+					var name = prompt('请输入需要修改的标题', '');
+					if (name) {
+						this.setChartTitle(name);
+						this.updateTitle();
+					}
+				},
+				width: 480,
+				height: 300,
+				onselect: (d) => {
+					this.singleMultiSelect = { bar_name: '', total_name: '', venn_name: '' };
+					this.doubleMultiSelect = { bar_name: [], total_name: [] };
+
+					if (d.length) {
+						this.singleMultiSelect['venn_name'] = d[0]['data']['name'];
+						this.upSelect.push(this.singleMultiSelect['venn_name']);
+					} else {
+						this.upSelect.length = 0;
+					}
+
+                    this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
+					this.chartBackStatus();
+				},
+				padding: 0.02,
+				outerRadius: 120,
+				startAngle: 0,
+				endAngle: 360,
+				showLabel: true,
+				enableChartSelect: true,
+				selectedModule: _self.isMultiSelect ? 'multiple' : 'single',
+				custom: [ 'name', 'value' ],
+				el: '#diffVennId',
+				type: 'pie',
+				data: data['rows']
+			},
+			legend: {
+				show: true,
+				position: 'right',
+				click: (d, index) => {
+					this.color = d3.select(d).attr('fill');
+					this.show = true;
+					this.legendIndex = index;
+				}
+			},
+			tooltip: (d) => '<span>name：' + d.data.name + '</span><br><span>value：' + d.data.value + '</span>'
+		};
+
+		this.chart = new d4().init(params);
 	}
 
 	//显示venn图
@@ -676,8 +732,8 @@ export class DiffExpressionComponent implements OnInit {
 					_selfV.singleMultiSelect['total_name'] = '';
 					_selfV.singleMultiSelect['venn_name'] = '';
 				}
-                _selfV.upSelect.length = 0;
-                _selfV.defaultShowFilterStatus = !!_selfV.leftSelect.length || !!_selfV.upSelect.length;
+				_selfV.upSelect.length = 0;
+				_selfV.defaultShowFilterStatus = !!_selfV.leftSelect.length || !!_selfV.upSelect.length;
 				// _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
 				_selfV.chartBackStatus();
 			});
@@ -823,8 +879,8 @@ export class DiffExpressionComponent implements OnInit {
 			function(d) {
 				_self.updateVenn();
 				_self.leftSelect.length = 0;
-                _self.upSelect.length = 0;
-                _self.defaultShowFilterStatus = false;
+				_self.upSelect.length = 0;
+				_self.defaultShowFilterStatus = false;
 				// _self.first ? _self.transformTable._getData() : (_self.first = true);
 				_self.chartBackStatus();
 			},

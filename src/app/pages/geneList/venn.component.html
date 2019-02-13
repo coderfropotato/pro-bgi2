@@ -77,12 +77,12 @@
                                             <span class="closeable-button" *ngIf="!item['setName'].length">
                                                 <button nz-button   nzType="default" [nzSize]="'small'"  [class.btnActive]="item['checked']" (click)="handleGeneListClick(item)">{{item['setName']}}
                                                 </button>
-                                                <i class="anticon anticon-close" (click)="handleDelete(item)"></i>
+                                                <i class="iconfont icon-tianjia1" (click)="handleDelete(item)"></i>
                                             </span>
                                             <span class="closeable-button" *ngIf="item['setName'].length">
                                                 <button  nz-button  nz-tooltip [nzTitle]="item['setAnnot']"  nzType="default" [nzSize]="'small'"  [class.btnActive]="item['checked']" (click)="handleGeneListClick(item)">{{item['setName']}}
                                                 </button>
-                                                <i class="anticon anticon-close" (click)="handleDelete(item)"></i>
+                                                <i class="iconfont icon-tianjia1" (click)="handleDelete(item)"></i>
                                             </span>
                                         </ng-container>
                                     </div>
