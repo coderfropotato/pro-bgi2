@@ -474,15 +474,24 @@ export class ReClassComponent implements OnInit {
 	drawChart(data) {
 		this.chartData = data;
 		let x, y, category, yTitle;
-		let _self = this;
+        let _self = this;
+        let showLegend = false;
+        let custom = [];
+
 		x = data['baseThead'][data['baseThead'].length - 1]['true_key'];
 		y = data['baseThead'][0]['true_key'];
 		if (data['baseThead'].length > 2) category = data['baseThead'][1]['true_key'];
 		if (y.indexOf(this.level1Key) != -1) {
-			yTitle = 'Level1';
+            yTitle = 'Level1';
+            showLegend = true;
+            custom = [x,y,category];
 		} else if (y.indexOf(this.level2Key) != -1) {
-			yTitle = 'Level2';
+            yTitle = 'Level2';
+            showLegend = true;
+            custom = [x,y,category];
 		} else {
+            showLegend = false;
+            custom = [x,category,category]
 			yTitle = 'Term';
 		}
 
@@ -497,7 +506,7 @@ export class ReClassComponent implements OnInit {
 				},
 				width: _self.set['width'],
 				height: data['rows'].length * 20,
-				custom: [ x, y, category ],
+				custom: custom,
 				el: '#geneClassChartDiv',
 				type: 'bar',
 				ticks: 6,
@@ -539,7 +548,7 @@ export class ReClassComponent implements OnInit {
 				}
 			},
 			legend: {
-				show: true,
+				show: showLegend,
 				position: 'right',
 				click: (d, index) => {
 					this.color = d3.select(d).attr('fill');
@@ -547,9 +556,13 @@ export class ReClassComponent implements OnInit {
 					this.legendIndex = index;
 				}
 			},
-			tooltip: function(d) {
-				if (category)
-					return (
+			tooltip: d =>{
+                if (y.indexOf(this.level1Key) != -1) {
+                    // level1
+                    return '<span>Number：' + d[x] + '</span><br><span>Level1：' + d[y] + '</span>';
+                } else if (y.indexOf(this.level2Key) != -1) {
+                    // level2
+                    return (
 						'<span>Number：' +
 						d[x] +
 						'</span><br><span>Level1：' +
@@ -558,7 +571,10 @@ export class ReClassComponent implements OnInit {
 						d[y] +
 						'</span>'
 					);
-				return '<span>Number：' + d[x] + '</span><br><span>Level2：' + d[y] + '</span>';
+                } else {
+                   // term
+                   return  '<span>Number：' + d[x] + '</span><br><span>termID：' + d[y] + '</span><br><span>term：' + d[category] + '</span>';
+                }
 			}
 		};
 
