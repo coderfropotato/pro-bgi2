@@ -363,37 +363,6 @@ export class InformationComponent implements OnInit {
 					'</span>'
 				);
 			}
-<<<<<<< HEAD
-		};
-
-        this.chartRNA = new d4().init(config);
-
-        console.log(this.chartRNA)
-	}
-
-	//2.5 外显子数量
-	drawExonsNum(data) {
-		console.log(data);
-		var baseThead = data.baseThead;
-		var rows = data.rows;
-		var chartData = [];
-
-		for (var i = 0; i < rows.length; i++) {
-			let temp = {};
-			for (let j = 0; j < baseThead.length; j++) {
-				let tempName = baseThead[j].true_key;
-				let tempValue = rows[i][tempName];
-				temp[tempName] = tempValue;
-			}
-			chartData.push(temp);
-		}
-
-		let that = this;
-
-		let config: object = {
-			chart: {
-				title: '外显子数量分布图',
-=======
     }
 
     this.chartRNA = new d4().init(config);
@@ -428,7 +397,6 @@ export class InformationComponent implements OnInit {
     let config:object={
       chart: {
 				title: "外显子数量分布图",
->>>>>>> 1a701fca1b85b779e29fec2cb618f602ae2ffe47
 				dblclick: function(event) {
 					var name = prompt('请输入需要修改的标题', '');
 					if (name) {
