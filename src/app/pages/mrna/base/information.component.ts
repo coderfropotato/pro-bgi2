@@ -21,7 +21,7 @@ export class InformationComponent implements OnInit {
   @ViewChild('RNALchart') RNALchart;
   @ViewChild('miRNAFchart') miRNAFchart;
   @ViewChild('transcriptLength') transcriptLength;
-  
+  @ViewChild('exonsNum') exonsNum;
 
   //2.2 RNA分类
   tableUrl:string;
@@ -51,6 +51,17 @@ export class InformationComponent implements OnInit {
   isShowColorPanelL: boolean = false;
   legendIndexL: number = 0; //当前点击图例的索引
   colorL: string; //当前选中的color
+
+  //2.5 外显子数量
+  exonsNumUrl:string;
+  exonsNumEntity:object;
+  chartE:any;
+  selectPanelDataE: object[] = [];
+  selectConfirmDataE: string[] = [];
+
+  isShowColorPanelE: boolean = false;
+  legendIndexE: number = 0; //当前点击图例的索引
+  colorE: string; //当前选中的color
 
   // table one 2.6
   defaultEntity: object;
@@ -106,6 +117,21 @@ export class InformationComponent implements OnInit {
     this.tableRNAUrl=`${config["javaPath"]}/basicModule/miRNALength`;
     this.tableRNAEntity={
       LCID: this.store.getStore('LCID'),
+    };
+
+    //2.5 外显子数量
+
+    this.selectPanelDataE = [
+      {
+        type: '',
+        data: m_geneTypeList
+      }
+    ]
+
+    this.exonsNumUrl=`${config["javaPath"]}/basicModule/exonsNum`;
+    this.exonsNumEntity={
+      LCID: this.store.getStore('LCID'),
+      RefGeneTypeList: m_geneTypeList
     };
 
     //2.6 小RNA数量
@@ -186,31 +212,17 @@ export class InformationComponent implements OnInit {
     var rows = data.rows;
     var chartData = [];
 
-    for (var i = 0; i < baseThead.length; i++) {
-        for (var j = 0; j < rows.length; j++) {
-          if(baseThead[i].name != "item" && baseThead[i].name !="all"){
-              chartData.push({
-                key: rows[j].item,
-                value: rows[j][baseThead[i].true_key],
-                category: baseThead[i].name,
-            })
-          }
-        }
+    for (var i = 0; i < rows.length; i++) {
+      let temp = {};
+      for (let j = 0; j < baseThead.length; j++) {
+        let tempName = baseThead[j].true_key;
+        let tempValue = rows[i][tempName];
+        temp[tempName] = tempValue;
+        //console.log(tempName+":"+tempValue)
+      }
+      chartData.push(temp)
     }
 
-    console.log(chartData)
-
-    // for (var j = 0; j < rows.length; j++) { 
-    //   chartData.push({
-    //       item: rows[j].item,
-    //       lncrna_known: rows[j]['lncrna|known'],
-    //       lncrna_novel: rows[j]['lncrna|novel'],
-    //       mrna_known: rows[j]['mrna|known'],
-    //       mrna_novel: rows[j]['mrna|novel']
-    //   })
-    // }
-
-    //console.log(chartData);
     let that = this;
 
     let config:object={
@@ -226,7 +238,7 @@ export class InformationComponent implements OnInit {
         el: "#TranscriptData",
         type: "stackBar",
         width:800,
-        custom:['key','value','category'],
+        custom:['item','all'],
 				data: chartData
 			},
 			axis: {
@@ -256,15 +268,15 @@ export class InformationComponent implements OnInit {
 				show: true,
 				position: "right",
 				click:function(d,index){
-          that.colorF = d3.select(d).attr('fill');
-          that.legendIndexF = index;
-          that.isShowColorPanelF = true;
+          that.colorT = d3.select(d).attr('fill');
+          that.legendIndexT = index;
+          that.isShowColorPanelT = true;
         }
 			},
 			tooltip: function(d) {
 				return (
 					"<span>样本：" +
-					d.data.sample_name +
+					d.data.key +
 					"</span><br><span>占比：" +
 					(d[1]-d[0]) +
 					"%</span>"
@@ -348,6 +360,87 @@ export class InformationComponent implements OnInit {
 
     this.chartRNA = new d4().init(config);
 
+  }
+
+  //2.5 外显子数量
+  drawExonsNum(data){
+    console.log(data);
+    var baseThead = data.baseThead;
+    var rows = data.rows;
+    var chartData = [];
+
+    for (var i = 0; i < rows.length; i++) {
+      let temp = {};
+      for (let j = 0; j < baseThead.length; j++) {
+        let tempName = baseThead[j].true_key;
+        let tempValue = rows[i][tempName];
+        temp[tempName] = tempValue;
+      }
+      chartData.push(temp)
+    }
+
+    let that = this;
+
+    let config:object={
+      chart: {
+				title: "外显子数量分布图",
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+            this.setChartTitle(name);
+            this.updateTitle();
+					}
+				},
+        el: "#exonsNumData",
+        type: "stackBar",
+        width:800,
+        custom:['ref_item','ref_all'],
+				data: chartData
+			},
+			axis: {
+				x: {
+					title: "Exon Number",
+					dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setXTitle(name);
+							this.updateTitle();
+						}
+					},
+					rotate:60
+				},
+				y: {
+					title: "Number of Transcripts",
+					dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setYTitle(name);
+							this.updateTitle();
+						}
+          }
+				}
+			},
+			legend: {
+				show: true,
+				position: "right",
+				click:function(d,index){
+          that.colorE = d3.select(d).attr('fill');
+          that.legendIndexE = index;
+          that.isShowColorPanelE = true;
+        }
+			},
+			tooltip: function(d) {
+				return (
+					"<span>样本：" +
+					d.data.key +
+					"</span><br><span>占比：" +
+					(d[1]-d[0]) +
+					"%</span>"
+				);
+			}
+    }
+
+    this.chartE = new d4().init(config);
   }
 
   //2.7 miRNA首位碱基分布
@@ -444,6 +537,20 @@ export class InformationComponent implements OnInit {
 	defaultSelectList(data) {
     console.log(data)
 		this.selectConfirmData = data;
+  }
+  
+  //选择面板 确定筛选的数据
+	selectConfirmE(data) {
+    //console.log(data)
+    this.selectConfirmDataE = data;
+    this.exonsNumEntity["RefGeneTypeList"] = this.selectConfirmDataE;
+    this.exonsNum.reGetData();
+  }
+
+  //选择面板，默认选中数据
+	defaultSelectListE(data) {
+    //console.log(data)
+		this.selectConfirmDataE = data;
 	}
 
   handlerRefresh(){
@@ -460,6 +567,12 @@ export class InformationComponent implements OnInit {
   colorLChange(curColor){
     this.chartRNA.setColor(curColor, this.legendIndexL);
     this.chartRNA.redraw();
+  }
+
+  //2.5 外显子数量
+  colorEChange(curColor){
+    this.chartE.setColor(curColor, this.legendIndexE);
+    this.chartE.redraw();
   }
 
   //2.7 miRNA首位碱基分布
