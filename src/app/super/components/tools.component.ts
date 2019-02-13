@@ -40,7 +40,7 @@ export class ToolsComponent implements OnInit {
 			name: '聚类重分析',
 			desc:
 				'横轴表示取log2后的差异倍数，即log2FoldChange。纵轴表示基因，默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。',
-			limit: [1],
+			limit: [1,2000],
 			category: 'common'
 		},
 		{
@@ -79,11 +79,11 @@ export class ToolsComponent implements OnInit {
 			type: 'multiOmics',
 			name: '多组学关联',
 			desc: '多组学',
-			limit: [1, 500],
+			limit: [1],
 			category: 'common'
 		},
-		{ type: 'chiSquare', name: '卡方检测', desc: '卡方', limit: [1, 500], category: 'common' },
-		{ type: 'as', name: '可变剪切', desc: '可变剪切', limit: [1, 500], category: 'common' },
+		{ type: 'chiSquare', name: '卡方检测', desc: '卡方', limit: [1], category: 'common' },
+		{ type: 'as', name: '可变剪切', desc: '可变剪切', limit: [1, 100], category: 'common' },
 		{
 			type: 'linkedNetwork',
 			name: '关联网络图',
@@ -95,7 +95,7 @@ export class ToolsComponent implements OnInit {
 			type: 'heatmaprelation',
 			name: '关联聚类热图',
 			desc: '关联聚类热图',
-			limit: [1, 500],
+			limit: [1, 2000],
 			category: 'relation'
 		}
 	];
@@ -103,7 +103,10 @@ export class ToolsComponent implements OnInit {
 	title: String = '';
 	disabled: boolean = false;
 
-	// 聚类参数
+    // 聚类参数
+    heatmapData:any;
+    heatmapSelectList:any[] = [];
+    heatmapSelect:any = '';
 	expressData: any[] = [];
 	expressUpload: any = [];
 	expressSelect: any[] = [];
@@ -222,7 +225,11 @@ export class ToolsComponent implements OnInit {
 		this.desc = '';
 		this.title = '';
 		this.disabled = false;
-		// 初始化聚类参数
+        // 初始化聚类参数
+        this.heatmapData = null;
+        this.heatmapSelectList = [];
+        this.heatmapSelect = '';
+
 		this.expressData = [];
 		this.expressUpload = [];
 		this.expressSelect = [];
@@ -443,17 +450,24 @@ export class ToolsComponent implements OnInit {
 			.subscribe(
 				data => {
 					if (data['status'] == '0') {
-						let res = data['data'];
-						this.expressData = res['expression'].map(val => {
-							val['checked'] = false;
-							return val;
-						});
+                        let res = data['data'];
+                        this.heatmapData = res;
+                        this.heatmapSelectList = res['field'];
 
-						if (this.expressData.length) {
-							this.expressData[0]['checked'] = true;
-							this.expressSelect = [this.expressData[0]];
-						}
-						this.expressUpload = res['exp_user'];
+                        if(this.heatmapSelectList.length){
+                            this.heatmapSelect = res['field'][0];
+                            this.expressData = res[this.heatmapSelect]['expression'].map(val => {
+                                val['checked'] = false;
+                                return val;
+                            });
+                            if (this.expressData.length) {
+                                this.expressData[0]['checked'] = true;
+                                this.expressSelect = [this.expressData[0]];
+                            }
+
+                            this.expressUpload = res[this.heatmapSelect]['exp_user'];
+                        }
+
 
 						this.diffData = res['diff'].map(val => {
 							val['checked'] = false;
@@ -488,7 +502,18 @@ export class ToolsComponent implements OnInit {
 					this.doHeatmapAjax = true;
 				}
 			);
-	}
+    }
+
+    heatmapSelectChange(){
+        this.expressData = this.heatmapData[this.heatmapSelect]['expression'].map(val => {
+            val['checked'] = false;
+            return val;
+        });
+        if (this.expressData.length) {
+            this.expressData[0]['checked'] = true;
+            this.expressSelect = [this.expressData[0]];
+        }
+    }
 
 	// 提交聚类重分析  需要生信重分析 需要1 不需要2
 	heatmapConfirm(type) {
@@ -1605,7 +1630,7 @@ export class ToolsComponent implements OnInit {
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: 'classification',
+					reanalysisType: 'enrichment',
 					needReanalysis: 1,
 					version: this.storeService.getStore('version'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],

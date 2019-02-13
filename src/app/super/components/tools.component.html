@@ -21,7 +21,7 @@
 			<span *ngIf="childVisible && selectType==='multiOmics'">多组学</span>
 			<span *ngIf="childVisible && selectType==='line'">折线图</span>
 			<span *ngIf="childVisible && selectType==='chiSquare'">卡方检验</span>
-			<span *ngIf="childVisible && selectType==='net'">蛋白网络互做</span>
+			<span *ngIf="childVisible && selectType==='net'">蛋白网络互作</span>
 			<span *ngIf="childVisible && selectType==='linkedNetwork'">关联网络图</span>
 			<span *ngIf="childVisible && selectType==='heatmaprelation'">关联聚类</span>
 			<span *ngIf="childVisible && selectType==='classification'">基因分类</span>
@@ -35,7 +35,11 @@
 				<nz-tabset [nzSize]="'small'">
 					<nz-tab nzTitle="表达量聚类">
 						<div class="tool-params-tab">
-							<p *ngIf="expressData.length || expressUpload.length">数据选择</p>
+							<p *ngIf="expressData.length || expressUpload.length">数据选择&emsp;&nbsp;
+                                <nz-select style="width: 120px;" [nzSize]="small" [(ngModel)]="heatmapSelect" (ngModelChange)="heatmapSelectChange()">
+                                    <nz-option *ngFor="let select of heatmapSelectList" [nzValue]="select" [nzLabel]="select"></nz-option>
+                                </nz-select>
+                            </p>
 							<span *ngIf="expressData.length && expressUpload.length">原始数据</span>
 							<div *ngIf="expressData.length">
 								<button (click)="handlerHeatmapSelect(ex,expressSelect,'express')" [class.active]="ex['checked']" *ngFor="let ex of expressData;index as i;"
@@ -47,8 +51,8 @@
 								 nz-button nzType="default" nzSize="middle">{{exup['name']}}</button>
 							</div>
 							<nz-alert *ngIf="expressError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
-							<p *ngIf="geneType.length">基因分类</p>
-							<div *ngIf="geneType.length">
+							<p *ngIf="geneType.length && expressData.length && heatmapSelectList.length">基因分类</p>
+							<div *ngIf="geneType.length && expressData.length && heatmapSelectList.length">
 								<button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;"
 								 nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
 								<!-- <nz-alert *ngIf="geneTypeError" nzShowIcon nzType="warning" nzMessage="基因分类不能大于2个"></nz-alert> -->
@@ -57,7 +61,7 @@
 									按照分类结果进行聚类
 								</label>
 							</div>
-							<p *ngIf="!expressData.length && !expressUpload.length && !geneType.length && doHeatmapAjax" class="center">暂无参数</p>
+							<p *ngIf="(!expressData.length && !expressUpload.length && !geneType.length && doHeatmapAjax ) || (!heatmapSelectList.length && doHeatmapAjax)" class="center">缺少必要数据</p>
 						</div>
 						<nz-divider></nz-divider>
 						<div *ngIf="expressData.length || expressUpload.length" class="tool-params-button-group">
@@ -79,8 +83,8 @@
 								 nz-button nzType="default" nzSize="middle">{{diffUp['name']}}</button>
 							</div>
 							<nz-alert *ngIf="diffError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
-							<p *ngIf="geneType.length">基因分类</p>
-							<div *ngIf="geneType.length">
+							<p *ngIf="diffData.length && geneType.length">基因分类</p>
+							<div *ngIf="diffData.length && geneType.length">
 								<button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;"
 								 nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
 								<!-- <nz-alert *ngIf="geneTypeError" nzShowIcon nzType="warning" nzMessage="基因分类不能大于2个"></nz-alert> -->
@@ -89,7 +93,7 @@
 									按照分类结果进行聚类
 								</label>
 							</div>
-							<p *ngIf="!diffData.length && !diffUpload.length && !geneType.length && doHeatmapAjax" class="center">暂无参数</p>
+							<p *ngIf="!diffData.length && !diffUpload.length && !geneType.length && doHeatmapAjax" class="center">缺少必要数据</p>
 						</div>
 						<nz-divider></nz-divider>
 						<div *ngIf="diffData.length || diffUpload.length" class="tool-params-button-group">
@@ -116,8 +120,8 @@
 								 *ngFor="let customUp of customUpload;index as i;" nz-button nzType="default" nzSize="middle">{{customUp['name']}}</button>
 							</div>
 							<nz-alert *ngIf="customError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
-							<p *ngIf="geneType.length">基因分类</p>
-							<div *ngIf="geneType.length">
+							<p *ngIf="customData.length && geneType.length">基因分类</p>
+							<div *ngIf="customData.length && geneType.length">
 								<button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;"
 								 nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
 								<!-- <nz-alert *ngIf="geneTypeError" nzShowIcon nzType="warning" nzMessage="基因分类不能大于2个"></nz-alert> -->
@@ -126,7 +130,7 @@
 									按照分类结果进行聚类
 								</label>
 							</div>
-							<p *ngIf="!customData.length && !customUpload.length && !geneType.length && doHeatmapAjax" class="center">暂无参数</p>
+							<p *ngIf="!customData.length && !customUpload.length && !geneType.length && doHeatmapAjax" class="center">缺少必要数据</p>
 						</div>
 						<nz-divider></nz-divider>
 						<div *ngIf="customData.length || customUpload.length" class="tool-params-button-group">
@@ -154,7 +158,7 @@
 						 nzSize="middle">确定</button>
 					</div>
 				</ng-container>
-				<p *ngIf="!multiOmicsData.length" class="center">暂无参数</p>
+				<p *ngIf="!multiOmicsData.length" class="center">缺少必要数据</p>
 			</nz-spin>
 		</nz-drawer>
 
@@ -168,7 +172,7 @@
 						<div class="tool-params-tab">
 							<button (click)="lineClick('group',line)" [class.active]="line['checked']" *ngFor="let line of lineGroupData;index as i;"
 							 nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
-							<p *ngIf="!lineGroupData.length  && doLineAjax " class="center">暂无参数</p>
+							<p *ngIf="!lineGroupData.length  && doLineAjax " class="center">缺少必要数据</p>
 							<nz-alert *ngIf="lineGroupError || !lineGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
 						</div>
 						<nz-divider></nz-divider>
@@ -183,7 +187,7 @@
 							<button (click)="lineClick('sample',line)" [class.active]="line['checked']" *ngFor="let line of lineSampleData;index as i;"
 							 nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
 							<nz-alert *ngIf="lineSampleError || !lineSampleSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
-							<p *ngIf="!lineSampleData.length && doLineAjax " class="center">暂无参数</p>
+							<p *ngIf="!lineSampleData.length && doLineAjax " class="center">缺少必要数据</p>
 						</div>
 						<nz-divider></nz-divider>
 						<div *ngIf="lineSampleData.length" class="tool-params-button-group">
@@ -197,7 +201,7 @@
 							<button (click)="lineClick('custom',line)" [class.active]="line['checked']" *ngFor="let line of lineCustomData;index as i;"
 							 nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
 							<nz-alert *ngIf="lineCustomError || !lineCustomSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
-							<p *ngIf="!lineCustomData.length && doLineAjax " class="center">暂无参数</p>
+							<p *ngIf="!lineCustomData.length && doLineAjax " class="center">缺少必要数据</p>
 						</div>
 						<nz-divider></nz-divider>
 						<div *ngIf="lineCustomData.length" class="tool-params-button-group">
@@ -236,7 +240,7 @@
 							<button (click)="kaFunClick(kaFun)" [class.active]="kaFun['checked']" *ngFor="let kaFun of kaFunGroupData;index as i;"
 							 nz-button nzType="default" nzSize="middle">{{kaFun['name']}}</button>
 							<nz-alert *ngIf="kaFunGroupError || !kaFunGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
-							<p *ngIf="!kaFunGroupData.length && doKaFunAjax" class="center">暂无参数</p>
+							<p *ngIf="!kaFunGroupData.length && doKaFunAjax" class="center">缺少必要数据</p>
 						</div>
 					</div>
 				</div>
@@ -269,7 +273,7 @@
                         <div class="tool-params-tab" *ngIf="kaFunGroupData.length">
                             <button (click)="kaFunClick(kaFun)" [class.active]="kaFun['checked']" *ngFor="let kaFun of kaFunGroupData;index as i;" nz-button nzType="default" nzSize="middle">{{kaFun['name']}}</button>
                             <nz-alert *ngIf="kaFunGroupError || !kaFunGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
-                            <p *ngIf="!kaFunGroupData.length" class="center">暂无参数</p>
+                            <p *ngIf="!kaFunGroupData.length" class="center">缺少必要数据</p>
                         </div>
                     </div>
                 </div>
@@ -288,7 +292,7 @@
 				<div class="tool-params-net">
 					<button class="mr6 mb6" (click)="netClick(net)" [class.active]="net['checked']" *ngFor="let net of netData;index as i;"
 					 nz-button nzType="default" nzSize="middle">{{net['name']}}</button>
-					<p *ngIf="!netData.length && doNetAjax" class="center">暂无参数</p>
+					<p *ngIf="!netData.length && doNetAjax" class="center">缺少必要数据</p>
 					<nz-alert class="mb6" *ngIf="netError || !netSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
 					<!-- 参数选择 -->
 					<div class="tools-prams-content">
@@ -320,7 +324,7 @@
 				<div class="tool-params-relativeNet">
 					<button class="mr6 mb6" (click)="relativeNetClick(relativeNet)" [class.active]="relativeNet['checked']" *ngFor="let relativeNet of relativeNetData;index as i;"
 					 nz-button nzType="default" nzSize="middle">{{relativeNet['name']}}</button>
-					<p *ngIf="!relativeNetData.length && doRelativeNetAjax " class="center">暂无参数</p>
+					<p *ngIf="!relativeNetData.length && doRelativeNetAjax " class="center">缺少必要数据</p>
 					<nz-alert class="mb6" *ngIf="!relativeNetError && !relativeNetSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
 					<!-- 参数选择 -->
 					<!-- <div class="tools-prams-content">
@@ -432,7 +436,7 @@
                         </label>
 					</div>
 					<p *ngIf="!heatmapReStand.length && !heatmapReGeneType.length && !heatmapReRelations.length && doHeatmapRelationAjax"
-					 class="center">暂无参数</p>
+					 class="center">缺少必要数据</p>
 				</div>
 				<nz-divider></nz-divider>
 				<div *ngIf="heatmapReStand.length && heatmapReRelations.length" class="tool-params-button-group">
@@ -453,7 +457,7 @@
 					 nz-button nzType="default" nzSize="middle">{{klass['name']}}</button>
 					<nz-alert *ngIf="!geneClassSelect.length" nzShowIcon nzType="warning" nzMessage="请选择一个分类"></nz-alert>
 				</div>
-				<p *ngIf="!geneClassData.length && doGeneClassAjax" class="center">暂无参数</p>
+				<p *ngIf="!geneClassData.length && doGeneClassAjax" class="center">缺少必要数据</p>
 				<nz-divider></nz-divider>
 				<div *ngIf="geneClassData.length" class="tool-params-button-group">
 					<button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
@@ -473,7 +477,7 @@
 					 nz-button nzType="default" nzSize="middle">{{rich['name']}}</button>
 					<nz-alert *ngIf="!geneRichSelect.length" nzShowIcon nzType="warning" nzMessage="请选择一个分类"></nz-alert>
 				</div>
-				<p *ngIf="!geneRichData.length && doGeneRichAjax" class="center">暂无参数</p>
+				<p *ngIf="!geneRichData.length && doGeneRichAjax" class="center">缺少必要数据</p>
 				<nz-divider></nz-divider>
 				<div *ngIf="geneRichData.length" class="tool-params-button-group">
 					<button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>

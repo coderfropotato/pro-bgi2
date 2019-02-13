@@ -236,8 +236,8 @@ export class ClusterSetComponent implements OnInit {
             }
         })
 
-        if(count>2){
-            this.notification.warning('添加纵向分类','最多允许添加2个');
+        if(count>1){
+            this.notification.warning('添加纵向分类','最多允许添加1个');
         }else{
             this.verticalInfos=[];
             this.verticalClassList.forEach(d => {
@@ -309,8 +309,8 @@ export class ClusterSetComponent implements OnInit {
             }
         })
 
-        if(count>2){
-            this.notification.warning('添加横向分类','最多允许添加2个');
+        if(count>1){
+            this.notification.warning('添加横向分类','最多允许添加1个');
         }else{
             this.horizontalInfos=[];
             this.horizontalClassList.forEach(d => {
