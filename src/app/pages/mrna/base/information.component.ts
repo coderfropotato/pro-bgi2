@@ -275,11 +275,11 @@ export class InformationComponent implements OnInit {
 			},
 			tooltip: function(d) {
 				return (
-					"<span>样本：" +
-					d.data.key +
-					"</span><br><span>占比：" +
-					(d[1]-d[0]) +
-					"%</span>"
+					"<span>name：" +
+					d.key +
+					"</span><br><span>数量：" +
+					(d.data[d.key]) +
+					"</span>"
 				);
 			}
     }
@@ -431,11 +431,11 @@ export class InformationComponent implements OnInit {
 			},
 			tooltip: function(d) {
 				return (
-					"<span>样本：" +
-					d.data.key +
-					"</span><br><span>占比：" +
-					(d[1]-d[0]) +
-					"%</span>"
+					"<span>name：" +
+					d.key +
+					"</span><br><span>数量：" +
+					(d.data[d.key]) +
+					"</span>"
 				);
 			}
     }
