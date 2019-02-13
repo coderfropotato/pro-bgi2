@@ -143,8 +143,6 @@ export class DiffExpressionComponent implements OnInit {
 	tableHeight = 0;
 	first = true;
 
-	color = '#fff'; // 默认颜色
-	show = false; // 是否显示颜色选择器
 	venn: any; // 韦恩图对象实例
 
 	leftSelect: any[] = [];
