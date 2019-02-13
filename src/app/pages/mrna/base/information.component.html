@@ -69,6 +69,29 @@
                 ></app-color-picker>
     </div>
 
+    <h3 class="title">2.5 外显子数量</h3>
+    <div class="f-content">
+        <app-table-switch-chart
+            #exonsNum
+            [id]="'exonsNum'"
+            [tableUrl]="exonsNumUrl"
+            [apiEntity]="exonsNumEntity"
+            [isOnlyChart] = "false"
+            (drawChartEmit)="drawExonsNum($event)"
+            [flex]="true"
+            [chartId]="'exonsNumData'"
+            [chartName]="'转录本长度分布图'"
+            (refresh)="handlerRefresh()"
+            [selectPanelData]="selectPanelDataE"
+            (selectConfirmEmit)="selectConfirmE($event)"
+            [defaultSelectNum]="-1"
+            (defaultSelectList)="defaultSelectListE($event)"
+        >
+        </app-table-switch-chart>
+        <app-color-picker [(color)]="colorE" (colorChange)="colorEChange($event)" [(show)]="isShowColorPanelE"
+                ></app-color-picker>
+    </div>
+
     <h3 class="title">2.6 注释统计表</h3>
     <div class="f-content">
         <app-big-table
