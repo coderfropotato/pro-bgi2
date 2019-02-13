@@ -178,7 +178,9 @@ export class InformationComponent implements OnInit {
               title.textContent = data;
           })
         },
-				padding:0.1,
+        width:600,
+        height:400,
+				padding:0.01,
 				outerRadius:120,
 				startAngle:0,
 				endAngle:360,
@@ -371,13 +373,19 @@ export class InformationComponent implements OnInit {
 
     for (var i = 0; i < rows.length; i++) {
       let temp = {};
+      let total = 0;
       for (let j = 0; j < baseThead.length; j++) {
         let tempName = baseThead[j].true_key;
         let tempValue = rows[i][tempName];
         temp[tempName] = tempValue;
+        // if(tempName != "ref_all"&&tempName !="ref_item"){
+        //   total += tempValue;
+        // }
       }
+      temp["total"] = total;
       chartData.push(temp)
     }
+    console.log(chartData);
 
     let that = this;
 
@@ -407,7 +415,7 @@ export class InformationComponent implements OnInit {
 							this.updateTitle();
 						}
 					},
-					rotate:60
+					// rotate:60
 				},
 				y: {
 					title: "Number of Transcripts",
