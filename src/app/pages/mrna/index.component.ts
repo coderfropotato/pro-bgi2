@@ -96,8 +96,6 @@ export class IndexComponent implements OnInit {
 								}
 							}
 
-							this.storeService.setStore('LCTYPE', 'mrna');
-
                             //this.menuList = data["data"].menu_list;
 
 							/**
@@ -321,6 +319,10 @@ export class IndexComponent implements OnInit {
 								},
 							];
 
+                            //动态跳第一个页面  需要替换  /report/mrna 为当前url  不然后退的时候会回到 /report/mrna 导致路由容器为空
+                            let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
+                            window.location.replace(url);
+
 							let menuRouteMap = {};
 							this.menuList.forEach((v, index) => {
 								if (v['children'].length) {
@@ -495,8 +497,8 @@ export class IndexComponent implements OnInit {
 						];
 
 						//动态跳第一个页面
-						// let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
-						// window.location.replace(url);
+						let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
+						window.location.replace(url);
 						resolve('success');
 					},
 					() => {

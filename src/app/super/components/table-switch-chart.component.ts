@@ -379,7 +379,7 @@ export class TableSwitchChartComponent implements OnInit {
     selectConfirm() {
         this.confirmSelects=[...this.selectedList];
         this.selectConfirmEmit.emit(this.selectedList);
-        this.isShowSelectPanel=false;
+        // this.isShowSelectPanel=false;
     }
 
     //显示隐藏选择面板

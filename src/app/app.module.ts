@@ -172,11 +172,11 @@ const ROUTES: Routes = [
 		},
 		canActivateChild: [ SysDefendService ],
 		children: [
-			{
-				path: '',
-				redirectTo: 'diff-expression',
-				pathMatch: 'full'
-			},
+			// {
+			// 	path: '',
+			// 	redirectTo: 'diff-expression',
+			// 	pathMatch: 'full'
+			// },
 			// 基础模块
 			{
 				path: 'overview',

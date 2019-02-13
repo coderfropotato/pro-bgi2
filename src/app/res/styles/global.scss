@@ -1337,20 +1337,32 @@ button.btnActive {
 // 带删除图标的按钮
 .closeable-button{
 	text-align: center;
-	position: relative;
 	display:inline-block;
-	padding-right:4px;
-	margin-right:6px;
+    padding-right:4px;
+    position: relative;
+    margin-right:6px;
+    button{
+        margin-right: 0!important;
+        padding-right: 20px;
+    }
 	i{
-		position:absolute;
-		top:-5px;
-		right:8px;
-		font-size:12px;
+        font-size:14px;
+        line-height: 12px;
+        position: absolute;
+        right: 10px;
+        top: 6px;
+        width: 12px;
+        height: 12px;
 		transition: .3s all ease;
 		z-index: 2;
-		cursor: pointer;
+        cursor: pointer;
+        // background-color: $close_icon_bg;
+        // color: $close_icon_color;
+        // border-radius: 50%;
+        transform: rotate(45deg);
+        opacity: .6;
 		&:hover{
-			transform: scale(1.2);
+			opacity: .8;
 		}
 	}
 }
