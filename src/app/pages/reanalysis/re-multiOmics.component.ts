@@ -871,8 +871,9 @@ export class ReMultiOmicsComponent implements OnInit {
 						k.scatters.forEach(d=>{
 							scatters.push({
 								x:Math.random(),
-								y:d,
-								w:k.w
+								y:d.value,
+								w:k.w,
+								gene:d.gene
 							})
 						})
 
@@ -890,7 +891,8 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('cx', m=>m.xscale(m.x))
 					.attr('cy', (m) => yScaleBox(m.y))
 					.on('mouseover', (m) => {
-						this.globalService.showPopOver(d3.event, m.y);
+						let text=`基因ID：<a>${m.gene}</a><br>值：${m.y}`;
+						this.globalService.showPopOver(d3.event, text);
 					})
 					.on('mouseout', () => {
 						this.globalService.hidePopOver();
