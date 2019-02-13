@@ -386,7 +386,7 @@ export class InformationComponent implements OnInit {
         //   total += tempValue;
         // }
       }
-      temp["total"] = total;
+      //temp["total"] = total;
       chartData.push(temp)
     }
     console.log(chartData);
