@@ -178,29 +178,31 @@ export class ReadsFilterComponent implements OnInit {
               title.textContent = data;
           })
         },
-				padding:0.1,
-				outerRadius:120,
-				startAngle:0,
-				endAngle:360,
-				showLabel:true,
-				custom: ["name", "value"],
-				el: "#rawDataID",
-				type: "pie",
-				data: tempArray
-				},
-				legend: {
-					show: true,
-					position: "right",
-					click:function(d,index){
-						that.color = d3.select(d).attr('fill');
-                        that.legendIndex = index;
-                        that.isShowColorPanel = true;
-					}
-				},
-				tooltip: function(d) {
-					return "<span>name："+d.data.name+"</span><br><span>value："+d.data.value+"</span>";
-				}
-			}
+        width:600,
+        height:400,
+        padding:0.01,
+        outerRadius:120,
+        startAngle:0,
+        endAngle:360,
+        showLabel:true,
+        custom: ["name", "value"],
+        el: "#rawDataID",
+        type: "pie",
+        data: tempArray
+        },
+        legend: {
+            show: true,
+            position: "right",
+            click:function(d,index){
+                that.color = d3.select(d).attr('fill');
+                that.legendIndex = index;
+                that.isShowColorPanel = true;
+            }
+        },
+        tooltip: function(d) {
+            return "<span>name："+d.data.name+"</span><br><span>value："+d.data.value+"</span>";
+        }
+    }
 
       this.chart=new d4().init(config);
   }

@@ -130,8 +130,9 @@ export class LrnaComponent implements OnInit {
               title.textContent = data;
           })
         },
-        width:700,
-				padding:0.1,
+        width:600,
+        height:400,
+				padding:0.01,
 				outerRadius:120,
 				startAngle:0,
 				endAngle:360,
