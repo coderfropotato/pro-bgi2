@@ -290,11 +290,13 @@ export class InformationComponent implements OnInit {
 		var chartData = [];
 		for (var i = 0; i < baseThead.length; i++) {
 			for (var j = 0; j < rows.length; j++) {
-				chartData.push({
-					key: rows[j].mirna_length,
-					value: rows[j][baseThead[i].true_key],
-					category: baseThead[i].name
-				});
+        if(baseThead[i].name != "mirna_length"){
+          chartData.push({
+            key: rows[j].mirna_length,
+            value: rows[j][baseThead[i].true_key],
+            category: baseThead[i].name
+          });
+        }
 			}
 		}
 
@@ -302,7 +304,7 @@ export class InformationComponent implements OnInit {
 
 		let config: object = {
 			chart: {
-				// title: "小RNA长度分布",
+				title: "miRNA长度分布",
 				dblclick: function(event) {
 					var name = prompt('请输入需要修改的标题', '');
 					if (name) {
@@ -326,7 +328,7 @@ export class InformationComponent implements OnInit {
 							this.updateTitle();
 						}
 					},
-					rotate: 60
+					//rotate: 60
 				},
 				y: {
 					title: 'Number of miRNA',
@@ -337,7 +339,7 @@ export class InformationComponent implements OnInit {
 							this.updateTitle();
 						}
 					},
-					formatter: (val) => val + '%'
+					//formatter: (val) => val + '%'
 				}
 			},
 			legend: {
