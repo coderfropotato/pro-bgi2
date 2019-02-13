@@ -202,7 +202,7 @@ export class InformationComponent implements OnInit {
 			}
 		};
 
-		this.chart = new d4().init(config);
+        this.chart = new d4().init(config);
 	}
 
 	//2.3基因长度
@@ -309,8 +309,9 @@ export class InformationComponent implements OnInit {
 					}
 				},
 				el: '#RNALData',
-				type: 'groupBar',
-				width: 660,
+                type: 'groupBar',
+                innerPadding:0.01,
+                width: 800,
 				custom: [ 'key', 'value', 'category' ],
 				data: chartData
 			},
@@ -334,8 +335,7 @@ export class InformationComponent implements OnInit {
 							this.setYTitle(name);
 							this.updateTitle();
 						}
-					},
-					formatter: (val) => val + '%'
+					}
 				}
 			},
 			legend: {
@@ -360,7 +360,9 @@ export class InformationComponent implements OnInit {
 			}
 		};
 
-		this.chartRNA = new d4().init(config);
+        this.chartRNA = new d4().init(config);
+
+        console.log(this.chartRNA)
 	}
 
 	//2.5 外显子数量
