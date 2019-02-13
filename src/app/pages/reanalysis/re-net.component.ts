@@ -551,7 +551,7 @@ export class ReNetComponent implements OnInit {
             .style('cursor','pointer')
             .attr("marker-end",d=> d.type==='target' ? 'url(#end-arrow)' :'')
             .on("mouseover", m => {
-                let text = `source：${m.source.geneID}<br>target：${m.target.geneID}<br>type：${m.type}<br>score：${m.score}<br>文献：${m.references}`;
+                let text = `source：${m.source.geneID}<br>target：${m.target.geneID}<br>type：${m.type}<br>score：${m.score}<br>文献：<a>${m.references}</a>`;
                 this.globalService.showPopOver(d3.event, text);
             })
             .on("mouseout", () => {
@@ -605,7 +605,7 @@ export class ReNetComponent implements OnInit {
             .attr('fill', d=>d.selected ? "#000000" : that.nodeColorScale(d.value))
             .attr("cursor", "pointer")
             .on("mouseover", m => {
-                let text = `geneID：${m.geneID}<br>type：${m.type}<br>linkNum：${m.value}<br>geneSymbol：${m.symbol}`;
+                let text = `geneID：<a>${m.geneID}</a><br>type：${m.type}<br>linkNum：${m.value}<br>geneSymbol：${m.symbol}`;
                 this.globalService.showPopOver(d3.event, text);
             })
             .on("mouseout", () => {
