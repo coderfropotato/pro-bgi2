@@ -87,6 +87,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() setDataUrl: string;
     @Input() setDataEntity: object;
+    @Input() localSetData:any;
     @Output() setData: EventEmitter<any> = new EventEmitter();
 
     // 刷新
@@ -179,23 +180,31 @@ export class TableSwitchChartComponent implements OnInit {
             }
         ];
 
-        if (this.selectPanelData) {
-            this.isHasSelectPanel = true;
-            this.calculateSelectPanelData(this.selectPanelData);
-        } else if (this.selectPanelUrl && this.selectPanelEntity) {
-            this.isHasSelectPanel = true;
-            this.getSelectPanelList();
-        } else {
-            this.isHasSelectPanel = false;
-            if (this.defaultSetUrl && this.defaultSetEntity) {
-                this.getDefaultSet();
+        if(this.selectPanelData || (this.selectPanelUrl && this.selectPanelEntity) || (this.defaultSetUrl && this.defaultSetEntity)){
+            if (this.selectPanelData) {
+                this.isHasSelectPanel = true;
+                this.calculateSelectPanelData(this.selectPanelData);
+            } else if (this.selectPanelUrl && this.selectPanelEntity) {
+                this.isHasSelectPanel = true;
+                this.getSelectPanelList();
             } else {
+                this.isHasSelectPanel = false;
                 this.reGetData();
             }
+    
+            if (this.defaultSetUrl && this.defaultSetEntity) {
+                this.getDefaultSet();
+            }else{
+                this.reGetData();  
+            }
+        }else{
+            this.reGetData();
         }
 
         if (this.setDataUrl && this.setDataEntity) {
             this.getSetData();
+        }else if(this.localSetData){
+            this.setData.emit(this.localSetData);
         }
     }
 
@@ -243,7 +252,7 @@ export class TableSwitchChartComponent implements OnInit {
             });
     }
 
-    //获取设置所需的数据
+    //获取设置中所需的数据
     getSetData() {
         this.ajaxService
             .getDeferData({
