@@ -16,6 +16,8 @@ export class GlobalService {
 
     colorPickerModal:NzModalRef = null;
 
+    popoverTimer:any = null;
+
     constructor(
         private sanitizer: DomSanitizer,
         private modalService: NzModalService
@@ -245,6 +247,7 @@ export class GlobalService {
      * @memberof GlobalService
      */
     showPopOver(event, text) {
+        clearTimeout(this.popoverTimer);
         if ($(".popover-service").length) $(".popover-service").remove();
 
         let pop = $(
@@ -275,9 +278,17 @@ export class GlobalService {
 
         pop.css("top", event.pageY - h / 2);
         pop.addClass(direction).css("opacity", 1);
+
+        pop.on('mouseenter',()=>{
+            clearTimeout(this.popoverTimer);
+        }).on('mouseleave',function(){
+            $(this).remove();
+        })
     }
 
     hidePopOver() {
-        $(".popover-service").remove();
+        this.popoverTimer = setTimeout(()=>{
+            $(".popover-service").remove();
+        },200)
     }
 }
