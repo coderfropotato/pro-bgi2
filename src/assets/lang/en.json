@@ -88,7 +88,8 @@
     "errorTips":{
         "nodata":"Sorry, there is no data to display ！",
         "error":"Sorry, the system is wrong !",
-        "maxOver":"Sorry, the amount of data is too large to display properly !"
+        "maxOver":"Sorry, the amount of data is too large to display properly !",
+        "curNodata":"Sorry,there is no data, please change the parameters to query."
     },
     "saveGene":{
         "title":"save Gene",
