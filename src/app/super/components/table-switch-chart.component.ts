@@ -98,6 +98,15 @@ export class TableSwitchChartComponent implements OnInit {
     // 图类型 ,形如：{key:"bubble",value:"气泡图"}
     @Input() chartTypeData: any[];
 
+    // 图说明
+    @Input() isShowChartDesc:boolean=false; // 可选，默认隐藏
+    @Input() chartDescTitle:string;  //可选， 说明字段标题； 默认是'图说明'
+    @Input() chartDescContent:string;  //  说明的内容；传入此字段说明有图的说明
+    // 表说明
+    @Input() isShowTableDesc:boolean=false;
+    @Input() tableDescTitle:string;
+    @Input() tableDescContent:string;
+
     scroll: object = { x: "120%", y: "400px" };
     isShowTable: boolean = false;
     total: number = 1;
@@ -133,8 +142,7 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.chartTypeData && this.chartTypeData.length)
-            this.chartType = this.chartTypeData[0]["key"];
+        if (this.chartTypeData && this.chartTypeData.length) this.chartType = this.chartTypeData[0]["key"];
 
         this.accuracyList = [
             {
@@ -268,8 +276,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     scrollHeight() {
         try {
-            let tableChartContentH = this.tableChartContent.nativeElement
-                .offsetHeight;
+            let tableChartContentH = this.tableChartContent.nativeElement .offsetHeight;
             let bottomPageH = this.tableBottom
                 ? this.tableBottom.nativeElement.offsetHeight
                 : 0;
