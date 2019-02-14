@@ -45,6 +45,7 @@
             [chartName]="'reads 在转录本上的分布'"
             [otherLeftTemplate]='searchTemplate'
             (refresh)="handlerRefresh()"
+            [chartDescContent]="'X 轴表示转录本的位置（ 设置 200 个滑动窗口 ），Y 轴表示 reads 的数目（ 以每个滑动窗口来计算 ）。'"
         >
         </app-table-switch-chart>
     </div>
@@ -95,6 +96,7 @@
             [chartName]="'测序饱和度曲线'"
             [otherLeftTemplate]='searchSaturationTemplate'
             (refresh)="handlerRefresh()"
+            [chartDescContent]="'横坐标表示clean reads数，单位为100k，极值是该样品当前的测序量；纵坐标表示检测到的基因数目比例，单位为%。'"
         >
         </app-table-switch-chart>
         <!-- <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
