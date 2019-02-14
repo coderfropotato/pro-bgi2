@@ -1724,3 +1724,31 @@ button.btnActive {
 .color-picker-mask{
     z-index:10;
 }
+
+// 图表说明
+.descTitle{
+	&:hover{
+		color: $font_active_color;
+	}
+	&.active{
+		color:$font_active_color;
+	}
+}
+
+.desc{
+	margin-top: 20px;
+}
+
+.descContent{
+	background-color: #f5f5f5;
+	font-size: 12px!important;
+	color: #636a82;
+	padding: 12px;
+	margin-top: 12px;
+	border: $border;
+	border-radius: 4px;
+	text-align: justify;
+	text-indent: 2em!important;
+	max-height: 200px;
+    overflow: auto;
+}

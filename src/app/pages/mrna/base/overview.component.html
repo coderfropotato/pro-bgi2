@@ -23,6 +23,7 @@
                 #relevanceChart
                 [id]="'relevanceChart'"
                 [tableUrl]="tableUrl"
+                [chartUrl]="chartUrl"
                 [apiEntity]="tableEntity"
                 [isOnlyChart] = "false"
                 (drawChartEmit)="drawRelevanceReads($event)"
@@ -34,8 +35,11 @@
                 (selectConfirmEmit)="selectConfirm($event)"
                 [defaultSelectNum]="-1"
                 (defaultSelectList)="defaultSelectList($event)"
+                [chartDescContent]="'X、Y轴均代表每个样品。颜色代表相关性系数(颜色越深代表相关性越高，颜色越浅代表相关性越低)。'"
             >
             </app-table-switch-chart>
+            <app-color-picker [(color)]="colorQuality" (colorChange)="colorQualityChange($event)" [(show)]="isShowQualityColorPanel"
+                ></app-color-picker>
         </div>
     </div>
 
@@ -60,6 +64,7 @@
                 [chartName]="'主成分分析'"
                 [otherLeftTemplate]='searchTemplate'
                 (refresh)="handlerRefresh()"
+                [chartDescContent]="'X、Y轴表示样品表达量经过降维处理后得到的对应主成分的新的数据集，用来表示样品之间的差距；坐标轴标签括号中的数值代表对应主成分解释总体方差的百分比。点代表每个样品，同一个颜色代表同一个样品组。'"
             >
             </app-table-switch-chart>
             <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
