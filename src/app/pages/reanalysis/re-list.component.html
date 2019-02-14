@@ -1,12 +1,55 @@
 <div class="analysis-list">
     <nz-spin [nzSpinning]="loading" nzTip='Loading...'>
+        <div class="search-box">
+            <div class="search">
+                <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary" nzSearch  (click)="search()"><i class="anticon anticon-search"></i></button>
+                </ng-template>
+                <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+                    <input type="text" [(ngModel)]="label" (keyup.enter)="search()" nz-input placeholder="input search text">
+                </nz-input-group>
+                <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'" [(nzVisible)]="panelVisible">
+                    <button nz-button nz-dropdown nzType="primary">条件筛选</button>
+                    <div class="analysis-list-panel">
+                        <div>
+                            <span>数据</span>
+                            <div>
+                                <button (click)="choose(da)" [class.btnActive]="da['checked']" nz-button *ngFor="let da of src['data']" nzType="default" nzSize="small">{{da['name']}}</button>
+                            </div>
+                        </div>
+                        <div>
+                            <span>提交时间</span>
+                            <div>
+                                <nz-range-picker nzSize="small" [(ngModel)]="src.dateRange" [nzPlaceHolder]="[ 'Start Time', 'End Time' ]" nzShowTime></nz-range-picker>
+                            </div>
+                        </div>
+                        <div>
+                            <span>类型</span>
+                            <div>
+                                <button (click)="choose(cat)" [class.btnActive]="cat['checked']" nz-button *ngFor="let cat of src['category']" nzType="default" nzSize="small">{{cat['name']}}</button>
+                            </div>
+                        </div>
+                        <div>
+                            <span>状态</span>
+                            <div>
+                                <button (click)="choose(st)" [class.btnActive]="st['checked']" nz-button *ngFor="let st of src['status']" nzType="default" nzSize="small">{{st['name']}}</button>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button nz-button nzType="primary" nzSize="small" (click)="filter()">筛选</button>
+                            <button nz-button nzType="default" nzSize="small" (click)="reset()">重置</button>
+                        </div>
+                    </div>
+                </nz-dropdown>
+            </div>
+        </div>
         <div class="table-thead tableHeader">
             <div class="fRight">
                 <i class="iconfont icon-shuaxin" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="getAnalysisList()"></i>
             </div>
         </div>
         <div class="table-content">
-            <nz-table #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"  nzSize="middle">
+            <nz-table *ngIf="!error" #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"  nzSize="middle">
                 <thead>
                     <tr>
                     <th>名称</th>
@@ -18,7 +61,7 @@
                 </thead>
                 <tbody>
                     <tr class="center" *ngFor="let data of analysisList">
-                        <td>{{data['nickname']}}</td>
+                        <td>{{data['nickname']}} <span *ngIf="data['isEdited']" style="color:red;">（已编辑）</span></td>
                         <td>{{data['reanalysisType']}}</td>
                         <td>{{data['date']}}</td>
                         <td>{{data['remark']?data['remark']:'-'}}</td>
@@ -30,10 +73,10 @@
                     </tr>
                 </tbody>
             </nz-table>
+            <app-error *ngIf="error" [error]="error"></app-error>
             <div class="table-bottom">
                 <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [showPageSize]="false" [total]="total" [pageSize]="10" (pageIndexChange)="getAnalysisList()"  [maxLimit]="1000"></app-pagination>
             </div>
-            <app-error *ngIf="error" [error]="error"></app-error>
         </div>
     </nz-spin>
 </div>
