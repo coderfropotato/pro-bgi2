@@ -144,7 +144,7 @@
         </div>
     </nz-spin>
     <!-- 图说明 -->
-    <div class="desc" *ngIf="chartDescContent && !isShowTable">
+    <div class="desc" *ngIf="chartDescContent && !isShowTable && !chartError">
         <div class="descTitle" [class.active]='isShowChartDesc' (click)='isShowChartDesc=!isShowChartDesc'>
             <i nz-icon class="anticon anticon-info-circle" theme="outline"></i>&nbsp;
             <span *ngIf="!chartDescTitle">图说明</span>
@@ -155,7 +155,7 @@
         </div>
     </div>
     <!-- 表说明 -->
-    <div class="desc" *ngIf="tableDescContent && isShowTable">
+    <div class="desc" *ngIf="tableDescContent && isShowTable && !tableError">
         <div class="descTitle" [class.active]='isShowTableDesc' (click)='isShowTableDesc=!isShowTableDesc'>
             <i nz-icon class="anticon anticon-info-circle" theme="outline"></i>&nbsp;
             <span *ngIf="!tableDescTitle">表说明</span>
