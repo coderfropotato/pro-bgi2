@@ -366,7 +366,7 @@ export class KaFunComponent implements OnInit {
     //单选
     doSingleData() {
         if(this.singleMultiSelect['bucket'].length){
-            this.transformTable._filter('gene_id','gene_id','string','$in',this.singleMultiSelect['bucket'].join(','),null);
+            this.transformTable._filter(`${this.geneType}_id`,`${this.geneType}_id`,'string','$in',this.singleMultiSelect['bucket'].join(','),null);
         }
     }
 
@@ -379,7 +379,7 @@ export class KaFunComponent implements OnInit {
         }
         let genelist  = Array.from(new Set(tempArray));
         if(genelist.length){
-            this.transformTable._filter('gene_id','gene_id','string','$in',genelist.join(','),null);
+            this.transformTable._filter(`${this.geneType}_id`,`${this.geneType}_id`,'string','$in',genelist.join(','),null);
         }
 	}
 
