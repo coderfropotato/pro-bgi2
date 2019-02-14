@@ -36,7 +36,7 @@ export class ReListComponent implements OnInit {
 	getListObserver = new Subject<boolean>();
 
 	label: string = '';
-	src: object = {
+	src: any = {
 		data: [ { name: '基因', key: 'gene', checked: false }, { name: '转录本', key: 'transcript', checked: false } ],
 		dateRange: [],
 		category: [
