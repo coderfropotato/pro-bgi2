@@ -117,6 +117,7 @@
             [chartId]="'RNAFData'"
             [chartName]="'miRNA首位碱基分布'"
             (refresh)="handlerRefresh()"
+            [chartDescContent]="'X轴表示miRNA长度，Y轴表示某一长度miRNA  5’ 端第一个碱基的百分比。'"
         >
         </app-table-switch-chart>
         <app-color-picker [(color)]="colorF" (colorChange)="colorFChange($event)" [(show)]="isShowColorPanelF"

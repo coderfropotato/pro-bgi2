@@ -101,6 +101,7 @@
             [chartName]="'Clean reads 碱基质量分布'"
             [otherLeftTemplate]='searchTemplateThree'
             (refresh)="handlerRefresh()"
+            [chartDescContent]="'X轴代表碱基在reads中的位置，Y轴代表碱基质量值，图中每个点表示此位置达到某一质量值的碱基总数，颜色越深表示数目越多。碱基质量分布反映了测序reads的准确性，测序仪、测序试剂、样品质量等均能影响碱基质量。正常情况下，reads中的前几个碱基质量值不高，是因为反转录时随机引物不能很好地结合RNA模板；随着测序长度的增加，高质量碱基的比例会有所提高；但长度达到一定阈值后，由于测序试剂的消耗，高质量碱基的比例会降低。从整体上看，如果低质量(Quality<20)的碱基比例较低，说明测序质量较好。'"
         >
         </app-table-switch-chart>
         <app-color-picker [(color)]="colorQuality" (colorChange)="colorQualityChange($event)" [(show)]="isShowQualityColorPanel"
