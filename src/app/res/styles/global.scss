@@ -883,6 +883,9 @@ button.btnActive {
 	p {
 		padding-top: 200px;
 	}
+	&.curNodata{
+		background: url(../img/curNodata.png) no-repeat center 60px;
+	}
 }
 
 // 小工具

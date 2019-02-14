@@ -1,31 +1,40 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef, Output, EventEmitter, HostListener } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    ViewChild,
+    TemplateRef,
+    Output,
+    EventEmitter,
+    HostListener
+} from "@angular/core";
 import { AjaxService } from "../../super/service/ajaxService";
-import { MessageService } from '../service/messageService';
+import { MessageService } from "../service/messageService";
 import { StoreService } from "./../service/storeService";
 import { TranslateService } from "@ngx-translate/core";
 
 declare const $: any;
 
 @Component({
-    selector: 'app-table-switch-chart',
-    templateUrl: './table-switch-chart.component.html',
+    selector: "app-table-switch-chart",
+    templateUrl: "./table-switch-chart.component.html",
     styles: []
 })
 export class TableSwitchChartComponent implements OnInit {
     @ViewChild("tableContent") tableContent;
-    @ViewChild('selectPanel') selectPanel;
-    @ViewChild('tableChartContent') tableChartContent;
-    @ViewChild('tableBottom') tableBottom;
+    @ViewChild("selectPanel") selectPanel;
+    @ViewChild("tableChartContent") tableChartContent;
+    @ViewChild("tableBottom") tableBottom;
 
-    @Input() tableUrl: string;  //表格api地址；isOnlyChart=true时可不传
+    @Input() tableUrl: string; //表格api地址；isOnlyChart=true时可不传
     @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
     @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。isOnlyChart=true则为必选。
 
-    @Input() apiEntity: object;  //api请求参数
+    @Input() apiEntity: object; //api请求参数
 
-    @Input() isBigTable:boolean; //表是否为大表（有分页）
+    @Input() isBigTable: boolean; //表是否为大表（有分页）
 
-    @Input() id: string;  // 当前模块id
+    @Input() id: string; // 当前模块id
 
     @Input() chartId: string; // 当前图容器div的id
     @Input() chartName: any;
@@ -36,9 +45,9 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() setTemplate: TemplateRef<any>; //可选，设置模块
 
-    @Input() otherRightTemplate:TemplateRef<any>;  //可选，组件头部右方其他模块
+    @Input() otherRightTemplate: TemplateRef<any>; //可选，组件头部右方其他模块
 
-    @Input() otherLeftTemplate:TemplateRef<any>;  //可选，组件头部左方其他模块
+    @Input() otherLeftTemplate: TemplateRef<any>; //可选，组件头部左方其他模块
 
     // 单、多选
     @Input() isHasMultiSelect: boolean; //可选，图是否有单选、多选
@@ -46,14 +55,14 @@ export class TableSwitchChartComponent implements OnInit {
     @Output() isMultiSelectChange: EventEmitter<any> = new EventEmitter(); //单、多选change
     @Output() multipleConfirmEmit: EventEmitter<any> = new EventEmitter(); //多选确定
 
-     //画图
+    //画图
     @Output() drawChartEmit: EventEmitter<any> = new EventEmitter();
 
     // 是否flex布局
     @Input() flex: boolean;
 
     // 特殊图表
-    @Input() isVennTable:boolean=false;  // true：venn/unsetR图的表；false：是普通表
+    @Input() isVennTable: boolean = false; // true：venn/unsetR图的表；false：是普通表
 
     //选择面板模块
     /**
@@ -61,8 +70,8 @@ export class TableSwitchChartComponent implements OnInit {
         selectPanelUrl 、selectPanelEntity：选择面板需请求api获取，返回数据结构是object[]={type:'sample',data:['sample1','sample2']};
         selectPanelData：从本地直接拿到储存的数据，数据结构是object[]={type:'sample',data:['sample1','sample2']};
      */
-    @Input() selectPanelUrl: string;  //选择面板请求api的url
-    @Input() selectPanelEntity: object;  //请求api的参数
+    @Input() selectPanelUrl: string; //选择面板请求api的url
+    @Input() selectPanelEntity: object; //请求api的参数
 
     @Input() selectPanelData: object[]; //选择面板的数据
 
@@ -72,42 +81,42 @@ export class TableSwitchChartComponent implements OnInit {
     @Output() selectConfirmEmit: EventEmitter<any> = new EventEmitter(); // 选择面板 确定
 
     // 设置
-    @Input() defaultSetUrl:string;
-    @Input() defaultSetEntity:object;
-    @Output() defaultSet:EventEmitter<any> = new EventEmitter();
+    @Input() defaultSetUrl: string;
+    @Input() defaultSetEntity: object;
+    @Output() defaultSet: EventEmitter<any> = new EventEmitter();
 
-    @Input() setDataUrl:string;
-    @Input() setDataEntity:object;
-    @Output() setData:EventEmitter<any>=new EventEmitter();
+    @Input() setDataUrl: string;
+    @Input() setDataEntity: object;
+    @Output() setData: EventEmitter<any> = new EventEmitter();
 
     // 刷新
-    @Output() refresh:EventEmitter<any> = new EventEmitter();
+    @Output() refresh: EventEmitter<any> = new EventEmitter();
 
     //table chart show
-    @Output() showTableChange:EventEmitter<any>=new EventEmitter();
+    @Output() showTableChange: EventEmitter<any> = new EventEmitter();
 
     // 图类型 ,形如：{key:"bubble",value:"气泡图"}
-    @Input() chartTypeData:any[];
+    @Input() chartTypeData: any[];
 
-    scroll: object = {x:'120%', y: '400px' };
+    scroll: object = { x: "120%", y: "400px" };
     isShowTable: boolean = false;
-    total:number = 1;
+    total: number = 1;
     tableData: any;
     chartData: any;
     tableError: string;
-    chartError:string;
+    chartError: string;
     isLoading: boolean = false;
 
     accuracyList: object[] = [];
     accuracy: number = -1;
 
-    selectPanelList: object[] = [];  //选择面板数据
+    selectPanelList: object[] = []; //选择面板数据
     isHasSelectPanel: boolean;
-    selectedList: string[] = [];  //选中的数据
-    isShowSelectPanel:boolean=false;
-    confirmSelects:any[]=[];
+    selectedList: string[] = []; //选中的数据
+    isShowSelectPanel: boolean = false;
+    confirmSelects: any[] = [];
 
-    chartType:string;
+    chartType: string;
 
     constructor(
         private ajaxService: AjaxService,
@@ -124,7 +133,8 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     ngOnInit() {
-        if(this.chartTypeData && this.chartTypeData.length) this.chartType=this.chartTypeData[0]['key'];
+        if (this.chartTypeData && this.chartTypeData.length)
+            this.chartType = this.chartTypeData[0]["key"];
 
         this.accuracyList = [
             {
@@ -169,84 +179,84 @@ export class TableSwitchChartComponent implements OnInit {
             this.getSelectPanelList();
         } else {
             this.isHasSelectPanel = false;
-            if(this.defaultSetUrl && this.defaultSetEntity){
+            if (this.defaultSetUrl && this.defaultSetEntity) {
                 this.getDefaultSet();
-            }else{
+            } else {
                 this.reGetData();
             }
         }
 
-        if(this.setDataUrl && this.setDataEntity){
+        if (this.setDataUrl && this.setDataEntity) {
             this.getSetData();
         }
-
     }
 
     //图类型下拉change
-    chartTypeChange(){
-        this.drawChart(this.chartData,this.chartType);
+    chartTypeChange() {
+        this.drawChart(this.chartData, this.chartType);
     }
 
     //图表切换按钮
-    chartBtnClick(){
-        this.isShowTable=false;
+    chartBtnClick() {
+        this.isShowTable = false;
         this.showTableChange.emit(this.isShowTable);
     }
 
-    tableBtnClick(){
-        this.isShowTable=true;
+    tableBtnClick() {
+        this.isShowTable = true;
         this.showTableChange.emit(this.isShowTable);
-        setTimeout(()=>{
+        setTimeout(() => {
             this.scrollHeight();
-        },0)
+        }, 0);
     }
 
     //获取默认值
-    getDefaultSet(){
+    getDefaultSet() {
         this.ajaxService
-        .getDeferData({
-            url:this.defaultSetUrl,
-            data:this.defaultSetEntity
-        })
-        .subscribe(
-            (data:any)=>{
-                if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+            .getDeferData({
+                url: this.defaultSetUrl,
+                data: this.defaultSetEntity
+            })
+            .subscribe((data: any) => {
+                if (
+                    data.status == "0" &&
+                    (data.data.length == 0 || $.isEmptyObject(data.data))
+                ) {
                     return;
                 } else if (data.status == "-1") {
                     return;
                 } else if (data.status == "-2") {
                     return;
                 } else {
-                    let defaultSetData=data.data;
+                    let defaultSetData = data.data;
                     this.defaultSet.emit(defaultSetData);
                     this.reGetData();
                 }
-            }
-        )
+            });
     }
 
     //获取设置所需的数据
-    getSetData(){
+    getSetData() {
         this.ajaxService
-        .getDeferData({
-            url:this.setDataUrl,
-            data:this.setDataEntity
-        })
-        .subscribe(
-            (data:any)=>{
-                if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+            .getDeferData({
+                url: this.setDataUrl,
+                data: this.setDataEntity
+            })
+            .subscribe((data: any) => {
+                if (
+                    data.status == "0" &&
+                    (data.data.length == 0 || $.isEmptyObject(data.data))
+                ) {
                     return;
                 } else if (data.status == "-1") {
                     return;
                 } else if (data.status == "-2") {
                     return;
                 } else {
-                    let trueData=data.data;
+                    let trueData = data.data;
                     this.setData.emit(trueData);
                 }
-            }
-        )
-
+            });
     }
 
     // 初始化计算表滚动的高度
@@ -258,29 +268,32 @@ export class TableSwitchChartComponent implements OnInit {
 
     scrollHeight() {
         try {
-            let tableChartContentH = this.tableChartContent.nativeElement.offsetHeight;
-            let bottomPageH=this.tableBottom?this.tableBottom.nativeElement.offsetHeight:0;
-            let scrollH:any = (tableChartContentH - 38 - bottomPageH) +'px';
-            if(this.isBigTable){
+            let tableChartContentH = this.tableChartContent.nativeElement
+                .offsetHeight;
+            let bottomPageH = this.tableBottom
+                ? this.tableBottom.nativeElement.offsetHeight
+                : 0;
+            let scrollH: any = tableChartContentH - 38 - bottomPageH + "px";
+            if (this.isBigTable) {
                 $(`#${this.id} .ant-table-body`).css("height", scrollH);
             }
-            this.scroll['y'] = scrollH;
-        } catch (error) {
-        }
+            this.scroll["y"] = scrollH;
+        } catch (error) {}
     }
 
     //获取选择面板数据
     getSelectPanelList() {
         this.ajaxService
-            .getDeferData(
-                {
-                    url: this.selectPanelUrl,
-                    data: this.selectPanelEntity
-                }
-            )
+            .getDeferData({
+                url: this.selectPanelUrl,
+                data: this.selectPanelEntity
+            })
             .subscribe(
                 (data: any) => {
-                    if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                    if (
+                        data.status == "0" &&
+                        (data.data.length == 0 || $.isEmptyObject(data.data))
+                    ) {
                         this.selectPanelList = [];
                     } else if (data.status != "0") {
                         this.selectPanelList = [];
@@ -288,44 +301,44 @@ export class TableSwitchChartComponent implements OnInit {
                         let selects = data.data;
                         this.calculateSelectPanelData(selects);
                     }
-
                 },
                 error => {
                     this.tableError = error;
-                    this.chartError=error;
+                    this.chartError = error;
                 }
-            )
+            );
     }
 
     //求 选择面板 使用的数据
     calculateSelectPanelData(data) {
         data.forEach(d => {
             this.selectPanelList.push({
-                type: d['type'],
+                type: d["type"],
                 data: []
-            })
+            });
         });
 
-        this.selectPanelList.forEach((d) => {
-            data.forEach((m) => {
-                if (d['type'] === m['type']) {
-                    m.data.forEach((k) => {
-                        d['data'].push({
+        this.selectPanelList.forEach(d => {
+            data.forEach(m => {
+                if (d["type"] === m["type"]) {
+                    m.data.forEach(k => {
+                        d["data"].push({
                             name: k,
                             isChecked: false
-                        })
-                    })
+                        });
+                    });
                 }
-            })
-        })
+            });
+        });
 
         if (this.defaultSelectNum) {
-            if (this.defaultSelectNum === -1) { //全选
+            if (this.defaultSelectNum === -1) {
+                //全选
                 this.selectPanelList.forEach(d => {
-                    d['data'].forEach(m => {
-                        m['isChecked'] = true;
-                    })
-                })
+                    d["data"].forEach(m => {
+                        m["isChecked"] = true;
+                    });
+                });
             } else {
                 // for (let i = 0; i < this.defaultSelectNum; i++) {   //最初
                 //     this.selectPanelList[0]['data'][i]['isChecked'] = true;
@@ -333,72 +346,70 @@ export class TableSwitchChartComponent implements OnInit {
 
                 let j = 0;
                 this.selectPanelList.forEach(d => {
-                    d['data'].forEach(m => {
-                        if(j<this.defaultSelectNum)
-                        {
+                    d["data"].forEach(m => {
+                        if (j < this.defaultSelectNum) {
                             j++;
-                            m['isChecked'] = true;
-                        }else{
+                            m["isChecked"] = true;
+                        } else {
                             return;
                         }
-                    })
-                })
-
+                    });
+                });
             }
         }
 
         this.selectPanelList.forEach(d => {
-            d['data'].forEach(m => {
-                if (m['isChecked']) {
-                    this.selectedList.push(m['name']);
+            d["data"].forEach(m => {
+                if (m["isChecked"]) {
+                    this.selectedList.push(m["name"]);
                 }
-            })
-        })
+            });
+        });
 
         this.defaultSelectList.emit(this.selectedList);
         this.reGetData();
-        this.confirmSelects=[...this.selectedList];
+        this.confirmSelects = [...this.selectedList];
     }
 
     //选择面板 选择
     selectClick(item) {
-        item['isChecked'] = !item['isChecked'];
+        item["isChecked"] = !item["isChecked"];
 
         this.selectedList = [];
 
         this.selectPanelList.forEach(d => {
-            d['data'].forEach(m => {
-                if (m['isChecked']) {
-                    this.selectedList.push(m['name']);
+            d["data"].forEach(m => {
+                if (m["isChecked"]) {
+                    this.selectedList.push(m["name"]);
                 }
-            })
-        })
+            });
+        });
     }
 
     //选择面板 确定
     selectConfirm() {
-        this.confirmSelects=[...this.selectedList];
+        this.confirmSelects = [...this.selectedList];
         this.selectConfirmEmit.emit(this.selectedList);
         // this.isShowSelectPanel=false;
     }
 
     //显示隐藏选择面板
-    showSelectPanel(){
+    showSelectPanel() {
         this.isShowSelectPanel = !this.isShowSelectPanel;
-        this.selectPanelList.forEach(d=>{
-            d['data'].forEach(k=>{
-                k['isChecked']=false;
-                this.confirmSelects.forEach(m=>{
-                    if(k['name']===m){
-                        k['isChecked']=true;
+        this.selectPanelList.forEach(d => {
+            d["data"].forEach(k => {
+                k["isChecked"] = false;
+                this.confirmSelects.forEach(m => {
+                    if (k["name"] === m) {
+                        k["isChecked"] = true;
                     }
-                })
-            })
-        })
+                });
+            });
+        });
 
-        setTimeout(()=>{
+        setTimeout(() => {
             this.scrollHeight();
-        },30)
+        }, 30);
     }
 
     /**
@@ -407,54 +418,61 @@ export class TableSwitchChartComponent implements OnInit {
     getTableData() {
         this.isLoading = true;
         this.ajaxService
-            .getDeferData(
-                {
-                    url: this.tableUrl,
-                    data: this.apiEntity
-                }
-            )
+            .getDeferData({
+                url: this.tableUrl,
+                data: this.apiEntity
+            })
             .subscribe(
                 (data: any) => {
-                    if (data.status == "0" && ((data.data.length == 0 || $.isEmptyObject(data.data) || ('rows' in data.data && !data.data['rows'].length)))) {
+                    if (
+                        data.status == "0" &&
+                        (data.data.length == 0 ||
+                            $.isEmptyObject(data.data) ||
+                            ("rows" in data.data && !data.data["rows"].length))
+                    ) {
                         this.tableError = "nodata";
-                        if(!this.chartUrl) this.chartError='nodata';
+                        if (!this.chartUrl) this.chartError = "nodata";
                     } else if (data.status == "-1") {
                         this.tableError = "error";
-                        if(!this.chartUrl) this.chartError='error';
+                        if (!this.chartUrl) this.chartError = "error";
                     } else if (data.status == "-2") {
                         this.tableError = "dataOver";
-                        if(!this.chartUrl) this.chartError='dataOver';
+                        if (!this.chartUrl) this.chartError = "dataOver";
                     } else {
                         this.tableError = "";
                         this.tableData = data.data;
                         if (!this.chartUrl) {
-                            this.chartError='';
+                            this.chartError = "";
                             this.chartData = data.data;
-                            if(this.chartTypeData && this.chartTypeData.length){
-                                this.drawChart(this.chartData,this.chartType);
-                            }else{
-                                this.drawChart(this.chartData,this.chartType=null);
+                            if (
+                                this.chartTypeData &&
+                                this.chartTypeData.length
+                            ) {
+                                this.drawChart(this.chartData, this.chartType);
+                            } else {
+                                this.drawChart(
+                                    this.chartData,
+                                    (this.chartType = null)
+                                );
                             }
                         }
 
-                        if(this.tableData.total){
-                            this.total=this.tableData.total;
+                        if (this.tableData.total) {
+                            this.total = this.tableData.total;
                         }
-
                     }
                     this.isLoading = false;
-
                 },
                 error => {
                     this.isLoading = false;
                     this.tableError = error;
-                    if(!this.chartUrl) this.chartError=error;
+                    if (!this.chartUrl) this.chartError = error;
                 }
-            )
+            );
     }
 
-    pageSizeChange(){
-        this.apiEntity['pageIndex']=1;
+    pageSizeChange() {
+        this.apiEntity["pageIndex"] = 1;
         this.getTableData();
     }
 
@@ -464,54 +482,66 @@ export class TableSwitchChartComponent implements OnInit {
     getChartData() {
         this.isLoading = true;
         this.ajaxService
-            .getDeferData(
-                {
-                    url: this.chartUrl,
-                    data: this.apiEntity
-                }
-            )
+            .getDeferData({
+                url: this.chartUrl,
+                data: this.apiEntity
+            })
             .subscribe(
                 (data: any) => {
-                    if (data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+                    if (
+                        data.status == "0" &&
+                        (data.data.length == 0 || $.isEmptyObject(data.data))
+                    ) {
                         this.chartError = "nodata";
+                    } else if (data.status == "0" && "flag" in data["data"]) {
+                        if (!data["data"]["flag"]) {
+                            this.chartError = "curNodata";
+                        } else {
+                            this.getChartThen(data);
+                        }
                     } else if (data.status == "-1") {
                         this.chartError = "error";
                     } else if (data.status == "-2") {
                         this.chartError = "dataOver";
                     } else {
-                        this.chartError = "";
-                        this.chartData = data.data;
-                        if(this.chartTypeData && this.chartTypeData.length){
-                            this.drawChart(this.chartData,this.chartType);
-                        }else{
-                            this.drawChart(this.chartData,this.chartType=null);
-                        }
+                        this.getChartThen(data);
                     }
+
                     this.isLoading = false;
                 },
                 error => {
                     this.isLoading = false;
                     this.chartError = error;
                 }
-            )
+            );
     }
 
-    drawChart(data,type) {
-        if(type){
+    getChartThen(data) {
+        this.chartError = "";
+        this.chartData = data.data;
+        if (this.chartTypeData && this.chartTypeData.length) {
+            this.drawChart(this.chartData, this.chartType);
+        } else {
+            this.drawChart(this.chartData, (this.chartType = null));
+        }
+    }
+
+    drawChart(data, type) {
+        if (type) {
             this.drawChartEmit.emit({
-                data:data,
-                type:type
+                data: data,
+                type: type
             });
-        }else{
+        } else {
             this.drawChartEmit.emit(data);
         }
     }
 
     redraw() {
-        if(this.chartTypeData && this.chartTypeData.length){
-            this.drawChart(this.chartData,this.chartType);
-        }else{
-            this.drawChart(this.chartData,this.chartType=null);
+        if (this.chartTypeData && this.chartTypeData.length) {
+            this.drawChart(this.chartData, this.chartType);
+        } else {
+            this.drawChart(this.chartData, (this.chartType = null));
         }
     }
 
@@ -541,11 +571,11 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     // 刷新
-    handlerRefresh(){
+    handlerRefresh() {
         this.refresh.emit();
-        if(!this.chartUrl || (this.chartUrl && this.isShowTable)){
+        if (!this.chartUrl || (this.chartUrl && this.isShowTable)) {
             this.getTableData();
-        }else if(this.chartUrl && !this.isShowTable){
+        } else if (this.chartUrl && !this.isShowTable) {
             this.getChartData();
         }
     }
