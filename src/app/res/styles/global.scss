@@ -1674,3 +1674,12 @@ button.btnActive {
 .color-picker-mask{
     z-index:10;
 }
+
+.descTitle{
+	&:hover{
+		color: $font_active_color;
+	}
+	&.active{
+		color:$font_active_color;
+	}
+}
