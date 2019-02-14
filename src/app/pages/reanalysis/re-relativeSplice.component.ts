@@ -419,12 +419,9 @@ export class RelativeSpliceComponent implements OnInit {
 
         let left_title = 20;//左侧标题
         let left_ylength = 30;//左侧y轴
-        let right_name_length=getNameLength(this.selectConfirmData)+30;
-
-        // let rect_length ={  //矩形宽高
-        //     x:50,
-        //     y:40
-        // }
+        // let right_name_length=getNameLength(this.selectConfirmData)+30;
+        // console.log(right_name_length);
+        let right_name_length = 90;
 
         // let xAxis_length = x_value.length*rect_length.x;
         // let yAxis_length = y_value.length*rect_length.y;
@@ -489,12 +486,14 @@ export class RelativeSpliceComponent implements OnInit {
 
         function drawRightTopLegend(){
 
+            let temp_width = 80;
             let padding_left = temp_x_width + left_title+10;
 
             let r_legend = svg
                 .append('g')
                 .attr('class','toplegend')
-                .attr('transform', 'translate(' + padding_left + ',' + top_title + ')');
+                .attr('transform', 'translate(' + padding_left + ',' + top_title + ')')
+                .attr('width',temp_width)
 
             let triangleU = d3.symbol().type(d3.symbolTriangle)(),
                 circle = d3.symbol().type(d3.symbolCircle)(),
@@ -523,11 +522,11 @@ export class RelativeSpliceComponent implements OnInit {
             let legendPath = d3.legendSymbol()
             .scale(symbolScale)
             .orient("vertical")
-            .labelWrap(right_name_length)
+            .labelWrap(temp_width)
             .labelOffset(0)
             .shapePadding(5)
             .title("Type")
-            .titleWidth(right_name_length)
+            .titleWidth(temp_width)
             //.on("cellover", function(d){alert("clicked " + d);})
             .on("cellclick", function(d){alert("clicked " + d);});
 
@@ -758,36 +757,65 @@ export class RelativeSpliceComponent implements OnInit {
             return temp;
         }
 
-        function getNameLength(k_dataName){
-            //计算左侧最大的名字长度
-            let k_name_max = [];
-            for (let i = 0; i < k_dataName.length; i++) {
-                k_name_max.push(getBLen(k_dataName[i]));
-            }
+        function getNameLength(total_name) {
+			//console.log(total_name)
+			let oSvg = d3.select('#relativeSpliceDiv').append('svg');
+			let mText = oSvg
+				.selectAll('MyAlltext')
+				.data(total_name)
+				.enter()
+				.append('text')
+				.text(function(d, i) {
+					return d;
+				})
+				.attr('class', 'aText');
 
-            let max_name = Math.max.apply(null, k_name_max);
-            let target_name = '';
-            for (let i = 0; i < k_name_max.length; i++) {
-                if (max_name == k_name_max[i]) {
-                    target_name = k_dataName[i];
-                    break;
-                }
-            }
-            let oSvg = d3.select('#relativeSpliceDiv').append('svg');
-            let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
-            let name_length = mText.nodes()[0].getBBox().width;
-            oSvg.remove();
+			let max_length = [];
 
-            return name_length;
-        }
+			mText.nodes().forEach((d) => {
+				max_length.push(d.getBBox().width);
+			});
+			//console.log(max_length)
 
-        function getBLen(str) {
-            if (str == null) return 0;
-            if (typeof str != 'string') {
-                str += '';
-            }
-            return str.replace(/[^\x00-\xff]/g, '01').length;
-        }
+			max_length.sort(function(a, b) {
+				return b - a;
+			});
+
+			oSvg.remove();
+
+			return max_length[0];
+		}
+
+        // function getNameLength(k_dataName){
+        //     //计算左侧最大的名字长度
+        //     let k_name_max = [];
+        //     for (let i = 0; i < k_dataName.length; i++) {
+        //         k_name_max.push(getBLen(k_dataName[i]));
+        //     }
+
+        //     let max_name = Math.max.apply(null, k_name_max);
+        //     let target_name = '';
+        //     for (let i = 0; i < k_name_max.length; i++) {
+        //         if (max_name == k_name_max[i]) {
+        //             target_name = k_dataName[i];
+        //             break;
+        //         }
+        //     }
+        //     let oSvg = d3.select('#relativeSpliceDiv').append('svg');
+        //     let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
+        //     let name_length = mText.nodes()[0].getBBox().width;
+        //     oSvg.remove();
+
+        //     return name_length;
+        // }
+
+        // function getBLen(str) {
+        //     if (str == null) return 0;
+        //     if (typeof str != 'string') {
+        //         str += '';
+        //     }
+        //     return str.replace(/[^\x00-\xff]/g, '01').length;
+        // }
 
         function pauseEvent(e){
             if(e.stopPropagation) e.stopPropagation();
