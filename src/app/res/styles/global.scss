@@ -1081,7 +1081,57 @@ button.btnActive {
 }
 
 .analysis-list {
-	padding: 100px;
+    padding: 100px;
+    .search-box{
+        &:after{
+            display: block;
+            content:"";
+            clear: both;
+        }
+        .search{
+            margin-bottom: 6px;
+            float:right;
+        }
+        .ant-input-search{
+            margin-right: 12px;
+            width: 180px;
+        }
+    }
+}
+
+.analysis-list-panel{
+    background-color:$white_bg;
+    padding:12px;
+    border:1px solid $border-color;
+    width: 460px;
+    &>div:not(.btn-group){
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+        display: flex;
+        &:after{
+            display: block;
+            clear: both;
+            content:"";
+        }
+        &>span{
+            width: 80px;
+        }
+        &>div{
+            flex:1;
+            button{
+                margin-right: 6px;
+                margin-bottom: 6px;
+            }
+        }
+    }
+    .btn-group{
+        display: flex;
+        flex-direction: row-reverse;
+        button{
+            width: auto;
+            margin-left: 12px;
+        }
+    }
 }
 
 // 重分析参数选择面板
