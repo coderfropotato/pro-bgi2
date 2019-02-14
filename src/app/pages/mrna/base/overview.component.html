@@ -23,6 +23,7 @@
                 #relevanceChart
                 [id]="'relevanceChart'"
                 [tableUrl]="tableUrl"
+                [chartUrl]="chartUrl"
                 [apiEntity]="tableEntity"
                 [isOnlyChart] = "false"
                 (drawChartEmit)="drawRelevanceReads($event)"
@@ -36,6 +37,8 @@
                 (defaultSelectList)="defaultSelectList($event)"
             >
             </app-table-switch-chart>
+            <app-color-picker [(color)]="colorQuality" (colorChange)="colorQualityChange($event)" [(show)]="isShowQualityColorPanel"
+                ></app-color-picker>
         </div>
     </div>
 
