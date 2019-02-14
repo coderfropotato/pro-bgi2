@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
 declare const d3: any;
-declare const d4:any;
+declare const d4: any;
 declare const Venn: any;
 
 @Component({
@@ -96,9 +96,9 @@ export class DiffExpressionComponent implements OnInit {
 
 	tableEntity: object = {};
 	selectPanelData: object[] = [];
-    venn_or_upsetR: boolean;
+	venn_or_upsetR: boolean;
 
-    legendIndex: number = 0;
+	legendIndex: number = 0;
 	color = '#fff'; // 默认颜色
 	show = false; // 是否显示颜色选择器
 
@@ -433,10 +433,10 @@ export class DiffExpressionComponent implements OnInit {
 			this.venn_or_upsetR = false;
 			this.showVenn(data);
 		} else {
-            this.venn_or_upsetR = false;
-            this.showCircle(data);
+			this.venn_or_upsetR = false;
+			this.showCircle(data);
 			// this.showVenn(data);
-        }
+		}
 	}
 
 	// 切换左右布局 计算左右表格的滚动高度
@@ -617,9 +617,9 @@ export class DiffExpressionComponent implements OnInit {
 		this.leftSelect.length = 0;
 		this.defaultShowFilterStatus = false;
 		this.chartBackStatus();
-    }
+	}
 
-    // 画拼图
+	// 画拼图
 	showCircle(data) {
 		let _self = this;
 		let params: object = {
@@ -645,7 +645,7 @@ export class DiffExpressionComponent implements OnInit {
 						this.upSelect.length = 0;
 					}
 
-                    this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
+					this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 					this.chartBackStatus();
 				},
 				padding: 0.02,

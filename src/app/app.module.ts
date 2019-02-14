@@ -58,7 +58,7 @@ import { ExpressionHelpComponent } from './pages/mrna/expression-help.component'
 import { ClusterComponent } from './pages/mrna/cluster.component';
 import { ClusterHelpComponent } from './pages/mrna/cluster-help.component';
 /* GO */
-import { GoClassComponent } from './pages/mrna/go-class.component';
+import { GoClassComponent,GoClassPage } from './pages/mrna/go-class.component';
 import { GoRichComponent } from './pages/mrna/go-rich.component';
 import { GoHelpComponent } from './pages/mrna/go-help.component';
 /* KEGG */
@@ -635,7 +635,8 @@ export function createTranslateLoader(http: HttpClient) {
 		ReMultiOmicsComponent,
 		LoadingComponent,
 		ExpressionHelpComponent,
-		ClusterHelpComponent,
+        ClusterHelpComponent,
+        GoClassPage,
 		GoClassComponent,
 		GoHelpComponent,
 		KeggClassComponent,
