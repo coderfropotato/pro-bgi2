@@ -306,7 +306,7 @@ export class ReHeatmapComponent implements OnInit {
             this.defaultEntity['pageIndex'] = 1;
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
-                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
+                    {"filterName":`${this.geneType}_id`,"filterNamezh":`${this.geneType}_id`,"searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
                 ];
             }else{
                 this.defaultEntity['searchList']= [] ;
@@ -316,10 +316,10 @@ export class ReHeatmapComponent implements OnInit {
             this.transformTable._setParamsNoRequest('pageIndex',1);
             /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
             if(this.selectGeneList.length) {
-                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.join(','),null);
+                this.transformTable._filter(`${this.geneType}_id`,`${this.geneType}_id`,"string","$in",this.selectGeneList.join(','),null);
             }else{
                 // this.transformTable._setParamsNoRequest('searchList',[]);
-                this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
+                this.transformTable._deleteFilterWithoutRequest(`${this.geneType}_id`,`${this.geneType}_id`,"$in");
                 this.transformTable._getData();
             }
         }

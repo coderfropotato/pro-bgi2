@@ -80,7 +80,20 @@ export class ReListComponent implements OnInit {
 		this.getAnalysisList();
 
 		this.getListObserver.pipe(debounceTime(300)).subscribe((loadingFlag) => {
-			this.loading = loadingFlag;
+			this.getList(loadingFlag);
+		});
+
+		setInterval(() => {
+			this.getList(false);
+		}, 5000);
+	}
+
+	getList(loadingFlag: boolean = true) {
+		this.getListObserver.next(loadingFlag);
+    }
+
+    getAnalysisList(loadingFlag: boolean = true){
+        this.loading = loadingFlag;
 			this.ajaxService
 				.getDeferData({
 					url: `${config['javaPath']}/reAnalysis/getReanalysisList`,
@@ -106,16 +119,7 @@ export class ReListComponent implements OnInit {
 						this.loading = false;
 					}
 				);
-		});
-
-		setInterval(() => {
-			this.getAnalysisList(false);
-		}, 5000);
-	}
-
-	getAnalysisList(loadingFlag: boolean = true) {
-		this.getListObserver.next(loadingFlag);
-	}
+    }
 
 	toDetail(data) {
 		let type = '';
@@ -160,7 +164,7 @@ export class ReListComponent implements OnInit {
 					if (res['status'] == 0) {
 						this.notify.success('Delete', `重分析任务 - ${data['nickname']} 删除成功`);
 						this.tableEntity['pageIndex'] = 1;
-						this.getAnalysisList();
+						this.getList();
 					} else {
 						this.notify.warning('Delete', `重分析任务 - ${data['nickname']} 删除失败`);
 					}
@@ -179,7 +183,7 @@ export class ReListComponent implements OnInit {
 
 	search() {
 		this.tableEntity['label'] = this.label;
-		this.getAnalysisList();
+		this.getList();
 	}
 
 	filter() {
@@ -205,7 +209,7 @@ export class ReListComponent implements OnInit {
 		});
 
 		this.tableEntity['pageIndex'] = 1;
-		this.getAnalysisList();
+		this.getList();
 	}
 
 	reset() {
@@ -225,6 +229,6 @@ export class ReListComponent implements OnInit {
 		this.tableEntity['searchContent']['dataSrc'] = [];
 		this.tableEntity['pageIndex'] = 1;
 
-		this.getAnalysisList();
+		this.getList();
 	}
 }
