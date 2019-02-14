@@ -329,7 +329,7 @@ export class reRelationNetComponent implements OnInit {
             this.defaultEntity['checkGraph'] = true;
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
-                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],"valueTwo":null}
+                    {"filterName":`${this.geneType}_id`,"filterNamezh":`${this.geneType}_id`,"searchType":"string","filterType":"$in","valueOne":this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],"valueTwo":null}
                 ];
             }else{
                 this.defaultEntity['searchList']= [] ;
@@ -338,9 +338,9 @@ export class reRelationNetComponent implements OnInit {
         }else{
             this.transformTable._setParamsNoRequest('checkGraph',true);
             if(this.selectGeneList.length) {
-                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],null);
+                this.transformTable._filter(`${this.geneType}_id`,`${this.geneType}_id`,"string","$in",this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],null);
             }else{
-                this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
+                this.transformTable._deleteFilterWithoutRequest(`${this.geneType}_id`,`${this.geneType}_id`,"$in");
                 this.transformTable._getData();
             }
         }
@@ -1058,7 +1058,7 @@ export class reRelationNetComponent implements OnInit {
                 d.source.selected=true;
             }
         })
-        
+
         this.selectedNodes.length=0;
         this.selectGeneList.length=0;
         this.allNodes.forEach(d=> {

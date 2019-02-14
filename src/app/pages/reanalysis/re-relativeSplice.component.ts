@@ -629,7 +629,7 @@ export class RelativeSpliceComponent implements OnInit {
                 //             `;
                 let tipText = `AS_type:  ${d.AS_type}
                             <br> Group:  ${d.Group}
-                            <br> st_gene_id:  ${d.st_gene_id}
+                            <br> st_${that.geneType}_id: ${d[`st_${that.geneType}_id`]}
                             <br> unique:  ${d.unique}`;
                 that.globalService.showPopOver(d3.event, tipText);
             })

@@ -6,6 +6,8 @@ import { RouterModule, Routes, RouteReuseStrategy } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NgZorroAntdModule, NZ_MESSAGE_CONFIG, NZ_NOTIFICATION_CONFIG } from 'ng-zorro-antd';
 import { SimpleReuseStrategy } from './super/service/simpleReuseStrategy';
+import zh from '@angular/common/locales/zh';
+registerLocaleData(zh);
 
 // 组件
 import { AppComponent } from './app.component';

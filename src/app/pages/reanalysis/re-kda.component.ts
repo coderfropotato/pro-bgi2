@@ -319,7 +319,7 @@ export class ReKdaComponent implements OnInit {
             this.defaultEntity['rootSearchContentList'] = [];
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
-                    {"filterName":"gene_id","filterNamezh":"gene_id","searchType":"string","filterType":"$in","valueOne":this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],"valueTwo":null}
+                    {"filterName":`${this.geneType}_id`,"filterNamezh":`${this.geneType}_id`,"searchType":"string","filterType":"$in","valueOne":this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],"valueTwo":null}
                 ];
             }else{
                 this.defaultEntity['searchList']= [] ;
@@ -327,9 +327,9 @@ export class ReKdaComponent implements OnInit {
             this.first = true;
         }else{
             if(this.selectGeneList.length) {
-                this.transformTable._filter("gene_id","gene_id","string","$in",this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],null);
+                this.transformTable._filter(`${this.geneType}_id`,`${this.geneType}_id`,"string","$in",this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],null);
             }else{
-                this.transformTable._deleteFilterWithoutRequest("gene_id","gene_id","$in");
+                this.transformTable._deleteFilterWithoutRequest(`${this.geneType}_id`,`${this.geneType}_id`,"$in");
                 this.transformTable._getData();
             }
         }
@@ -478,7 +478,7 @@ export class ReKdaComponent implements OnInit {
         //图例svg
         let legendSvg=d3.select("#kdaChartDiv").append('svg').attr('id',"legendSvg");
 
-        //svg 
+        //svg
         let svg = d3.select("#kdaChartDiv").append('svg').attr("width", width).attr("height", height)
             .call(
                 //缩放
@@ -653,7 +653,7 @@ export class ReKdaComponent implements OnInit {
 
         // node color legend
         function drawNodeColorScale(){
-          
+
             var legendOrdinal = d3.legendColor()
                 .shape("path", d3.symbol().type(d3.symbolCircle).size(150)())
                 .orient("horizontal")
@@ -673,10 +673,10 @@ export class ReKdaComponent implements OnInit {
 
                     that.isShowColorPanel = true;
                 });
-          
+
             legendSvg.select(".legendNodeColor")
                 .call(legendOrdinal);
-            
+
         }
 
         // node name text
@@ -891,7 +891,7 @@ export class ReKdaComponent implements OnInit {
                 d.source.selected=true;
             }
         })
-        
+
         this.selectedNodes.length=0;
         this.selectGeneList.length=0;
         this.allNodes.forEach(d=> {
