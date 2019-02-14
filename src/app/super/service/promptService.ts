@@ -51,19 +51,27 @@ export class PromptService {
 
 @Component({
     selector: "app-propmt",
-    template: `<input nz-input [attr.value]="value['key']" (keyup)="handlerChange($event)" />`,
+    template: `<input nz-input [attr.value]="value['key']" (keyup)="handlerChange($event)" />
+    <div style="text-align:center;margin-top:10px;color:red;" [hidden]="isshowFlag != true">最多输入25位字符</div>`,
     styles: []
 })
 export class PromtComponent{
     @Input() value:object;
 
     beforeValue:string = null;
+    isshowFlag:boolean=false;
 
     ngOnInit(){
       this.beforeValue =this.value['key'];
     }
 
     handlerChange(ev){
+      console.log(ev.target.value.length);
+      if(ev.target.value.length>25){
+        this.isshowFlag = true;
+      }else{
+        this.isshowFlag = false;
+      }
       this.value['key'] = ev.target.value;
     }
 }
