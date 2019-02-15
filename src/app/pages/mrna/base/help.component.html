@@ -7,8 +7,12 @@
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
             <h3 class="title" *ngIf="mflag == 0">6.1 实验流程</h3>
             <h3 class="title" *ngIf="mflag == 3">6.1.1 实验流程</h3>
-            <div class="img_one"></div>
-            <p class="help_text">用mRNA富集法或rRNA去除法对totalRNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA；rRNA去除：用DNA探针杂交rRNA，RNaseH选择性消化DNA/RNA杂交链，再用DNaseI消化掉DNA探针，纯化后即得到所需RNA。得到的mRNA中加入适量打断试剂高温条件下使其片断化，以打断后的mRNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库用Agilent 2100 Bioanalyzer和ABI StepOnePlus Real-Time PCR System质检，合格后进行测序。</p>
+            <div class="img_one" *ngIf="tflag == 4"></div>
+            <p class="help_text" *ngIf="tflag == 4">用mRNA富集法或rRNA去除法对totalRNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA；rRNA去除：用DNA探针杂交rRNA，RNaseH选择性消化DNA/RNA杂交链，再用DNaseI消化掉DNA探针，纯化后即得到所需RNA。得到的mRNA中加入适量打断试剂高温条件下使其片断化，以打断后的mRNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库用Agilent 2100 Bioanalyzer和ABI StepOnePlus Real-Time PCR System质检，合格后进行测序。</p>
+            <div class="img_one_f" *ngIf="tflag == 5"></div>
+            <p class="help_text" *ngIf="tflag == 5">用mRNA富集法或rRNA去除法对totalRNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA；rRNA去除：用DNA探针杂交rRNA，RNaseH选择性消化DNA/RNA杂交链，再用DNaseI消化掉DNA探针，纯化后即得到所需RNA。得到的mRNA中加入适量打断试剂高温条件下使其片断化，以打断后的mRNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库用Agilent 2100 Bioanalyzer和ABI StepOnePlus Real-Time PCR System质检，合格后进行测序。</p>
+            <div class="img_one_s" *ngIf="tflag == 5"></div>
+            <p class="help_text" *ngIf="tflag == 5">首先将提取好的total RNA使用生物素标记的特异性探针（Ribo-Zero™ rRNA Removal Kit）去除核糖体rRNA。在纯化之后，将RNA在一定的温度和离子环境下片段化。随后使用TruSeq® Stranded kit中随机引物和反转录酶合成cDNA一链，然后使用DNA聚合酶I和RNaseH来合成双链的cDNA。在cDNA二链合成过程中，RNA模板被去除，dTTP被dUTP所替换。dUTP的参与使cDNA的二链无法在后续流程中被扩增，因为聚合酶在延伸时无法跨过模板上的dUTP位点。双链的cDNA产物随后进行了加“A”碱基和接头连接。连接产物将被扩增，纯化后即得到了最终的cDNA文库。最后将构建好的测序文库进行测序。</p>
         </div>
 
         <!-- 实验流程（小RNA） -->
@@ -34,8 +38,15 @@
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
             <h3 class="title" *ngIf="mflag == 0">6.2 分析流程</h3>
             <h3 class="title" *ngIf="mflag == 3">6.2.1 分析流程</h3>
-            <div class="img_two"></div>
-            <p class="help_text">测序所得的原始数据称为raw reads。首先，我们过滤掉低质量、接头污染以及未知碱基N含量过高的reads，过滤后的数据称为clean reads。然后将clean reads比对到参考基因组上，之后进行新转录本预测、 SNP & InDel 和差异剪接基因检测。得到新转录本之后，我们将具有蛋白编码潜力的新转录本加入到参考基因序列中构成一个完整的参考序列，然后计算基因表达水平。最后，对于多个样品根据需求检测不同样品之间的差异表达基因，并对差异表达基因做深入的聚类分析和功能富集分析等等。完整的分析流程图如下:</p>
+            <p class="help_text" *ngIf="nflag == 7">测序所得的数据称为raw reads或raw data，随后要对raw reads进行质控(QC)，以确定测序数据是否适用于后续分析。质控后，经过滤得到的clean reads比对到参考序列。比对完，通过统计比对率、reads在参考序列上的分布情况等，判断比对结果是否通过第二次质控(QC of alignment)。若通过，则进行基因定量分析、基于基因表达水平的各项分析（主成分、相关性、差异基因筛选等等），并对筛选出的样品间差异表达基因，进行GO功能显著性富集分析、pathway显著性富集分析、聚类、蛋白互作网络和转录因子等更深入的挖掘分析。完整的分析流程图如下：</p>
+            <div class="img_two" *ngIf="nflag == 7"></div> 
+            
+            <p class="help_text" *ngIf="nflag == 8">测序所得的数据称为raw reads或raw data，随后要对raw reads进行质控(QC)，以确定测序数据是否适用于后续分析。质控后，经过滤得到的clean reads比对到参考序列。比对完，通过统计比对率、reads在参考序列上的分布情况等，判断比对结果是否通过第二次质控(QC of alignment)。若通过，则进行基因定量分析、基于基因表达水平的各项分析（主成分、相关性、差异基因筛选等等），并对筛选出的样品间差异表达基因，进行GO功能显著性富集分析、pathway显著性富集分析、聚类、蛋白互作网络和转录因子等更深入的挖掘分析。SNP & InDel 和差异剪接基因检测。完整的分析流程图如下：</p>
+            <div class="img_two_f" *ngIf="nflag == 8"></div> 
+
+            <p class="help_text" *ngIf="nflag == 9">测序所得数据称为raw reads。首先，我们过滤掉rRNA，低质量、接头污染以及未知碱基N含量过高的reads，过滤后的数据称为clean reads。然后将clean reads比对到参考基因组上，之后进行转录本组装。对于组装得到的新转录本，我们将进行编码能力预测，以区分新的lncRNA和新的mRNA。这些新的lncRNA和mRNA将与已知的lncRNA和mRNA一起进行后续的分析。</p>
+            <p class="help_text" *ngIf="nflag == 9">我们会对所有的RNA进行定量，进行差异分析，聚类分析，时间序列分析，富集分析等。我们预测lncRNA的靶基因，预测lncRNA家族分类以及潜在的miRNA前体。对于mRNA，我们会进行数据库注释。我们的分析还包括 SNP ， InDel 以及可变剪接。完整的分析流程图如下图：</p>
+            <div class="img_two_s" *ngIf="nflag == 9"></div> 
         </div>
 
         <!-- 分析流程（小RNA） -->
@@ -114,7 +125,14 @@
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
             <h3 class="title" *ngIf="mflag == 2">6.4 参考基因组比对（小RNA）</h3>
             <h3 class="title" *ngIf="mflag == 3">6.4.2 参考基因组比对（小RNA）</h3>
-            <p class="help_text">一般来说,比对率越高,说明样本和参考序列之间的关系越近；较低的比对率可能是由于低相似性或还有其他污染导致。我们使用比对软件AASRA[8]将clean reads比对到参考基组和其他小RNA数据库，除了Rfam是用cmsearch[7]进行比对。关于 Bowtie2 的参数说明，请阅读官方网址 <a href="http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#" target="_blank">http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#</a> 中的"Options"章节。</p>
+            <!-- <p class="help_text">一般来说,比对率越高,说明样本和参考序列之间的关系越近；较低的比对率可能是由于低相似性或还有其他污染导致。我们使用比对软件AASRA[8]将clean reads比对到参考基组和其他小RNA数据库，除了Rfam是用cmsearch[7]进行比对。关于 Bowtie2 的参数说明，请阅读官方网址 <a href="http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#" target="_blank">http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#</a> 中的"Options"章节。</p> -->
+            <p class="help_text">测序得到的Reads与参考基因组比对，基于测序数据在基因组上的位置来预测miRNA和其他的非编码RNA。另外，Reads还与非编码RNA、Rfam数据库进行比对，对测序数据进行非编码RNA注释。</p>
+            <div class="help_bg">
+                <p>软件信息：</p>
+                <p>基因组比对: Bowtie2 ，允许一个错配</p>
+                <p>非编码RNA比对: AASRA，不允许醋配，但是允许长短匹配</p>
+                <p>Rfam数据库比对: cmsearch</p>
+            </div>
         </div>
 
         <!-- 随机性 -->
@@ -133,7 +151,7 @@
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
             <h3 class="title">6.7 测序饱和度</h3>
             <div class="help_text">
-                <p>XXX</p> 
+                <p>使用perl脚本进行测序饱和度分析，测序饱和度分析可以在一定程度上判断测序数据量是否满足要求。随着测序量(Reads数量)的增加，检测到的基因数也随之上升，当测序量达到一定区间后其检测到的基因数增长速度趋于平缓，说明检测到的基因数趋于饱和，此时测序量达到要求。</p> 
             </div>
         </div>
 
@@ -141,7 +159,7 @@
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
             <h3 class="title" *ngIf="mflag == 2">6.5 小RNA预测</h3>
             <h3 class="title" *ngIf="mflag == 3">6.8 小RNA预测</h3>
-            <p class="help_text">基于miRNA的前体能够形成发夹二级结构，我们使用miRDeep2[9]（适用于动物）和miRA[10]（适用于植物）进行新的miRNA预测。 我们使用Piano[11]进行piRNA预测，该方法主要基于SVM算法和转座子信息，进行预测，适合于人、小鼠、大鼠等。 siRNA[12]是一种22-24nt的双链RNA分子，每条链的末端会多出2个碱基；结合已报道的siRNA碱基特性，进行预测潜在的siRNA。</p>
+            <p class="help_text">基于miRNA的前体能够形成发夹二级结构，我们使用miRDeep2（适用于动物）和miRA（适用于植物）进行新的miRNA预测。我们使用Piano进行piRNA预测，该方法主要基于SVM算法和转座子信息，进行预测，适合于人、小鼠、大鼠等。siRNA是一种22-24nt的双链RNA分子，每条链的末端会多出2个碱基；结合已报道的siRNA碱基特性，进行预测潜在的siRNA。</p>
         </div>
         <!-- 小RNA分类 -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
