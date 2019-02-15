@@ -59,7 +59,8 @@ export class ReListComponent implements OnInit {
 			{ key: '0', name: '失败', checked: false },
 			{ key: '-1', name: '进行中', checked: false }
 		]
-	};
+    };
+    intervalTimer = null;
 
 	constructor(
 		private routes: ActivatedRoute,
@@ -77,9 +78,10 @@ export class ReListComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.getAnalysisList();
+        this.getAnalysisList();
 
-		this.getListObserver.pipe(debounceTime(300)).subscribe((loadingFlag) => {
+        let observerObj;
+		observerObj = this.getListObserver.pipe(debounceTime(300)).subscribe((loadingFlag) => {
 			this.loading = loadingFlag;
 			this.ajaxService
 				.getDeferData({
@@ -100,7 +102,10 @@ export class ReListComponent implements OnInit {
 					},
 					(err) => {
 						this.total = 0;
-						this.error = 'error';
+                        this.error = 'error';
+                        // 如果是可观察对象发出的token error 信息  就需要清空轮询定时器
+                        clearInterval(this.intervalTimer);
+                        observerObj.unsubscribe();
 					},
 					() => {
 						this.loading = false;
@@ -108,7 +113,7 @@ export class ReListComponent implements OnInit {
 				);
 		});
 
-		setInterval(() => {
+		this.intervalTimer = setInterval(() => {
 			this.getList(false);
 		}, 5000);
 	}
