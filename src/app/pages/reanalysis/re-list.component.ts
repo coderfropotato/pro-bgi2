@@ -20,8 +20,8 @@ export class ReListComponent implements OnInit {
 		LCID: sessionStorage.getItem('LCID'),
 		pageIndex: 1,
 		pageSize: 10,
-		label: null,
 		searchContent: {
+            label: null,
 			timeStart: '',
 			timeEnd: '',
 			dataSrc: [],
@@ -207,7 +207,7 @@ export class ReListComponent implements OnInit {
 	}
 
 	search() {
-		this.tableEntity['label'] = this.label;
+		this.tableEntity['searchContent']['label'] = this.label;
 		this.getList();
 	}
 
