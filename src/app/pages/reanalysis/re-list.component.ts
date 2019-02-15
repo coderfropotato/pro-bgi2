@@ -80,20 +80,7 @@ export class ReListComponent implements OnInit {
 		this.getAnalysisList();
 
 		this.getListObserver.pipe(debounceTime(300)).subscribe((loadingFlag) => {
-			this.getList(loadingFlag);
-		});
-
-		setInterval(() => {
-			this.getList(false);
-		}, 5000);
-	}
-
-	getList(loadingFlag: boolean = true) {
-		this.getListObserver.next(loadingFlag);
-    }
-
-    getAnalysisList(loadingFlag: boolean = true){
-        this.loading = loadingFlag;
+			this.loading = loadingFlag;
 			this.ajaxService
 				.getDeferData({
 					url: `${config['javaPath']}/reAnalysis/getReanalysisList`,
@@ -119,7 +106,45 @@ export class ReListComponent implements OnInit {
 						this.loading = false;
 					}
 				);
-    }
+		});
+
+		setInterval(() => {
+			this.getList(false);
+		}, 5000);
+	}
+
+	getList(loadingFlag: boolean = true) {
+		this.getListObserver.next(loadingFlag);
+	}
+
+	getAnalysisList(loadingFlag: boolean = true) {
+		this.loading = loadingFlag;
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/reAnalysis/getReanalysisList`,
+				data: this.tableEntity
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						this.analysisList = data['data']['list'];
+						this.total = data['data']['sumCount'];
+						this.error = '';
+					} else {
+						this.analysisList = [];
+						this.total = 0;
+						this.error = 'nodata';
+					}
+				},
+				(err) => {
+					this.total = 0;
+					this.error = 'error';
+				},
+				() => {
+					this.loading = false;
+				}
+			);
+	}
 
 	toDetail(data) {
 		let type = '';
