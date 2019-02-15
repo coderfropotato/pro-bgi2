@@ -126,7 +126,7 @@ export class OverviewComponent implements OnInit {
 			return d.length;
 		});
 
-		//value min 
+		//value min
 		var valuemin = d3.min(chartData, function(d) {
 			return d.value;
 		})
@@ -529,12 +529,12 @@ export class OverviewComponent implements OnInit {
 		} else {
 			evt.cancelBubble = true;
 		}
-	
+
 		if (evt.preventDefault) {
 			evt.preventDefault();
 		} else {
 			evt.returnValue = false;
 		}
-	
+
 	}
 }

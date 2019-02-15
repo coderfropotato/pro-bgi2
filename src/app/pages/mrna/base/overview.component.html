@@ -2,8 +2,8 @@
     <h2 class="title">1 项目概况</h2>
     <hr class="mhr" />
 
-    <h3 class="title" *ngIf="abstract_general.length !=0">1.1 摘要</h3>
-    <p class="help_text" *ngIf="abstract_general.length !=0">{{abstract_general}}</p>
+    <h3 class="title" *ngIf="abstract_general">1.1 摘要</h3>
+    <p class="help_text" *ngIf="abstract_general">{{abstract_general}}</p>
 
     <h3 class="title">1.2 分析方案</h3>
     <div class="f-content">
@@ -73,6 +73,6 @@
             <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
                     ></app-color-picker>
         </div>
-        
+
     </div>
 </div>
