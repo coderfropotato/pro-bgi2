@@ -2,6 +2,9 @@
     <h2 class="title">1 项目概况</h2>
     <hr class="mhr" />
 
+    <h3 class="title" *ngIf="abstract_general.length !=0">1.1 摘要</h3>
+    <p class="help_text" *ngIf="abstract_general.length !=0">{{abstract_general}}</p>
+
     <h3 class="title">1.2 分析方案</h3>
     <div class="f-content">
         <h4 class="title">1.2.1 样品分组设置</h4>

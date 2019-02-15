@@ -457,10 +457,14 @@ export class ToolsComponent implements OnInit {
             val['checked'] = false;
             return val;
         });
+
         if (this.expressData.length) {
             this.expressData[0]['checked'] = true;
             this.expressSelect = [this.expressData[0]];
         }
+
+        this.expressUpload = this.heatmapData[this.heatmapSelect]['exp_user'];
+
     }
 
 	// 提交聚类重分析  需要生信重分析 需要1 不需要2

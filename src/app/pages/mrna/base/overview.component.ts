@@ -19,6 +19,8 @@ export class OverviewComponent implements OnInit {
 	@ViewChild('relevanceChart') relevanceChart;
 	@ViewChild('PCAChart') PCAChart;
 
+	abstract_general: string;
+
 	// table one
 	defaultUrl: string;
 	defaultUrlTwo: string;
@@ -60,6 +62,9 @@ export class OverviewComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+
+		this.abstract_general = this.store.getStore('abstract_general');
+
 		//样品分组设置
 		this.defaultUrl = `${config['javaPath']}/basicModule/groupPlan`;
 

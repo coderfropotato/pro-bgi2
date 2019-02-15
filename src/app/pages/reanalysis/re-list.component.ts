@@ -20,8 +20,8 @@ export class ReListComponent implements OnInit {
 		LCID: sessionStorage.getItem('LCID'),
 		pageIndex: 1,
 		pageSize: 10,
-		label: null,
 		searchContent: {
+            label: null,
 			timeStart: '',
 			timeEnd: '',
 			dataSrc: [],
@@ -59,7 +59,8 @@ export class ReListComponent implements OnInit {
 			{ key: '0', name: '失败', checked: false },
 			{ key: '-1', name: '进行中', checked: false }
 		]
-	};
+    };
+    intervalTimer = null;
 
 	constructor(
 		private routes: ActivatedRoute,
@@ -77,23 +78,11 @@ export class ReListComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.getAnalysisList();
+        this.getAnalysisList();
 
-		this.getListObserver.pipe(debounceTime(300)).subscribe((loadingFlag) => {
-			this.getList(loadingFlag);
-		});
-
-		setInterval(() => {
-			this.getList(false);
-		}, 5000);
-	}
-
-	getList(loadingFlag: boolean = true) {
-		this.getListObserver.next(loadingFlag);
-    }
-
-    getAnalysisList(loadingFlag: boolean = true){
-        this.loading = loadingFlag;
+        let observerObj;
+		observerObj = this.getListObserver.pipe(debounceTime(300)).subscribe((loadingFlag) => {
+			this.loading = loadingFlag;
 			this.ajaxService
 				.getDeferData({
 					url: `${config['javaPath']}/reAnalysis/getReanalysisList`,
@@ -113,13 +102,54 @@ export class ReListComponent implements OnInit {
 					},
 					(err) => {
 						this.total = 0;
-						this.error = 'error';
+                        this.error = 'error';
+                        // 如果是可观察对象发出的token error 信息  就需要清空轮询定时器
+                        clearInterval(this.intervalTimer);
+                        observerObj.unsubscribe();
 					},
 					() => {
 						this.loading = false;
 					}
 				);
-    }
+		});
+
+		this.intervalTimer = setInterval(() => {
+			this.getList(false);
+		}, 5000);
+	}
+
+	getList(loadingFlag: boolean = true) {
+		this.getListObserver.next(loadingFlag);
+	}
+
+	getAnalysisList(loadingFlag: boolean = true) {
+		this.loading = loadingFlag;
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/reAnalysis/getReanalysisList`,
+				data: this.tableEntity
+			})
+			.subscribe(
+				(data) => {
+					if (data['status'] === '0') {
+						this.analysisList = data['data']['list'];
+						this.total = data['data']['sumCount'];
+						this.error = '';
+					} else {
+						this.analysisList = [];
+						this.total = 0;
+						this.error = 'nodata';
+					}
+				},
+				(err) => {
+					this.total = 0;
+					this.error = 'error';
+				},
+				() => {
+					this.loading = false;
+				}
+			);
+	}
 
 	toDetail(data) {
 		let type = '';
@@ -182,7 +212,7 @@ export class ReListComponent implements OnInit {
 	}
 
 	search() {
-		this.tableEntity['label'] = this.label;
+		this.tableEntity['searchContent']['label'] = this.label;
 		this.getList();
 	}
 
