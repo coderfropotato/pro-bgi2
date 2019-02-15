@@ -616,7 +616,8 @@ export class reRelationNetComponent implements OnInit {
             .attr('fill', d=>d.selected ? "#000000" : that.nodeColorScale(d.value))
             .attr("cursor", "pointer")
             .on("mouseover", m => {
-                let text = `geneID：<a>${m.geneID}</a><br>type：${m.type}<br>linkNum：${m.value}<br>geneSymbol：${m.symbol}`;
+                let value=isLinkNum ? 'node连接数' : that.chartEntity['quantity']['name'];
+                let text = `geneID：<a>${m.geneID}</a><br>type：${m.type}<br>${value}：${m.value}<br>geneSymbol：${m.symbol}`;
                 this.globalService.showPopOver(d3.event, text);
             })
             .on("mouseout", () => {
@@ -713,20 +714,7 @@ export class reRelationNetComponent implements OnInit {
 
         // svg 点击清空选择
         d3.selectAll("#relationNetChartDiv svg").on('click',function(){
-            d3.selectAll('path.node').attr('fill',d=>that.nodeColorScale(d.value));
-            d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
-            that.selectedNodes.length=0;
-            that.selectedLinks.length=0;
-            that.selectGeneList.length=0;
-            that.selectLinkList.length=0;
-            that.curSearchNode=null;
-            that.allNodes.forEach(m=>{
-                m.selected=false;
-            })
-            that.allLinks.forEach(m=>{
-                m.selected=false;
-            })
-            that.chartBackStatus();
+            that.clearSelected();
         })
 
         // node color scale
@@ -948,6 +936,24 @@ export class reRelationNetComponent implements OnInit {
 
     }
 
+    //清空所有的选择
+    clearSelected(){
+        d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.value));
+        d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
+        this.selectedNodes.length=0;
+        this.selectedLinks.length=0;
+        this.selectGeneList.length=0;
+        this.selectLinkList.length=0;
+        this.curSearchNode=null;
+        this.allNodes.forEach(m=>{
+            m.selected=false;
+        })
+        this.allLinks.forEach(m=>{
+            m.selected=false;
+        })
+        this.chartBackStatus();
+    }
+
     //搜索 node
     searchNodeChange(){
         d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.value));
@@ -996,6 +1002,7 @@ export class reRelationNetComponent implements OnInit {
                     } else {
                         this.chartData=data.data;
                         this.relationNetChart.getTableData();
+                        this.clearSelected();
                         this.drawChart(data.data);
                     }
                 },
@@ -1035,6 +1042,7 @@ export class reRelationNetComponent implements OnInit {
                     } else {
                         this.chartData=data.data;
                         this.relationNetChart.getTableData();
+                        this.clearSelected();
                         this.drawChart(data.data);
                     }
                 },
@@ -1050,21 +1058,23 @@ export class reRelationNetComponent implements OnInit {
 
     // expand node
     expandNode(){
+        let expandNodes=[];
         this.allLinks.forEach(d=> {
-            if(d.source.selected){
+            if ((this.selectedNodes.indexOf(d.source) > -1) && (this.selectedNodes.indexOf(d.target) == -1) && (expandNodes.indexOf(d.target) == -1)) {
                 d.target.selected=true;
+                expandNodes.push(d.target);
             }
-            if(d.target.selected){
+            if ((this.selectedNodes.indexOf(d.target) > -1) && (this.selectedNodes.indexOf(d.source) == -1) && (expandNodes.indexOf(d.source) == -1)) {
                 d.source.selected=true;
+                expandNodes.push(d.source);
             }
         })
 
-        this.selectedNodes.length=0;
+        this.selectedNodes=[...this.selectedNodes,...expandNodes];
         this.selectGeneList.length=0;
         this.allNodes.forEach(d=> {
             if (d.selected) {
                 d3.selectAll("path#node"+d.geneID.replace(this.idReq,"")).attr('fill',"#000000");
-                this.selectedNodes.push(d);
                 this.selectGeneList.push(d.geneID);
             }
         })
