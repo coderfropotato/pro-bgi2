@@ -23,6 +23,11 @@ export class ReadsFilterComponent implements OnInit {
   @ViewChild('rawQualityChart') rawQualityChart;
   @ViewChild('bigTable') bigTable;
   @ViewChild('bigRNATable') bigRNATable;
+
+  seq_platform: string;
+  seq_length: string;
+  fragment_peak: string;
+
   // table one
   defaultEntity: object;
   defaultUrl: string;
@@ -88,6 +93,11 @@ export class ReadsFilterComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.seq_platform=this.store.getStore('seq_platform');
+    this.seq_length=this.store.getStore('seq_length');
+    this.fragment_peak=this.store.getStore('fragment_peak');
+
       //Reads过滤表
       this.defaultUrl = `${config["javaPath"]}/basicModule/filterSummary`;
       this.defaultEntity = {

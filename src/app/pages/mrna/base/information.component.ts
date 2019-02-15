@@ -23,6 +23,9 @@ export class InformationComponent implements OnInit {
 	@ViewChild('transcriptLength') transcriptLength;
 	@ViewChild('exonsNum') exonsNum;
 
+	species_name: string;
+	ref_info: object;
+
 	//2.2 RNA分类
 	tableUrl: string;
 	tableEntity: object;
@@ -88,6 +91,11 @@ export class InformationComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+
+		this.species_name = this.store.getStore('species_name');
+
+		this.ref_info = this.store.getStore('ref_info');
+
 		//2.2 RNA分类
 
 		this.tableUrl = `${config['javaPath']}/basicModule/RNAClass`;
