@@ -27,7 +27,7 @@
 
     <h3 class="title">4.3 随机性</h3>
     <p class="help_text">对于样品质量好同时测序数据足够的样品，大部分的转录本将会被完整地覆盖，同时 reads 将均匀分布在转录本的各个区域。</p>
-    <div class="f-content">
+    <div class="t-content">
         <ng-template #searchTemplate>
             <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
                 <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
@@ -78,7 +78,7 @@
 
 
     <h3 class="title">4.5 测序饱和度</h3>
-    <div class="f-content">
+    <div class="t-content">
         <ng-template #searchSaturationTemplate>
             <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="saturationSearchType" [nzSize]="'small'" (ngModelChange)="saturationTypeChange()" nzShowSearch>
                 <nz-option *ngFor="let item of saturationSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>

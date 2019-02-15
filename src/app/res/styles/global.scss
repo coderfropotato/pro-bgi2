@@ -1531,7 +1531,14 @@ button.btnActive {
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 1px solid #EEEEEE;
+		border: 0.1px solid #EEEEEE;
+		border-radius: 4px;
+	}
+	.t-content{
+		width: 96%;
+		height: auto;
+		margin: 10px auto;
+		border: 0px solid #EEEEEE;
 		border-radius: 4px;
 	}
 	.title{
@@ -1676,7 +1683,14 @@ button.btnActive {
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 1px solid #EEEEEE;
+		border: 0.5px solid #EEEEEE;
+		border-radius: 4px;
+	}
+	.t-content{
+		width: 96%;
+		height: auto;
+		margin: 10px auto;
+		border: 0px solid #EEEEEE;
 		border-radius: 4px;
 	}
 	.title{
