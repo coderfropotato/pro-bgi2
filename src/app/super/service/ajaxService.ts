@@ -20,7 +20,6 @@ export class AjaxService {
      * @date 2018-10-10
      * @param {*} params
      * @memberof ajaxService
-     * new Promise(resolve,reject)
      */
     getDeferData(params: object): Observable<{}> {
         // 验证本地有没有token
@@ -34,6 +33,7 @@ export class AjaxService {
                         Authorization: `token ${token}`
                     })
                 };
+
                 // 如果系统维护了 那就跳系统维护
                 if (config["sysDefend"]) {
                     this.router.navigateByUrl("/report/sysDefend");
@@ -45,6 +45,7 @@ export class AjaxService {
                     .subscribe(
                         res => {
                             if (res["status"] != "0") {
+                                observer.error('swap token status error');
                                 observer.complete();
                                 this.router.navigateByUrl("/reprot/sysError");
                             } else {
@@ -68,18 +69,20 @@ export class AjaxService {
                                             observer.complete();
                                         },
                                         error => {
-                                            observer.error(error);
+                                            observer.error(`inner request error ${error}`);
                                             observer.complete();
                                         }
                                     );
                             }
                         },
                         error => {
+                            observer.error('swap token request error');
                             observer.complete();
                             this.router.navigateByUrl("/reprot/sysError");
                         }
                     );
             } else {
+                observer.error('local no token');
                 observer.complete();
                 this.router.navigateByUrl("/reprot/sysError");
             }
@@ -138,6 +141,7 @@ export class AjaxService {
                     .subscribe(
                         res => {
                             if (res["status"] != "0") {
+                                observer.error('swap token status error');
                                 observer.complete();
                                 this.router.navigateByUrl("/reprot/sysError");
                             } else {
@@ -148,11 +152,13 @@ export class AjaxService {
                             }
                         },
                         error => {
+                            observer.error('swap token request error');
                             observer.complete();
                             this.router.navigateByUrl("/reprot/sysError");
                         }
                     );
             } else {
+                observer.error('local no token');
                 observer.complete();
                 this.router.navigateByUrl("/reprot/sysError");
             }
