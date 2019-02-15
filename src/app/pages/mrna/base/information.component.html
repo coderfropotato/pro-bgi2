@@ -2,10 +2,10 @@
     <h2 class="title">2 参考信息</h2>
     <hr class="mhr" />
 
-    <h3 class="title" *ngIf="species_name.length !=0 && ref_info.genome_source.length !=0 && ref_info.genome_url.length !=0">2.1 参考物种</h3>
+    <h3 class="title" *ngIf="species_name.length !=0 && ref_info['genome_source'].length !=0 && ref_info['genome_url'].length !=0">2.1 参考物种</h3>
     <p class="help_text" *ngIf="species_name.length !=0">物种名：<span style="font-style: italic">{{species_name}}</span></p>
-    <p class="help_text" *ngIf="ref_info.genome_source.length !=0">来源：<span>{{ref_info.genome_source}}</span></p>
-    <p class="help_text" *ngIf="ref_info.genome_url.length !=0">参考基因组版本：<span><a href="{{ref_info.genome_url}}" target="_blank">{{ref_info.genome_version}}</a></span></p>
+    <p class="help_text" *ngIf="ref_info['genome_source'].length !=0">来源：<span>{{ref_info['genome_source']}}</span></p>
+    <p class="help_text" *ngIf="ref_info['genome_url'].length !=0">参考基因组版本：<span><a href="{{ref_info['genome_url']}}" target="_blank">{{ref_info['genome_version']}}</a></span></p>
 
     <h3 class="title">2.2 RNA分类</h3>
     <div class="f-content">
