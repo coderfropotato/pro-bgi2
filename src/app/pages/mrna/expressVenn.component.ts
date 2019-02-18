@@ -815,7 +815,7 @@ export class ExpressVennComponent implements OnInit {
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
-					let tipText = `name: ${bar_name[i]}<br> value:  ${d}`;
+					let tipText = `Group: ${bar_name[i]}<br>Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', () => {
@@ -946,7 +946,7 @@ export class ExpressVennComponent implements OnInit {
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
-					let tipText = `name: ${total_name[i]}<br> value:  ${d}`;
+					let tipText = `Group: ${total_name[i]}<br>Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', () => {

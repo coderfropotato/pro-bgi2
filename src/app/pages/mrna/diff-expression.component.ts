@@ -924,7 +924,7 @@ export class DiffExpressionComponent implements OnInit {
 				.on('mouseover', function(d, i) {
 					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
 					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
-					let tipText = `name: ${bar_name[i]}<br> value:  ${d}`;
+					let tipText = `Group: ${bar_name[i]}<br> Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d, i) {
@@ -1072,7 +1072,7 @@ export class DiffExpressionComponent implements OnInit {
 					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
 					//console.log(tempSelectColor);
 					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
-					let tipText = `name: ${total_name[i]}<br> value:  ${d}`;
+					let tipText = `Group: ${total_name[i]}<br> Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d, i) {
