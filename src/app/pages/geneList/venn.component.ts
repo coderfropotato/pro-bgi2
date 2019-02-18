@@ -991,12 +991,11 @@ export class GeneListVennComponent implements OnInit {
 		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on(
 			'click',
 			function(d) {
-				_self.updateVenn();
-				_self.leftSelect.length = 0;
-                _self.upSelect.length = 0;
-                _self.defaultShowFilterStatus = !!_self.leftSelect.length || !!_self.upSelect.length;
-				// _self.first ? _self.transformTable._getData() : (_self.first = true);
-				_self.chartBackStatus();
+				// _self.updateVenn();
+				// _self.leftSelect.length = 0;
+                // _self.upSelect.length = 0;
+                // _self.defaultShowFilterStatus = !!_self.leftSelect.length || !!_self.upSelect.length;
+				// _self.chartBackStatus();
 			},
 			false
 		);
