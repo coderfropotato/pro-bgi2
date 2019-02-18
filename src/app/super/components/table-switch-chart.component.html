@@ -5,7 +5,7 @@
             <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="chartBtnClick()" nz-tooltip nzTitle="{{'view.s_view' | translate}}">
                 <i class="anticon anticon-area-chart"></i>
             </button>
-            <button *ngIf="!isOnlyChart" nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="tableBtnClick()" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
+            <button *ngIf="tableUrl" nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="tableBtnClick()" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
                 <i class="anticon anticon-table"></i>
             </button>
             <!-- 选择面板 显示隐藏icon -->
@@ -131,7 +131,7 @@
                     </nz-table>
 
                     <!-- chart -->
-                    <div class="center chart" style="margin: 0 auto;" [hidden]="isShowTable || chartError">
+                    <div class="center chart" [hidden]="isShowTable || chartError">
                         <div [attr.id]="chartId"></div>
                     </div>
 

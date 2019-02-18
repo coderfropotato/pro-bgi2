@@ -26,9 +26,8 @@ export class TableSwitchChartComponent implements OnInit {
     @ViewChild("tableChartContent") tableChartContent;
     @ViewChild("tableBottom") tableBottom;
 
-    @Input() tableUrl: string; //表格api地址；isOnlyChart=true时可不传
-    @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
-    @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。isOnlyChart=true则为必选。
+    @Input() tableUrl: string; //表格api地址；
+    @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。
 
     @Input() apiEntity: object; //api请求参数
 
@@ -180,11 +179,11 @@ export class TableSwitchChartComponent implements OnInit {
             }
         ];
 
-        if(this.selectPanelData || (this.selectPanelUrl && this.selectPanelEntity) || (this.defaultSetUrl && this.defaultSetEntity)){
+        if(this.selectPanelData || this.selectPanelUrl || this.defaultSetUrl){
             if (this.selectPanelData) {
                 this.isHasSelectPanel = true;
                 this.calculateSelectPanelData(this.selectPanelData);
-            } else if (this.selectPanelUrl && this.selectPanelEntity) {
+            } else if (this.selectPanelUrl) {
                 this.isHasSelectPanel = true;
                 this.getSelectPanelList();
             } else {
@@ -192,7 +191,7 @@ export class TableSwitchChartComponent implements OnInit {
                 this.reGetData();
             }
     
-            if (this.defaultSetUrl && this.defaultSetEntity) {
+            if (this.defaultSetUrl) {
                 this.getDefaultSet();
             }else{
                 this.reGetData();  
@@ -201,7 +200,7 @@ export class TableSwitchChartComponent implements OnInit {
             this.reGetData();
         }
 
-        if (this.setDataUrl && this.setDataEntity) {
+        if (this.setDataUrl) {
             this.getSetData();
         }else if(this.localSetData){
             this.setData.emit(this.localSetData);
@@ -562,7 +561,7 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     reGetData() {
-        if (!this.isOnlyChart && this.tableUrl) {
+        if (this.tableUrl) {
             this.getTableData();
         }
         if (this.chartUrl) {
