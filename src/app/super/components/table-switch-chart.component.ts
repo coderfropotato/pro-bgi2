@@ -93,7 +93,7 @@ export class TableSwitchChartComponent implements OnInit {
     @Output() refresh: EventEmitter<any> = new EventEmitter();
 
     //table chart show
-    @Output() showTableChange: EventEmitter<any> = new EventEmitter();
+    @Output() showChange: EventEmitter<any> = new EventEmitter();
 
     // 图类型 ,形如：{key:"bubble",value:"气泡图"}
     @Input() chartTypeData: any[];
@@ -215,12 +215,12 @@ export class TableSwitchChartComponent implements OnInit {
     //图表切换按钮
     chartBtnClick() {
         this.isShowTable = false;
-        this.showTableChange.emit(this.isShowTable);
+        this.showChange.emit(this.isShowTable);
     }
 
     tableBtnClick() {
         this.isShowTable = true;
-        this.showTableChange.emit(this.isShowTable);
+        this.showChange.emit(this.isShowTable);
         setTimeout(() => {
             this.scrollHeight();
         }, 0);

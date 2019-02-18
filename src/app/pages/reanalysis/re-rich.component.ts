@@ -260,7 +260,7 @@ export class ReRichComponent implements OnInit {
     }
 
 
-    showTableChange(isshowtable){
+    showChange(isshowtable){
         this.isShowTable=isshowtable;
     }
 
