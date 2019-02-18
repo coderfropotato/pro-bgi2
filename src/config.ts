@@ -1,5 +1,5 @@
 const config: object = {
-    url: "http://localhost:8086",
+    url: "http://192.168.167.24:7777",
     javaPath:"http://192.168.167.24:7777/api", // api基础路径 47.107.224.133
     outerDataBaseIndex:"006", // 增删列外部数据库的索引
     lang:"zh",  // 默认语言

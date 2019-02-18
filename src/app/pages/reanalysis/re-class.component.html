@@ -37,7 +37,7 @@
 
                 <!-- 图标切换 -->
                 <ng-container *ngIf="isExceed!=null && !isExceed">
-                    <app-table-switch-chart #switchChart *ngIf="selectedVal" [id]="'re-class'" [isOnlyChart]="false" [tableUrl]="chartUrl"  [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true"> </app-table-switch-chart>
+                    <app-table-switch-chart #switchChart *ngIf="selectedVal" [id]="'re-class'" [tableUrl]="chartUrl"  [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true"> </app-table-switch-chart>
 
                     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
                 </ng-container>
