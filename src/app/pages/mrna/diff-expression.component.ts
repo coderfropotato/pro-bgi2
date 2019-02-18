@@ -102,6 +102,8 @@ export class DiffExpressionComponent implements OnInit {
 	color = '#fff'; // 默认颜色
 	show = false; // 是否显示颜色选择器
 
+	isShowSpan: boolean = false;
+
 	p_show: boolean; //设置里面的PossionDis
 	PossionDis: object = {
 		log2FC: '',
@@ -457,7 +459,14 @@ export class DiffExpressionComponent implements OnInit {
 	}
 
 	OnChange(value: string): void {
-		this.PossionDis['log2FC'] = value;
+		if(parseInt(value)<0){
+			this.isShowSpan = true;
+			return;
+		}else{
+			this.isShowSpan = false;
+			this.PossionDis['log2FC'] = value;
+		}
+		
 	}
 	OnChange2(value: string): void {
 		this.PossionDis['FDR'] = value;

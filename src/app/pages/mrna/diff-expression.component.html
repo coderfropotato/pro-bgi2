@@ -29,6 +29,7 @@
                                         <input style="margin-top: 8px;" (ngModelChange)="OnChange($event)" nz-input
                                             placeholder="" nzSize="small" [ngModel]="PossionDis.log2FC" />
                                     </div>
+                                    <span *ngIf="isShowSpan" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
                                 </div>
                                 <div class="con_PessionDis_row">
                                     <div class="con_PessionDis_left">
