@@ -215,21 +215,36 @@ export class InformationComponent implements OnInit {
 
 	//2.3基因长度
 	drawTranscriptLength(data) {
-		console.log(data);
+		//console.log(data);
 		var baseThead = data.baseThead;
 		var rows = data.rows;
 		var chartData = [];
 
+		// for (var i = 0; i < rows.length; i++) {
+		// 	let temp = {};
+		// 	for (let j = 0; j < baseThead.length; j++) {
+		// 		let tempName = baseThead[j].true_key;
+		// 		let tempValue = rows[i][tempName];
+		// 		temp[tempName] = tempValue;
+		// 		//console.log(tempName+":"+tempValue)
+		// 	}
+		// 	chartData.push(temp);
+		// }
 		for (var i = 0; i < rows.length; i++) {
 			let temp = {};
+			let total = 0;
 			for (let j = 0; j < baseThead.length; j++) {
 				let tempName = baseThead[j].true_key;
 				let tempValue = rows[i][tempName];
 				temp[tempName] = tempValue;
-				//console.log(tempName+":"+tempValue)
+				if(tempName != "item"){
+				  total += tempValue;
+				}
 			}
-			chartData.push(temp);
+			temp["total"] = total;
+			chartData.push(temp)
 		}
+		//console.log(chartData);
 
 		let that = this;
 
@@ -246,7 +261,7 @@ export class InformationComponent implements OnInit {
 				el: '#TranscriptData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'item', 'all' ],
+				custom: [ 'item', 'total' ],
 				data: chartData
 			},
 			axis: {
