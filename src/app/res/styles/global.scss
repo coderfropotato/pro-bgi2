@@ -1574,21 +1574,61 @@ button.btnActive {
 			height: auto;
 
 			.img_one{
-				width: 213px;
-				height: 613px;
+				width: 348px;
+				height: 890px;
 				margin:  10px auto;
-				background-image: url("../img/help/mrnaLC.png");
+				background-image: url("../img/help2/Illumina_Experiment_FlowChart.png");
+				background-size: 100% 100%;
 				background-repeat: no-repeat;
 				background-position: center;
 			}
+			.img_one_f{
+				width: 497px;
+				height: 486px;
+				margin:  10px auto;
+				background-image: url("../img/help2/BGISEQ_Experiment_FlowChart.png");
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+
+			.img_one_s{
+				width: 809px;
+				height: 677px;
+				margin:  10px auto;
+				background-image: url("../img/help2/rRNA_Removal_Experiment_FlowChartl.png");
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+
 			.img_two{
-				width: 622px;
-				height: 715px;
+				width: 928px;
+				height: 880px;
 				margin:  10px auto;
-				background-image: url("../img/help/fxLC.png");
+				background-image: url("../img/help2/RNAseq_Analysis_FlowChart.png");
+				background-size: 100% 100%;
 				background-repeat: no-repeat;
 				background-position: center;
 			}
+			.img_two_f{
+				// width: 1551px;
+				// height: 1988px;
+				width: 928px;
+				height: 880px;
+				margin:  10px auto;
+				background-image: url("../img/help2/RNAref_Analysis_FlowChart.png");
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+			.img_two_s{
+				width: 838px;
+				height: 768px;
+				margin:  10px auto;
+				background-image: url("../img/help2/lncRNA_Analysis_FlowChart.png");
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+
 			.img_three{
 				width: 585px;
 				height: 692px;
@@ -1624,10 +1664,10 @@ button.btnActive {
 				background-size: 100% 100%;
 			}
 			.img_seven{
-				width: 773px;
-				height: 685px;
+				width: 553px;
+				height: 535px;
 				margin:  10px auto;
-				background-image: url("../img/help/smrna1.png");
+				background-image: url("../img/help2/BGISEQ_smallRNA_Experiment_FlowChart.png");
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: 100% 100%;

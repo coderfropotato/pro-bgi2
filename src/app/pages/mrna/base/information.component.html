@@ -93,7 +93,8 @@
     </div>
 
     <h3 class="title">2.6 注释统计表</h3>
-    <div class="f-content">
+    <app-little-table [url]="defaultUrl"></app-little-table>
+    <!-- <div class="f-content">
         <app-big-table
           *ngIf="defaultEntity"
           class="no-outside-border"
@@ -102,7 +103,8 @@
           [url]="defaultUrl"
           [tableId]="defaultTableId"
         ></app-big-table>
-    </div>
+        <app-little-table [url]="defaultUrl"></app-little-table>
+    </div> -->
 
     <h3 class="title">2.7 miRNA首位碱基分布</h3>
     <div class="t-content">

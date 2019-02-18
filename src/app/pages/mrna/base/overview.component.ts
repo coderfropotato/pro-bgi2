@@ -219,11 +219,11 @@ export class OverviewComponent implements OnInit {
 			})
 			.on("mouseover", function() {
 				d3.select(this).attr("fill", "#5378f8");
-				d3.select(this).append("title").text("双击修改");
+				//d3.select(this).append("title").text("双击修改");
 			})
 			.on("mouseout", function() {
 				d3.select(this).attr("fill", "#000");
-				d3.select(this).select("title").remove();
+				//d3.select(this).select("title").remove();
 			});
 
 		//画轴
@@ -285,7 +285,8 @@ export class OverviewComponent implements OnInit {
 					return "translate(" + d.x * eachRect_w + "," + yValueScale(d.y) * eachRect_h + ")"
 				})
 				.on("mouseover", function(d) {
-					var tipText = ["样本1： " + d.sample1, "样本2： " + d.sample2, "相关系数：" + d.value];
+					//var tipText = ["样本1： " + d.sample1, "样本2： " + d.sample2, "相关系数：" + d.value];
+					var tipText = "<span>样本1："+d.sample1+"</span><br><span>样本2："+d.sample2+"</span><br><span>样本2："+d.value+"</span>";
 					//reportService.GenericTip.Show(d3.event, tipText);
 					that.globalService.showPopOver(d3.event, tipText);
 				})
