@@ -137,7 +137,7 @@ export class InformationComponent implements OnInit {
 		this.exonsNumUrl = `${config['javaPath']}/basicModule/exonsNum`;
 		this.exonsNumEntity = {
 			LCID: this.store.getStore('LCID'),
-			RefGeneTypeList: m_geneTypeList
+			refGeneTypeList: m_geneTypeList
 		};
 
 		//2.6 小RNA数量
@@ -186,7 +186,7 @@ export class InformationComponent implements OnInit {
 				},
 				width: 600,
 				height: 400,
-				padding: 0.01,
+				padding: 0,
 				outerRadius: 120,
 				startAngle: 0,
 				endAngle: 360,
@@ -297,7 +297,7 @@ export class InformationComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				return '<span>name：' + d.key + '</span><br><span>数量：' + d.data[d.key] + '</span>';
+				return '<span>类型：' + d.key + '</span><br><span>转录本数目：' + d.data[d.key] + '</span><br><span>转录本数目：'+ d.data["item"]+'</span>';
 			}
 		};
 
@@ -464,7 +464,7 @@ export class InformationComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				return '<span>name：' + d.key + '</span><br><span>数量：' + d.data[d.key] + '</span>';
+				return '<span>类型：' + d.key + '</span><br><span>数量：' + d.data[d.key] + '</span>';
 			}
 		};
 

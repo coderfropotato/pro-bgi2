@@ -132,7 +132,7 @@ export class LrnaComponent implements OnInit {
         },
         width:600,
         height:400,
-				padding:0.01,
+				padding:0,
 				outerRadius:120,
 				startAngle:0,
 				endAngle:360,
