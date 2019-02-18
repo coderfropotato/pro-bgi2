@@ -125,7 +125,7 @@ export class ReadsComparisonComponent implements OnInit {
 
   }
 
-  //reads 在转录本上的分布画图
+  //4.3 随机性 reads 在转录本上的分布画图
   drawRondReads(data){
 
     var rows = data.rows;
@@ -163,6 +163,7 @@ export class ReadsComparisonComponent implements OnInit {
         el: "#rondData",
         custom: ["window_pos", "window_read_num"],
         type: "line",
+        interpolate:'cardinal',
         data: temps
       },
       axis: {
@@ -198,7 +199,7 @@ export class ReadsComparisonComponent implements OnInit {
     
   }
 
-  //转录本的 reads 覆盖度
+  //4.4 覆盖度 转录本的 reads 覆盖度
   drawCoverReads(data){
     // console.log(data);
     // let rows = [];
@@ -283,7 +284,7 @@ export class ReadsComparisonComponent implements OnInit {
     new d4().init(config);
   }
 
-  //测序饱和度曲线
+  //4.5 测序饱和度 测序饱和度曲线
   drawSaturationReads(data){
     console.log(data);
 
