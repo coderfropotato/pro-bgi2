@@ -373,6 +373,11 @@ export class ReMultiOmicsComponent implements OnInit {
 		}
 		let boxplotLength = boxplot.length;
 
+		column.forEach(d=>{
+			let rectsLens = d.data.length;
+			this.columnNum+=rectsLens;
+		})
+
 		// set width height space
 		let eachChartHeight = 0; //每种图主体的height
 		const chartSpace = 10; // 每种图之间的间距
@@ -392,11 +397,11 @@ export class ReMultiOmicsComponent implements OnInit {
 			legend_text_space = 4; //图例矩形与文字之间的距离
 
 		//domain 柱子数量；range 宽、距离
-		let widthScale = d3.scaleLinear().domain([ 1, 60 ]).range([ 50, 8 ]).clamp(true).nice(); //根据每组柱子数量决定当前组每根柱子宽度
-		let spaceScale = d3.scaleLinear().domain([ 1, 60 ]).range([ 40, 2 ]).clamp(true).nice(); //根据每组柱子数量决定当前组每根柱子之间的距离
+		let widthScale = d3.scaleLinear().domain([ 1, 100 ]).range([ 30, 8 ]).clamp(true).nice(); //根据柱子数量决定当前组每根柱子宽度
+		let spaceScale = d3.scaleLinear().domain([ 1, 100 ]).range([ 10, 1 ]).clamp(true).nice(); //根据柱子数量决定当前组每根柱子之间的距离
 
 		//domain：箱线图数量
-		let heightScale = d3.scaleOrdinal().domain([ 1, 2, 3, 4, 5 ]).range([ 240, 210, 180, 150, 120 ]);
+		let heightScale = d3.scaleOrdinal().domain([ 1, 2, 3, 4, 5 ]).range([ 260, 230, 200, 170, 140 ]);
 
 		//calculate min max
 		let allXTexts = [];
@@ -410,7 +415,6 @@ export class ReMultiOmicsComponent implements OnInit {
 			colors.push(this.colors[i]);
 
 			let rectsLen = d.data.length;
-			this.columnNum+=rectsLen;
 			rectWidth = widthScale(rectsLen);
 
 			let eachSpaceNum = rectsLen + 1;

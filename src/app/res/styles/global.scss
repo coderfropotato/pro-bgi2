@@ -362,8 +362,8 @@ tbody > tr:nth-child(even) {
 .center-flex {
 	display: flex;
 	// padding-top: 40px;
-	justify-content: center;
-    align-items: center;
+	// justify-content: center;
+    // align-items: center;
 }
 .clearfix {
 	display: block;
@@ -1834,4 +1834,12 @@ button.btnActive {
 .isEdit{
     color: $error-color;
     margin-left: 6px;
+}
+
+.chart{
+	width: -webkit-fill-available;
+	width: fill-available;
+	width:-moz-fill-available;
+	height: 100%;
+	display: flex;
 }
