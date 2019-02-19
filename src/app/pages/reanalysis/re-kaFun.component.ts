@@ -160,7 +160,7 @@ export class KaFunComponent implements OnInit {
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
             searchList: [],
-            sortThead:this.addColumnService['sortThead']
+            sortThead:this.addColumn['sortThead']
         };
         this.defaultTableId = 'default_kafun';
         this.defaultDefaultChecked = true;
@@ -185,7 +185,7 @@ export class KaFunComponent implements OnInit {
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
             searchList: [],
-            sortThead:this.addColumnService['sortThead']
+            sortThead:this.addColumn['sortThead']
         };
         this.extendTableId = 'extend_kafun';
         this.extendDefaultChecked = true;

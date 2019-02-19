@@ -66,7 +66,7 @@ export class PromtComponent{
     }
 
     handlerChange(ev){
-      console.log(ev.target.value.length);
+    //   console.log(ev.target.value.length);
       if(ev.target.value.length>25){
         this.isshowFlag = true;
       }else{

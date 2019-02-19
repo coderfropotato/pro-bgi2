@@ -165,7 +165,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
 			searchList: [],
-			sortThead: this.addColumnService['sortThead']
+			sortThead: this.addColumn['sortThead']
 		};
 		this.defaultTableId = 'default-multi-omics';
 		this.defaultDefaultChecked = true;
@@ -193,7 +193,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
 			searchList: [],
-			sortThead: this.addColumnService['sortThead']
+			sortThead: this.addColumn['sortThead']
 		};
 		this.extendTableId = 'extend-multi-omics';
 		this.extendDefaultChecked = true;
@@ -229,7 +229,7 @@ export class ReMultiOmicsComponent implements OnInit {
 	// 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
 		this.showBackButton = true;
-		this.extendEmitBaseThead = false;
+		this.extendEmitBaseThead = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -726,7 +726,7 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('text-anchor', 'middle')
 					.attr('dominant-baseline', 'middle')
 					.attr('transform', `rotate(-90)`);
-					
+
 				boxYtitle.append('tspan').text(d.relation);
 				boxYtitle.append('tspan').attr("x",0).attr('dy',15).text(d.name);
 
@@ -886,7 +886,7 @@ export class ReMultiOmicsComponent implements OnInit {
 						scatters.forEach(d=>{
 							d.xscale=d3.scaleLinear().domain([0,1]).range([0,d.w]).clamp(true).nice();
 						})
-						
+
 						return scatters;
 					})
 					.enter()

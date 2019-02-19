@@ -102,7 +102,7 @@ export class LrnaComponent implements OnInit {
       LCID: this.store.getStore('LCID'),
       smallRNASampleList: this.store.getStore("sample")
     };
-    
+
   }
 
   //小RNA分类
@@ -116,7 +116,7 @@ export class LrnaComponent implements OnInit {
               name: rows[j].smallrna_class,
               value: rows[j].smallrna_count
           })
-        }   
+        }
     }
 
     let that = this;
@@ -161,7 +161,7 @@ export class LrnaComponent implements OnInit {
 
   //5.3 小RNA长度
   drawRNALengthReads(data){
-    console.log(data);
+    // console.log(data);
 
     var baseThead = data.baseThead;
     var rows = data.rows;
@@ -175,10 +175,10 @@ export class LrnaComponent implements OnInit {
                 category: baseThead[i].name,
             })
           }
-                
+
         }
     }
-    console.log(chartData)
+    // console.log(chartData)
 
     let that = this;
 
@@ -239,7 +239,7 @@ export class LrnaComponent implements OnInit {
     this.chartRNA = new d4().init(config);
 
   }
-  
+
   searchTypeChange(){
     this.tableEntity["sample"] = this.curSearchType;
     this.smallRNAChart.reGetData();
@@ -255,10 +255,10 @@ export class LrnaComponent implements OnInit {
     this.chartRNA.setColor(curColor, this.legendIndexL);
     this.chartRNA.redraw();
   }
-  
+
   //选择面板 确定筛选的数据
 	selectConfirm(data) {
-    console.log(data)
+    // console.log(data)
     this.selectConfirmData = data;
     this.tableRNAEntity["Sample"] = this.selectConfirmData;
     this.RNALchart.reGetData();
@@ -266,7 +266,7 @@ export class LrnaComponent implements OnInit {
 
   //选择面板，默认选中数据
 	defaultSelectList(data) {
-    console.log(data)
+    // console.log(data)
 		this.selectConfirmData = data;
 	}
 

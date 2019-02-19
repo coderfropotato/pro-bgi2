@@ -56,15 +56,15 @@ export class ClusterComponent implements OnInit {
 
         this.chartUrl=`${config['javaPath']}/cluster/heatmapGraph`;
         this.chartEntity = {
-            "LCID": this.storeService.getStore('LCID'), 
-            "tid": "20783e1576b84867aee1a63e22716fed", 
+            "LCID": this.storeService.getStore('LCID'),
+            "tid": "20783e1576b84867aee1a63e22716fed",
             "isHorizontal": true,
             "verticalClassification": {},
             "horizontalClassification": []
         };
     }
 
-    //设置 默认 
+    //设置 默认
     apiEntityChange(data){
         let xNum=data.xNum;
         if (xNum <= 8) {
@@ -210,7 +210,7 @@ export class ClusterComponent implements OnInit {
 
         //top left rect width height
         let simpleRectWH=16,complexRectWH=6;
-        
+
         // top
         let topSimpleHeight=topSimples.length*(simpleRectWH+small_space);
         let topComplexHeight=0;
@@ -234,14 +234,14 @@ export class ClusterComponent implements OnInit {
             });
         }
         let leftColumnWidth=leftSimpleWidth+leftComplexWidth;
-        
+
         //热图区偏移
         let heatmap_x=margin.left+cluster_width+leftColumnWidth;
         let heatmap_y=margin.top+topCluster_height+topColumnHeight;
 
         //图例
         let gradientLegendWidth=legend_width+valuemax.toString().length*7;
-        
+
         let legendColNumScale=d3.scaleLinear().domain([200, 2000]).range([8,80]);
 
         let OrdinalRectW=16,OrdinalRectH=16, // rect width height
@@ -368,7 +368,7 @@ export class ClusterComponent implements OnInit {
         //left simple rect
         if(leftSimples.length){
             let simple_g = body_g.append('g').attr('class','simpleRects').attr("transform",`translate(${cluster_width},${heatmap_y-margin.top})`);
-            
+
             for(let i=0;i<leftSimples.length;i++){
                 drawSimple(leftSimples,i,simple_g,i*(simpleRectWH+small_space),d=>yScale(d.name),simpleRectWH,single_rect_height,`translate(${i*(simpleRectWH+small_space)+simpleRectWH/2},${heatmap_height+space}) rotate(90)`);
             }
@@ -409,7 +409,7 @@ export class ClusterComponent implements OnInit {
 
             let d=data[i];
             let simplePath_g = g.append("g");
-            
+
             simplePath_g.selectAll(".rects")
                 .data(d.data).enter()
                 .append("rect")
@@ -493,7 +493,7 @@ export class ClusterComponent implements OnInit {
 
                 let curLegend= legendWrap.append('g').attr('class','oLegend');
 
-                
+
                 let sumWidth = 0,
                     sumBeforeWidth = 0;
                 let widthArr = [];
@@ -560,7 +560,7 @@ export class ClusterComponent implements OnInit {
                 curLegend.append('text').attr('class','oLegendTitle')
                 .style('font-size','14px')
                 .style('text-anchor','start')
-                
+
                 .text(function(){
                     let textwidth=d.title.length *7+legend_col_space/2;
                     let colWidth=d3.select(this.parentNode).select('.legendGroup').node().getBBox().width;
@@ -584,7 +584,7 @@ export class ClusterComponent implements OnInit {
                 let x = d3.select(this.parentNode).select('.legendGroup').attr('transform');
                 return x;
             })
-            
+
         }
 
         //画热图
@@ -926,7 +926,7 @@ export class ClusterComponent implements OnInit {
     }
 
     setGeneList(geneList) {
-        console.log(geneList);
+        // console.log(geneList);
     }
 
      // 数组分组

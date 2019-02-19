@@ -404,7 +404,7 @@ const ROUTES: Routes = [
 			},
 
 			{
-				path: 're-multiOmics/:geneType/:tid/:version',
+				path: 're-multiOmics/:geneType/:tid/:version/:isEdit',
 				component: ReMultiOmicsComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -413,7 +413,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-heatmap/:geneType/:tid/:version',
+				path: 're-heatmap/:geneType/:tid/:version/:isEdit',
 				component: ReHeatmapComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -422,7 +422,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-heatmaprelation/:geneType/:tid/:version',
+				path: 're-heatmaprelation/:geneType/:tid/:version/:isEdit',
 				component: reRelationHeatmapComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -431,7 +431,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-net/:geneType/:tid/:version',
+				path: 're-net/:geneType/:tid/:version/:isEdit',
 				component: ReNetComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -440,7 +440,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-linkedNetwork/:geneType/:tid/:version',
+				path: 're-linkedNetwork/:geneType/:tid/:version/:isEdit',
 				component: reRelationNetComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -449,7 +449,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-kda/:geneType/:tid/:version',
+				path: 're-kda/:geneType/:tid/:version/:isEdit',
 				component: ReKdaComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -458,7 +458,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-line/:geneType/:tid/:version',
+				path: 're-line/:geneType/:tid/:version/:isEdit',
 				component: ReLineComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -467,7 +467,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-chiSquare/:geneType/:tid/:version',
+				path: 're-chiSquare/:geneType/:tid/:version/:isEdit',
 				component: KaFunComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -476,7 +476,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-as/:geneType/:tid/:version',
+				path: 're-as/:geneType/:tid/:version/:isEdit',
 				component: RelativeSpliceComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -485,7 +485,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-classification/:geneType/:tid/:version/:annotation',
+				path: 're-classification/:geneType/:tid/:version/:annotation/:isEdit',
 				component: ReClassComponent,
 				canActivate: [ SysDefendService ],
 				data: {
@@ -494,7 +494,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-enrichment/:geneType/:tid/:version/:annotation',
+				path: 're-enrichment/:geneType/:tid/:version/:annotation/:isEdit',
 				component: ReRichComponent,
 				canActivate: [ SysDefendService ],
 				data: {

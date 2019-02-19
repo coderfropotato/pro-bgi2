@@ -195,7 +195,7 @@ export class ReRichComponent implements OnInit {
                 checkedClassifyType: this.selectedVal,
                 checkedClassifyList: this.selectGeneList,
                 checkGraph: true,
-                sortThead: this.addColumnService['sortThead'],
+                sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };
             this.defaultTableId = 'default_rich';
@@ -226,7 +226,7 @@ export class ReRichComponent implements OnInit {
                 checkedClassifyType: this.selectedVal,
                 checkedClassifyList: this.selectGeneList,
                 checkGraph: true,
-                sortThead: this.addColumnService['sortThead'],
+                sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };
             this.extendTableId = 'extend_rich';

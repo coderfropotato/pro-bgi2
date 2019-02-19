@@ -180,7 +180,7 @@ export class reRelationHeatmapComponent implements OnInit {
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
             searchList: [],
-            sortThead:this.addColumnService['sortThead']
+            sortThead:this.addColumn['sortThead']
         };
         this.defaultTableId = 'default_heatmap';
         this.defaultDefaultChecked = true;
@@ -208,7 +208,7 @@ export class reRelationHeatmapComponent implements OnInit {
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
             searchList: [],
-            sortThead:this.addColumnService['sortThead']
+            sortThead:this.addColumn['sortThead']
         };
         this.extendTableId = 'extend_heatmap';
         this.extendDefaultChecked = true;

@@ -159,7 +159,7 @@ export class RelativeSpliceComponent implements OnInit {
                     species: this.storeService.getStore("genome"), //物种
                     version: this.version,
                     searchList: [],
-                    sortThead: this.addColumnService["sortThead"],
+                    sortThead: this.addColumn["sortThead"],
                     AS_type: this.AS_type_select,
                     Group: this.group_select
                 };
