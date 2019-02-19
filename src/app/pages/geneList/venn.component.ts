@@ -18,15 +18,23 @@ declare const $: any;
 @Component({
 	selector: 'app-gene-list-venn-page',
 	template: `<app-gene-list-venn *ngIf="showModule" [defaultGeneType]="defaultGeneType">
-                    <div  class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
+                    <div *ngIf="rootGeneType===config['geneTypeAll']" class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
                         <span>{{defaultGeneType | translate}}</span><i class="iconfont icon-qiehuan"></i>
+                    </div>
+                    <div *ngIf="rootGeneType!==config['geneTypeAll']" class="gene-switch gene-switch-module nocursor">
+                        <span>{{defaultGeneType | translate}}</span>
                     </div>
                 </app-gene-list-venn>`,
 	styles: []
 })
 export class GeneListVennPageComponent {
+	config: object = config;
+	rootGeneType: string = 'all'; // 来自菜单 可配置  all gene transcript
+	defaultGeneType: string = this.rootGeneType === this.config['geneTypeAll']
+		? this.config['geneTypeOfGene']
+        : this.rootGeneType;
+
 	showModule: boolean = true;
-	defaultGeneType: string = 'gene';
 
 	constructor(private storeService: StoreService, private translate: TranslateService) {
 		let browserLang = this.storeService.getLang();
@@ -34,7 +42,10 @@ export class GeneListVennPageComponent {
 	}
 
 	handlerSwitchChange() {
-		this.defaultGeneType = this.defaultGeneType === 'gene' ? 'transcript' : 'gene';
+		this.defaultGeneType =
+			this.defaultGeneType === config['geneTypeOfGene']
+				? config['geneTypeOfTranscript']
+				: config['geneTypeOfGene'];
 		this.showModule = false;
 		setTimeout(() => {
 			this.showModule = true;
@@ -215,8 +226,8 @@ export class GeneListVennComponent implements OnInit {
 				geneType: this.defaultGeneType, //基因类型gene和transcript
 				species: this.storeService.getStore('genome'), //物种
 				version: this.storeService.getStore('version'),
-				searchList: []
-				// sortThead:this.addColumn['sortThead']
+				searchList: [],
+				sortThead:this.addColumn['sortThead']
 			};
 			this.defaultTableId = 'diff_venn_default_gene';
 			this.defaultDefaultChecked = true;
@@ -244,8 +255,8 @@ export class GeneListVennComponent implements OnInit {
 				geneType: this.defaultGeneType, //基因类型gene和transcript
 				species: this.storeService.getStore('genome'), //物种
 				version: this.storeService.getStore('version'),
-				searchList: []
-				// sortThead:this.addColumn['sortThead']
+				searchList: [],
+				sortThead:this.addColumn['sortThead']
 			};
 			this.extendTableId = 'diff_venn_extend_gene';
 			this.extendDefaultChecked = true;
@@ -589,7 +600,12 @@ export class GeneListVennComponent implements OnInit {
 				tpl.destroy();
 			}
 		});
-	}
+    }
+
+    saveGeneListSuccess(argv){
+        this.selectPanelEntity['tag'].length = 0;
+        this.handleTagSelectChange();
+    }
 
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {

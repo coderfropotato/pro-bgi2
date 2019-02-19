@@ -1766,3 +1766,20 @@ button.btnActive {
 	max-height: 200px;
     overflow: auto;
 }
+
+.success{
+    color: $success-color;
+}
+
+.error{
+    color: $error-color;
+}
+
+.pending{
+    color: $them-color;
+}
+
+.isEdit{
+    color: $error-color;
+    margin-left: 6px;
+}

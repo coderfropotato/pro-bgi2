@@ -126,9 +126,10 @@
             </div>
             <div class="table-content">
                 <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" x:head.length*150+'px'-->
+                <!-- [nzWidthConfig]="widthConfig" -->
                 <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="scroll"
                     [nzData]="dataSet" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"
-                    nzBordered [nzWidthConfig]="widthConfig">
+                    nzBordered >
                     <thead #thead>
                         <tr>
                             <!-- checkbox -->
@@ -136,7 +137,7 @@
                                 [nzSelections]="selectMenu" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
                                 (nzCheckedChange)="checkAll($event)"></th>
                             <!-- 首列 -->
-                            <th style="text-align: center;" [attr.colspan]="head[0]['colspan']" [attr.rowspan]="head[0]['rowspan']"
+                            <th style="text-align: center;" [ngStyle]="{'min-width':widthConfig[1]}" [attr.colspan]="head[0]['colspan']" [attr.rowspan]="head[0]['rowspan']"
                                 [nzLeft]="colLeftConfig[0]" [(nzSort)]="sortMap[head[0]['true_key']]" [nzShowSort]="head[0]['searchType']!='string' && head[0]['searchType']!='number' && head[0]['searchType']!='total'"
                                 [nzSortKey]="head[0]['true_key']" (nzSortChange)="sort(head[0]['true_key'],$event)">
                                 <span [nzTitle]="(head[0]['hover'] || head[0]['hover']==0)?head[0]['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{head[0]['name']}}</span>
@@ -146,7 +147,7 @@
                                     [filterName]="head[0]['true_key']"></app-filter>
                             </th>
                             <!-- 其他列 -->
-                            <th style="text-align: center;" [nzSortKey]="head[i+1]['true_key']" [(nzSort)]="sortMap[head[i+1]['true_key']]"
+                            <th style="text-align: center;" [ngStyle]="{'min-width':widthConfig[i+2]}" [nzSortKey]="head[i+1]['true_key']" [(nzSort)]="sortMap[head[i+1]['true_key']]"
                                 (nzSortChange)="sort(head[i+1]['true_key'],$event)" [nzShowSort]="!head[i+1]['children'].length && head[i+1]['searchType']!='string' && head[i+1]['searchType']!='number' && head[i+1]['searchType']!='total'"
                                 [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']" *ngFor="let h of head.slice(1);index as i;trackBy:identify">
                                 <span [nzTitle]="(head[i+1]['hover'] || head[i+1]['hover']==0)?head[i+1]['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
@@ -157,16 +158,15 @@
                         </tr>
                         <tr ng-if="twoLevelHead.length">
                             <!-- 二级表头首列 -->
-                            <th class="two-level-thead" style="text-align: center;" *ngFor="let h of twoLevelHead.slice(0,head[0].children.length);index as i;trackBy:identify"
+                            <!-- <th class="two-level-thead" style="text-align: center;" [ngStyle]="{'min-width':twoLevelWidth[0],'max-width':twoLevelWidth[0]}" *ngFor="let h of twoLevelHead.slice(0,head[0].children.length);index as i;trackBy:identify"
                                 [nzLeft]="colLeftConfig[i]" [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string' && h['searchType']!='number' && h['searchType']!='total'" [nzSortKey]="h['true_key']"
                                 (nzSortChange)="sort(h['true_key'],$event)">
                                 <span [nzTitle]="(h['hover'] || h['hover']==0)?h['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
                                 <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']"
                                     (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="h['name']"
                                     [filterName]="h['true_key']"></app-filter>
-                            </th>
-                            <!-- 二级表头其他列 -->
-                            <th style="text-align: center;" *ngFor="let h of twoLevelHead.slice(head[0].children.length);index as i;trackBy:identify"
+                            </th> -->
+                            <th style="text-align: center;" [ngStyle]="{'min-width':twoLevelWidth[i],'max-width':twoLevelWidth[i]}" *ngFor="let h of twoLevelHead.slice(head[0].children.length);index as i;trackBy:identify"
                                 [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string' && h['searchType']!='number' && h['searchType']!='total'" [nzSortKey]="h['true_key']"
                                 (nzSortChange)="sort(h['true_key'],$event)">
                                 <span [nzTitle]="(h['hover'] || h['hover']==0)?h['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
@@ -181,13 +181,13 @@
                             <!-- checkbox -->
                             <td nzLeft="0px" style="min-width:61px;" nzShowCheckbox [(nzChecked)]="d.checked" (nzCheckedChange)="refreshStatus($event,d)"></td>
                             <!-- 首列的二级头表格数据 -->
-                            <td *ngFor="let two of (head[0].children.length?head[0].children:[head[0]]);index as i;trackBy:identity"
+                            <td [ngStyle]="{'min-width':widthConfig[1],'max-width':widthConfig[1]}" *ngFor="let two of (head[0].children.length?head[0].children:[head[0]]);index as i;trackBy:identity"
                                 [nzLeft]="colLeftConfig[i]"
                                 [nzContent]="(d[two['true_key']]+'')?(d[two['true_key']]| accuracyPipe : accuracy : two['searchType']):'NA'" nzPlacement="right" nz-popover>
                                 {{d[two['true_key']] | accuracyPipe : accuracy : two['searchType']}}
                             </td>
                             <!-- 其他列  (| accuracyPipe : accuracy : h['searchType'])-->
-                            <td *ngFor="let h of tbodyOutFirstCol"
+                            <td [ngStyle]="{'min-width':widthConfig[i+2],'max-width':widthConfig[i+2]}" *ngFor="let h of tbodyOutFirstCol,index as i"
                             [nzContent]="(d[h['true_key']] || d[h['true_key']]==0)?d[h['true_key']]:'NA' " nzPlacement="right" nz-popover>
                                 {{(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | accuracyPipe : accuracy : h['searchType']):'NA' }}
                             </td>

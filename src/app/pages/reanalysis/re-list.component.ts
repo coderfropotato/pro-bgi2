@@ -24,7 +24,7 @@ export class ReListComponent implements OnInit {
             label: null,
 			timeStart: '',
 			timeEnd: '',
-			dataSrc: [],
+			geneType: [],
 			reanalysisType: [],
 			status: []
 		}
@@ -51,8 +51,8 @@ export class ReListComponent implements OnInit {
 			{ key: 'multiOmics', name: '多组学关联', checked: false },
 			{ key: 'chiSquare', name: '卡方检测', checked: false },
 			{ key: 'as', name: '可变剪切', checked: false },
-			{ key: 'linkedNetwork', name: '关联网络', checked: false },
-			{ key: 'heatmaprelation', name: '关联聚类', checked: false }
+			{ key: 'linkedNetwork', name: '关联网络图', checked: false },
+			{ key: 'heatmaprelation', name: '关联聚类热图', checked: false }
 		],
 		status: [
 			{ key: '1', name: '成功', checked: false },
@@ -167,14 +167,12 @@ export class ReListComponent implements OnInit {
 
 		if (type === 'classification' || type === 'enrichment') {
 			window.open(
-				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data[
-					'annotation'
-				]}`
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data[ 'annotation' ]}/${data['isEdited']}`
 			);
 			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
 		} else {
 			window.open(
-				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['isEdited']}`
 			);
 			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
 		}
@@ -224,7 +222,7 @@ export class ReListComponent implements OnInit {
 		}
 		this.tableEntity['searchContent']['reanalysisType'] = [];
 		this.tableEntity['searchContent']['status'] = [];
-		this.tableEntity['searchContent']['dataSrc'] = [];
+		this.tableEntity['searchContent']['geneType'] = [];
 
 		this.src['category'].forEach((v) => {
 			if (v['checked']) this.tableEntity['searchContent']['reanalysisType'].push(v['key']);
@@ -235,7 +233,7 @@ export class ReListComponent implements OnInit {
 		});
 
 		this.src['data'].forEach((v) => {
-			if (v['checked']) this.tableEntity['searchContent']['dataSrc'].push(v['key']);
+			if (v['checked']) this.tableEntity['searchContent']['geneType'].push(v['key']);
 		});
 
 		this.tableEntity['pageIndex'] = 1;
@@ -256,7 +254,7 @@ export class ReListComponent implements OnInit {
 		this.tableEntity['searchContent']['timeEnd'] = '';
 		this.tableEntity['searchContent']['reanalysisType'] = [];
 		this.tableEntity['searchContent']['status'] = [];
-		this.tableEntity['searchContent']['dataSrc'] = [];
+		this.tableEntity['searchContent']['geneType'] = [];
 		this.tableEntity['pageIndex'] = 1;
 
 		this.getList();

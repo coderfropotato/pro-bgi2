@@ -145,9 +145,9 @@ export class ReadsComparisonComponent implements OnInit {
         window_read_num:d.window_read_num
       })
     });
-    
 
-    console.log(temps)
+
+    // console.log(temps)
 
     let that = this;
     let config: object={
@@ -195,7 +195,7 @@ export class ReadsComparisonComponent implements OnInit {
     }
 
     new d4().init(config);
-    
+
   }
 
   //转录本的 reads 覆盖度
@@ -209,7 +209,7 @@ export class ReadsComparisonComponent implements OnInit {
 
     //   })
     //   d["percent_covered"].split("-")[0]
-      
+
     // });
 
     // rows.sort((a,b)=>{
@@ -285,7 +285,7 @@ export class ReadsComparisonComponent implements OnInit {
 
   //测序饱和度曲线
   drawSaturationReads(data){
-    console.log(data);
+    // console.log(data);
 
     let rows = data.rows;
     rows.sort((a,b)=>{

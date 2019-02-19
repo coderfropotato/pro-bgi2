@@ -107,6 +107,9 @@ export class ReNetComponent implements OnInit {
     selectGeneCount:number = 0;
     computedScrollHeight:boolean = false;
 
+    isEdit:boolean = false;
+    rationAddThead:object[] = [];
+
     constructor(
         private message: MessageService,
 		private store: StoreService,
@@ -134,6 +137,7 @@ export class ReNetComponent implements OnInit {
             this.tid = params['params']['tid'];
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
+            this.isEdit = params['params']['isEdit'];
             this.storeService.setTid(this.tid);
         })
     }
@@ -191,6 +195,8 @@ export class ReNetComponent implements OnInit {
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
+            rationAddThead:this.rationAddThead,
+            sortThead:this.addColumn['sortThead'],
             searchList: []
         };
         this.defaultTableId = 'default_re_net';
@@ -216,6 +222,8 @@ export class ReNetComponent implements OnInit {
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
+            rationAddThead:this.rationAddThead,
+            sortThead:this.addColumn['sortThead'],
             searchList: []
         };
         this.extendTableId = 'extend_re_net';
@@ -1089,6 +1097,10 @@ export class ReNetComponent implements OnInit {
         this.chartEntity["symbolType"]=data['symbolType'];
         this.chartEntity['quantity']=data.value;
         this.netChart.reGetData();
+
+        this.rationAddThead.length = 0;
+        this.rationAddThead.push(data.value);
+        this.chartBackStatus();
     }
 
 }

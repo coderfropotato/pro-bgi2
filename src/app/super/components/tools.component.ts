@@ -505,13 +505,13 @@ export class ToolsComponent implements OnInit {
 							nzStyle: { width: '200px' }
 						});
 					} else {
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},
@@ -611,20 +611,20 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.blank('tips：', '重分析提交失败，请重试', {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						newWindow.close();
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
 					newWindow.close();
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},
@@ -729,7 +729,7 @@ export class ToolsComponent implements OnInit {
 	}
 
 	onkaFunChange(value: any): void {
-		console.log(value);
+		// console.log(value);
 	}
 
 	kaFunConfirm(reanalysisType) {
@@ -776,20 +776,20 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.blank('tips：', '重分析提交失败，请重试', {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						newWindow.close();
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
 					newWindow.close();
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},
@@ -819,23 +819,24 @@ export class ToolsComponent implements OnInit {
 						if (data['data']) {
 							this.lineGroupSelect.length = 0;
 							this.lineSampleSelect.length = 0;
+                            let activeIndex = [0,1];
 
 							let group = data['data']['group'].map((v, index) => {
-								let status = index ? false : true;
+								let status = !activeIndex.includes(index) ? false : true;
 								v['checked'] = status;
 								if (status) this.lineGroupSelect.push(v);
 								return v;
 							});
 
 							let sample = data['data']['sample'].map((v, index) => {
-								let status = index ? false : true;
+								let status = !activeIndex.includes(index) ? false : true;
 								v['checked'] = status;
 								if (status) this.lineSampleSelect.push(v);
 								return v;
 							});
 
 							let custom = data['data']['userDefData'].map((v, index) => {
-								let status = index ? false : true;
+								let status = !activeIndex.includes(index) ? false : true;
 								v['checked'] = status;
 								if (status) this.lineCustomSelect.push(v);
 								return v;
@@ -845,9 +846,9 @@ export class ToolsComponent implements OnInit {
 							this.lineGroupData = group;
 							this.lineSampleData = sample;
 
-							this.lineGroupError = !this.lineGroupSelect.length;
-							this.lineSampleError = !this.lineSampleSelect.length;
-							this.lineCustomError = !this.lineCustomSelect.length;
+							this.lineGroupError = this.lineGroupSelect.length<2;
+							this.lineSampleError = this.lineSampleSelect.length<2;
+							this.lineCustomError = this.lineCustomSelect.length<2;
 						} else {
 							this.initLineData();
 						}
@@ -899,9 +900,9 @@ export class ToolsComponent implements OnInit {
 			if (index != -1) temp.splice(index, 1);
 		}
 
-		this.lineGroupError = !this.lineGroupSelect.length;
-		this.lineSampleError = !this.lineSampleSelect.length;
-		this.lineCustomError = !this.lineCustomSelect.length;
+		this.lineGroupError = this.lineGroupSelect.length<2;
+		this.lineSampleError = this.lineSampleSelect.length<2;
+		this.lineCustomError = this.lineCustomSelect.length<2;
 	}
 
 	// 提交折线图重分析
@@ -957,20 +958,20 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.blank('tips：', '重分析提交失败，请重试', {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						newWindow.close();
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
 					newWindow.close();
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},
@@ -1017,20 +1018,20 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.blank('tips：', '重分析提交失败，请重试', {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						newWindow.close();
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
 					newWindow.close();
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},
@@ -1108,20 +1109,20 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.blank('tips：', '重分析提交失败，请重试', {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						newWindow.close();
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
 					newWindow.close();
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},
@@ -1134,7 +1135,8 @@ export class ToolsComponent implements OnInit {
 	// 关联网路图
 	getlinkedNetworkParams() {
 		this.relativeNetData = this.toolsService.get('tableEntity')['relations'];
-		this.doRelativeNetAjax = true;
+        this.doRelativeNetAjax = true;
+
 		this.relativeNetData.forEach((v, index) => {
 			v['checked'] = index ? false : true;
 		});
@@ -1157,18 +1159,19 @@ export class ToolsComponent implements OnInit {
 			.subscribe(
 				res => {
 					if (res['status'] === '0') {
+                        this.relativeNetData.length = 0;
+                        this.relativeNetSelect.length = 0;
 						if (!res['data'].length) {
-							this.relativeNetData.length = 0;
-							this.relativeNetSelect.length = 0;
 							this.relativeNetError = true;
 						} else {
 							this.relativeNetData = res['data'];
 							this.relativeNetData.forEach((v, index) => {
 								v['checked'] = index ? false : true;
-							});
+                            });
+
 							this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
 							this.relativeNetError = false;
-						}
+                        }
 					}
 				},
 				err => {
@@ -1235,20 +1238,20 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.blank('tips：', '重分析提交失败，请重试', {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
 						newWindow.close();
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
 					newWindow.close();
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},
@@ -1375,18 +1378,18 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '200px' }
 							});
 						} else {
-							this.notify.blank('tips：', '重分析提交失败，请重试', {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},
@@ -1495,18 +1498,18 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '200px' }
 							});
 						} else {
-							this.notify.blank('tips：', '重分析提交失败，请重试', {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},
@@ -1603,18 +1606,18 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '200px' }
 							});
 						} else {
-							this.notify.blank('tips：', '重分析提交失败，请重试', {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 								nzStyle: { width: '200px' }
 							});
 						}
 					} else {
-						this.notify.blank('tips：', '重分析提交失败，请重试', {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
 							nzStyle: { width: '200px' }
 						});
 					}
 				},
 				err => {
-					this.notify.blank('tips：', '重分析提交失败，请重试', {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
 						nzStyle: { width: '200px' }
 					});
 				},

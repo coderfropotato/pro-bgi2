@@ -37,7 +37,7 @@ export class NetSetComponent implements OnInit {
     @Output() confirm: EventEmitter<any> = new EventEmitter();
     @Input() defaultSetData:any;
     @Input() setData:any;
-    
+
     confirmData:object;
 
     geneType:string;
@@ -91,13 +91,12 @@ export class NetSetComponent implements OnInit {
         this.getRationClassify();
 
         this.confirmData={...this.defaultSetData};
-         
+
     }
 
     //获取定量信息
     getRationClassify() {
         this.rationClassifyList = this.setData;
-
         this.curRationClassify = this.rationClassifyList[0]['name'];
 
         this.rationClassifyList.forEach((d) => {
@@ -137,7 +136,7 @@ export class NetSetComponent implements OnInit {
      addRation(){
         this.isShowAddPanel=true;
         this.isShowSetPanel=false;
-        
+
         this.judgeChecked();
     }
 
@@ -189,7 +188,7 @@ export class NetSetComponent implements OnInit {
         this.isShowAddPanel=false;
 
         this.cancel();
-      
+
     }
 
     //设置 确定
@@ -203,10 +202,10 @@ export class NetSetComponent implements OnInit {
 
         if($.isEmptyObject(this.rationInfo)){
             this.isDefaultValue=true;
-            this.confirmData['value']={};  
+            this.confirmData['value']={};
         }else{
             this.isDefaultValue=false;
-            this.confirmData['value']={...this.rationInfo}; 
+            this.confirmData['value']={...this.rationInfo};
         }
 
         this.confirm.emit(this.confirmData);
@@ -218,7 +217,7 @@ export class NetSetComponent implements OnInit {
         this.isShowAddPanel=false;
 
         this.cancel();
-       
+
     }
 
     cancel(){

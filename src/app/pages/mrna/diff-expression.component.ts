@@ -331,6 +331,8 @@ export class DiffExpressionComponent implements OnInit {
 		// 清空表的筛选
 		this.transformTable._clearFilterWithoutRequest();
 		if (!this.first) {
+			this.defaultEntity['addThead'] = [];
+			this.defaultEntity['removeColumns'] = [];
 			this.defaultEntity['compareGroup'] = this.selectConfirmData;
 			this.defaultEntity['searchList'] = [];
 			this.defaultEntity['pageIndex'] = 1;
@@ -361,7 +363,7 @@ export class DiffExpressionComponent implements OnInit {
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
-		this.extendEmitBaseThead = false;
+		this.extendEmitBaseThead = true;
 		this.addColumn._clearThead();
 		if (this.first) {
 			this.extendCheckStatusInParams = false;

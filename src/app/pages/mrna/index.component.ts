@@ -140,41 +140,6 @@ export class IndexComponent implements OnInit {
                              */
 							this.menuList = [
 								{
-									category: '基础模块',
-									children: [
-										{
-											url: 'overview',
-											name: '项目概况',
-											isExport: true
-										},
-										{
-											url: 'reference',
-											name: '参考信息',
-											isExport: true
-										},
-										{
-											url: 'reads-filter',
-											name: 'Reads过滤',
-											isExport: true
-										},
-										{
-											url: 'reads-alignment',
-											name: 'Reads比对',
-											isExport: true
-										},
-										{
-											url: 'smallrna',
-											name: '小RNA检测',
-											isExport: true
-										},
-										{
-											url: 'basic-help',
-											name: '帮助',
-											isExport: true
-										}
-									]
-								},
-								{
 									category: '差异表达',
 									children: [
 										{
@@ -316,7 +281,42 @@ export class IndexComponent implements OnInit {
 											isExport: true
 										}
 									]
-								},
+                                },
+                                {
+									category: '基础模块',
+									children: [
+										{
+											url: 'overview',
+											name: '项目概况',
+											isExport: true
+										},
+										{
+											url: 'reference',
+											name: '参考信息',
+											isExport: true
+										},
+										{
+											url: 'reads-filter',
+											name: 'Reads过滤',
+											isExport: true
+										},
+										{
+											url: 'reads-alignment',
+											name: 'Reads比对',
+											isExport: true
+										},
+										{
+											url: 'smallrna',
+											name: '小RNA检测',
+											isExport: true
+										},
+										{
+											url: 'basic-help',
+											name: '帮助',
+											isExport: true
+										}
+									]
+								}
 							];
 
                             //动态跳第一个页面  需要替换  /report/mrna 为当前url  不然后退的时候会回到 /report/mrna 导致路由容器为空

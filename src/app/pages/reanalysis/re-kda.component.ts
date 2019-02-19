@@ -191,6 +191,7 @@ export class ReKdaComponent implements OnInit {
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
+            sortThead:this.addColumn['sortThead'],
             searchList: []
         };
         this.defaultTableId = 'default_re_kda';
@@ -216,6 +217,7 @@ export class ReKdaComponent implements OnInit {
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
+            sortThead:this.addColumn['sortThead'],
             searchList: []
         };
         this.extendTableId = 'extend_re_kda';

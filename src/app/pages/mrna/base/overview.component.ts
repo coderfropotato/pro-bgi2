@@ -436,7 +436,7 @@ export class OverviewComponent implements OnInit {
 			lengendtitle.push(d.sample_name);
 		});
 
-		console.log(data['rows']);
+		// console.log(data['rows']);
 
 		let that = this;
 		let config: object = {

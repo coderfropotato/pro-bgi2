@@ -160,6 +160,8 @@
             [(applyOnceSearchParams)]="applyOnceSearchParams"
             (selectGeneCountChange)="handleSelectGeneCountChange($event)"
             [(computedScrollHeight)]="computedScrollHeight"
+            (defaultSaveGeneListSuccess)="saveGeneListSuccess($event)"
+            (extendSaveGeneListSuccess)="saveGeneListSuccess($event)"
         ></app-table-transformation>
     </div>
 </div>

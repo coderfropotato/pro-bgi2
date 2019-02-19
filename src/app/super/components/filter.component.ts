@@ -124,7 +124,7 @@ export class FilterComponent implements OnInit {
             gteabs: "",
             gtabs: "",
             notNull:"",
-            and:"0"
+            and:"All"
         };
     }
 
@@ -321,7 +321,7 @@ export class FilterComponent implements OnInit {
             gteabs: "",
             gtabs: "",
             notNull:"",
-            and:"0"
+            and:"All"
         };
 
         switch (filterType) {
@@ -363,7 +363,7 @@ export class FilterComponent implements OnInit {
                 this.filter["notNull"] = filterValueOne || "";
                 break;
             case "$and":
-                this.filter["and"] = filterValueOne || "0";
+                this.filter["and"] = filterValueOne || "All";
                 break;
         }
 
