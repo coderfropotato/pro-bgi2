@@ -63,6 +63,9 @@ export class TransformationTableComponent implements OnInit {
     @Input() defaultShowFilterStatus:boolean = false;
     @Input() extendShowFilterStatus:boolean = false;
 
+    @Output() extendSaveGeneListSuccess:EventEmitter<any> = new EventEmitter();
+    @Output() defaultSaveGeneListSuccess:EventEmitter<any> = new EventEmitter();
+
 
     defaultUrl: string = "";
     params: object;
@@ -116,6 +119,14 @@ export class TransformationTableComponent implements OnInit {
 
     handlerComputedScrollHeightChange(status){
         this.computedScrollHeightChange.emit(status);
+    }
+
+    handleDefaultSaveGeneListSuccess(params){
+        this.defaultSaveGeneListSuccess.emit(params);
+    }
+
+    handleExtendSaveGeneListSuccess(params){
+        this.extendSaveGeneListSuccess.emit(params);
     }
 
     /**

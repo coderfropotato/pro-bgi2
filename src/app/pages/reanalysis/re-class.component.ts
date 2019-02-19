@@ -104,7 +104,9 @@ export class ReClassComponent implements OnInit {
 	// 设置
 	set: object = { width: 600, len: 40 };
 	beforeSet: object = { width: 600, len: 40 };
-	setVisible: boolean = false;
+    setVisible: boolean = false;
+
+    isEdit:boolean = false;
 
 	constructor(
 		private message: MessageService,
@@ -134,8 +136,8 @@ export class ReClassComponent implements OnInit {
 			this.tid = params['params']['tid'];
 			this.version = params['params']['version'];
 			this.geneType = params['params']['geneType'];
-			this.annotation = params['params']['annotation'];
-			this.storeService.setTid(this.tid);
+            this.annotation = params['params']['annotation'];
+            this.storeService.setTid(this.tid);
 		});
 	}
 
@@ -169,7 +171,7 @@ export class ReClassComponent implements OnInit {
 				checkedClassifyType: this.selectedVal,
 				checkedClassifyList: this.checkedList,
 				checkGraph: true,
-				sortThead: this.addColumnService['sortThead'],
+				sortThead: this.addColumn['sortThead'],
 				removeColumns: []
 			};
 			this.defaultTableId = 'default_class';
@@ -200,7 +202,7 @@ export class ReClassComponent implements OnInit {
 				checkedClassifyType: this.selectedVal,
 				checkedClassifyList: this.checkedList,
 				checkGraph: true,
-				sortThead: this.addColumnService['sortThead'],
+				sortThead: this.addColumn['sortThead'],
 				removeColumns: []
 			};
 			this.extendTableId = 'extend_class';
@@ -497,7 +499,7 @@ export class ReClassComponent implements OnInit {
             custom = [x,y,category];
 		} else {
             showLegend = false;
-            custom = [x,category,category]
+            custom = [x,category]
 			yTitle = 'Term';
 		}
 
@@ -579,7 +581,7 @@ export class ReClassComponent implements OnInit {
 					);
                 } else {
                    // term
-                   return  '<span>Number：' + d[x] + '</span><br><span>termID：' + d[y] + '</span><br><span>term：' + d[category] + '</span>';
+                   return  '<span>Number：' + d[x] + '</span><br><span>db_term：' + d[y] + '</span><br><span>db_term_desc：' + d[category] + '</span>';
                 }
 			}
 		};

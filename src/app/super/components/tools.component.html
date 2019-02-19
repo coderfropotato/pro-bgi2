@@ -173,7 +173,7 @@
 							<button (click)="lineClick('group',line)" [class.active]="line['checked']" *ngFor="let line of lineGroupData;index as i;"
 							 nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
 							<p *ngIf="!lineGroupData.length  && doLineAjax " class="center">缺少必要数据</p>
-							<nz-alert *ngIf="lineGroupError || !lineGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+							<nz-alert *ngIf="lineGroupError || !lineGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择两个样本/比较组"></nz-alert>
 						</div>
 						<nz-divider></nz-divider>
 						<div *ngIf="lineGroupData.length" class="tool-params-button-group">
@@ -186,7 +186,7 @@
 						<div class="tool-params-tab">
 							<button (click)="lineClick('sample',line)" [class.active]="line['checked']" *ngFor="let line of lineSampleData;index as i;"
 							 nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
-							<nz-alert *ngIf="lineSampleError || !lineSampleSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+							<nz-alert *ngIf="lineSampleError || !lineSampleSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择两个样本/比较组"></nz-alert>
 							<p *ngIf="!lineSampleData.length && doLineAjax " class="center">缺少必要数据</p>
 						</div>
 						<nz-divider></nz-divider>
@@ -200,7 +200,7 @@
 						<div class="tool-params-tab">
 							<button (click)="lineClick('custom',line)" [class.active]="line['checked']" *ngFor="let line of lineCustomData;index as i;"
 							 nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
-							<nz-alert *ngIf="lineCustomError || !lineCustomSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+							<nz-alert *ngIf="lineCustomError || !lineCustomSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择两个样本/比较组"></nz-alert>
 							<p *ngIf="!lineCustomData.length && doLineAjax " class="center">缺少必要数据</p>
 						</div>
 						<nz-divider></nz-divider>

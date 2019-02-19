@@ -206,7 +206,7 @@ export class GoClassComponent implements OnInit {
 				checkedClassifyType: this.selectedVal,
 				checkedClassifyList: this.checkedList,
 				checkGraph: true,
-				sortThead: this.addColumnService['sortThead'],
+				sortThead: this.addColumn['sortThead'],
 				removeColumns: []
 			};
 			this.defaultTableId = 'default_class';
@@ -238,7 +238,7 @@ export class GoClassComponent implements OnInit {
 				checkedClassifyType: this.selectedVal,
 				checkedClassifyList: this.checkedList,
 				checkGraph: true,
-				sortThead: this.addColumnService['sortThead'],
+				sortThead: this.addColumn['sortThead'],
 				removeColumns: []
 			};
 			this.extendTableId = 'extend_class';

@@ -392,7 +392,7 @@ export class InformationComponent implements OnInit {
 
   //2.5 外显子数量
   drawExonsNum(data){
-    console.log(data);
+    // console.log(data);
     var baseThead = data.baseThead;
     var rows = data.rows;
     var chartData = [];
@@ -411,7 +411,7 @@ export class InformationComponent implements OnInit {
       //temp["total"] = total;
       chartData.push(temp)
     }
-    console.log(chartData);
+    // console.log(chartData);
 
     let that = this;
 
@@ -548,7 +548,7 @@ export class InformationComponent implements OnInit {
 
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
-		console.log(data);
+		// console.log(data);
 		this.selectConfirmData = data;
 		this.transcriptLengthEntity['geneTypeList'] = this.selectConfirmData;
 		this.transcriptLength.reGetData();
@@ -556,7 +556,7 @@ export class InformationComponent implements OnInit {
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
-		console.log(data);
+		// console.log(data);
 		this.selectConfirmData = data;
 	}
 

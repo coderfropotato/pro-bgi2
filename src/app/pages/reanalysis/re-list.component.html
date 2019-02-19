@@ -3,13 +3,13 @@
         <div class="search-box">
             <div class="search">
                 <ng-template #suffixIconButton>
-                    <button nz-button nzType="primary" nzSearch  (click)="search()"><i class="anticon anticon-search"></i></button>
+                    <button nz-button nzType="default" nzSearch  (click)="search()"><i class="anticon anticon-search"></i></button>
                 </ng-template>
                 <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
                     <input type="text" [(ngModel)]="label" (keyup.enter)="search()" nz-input placeholder="input search text">
                 </nz-input-group>
                 <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'" [(nzVisible)]="panelVisible">
-                    <button nz-button nz-dropdown nzType="primary">条件筛选</button>
+                    <button nz-button nz-dropdown nzType="primary"><i class="anticon anticon-"></i>条件筛选</button>
                     <div class="analysis-list-panel">
                         <div class="temp-group">
                             <span>条件筛选</span>
@@ -66,7 +66,12 @@
                 <tbody>
                     <tr class="center" *ngFor="let data of analysisList">
                         <td>{{data['nickname']}} <span *ngIf="data['isEdited']" style="color:red;">（已编辑）</span></td>
-                        <td>done</td>
+                        <!-- process -1 pending 1 success 0 error -->
+                        <td>
+                            <span *ngIf="data['process'] == 1"><i class="anticon anticon-check-circle success"></i>&nbsp;成功</span>
+                            <span *ngIf="data['process'] == 0"><i class="anticon anticon-close-circle error"></i>&nbsp;失败</span>
+                            <span *ngIf="data['process'] == -1"><i class="anticon anticon-hourglass pending"></i>&nbsp;{{data['restTime']}}</span>
+                        </td>
                         <td>{{data['reanalysisType']}}</td>
                         <td>{{data['date']}}</td>
                         <td>{{data['remark']?data['remark']:'-'}}</td>

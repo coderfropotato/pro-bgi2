@@ -17,6 +17,9 @@ $layout_switch_bgcolor:#ccc; // 布局切换按钮的背景色
 // $close_icon_color:#fff; // 关闭按钮的颜色
 $font_active_color:#5278f8;
 
+$error-color:#f40;
+$success-color:#52c41a;
+
 // flex 兼容
 @mixin display-flex {
     display: flex;

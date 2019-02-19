@@ -523,8 +523,19 @@ button.btnActive {
 			@include module-style;
 			margin-bottom: 12px;
 			padding: 12px;
+			i{
+				font-style: normal;
+			}
+			p{
+				margin-top:5px;
+				margin-bottom: 0;
+				// text-indent: 2em; 
+			}
 			.expand-icon{
 				font-size:13px;
+			}
+			.zhankai-shouqi:hover{
+				color: #5278f8;
 			}
 		}
 		.left-bottom-layout {
@@ -1377,7 +1388,7 @@ button.btnActive {
 	position: relative;
 	.gene-switch {
 		position: absolute;
-		top: 12px;
+		top: 9px;
         right: 0px;
         height: 28px;
 		border-radius: 16px 0 0 16px;
@@ -1848,4 +1859,21 @@ button.btnActive {
 	text-indent: 2em!important;
 	max-height: 200px;
     overflow: auto;
+}
+
+.success{
+    color: $success-color;
+}
+
+.error{
+    color: $error-color;
+}
+
+.pending{
+    color: $them-color;
+}
+
+.isEdit{
+    color: $error-color;
+    margin-left: 6px;
 }

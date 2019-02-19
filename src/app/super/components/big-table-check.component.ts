@@ -764,52 +764,51 @@ export class BigTableCheckComponent implements OnInit {
      */
 	computedTheadWidth(head): object {
 		let defaultWidth = 12;
-		let widthConfig = [];
-		let twoLevelHead = [];
-		let totalWidth: string;
+        let widthConfig = [];
+        let twoLevelHead = [];
+        let totalWidth: string;
 
-		head.forEach((v) => {
-			let singleWidth = 0;
-			if ('children' in v && v.children && v.children.length) {
-				v['colspan'] = v.children.length;
-				v['rowspan'] = 1;
-				v.children.forEach((val) => {
-					singleWidth = val.name.length * defaultWidth + 22;
-					widthConfig.push(singleWidth);
-					twoLevelHead.push(val);
-				});
-			} else {
-				v['colspan'] = 1;
-				v['rowspan'] = 2;
-				singleWidth = defaultWidth * v.name.length + 22;
-				widthConfig.push(singleWidth);
-			}
-		});
-		widthConfig.unshift(60);
+        head.forEach(v => {
+            let singleWidth = 0;
+            if (v.children.length) {
+                v["colspan"] = v.children.length;
+                v["rowspan"] = 1;
+                v.children.forEach(val => {
+                    singleWidth = val.name.length * defaultWidth + 22;
+                    widthConfig.push(singleWidth);
+                    twoLevelHead.push(val);
+                });
+            } else {
+                v["colspan"] = 1;
+                v["rowspan"] = 2;
+                singleWidth = defaultWidth * v.name.length + 22;
+                widthConfig.push(singleWidth);
+            }
+        });
+        widthConfig.unshift(61);
+        let colLeftConfig: any[] = [];
+        // 计算首列的left
+        if (head[0]["children"].length) {
+            head[0]["children"].forEach((v, i) => {
+                let sunDis = 0;
+                for (var k = 0; k < i + 1; k++) {
+                    sunDis += widthConfig[k];
+                }
+                colLeftConfig.push(sunDis);
+            });
+        } else {
+            colLeftConfig.push(widthConfig[0]);
+        }
 
-		let colLeftConfig: any[] = [];
-		// 计算首列的left
-		if ('children' in head[0] && head[0]['children'] && head[0]['children'].length) {
-			head[0]['children'].forEach((v, i) => {
-				let sunDis = 0;
-				for (var k = 0; k < i + 1; k++) {
-					sunDis += widthConfig[k];
-				}
-				colLeftConfig.push(sunDis);
-			});
-		} else {
-			colLeftConfig.push(widthConfig[0]);
-		}
+        let tempTotalWidth = 0;
+        widthConfig.map((v, i) => {
+            tempTotalWidth += v;
+            widthConfig[i] += "px";
+        });
+        colLeftConfig.map((v, i) => (colLeftConfig[i] += "px"));
+        totalWidth = tempTotalWidth + "px";
 
-		let tempTotalWidth = 0;
-		widthConfig.map((v, i) => {
-			tempTotalWidth += v;
-			widthConfig[i] += 29; // 排序和筛选按钮的宽度
-			widthConfig[i] += 'px';
-		});
-		colLeftConfig.map((v, i) => (colLeftConfig[i] += 'px'));
-		totalWidth = tempTotalWidth + 'px';
-
+        // console.log(widthConfig);
 		return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
 	}
 

@@ -37,6 +37,8 @@ export class ReMultiOmicsComponent implements OnInit {
 
 	isMultiSelect: boolean = false;
 
+	columnNum:number=0;
+
 	selectedColumn: object[] = []; //选中的柱状图柱子
 	selectedBox: object[] = []; //选中的箱线图箱体
 	setAddedThead: any[] = []; // 通过定量设置增加的头
@@ -163,7 +165,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
 			searchList: [],
-			sortThead: this.addColumnService['sortThead']
+			sortThead: this.addColumn['sortThead']
 		};
 		this.defaultTableId = 'default-multi-omics';
 		this.defaultDefaultChecked = true;
@@ -191,7 +193,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
 			searchList: [],
-			sortThead: this.addColumnService['sortThead']
+			sortThead: this.addColumn['sortThead']
 		};
 		this.extendTableId = 'extend-multi-omics';
 		this.extendDefaultChecked = true;
@@ -227,7 +229,7 @@ export class ReMultiOmicsComponent implements OnInit {
 	// 转换之前需要把图的 参数保存下来  返回的时候应用
 	confirm(relations) {
 		this.showBackButton = true;
-		this.extendEmitBaseThead = false;
+		this.extendEmitBaseThead = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
 		this.applyOnceSearchParams = true;
@@ -360,6 +362,8 @@ export class ReMultiOmicsComponent implements OnInit {
 		d3.select('#multiOmicsChartDiv svg').remove();
 		let that = this;
 
+		this.columnNum=0;
+
 		//data
 		let column = data.column;
 		let columnLength = column.length;
@@ -388,8 +392,8 @@ export class ReMultiOmicsComponent implements OnInit {
 			legend_text_space = 4; //图例矩形与文字之间的距离
 
 		//domain 柱子数量；range 宽、距离
-		let widthScale = d3.scaleLinear().domain([ 1, 60 ]).range([ 50, 8 ]).clamp(true); //根据每组柱子数量决定当前组每根柱子宽度
-		let spaceScale = d3.scaleLinear().domain([ 1, 60 ]).range([ 40, 2 ]).clamp(true); //根据每组柱子数量决定当前组每根柱子之间的距离
+		let widthScale = d3.scaleLinear().domain([ 1, 60 ]).range([ 50, 8 ]).clamp(true).nice(); //根据每组柱子数量决定当前组每根柱子宽度
+		let spaceScale = d3.scaleLinear().domain([ 1, 60 ]).range([ 40, 2 ]).clamp(true).nice(); //根据每组柱子数量决定当前组每根柱子之间的距离
 
 		//domain：箱线图数量
 		let heightScale = d3.scaleOrdinal().domain([ 1, 2, 3, 4, 5 ]).range([ 240, 210, 180, 150, 120 ]);
@@ -406,6 +410,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			colors.push(this.colors[i]);
 
 			let rectsLen = d.data.length;
+			this.columnNum+=rectsLen;
 			rectWidth = widthScale(rectsLen);
 
 			let eachSpaceNum = rectsLen + 1;
@@ -721,7 +726,7 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('text-anchor', 'middle')
 					.attr('dominant-baseline', 'middle')
 					.attr('transform', `rotate(-90)`);
-					
+
 				boxYtitle.append('tspan').text(d.relation);
 				boxYtitle.append('tspan').attr("x",0).attr('dy',15).text(d.name);
 
@@ -881,7 +886,7 @@ export class ReMultiOmicsComponent implements OnInit {
 						scatters.forEach(d=>{
 							d.xscale=d3.scaleLinear().domain([0,1]).range([0,d.w]).clamp(true).nice();
 						})
-						
+
 						return scatters;
 					})
 					.enter()

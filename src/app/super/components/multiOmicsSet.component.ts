@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { AjaxService } from '../service/ajaxService';
 import config from '../../../config';
 import { StoreService } from '../service/storeService';
@@ -54,6 +54,7 @@ declare const $: any;
 
 export class MultiOmicsSetComponent implements OnInit {
     @Output() confirm: EventEmitter<any> = new EventEmitter();
+    @Input() num:number;
 
     geneType:string;
 
@@ -188,14 +189,22 @@ export class MultiOmicsSetComponent implements OnInit {
 
         // 关联关系若存在，下拉框不可选择此关联关系
         this.relationList.forEach(d => {
-            d['isDisabled'] = false;
-            this.infoList.forEach(m => {
-                if (d['key'] !== 'false') {
-                    if (d['key'] === m['relation']) {
-                        d['isDisabled'] = true;
-                    }
+            if(this.num>200){
+                if(d['key'] === 'false'){
+                    d['isDisabled'] = false;
+                }else{
+                    d['isDisabled'] = true; 
                 }
-            });
+            }else{
+                d['isDisabled'] = false;
+                this.infoList.forEach(m => {
+                    if (d['key'] !== 'false') {
+                        if (d['key'] === m['relation']) {
+                            d['isDisabled'] = true;
+                        }
+                    }
+                });
+            }
 
         })
 
@@ -358,18 +367,6 @@ export class MultiOmicsSetComponent implements OnInit {
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
         this.infoList.splice(i, 1);
-
-        this.relationList.forEach(d => {
-            d['isDisabled'] = false;
-            this.infoList.forEach(m => {
-                if (d['key'] !== 'false') {
-                    if (d['key'] === m['relation']) {
-                        d['isDisabled'] = true;
-                    }
-                }
-            });
-
-        })
     }
 
     // 设置 确定

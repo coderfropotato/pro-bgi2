@@ -29,6 +29,9 @@ export class ReRichComponent implements OnInit {
     @ViewChild('transformTable') transformTable;
     @ViewChild('addColumn') addColumn;
 
+    // 默认显示表
+	expandModuleTable: boolean = true;
+
     bigtableUrl:string;
 
     chartUrl: string;
@@ -192,7 +195,7 @@ export class ReRichComponent implements OnInit {
                 checkedClassifyType: this.selectedVal,
                 checkedClassifyList: this.selectGeneList,
                 checkGraph: true,
-                sortThead: this.addColumnService['sortThead'],
+                sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };
             this.defaultTableId = 'default_rich';
@@ -223,7 +226,7 @@ export class ReRichComponent implements OnInit {
                 checkedClassifyType: this.selectedVal,
                 checkedClassifyList: this.selectGeneList,
                 checkGraph: true,
-                sortThead: this.addColumnService['sortThead'],
+                sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };
             this.extendTableId = 'extend_rich';
@@ -232,6 +235,14 @@ export class ReRichComponent implements OnInit {
             this.extendCheckStatusInParams = false;
         })()
     }
+
+    moduleTableChange() {
+		this.expandModuleTable = !this.expandModuleTable;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.switchChart.scrollHeight();
+		}, 30);
+	}
 
     async getSelect(){
         return new Promise((resolve,reject)=>{
