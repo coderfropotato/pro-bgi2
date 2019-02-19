@@ -373,11 +373,6 @@ export class ReMultiOmicsComponent implements OnInit {
 		}
 		let boxplotLength = boxplot.length;
 
-		column.forEach(d=>{
-			let rectsLens = d.data.length;
-			this.columnNum+=rectsLens;
-		})
-
 		// set width height space
 		let eachChartHeight = 0; //每种图主体的height
 		const chartSpace = 10; // 每种图之间的间距
@@ -415,6 +410,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			colors.push(this.colors[i]);
 
 			let rectsLen = d.data.length;
+			this.columnNum+=rectsLen;
 			rectWidth = widthScale(rectsLen);
 
 			let eachSpaceNum = rectsLen + 1;
