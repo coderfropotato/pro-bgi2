@@ -28,6 +28,8 @@ export class ReClassComponent implements OnInit {
 	@ViewChild('transformTable') transformTable;
 	@ViewChild('addColumn') addColumn;
 
+	isShowTable:boolean;
+
 	chartUrl: string;
 	chartEntity: object;
 
@@ -227,6 +229,10 @@ export class ReClassComponent implements OnInit {
 		})();
 	}
 
+	showChange(isshowtable){
+        this.isShowTable=isshowtable;
+	}
+	
 	ngAfterViewInit() {
 		setTimeout(() => {
 			this.computedTableHeight();

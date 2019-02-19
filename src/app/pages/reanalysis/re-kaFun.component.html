@@ -6,12 +6,12 @@
     <div class="content reanalysis-content row">
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
-            <h4>
-                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.expand' | translate" nz-tooltip class="iconfont icon-theme pointer expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.unexpand' | translate" nz-tooltip class="iconfont icon-theme pointer expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
                 <!-- {{'diff_venn.diff_venn_title' | translate}} -->
                 kaFun图
-            </h4>
+            </span>
             <p [hidden]="!expandModuleDesc">{{k_statistic['explain']}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
@@ -19,7 +19,6 @@
                 <app-table-switch-chart
                     #kaFunChart
                     [id]="'kaFun'"
-                    [isOnlyChart]="false"
                     [tableUrl]="tableUrl"
                     [apiEntity]="tableEntity"
                     (drawChartEmit)="drawChart($event)"

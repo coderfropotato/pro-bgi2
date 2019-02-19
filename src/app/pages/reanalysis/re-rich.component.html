@@ -3,13 +3,22 @@
     <app-menu [menu]="[]" [geneSwitch]="false"> <p class="menu-slot-text">重分析id：{{tid}}</p> </app-menu>
     <div class="content reanalysis-content row">
         <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+            
+            <div class="left-top-layout">
+                <span class="zhankai-shouqi pointer" (click)="moduleTableChange()" [nzTitle]="(expandModuleTable ? '收起表格' : '展开表格') | translate" nz-tooltip>
+                    <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleTable"></i>
+                    <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleTable"></i>
+                    {{annotation}}富集结果表
+                </span>
+            </div>
+
             <div #leftBottom class="left-bottom-layout" style=" overflow: auto; ">
                 <!-- 下拉选择 -->
-                <ng-template #selectTemplate>
-                    <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
-                        <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
-                    </nz-select>
-                </ng-template>
+            <ng-template #selectTemplate>
+                <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                    <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
+                </nz-select>
+            </ng-template>
 
                 <!-- 选中数据 -->
                 <ng-template #checkedTemplate>
@@ -44,24 +53,26 @@
 
                 </ng-template>
 
+                 <!-- 可选择数据的大表 -->
+                 <div [hidden]='!expandModuleTable'>
+                     <ng-container>
+                        <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable
+                            [selectTemplate]="selectTemplate"
+                            [tableHeight]="leftTableHeight / 2"
+                            [defaultChecked]="false"
+                            [pageEntity]="chartEntity"
+                            [url]="bigtableUrl"
+                            tableId="geneRichCheckBigTable"
+                            (checkedChange)="checkedChange($event)"
+                            [(computedScrollHeight)]="leftComputedScrollHeight">
+                        </app-big-table-check>
+                    </ng-container>
+                    
+                    <div class="text-info">
+                        <span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>
+                    </div>
+                 </div>
 
-                <!-- 可选择数据的大表 -->
-                <ng-container>
-                    <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable
-                        [selectTemplate]="selectTemplate"
-                        [tableHeight]="leftTableHeight / 2"
-                        [defaultChecked]="false"
-                        [pageEntity]="chartEntity"
-                        [url]="bigtableUrl"
-                        tableId="geneRichCheckBigTable"
-                        (checkedChange)="checkedChange($event)"
-                        [(computedScrollHeight)]="leftComputedScrollHeight">
-                    </app-big-table-check>
-                </ng-container>
-
-                <div class="text-info">
-                    <span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>
-                </div>
 
                 <!-- 图表切换 -->
                 <div>
@@ -77,7 +88,7 @@
                         [(isMultiSelect)]="isMultipleSelect"
                         (isMultiSelectChange)="chartSelectModelChange($event)"
                         (multipleConfirmEmit)="multipleSelectConfirm()"
-                        (showTableChange)="showTableChange($event)"
+                        (showChange)="showChange($event)"
                         [chartTypeData]="chartTypeData"
                         [otherLeftTemplate]="checkedTemplate"
                         [flex]="true">

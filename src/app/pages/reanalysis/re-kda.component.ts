@@ -227,7 +227,7 @@ export class ReKdaComponent implements OnInit {
 
     }
 
-    showTableChange(isshowtable){
+    showChange(isshowtable){
         this.isShowTable=isshowtable;
     }
 

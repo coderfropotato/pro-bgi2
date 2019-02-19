@@ -775,11 +775,10 @@ export class ExpressVennComponent implements OnInit {
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
 
 		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on('click', function(d) {
-            _self.updateVenn();
-            _self.leftSelect.length = 0;
-            _self.upSelect.length = 0;
-            // _self.first ? _self.transformTable._getData() : (_self.first = true);
-            _self.chartBackStatus();
+            // _self.updateVenn();
+            // _self.leftSelect.length = 0;
+            // _self.upSelect.length = 0;
+            // _self.chartBackStatus();
         },false);
 
 		drawSvg();
@@ -815,7 +814,7 @@ export class ExpressVennComponent implements OnInit {
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
-					let tipText = `name: ${bar_name[i]}<br> value:  ${d}`;
+					let tipText = `Group: ${bar_name[i]}<br>Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', () => {
@@ -946,7 +945,7 @@ export class ExpressVennComponent implements OnInit {
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
-					let tipText = `name: ${total_name[i]}<br> value:  ${d}`;
+					let tipText = `Group: ${total_name[i]}<br>Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', () => {

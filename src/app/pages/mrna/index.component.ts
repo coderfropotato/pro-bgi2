@@ -281,8 +281,8 @@ export class IndexComponent implements OnInit {
 											isExport: true
 										}
 									]
-                                },
-                                {
+								},
+								{
 									category: '基础模块',
 									children: [
 										{

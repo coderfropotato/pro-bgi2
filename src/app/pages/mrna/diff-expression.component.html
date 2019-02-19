@@ -2,11 +2,11 @@
 <div class="content row venn">
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
-            <h4>
-                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.expand' | translate" nz-tooltip class="iconfont icon-theme pointer expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i (click)="moduleDescChange()" [nzTitle]="'moduleDesc.unexpand' | translate" nz-tooltip class="iconfont icon-theme pointer expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
                 {{'diff_venn.diff_venn_title' | translate}}
-            </h4>
+            </span>
             <p [hidden]="!expandModuleDesc">{{'diff_venn.diff_venn_content' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
@@ -29,6 +29,7 @@
                                         <input style="margin-top: 8px;" (ngModelChange)="OnChange($event)" nz-input
                                             placeholder="" nzSize="small" [ngModel]="PossionDis.log2FC" />
                                     </div>
+                                    <span *ngIf="isShowSpan" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
                                 </div>
                                 <div class="con_PessionDis_row">
                                     <div class="con_PessionDis_left">

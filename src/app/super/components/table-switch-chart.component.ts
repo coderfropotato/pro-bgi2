@@ -26,11 +26,12 @@ export class TableSwitchChartComponent implements OnInit {
     @ViewChild("tableChartContent") tableChartContent;
     @ViewChild("tableBottom") tableBottom;
 
-    @Input() tableUrl: string; //表格api地址；isOnlyChart=true时可不传
-    @Input() isOnlyChart: boolean; //可选，此组件是否只存在图；true：图，false：图+表
-    @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。isOnlyChart=true则为必选。
+    @Input() tableUrl: string; //表格api地址；
+    @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。
 
     @Input() apiEntity: object; //api请求参数
+
+    @Input() isChartThenTable:boolean; //是否是图画完后再获取表数据
 
     @Input() isBigTable: boolean; //表是否为大表（有分页）
 
@@ -94,7 +95,7 @@ export class TableSwitchChartComponent implements OnInit {
     @Output() refresh: EventEmitter<any> = new EventEmitter();
 
     //table chart show
-    @Output() showTableChange: EventEmitter<any> = new EventEmitter();
+    @Output() showChange: EventEmitter<any> = new EventEmitter();
 
     // 图类型 ,形如：{key:"bubble",value:"气泡图"}
     @Input() chartTypeData: any[];
@@ -180,28 +181,33 @@ export class TableSwitchChartComponent implements OnInit {
             }
         ];
 
-        if(this.selectPanelData || (this.selectPanelUrl && this.selectPanelEntity) || (this.defaultSetUrl && this.defaultSetEntity)){
-            if (this.selectPanelData) {
-                this.isHasSelectPanel = true;
-                this.calculateSelectPanelData(this.selectPanelData);
-            } else if (this.selectPanelUrl && this.selectPanelEntity) {
-                this.isHasSelectPanel = true;
-                this.getSelectPanelList();
-            } else {
-                this.isHasSelectPanel = false;
+        if(this.isChartThenTable){
+            this.getChartData();
+        }else{
+            if(this.selectPanelData || this.selectPanelUrl || this.defaultSetUrl){
+                if (this.selectPanelData) {
+                    this.isHasSelectPanel = true;
+                    this.calculateSelectPanelData(this.selectPanelData);
+                } else if (this.selectPanelUrl) {
+                    this.isHasSelectPanel = true;
+                    this.getSelectPanelList();
+                } else {
+                    this.isHasSelectPanel = false;
+                    this.reGetData();
+                }
+        
+                if (this.defaultSetUrl) {
+                    this.getDefaultSet();
+                }else{
+                    this.reGetData();  
+                }
+            }else{
                 this.reGetData();
             }
-    
-            if (this.defaultSetUrl && this.defaultSetEntity) {
-                this.getDefaultSet();
-            }else{
-                this.reGetData();  
-            }
-        }else{
-            this.reGetData();
         }
 
-        if (this.setDataUrl && this.setDataEntity) {
+        //设置中所需数据
+        if (this.setDataUrl) {
             this.getSetData();
         }else if(this.localSetData){
             this.setData.emit(this.localSetData);
@@ -216,12 +222,12 @@ export class TableSwitchChartComponent implements OnInit {
     //图表切换按钮
     chartBtnClick() {
         this.isShowTable = false;
-        this.showTableChange.emit(this.isShowTable);
+        this.showChange.emit(this.isShowTable);
     }
 
     tableBtnClick() {
         this.isShowTable = true;
-        this.showTableChange.emit(this.isShowTable);
+        this.showChange.emit(this.isShowTable);
         setTimeout(() => {
             this.scrollHeight();
         }, 0);
@@ -504,23 +510,32 @@ export class TableSwitchChartComponent implements OnInit {
             })
             .subscribe(
                 (data: any) => {
-                    if (
-                        data.status == "0" &&
-                        (data.data.length == 0 || $.isEmptyObject(data.data))
-                    ) {
+                    if ( data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data)) ) {
                         this.chartError = "nodata";
-                    } else if (data.status == "0" && "flag" in data["data"]) {
-                        if (!data["data"]["flag"]) {
-                            this.chartError = "curNodata";
-                        } else {
-                            this.getChartThen(data);
+                        if(this.isChartThenTable){
+                            this.getTableData();
                         }
+                    } else if (data.status == "0" && "flag" in data["data"]) {
+                            if (!data["data"]["flag"]) {
+                                this.chartError = "curNodata";
+                                if(this.isChartThenTable){
+                                    this.getTableData();
+                                }
+                            } else {
+                                this.getChartThen(data);
+                            }
                     } else if (data.status == "-1") {
                         this.chartError = "error";
+                        if(this.isChartThenTable){
+                            this.getTableData();
+                        }
                     } else if (data.status == "-2") {
                         this.chartError = "dataOver";
+                        if(this.isChartThenTable){
+                            this.getTableData();
+                        }
                     } else {
-                        this.getChartThen(data);
+                            this.getChartThen(data);
                     }
 
                     this.isLoading = false;
@@ -528,6 +543,9 @@ export class TableSwitchChartComponent implements OnInit {
                 error => {
                     this.isLoading = false;
                     this.chartError = error;
+                    if(this.isChartThenTable){
+                        this.getTableData();
+                    }
                 }
             );
     }
@@ -539,6 +557,10 @@ export class TableSwitchChartComponent implements OnInit {
             this.drawChart(this.chartData, this.chartType);
         } else {
             this.drawChart(this.chartData, (this.chartType = null));
+        }
+
+        if(this.isChartThenTable){
+            this.getTableData();
         }
     }
 
@@ -562,7 +584,7 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     reGetData() {
-        if (!this.isOnlyChart && this.tableUrl) {
+        if (this.tableUrl) {
             this.getTableData();
         }
         if (this.chartUrl) {

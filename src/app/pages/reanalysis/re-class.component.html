@@ -16,7 +16,7 @@
 
                 <!-- 设置面板 -->
                 <ng-template #setTemplate>
-                    <nz-dropdown [nzTrigger]="'click'" [(nzVisible)]="setVisible" (nzVisibleChange)="handleVisibleChange()" [nzPlacement]="'bottomRight'">
+                    <nz-dropdown *ngIf="!isShowTable" [nzTrigger]="'click'" [(nzVisible)]="setVisible" (nzVisibleChange)="handleVisibleChange()" [nzPlacement]="'bottomRight'">
                         <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
                         <div nz-menu class="set-panel clearfix">
                             <ul>
@@ -39,7 +39,7 @@
 
                 <!-- 图标切换 -->
                 <ng-container *ngIf="isExceed!=null && !isExceed">
-                    <app-table-switch-chart #switchChart *ngIf="selectedVal" [id]="'re-class'" [isOnlyChart]="false" [tableUrl]="chartUrl"  [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true"> </app-table-switch-chart>
+                    <app-table-switch-chart #switchChart *ngIf="selectedVal" [id]="'re-class'" (showChange)="showChange($event)" [tableUrl]="chartUrl"  [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true"> </app-table-switch-chart>
 
                     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
                 </ng-container>

@@ -1007,12 +1007,11 @@ export class GeneListVennComponent implements OnInit {
 		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on(
 			'click',
 			function(d) {
-				_self.updateVenn();
-				_self.leftSelect.length = 0;
-                _self.upSelect.length = 0;
-                _self.defaultShowFilterStatus = !!_self.leftSelect.length || !!_self.upSelect.length;
-				// _self.first ? _self.transformTable._getData() : (_self.first = true);
-				_self.chartBackStatus();
+				// _self.updateVenn();
+				// _self.leftSelect.length = 0;
+                // _self.upSelect.length = 0;
+                // _self.defaultShowFilterStatus = !!_self.leftSelect.length || !!_self.upSelect.length;
+				// _self.chartBackStatus();
 			},
 			false
 		);
@@ -1054,7 +1053,7 @@ export class GeneListVennComponent implements OnInit {
 				.on('mouseover', function(d, i) {
 					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
 					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
-					let tipText = `name: ${bar_name[i]}<br> value:  ${d}`;
+					let tipText = `Group: ${bar_name[i]}<br>Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d, i) {
@@ -1185,7 +1184,7 @@ export class GeneListVennComponent implements OnInit {
 				.on('mouseover', function(d, i) {
 					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
 					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
-					let tipText = `name: ${total_name[i]}<br> value:  ${d}`;
+					let tipText = `Group: ${total_name[i]}<br>Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d, i) {

@@ -38,7 +38,6 @@
             [id]="'rondDataChart'"
             [tableUrl]="tableUrl"
             [apiEntity]="tableEntity"
-            [isOnlyChart] = "false"
             (drawChartEmit)="drawRondReads($event)"
             [flex]="true"
             [chartId]="'rondData'"
@@ -63,7 +62,6 @@
             [id]="'coverageDataChart'"
             [tableUrl]="coverTableUrl"
             [apiEntity]="coverTableEntity"
-            [isOnlyChart] = "false"
             (drawChartEmit)="drawCoverReads($event)"
             [flex]="true"
             [chartId]="'coverageData'"
@@ -78,6 +76,7 @@
 
 
     <h3 class="title">4.5 测序饱和度</h3>
+    <p class="help_text">测序饱和度分析可以在一定程度上判断测序数据量是否满足要求。随着测序量(Reads数量)的增加，检测到的基因数也随之上升，当测序量达到一定区间后其检测到的基因数增长速度趋于平缓，说明检测到的基因数趋于饱和，此时测序量达到要求。</p>
     <div class="t-content">
         <ng-template #searchSaturationTemplate>
             <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="saturationSearchType" [nzSize]="'small'" (ngModelChange)="saturationTypeChange()" nzShowSearch>
@@ -89,14 +88,13 @@
             [id]="'saturationDataChart'"
             [tableUrl]="saturationTableUrl"
             [apiEntity]="saturationTableEntity"
-            [isOnlyChart] = "false"
             (drawChartEmit)="drawSaturationReads($event)"
             [flex]="true"
             [chartId]="'saturationData'"
             [chartName]="'测序饱和度曲线'"
             [otherLeftTemplate]='searchSaturationTemplate'
             (refresh)="handlerRefresh()"
-            [chartDescContent]="'横坐标表示clean reads数，单位为100k，极值是该样品当前的测序量；纵坐标表示检测到的基因数目比例，单位为%。'"
+            [chartDescContent]="'横坐标表示clean reads数，单位为100k，值是该样品当前的测序量；纵坐标表示检测到的基因数目比例，单位为%。'"
         >
         </app-table-switch-chart>
         <!-- <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"

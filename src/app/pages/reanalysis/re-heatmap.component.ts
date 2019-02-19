@@ -529,7 +529,16 @@ export class ReHeatmapComponent implements OnInit {
                 },
                 oLegend:{
                     show:true,
-                    data:data.gauge
+                    data:data.gauge,
+                    // click: (el,d,m, i) => {
+                    //    console.log(el,d,m,i)
+                    // },
+                    // mouseover: function(event, legendObj) {
+                    //     legendObj.append("title").text("单击修改颜色");
+                    // },
+                    // mouseout: function(event, legendObj) {
+                    //     legendObj.select("title").remove();
+                    // }
                 }
             },
             tooltip: function(d) {

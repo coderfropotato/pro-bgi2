@@ -239,7 +239,7 @@ export class reRelationNetComponent implements OnInit {
 
     }
 
-    showTableChange(isshowtable){
+    showChange(isshowtable){
         this.isShowTable=isshowtable;
     }
 
