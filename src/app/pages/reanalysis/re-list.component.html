@@ -11,6 +11,9 @@
                 <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'" [(nzVisible)]="panelVisible">
                     <button nz-button nz-dropdown nzType="primary">条件筛选</button>
                     <div class="analysis-list-panel">
+                        <div class="temp-group">
+                            <span>条件筛选</span>
+                        </div>
                         <div>
                             <span>数据</span>
                             <div>
@@ -23,7 +26,7 @@
                                 <nz-range-picker nzSize="small" [(ngModel)]="src.dateRange" [nzPlaceHolder]="[ 'Start Time', 'End Time' ]" nzShowTime></nz-range-picker>
                             </div>
                         </div>
-                        <div>
+                        <div class="category-group">
                             <span>类型</span>
                             <div>
                                 <button (click)="choose(cat)" [class.btnActive]="cat['checked']" nz-button *ngFor="let cat of src['category']" nzType="default" nzSize="small">{{cat['name']}}</button>
