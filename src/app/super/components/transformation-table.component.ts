@@ -75,6 +75,7 @@ export class TransformationTableComponent implements OnInit {
     geneCollectionId: string = null;
     currentGeneTable: any = null;
     allThead: any[] = [];
+    relative:any[] = [];   // 表格上的关系
 
     constructor(
         private ajaxService: AjaxService,
@@ -127,6 +128,14 @@ export class TransformationTableComponent implements OnInit {
 
     handleExtendSaveGeneListSuccess(params){
         this.extendSaveGeneListSuccess.emit(params);
+    }
+
+    handleDefaultSyncRelative(thead){
+        this.relative = thead;
+    }
+
+    handleExtendSyncRelative(thead){
+        this.relative = thead;
     }
 
     /**

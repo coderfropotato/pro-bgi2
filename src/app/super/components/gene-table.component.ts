@@ -83,7 +83,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	@Input() showFilterStatus: boolean = false; // 是否显示 表格是否通过外部操作更新
 
-	@Output() saveGeneListSuccess: EventEmitter<any> = new EventEmitter(); // 成功保存基因集的时候 发出的事件
+    @Output() saveGeneListSuccess: EventEmitter<any> = new EventEmitter(); // 成功保存基因集的时候 发出的事件
+
+    @Output() syncRelative:EventEmitter<any> = new EventEmitter(); // 同步表头
 
 	count: number = 0; // 选中的基因个数
 	mongoId: any = null;
@@ -168,7 +170,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	delSelect: any[] = [];
 	textareaMaxLen: number = 100;
 
-	computedTimer = null;
+    computedTimer = null;
+
+    tableRelative:any[] = [];
 
 	constructor(
 		private translate: TranslateService,
@@ -319,14 +323,15 @@ export class GeneTableComponent implements OnInit, OnChanges {
 						this.emitBaseThead = false;
 						this.emitBaseTheadChange.emit(this.emitBaseThead);
 						this.baseTheadChange.emit({ baseThead: responseData['data']['baseThead'] });
-					}
+                    }
+
 
 					this.error = '';
 					let arr = [];
 					this.head = responseData.data.baseThead;
 
 					responseData.data.baseThead.slice(1).forEach((val) => {
-						arr = val.children.length ? arr.concat(val.children) : arr.concat(val);
+                        arr = val.children.length ? arr.concat(val.children) : arr.concat(val);
 					});
 					this.tbodyOutFirstCol = arr;
 					let tempObj = this.computedTheadWidth(this.head);
@@ -334,8 +339,12 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.twoLevelHead = tempObj['twoLevelHead'];
 					this.twoLevelWidth = tempObj['twoLevelWidth'];
 					this.colLeftConfig = tempObj['colLeftConfig'];
-					this.totalWidth = tempObj['totalWidth'];
+                    this.totalWidth = tempObj['totalWidth'];
+                    this.tableRelative = tempObj['tableRelative'];
+
 					this.scroll['x'] = this.totalWidth;
+                    // 同步表个关系到外部组件
+                    this.syncRelative.emit(this.tableRelative);
 					// 根据表头生成sortmap
 					this.generatorSortMap();
 					if (responseData.data.total != this.total) this.tableEntity['pageIndex'] = 1;
@@ -400,7 +409,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					}
 				} else {
 					this.total = 0;
-					this.error = 'error';
+                    this.error = 'error';
+                    this.syncRelative.emit([]);
 				}
 
 				setTimeout(() => {
@@ -409,7 +419,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			},
 			(err) => {
 				this.isLoading = false;
-				this.total = 0;
+                this.total = 0;
+                this.syncRelative.emit([]);
 			},
 			() => {
 				// if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
@@ -840,6 +851,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		let twoLevelHead = [];
 		let twoLevelWidth = [];
 		let totalWidth: string;
+        let tableRelative = [];
 
 		head.forEach((v) => {
 			let singleWidth = 0;
@@ -851,7 +863,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					widthConfig.push(singleWidth);
 					twoLevelHead.push(val);
 					twoLevelWidth.push(singleWidth + 'px');
-				});
+                });
+                tableRelative.push(v);
 			} else {
 				v['colspan'] = 1;
 				v['rowspan'] = 2;
@@ -882,7 +895,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		colLeftConfig.map((v, i) => (colLeftConfig[i] += 'px'));
 		totalWidth = tempTotalWidth + 'px';
 
-		return { widthConfig, twoLevelHead, twoLevelWidth, colLeftConfig, totalWidth };
+		return { widthConfig, twoLevelHead, twoLevelWidth, colLeftConfig, totalWidth,tableRelative };
 	}
 
 	computedTbody(tableHeight) {
