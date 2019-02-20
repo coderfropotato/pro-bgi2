@@ -6,6 +6,10 @@
         "diff_venn_title":"Differential gene clustering",
         "diff_venn_content":"Clustering the FPKM values of different genes in each comparison group"
     },
+    "geneList":{
+        "title":"genelist",
+        "desc":"genelist"
+    },
     "expandTable":"Expand table",
     "unExpandTable":"Retract table",
     "cxzk1Title": "cxzk is works",
