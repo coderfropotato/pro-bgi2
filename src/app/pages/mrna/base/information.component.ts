@@ -237,11 +237,11 @@ export class InformationComponent implements OnInit {
 				let tempName = baseThead[j].true_key;
 				let tempValue = rows[i][tempName];
 				temp[tempName] = tempValue;
-				if(tempName != "item"){
-				  total += tempValue;
-				}
+				// if(tempName != "item"){
+				//   total += tempValue;
+				// }
 			}
-			temp["total"] = total;
+			//temp["total"] = total;
 			chartData.push(temp)
 		}
 		//console.log(chartData);
@@ -261,7 +261,7 @@ export class InformationComponent implements OnInit {
 				el: '#TranscriptData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'item', 'total' ],
+				custom: [ 'item', 'all' ],
 				data: chartData
 			},
 			axis: {

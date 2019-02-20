@@ -107,7 +107,7 @@ export class ReNetComponent implements OnInit {
     selectGeneCount:number = 0;
     computedScrollHeight:boolean = false;
 
-    isEdit:boolean = false;
+    isEdit:string = 'false';
     rationAddThead:object[] = [];
 
     constructor(
