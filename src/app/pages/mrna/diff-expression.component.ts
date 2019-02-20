@@ -1562,7 +1562,7 @@ export class DiffExpressionComponent implements OnInit {
 
 		function getNameLength(total_name) {
 			//console.log(total_name)
-			let oSvg = d3.select('#diffVennId').append('svg');
+			let oSvg = d3.select('#tableSwitchChart').append('svg');
 			let mText = oSvg
 				.selectAll('MyAlltext')
 				.data(total_name)
