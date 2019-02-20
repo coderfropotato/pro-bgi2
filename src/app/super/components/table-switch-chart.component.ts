@@ -512,33 +512,24 @@ export class TableSwitchChartComponent implements OnInit {
                 (data: any) => {
                     if ( data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data)) ) {
                         this.chartError = "nodata";
-                        if(this.isChartThenTable){
-                            this.getTableData();
-                        }
                     } else if (data.status == "0" && "flag" in data["data"]) {
                             if (!data["data"]["flag"]) {
                                 this.chartError = "curNodata";
-                                if(this.isChartThenTable){
-                                    this.getTableData();
-                                }
                             } else {
                                 this.getChartThen(data);
                             }
                     } else if (data.status == "-1") {
                         this.chartError = "error";
-                        if(this.isChartThenTable){
-                            this.getTableData();
-                        }
                     } else if (data.status == "-2") {
                         this.chartError = "dataOver";
-                        if(this.isChartThenTable){
-                            this.getTableData();
-                        }
                     } else {
                             this.getChartThen(data);
                     }
 
                     this.isLoading = false;
+                    if(this.isChartThenTable){
+                        this.getTableData();
+                    }
                 },
                 error => {
                     this.isLoading = false;
@@ -559,9 +550,6 @@ export class TableSwitchChartComponent implements OnInit {
             this.drawChart(this.chartData, (this.chartType = null));
         }
 
-        if(this.isChartThenTable){
-            this.getTableData();
-        }
     }
 
     drawChart(data, type) {
