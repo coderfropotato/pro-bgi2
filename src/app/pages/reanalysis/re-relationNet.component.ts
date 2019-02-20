@@ -110,7 +110,7 @@ export class reRelationNetComponent implements OnInit {
     defaultMartix:boolean = true;
     computedScrollHeight:boolean = false;
 
-    isEdit:boolean = false;
+    isEdit:string = 'false';
     rationAddThead:object[] = [];
 
     constructor(
