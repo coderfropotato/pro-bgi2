@@ -5,7 +5,7 @@
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
                 <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
                 <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
-                {{'geneList.title' | translate}}
+                {{'geneList.title' | translate}}1
             </span>
             <p [hidden]="!expandModuleDesc">{{'geneList.desc' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
@@ -110,7 +110,9 @@
                                 </nz-table>
 
                                 <!-- chart -->
-                                <div class="center chart" style="margin: 0 auto;min-width:480px;"  id="geneListTableSwitchChart_chart" [hidden]="isShowTable || chartError"></div>
+                                <div class="center chart"  [hidden]="isShowTable || chartError">
+                                    <div id="geneListTableSwitchChart_chart" style='margin: auto;'></div>
+                                </div>
 
                                 <!-- error -->
                                 <app-error *ngIf="chartError" [error]="chartError"></app-error>
