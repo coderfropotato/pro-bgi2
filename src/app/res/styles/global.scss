@@ -389,10 +389,15 @@ tbody > tr:nth-child(even) {
 	padding: 4px $padding;
 }
 
-button.btnActive {
-	border: 1px solid $btn_active_color !important;
-	color: #fff !important;
-	background: $btn_active_color !important;
+button{
+    &.btnActive {
+        border: 1px solid $btn_active_color !important;
+        color: #fff !important;
+        background: $btn_active_color !important;
+    }
+    &.active-disabled{
+        border: 1px solid $btn_active_color !important;
+    }
 }
 
 .table-bottom {
@@ -529,7 +534,7 @@ button.btnActive {
 			p{
 				margin-top:5px;
 				margin-bottom: 0;
-				// text-indent: 2em; 
+				// text-indent: 2em;
 			}
 			.expand-icon{
 				font-size:13px;
@@ -1408,7 +1413,7 @@ button.btnActive {
     margin-right:6px;
     button{
         margin-right: 0!important;
-        padding-right: 20px;
+        padding-right: 24px;
     }
 	i{
         font-size:14px;

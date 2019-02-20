@@ -6,6 +6,10 @@
         "diff_venn_title":"差异基因聚类",
         "diff_venn_content":"对每个比较组差异基因的FPKM值进行聚类"
     },
+    "geneList":{
+        "title":"基因集",
+        "desc":"基因集"
+    },
     "expandTable":"表格展开",
     "unExpandTable":"表格收起",
     "cxzk1Title": "测序质控工作中",
