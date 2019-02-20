@@ -362,8 +362,8 @@ tbody > tr:nth-child(even) {
 .center-flex {
 	display: flex;
 	// padding-top: 40px;
-	justify-content: center;
-    align-items: center;
+	// justify-content: center;
+    // align-items: center;
 }
 .clearfix {
 	display: block;
@@ -1118,20 +1118,24 @@ button{
 
 .analysis-list-panel{
     background-color:$white_bg;
-    padding:12px;
     border:1px solid $border-color;
     width: 460px;
-    &>div:not(.btn-group){
-        flex-wrap: wrap;
-        margin-bottom: 12px;
-        display: flex;
+    &>div:not(.btn-group):not(.temp-group):not(.category-group){
+		flex-wrap: wrap;
+		width: 430px;
+		margin:6px auto;
+		display: flex;
+		border-bottom: 1px solid #EEEEEE;
+		height: 40px;
+		align-items: center;
         &:after{
             display: block;
             clear: both;
-            content:"";
+			content:"";
         }
         &>span{
-            width: 80px;
+			width: 80px;
+			color: #333333;
         }
         &>div{
             flex:1;
@@ -1143,12 +1147,50 @@ button{
     }
     .btn-group{
         display: flex;
-        flex-direction: row-reverse;
+		flex-direction: row-reverse;
+		height: 40px;
+		align-items: center;
         button{
             width: auto;
-            margin-left: 12px;
+            margin-right: 12px;
         }
-    }
+	}
+	.temp-group{
+		display: flex;
+		width: 100%;
+		border-bottom: 1px solid #EEEEEE;
+		&>span{
+			width: 80px;
+			height: 40px;
+			line-height: 40px;
+			color: #333333;
+			margin-left: 12px;
+        }
+	}
+	.category-group{
+		height: auto;
+		flex-wrap: wrap;
+		width: 430px;
+		margin:0 auto;
+		display: flex;
+		border-bottom: 1px solid #EEEEEE;
+        &:after{
+            display: block;
+            clear: both;
+			content:"";
+        }
+        &>span{
+			width: 80px;
+			color: #333333;
+        }
+        &>div{
+            flex:1;
+            button{
+                margin-right: 6px;
+                margin-bottom: 6px;
+            }
+        }
+	}
 }
 
 // 重分析参数选择面板
@@ -1839,4 +1881,12 @@ button{
 .isEdit{
     color: $error-color;
     margin-left: 6px;
+}
+
+.chart{
+	width: -webkit-fill-available;
+	width: fill-available;
+	width:-moz-fill-available;
+	height: 100%;
+	display: flex;
 }
