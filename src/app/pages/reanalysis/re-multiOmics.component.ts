@@ -437,6 +437,10 @@ export class ReMultiOmicsComponent implements OnInit {
 			height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
 			width = height;
 			rectSpace = (width - allRectWidth) / spaceNum;
+			if(rectSpace<1){
+				rectSpace=1;
+				width=rectSpace*spaceNum+allRectWidth;
+			}
 
 			column.forEach((d) => {
 				let rectsLength = d.data.length;
@@ -468,19 +472,18 @@ export class ReMultiOmicsComponent implements OnInit {
 
 			width = temp;
 			height = width;
-			eachChartHeight = (height - boxplotLength * chartSpace) / (boxplotLength + 1);
 
 			//判断极值
-			if (eachChartHeight >= 400) {
-				eachChartHeight = 400;
-				height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
+			if (height >= 400) {
+				height = 400;
 			}
-			if(eachChartHeight<=180){
-				eachChartHeight=180;
-				height = eachChartHeight * (boxplotLength + 1) + boxplotLength * chartSpace;
+			if(height<=150){
+				height=150;
 				width=height;
-				rectSpace = (width - allRectWidth) / spaceNum;
 			}
+
+			eachChartHeight = height;
+
 		}
 
 		//计算max
