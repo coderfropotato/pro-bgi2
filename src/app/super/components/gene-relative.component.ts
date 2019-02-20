@@ -1,5 +1,5 @@
 import { StoreService } from './../service/storeService';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 /**
  * @description gene 关系选择
@@ -14,16 +14,18 @@ import { TranslateService } from '@ngx-translate/core';
 	styles: []
 })
 export class GeneRelativeComponent implements OnInit {
-    @Input() disabled:boolean = true;
+	@Input() disabled: boolean = true;
 	@Output() confirmEvent: EventEmitter<any> = new EventEmitter();
+	@Input() relative: any[] = [];
 
 	isVisible: boolean = false;
 	selectRelations: object[] = [];
 	relations: object[] = [];
 	beforeRelation: object[] = [];
-	constructor(
-        private storeService:StoreService
-    ) {}
+	disabledRelative: string[] = [];
+	currentTableRelative: string[] = [];
+
+	constructor(private storeService: StoreService) {}
 
 	ngOnInit() {
 		/*
@@ -35,10 +37,29 @@ export class GeneRelativeComponent implements OnInit {
 		// 	{ key: 'ppi', name: 'ppi', limit: true, score: [ 0, 100, 60 ], max: [ 100, 500, 152 ] },
 		// 	{ key: 'rbp', name: 'rbp', limit: true, score: [ 0, 100, 90 ], max: [ 100, 500, 200 ] },
 		// 	{ key: 'target', name: 'target', limit: true, score: [ 0, 100, 32 ], max: [ 100, 500, 459 ] }
-        // ];
+		// ];
 
-        this.relations = this.storeService.getStore('relations');
+		this.relations = this.storeService.getStore('relations');
 		this.beforeRelation = JSON.parse(JSON.stringify(this.relations));
+	}
+
+	ngOnChanges(changes: SimpleChanges) {
+		if ('relative' in changes) {
+			let relative = changes['relative']['currentValue'];
+			if (relative.length) {
+				this.currentTableRelative.length = 0;
+				changes['relative']['currentValue'].map((v) => v['name']).forEach((v) => {
+					if (!this.disabledRelative.includes(v)) this.disabledRelative.push(v);
+					this.currentTableRelative.push(v);
+				});
+			} else {
+				this.disabledRelative.length = 0;
+				this.currentTableRelative.length = 0;
+			}
+		}
+
+		console.log(this.currentTableRelative);
+		console.log(this.disabledRelative);
 	}
 
 	// 选择关系
@@ -73,10 +94,19 @@ export class GeneRelativeComponent implements OnInit {
 	initRelations() {
 		this.relations.forEach((v) => {
 			v['checked'] = false;
+			let include = this.disabledRelative.includes(v['name']);
+			v['checked'] = include;
+			v['disabled'] = include;
 		});
-		this.relations[0]['checked'] = true;
+
 		this.selectRelations.length = 0;
-		this.selectRelations.push(this.relations[0]);
+		for (let i = 0; i < this.relations.length; i++) {
+			if (!this.relations[i]['checked'] && !this.relations[i]['disabled']) {
+				this.relations[i]['checked'] = true;
+				this.selectRelations.push(this.relations[i]);
+				break;
+			}
+		}
 	}
 
 	_getRelative() {

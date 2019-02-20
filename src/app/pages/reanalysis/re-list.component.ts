@@ -40,19 +40,17 @@ export class ReListComponent implements OnInit {
 		data: [ { name: '基因', key: 'gene', checked: false }, { name: '转录本', key: 'transcript', checked: false } ],
 		dateRange: [],
 		category: [
-			{ key: 'heatmapdiff', name: '差异聚类', checked: false },
-			{ key: 'heatmapexpress', name: '表达量聚类', checked: false },
-			{ key: 'heatmapcustom', name: '自定义数据聚类', checked: false },
-			{ key: 'classification', name: '基因分类', checked: false },
-			{ key: 'enrichment', name: '基因富集', checked: false },
-			{ key: 'net', name: '蛋白网络互作', checked: false },
-			{ key: 'line', name: '折线图', checked: false },
-			{ key: 'kda', name: 'KDA', checked: false },
-			{ key: 'multiOmics', name: '多组学关联', checked: false },
-			{ key: 'chiSquare', name: '卡方检测', checked: false },
-			{ key: 'as', name: '可变剪切', checked: false },
-			{ key: 'linkedNetwork', name: '关联网络图', checked: false },
-			{ key: 'heatmaprelation', name: '关联聚类热图', checked: false }
+			{ key: 'heatmap', name: '聚类重分析', checked: false ,value:['heatmapdiff','heatmapexpress','heatmapcustom']},
+			{ key: 'classification', name: '基因分类', checked: false,value:['classification'] },
+			{ key: 'enrichment', name: '基因富集', checked: false,value:['enrichment'] },
+			{ key: 'net', name: '蛋白网络互作', checked: false,value:['net'] },
+			{ key: 'line', name: '折线图', checked: false,value:['line'] },
+			{ key: 'kda', name: 'KDA', checked: false,value:['kda'] },
+			{ key: 'multiOmics', name: '多组学关联', checked: false,value:['multiOmics'] },
+			{ key: 'chiSquare', name: '卡方检测', checked: false,value:['chiSquare'] },
+			{ key: 'as', name: '可变剪切', checked: false,value:['as'] },
+			{ key: 'linkedNetwork', name: '关联网络图', checked: false,value:['linkedNetwork'] },
+			{ key: 'heatmaprelation', name: '关联聚类热图', checked: false,value:['heatmaprelation'] }
 		],
 		status: [
 			{ key: '1', name: '成功', checked: false },
@@ -225,7 +223,7 @@ export class ReListComponent implements OnInit {
 		this.tableEntity['searchContent']['geneType'] = [];
 
 		this.src['category'].forEach((v) => {
-			if (v['checked']) this.tableEntity['searchContent']['reanalysisType'].push(v['key']);
+			if (v['checked']) this.tableEntity['searchContent']['reanalysisType'].push(...v['value']);
 		});
 
 		this.src['status'].forEach((v) => {

@@ -24,6 +24,7 @@
             (computedScrollHeightChange)="handlerComputedScrollHeightChange($event)"
             [showFilterStatus]="defaultShowFilterStatus"
             (saveGeneListSuccess)="handleDefaultSaveGeneListSuccess($event)"
+            (syncRelative)="handleDefaultSyncRelative($event)"
         ></app-geneTable>
     </div>
     <div *ngIf="!isFirst" id="extend-gene-table">
@@ -46,6 +47,7 @@
             (computedScrollHeightChange)="handlerComputedScrollHeightChange($event)"
             [showFilterStatus]="extendShowFilterStatus"
             (saveGeneListSuccess)="handleExtendSaveGeneListSuccess($event)"
+            (syncRelative)="handleExtendSyncRelative($event)"
         ></app-geneTable>
     </div>
 </div>
