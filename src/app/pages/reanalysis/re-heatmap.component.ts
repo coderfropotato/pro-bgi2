@@ -121,7 +121,7 @@ export class ReHeatmapComponent implements OnInit {
 
         this.routes.paramMap.subscribe((params)=>{
             this.tid = params['params']['tid'];
-            this.tid = '20783e1576b84867aee1a63e22716fed';
+            // this.tid = '20783e1576b84867aee1a63e22716fed';
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
             this.storeService.setTid(this.tid);
