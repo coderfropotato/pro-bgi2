@@ -422,7 +422,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-heatmaprelation/:geneType/:tid/:version/:isEdit',
+				path: 're-heatmapRelation/:geneType/:tid/:version/:isEdit',
 				component: reRelationHeatmapComponent,
 				canActivate: [ SysDefendService ],
 				data: {

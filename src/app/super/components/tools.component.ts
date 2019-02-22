@@ -604,7 +604,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-multiOmics/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -769,7 +769,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-chiSquare/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -951,7 +951,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-line/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -1011,7 +1011,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-as/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -1102,7 +1102,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-net/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -1231,7 +1231,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-linkedNetwork/${this.toolsService.get(
 								'geneType'
-							)}/${data['data'][0]}/${this.storeService.getStore('version')}`;
+							)}/${data['data'][0]}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -1489,7 +1489,7 @@ export class ToolsComponent implements OnInit {
 								'geneType'
 							)}/${data['data'][0]}/${this.storeService.getStore('version')}/${
 								this.geneClassSelect[0]['name']
-							}`;
+							}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
