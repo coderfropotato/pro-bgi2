@@ -23,7 +23,7 @@
 			<span *ngIf="childVisible && selectType==='chiSquare'">卡方检验</span>
 			<span *ngIf="childVisible && selectType==='net'">蛋白网络互作</span>
 			<span *ngIf="childVisible && selectType==='linkedNetwork'">关联网络图</span>
-			<span *ngIf="childVisible && selectType==='heatmaprelation'">关联聚类</span>
+			<span *ngIf="childVisible && selectType==='heatmapRelation'">关联聚类</span>
 			<span *ngIf="childVisible && selectType==='classification'">基因分类</span>
 			<span *ngIf="childVisible && selectType==='enrichment'">基因富集</span>
 		</ng-template>
@@ -66,7 +66,7 @@
 						<nz-divider></nz-divider>
 						<div *ngIf="expressData.length || expressUpload.length" class="tool-params-button-group">
 							<button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
-							<button nz-button nzType="primary" [disabled]="expressError" (click)="heatmapConfirm('express')" nzSize="middle">确定</button>
+							<button nz-button nzType="primary" [disabled]="expressError" (click)="heatmapConfirm('Express')" nzSize="middle">确定</button>
 						</div>
 					</nz-tab>
 					<nz-tab nzTitle="差异聚类">
@@ -98,7 +98,7 @@
 						<nz-divider></nz-divider>
 						<div *ngIf="diffData.length || diffUpload.length" class="tool-params-button-group">
 							<button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
-							<button nz-button nzType="primary" [disabled]="diffError" (click)="heatmapConfirm('diff')" nzSize="middle">确定</button>
+							<button nz-button nzType="primary" [disabled]="diffError" (click)="heatmapConfirm('Diff')" nzSize="middle">确定</button>
 						</div>
 					</nz-tab>
 					<nz-tab nzTitle="自定义数据聚类">
@@ -135,7 +135,7 @@
 						<nz-divider></nz-divider>
 						<div *ngIf="customData.length || customUpload.length" class="tool-params-button-group">
 							<button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
-							<button nz-button nzType="primary" [disabled]="customError" (click)="heatmapConfirm('custom')" nzSize="middle">确定</button>
+							<button nz-button nzType="primary" [disabled]="customError" (click)="heatmapConfirm('Custom')" nzSize="middle">确定</button>
 						</div>
 					</nz-tab>
 				</nz-tabset>
@@ -374,7 +374,7 @@
 		</nz-drawer>
 
 		<!-- 关联聚类 -->
-		<nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='heatmaprelation'" [nzClosable]="false"
+		<nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='heatmapRelation'" [nzClosable]="false"
 		 [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }"
 		 [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
 			<nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">

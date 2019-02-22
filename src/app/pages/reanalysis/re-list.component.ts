@@ -40,7 +40,7 @@ export class ReListComponent implements OnInit {
 		data: [ { name: '基因', key: 'gene', checked: false }, { name: '转录本', key: 'transcript', checked: false } ],
 		dateRange: [],
 		category: [
-			{ key: 'heatmap', name: '聚类重分析', checked: false ,value:['heatmapdiff','heatmapexpress','heatmapcustom']},
+			{ key: 'heatmap', name: '聚类重分析', checked: false ,value:['heatmapDiff','heatmapExpress','heatmapCustom']},
 			{ key: 'classification', name: '基因分类', checked: false,value:['classification'] },
 			{ key: 'enrichment', name: '基因富集', checked: false,value:['enrichment'] },
 			{ key: 'net', name: '蛋白网络互作', checked: false,value:['net'] },
@@ -50,7 +50,7 @@ export class ReListComponent implements OnInit {
 			{ key: 'chiSquare', name: '卡方检测', checked: false,value:['chiSquare'] },
 			{ key: 'as', name: '可变剪切', checked: false,value:['as'] },
 			{ key: 'linkedNetwork', name: '关联网络图', checked: false,value:['linkedNetwork'] },
-			{ key: 'heatmaprelation', name: '关联聚类热图', checked: false,value:['heatmaprelation'] }
+			{ key: 'heatmapRelation', name: '关联聚类热图', checked: false,value:['heatmapRelation'] }
 		],
 		status: [
 			{ key: '1', name: '成功', checked: false },
@@ -152,10 +152,10 @@ export class ReListComponent implements OnInit {
 	toDetail(data) {
 		let type = '';
 		if (data['reanalysisType'].indexOf('heatmap') != -1) {
-			if (data['reanalysisType'] != 'heatmaprelation') {
+			if (data['reanalysisType'] != 'heatmapRelation') {
 				type = 'heatmap';
 			} else {
-				type = 'heatmaprelation';
+				type = 'heatmapRelation';
 			}
 		} else {
 			type = data['reanalysisType'];
