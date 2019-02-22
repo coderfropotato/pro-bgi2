@@ -36,6 +36,9 @@
 
                 <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
                 ></app-color-picker>
+
+                <app-color-picker [(color)]="oColor" (colorChange)="ocolorChange($event)" [(show)]="isoShowColorPanel"
+                ></app-color-picker>
         </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
