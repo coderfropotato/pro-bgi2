@@ -83,9 +83,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	@Input() showFilterStatus: boolean = false; // 是否显示 表格是否通过外部操作更新
 
-    @Output() saveGeneListSuccess: EventEmitter<any> = new EventEmitter(); // 成功保存基因集的时候 发出的事件
+	@Output() saveGeneListSuccess: EventEmitter<any> = new EventEmitter(); // 成功保存基因集的时候 发出的事件
 
-    @Output() syncRelative:EventEmitter<any> = new EventEmitter(); // 同步表头
+	@Output() syncRelative: EventEmitter<any> = new EventEmitter(); // 同步表头
 
 	count: number = 0; // 选中的基因个数
 	mongoId: any = null;
@@ -170,9 +170,11 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	delSelect: any[] = [];
 	textareaMaxLen: number = 100;
 
-    computedTimer = null;
+	computedTimer = null;
 
-    tableRelative:any[] = [];
+	tableRelative: any[] = [];
+
+	srcTotal: number = 0;
 
 	constructor(
 		private translate: TranslateService,
@@ -314,6 +316,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 					if (!responseData.data['rows'].length) {
 						this.total = 0;
+						this.srcTotal = 0;
 						this.error = 'nodata';
 						return;
 					}
@@ -323,15 +326,14 @@ export class GeneTableComponent implements OnInit, OnChanges {
 						this.emitBaseThead = false;
 						this.emitBaseTheadChange.emit(this.emitBaseThead);
 						this.baseTheadChange.emit({ baseThead: responseData['data']['baseThead'] });
-                    }
-
+					}
 
 					this.error = '';
 					let arr = [];
 					this.head = responseData.data.baseThead;
 
 					responseData.data.baseThead.slice(1).forEach((val) => {
-                        arr = val.children.length ? arr.concat(val.children) : arr.concat(val);
+						arr = val.children.length ? arr.concat(val.children) : arr.concat(val);
 					});
 					this.tbodyOutFirstCol = arr;
 					let tempObj = this.computedTheadWidth(this.head);
@@ -339,16 +341,17 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.twoLevelHead = tempObj['twoLevelHead'];
 					this.twoLevelWidth = tempObj['twoLevelWidth'];
 					this.colLeftConfig = tempObj['colLeftConfig'];
-                    this.totalWidth = tempObj['totalWidth'];
-                    this.tableRelative = tempObj['tableRelative'];
+					this.totalWidth = tempObj['totalWidth'];
+					this.tableRelative = tempObj['tableRelative'];
 
 					this.scroll['x'] = this.totalWidth;
-                    // 同步表个关系到外部组件
-                    this.syncRelative.emit(this.tableRelative);
+					// 同步表个关系到外部组件
+					this.syncRelative.emit(this.tableRelative);
 					// 根据表头生成sortmap
 					this.generatorSortMap();
 					if (responseData.data.total != this.total) this.tableEntity['pageIndex'] = 1;
 					this.total = responseData.data.total;
+					this.srcTotal = responseData.data.srcTotal;
 					this.dataSet = responseData.data.rows;
 					// 标志key
 					this.key = this.head[0]['children'].length
@@ -409,8 +412,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					}
 				} else {
 					this.total = 0;
-                    this.error = 'error';
-                    this.syncRelative.emit([]);
+					this.srcTotal = 0;
+					this.error = 'error';
+					this.syncRelative.emit([]);
 				}
 
 				setTimeout(() => {
@@ -419,8 +423,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			},
 			(err) => {
 				this.isLoading = false;
-                this.total = 0;
-                this.syncRelative.emit([]);
+				this.total = 0;
+				this.srcTotal = 0;
+				this.syncRelative.emit([]);
 			},
 			() => {
 				// if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
@@ -480,7 +485,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.unCheckedMap = {};
 		this.checked = [];
 		this.unChecked = [];
-        this.checkStatus = this.defaultChecked;
+		this.checkStatus = this.defaultChecked;
 
 		if (this.tableType === 'transform') {
 			this.tableEntity['transform'] = true;
@@ -519,7 +524,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 		this.allChecked = allChecked;
 		this.indeterminate = !allChecked && !allUnChecked;
-        this.getCollection();
+		this.getCollection();
 	}
 
 	// 当前页全选
@@ -579,7 +584,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.checked = Object.keys(this.checkedMap);
 		this.unChecked = Object.keys(this.unCheckedMap);
 		this.count = this.checkStatus ? this.total - this.unChecked.length : this.checked.length;
-        this.selectGeneCountChange.emit(this.count);
+		this.selectGeneCountChange.emit(this.count);
 	}
 
 	/**
@@ -593,7 +598,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.unCheckedMap = {};
 		this.checked = [];
 		this.unChecked = [];
-        this.checkStatus = this.defaultChecked;
+		this.checkStatus = this.defaultChecked;
 	}
 
 	// applyOnceBeforeStatusThenReset(){
@@ -703,7 +708,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.checkedMap = {};
 		this.unCheckedMap = {};
 		this.checked = [];
-        this.unChecked = [];
+		this.unChecked = [];
 
 		this.getRemoteData();
 		this.classifySearchCondition();
@@ -851,7 +856,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		let twoLevelHead = [];
 		let twoLevelWidth = [];
 		let totalWidth: string;
-        let tableRelative = [];
+		let tableRelative = [];
 
 		head.forEach((v) => {
 			let singleWidth = 0;
@@ -863,8 +868,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					widthConfig.push(singleWidth);
 					twoLevelHead.push(val);
 					twoLevelWidth.push(singleWidth + 'px');
-                });
-                tableRelative.push(v);
+				});
+				tableRelative.push(v);
 			} else {
 				v['colspan'] = 1;
 				v['rowspan'] = 2;
@@ -895,7 +900,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		colLeftConfig.map((v, i) => (colLeftConfig[i] += 'px'));
 		totalWidth = tempTotalWidth + 'px';
 
-		return { widthConfig, twoLevelHead, twoLevelWidth, colLeftConfig, totalWidth,tableRelative };
+		return { widthConfig, twoLevelHead, twoLevelWidth, colLeftConfig, totalWidth, tableRelative };
 	}
 
 	computedTbody(tableHeight) {
@@ -935,7 +940,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 				nzDuration: 2000
 			});
 		} else {
-			let params = this._getInnerStatusParams();
+			let params = { srcTotal: this.srcTotal, ...this._getInnerStatusParams() };
 			this.toolsService.showTools(this.total, params);
 		}
 	}
@@ -1291,7 +1296,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 						);
 
 						// 不发请求不清空选中状态
-                        /*
+						/*
                             this.checkStatus = this.defaultChecked;
                             this.checkedMap = {};
                             this.unCheckedMap = {};

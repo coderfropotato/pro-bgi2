@@ -13,6 +13,8 @@ import { Observable, Subject, fromEvent } from "rxjs";
 export class ToolsService {
     visible:boolean = false;
     geneCount:number = 0;
+    srcTotal:number = 0;
+    relativeGeneCount:number = 0;
     tableEntity:object = {};
     tableUrl:string = '';
     baseThead:object[] = [];  // 多组学要表头
@@ -26,6 +28,8 @@ export class ToolsService {
 
     init(){
         this.geneCount = 0;
+        this.srcTotal = 0;
+        this.relativeGeneCount = 0;
         this.tableEntity = {};
         this.tableUrl = '';
         this.geneType = '';
@@ -41,6 +45,10 @@ export class ToolsService {
         }else{
             this.geneCount = entity['others']['excludeGeneList']['checked'].length;
         }
+        this.srcTotal = entity['srcTotal'];
+        // 关联的基因个数
+        this.relativeGeneCount = this.geneCount+this.srcTotal;
+
         this.tableUrl = entity['url'];
         this.mongoId = entity['mongoId'];
         this.tableEntity = entity['tableEntity'];
@@ -53,18 +61,23 @@ export class ToolsService {
 
 
         let allRelations = JSON.parse(sessionStorage.getItem('relations'));
+
         if(allRelations.length){
-            this.baseThead.forEach((val,index)=>{
-                if(val['children'].length){
-                    let index = allRelations.findIndex((v,i)=>{
-                        return v['key'] === val['true_key'];
+            this.isRelation = false;
+            for(let i=0;i<this.baseThead.length;i++){
+                if(this.baseThead[i]['children'].length){
+                    let index = allRelations.findIndex(v=>{
+                        return v['key'] === this.baseThead[i]['true_key'];
                     })
                     if(index!=-1) {
                         this.isRelation = true;
-                        return;
+                        break;
                     }
                 }
-            })
+            }
+
+        }else{
+            this.isRelation = false;
         }
 
         this.visible = true;
@@ -81,7 +94,7 @@ export class ToolsService {
     }
 
     sendOpen(){
-        this.open.next([this.geneCount,this.isRelation]);
+        this.open.next([this.geneCount,this.isRelation,this.relativeGeneCount]);
     }
 
     getOpen(){
