@@ -292,6 +292,8 @@ export class UploadComponent implements OnInit {
 				},false)
 				
 				xhr.open('post',p_url,true);
+				xhr.setRequestHeader("Content-Type","application/json");
+				xhr.setRequestHeader("Authorization", `token ${localStorage.getItem("token")}`);
 				xhr.send(formData);
 
 				xhr.onreadystatechange = function(){
