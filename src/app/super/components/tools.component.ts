@@ -22,9 +22,9 @@ export class ToolsComponent implements OnInit {
 	// heatmap goRich keggRich goClass keggClass line net
 
 	/*
-        "heatmaprelation""关联聚类"
-        "heatmapexpress""表达量聚类"
-        "heatmapdiff" "差异聚类"
+        "heatmapRelation""关联聚类"
+        "heatmapExpress""表达量聚类"
+        "heatmapDiff" "差异聚类"
         "multiOmics" "多组学关联"
         "net" 普通网络图
         "netrelation" "关联网络图"
@@ -45,7 +45,7 @@ export class ToolsComponent implements OnInit {
 		{ type: 'chiSquare', name: '卡方检测', desc: '卡方', limit: [1], category: 'common' },
 		{ type: 'as', name: '可变剪切', desc: '可变剪切', limit: [1, 100], category: 'common' },
 		{ type: 'linkedNetwork', name: '关联网络图', desc: '关联网络图', limit: [1, 500], category: 'relation' },
-		{ type: 'heatmaprelation', name: '关联聚类热图', desc: '关联聚类热图', limit: [1, 2000], category: 'relation' }
+		{ type: 'heatmapRelation', name: '关联聚类热图', desc: '关联聚类热图', limit: [1, 2000], category: 'relation' }
 	];
 	desc: string = '';
 	title: String = '';
@@ -604,7 +604,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-multiOmics/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -769,7 +769,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-chiSquare/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -951,7 +951,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-line/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -1011,7 +1011,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-as/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -1102,7 +1102,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-net/${this.toolsService.get('geneType')}/${
 								data['data'][0]
-							}/${this.storeService.getStore('version')}`;
+							}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -1231,7 +1231,7 @@ export class ToolsComponent implements OnInit {
 								window.location.href.split('report')[0]
 							}report/reanalysis/re-linkedNetwork/${this.toolsService.get(
 								'geneType'
-							)}/${data['data'][0]}/${this.storeService.getStore('version')}`;
+							)}/${data['data'][0]}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -1262,7 +1262,7 @@ export class ToolsComponent implements OnInit {
 	}
 
 	// 关联聚类
-	getheatmaprelationParams() {
+	getheatmapRelationParams() {
 		let entity = this.toolsService.get('tableEntity');
 		this.ajaxService
 			.getDeferData({
@@ -1356,7 +1356,7 @@ export class ToolsComponent implements OnInit {
 			.getDeferData({
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
-					reanalysisType: 'heatmaprelation',
+					reanalysisType: 'heatmapRelation',
 					needReanalysis: 1,
 					version: this.storeService.getStore('version'),
 					geneType: this.toolsService.get('tableEntity')['geneType'],
@@ -1489,7 +1489,7 @@ export class ToolsComponent implements OnInit {
 								'geneType'
 							)}/${data['data'][0]}/${this.storeService.getStore('version')}/${
 								this.geneClassSelect[0]['name']
-							}`;
+							}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;

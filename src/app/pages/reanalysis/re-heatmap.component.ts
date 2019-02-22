@@ -45,9 +45,10 @@ export class ReHeatmapComponent implements OnInit {
     color: string; //当前选中的color
     colors: string[];
 
-    gaugeColors:string[]=[];
+    isoShowColorPanel:boolean=false;
     oLegendIndex:number=0;
     oColor:string;
+    gaugeColors:string[]=[];
 
     defaultSetUrl:string;
     defaultSetEntity:object;
@@ -450,6 +451,7 @@ export class ReHeatmapComponent implements OnInit {
                 type: "complexCluster",
                 data: data,
                 colors: that.colors,
+                otherColors:that.gaugeColors,
                 heatmap: {
                     width: that.width,
                     height: that.height
@@ -530,15 +532,17 @@ export class ReHeatmapComponent implements OnInit {
                 oLegend:{
                     show:true,
                     data:data.gauge,
-                    // click: (el,d,m, i) => {
-                    //    console.log(el,d,m,i)
-                    // },
-                    // mouseover: function(event, legendObj) {
-                    //     legendObj.append("title").text("单击修改颜色");
-                    // },
-                    // mouseout: function(event, legendObj) {
-                    //     legendObj.select("title").remove();
-                    // }
+                    click: (el, i) => {
+                       this.oColor=d3.select(el).attr('fill');
+                       this.oLegendIndex=i;
+                       this.isoShowColorPanel=true;
+                    },
+                    mouseover: function(event, legendObj) {
+                        legendObj.append("title").text("单击修改颜色");
+                    },
+                    mouseout: function(event, legendObj) {
+                        legendObj.select("title").remove();
+                    }
                 }
             },
             tooltip: function(d) {
@@ -553,6 +557,12 @@ export class ReHeatmapComponent implements OnInit {
     colorChange(curColor) {
         this.color = curColor;
         this.colors.splice(this.legendIndex, 1, curColor);
+        this.clusterChart.redraw();
+    }
+
+    ocolorChange(curColor) {
+        this.oColor = curColor;
+        this.gaugeColors.splice(this.oLegendIndex, 1, curColor);
         this.clusterChart.redraw();
     }
 
