@@ -345,7 +345,7 @@ export class ReMultiOmicsComponent implements OnInit {
 	computedTableHeight() {
 		try {
             let h = this.tableHeight;
-            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
             if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
     }
