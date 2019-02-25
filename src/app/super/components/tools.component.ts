@@ -11,6 +11,7 @@ import {
 	EventEmitter
 } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd';
+import { TranslateService } from '@ngx-translate/core';
 import config from '../../../config';
 declare const $: any;
 @Component({
@@ -156,7 +157,8 @@ export class ToolsComponent implements OnInit {
 		public toolsService: ToolsService,
 		private ajaxService: AjaxService,
 		private storeService: StoreService,
-		private notify: NzNotificationService
+        private notify: NzNotificationService,
+        private translate:TranslateService
 	) {}
 
 	ngOnInit() {
