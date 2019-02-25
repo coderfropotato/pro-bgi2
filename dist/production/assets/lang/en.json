@@ -6,6 +6,13 @@
         "diff_venn_title":"Differential gene clustering",
         "diff_venn_content":"Clustering the FPKM values of different genes in each comparison group"
     },
+    "top":{
+        "pdf":"Export as pdf",
+        "upload":"Upload data",
+        "analysis":"My analysis",
+        "lang":"Toggle language",
+        "fullscreen":"Toggle fullscreen"
+    },
     "geneList":{
         "title":"genelist",
         "desc":"genelist"
