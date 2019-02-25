@@ -11,6 +11,7 @@ import {
 	EventEmitter
 } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd';
+import { TranslateService } from '@ngx-translate/core';
 import config from '../../../config';
 declare const $: any;
 @Component({
@@ -149,13 +150,15 @@ export class ToolsComponent implements OnInit {
 	childVisible: boolean = false;
 	isSubmitReanalysis: boolean = false; // 是否在提交重分析任务
 	geneCount: number = 0;
-	isRelation: boolean = false; // 是否是关联关系的表格
+    isRelation: boolean = false; // 是否是关联关系的表格
+    relativeGeneCount:number = 0; // 关联的基因个数
 
 	constructor(
 		public toolsService: ToolsService,
 		private ajaxService: AjaxService,
 		private storeService: StoreService,
-		private notify: NzNotificationService
+        private notify: NzNotificationService,
+        private translate:TranslateService
 	) {}
 
 	ngOnInit() {
@@ -164,7 +167,8 @@ export class ToolsComponent implements OnInit {
 		// 订阅打开抽屉
 		this.toolsService.getOpen().subscribe(res => {
 			this.geneCount = res[0];
-			this.isRelation = res[1];
+            this.isRelation = res[1];
+            this.relativeGeneCount = res[2];
 			this.formatTools();
 		});
 	}
@@ -285,11 +289,12 @@ export class ToolsComponent implements OnInit {
 				if (!this.isRelation) {
 					v['disabled'] = true;
 				} else {
+                    // 是矩阵表 才可以使用关联小工具
 					if (v['limit'].length === 1) {
-						v['disabled'] = this.geneCount >= v['limit'][0] ? false : true;
+						v['disabled'] = this.relativeGeneCount >= v['limit'][0] ? false : true;
 					} else {
 						v['disabled'] =
-							this.geneCount < v['limit'][0] || this.geneCount > v['limit'][1]
+							this.relativeGeneCount < v['limit'][0] || this.relativeGeneCount > v['limit'][1]
 								? true
 								: false;
 					}

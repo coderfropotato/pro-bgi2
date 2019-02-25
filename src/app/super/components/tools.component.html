@@ -1,9 +1,9 @@
 <div class="tool-component">
 	<nz-drawer [nzClosable]="true" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }"
-	 [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="请选择一个分析方案" (nzOnClose)="close()">
+	 [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="{{'analysisPanel.title' | translate}}" (nzOnClose)="close()">
 		<!-- gene:{{ toolsService["geneCount"] }} -->
 		<ul class="clearfix">
-			<li nz-tooltip [nzTitle]="tool['limit'].length>1?('基因限制：'+tool['limit'][0]+'个-'+tool['limit'][1])+'个':'基因限制：至少'+tool['limit'][0]+'个'"
+			<li nz-tooltip [nzTitle]="tool['limit'].length>1?('Limit : '+tool['limit'][0]+'-'+tool['limit'][1])+'':'Limit : At least '+tool['limit'][0]"
 			 *ngFor="let tool of toolList; index as i" [class.disabled]="tool['disabled']" (click)="selectParams(tool)"
 			 (mouseover)="handlerMouseOver(tool)">
 				<div class="tool-imgs {{tool['type']}}-img"></div>

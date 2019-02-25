@@ -22,6 +22,7 @@ export class TopComponent implements OnInit {
 	browserLang: string;
     navigatedRoutes: Array<string> = [];
     themeColor:string = '#5278f8';
+    isFull:boolean = false;
 
 	@Input() pdf: boolean = true;
 	@Input() analysis: boolean = true;
@@ -161,8 +162,8 @@ export class TopComponent implements OnInit {
 
 	handleFullScreenClick() {
 		let el = document.documentElement;
-
-		if (!this.isFullscreen()) {
+        this.isFull = this.isFullscreen();
+		if (!this.isFull) {
 			let requestMethod =
 				el['requestFullscreen'] ||
 				el['webkitRequestFullScreen'] ||
@@ -175,14 +176,17 @@ export class TopComponent implements OnInit {
 				if (wscript !== null) {
 					wscript.SendKeys('{F11}');
 				}
-			}
+            }
+            this.isFull = true;
 		} else {
 			let exitMethod =
 				document['exitFullscreen'] ||
 				document['webkitCancelFullScreen'] ||
 				document['mozCancelFullScreen'] ||
 				document['msExitFullscreen'];
-			if (exitMethod) exitMethod.call(document);
+            if (exitMethod) exitMethod.call(document);
+
+            this.isFull = false;
 		}
 	}
 

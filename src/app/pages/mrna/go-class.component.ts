@@ -526,11 +526,11 @@ export class GoClassComponent implements OnInit {
 	computedTableHeight() {
 		try {
 			let h = this.tableHeight;
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 
 			let l = this.leftTableHeight;
-			this.leftTableHeight = this.leftBottom.nativeElement.offsetHeight - 24;
+			this.leftTableHeight = this.leftBottom.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
 			if (this.leftTableHeight === l) this.leftComputedScrollHeight = true;
 		} catch (error) {}
 	}

@@ -130,7 +130,7 @@ export class ExpressVennComponent implements OnInit {
 	addColumnShow:boolean = false;
 	showBackButton:boolean = false;
 	computedScrollHeight:boolean = false;
-	
+
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -258,7 +258,7 @@ export class ExpressVennComponent implements OnInit {
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
 	}
-	
+
 	ngAfterViewInit() {
 		setTimeout(() => {
 			this.computedTableHeight();
@@ -391,7 +391,7 @@ export class ExpressVennComponent implements OnInit {
 	computedTableHeight() {
 		try {
             let h = this.tableHeight;
-            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - 24;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
             if(this.tableHeight===h) this.computedScrollHeight = true;
 		} catch (error) {}
     }
@@ -562,7 +562,7 @@ export class ExpressVennComponent implements OnInit {
         this.leftSelect.length = 0;
         this.chartBackStatus();
 	}
-	
+
 	//显示venn图
 	showVenn(data) {
 		let _selfV = this;

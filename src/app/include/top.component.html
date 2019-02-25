@@ -7,13 +7,16 @@
     <div class="top_right">
             <ng-content></ng-content>
             <div class="top_right_content">
-                <i *ngIf="pdf" class="iconfont icon-pdfwenjian" title="export as pdf" (click)="exportPdf()"></i>
-                <i *ngIf="upload" class="iconfont icon-shangchuanwenjian" title="上传数据" (click)="uploadFn()"></i>
-                <i *ngIf="analysis" class="iconfont icon-fenxi" title="我的分析" (click)="analysisFn()"></i>
-                <i *ngIf="lang" class="iconfont" style="margin-right:16px;" [class.icon-yingwenqiehuan]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
+                <i *ngIf="pdf" nz-tooltip nzTitle="{{'top.pdf' | translate}}" class="iconfont icon-pdfwenjian" (click)="exportPdf()"></i>
+                <i *ngIf="upload" nz-tooltip nzTitle="{{'top.upload' | translate}}" class="iconfont icon-shangchuanwenjian" (click)="uploadFn()"></i>
+                <i *ngIf="analysis" nz-tooltip nzTitle="{{'top.analysis' | translate}}" class="iconfont icon-fenxi" (click)="analysisFn()"></i>
+                <i *ngIf="lang" nz-tooltip nzTitle="{{'top.lang' | translate}}" class="iconfont" style="margin-right:16px;" [class.icon-yingwenqiehuan]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
                 <!-- 修改主题色 -->
                 <!-- <input type="color" (change)="handleColorChange($event)"> -->
-                <button style="padding: 0 7px;height: 24px;" nz-button nzType="primary" (click)="handleFullScreenClick()">切换全屏</button>
+
+                <!-- <button style="padding: 0 7px;height: 24px;" nz-button nzType="primary" (click)="handleFullScreenClick()">切换全屏</button> -->
+
+                <i class="iconfont" nz-tooltip nzTitle="{{'top.fullscreen' | translate}}" style="margin-right:0;"  [class.icon-chuangkou]="isFull" [class.icon-quanping]="!isFull" (click)="handleFullScreenClick()"></i>
             </div>
     </div>
 </div>

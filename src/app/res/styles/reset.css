@@ -6,7 +6,9 @@ body,
     margin: 0;
     /* font-size: 14px; */
 }
-
+body{
+    padding-right:0!important;
+}
 body,html{
     width: 100%;
     height: 100%;
@@ -93,7 +95,7 @@ ul,ol {
 .big-table-check-component .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-tbody>tr>td,
 .big-table-check-component .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th {
     white-space: nowrap;
-    /* max-width: 160px; */
+    max-width: 160px;
     min-width:160px;
     overflow: hidden;
     text-overflow: ellipsis;

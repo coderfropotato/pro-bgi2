@@ -112,6 +112,8 @@ export class BigTableCheckComponent implements OnInit {
 	isFirst = true;
     computedTimer = null;
 
+    pageSizeChangeFlag:boolean = false; // pageSize改变的标志
+
 	constructor(
 		private translate: TranslateService,
 		private globalService: GlobalService,
@@ -210,7 +212,7 @@ export class BigTableCheckComponent implements OnInit {
 	}
 
 	// 获取表格数据
-	getRemoteData(reset: boolean = false): void {
+	getRemoteData(reset: boolean = false,cb: any = null): void {
 		if (reset) {
 			this.tableEntity['pageIndex'] = 1;
 		}
@@ -278,38 +280,52 @@ export class BigTableCheckComponent implements OnInit {
 
 					// 增加筛选状态key
 					this.dataSet.forEach((val) => {
-						val['checked'] = this.checkStatus;
+                        if(!$.isEmptyObject(this.checkedMap) || !$.isEmptyObject(this.unCheckedMap)){
+                            let allGeneMap = [...Object.keys(this.checkedMap),...Object.keys(this.unCheckedMap)];
+                            if(allGeneMap.includes(val[this.key])){
+                                // 在map的基因给记录的状态
+                                val['checked'] = Object.keys(this.checkedMap).includes(val[this.key]);
+                            }else{
+                                // 找出不在map里记录的基因 给默认状态
+                                val['checked'] = this.checkStatus
+                            }
+                        }else{
+                            val['checked'] = this.checkStatus
+                        }
 
-						if (this.checkStatus) {
+                        // 根据当前基因的选中状态 用不同的map记录下来
+						if (this.checkStatus && !Object.keys(this.unCheckedMap).includes(val[this.key])) {
 							this.checkedMap[val[this.key]] = val;
 						} else {
-							this.unCheckedMap[val[this.key]] = val;
+							if (!Object.keys(this.checkedMap).includes(val[this.key])) {
+								this.unCheckedMap[val[this.key]] = val;
+							}
 						}
 
+                        // map去重
 						if (!$.isEmptyObject(this.checkedMap) || !$.isEmptyObject(this.unCheckedMap)) {
-							// 默认选中 就看未选中的列表里有没有当前项 有就变成未选中
+							//  默认选中 就看未选中的列表里有没有当前项 有就变成未选中
 							if (this.checkStatus) {
 								if (!$.isEmptyObject(this.unCheckedMap)) {
-									for (let name in this.unCheckedMap) {
-										if (name == val[this.key]) {
-											val['checked'] = false;
-											delete this.checkedMap[val[this.key]];
-										}
+									let unCheckedKeys = Object.keys(this.unCheckedMap);
+									if (unCheckedKeys.includes(val[this.key])) {
+										val['checked'] = false;
+										delete this.checkedMap[val[this.key]];
 									}
 								}
 							} else {
 								// 默认不选中  就看选中的列表里有没有当前项 有就变成选中
 								if (!$.isEmptyObject(this.checkedMap)) {
-									for (let name in this.checkedMap) {
-										if (name == val[this.key]) {
-											val['checked'] = true;
-											delete this.unCheckedMap[val[this.key]];
-										}
+									let checkedKeys = Object.keys(this.checkedMap);
+									if (checkedKeys.includes(val[this.key])) {
+										val['checked'] = true;
+										delete this.unCheckedMap[val[this.key]];
 									}
 								}
 							}
 						}
 					});
+
 					this.computedStatus();
 					this.getCollection();
 					this.isFirst = false;
@@ -346,6 +362,7 @@ export class BigTableCheckComponent implements OnInit {
 				this.error = 'error';
 			},
 			() => {
+                cb && cb();
 				if (this.applyOnceSearchParams) {
 					// 每次应用一次设置的查询参数 然后清空恢复默认，用自己的查询参数；
 					this.tableEntity['searchList'] = [];
@@ -626,7 +643,17 @@ export class BigTableCheckComponent implements OnInit {
 			// 首列gene的高度
 			let res = tableHeight - head - bottom - filter - tools - 2;
 			$(`#${this.tableId} .ant-table-body`).css('height', `${res}px`);
-			this.scroll['y'] = `${res}px`;
+            this.scroll['y'] = `${res}px`;
+
+            try {
+                let thead = $(`#${this.tableId} .table-content thead tr th`);
+                $.each(thead,(i,v)=>{
+                    let w = $(v).outerWidth();
+                    $(`#${this.tableId} .table-content tbody tr td`).eq(i).css('min-width',w).css('max-width',w);
+                })
+            } catch (error) {
+
+            }
 		}
 	}
 
@@ -813,8 +840,11 @@ export class BigTableCheckComponent implements OnInit {
 	}
 
 	pageSizeChange() {
-		this.tableEntity['pageIndex'] = 1;
-		this.getRemoteData(true);
+        this.tableEntity['pageIndex'] = 1;
+        this.pageSizeChangeFlag = true;
+		this.getRemoteData(true, () => {
+			this.pageSizeChangeFlag = false;
+		});
 	}
 
 	/**
