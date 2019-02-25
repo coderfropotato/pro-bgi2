@@ -83,7 +83,10 @@
 	// min-height: 400px;
 	position: relative;
 	border: $border;
-	border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
 	background-color: #fff;
 	// overflow: auto;
 }
@@ -316,9 +319,12 @@
 
 .tableHeader {
 	padding: 8px;
-	border: $border;
-	border-bottom: 0;
-	background-color: $table_header_bgcolor;
+	// border: $border;
+	// border-bottom: 1px solid #efefef;
+    background-color: $white_bg;
+    &.gene-table{
+        background-color:$background_color;
+    }
 }
 
 tbody > tr:nth-child(odd) {
@@ -471,7 +477,7 @@ button{
 
 .func {
 	background-color: #fff;
-	padding: 12px;
+	padding: 8px;
 	position:relative;
 	.only-table{
 		position:absolute;
@@ -484,7 +490,7 @@ button{
 
 // 转换表 大表
 .transformation-table-component,.big-table-component{
-	padding:12px;
+	padding:8px;
 }
 
 .content {
@@ -542,7 +548,7 @@ button{
 		}
 		.left-bottom-layout {
 			@include module-style;
-			padding: 12px;
+			// padding: 12px;
 			flex: 1;
 			overflow: hidden;
         }
@@ -566,7 +572,7 @@ button{
 
 	& .switch {
 		position: fixed;
-		right: 218px;
+		right: 224px;
 		top: 46px;
 	}
 
@@ -580,7 +586,8 @@ button{
 }
 
 .menufunc{
-	opacity:0.8;
+    opacity:0.8;
+    cursor: pointer;
 	&:hover{
 		opacity: 1.0;
 	}
@@ -604,34 +611,33 @@ button{
 		}
 	}
     .layout-switch {
-        width: 106px;
-        height: 20px;
+        width: 88px;
+        height: 24px;
         background: $layout_switch_bgcolor;
         border-radius: 4px;
         position: relative;
         cursor: pointer;
         display: inline-block;
         vertical-align: middle;
-        margin-right: 6px;
         span {
             position: absolute;
             top: 4px;
             left:4px;
             transform: translateX(0);
             width: 40px;
-            height: 12px;
+            height: 16px;
             background: #ffffff;
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
             border-radius: 2px;
-            transition: .3s all ease;
+            transition: .2s all ease;
             &.left{
-                transform: translateX(3px);
+                transform: translateX(2px);
             }
             &.right{
-                transform: translateX(55px);
+                transform: translateX(38px);
 			}
 			&.center{
-				transform: translateX(31px)
+				transform: translateX(21px)
 			}
         }
     }
@@ -659,12 +665,12 @@ button{
 
 // menu
 .menu {
-	height: 40px;
+	height: 41px;
 	padding: 0 20px;
 	min-width: $min-width;
 	border-bottom: $border;
 	background-color: #fff;
-	cursor: pointer;
+	// cursor: pointer;
 	position: relative;
 	.menu-slot-text {
 		line-height: 40px;
@@ -674,17 +680,25 @@ button{
 		margin: 0;
 		box-sizing: border-box;
 		background-color: #fff;
-		@include display-flex;
+        @include display-flex;
+        cursor: pointer;
 		li {
-			padding: 8px 4px;
+            // padding: 8px 4px;
+            width: 80px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
 			&:hover {
 				@include hover-animate;
-			}
+            }
+            &.active{
+                span{
+                    color: $menu_active_font_color;
+                }
+                border-bottom:2px solid $menu_active_font_color;
+            }
 			span {
 				color: $menu_font_color;
-				&.active {
-					color: $menu_active_font_color;
-				}
 			}
 		}
 	}
@@ -707,7 +721,7 @@ button{
 		&.active {
 			opacity: 1;
 			left: 0;
-			top: 40px;
+			top: 41px;
 			z-index: 12;
 		}
 		li {
