@@ -473,7 +473,7 @@ export class ReClassComponent implements OnInit {
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 
 			let l = this.leftTableHeight;
-			this.leftTableHeight = this.leftBottom.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
+			this.leftTableHeight = this.leftBottom.nativeElement.offsetHeight;
 			if (this.leftTableHeight === l) this.leftComputedScrollHeight = true;
 		} catch (error) {}
 	}
