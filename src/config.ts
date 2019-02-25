@@ -6,7 +6,8 @@ const config: object = {
     geneTypeAll:"all",  // 基因和转录本切换 基因类型为all表示有基因切换 默认为gene
     geneTypeOfGene:'gene', // 基因和转录本切换 基因类型为gene的字段名称
     geneTypeOfTranscript:"transcript",   // 基因和转录本切换 基因类型为transcript的字段名称
-    sysDefend:false // 是否系统维护
+    sysDefend:false, // 是否系统维护
+    layoutContentPadding:8
 };
 
 export default config;
