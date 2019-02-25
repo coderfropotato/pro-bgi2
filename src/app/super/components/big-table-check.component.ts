@@ -643,7 +643,17 @@ export class BigTableCheckComponent implements OnInit {
 			// 首列gene的高度
 			let res = tableHeight - head - bottom - filter - tools - 2;
 			$(`#${this.tableId} .ant-table-body`).css('height', `${res}px`);
-			this.scroll['y'] = `${res}px`;
+            this.scroll['y'] = `${res}px`;
+
+            try {
+                let thead = $(`#${this.tableId} .table-content thead tr th`);
+                $.each(thead,(i,v)=>{
+                    let w = $(v).outerWidth();
+                    $(`#${this.tableId} .table-content tbody tr td`).eq(i).css('min-width',w).css('max-width',w);
+                })
+            } catch (error) {
+
+            }
 		}
 	}
 
