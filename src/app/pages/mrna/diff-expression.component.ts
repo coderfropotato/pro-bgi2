@@ -213,13 +213,10 @@ export class DiffExpressionComponent implements OnInit {
 		this.selectedData = [];
 		this.tableUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 
-
-		//console.log(this.storeService.getStore('diff_threshold'));
 		this.tempThreshold = this.storeService.getStore('diff_threshold');
 		for (const key in this.tempThreshold) {
 			this.thresholdName.push(key)
 		}
-		//console.log(this.thresholdName)
 
 		for(let i = 0;i<this.thresholdName.length;i++){
 			const tempN = this.thresholdName[i];
@@ -230,7 +227,7 @@ export class DiffExpressionComponent implements OnInit {
 			}else if(tempN=="NOIseq"){
 				this.NOIseq = this.tempThreshold["NOIseq"];
 				this.n_log2FC = this.tempThreshold["NOIseq"].log2FC;
-				this.n_probability = this.tempThreshold["NOIseq"].FDR;
+				this.n_probability = this.tempThreshold["NOIseq"].probability;
 			}else if(tempN=="DEGseq"){
 				this.DEGseq = this.tempThreshold["DEGseq"];
 				this.d_log2FC = this.tempThreshold["DEGseq"].log2FC;
@@ -588,28 +585,6 @@ export class DiffExpressionComponent implements OnInit {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
-		/*
-		if(tempN=="PossionDis"){
-			this.PossionDis = this.tempThreshold["PossionDis"];
-			this.p_log2FC = this.tempThreshold["PossionDis"].log2FC;
-			this.p_FDR = this.tempThreshold["PossionDis"].FDR;
-		}else if(tempN=="NOIseq"){
-			this.NOIseq = this.tempThreshold["NOIseq"];
-			this.n_log2FC = this.tempThreshold["NOIseq"].log2FC;
-			this.n_probability = this.tempThreshold["NOIseq"].FDR;
-		}else if(tempN=="DEGseq"){
-			this.DEGseq = this.tempThreshold["DEGseq"];
-			this.d_log2FC = this.tempThreshold["DEGseq"].log2FC;
-			this.d_Qvalue = this.tempThreshold["DEGseq"].Qvalue;
-		}else if(tempN=="DESeq2"){
-			this.DESeq2 = this.tempThreshold["DESeq2"];
-			this.de_log2FC = this.tempThreshold["DESeq2"].log2FC;
-			this.de_Qvalue = this.tempThreshold["DESeq2"].Qvalue;
-		}else if(tempN=="EBSeq"){
-			this.EBSeq = this.tempThreshold["EBSeq"];
-			this.e_log2FC = this.tempThreshold["EBSeq"].log2FC;
-			this.e_PPEE = this.tempThreshold["EBSeq"].PPEE;
-		}*/
 		for(let i = 0;i<this.thresholdName.length;i++){
 			const tempN = this.thresholdName[i];
 			if(tempN=="PossionDis"){
@@ -642,7 +617,7 @@ export class DiffExpressionComponent implements OnInit {
 				}
 			}else if(tempN=="EBSeq"){
 				if (this.e_log2FC != this.EBSeq['log2FC'] || this.e_PPEE != this.EBSeq['probability']) {
-					this.NOIseq = {
+					this.EBSeq = {
 						log2FC: this.e_log2FC,
 						PPEE: this.e_PPEE
 					};
