@@ -242,29 +242,6 @@ export class DiffExpressionComponent implements OnInit {
 				this.e_PPEE = this.tempThreshold["EBSeq"].PPEE;
 			}
 		}
-		// this.p_show = this.tempThreshold.hasOwnProperty('PossionDis'); //设置里面的PossionDis
-		// this.n_show = this.tempThreshold.hasOwnProperty('NOIseq'); //设置里面的NOIseq
-		// this.d_show = this.tempThreshold.hasOwnProperty('DEGseq');
-		// this.de_show = this.tempThreshold.hasOwnProperty('DESeq2');
-		// this.e_show = this.tempThreshold.hasOwnProperty('EBSeq');
-
-		// this.p_show = this.storeService.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
-		// this.PossionDis = {
-		// 	log2FC: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '',
-		// 	FDR: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.FDR : ''
-		// };
-		// this.p_log2FC = this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '';
-		// this.p_FDR = this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.FDR : '';
-
-		// this.n_show = this.storeService.getStore('diff_threshold').hasOwnProperty('NOIseq'); //设置里面的NOIseq
-		// this.NOIseq = {
-		// 	log2FC: this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.log2FC : '',
-		// 	probability: this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.probability : ''
-		// };
-
-		// this.n_log2FC = this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.log2FC : '';
-		// this.n_probability = this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.probability : '';
-
 
 		this.selectPanelData = [
 			//差异面板的数据
@@ -316,9 +293,7 @@ export class DiffExpressionComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			diffThreshold: {
-				PossionDis: this.PossionDis
-			},
+			diffThreshold: this.tempThreshold,
 			version: this.storeService.getStore('version'),
 			searchList: [],
 			sortThead: this.addColumn['sortThead']
@@ -347,9 +322,7 @@ export class DiffExpressionComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			diffThreshold: {
-				PossionDis: this.PossionDis
-			},
+			diffThreshold: this.tempThreshold,
 			version: this.storeService.getStore('version'),
 			searchList: [],
 			sortThead: this.addColumn['sortThead']
@@ -560,26 +533,6 @@ export class DiffExpressionComponent implements OnInit {
 			this.EBSeq['PPEE'] = value;
 		}
 	}
-	// OnChange(value: string): void {
-	// 	if(parseInt(value)<0){
-	// 		this.isShowSpan = true;
-	// 		return;
-	// 	}else{
-	// 		this.isShowSpan = false;
-	// 		this.PossionDis['log2FC'] = value;
-	// 	}
-
-	// }
-	// OnChange2(value: string): void {
-	// 	this.PossionDis['FDR'] = value;
-	// }
-
-	OnChange3(value: string): void {
-		this.NOIseq['log2FC'] = value;
-	}
-	OnChange4(value: string): void {
-		this.NOIseq['probability'] = value;
-	}
 
 	panelChange() {
 		this.panelShow = !this.panelShow;
@@ -631,12 +584,6 @@ export class DiffExpressionComponent implements OnInit {
 			}
 
 		}
-
-
-		
-
-		
-
 		this.panelShow = false;
 	}
 	setConfirm() {
