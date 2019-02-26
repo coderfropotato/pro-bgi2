@@ -593,6 +593,8 @@ export class DiffExpressionComponent implements OnInit {
 						log2FC: this.p_log2FC,
 						FDR: this.p_FDR
 					};
+
+					this.tempThreshold["PossionDis"] = this.PossionDis;
 				}
 			}else if(tempN=="NOIseq"){
 				if (this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability != this.NOIseq['probability']) {
@@ -600,6 +602,7 @@ export class DiffExpressionComponent implements OnInit {
 						log2FC: this.n_log2FC,
 						probability: this.n_probability
 					};
+					this.tempThreshold["NOIseq"] = this.NOIseq;
 				}
 			}else if(tempN=="DEGseq"){
 				if (this.d_log2FC != this.DEGseq['log2FC'] || this.d_Qvalue != this.DEGseq['Qvalue']) {
@@ -607,6 +610,7 @@ export class DiffExpressionComponent implements OnInit {
 						log2FC: this.d_log2FC,
 						Qvalue: this.d_Qvalue
 					};
+					this.tempThreshold["DEGseq"] = this.DEGseq;
 				}
 			}else if(tempN=="DESeq2"){
 				if (this.de_log2FC != this.DESeq2['log2FC'] || this.de_Qvalue != this.DESeq2['Qvalue']) {
@@ -614,6 +618,7 @@ export class DiffExpressionComponent implements OnInit {
 						log2FC: this.de_log2FC,
 						Qvalue: this.de_Qvalue
 					};
+					this.tempThreshold["DESeq2"] = this.DESeq2;
 				}
 			}else if(tempN=="EBSeq"){
 				if (this.e_log2FC != this.EBSeq['log2FC'] || this.e_PPEE != this.EBSeq['probability']) {
@@ -621,6 +626,7 @@ export class DiffExpressionComponent implements OnInit {
 						log2FC: this.e_log2FC,
 						PPEE: this.e_PPEE
 					};
+					this.tempThreshold["EBSeq"] = this.EBSeq;
 				}
 			}
 
