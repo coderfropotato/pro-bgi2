@@ -1491,9 +1491,11 @@ button{
 }
 
 
+//venn图设置参数
 .ex_container {
-    height: 360px;
-    width: 320px;
+    height: auto;
+	width: 320px;
+	padding-bottom: 60px;
     background: #FFFFFF;
     position: relative;
     background: #FFFFFF;
@@ -1510,14 +1512,13 @@ button{
 }
 
 .con_PessionDis_title {
-    height: 48px;
+    height: 36px;
     width: 100%;
-    line-height: 48px;
+    line-height: 36px;
     margin: 0 auto;
 }
 
 .con_PessionDis_in {
-    margin-top: 6px;
     height: 80px;
     width: 100%;
 }
