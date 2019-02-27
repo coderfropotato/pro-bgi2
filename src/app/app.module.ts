@@ -43,6 +43,8 @@ import { LoadingComponent } from './pages/reanalysis/loading.component';
 import { BigTableCheckComponent } from './super/components/big-table-check.component';
 
 // 页面
+/* 基因总表 */
+import { GeneComponent } from './pages/mrna/gene.component';
 /* 基础模块 */
 import { OverviewComponent } from './pages/mrna/base/overview.component';
 import { InformationComponent } from './pages/mrna/base/information.component';
@@ -78,12 +80,8 @@ import { SnpDistributionComponent } from './pages/mrna/snp-distribution.componen
 import { IndelOverviewComponent } from './pages/mrna/indel-overview.component';
 import { IndelDistributionComponent } from './pages/mrna/indel-distribution.component';
 import { SnpIndelHelpComponent } from './pages/mrna/snp-indel-help.component';
-
-/* 基因总表 */
-import { GeneComponent } from './pages/mrna/gene.component';
 /* 上传模块 */
 import { UploadComponent } from './pages/mrna/upload.component';
-
 /* 小工具 */
 import { ReanalysisIndexComponent } from './pages/reanalysis/index.component';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
@@ -99,7 +97,6 @@ import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.co
 import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
 import { ReRichComponent } from './pages/reanalysis/re-rich.component';
-
 /* 基因集 */
 import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneList/venn.component';
 
@@ -612,14 +609,9 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
 	// 组件，指令，过滤器（管道） 申明在declarations 里
 	declarations: [
-		DiffVennPage,
-		ExpressVennPage,
-		GeneListIndexComponent,
 		SysDefendComponent,
 		LoginComponent,
 		IndexComponent,
-		GoRichComponent,
-		ClusterComponent,
 		GeneTableComponent,
 		NotFoundComponent,
 		AppComponent,
@@ -628,7 +620,6 @@ export function createTranslateLoader(http: HttpClient) {
 		FilterComponent,
 		ErrorComponent,
 		DnaIndexComponent,
-		ReanalysisIndexComponent,
 		SyserrorComponent,
 		AddColumnComponent,
 		ChartExportComponent,
@@ -644,57 +635,76 @@ export function createTranslateLoader(http: HttpClient) {
 		GridExportComponent,
 		PaginationComponent,
 		TreeItemComponent,
-		ExpressVennComponent,
-		DiffExpressionComponent,
 		TreeComponent,
 		ToolsComponent,
-		UploadComponent,
 		ColorPickerComponent,
 		ReListComponent,
-		ReHeatmapComponent,
-		reRelationHeatmapComponent,
 		TooltipDirective,
-		ReNetComponent,
-		ReKdaComponent,
-		reRelationNetComponent,
-		ReLineComponent,
-		KaFunComponent,
-		RelativeSpliceComponent,
 		LayoutSwitchComponent,
-		ReMultiOmicsComponent,
 		LoadingComponent,
+		BigTableCheckComponent,
+		PromtComponent,
+		TableSpecialTheadFilter,
+
+		// 页面
+		GeneComponent,
+		
+		OverviewComponent,
+		InformationComponent,
+		ReadsFilterComponent,
+		ReadsComparisonComponent,
+		LrnaComponent,
+		BasicHelpComponent,
+		
+		DiffVennPage,
+		DiffExpressionComponent,
+		DiffExpressionHelpComponent,
+		
+		ExpressVennPage,
+		ExpressVennComponent,
 		ExpressionHelpComponent,
+		
+		ClusterComponent,
         ClusterHelpComponent,
+		
         GoClassPage,
 		GoClassComponent,
 		GoHelpComponent,
+		GoRichComponent,
+		
 		KeggClassComponent,
 		KeggRichComponent,
 		KeggHelpComponent,
+		
 		AlternativeSplicingComponent,
-		GeneFusionComponent,
-		GeneComponent,
 		DiffAlternativeSplicingComponent,
+		GeneFusionComponent,
 		AsSvHelpComponent,
+		
 		SnpOverviewComponent,
 		SnpDistributionComponent,
-		IndelDistributionComponent,
 		IndelOverviewComponent,
+		IndelDistributionComponent,
 		SnpIndelHelpComponent,
-		GeneListVennComponent,
-		DiffExpressionHelpComponent,
-		GeneListVennPageComponent,
-		BigTableCheckComponent,
+
+		UploadComponent,
+
+		ReanalysisIndexComponent,
+		ReMultiOmicsComponent,
+		ReHeatmapComponent,
+		reRelationHeatmapComponent,
+		reRelationNetComponent,
+		ReNetComponent,
+		ReKdaComponent,
+		ReLineComponent,
+		KaFunComponent,
+		RelativeSpliceComponent,
+		GeneListIndexComponent,
 		ReClassComponent,
 		ReRichComponent,
-		PromtComponent,
-		OverviewComponent,
-		InformationComponent,
-		ReadsComparisonComponent,
-		LrnaComponent,
-		ReadsFilterComponent,
-		BasicHelpComponent,
-		TableSpecialTheadFilter
+
+		GeneListVennComponent,
+		GeneListVennPageComponent
 	],
 	// 路由模块在imports 导入
 	imports: [

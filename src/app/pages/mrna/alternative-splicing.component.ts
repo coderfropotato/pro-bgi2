@@ -110,7 +110,6 @@ export class AlternativeSplicingComponent implements OnInit {
 		}
 
 		let that = this;
-		console.log(document.querySelector('#alternativeSpliceDiv'))
 		let config: object = {
 			chart: {
 				title: '可变剪接事件统计',
