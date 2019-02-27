@@ -140,6 +140,17 @@ export class IndexComponent implements OnInit {
                              */
 							this.menuList = [
 								{
+									category: '基因总表',
+									children: [
+										{
+											url: 'gene',
+											geneType: 'all',
+											name: '基因总表',
+											isExport: true
+										}
+									]
+								},
+								{
 									category: '差异表达',
 									children: [
 										{
@@ -237,24 +248,18 @@ export class IndexComponent implements OnInit {
 									]
 								},
 								{
-									category: '结构变异',
+									category: '剪接/变异',
 									children: [
-										{
-											url: 'snp',
-											geneType: 'all',
-											name: 'SNP',
-											isExport: true
-										},
-										{
-											url: 'indel',
-											geneType: 'all',
-											name: 'INDEL',
-											isExport: true
-										},
 										{
 											url: 'alternative-splicing',
 											geneType: 'all',
-											name: '可变剪切',
+											name: '可变剪接',
+											isExport: true
+										},
+										{
+											url: 'diff-alternative-splicing',
+											geneType: 'all',
+											name: '差异可变剪接',
 											isExport: true
 										},
 										{
@@ -264,7 +269,7 @@ export class IndexComponent implements OnInit {
 											isExport: true
 										},
 										{
-											url: 'structure-variation-help',
+											url: 'as-sv-help',
 											geneType: null,
 											name: '帮助',
 											isExport: true
@@ -272,13 +277,37 @@ export class IndexComponent implements OnInit {
 									]
 								},
 								{
-									category: '基因总表',
+									category: 'SNP/InDel',
 									children: [
 										{
-											url: 'gene',
+											url: 'snp-overview',
 											geneType: 'all',
-											name: '基因总表',
+											name: 'SNP总览',
 											isExport: true
+										},
+										{
+											url: 'snp-distribution',
+											geneType: 'all',
+											name: 'SNP区域总览',
+											isExport: true
+										},
+										{
+											url: 'indel-overview',
+											geneType: 'all',
+											name: 'InDel总览',
+											isExport: true
+										},
+										{
+											url: 'indel-distribution',
+											geneType: 'all',
+											name: 'InDel区域总览',
+											isExport: true
+										},
+										{
+											url:'snp-indel-help',
+											geneType:'all',
+											name:'帮助',
+											isExport:true
 										}
 									]
 								},

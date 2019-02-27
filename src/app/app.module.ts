@@ -67,12 +67,18 @@ import { GoHelpComponent } from './pages/mrna/go-help.component';
 import { KeggClassComponent } from './pages/mrna/kegg-class.component';
 import { KeggRichComponent } from './pages/mrna/kegg-rich.component';
 import { KeggHelpComponent } from './pages/mrna/kegg-help.component';
-/* 结构变异 */
-import { SnpComponent } from './pages/mrna/snp.component';
-import { IndelComponent } from './pages/mrna/indel.component';
+/* 剪接/变异 */
 import { AlternativeSplicingComponent } from './pages/mrna/alternative-splicing.component';
+import { DiffAlternativeSplicingComponent } from './pages/mrna/diff-alternative-splicing.component';
 import { GeneFusionComponent } from './pages/mrna/gene-fusion.component';
-import { StructureVariationHelpComponent } from './pages/mrna/structure-variation-help.component';
+import { AsSvHelpComponent } from './pages/mrna/as-sv-help.component';
+/* SNP/Indel */
+import { SnpOverviewComponent } from './pages/mrna/snp-overview.component';
+import { SnpDistributionComponent } from './pages/mrna/snp-distribution.component';
+import { IndelOverviewComponent } from './pages/mrna/indel-overview.component';
+import { IndelDistributionComponent } from './pages/mrna/indel-distribution.component';
+import { SnpIndelHelpComponent } from './pages/mrna/snp-indel-help.component';
+
 /* 基因总表 */
 import { GeneComponent } from './pages/mrna/gene.component';
 /* 上传模块 */
@@ -311,21 +317,16 @@ const ROUTES: Routes = [
 				component:KeggHelpComponent,
 				data:{keep:true,module:'keggHelp'}
 			},
-			// 结构变异
-			{
-				path:'snp',
-				component:SnpComponent,
-				data:{keep:true,module:'SNP'}
-			},
-			{
-				path:'indel',
-				component:IndelComponent,
-				data:{keep:true,module:'INDEL'}
-			},
+			// 剪接/变异
 			{
 				path:'alternative-splicing',
 				component:AlternativeSplicingComponent,
 				data:{keep:true,module:'alternativeSplicing'}
+			},
+			{
+				path:'diff-alternative-splicing',
+				component:DiffAlternativeSplicingComponent,
+				data:{keep:true,module:'diffAlternativeSplicing'}
 			},
 			{
 				path:'gene-fusion',
@@ -333,9 +334,35 @@ const ROUTES: Routes = [
 				data:{keep:true,module:'geneFusion'}
 			},
 			{
-				path:'structure-variation-help',
-				component:StructureVariationHelpComponent,
-				data:{keep:true,module:'structureVariationHelp'}
+				path:'as-sv-help',
+				component:AsSvHelpComponent,
+				data:{keep:true,module:'asSvHelp'}
+			},
+			// SNP/InDel
+			{
+				path:'snp-overview',
+				component:SnpOverviewComponent,
+				data:{keep:true,module:'snpOverview'}
+			},
+			{
+				path:'snp-distribution',
+				component:SnpDistributionComponent,
+				data:{keep:true,module:'snpDistribution'}
+			},
+			{
+				path:'indel-overview',
+				component:IndelOverviewComponent,
+				data:{keep:true,module:'indelOverview'}
+			},
+			{
+				path:'indel-distribution',
+				component:IndelDistributionComponent,
+				data:{keep:true,module:'indelDistribution'}
+			},
+			{
+				path:'snp-indel-help',
+				component:SnpIndelHelpComponent,
+				data:{keep:true,module:'snpIndelHelp'}
 			},
 			// 基因总表
 			{
@@ -644,12 +671,16 @@ export function createTranslateLoader(http: HttpClient) {
 		KeggClassComponent,
 		KeggRichComponent,
 		KeggHelpComponent,
-		SnpComponent,
-		IndelComponent,
 		AlternativeSplicingComponent,
 		GeneFusionComponent,
-		StructureVariationHelpComponent,
 		GeneComponent,
+		DiffAlternativeSplicingComponent,
+		AsSvHelpComponent,
+		SnpOverviewComponent,
+		SnpDistributionComponent,
+		IndelDistributionComponent,
+		IndelOverviewComponent,
+		SnpIndelHelpComponent,
 		GeneListVennComponent,
 		DiffExpressionHelpComponent,
 		GeneListVennPageComponent,
