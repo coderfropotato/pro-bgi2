@@ -94,81 +94,81 @@ export class AlternativeSplicingComponent implements OnInit {
 	}
   
   drawChart(data) {
-    console.log(data);
-    return;
-    var baseThead = data.baseThead;
-		var rows = data.rows;
-		var chartData = [];
+    //console.log(data);
+    // return;
+    // var baseThead = data.baseThead;
+		// var rows = data.rows;
+		// var chartData = [];
 
-		for (var j = 0; j < rows.length; j++) {
-			chartData.push({
-				sample_name: rows[j].sample_name,
-				as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
-				as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
-				as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
-        as_ri: rows[j].as_ri * 100 / rows[j].as_total,
-        as_se: rows[j].as_se * 100 / rows[j].as_total
-			});
-		}
+		// for (var j = 0; j < rows.length; j++) {
+		// 	chartData.push({
+		// 		sample_name: rows[j].sample_name,
+		// 		as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
+		// 		as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
+		// 		as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
+    //     as_ri: rows[j].as_ri * 100 / rows[j].as_total,
+    //     as_se: rows[j].as_se * 100 / rows[j].as_total
+		// 	});
+		// }
 
-		let that = this;
+		// let that = this;
 
-		let config: object = {
-			chart: {
-				title: '可变剪接事件统计',
-				dblclick: function(event,title) {
-          let text = title.firstChild.nodeValue;
-          that.promptService.open(text,(data)=>{
-              title.textContent = data;
-          })
-        },
-				el: '#alternativeSpliceDiv',
-				type: 'stackBarPercent',
-				width: 660,
-				custom: [ 'sample_name' ],
-				data: chartData
-			},
-			axis: {
-				x: {
-					// title: 'Length(nt)',
-					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
-							this.updateTitle();
-						}
-					},
-					// rotate: 60
-				},
-				y: {
-					title: 'Percentage (%)',
-					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
-							this.updateTitle();
-						}
-					}
-				}
-			},
-			legend: {
-				show: true,
-				position: 'right',
-				click: function(d, index) {
-          that.color = d3.select(d).attr('fill');
-					that.legendIndex = index;
-					that.isShowColorPanel = true;
-				}
-			},
-			tooltip: function(d) {
-        //console.log(d);
-        // console.log(d.data[d.key])
-        //return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Number：'+d.data[d.key]/100*d.data['as_total']+'</span><br><span>Sample：'+d.data['sample_name']+'</span>';
-        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
-			}
-		};
+		// let config: object = {
+		// 	chart: {
+		// 		title: '可变剪接事件统计',
+		// 		dblclick: function(event,title) {
+    //       let text = title.firstChild.nodeValue;
+    //       that.promptService.open(text,(data)=>{
+    //           title.textContent = data;
+    //       })
+    //     },
+		// 		el: '#alternativeSpliceDiv',
+		// 		type: 'stackBarPercent',
+		// 		width: 660,
+		// 		custom: [ 'sample_name' ],
+		// 		data: chartData
+		// 	},
+		// 	axis: {
+		// 		x: {
+		// 			// title: 'Length(nt)',
+		// 			dblclick: function(event) {
+		// 				var name = prompt('请输入需要修改的标题', '');
+		// 				if (name) {
+		// 					this.setXTitle(name);
+		// 					this.updateTitle();
+		// 				}
+		// 			},
+		// 			// rotate: 60
+		// 		},
+		// 		y: {
+		// 			title: 'Percentage (%)',
+		// 			dblclick: function(event) {
+		// 				var name = prompt('请输入需要修改的标题', '');
+		// 				if (name) {
+		// 					this.setYTitle(name);
+		// 					this.updateTitle();
+		// 				}
+		// 			}
+		// 		}
+		// 	},
+		// 	legend: {
+		// 		show: true,
+		// 		position: 'right',
+		// 		click: function(d, index) {
+    //       that.color = d3.select(d).attr('fill');
+		// 			that.legendIndex = index;
+		// 			that.isShowColorPanel = true;
+		// 		}
+		// 	},
+		// 	tooltip: function(d) {
+    //     //console.log(d);
+    //     // console.log(d.data[d.key])
+    //     //return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Number：'+d.data[d.key]/100*d.data['as_total']+'</span><br><span>Sample：'+d.data['sample_name']+'</span>';
+    //     return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
+		// 	}
+		// };
 
-		this.chart = new d4().init(config);
+		// this.chart = new d4().init(config);
   }
 
   handlerRefresh() {
