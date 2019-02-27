@@ -312,7 +312,7 @@ export class ReadsComparisonComponent implements OnInit {
       },
       axis: {
         x: {
-          title: "Reads number(x100K)",
+          title: "Amount of reads (x100K)",
           rotate: 60,
           ticks:5,
           dblclick: function(event) {

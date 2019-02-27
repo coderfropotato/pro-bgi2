@@ -104,12 +104,16 @@ export class DiffExpressionComponent implements OnInit {
 
 	isShowSpan: boolean = false;
 
+
+	//参数名字设置
+	tempThreshold: object;
+	thresholdName: string[] = [];
+
 	p_show: boolean; //设置里面的PossionDis
 	PossionDis: object = {
 		log2FC: '',
 		FDR: ''
 	};
-
 	p_log2FC: string;
 	p_FDR: string;
 
@@ -118,9 +122,32 @@ export class DiffExpressionComponent implements OnInit {
 		log2FC: '',
 		probability: ''
 	};
-
 	n_log2FC: string;
 	n_probability: string;
+
+	d_show: boolean; //设置里面的DEGseq
+	DEGseq: object = {
+		log2FC: '',
+		Qvalue: ''
+	};
+	d_log2FC: string;
+	d_Qvalue: string;
+
+	de_show: boolean; //设置里面的DESeq2
+	DESeq2: object = {
+		log2FC: '',
+		Qvalue: ''
+	};
+	de_log2FC: string;
+	de_Qvalue: string;
+
+	e_show: boolean; //设置里面的EBSeq
+	EBSeq: object = {
+		log2FC: '',
+		PPEE: ''
+	}
+	e_log2FC: string;
+	e_PPEE: string;
 
 	activedCompareGroup: any[] = [];
 	singleMultiSelect: object = {
@@ -186,22 +213,35 @@ export class DiffExpressionComponent implements OnInit {
 		this.selectedData = [];
 		this.tableUrl = `${config['javaPath']}/Venn/diffGeneGraph`;
 
-		this.p_show = this.storeService.getStore('diff_threshold').hasOwnProperty('PossionDis'); //设置里面的PossionDis
-		this.PossionDis = {
-			log2FC: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '',
-			FDR: this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.FDR : ''
-		};
-		this.p_log2FC = this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.log2FC : '';
-		this.p_FDR = this.p_show ? this.storeService.getStore('diff_threshold').PossionDis.FDR : '';
+		this.tempThreshold = this.storeService.getStore('diff_threshold');
+		for (const key in this.tempThreshold) {
+			this.thresholdName.push(key)
+		}
 
-		this.n_show = this.storeService.getStore('diff_threshold').hasOwnProperty('NOIseq'); //设置里面的NOIseq
-		this.NOIseq = {
-			log2FC: this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.log2FC : '',
-			probability: this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.probability : ''
-		};
-
-		this.n_log2FC = this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.log2FC : '';
-		this.n_probability = this.n_show ? this.storeService.getStore('diff_threshold').NOIseq.probability : '';
+		for(let i = 0;i<this.thresholdName.length;i++){
+			const tempN = this.thresholdName[i];
+			if(tempN=="PossionDis"){
+				this.PossionDis = this.tempThreshold["PossionDis"];
+				this.p_log2FC = this.tempThreshold["PossionDis"].log2FC;
+				this.p_FDR = this.tempThreshold["PossionDis"].FDR;
+			}else if(tempN=="NOIseq"){
+				this.NOIseq = this.tempThreshold["NOIseq"];
+				this.n_log2FC = this.tempThreshold["NOIseq"].log2FC;
+				this.n_probability = this.tempThreshold["NOIseq"].probability;
+			}else if(tempN=="DEGseq"){
+				this.DEGseq = this.tempThreshold["DEGseq"];
+				this.d_log2FC = this.tempThreshold["DEGseq"].log2FC;
+				this.d_Qvalue = this.tempThreshold["DEGseq"].Qvalue;
+			}else if(tempN=="DESeq2"){
+				this.DESeq2 = this.tempThreshold["DESeq2"];
+				this.de_log2FC = this.tempThreshold["DESeq2"].log2FC;
+				this.de_Qvalue = this.tempThreshold["DESeq2"].Qvalue;
+			}else if(tempN=="EBSeq"){
+				this.EBSeq = this.tempThreshold["EBSeq"];
+				this.e_log2FC = this.tempThreshold["EBSeq"].log2FC;
+				this.e_PPEE = this.tempThreshold["EBSeq"].PPEE;
+			}
+		}
 
 		this.selectPanelData = [
 			//差异面板的数据
@@ -253,9 +293,7 @@ export class DiffExpressionComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			diffThreshold: {
-				PossionDis: this.PossionDis
-			},
+			diffThreshold: this.tempThreshold,
 			version: this.storeService.getStore('version'),
 			searchList: [],
 			sortThead: this.addColumn['sortThead']
@@ -284,9 +322,7 @@ export class DiffExpressionComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			diffThreshold: {
-				PossionDis: this.PossionDis
-			},
+			diffThreshold: this.tempThreshold,
 			version: this.storeService.getStore('version'),
 			searchList: [],
 			sortThead: this.addColumn['sortThead']
@@ -460,63 +496,113 @@ export class DiffExpressionComponent implements OnInit {
 		} catch (error) {}
 	}
 
-	OnChange(value: string): void {
+	OnChange(value,type) {
+		console.log(type);
+
 		if(parseInt(value)<0){
 			this.isShowSpan = true;
 			return;
 		}else{
 			this.isShowSpan = false;
-			this.PossionDis['log2FC'] = value;
+			if(type=="PossionDis"){
+				this.PossionDis['log2FC'] = value;
+			}else if(type=="NOIseq"){
+				this.NOIseq['log2FC'] = value;
+			}else if(type=="DEGseq"){
+				this.DEGseq['log2FC'] = value;
+			}else if(type=="DESeq2"){
+				this.DESeq2['log2FC'] = value;
+			}else if(type=="EBSeq"){
+				this.EBSeq['log2FC'] = value;
+			}
 		}
 
 	}
-	OnChange2(value: string): void {
-		this.PossionDis['FDR'] = value;
-	}
 
-	OnChange3(value: string): void {
-		this.NOIseq['log2FC'] = value;
-	}
-	OnChange4(value: string): void {
-		this.NOIseq['probability'] = value;
+	OnChange2(value,type){
+		//this.PossionDis['FDR'] = value;
+		if(type=="PossionDis"){
+			this.PossionDis['FDR'] = value;
+		}else if(type=="NOIseq"){
+			this.NOIseq['probability'] = value;
+		}else if(type=="DEGseq"){
+			this.DEGseq['Qvalue'] = value;
+		}else if(type=="DESeq2"){
+			this.DESeq2['Qvalue'] = value;
+		}else if(type=="EBSeq"){
+			this.EBSeq['PPEE'] = value;
+		}
 	}
 
 	panelChange() {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
-		if (this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR != this.PossionDis['FDR']) {
-			this.PossionDis = {
-				log2FC: this.p_show ? this.p_log2FC : '',
-				FDR: this.p_show ? this.p_FDR : ''
-			};
-		}
+		for(let i = 0;i<this.thresholdName.length;i++){
+			const tempN = this.thresholdName[i];
+			if(tempN=="PossionDis"){
+				if (this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR != this.PossionDis['FDR']) {
+					this.PossionDis = {
+						log2FC: this.p_log2FC,
+						FDR: this.p_FDR
+					};
 
-		if (this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability != this.NOIseq['probability']) {
-			this.NOIseq = {
-				log2FC: this.n_show ? this.n_log2FC : '',
-				probability: this.n_show ? this.n_probability : ''
-			};
-		}
+					this.tempThreshold["PossionDis"] = this.PossionDis;
+				}
+			}else if(tempN=="NOIseq"){
+				if (this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability != this.NOIseq['probability']) {
+					this.NOIseq = {
+						log2FC: this.n_log2FC,
+						probability: this.n_probability
+					};
+					this.tempThreshold["NOIseq"] = this.NOIseq;
+				}
+			}else if(tempN=="DEGseq"){
+				if (this.d_log2FC != this.DEGseq['log2FC'] || this.d_Qvalue != this.DEGseq['Qvalue']) {
+					this.DEGseq = {
+						log2FC: this.d_log2FC,
+						Qvalue: this.d_Qvalue
+					};
+					this.tempThreshold["DEGseq"] = this.DEGseq;
+				}
+			}else if(tempN=="DESeq2"){
+				if (this.de_log2FC != this.DESeq2['log2FC'] || this.de_Qvalue != this.DESeq2['Qvalue']) {
+					this.DESeq2 = {
+						log2FC: this.de_log2FC,
+						Qvalue: this.de_Qvalue
+					};
+					this.tempThreshold["DESeq2"] = this.DESeq2;
+				}
+			}else if(tempN=="EBSeq"){
+				if (this.e_log2FC != this.EBSeq['log2FC'] || this.e_PPEE != this.EBSeq['probability']) {
+					this.EBSeq = {
+						log2FC: this.e_log2FC,
+						PPEE: this.e_PPEE
+					};
+					this.tempThreshold["EBSeq"] = this.EBSeq;
+				}
+			}
 
+		}
 		this.panelShow = false;
 	}
 	setConfirm() {
 		//设置下拉面板点击确定时候的两个参数
-		if (this.p_show) {
-			this.tableEntity['diffThreshold'] = {
-				PossionDis: this.PossionDis
-			};
-			this.p_log2FC = this.PossionDis['log2FC'];
-			this.p_FDR = this.PossionDis['FDR'];
+		for (let index = 0; index < this.thresholdName.length; index++) {
+			const element = this.thresholdName[index];
+			if(element=="PossionDis"){
+				this.tableEntity['diffThreshold']['PossionDis'] = this.PossionDis;
+			}else if(element=="NOIseq"){
+				this.tableEntity['diffThreshold']['NOIseq'] = this.NOIseq;
+			}else if(element=="DEGseq"){
+				this.tableEntity['diffThreshold']['DEGseq'] = this.DEGseq;
+			}else if(element=="DESeq2"){
+				this.tableEntity['diffThreshold']['DESeq2'] = this.DESeq2;
+			}else if(element=="EBSeq"){
+				this.tableEntity['diffThreshold']['EBSeq'] = this.EBSeq;
+			}
 		}
-		if (this.n_show) {
-			this.tableEntity['diffThreshold'] = {
-				NOIseq: this.NOIseq
-			};
-			this.n_log2FC = this.NOIseq['log2FC'];
-			this.n_probability = this.NOIseq['probability'];
-		}
+		//console.log(this.tableEntity);
 
 		this.singleMultiSelect = {
 			bar_name: '',
