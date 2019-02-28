@@ -112,7 +112,8 @@ export class BigTableCheckComponent implements OnInit {
 	isFirst = true;
     computedTimer = null;
 
-    pageSizeChangeFlag:boolean = false; // pageSize改变的标志
+	pageSizeChangeFlag:boolean = false; // pageSize改变的标志
+	theadInitTimer:any = null;
 
 	constructor(
 		private translate: TranslateService,
@@ -630,30 +631,38 @@ export class BigTableCheckComponent implements OnInit {
 		this.classifySearchCondition();
 	}
 
+
 	computedTbody(tableHeight) {
-		if (tableHeight) {
+		if(this.theadInitTimer) clearInterval(this.theadInitTimer);
+		if (tableHeight && tableHeight>0) {
 			// 固定头的高度
-			let head = $(`#${this.tableId} .ant-table-fixed .ant-table-thead`).outerHeight();
-			// 分页的高度
-			let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
-			// 筛选条件的高度
-			let filter = $(`#${this.tableId} .table-filter`).outerHeight();
-			// 表头工具栏的高度
-			let tools = $(`#${this.tableId} .table-thead`).outerHeight();
-			// 首列gene的高度
-			let res = tableHeight - head - bottom - filter - tools - 2;
-			$(`#${this.tableId} .ant-table-body`).css('height', `${res}px`);
-            this.scroll['y'] = `${res}px`;
+			let head; 
+			this.theadInitTimer = setInterval(()=>{
+				head = $(`#${this.tableId} .ant-table-thead`).outerHeight();
+				if(head) {
+					clearInterval(this.theadInitTimer);
+					// 分页的高度
+					let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
+					// 筛选条件的高度
+					let filter = $(`#${this.tableId} .table-filter`).outerHeight();
+					// 表头工具栏的高度
+					let tools = $(`#${this.tableId} .table-thead`).outerHeight();
+					// 首列gene的高度
+					let res = tableHeight - head - bottom - filter - tools - 2;
+					$(`#${this.tableId} .ant-table-body`).css('height', `${res}px`);
+					this.scroll['y'] = `${res}px`;
 
-            try {
-                let thead = $(`#${this.tableId} .table-content thead tr th`);
-                $.each(thead,(i,v)=>{
-                    let w = $(v).outerWidth();
-                    $(`#${this.tableId} .table-content tbody tr td`).eq(i).css('min-width',w).css('max-width',w);
-                })
-            } catch (error) {
-
-            }
+					try {
+						let thead = $(`#${this.tableId} .table-content thead tr th`);
+						$.each(thead,(i,v)=>{
+							let w = $(v).outerWidth();
+							$(`#${this.tableId} .table-content tbody tr td`).eq(i).css('min-width',w).css('max-width',w);
+						})
+					} catch (error) {
+		
+					}
+				}
+			},100)
 		}
 	}
 

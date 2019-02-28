@@ -87,6 +87,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	@Output() syncRelative: EventEmitter<any> = new EventEmitter(); // 同步表头
 
+
 	count: number = 0; // 选中的基因个数
 	mongoId: any = null;
 	scroll: any = { x: '0', y: '0' };
@@ -176,6 +177,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	srcTotal: number = 0;
 	pageSizeChangeFlag: boolean = false; // pagesize 改变的标志  pagesize改变的时候 需要保留之前选中的基因 在剩下的基因里做默认的选中
+
+	theadInitTimer:any = null;
 
 	constructor(
 		private translate: TranslateService,
@@ -922,19 +925,26 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	}
 
 	computedTbody(tableHeight) {
-		if (tableHeight) {
+		if(this.theadInitTimer) clearInterval(this.theadInitTimer);
+		if (tableHeight && tableHeight>0) {
 			// 固定头的高度
-			let head = $(`#${this.tableId} .ant-table-fixed .ant-table-thead`).outerHeight();
-			// 分页的高度
-			let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
-			// 筛选条件的高度
-			let filter = $(`#${this.tableId} .table-filter`).outerHeight();
-			// 表头工具栏的高度
-			let tools = $(`#${this.tableId} .table-thead`).outerHeight();
-			// 首列gene的高度
-			let res = tableHeight - head - bottom - filter - tools - 2;
-			$(`#${this.tableId} .ant-table-body`).css('height', `${res}px`);
-			this.scroll['y'] = `${res}px`;
+			let head; 
+			this.theadInitTimer = setInterval(()=>{
+				head = $(`#${this.tableId} .ant-table-thead`).outerHeight();
+				if(head) {
+					clearInterval(this.theadInitTimer);
+					// 分页的高度
+					let bottom = $(`#${this.tableId} .table-bottom`).outerHeight();
+					// 筛选条件的高度
+					let filter = $(`#${this.tableId} .table-filter`).outerHeight();
+					// 表头工具栏的高度
+					let tools = $(`#${this.tableId} .table-thead`).outerHeight();
+					// 首列gene的高度
+					let res = tableHeight - head - bottom - filter - tools - 2;
+					$(`#${this.tableId} .ant-table-body`).css('height', `${res}px`);
+					this.scroll['y'] = `${res}px`;
+				}
+			},100)
 		}
 	}
 
