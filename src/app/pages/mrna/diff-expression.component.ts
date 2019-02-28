@@ -497,8 +497,6 @@ export class DiffExpressionComponent implements OnInit {
 	}
 
 	OnChange(value,type) {
-		console.log(type);
-
 		if(parseInt(value)<0){
 			this.isShowSpan = true;
 			return;
@@ -602,7 +600,6 @@ export class DiffExpressionComponent implements OnInit {
 				this.tableEntity['diffThreshold']['EBSeq'] = this.EBSeq;
 			}
 		}
-		//console.log(this.tableEntity);
 
 		this.singleMultiSelect = {
 			bar_name: '',
