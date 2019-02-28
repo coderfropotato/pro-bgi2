@@ -718,6 +718,7 @@ button{
 		top: 120px;
 		background-color: #fff;
 		z-index: -1;
+		box-shadow: rgba(17, 24, 151, 0.098) 0px 12px 30px;
 		&.active {
 			opacity: 1;
 			left: 0;
