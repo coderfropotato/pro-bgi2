@@ -131,8 +131,8 @@ export class RelativeSpliceComponent implements OnInit {
                     version: this.version,
                     geneType: this.geneType,
                     species: this.storeService.getStore("genome"),
-                    AS_type: this.AS_type_select,
-                    Group: this.group_select
+                    as_type: this.AS_type_select,
+                    as_group_name: this.group_select
                 };
 
 
@@ -160,8 +160,8 @@ export class RelativeSpliceComponent implements OnInit {
                     version: this.version,
                     searchList: [],
                     sortThead: this.addColumn["sortThead"],
-                    AS_type: this.AS_type_select,
-                    Group: this.group_select
+                    as_type: this.AS_type_select,
+                    as_group_name: this.group_select
                 };
                 this.defaultTableId = "splice";
             } catch (error) {}
@@ -199,9 +199,9 @@ export class RelativeSpliceComponent implements OnInit {
         this.bigTable._clearFilterWithoutRequest();
         this.bigTable._setParamsOfEntityWithoutRequest('pageIndex',1);
         if(this.selectUniqueList.length) {
-            this.bigTable._filter('unique', "unique", "double","$in",this.selectUniqueList.join(','),null);
+            this.bigTable._filter('as_id', "as_id", "string","$in",this.selectUniqueList.join(','),null);
         }else{
-            this.bigTable._deleteFilterWithoutRequest("unique","unique","$in");
+            this.bigTable._deleteFilterWithoutRequest("as_id","as_id","$in");
             this.bigTable._getData();
         }
     }
@@ -296,11 +296,11 @@ export class RelativeSpliceComponent implements OnInit {
     //单选
     doSingleData() {
         if($.isEmptyObject(this.singleMultiSelect)){
-            this.bigTable._deleteFilter("unique","unique","$in");
+            this.bigTable._deleteFilter("as_id","as_id","$in");
         }else{
             this.selectUniqueList.length = 0;
-            this.selectUniqueList.push(this.singleMultiSelect['unique']);
-            this.bigTable._filter('unique', "unique", "double","$in", this.selectUniqueList.join(','),null)
+            this.selectUniqueList.push(this.singleMultiSelect['as_id']);
+            this.bigTable._filter('as_id', "as_id", "string","$in", this.selectUniqueList.join(','),null)
         }
     }
 
@@ -312,13 +312,13 @@ export class RelativeSpliceComponent implements OnInit {
             tempArray.push(d["__data__"])
         });
         // 筛选表格
-        let gene = tempArray.map(v=>v['unique']);
+        let gene = tempArray.map(v=>v['as_id']);
         this.selectUniqueList.length = 0;
         this.selectUniqueList.push(...gene);
         if(this.selectUniqueList.length){
-            this.bigTable._filter('unique', "unique", "double","$in", this.selectUniqueList.join(','),null)
+            this.bigTable._filter('as_id', "as_id", "string","$in", this.selectUniqueList.join(','),null)
         }else{
-            this.bigTable._deleteFilter("unique","unique","$in");
+            this.bigTable._deleteFilter("as_id","as_id","$in");
         }
     }
 
@@ -385,8 +385,8 @@ export class RelativeSpliceComponent implements OnInit {
             });
 
             tempData.forEach((d) => {
-                x_value.push(d.x_site);
-                y_value.push(d.y_site);
+                x_value.push(d.as_x_site);
+                y_value.push(d.as_y_site);
             });
         }
 
@@ -593,8 +593,8 @@ export class RelativeSpliceComponent implements OnInit {
             );
 
             tempData.forEach((d) => {
-                d.x = xScale(d['x_site'])+left_ylength;
-                d.y = yScale(d['y_site'])+temp_add_width;
+                d.x = xScale(d['as_x_site'])+left_ylength;
+                d.y = yScale(d['as_y_site'])+temp_add_width;
             });
 
             // 默认用图例数组
@@ -623,14 +623,15 @@ export class RelativeSpliceComponent implements OnInit {
                 //             <br> AS_type:  ${d.AS_type}
                 //             <br> Group:  ${d.Group}
                 //             <br> st_gene_id:  ${d.st_gene_id}
-                //             <br> unique:  ${d.unique}
+                //             <br> as_id:  ${d.as_id}
                 //             <br> x_calculate: ${d.x}
                 //             <br> y_calculate:  ${d.y}
                 //             `;
-                let tipText = `AS_type:  ${d.AS_type}
-                            <br> Group:  ${d.Group}
+                //console.log(d);
+                let tipText = `AS_type:  ${d.as_type}
+                            <br> Group:  ${d.as_group_name}
                             <br> st_${that.geneType}_id: ${d[`st_${that.geneType}_id`]}
-                            <br> unique:  ${d.unique}`;
+                            <br> as_id:  ${d.as_id}`;
                 that.globalService.showPopOver(d3.event, tipText);
             })
             .on("mouseout", function(d) {

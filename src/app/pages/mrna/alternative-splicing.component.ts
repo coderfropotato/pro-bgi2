@@ -175,7 +175,7 @@ export class AlternativeSplicingComponent implements OnInit {
   //color change 回调函数
   colorChange(curColor) {
       this.chart.setColor(curColor, this.legendIndex);
-      this.alternativeSpliceChart.redraw();
+      this.chart.redraw();
   }
 
 }
