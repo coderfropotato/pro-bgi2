@@ -46,17 +46,17 @@
                         [(computedScrollHeight)]="computedScrollHeight"
               ></app-big-table> -->
 
-              <!-- [showFilterStatus]="defaultShowFilterStatus" -->
+              <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix"-->
               <app-geneTable
                 #defaultTable
                 [url]="defaultTableUrl"
                 [pageEntity]="defaultTableEntity"
                 [tableId]="defaultTableId"
-                [defaultChecked]="defaultTableDefaultChecked"
+                [defaultChecked]="defaultDefaultChecked"
                 [tableHeight]="tableHeight"
-                [tableType]="defaultTableType"
-                [checkStatusInParams]="defaultTableCheckStatusInParams"
-                [defaultMartix]="defaultMartix"
+                
+                [checkStatusInParams]="defaultCheckStatusInParams"
+                
                 [(computedScrollHeight)]="computedScrollHeight"
             ></app-geneTable>
         </div>

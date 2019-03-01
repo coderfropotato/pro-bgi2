@@ -44,17 +44,17 @@
                 [url]="defaultUrl"
                         [tableId]="diffDefaultTableId"
                         [(computedScrollHeight)]="computedScrollHeight"
-              ></app-big-table> -->
+              ></app-big-table>   [tableType]="defaultTableType"  [defaultMartix]="defaultMartix"-->
               <app-geneTable
                 #diffDefaultTable
                 [url]="diffDefaultTableUrl"
                 [pageEntity]="diffDefaultTableEntity"
-                [tableId]="diffDefaultTableId"
-                [defaultChecked]="defaultTableDefaultChecked"
+                [tableId]="defaultTableId"
+                [defaultChecked]="defaultDefaultChecked"
                 [tableHeight]="tableHeight"
-                [tableType]="defaultTableType"
-                [checkStatusInParams]="defaultTableCheckStatusInParams"
-                [defaultMartix]="defaultMartix"
+                
+                [checkStatusInParams]="defaultCheckStatusInParams"
+                
                 [(computedScrollHeight)]="computedScrollHeight"
             ></app-geneTable>
         </div>
