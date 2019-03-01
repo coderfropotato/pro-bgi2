@@ -25,6 +25,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
   @ViewChild('right') right;
   @ViewChild('func') func;
   @ViewChild('switchChart') switchChart;
+  @ViewChild('diffDefaultTable') diffDefaultTable;
 
   chartUrl: string;
   chartEntity: object;
@@ -38,6 +39,22 @@ export class DiffAlternativeSplicingComponent implements OnInit {
   computedScrollHeight: boolean = false;
 
   switch = 'right';
+
+  // 路由参数
+  tid: string = null;
+  geneType: string = "";
+  version: string = null;
+
+  // table
+  diffDefaultTableEntity: object;
+  diffDefaultTableUrl: string;
+  defaultTableId: string;
+  defaultDefaultChecked: boolean;
+  defaultCheckStatusInParams: boolean;
+  baseThead: any[] = [];
+
+  asType: string;
+  group: string;
 
   constructor(
     private message: MessageService,
@@ -63,15 +80,43 @@ export class DiffAlternativeSplicingComponent implements OnInit {
         if (event instanceof NavigationEnd) this.computedTableHeight();
       });
 
-      let browserLang = this.storeService.getLang();
-		  this.translate.use(browserLang);
+      this.routes.paramMap.subscribe(params => {
+          this.tid = params["params"]["tid"];
+          this.version = params["params"]["version"];
+          this.geneType = params["params"]["geneType"];
+          this.storeService.setTid(this.tid);
+      });
    }
 
   ngOnInit() {
-    this.chartUrl = `${config["javaPath"]}/alternativeSplice/groupAs`;
-    this.chartEntity = {
-        LCID: sessionStorage.getItem("LCID"),
-    };
+      this.chartUrl = `${config["javaPath"]}/alternativeSplice/groupAs`;
+      this.chartEntity = {
+          LCID: sessionStorage.getItem("LCID"),
+      };
+
+      this.asType = "A3SS";
+      this.group = this.storeService.getStore("group")[0];
+      // table
+      this.diffDefaultTableUrl = `${config["javaPath"]}/alternativeSplice/tableAs`;
+      this.diffDefaultTableEntity = {
+          LCID: sessionStorage.getItem("LCID"),
+          pageIndex: 1, //分页
+          pageSize: 20,
+          sortValue: null,
+          sortKey: null, //排序
+          searchList: [],
+          geneType: "gene", //基因类型gene和transcript
+          species: this.storeService.getStore("genome"), //物种
+          checkStatus: true,
+          checked: [],
+          unChecked: [],
+          asType:this.asType,
+          sample:this.group
+      };
+      this.defaultTableId = 'diff_alternative_default_splicing';
+      this.defaultDefaultChecked = true;
+      this.defaultCheckStatusInParams = true;
+
   }
 
   computedTableHeight() {
@@ -80,6 +125,12 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
+  }
+
+  ngAfterViewInit() {
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
   }
 
   // 切换左右布局 计算左右表格的滚动高度
@@ -170,6 +221,17 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 
   handlerRefresh() {
   
+  }
+
+  handleData(data){
+    //console.log(data);
+    this.asType = data[0].key.split("_")[1].toUpperCase();
+    this.group = data[0].data["compare_group"];
+
+    this.diffDefaultTable._setParamsOfEntityWithoutRequest('group', this.group);
+    this.diffDefaultTable._setParamsOfEntityWithoutRequest('asType', this.asType);
+    this.diffDefaultTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
+    this.diffDefaultTable._getData();
   }
 
   //color change 回调函数

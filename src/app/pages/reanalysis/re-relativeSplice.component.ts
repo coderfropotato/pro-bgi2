@@ -364,6 +364,7 @@ export class RelativeSpliceComponent implements OnInit {
 
     //画图
     drawChart(data) {
+        document.getElementById('relativeSpliceDiv').innerHTML = "";
         let that = this;
 
         // if(data.length == 0){
@@ -486,7 +487,7 @@ export class RelativeSpliceComponent implements OnInit {
 
         function drawRightTopLegend(){
 
-            let temp_width = 80;
+            let temp_width = right_name_length;
             let padding_left = temp_x_width + left_title+10;
 
             let r_legend = svg
@@ -523,7 +524,7 @@ export class RelativeSpliceComponent implements OnInit {
             .scale(symbolScale)
             .orient("vertical")
             .labelWrap(temp_width)
-            .labelOffset(0)
+            .labelOffset(5)
             .shapePadding(5)
             .title("Type")
             .titleWidth(temp_width)

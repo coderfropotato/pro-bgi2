@@ -45,5 +45,19 @@
                         [tableId]="defaultTableId"
                         [(computedScrollHeight)]="computedScrollHeight"
               ></app-big-table> -->
+
+              <!-- [showFilterStatus]="defaultShowFilterStatus" -->
+              <app-geneTable
+                #defaultTable
+                [url]="defaultTableUrl"
+                [pageEntity]="defaultTableEntity"
+                [tableId]="defaultTableId"
+                [defaultChecked]="defaultTableDefaultChecked"
+                [tableHeight]="tableHeight"
+                [tableType]="defaultTableType"
+                [checkStatusInParams]="defaultTableCheckStatusInParams"
+                [defaultMartix]="defaultMartix"
+                [(computedScrollHeight)]="computedScrollHeight"
+            ></app-geneTable>
         </div>
 </div>
