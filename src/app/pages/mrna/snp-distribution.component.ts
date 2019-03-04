@@ -26,9 +26,8 @@ export class SnpDistributionComponent implements OnInit {
   @ViewChild('right') right;
   @ViewChild('func') func;
   @ViewChild('switchChart') switchChart;
-  // @ViewChild('defaultSNPTable') defaultSNPTable;
+  @ViewChild('defaultSNPTable') defaultSNPTable;
 
-   //原始数据过滤成分统计
    chartSelectType:any=[];
    curSearchType:string;
    tableUrl:string;
@@ -38,6 +37,10 @@ export class SnpDistributionComponent implements OnInit {
   legendIndex: number = 0; //当前点击图例的索引
   color: string; //当前选中的color
   isShowColorPanel: boolean = false;
+
+  defaultTableEntity:object;
+  defaultTableUrl:string;
+  defaultTableId:string;  
 
   tableHeight = 0;
   computedScrollHeight: boolean = false;
@@ -71,7 +74,7 @@ export class SnpDistributionComponent implements OnInit {
   }
 
   ngOnInit() {
-    //原始数据过滤成分统计
+    //SNP 位点区域分布
     let sample = [];
     this.store.getStore("sample").forEach((d) => {
       let temp = {
@@ -83,11 +86,17 @@ export class SnpDistributionComponent implements OnInit {
     this.chartSelectType=sample;
     this.curSearchType=sample[0].value;
 
-    this.tableUrl=`${config["javaPath"]}/basicModule/rawReadsClass`;
-    this.tableEntity={
-      LCID: this.store.getStore('LCID'),
-      sample: this.curSearchType
+    // this.tableUrl=`${config["javaPath"]}/basicModule/rawReadsClass`;
+    // this.tableEntity={
+    //   LCID: this.store.getStore('LCID'),
+    //   sample: this.curSearchType
+    // };
+
+    this.tableUrl = `${config["javaPath"]}/alternativeSplice/sampleAs`;
+    this.tableEntity = {
+        LCID: sessionStorage.getItem("LCID"),
     };
+     
   }
 
   computedTableHeight() {
@@ -115,25 +124,77 @@ export class SnpDistributionComponent implements OnInit {
 		}, 320);
 	}
 
-  //原始数据过滤成分统计图表
+  //SNP 位点区域分布
   drawRawReads(data){
-    let temp = data.rows[0];
+    let data1 = {
+      "rows": [{
+        "sample_name": "HBRR1",
+        "snp_stat_up2k": 1702,
+        "snp_stat_exon": 43902,
+        "snp_stat_intron": 47315,
+        "snp_stat_down2k": 3852,
+        "snp_stat_intergenic": 12990
+      }],
+      "baseThead": [{
+        "true_key": "sample_name",
+        "name": "Sample",
+        "searchType": "string",
+        "hover": "",
+        "children":[]
+      }, {
+        "true_key": "snp_stat_up2k",
+        "name": "Up2k",
+        "searchType": "int",
+        "hover": "",
+        "children":[]
+      }, {
+        "true_key": "snp_stat_exon",
+        "name": "Exon",
+        "searchType": "int",
+        "hover": "",
+        "children":[]
+      }, {
+        "true_key": "snp_stat_intron",
+        "name": "Intron",
+        "searchType": "int",
+        "hover": "",
+        "children":[]
+      }, {
+        "true_key": "snp_stat_down2k",
+        "name": "Down2k",
+        "searchType": "int",
+        "hover": "",
+        "children":[]
+      }, {
+        "true_key": "snp_stat_intergenic",
+        "name": "Intergenic",
+        "searchType": "int",
+        "hover": "",
+        "children":[]
+      }]
+    };
+    let temp = data1.rows[0];
+    //let temp = data.rows[0];
     let tempArray = [
       {
-        name:"n_read_num",
-        value:temp.n_read_num
+        name:"Up2k",
+        value:temp.snp_stat_up2k
       },
       {
-        name:"adapter_read_num",
-        value:temp.adapter_read_num
+        name:"Exon",
+        value:temp.snp_stat_exon
       },
       {
-        name:"low_qual_read_num",
-        value:temp.low_qual_read_num
+        name:"intron",
+        value:temp.snp_stat_intron
       },
       {
-        name:"clean_read_num",
-        value:temp.clean_read_num
+        name:"Down2k",
+        value:temp.snp_stat_down2k
+      },
+      {
+        name:"intergenic",
+        value:temp.snp_stat_intergenic
       },
     ];
 
@@ -141,7 +202,7 @@ export class SnpDistributionComponent implements OnInit {
 
     let config:object={
       chart: {
-				title: "原始数据过滤成分统计",
+				title: "SNP位点区域分布",
         dblclick: function(event,title) {
           let text = title.firstChild.nodeValue;
           that.promptService.open(text,(data)=>{
@@ -156,7 +217,7 @@ export class SnpDistributionComponent implements OnInit {
         endAngle:360,
         showLabel:true,
         custom: ["name", "value"],
-        el: "#rawDataID",
+        el: "#snpDataID",
         type: "pie",
         data: tempArray
         },
@@ -170,11 +231,44 @@ export class SnpDistributionComponent implements OnInit {
             }
         },
         tooltip: function(d) {
-            return "<span>name："+d.data.name+"</span><br><span>value："+d.data.value+"</span>";
+            return "<span>name："+d.data.key+"</span><br><span>value："+d.data.value+"</span>";
         }
     }
 
       this.chart=new d4().init(config);
+  }
+
+  doWithDatas(res){
+    var sum = 0;
+    for (var name in res.rows[0]) {
+        if (typeof res.rows[0][name] == 'number') {
+            sum += res.rows[0][name];
+        }
+    }
+    var list = []
+    for (var key in res.rows[0]) {
+        if (typeof res.rows[0][key] == 'number') {
+            var obj = {};
+            obj['key'] = key;
+            obj['value'] = Math.round((res.rows[0][key] / sum) * 100 * 100) / 100;
+            list.push(obj);
+        }
+    }
+
+    var mapJson = {};
+    //$scope.mapJson2 = {};
+    res.baseThead.forEach(function(d, i) {
+        mapJson[d['true_key']] = d['name'];
+        //$scope.mapJson2[d['name']] = d['true_key'];
+    })
+
+    list.forEach(function(val, index) {
+        var temp = val.key;
+        delete val.key;
+        val['key'] = mapJson[temp]
+    })
+
+    return list;
   }
 
   handlerRefresh(){

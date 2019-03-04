@@ -16,7 +16,7 @@
               [apiEntity]="tableEntity"
               (drawChartEmit)="drawRawReads($event)"
               [flex]="true"
-              [chartId]="'rawDataID'"
+              [chartId]="'snpDataID'"
               [chartName]="'SNP 位点区域分布'"
               [otherLeftTemplate]='searchTemplate'
               (refresh)="handlerRefresh()"
@@ -40,7 +40,7 @@
               <!-- 只看表 -->
               <!-- <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i> -->
           <!-- </div> -->
-          <!-- 表格转换 -->
+          <!-- 表格转换 -->  
           <!-- <app-big-table
               *ngIf="defaultEntity"
               class="no-outside-border"
@@ -65,5 +65,15 @@
               [defaultMartix]="defaultMartix"
               [(computedScrollHeight)]="computedScrollHeight"
           ></app-geneTable> -->
+          <app-big-table
+                *ngIf="defaultTableEntity"
+                class="no-outside-border"
+                #defaultSNPTable
+                [tableHeight]="tableHeight"
+                [pageEntity]="defaultTableEntity"
+                [url]="defaultTableUrl"
+                [tableId]="defaultTableId"
+                [(computedScrollHeight)]="computedScrollHeight"
+            ></app-big-table>
       </div>
 </div>

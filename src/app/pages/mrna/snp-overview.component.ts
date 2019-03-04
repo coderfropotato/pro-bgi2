@@ -90,7 +90,7 @@ export class SnpOverviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.chartUrl = `${config["javaPath"]}/alternativeSplice/sampleAs`;
+      this.chartUrl = `${config["javaPath"]}/alternativeSplice/sampleAs`;
       this.chartEntity = {
           LCID: sessionStorage.getItem("LCID"),
       };
@@ -145,18 +145,155 @@ export class SnpOverviewComponent implements OnInit {
 	}
   
   drawChart(data) {
-    var baseThead = data.baseThead;
-		var rows = data.rows;
+
+    let data1 = {
+      "rows": [{
+        "sample_name": "HBRR1",
+        "snp_a_g": 41601,
+        "snp_c_t": 40971,
+        "snp_transition": 82572,
+        "snp_a_c": 6772,
+        "snp_a_t": 4532,
+        "snp_c_g": 9024,
+        "snp_g_t": 6861,
+        "snp_transversion": 27189,
+        "snp_total": 109761
+      }, {
+        "sample_name": "HBRR2",
+        "snp_a_g": 43066,
+        "snp_c_t": 42306,
+        "snp_transition": 85372,
+        "snp_a_c": 7065,
+        "snp_a_t": 4819,
+        "snp_c_g": 9499,
+        "snp_g_t": 7147,
+        "snp_transversion": 28530,
+        "snp_total": 113902
+      }, {
+        "sample_name": "HBRR3",
+        "snp_a_g": 38783,
+        "snp_c_t": 37853,
+        "snp_transition": 76636,
+        "snp_a_c": 6329,
+        "snp_a_t": 4247,
+        "snp_c_g": 8623,
+        "snp_g_t": 6564,
+        "snp_transversion": 25763,
+        "snp_total": 102399
+      }, {
+        "sample_name": "UHRR1",
+        "snp_a_g": 25313,
+        "snp_c_t": 24956,
+        "snp_transition": 50269,
+        "snp_a_c": 4414,
+        "snp_a_t": 2936,
+        "snp_c_g": 6174,
+        "snp_g_t": 4551,
+        "snp_transversion": 18075,
+        "snp_total": 68344
+      }, {
+        "sample_name": "UHRR2",
+        "snp_a_g": 37620,
+        "snp_c_t": 36664,
+        "snp_transition": 74284,
+        "snp_a_c": 6637,
+        "snp_a_t": 4544,
+        "snp_c_g": 9030,
+        "snp_g_t": 6725,
+        "snp_transversion": 26936,
+        "snp_total": 101220
+      }, {
+        "sample_name": "UHRR3",
+        "snp_a_g": 41088,
+        "snp_c_t": 40125,
+        "snp_transition": 81213,
+        "snp_a_c": 7091,
+        "snp_a_t": 4955,
+        "snp_c_g": 9490,
+        "snp_g_t": 6980,
+        "snp_transversion": 28516,
+        "snp_total": 109729
+      }],
+      "baseThead": [{
+        "true_key": "sample_name",
+        "name": "Sample",
+        "searchType": "string",
+        "hover": "",
+            "children":[]
+      }, {
+        "true_key": "snp_a_g",
+        "name": "A-G",
+        "searchType": "int",
+        "hover": "",
+            "children":[]
+      }, {
+        "true_key": "snp_c_t",
+        "name": "C-T",
+        "searchType": "int",
+        "hover": "",
+            "children":[]
+      }, {
+        "true_key": "snp_transition",
+        "name": "Transition",
+        "searchType": "int",
+        "hover": "",
+            "children":[]
+      }, {
+        "true_key": "snp_a_c",
+        "name": "A-C",
+        "searchType": "int",
+        "hover": "",
+            "children":[]
+      }, {
+        "true_key": "snp_a_t",
+        "name": "A-T",
+        "searchType": "int",
+        "hover": "",
+            "children":[]
+      }, {
+        "true_key": "snp_c_g",
+        "name": "C-G",
+        "searchType": "int",
+        "hover": "",
+            "children":[]
+      }, {
+        "true_key": "snp_g_t",
+        "name": "G-T",
+        "searchType": "int",
+        "hover": "",
+            "children":[]
+      }, {
+        "true_key": "snp_transversion",
+        "name": "Transversion",
+        "searchType": "int",
+        "hover": "",
+            "children":[]
+      }, {
+        "true_key": "snp_total",
+        "name": "Total",
+        "searchType": "int",
+        "hover": "",
+            "children":[]
+      }]
+    }
+
+
+    // var baseThead = data.baseThead;
+    // var rows = data.rows;
+    
+    var baseThead = data1.baseThead;
+		var rows = data1.rows;
 		var chartData = [];
 
 		for (var j = 0; j < rows.length; j++) {
 			chartData.push({
 				sample_name: rows[j].sample_name,
-				as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
-				as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
-				as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
-        as_ri: rows[j].as_ri * 100 / rows[j].as_total,
-        as_se: rows[j].as_se * 100 / rows[j].as_total
+				A_G: rows[j].snp_a_g * 100 / rows[j].snp_total,
+				C_T: rows[j].snp_c_t * 100 / rows[j].snp_total,
+				A_C: rows[j].snp_a_c * 100 / rows[j].snp_total,
+        A_T: rows[j].snp_a_t * 100 / rows[j].snp_total,
+        C_G: rows[j].snp_c_g * 100 / rows[j].snp_total,
+        G_T: rows[j].snp_g_t * 100 / rows[j].snp_total
 			});
 		}
 
