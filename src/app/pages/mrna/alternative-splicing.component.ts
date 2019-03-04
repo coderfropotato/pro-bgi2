@@ -25,7 +25,7 @@ export class AlternativeSplicingComponent implements OnInit {
   @ViewChild('right') right;
   @ViewChild('func') func;
   @ViewChild('switchChart') switchChart;
-  @ViewChild('defaultTable') defaultTable;
+  @ViewChild('defaultSpliceTable') defaultSpliceTable;
 
   chartUrl: string;
   chartEntity: object;
@@ -49,7 +49,7 @@ export class AlternativeSplicingComponent implements OnInit {
   defaultTableEntity: object;
   defaultTableUrl: string;
   defaultTableId: string;
-  defaultDefaultChecked: boolean;
+  defaultSpliceChecked: boolean;
   defaultCheckStatusInParams: boolean;
   baseThead: any[] = [];
 
@@ -115,7 +115,7 @@ export class AlternativeSplicingComponent implements OnInit {
           sample:this.sample
       };
       this.defaultTableId = 'alternative_default_splicing';
-      this.defaultDefaultChecked = true;
+      this.defaultSpliceChecked = true;
       this.defaultCheckStatusInParams = true;
 
   }
@@ -234,10 +234,10 @@ export class AlternativeSplicingComponent implements OnInit {
     this.asType = data[0].key.split("_")[1].toUpperCase();
     this.sample = data[0].data["sample_name"];
 
-    this.defaultTable._setParamsOfEntityWithoutRequest('sample', this.sample);
-    this.defaultTable._setParamsOfEntityWithoutRequest('asType', this.asType);
-    this.defaultTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
-    this.defaultTable._getData();
+    this.defaultSpliceTable._setParamsOfEntityWithoutRequest('sample', this.sample);
+    this.defaultSpliceTable._setParamsOfEntityWithoutRequest('asType', this.asType);
+    this.defaultSpliceTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
+    this.defaultSpliceTable._getData();
   }
 
   //color change 回调函数

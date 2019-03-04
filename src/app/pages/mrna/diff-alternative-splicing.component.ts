@@ -48,8 +48,8 @@ export class DiffAlternativeSplicingComponent implements OnInit {
   // table
   diffDefaultTableEntity: object;
   diffDefaultTableUrl: string;
-  defaultTableId: string;
-  defaultDefaultChecked: boolean;
+  defaultDiffTableId: string;
+  defaultDiffChecked: boolean;
   defaultCheckStatusInParams: boolean;
   baseThead: any[] = [];
 
@@ -113,8 +113,8 @@ export class DiffAlternativeSplicingComponent implements OnInit {
           asType:this.asType,
           sample:this.group
       };
-      this.defaultTableId = 'diff_alternative_default_splicing';
-      this.defaultDefaultChecked = true;
+      this.defaultDiffTableId = 'diff_alternative_default_splicing';
+      this.defaultDiffChecked = true;
       this.defaultCheckStatusInParams = true;
 
   }
