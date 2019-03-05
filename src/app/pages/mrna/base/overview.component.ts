@@ -471,7 +471,25 @@ export class OverviewComponent implements OnInit {
 	//箱线图
 	drawBoxReads(data) {
 		console.log(data);
-		
+		var dataLength = data['data'].length;
+		var xData = [],
+		yData = [],
+		lineData = [];
+
+		for (var i = 0; i < dataLength; i++) {
+			xData.push(data['data'][i].name);
+			var spotLength = data['data'][i].spotData.length;
+
+			for (var j = 0; j < spotLength; j++) {
+				yData.push(data['data'][i].spotData[j].y);
+			}
+
+			lineData.push({
+				x: data['data'][i].name,
+				y: data['data'][i].spotData[spotLength - 1].y
+			});
+		}
+
 		let that = this;
 		let config: object = {
 			chart: {
@@ -495,6 +513,10 @@ export class OverviewComponent implements OnInit {
 				},
 				el: "#BoxDataID",
 				type: "boxplot",
+				width: 660,
+				onselect: data => {
+					console.log(data);
+				},
 				style: {
 				  fill: "#ffffff",
 				  stroke: "#000000"
@@ -516,7 +538,7 @@ export class OverviewComponent implements OnInit {
 					stroke: "red",
 					"stroke-width": 2
 				  },
-				  data: [],
+				  data: lineData,
 				  tooltip: function(d) {
 					return "<span>x轴：d.x</span><br><span>y轴：d.y</span>";
 				  }
@@ -527,7 +549,7 @@ export class OverviewComponent implements OnInit {
 				x: {
 				  title: "",
 				  rotate: 30,
-				  data:[],
+				  data:xData,
 				  dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 					if (name) {
@@ -539,7 +561,7 @@ export class OverviewComponent implements OnInit {
 				y: {
 				  title: "log10(FPKM+1)",
 				  min: 0,
-				  data:[],
+				  data:yData,
 				  dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 					if (name) {
@@ -551,7 +573,7 @@ export class OverviewComponent implements OnInit {
 			  },
 			  legend: {
 				show: true,
-				data:[],
+				data:xData,
 				position: "right",
 				click: function(d, index) {
 					that.colorBox = d3.select(d).attr('fill');
