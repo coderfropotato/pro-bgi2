@@ -2,9 +2,9 @@
     <h2 class="title">3.Reads过滤</h2>
     <hr class="mhr" />
 
-    <h4 class="title" *ngIf="seq_platform.length !=0">测序平台：<span>{{seq_platform}}</span></h4>
-    <h4 class="title" *ngIf="seq_length.length !=0">测序长度：<span>{{seq_length}}</span></h4>
-    <h4 class="title" *ngIf="fragment_peak.length !=0">文库峰值长度：<span>{{fragment_peak}}</span></h4>
+    <h4 class="title" *ngIf="seq_platform">测序平台：<span>{{seq_platform}}</span></h4>
+    <h4 class="title" *ngIf="seq_length">测序长度：<span>{{seq_length}}</span></h4>
+    <h4 class="title" *ngIf="fragment_peak">文库峰值长度：<span>{{fragment_peak}}</span></h4>
 
     <h3 class="title">3.1 过滤后的 Reads 质量统计</h3>
     <div class="f-content">

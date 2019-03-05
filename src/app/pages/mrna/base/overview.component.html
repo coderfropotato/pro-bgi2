@@ -73,4 +73,68 @@
         </div>
 
     </div>
+
+    <h3 class="title">1.4 表达量分布</h3>
+    <div class="f-content">
+        <h4 class="title">1.4.1 箱线图</h4>
+        <div class="t-content">
+            <app-table-switch-chart
+                #Boxplot
+                [id]="'Boxplot'"
+                [tableUrl]="tableBoxUrl"
+                [chartUrl]="chartBoxUrl"
+                [apiEntity]="tableBoxEntity"
+                (drawChartEmit)="drawBoxReads($event)"
+                [flex]="true"
+                [chartId]="'BoxDataID'"
+                [chartName]="'表达量箱线图'"
+                (refresh)="handlerRefresh()"
+                [chartDescContent]="'X 轴为样品名称，Y轴为log10(FPKM+1)，每个区域的箱线图对应五个统计量（ 自上而下分别为上限、上四分位数、中位数、下四分位数、下限，其中上限和下限未考虑异常值）。'"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="colorBox" (colorChange)="colorBoxChange($event)" [(show)]="isBoxShowColorPanel"
+                    ></app-color-picker>
+        </div>
+    </div>
+
+    <div class="f-content">
+        <h4 class="title">1.4.2 密度图</h4>
+        <div class="t-content">
+            <app-table-switch-chart
+                #DensityMap
+                [id]="'DensityMap'"
+                [chartUrl]="chartMapUrl"
+                [apiEntity]="tableMapEntity"
+                (drawChartEmit)="drawMapReads($event)"
+                [flex]="true"
+                [chartId]="'MapDataID'"
+                [chartName]="'表达量密度图'"
+                (refresh)="handlerRefresh()"
+                [chartDescContent]="'X 轴为 log2（ FPKM+1 ），Y轴为基因的密度，即该表达量下的基因数与表达基因总数的比例。'"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="colorMap" (colorChange)="colorMapChange($event)" [(show)]="isMapShowColorPanel"
+                    ></app-color-picker>
+        </div>
+    </div>
+
+    <div class="f-content">
+        <h4 class="title">1.4.3 堆积柱状图</h4>
+        <div class="t-content">
+            <app-table-switch-chart
+            #stackMap
+            [id]="'stackMap'"
+            [tableUrl]="stackMapUrl"
+            [apiEntity]="stackMapEntity"
+            (drawChartEmit)="drawStackMap($event)"
+            [flex]="true"
+            [chartId]="'stackMapData'"
+            [chartName]="'表达量堆积图'"
+            (refresh)="handlerRefresh()"
+        >
+        </app-table-switch-chart>
+        <app-color-picker [(color)]="colorT" (colorChange)="colorTChange($event)" [(show)]="isShowColorPanelT"
+                ></app-color-picker>
+        </div>
+    </div>
 </div>
