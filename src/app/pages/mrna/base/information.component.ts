@@ -94,6 +94,7 @@ export class InformationComponent implements OnInit {
 
 		this.species_name = this.store.getStore('species_name');
 
+		//if()
 		this.ref_info = this.store.getStore('ref_info');
 
 		//2.2 RNA分类
