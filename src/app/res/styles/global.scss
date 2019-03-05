@@ -1603,14 +1603,14 @@ button{
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 0.1px solid #EEEEEE;
+		border: 1px solid #EEEEEE;
 		border-radius: 4px;
 	}
 	.t-content{
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 0px solid #EEEEEE;
+		border: 1px solid #EEEEEE;
 		border-radius: 4px;
 	}
 	.title{
@@ -1795,7 +1795,7 @@ button{
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 0.5px solid #EEEEEE;
+		border: 1px solid #EEEEEE;
 		border-radius: 4px;
 	}
 	.t-content{
@@ -1853,6 +1853,10 @@ button{
 
 // 图表说明
 .descTitle{
+	padding-bottom: 6px;
+	width: 98%;
+	cursor: pointer;
+    margin: 0 auto;
 	&:hover{
 		color: $font_active_color;
 	}
