@@ -86,15 +86,10 @@ export class IndelDistributionComponent implements OnInit {
     this.chartSelectType=sample;
     this.curSearchType=sample[0].value;
 
-    // this.tableUrl=`${config["javaPath"]}/basicModule/rawReadsClass`;
-    // this.tableEntity={
-    //   LCID: this.store.getStore('LCID'),
-    //   sample: this.curSearchType
-    // };
-
-    this.tableUrl = `${config["javaPath"]}/alternativeSplice/sampleAs`;
-    this.tableEntity = {
-        LCID: sessionStorage.getItem("LCID"),
+    this.tableUrl=`${config["javaPath"]}/alternativeSplice/indelAnnotationStat`;
+    this.tableEntity={
+      LCID: this.store.getStore('LCID'),
+      sample: this.curSearchType
     };
      
   }
@@ -126,75 +121,27 @@ export class IndelDistributionComponent implements OnInit {
 
   //Indel位点区域分布
   drawIndelReads(data){
-    let data1 = {
-      "rows": [{
-        "sample_name": "HBRR1",
-        "snp_stat_up2k": 1702,
-        "snp_stat_exon": 43902,
-        "snp_stat_intron": 47315,
-        "snp_stat_down2k": 3852,
-        "snp_stat_intergenic": 12990
-      }],
-      "baseThead": [{
-        "true_key": "sample_name",
-        "name": "Sample",
-        "searchType": "string",
-        "hover": "",
-        "children":[]
-      }, {
-        "true_key": "snp_stat_up2k",
-        "name": "Up2k",
-        "searchType": "int",
-        "hover": "",
-        "children":[]
-      }, {
-        "true_key": "snp_stat_exon",
-        "name": "Exon",
-        "searchType": "int",
-        "hover": "",
-        "children":[]
-      }, {
-        "true_key": "snp_stat_intron",
-        "name": "Intron",
-        "searchType": "int",
-        "hover": "",
-        "children":[]
-      }, {
-        "true_key": "snp_stat_down2k",
-        "name": "Down2k",
-        "searchType": "int",
-        "hover": "",
-        "children":[]
-      }, {
-        "true_key": "snp_stat_intergenic",
-        "name": "Intergenic",
-        "searchType": "int",
-        "hover": "",
-        "children":[]
-      }]
-    };
-    let temp = data1.rows[0];
-    //let temp = data.rows[0];
+    let temp = data.rows[0];
     let tempArray = [
       {
         name:"Up2k",
-        value:temp.snp_stat_up2k
+        value:temp.indel_stat_up2k
       },
       {
         name:"Exon",
-        value:temp.snp_stat_exon
+        value:temp.indel_stat_exon
       },
       {
         name:"intron",
-        value:temp.snp_stat_intron
+        value:temp.indel_stat_intron
       },
       {
         name:"Down2k",
-        value:temp.snp_stat_down2k
+        value:temp.indel_stat_down2k
       },
       {
         name:"intergenic",
-        value:temp.snp_stat_intergenic
+        value:temp.indel_stat_intergenic
       },
     ];
 
@@ -238,37 +185,9 @@ export class IndelDistributionComponent implements OnInit {
       this.chart=new d4().init(config);
   }
 
-  doWithDatas(res){
-    var sum = 0;
-    for (var name in res.rows[0]) {
-        if (typeof res.rows[0][name] == 'number') {
-            sum += res.rows[0][name];
-        }
-    }
-    var list = []
-    for (var key in res.rows[0]) {
-        if (typeof res.rows[0][key] == 'number') {
-            var obj = {};
-            obj['key'] = key;
-            obj['value'] = Math.round((res.rows[0][key] / sum) * 100 * 100) / 100;
-            list.push(obj);
-        }
-    }
-
-    var mapJson = {};
-    //$scope.mapJson2 = {};
-    res.baseThead.forEach(function(d, i) {
-        mapJson[d['true_key']] = d['name'];
-        //$scope.mapJson2[d['name']] = d['true_key'];
-    })
-
-    list.forEach(function(val, index) {
-        var temp = val.key;
-        delete val.key;
-        val['key'] = mapJson[temp]
-    })
-
-    return list;
+  searchTypeChange(){
+    this.tableEntity["sample"] = this.curSearchType;
+    this.indelDataChart.reGetData();
   }
 
   handlerRefresh(){
