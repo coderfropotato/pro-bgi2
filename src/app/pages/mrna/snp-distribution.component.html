@@ -1,7 +1,7 @@
 <!-- <p>
   snp-distribution works!
 </p> -->
-<div class="content row  distribution">
+<!-- <div class="content row  distribution">
   <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
       <div class="left-bottom-layout">
           <ng-template #searchTemplate>
@@ -29,7 +29,7 @@
       <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
           <div class="switch">
               <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
-          </div>
+          </div> -->
           <!-- <div class="func" #func (click)="resize($event)"> -->
               <!-- 增删列 -->
               <!-- <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column> -->
@@ -65,7 +65,7 @@
               [defaultMartix]="defaultMartix"
               [(computedScrollHeight)]="computedScrollHeight"
           ></app-geneTable> -->
-          <app-big-table
+          <!-- <app-big-table
                 *ngIf="defaultTableEntity"
                 class="no-outside-border"
                 #defaultSNPTable
@@ -76,4 +76,26 @@
                 [(computedScrollHeight)]="computedScrollHeight"
             ></app-big-table>
       </div>
+</div> -->
+<div>
+    <ng-template #searchTemplate>
+        <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
+            <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+        </nz-select>
+    </ng-template>
+    <app-table-switch-chart
+        #rawDataChart
+        [id]="'rawDataChart'"
+        [tableUrl]="tableUrl"
+        [apiEntity]="tableEntity"
+        (drawChartEmit)="drawRawReads($event)"
+        [flex]="true"
+        [chartId]="'snpDataID'"
+        [chartName]="'SNP位点区域分布'"
+        [otherLeftTemplate]='searchTemplate'
+        (refresh)="handlerRefresh()"
+    >
+    </app-table-switch-chart>
+    <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+            ></app-color-picker>
 </div>

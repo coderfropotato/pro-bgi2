@@ -54,8 +54,8 @@ export class SnpOverviewComponent implements OnInit {
   defaultCheckStatusInParams: boolean;
   baseThead: any[] = [];
 
-  asType: string;
-  sample: string;
+  // asType: string;
+  // sample: string;
 
   constructor(
     private message: MessageService,
@@ -95,10 +95,10 @@ export class SnpOverviewComponent implements OnInit {
           LCID: sessionStorage.getItem("LCID"),
       };
 
-      this.asType = "A3SS";
-      this.sample = this.storeService.getStore("sample")[0];
+      // this.asType = "A3SS";
+      // this.sample = this.storeService.getStore("sample")[0];
       // table
-      this.defaultTableUrl = `${config["javaPath"]}/alternativeSplice/tableAs`;
+      this.defaultTableUrl = `${config["javaPath"]}/alternativeSplice/tableSnp`;
       this.defaultTableEntity = {
           LCID: sessionStorage.getItem("LCID"),
           pageIndex: 1, //分页
@@ -111,8 +111,8 @@ export class SnpOverviewComponent implements OnInit {
           checkStatus: true,
           checked: [],
           unChecked: [],
-          asType:this.asType,
-          sample:this.sample
+          // asType:this.asType,
+          // sample:this.sample
       };
       this.defaultTableId = 'snp_default_overview';
       this.defaultTableChecked = true;
@@ -176,12 +176,7 @@ export class SnpOverviewComponent implements OnInit {
 				type: 'stackBarPercent',
 				width: 660,
 				custom: [ 'sample_name' ],
-        data: chartData,
-        enableChartSelect: true,
-        onselect: function(data) {
-          //console.log(data);
-          that.handleData(data);
-        },
+        data: chartData
 			},
 			axis: {
 				x: {
@@ -228,17 +223,6 @@ export class SnpOverviewComponent implements OnInit {
 
   handlerRefresh() {
   
-  }
-
-  handleData(data){
-    //console.log(data);
-    this.asType = data[0].key.split("_")[1].toUpperCase();
-    this.sample = data[0].data["sample_name"];
-
-    this.defaultSNPTable._setParamsOfEntityWithoutRequest('sample', this.sample);
-    this.defaultSNPTable._setParamsOfEntityWithoutRequest('asType', this.asType);
-    this.defaultSNPTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
-    this.defaultSNPTable._getData();
   }
 
   //color change 回调函数

@@ -77,6 +77,7 @@
     <h3 class="title">1.4 表达量分布</h3>
     <div class="f-content">
         <h4 class="title">1.4.1 箱线图</h4>
+        <p class="help_text">箱线图展示各样品基因表达水平的分布情况，可以观察到数据分布的分散程度。</p>
         <div class="t-content">
             <app-table-switch-chart
                 #Boxplot
@@ -99,6 +100,7 @@
 
     <div class="f-content">
         <h4 class="title">1.4.2 密度图</h4>
+        <p class="help_text">密度图能够展示样品中基因丰度随着表达量变化的趋势，可以清晰地反映样本中基因表达量集中的区间。</p>
         <div class="t-content">
             <app-table-switch-chart
                 #DensityMap
@@ -120,6 +122,7 @@
 
     <div class="f-content">
         <h4 class="title">1.4.3 堆积柱状图</h4>
+        <p class="help_text">为了更直观地展示每个样品在不同 FPKM 区间的基因数目，我们对FPKM（FPKM<=1、FPKM 1~10、FPKM>=10）的三种情况进行了基因数目的统计。</p>
         <div class="t-content">
             <app-table-switch-chart
             #stackMap

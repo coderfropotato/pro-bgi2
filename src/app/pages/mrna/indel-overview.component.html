@@ -1,3 +1,15 @@
-<p>
+<!-- <p>
   indel-overview works!
-</p>
+</p> -->
+<div>
+    <app-geneTable
+      #defaultIndelTable
+      [url]="defaultTableUrl"
+      [pageEntity]="defaultTableEntity"
+      [tableId]="defaultTableId"
+      [defaultChecked]="defaultTableChecked"
+      [tableHeight]="tableHeight"
+      [checkStatusInParams]="defaultCheckStatusInParams"
+      [(computedScrollHeight)]="computedScrollHeight"
+  ></app-geneTable>
+</div>
