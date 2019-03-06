@@ -18,6 +18,9 @@ declare const d4: any;
 export class OverviewComponent implements OnInit {
 	@ViewChild('relevanceChart') relevanceChart;
 	@ViewChild('PCAChart') PCAChart;
+	@ViewChild('Boxplot') Boxplot;
+	@ViewChild('DensityMap') DensityMap;
+	@ViewChild('stackMap') stackMap;
 
 	abstract_general: string;
 
@@ -40,6 +43,23 @@ export class OverviewComponent implements OnInit {
 	tablePCAEntity: object;
 	chartPCA: any;
 
+	//箱线图
+	tableBoxUrl: string;
+	chartBoxUrl: string;
+	tableBoxEntity: object;
+	chartBox: any;
+
+	//密度图
+	chartMapUrl: string;
+	tableMapEntity: object;
+	chartMap: any;
+
+	//堆积图
+	stackMapUrl: string;
+	stackChartUrl: string;
+	stackMapEntity: object;
+	chartStack: any;
+
 	//图例颜色
 	isShowColorPanel: boolean = false;
 	legendIndex: number = 0; //当前点击图例的索引
@@ -50,6 +70,18 @@ export class OverviewComponent implements OnInit {
 	isShowQualityColorPanel: boolean = false;
 	legendIndexThree: number = 0; //当前点击图例的索引
 	colorQuality: string; //当前选中的color
+
+	isBoxShowColorPanel:boolean = false;
+	legendIndexBox:number = 0;
+	colorBox:string;
+
+	isMapShowColorPanel:boolean = false;
+	legendIndexMap:number = 0;
+	colorMap:string;
+
+	isShowColorPanelT: boolean = false;
+	legendIndexT: number = 0; //当前点击图例的索引
+	colorT: string; //当前选中的color
 
 	constructor(
 		private message: MessageService,
@@ -98,12 +130,36 @@ export class OverviewComponent implements OnInit {
 			pca_info.push(temp);
 		});
 		this.PCASelectType = pca_info;
-		this.PCASearchType = pca_info[0].value;
+		if(pca_info.length != 0){
+			this.PCASearchType = pca_info[0].value;
+		}else{
+			this.PCASearchType = "";
+		}
+		
 
 		this.tablePCAUrl = `${config['javaPath']}/basicModule/PCA`;
 		this.tablePCAEntity = {
 			LCID: this.store.getStore('LCID'),
 			pca_info: this.PCASearchType
+		};
+
+		//箱线图
+		this.tableBoxUrl = `${config['javaPath']}/basicModule/boxTable`;
+		this.chartBoxUrl = `${config['javaPath']}/basicModule/box`;
+		this.tableBoxEntity = {
+			LCID: this.store.getStore('LCID')
+		};
+
+		//密度图
+		this.chartMapUrl = `${config['javaPath']}/basicModule/density`;
+		this.tableMapEntity = {
+			LCID: this.store.getStore('LCID')
+		};
+
+		//堆积图
+		this.stackMapUrl = `${config['javaPath']}/basicModule/geneExpression`;
+		this.stackMapEntity = {
+			LCID: this.store.getStore('LCID')
 		};
 	}
 
@@ -411,6 +467,294 @@ export class OverviewComponent implements OnInit {
 
 
 	}
+
+	//箱线图
+	drawBoxReads(data) {
+		console.log(data);
+		var dataLength = data['data'].length;
+		var xData = [],
+		yData = [],
+		lineData = [];
+
+		for (var i = 0; i < dataLength; i++) {
+			xData.push(data['data'][i].name);
+			var spotLength = data['data'][i].spotData.length;
+
+			for (var j = 0; j < spotLength; j++) {
+				yData.push(data['data'][i].spotData[j].y);
+			}
+
+			lineData.push({
+				x: data['data'][i].name,
+				y: data['data'][i].spotData[spotLength - 1].y
+			});
+		}
+
+		let that = this;
+		let config: object = {
+			chart: {
+				title: "表达量箱线图",
+				dblclick: function(event) {
+				  var name = prompt("请输入需要修改的标题", "");
+				  if (name) {
+					this.setChartTitle(name);
+					this.updateTitle();
+				  }
+				},
+				mouseover: function(event, titleObj) {
+				  titleObj
+					.attr("fill", "blue")
+					.append("title")
+					.text("custom");
+				},
+				mouseout: function(event, titleObj) {
+				  titleObj.attr("fill", "#333");
+				  titleObj.select("title").remove();
+				},
+				el: "#BoxDataID",
+				type: "boxplot",
+				width: 660,
+				onselect: data => {
+					console.log(data);
+				},
+				style: {
+				  fill: "#ffffff",
+				  stroke: "#000000"
+				},
+				scatter: {
+				  show: true,
+				  style: {
+					fill: "#000",
+					stroke: "#000",
+					"stroke-width": 1,
+					radius: 4
+				  }
+				},
+				line: {
+				  show: true,
+				  smooth: true,
+				  point: true,
+				  style: {
+					stroke: "red",
+					"stroke-width": 2
+				  },
+				  data: lineData,
+				  tooltip: function(d) {
+					return "<span>x轴：d.x</span><br><span>y轴：d.y</span>";
+				  }
+				},
+				data: data.data
+			  },
+			  axis: {
+				x: {
+				  title: "",
+				  rotate: 30,
+				  data:xData,
+				  dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					  this.setXTitle(name);
+					  this.updateTitle();
+					}
+				  }
+				},
+				y: {
+				  title: "log10(FPKM+1)",
+				  min: 0,
+				  data:yData,
+				  dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					  this.setYTitle(name);
+					  this.updateTitle();
+					}
+				  }
+				}
+			  },
+			  legend: {
+				show: true,
+				data:xData,
+				position: "right",
+				click: function(d, index) {
+					that.colorBox = d3.select(d).attr('fill');
+					that.legendIndexBox = index;
+					that.isBoxShowColorPanel = true;
+				},
+			  },
+			  tooltip: function(d) {
+				return "<span>样本："+d.x+"</span><br><span>y："+d.y+"</span>";
+			  }
+		}
+
+		this.chartBox = new d4().init(config);
+	}
+
+	//密度图
+	drawMapReads(data){
+		console.log(data);
+		let tempData = data.data;
+		let targetData = [];
+		for(var i = 0;i < tempData.length;i++){
+			let temp_name = tempData[i].name;
+			for(var j = 0;j <tempData[i].areaData.length;j++){
+				var tempObj = {
+					x:tempData[i].areaData[j].x,
+					y:tempData[i].areaData[j].y,
+					name:temp_name
+				}
+				targetData.push(tempObj)
+			}
+		}
+
+		//console.log(targetData)
+		let that = this;
+		let config: object = {
+			chart: {
+				title: "表达量密度图",
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+						this.setChartTitle(name);
+						this.updateTitle();
+					}
+				},
+				custom: ["x", "y","name"],
+				el: "#MapDataID", // area chart type
+				type: "area",
+				width:660,
+				data: targetData
+			},
+			axis: {
+				x: {
+					title: "log10(FPKM+1)",
+					dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setXTitle(name);
+							this.updateTitle();
+						}
+					}
+				},
+				y: {
+					title: "density",
+					dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setYTitle(name);
+							this.updateTitle();
+						}
+					}
+				}
+			},
+			legend: {
+				show: true,
+				position: "right",
+				dblclick: function(el) {
+					console.log(el);
+				}
+			},
+			tooltip: function(d) {
+				return (
+					"<span>x：" + d.x + "</span><br><span>y：" + d.y +"</span><br><span>name："+ d.name +"</span>"
+				);
+			}
+		}
+
+		this.chartMap = new d4().init(config)
+	}
+
+	//堆积图
+	drawStackMap(data){
+
+		var baseThead = data.baseThead;
+		var rows = data.rows;
+		var chartData = [];
+		var sample =  this.store.getStore('sample');
+
+		for (var i = 0; i < sample.length; i++) {
+			var row = {'sample': sample[i], 'total': 0}
+			for (var j = 0; j < rows.length; j++) {
+				row[rows[j].range] = rows[j]['fpkm_' + sample[i]]
+			}
+			for (var j = 0; j < rows.length; j++) {
+				row['total'] += rows[j]['fpkm_' + sample[i]]
+			}
+			chartData.push(row);
+		}
+
+		// for (var i = 0; i < rows.length; i++) {
+		// 	let temp = {};
+		// 	let total = 0;
+		// 	for (let j = 0; j < baseThead.length; j++) {
+		// 		let tempName = baseThead[j].true_key;
+		// 		let tempValue = rows[i][tempName];
+		// 		temp[tempName] = tempValue;
+		// 		if(tempName != "range"){
+		// 		  total += tempValue;
+		// 		}
+		// 	}
+		// 	temp["total"] = total;
+		// 	chartData.push(temp)
+		// }
+		console.log(chartData)
+
+		let that = this;
+
+		let config: object = {
+			chart: {
+				title: '表达量堆积图',
+				dblclick: function(event) {
+					var name = prompt('请输入需要修改的标题', '');
+					if (name) {
+						this.setChartTitle(name);
+						this.updateTitle();
+					}
+				},
+				el: '#stackMapData',
+				type: 'stackBar',
+				width: 800,
+				custom: [ 'sample', 'total' ],
+				data: chartData
+			},
+			axis: {
+				x: {
+					title: 'Sample',
+					dblclick: function(event) {
+						var name = prompt('请输入需要修改的标题', '');
+						if (name) {
+							this.setXTitle(name);
+							this.updateTitle();
+						}
+					},
+					// rotate: 60
+				},
+				y: {
+					title: 'GeneNumber',
+					dblclick: function(event) {
+						var name = prompt('请输入需要修改的标题', '');
+						if (name) {
+							this.setYTitle(name);
+							this.updateTitle();
+						}
+					}
+				}
+			},
+			legend: {
+				show: true,
+				position: 'right',
+				click: function(d, index) {
+					that.colorT = d3.select(d).attr('fill');
+					that.legendIndexT = index;
+					that.isShowColorPanelT = true;
+				}
+			},
+			tooltip: function(d) {
+				return '<span>类型：' + d.key + '</span><br><span>转录本数目：' + d.data[d.key] + '</span><br><span>转录本数目：'+ d.data["item"]+'</span>';
+			}
+		};
+
+		this.chartStack = new d4().init(config);
+	}
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
 		//console.log(data)
@@ -419,25 +763,11 @@ export class OverviewComponent implements OnInit {
 		this.relevanceChart.reGetData();
 	}
 
-	//选择面板，默认选中数据
-	defaultSelectList(data) {
-		//console.log(data)
-		this.selectConfirmData = data;
-	}
-
-	handlerRefresh() {}
-
 	drawPCAReads(data) {
-		// pca_comp1: -0.414345827931845
-		// pca_comp2: 0.234081607476174
-		// sample_name: "KO_elo"
 		let lengendtitle = [];
 		data.rows.forEach((d) => {
-			//console.log(d.sample_name);
 			lengendtitle.push(d.sample_name);
 		});
-
-		// console.log(data['rows']);
 
 		let that = this;
 		let config: object = {
@@ -505,6 +835,14 @@ export class OverviewComponent implements OnInit {
 		this.chartPCA = new d4().init(config);
 	}
 
+	//选择面板，默认选中数据
+	defaultSelectList(data) {
+		//console.log(data)
+		this.selectConfirmData = data;
+	}
+
+	handlerRefresh() {}
+
 	searchPCATypeChange() {
 		this.tablePCAEntity['pca_info'] = this.PCASearchType;
 		this.PCAChart.reGetData();
@@ -521,8 +859,24 @@ export class OverviewComponent implements OnInit {
 		this.colorQuality = curColor;
 		this.colorArr.splice(this.legendIndex, 1, curColor);
 		this.relevanceChart.redraw();
-	  }
+	}
 
+	//legend color change
+	colorBoxChange(curColor){
+		this.chartBox.setColor(curColor, this.legendIndexThree);
+		this.chartBox.redraw();
+	}
+
+	//legend color change
+	colorMapChange(curColor){
+		this.chartMap.setColor(curColor, this.legendIndexMap);
+		this.chartMap.redraw();
+	}
+
+	colorTChange(curColor) {
+		this.chartStack.setColor(curColor, this.legendIndexT);
+		this.chartStack.redraw();
+	}
 	//阻止冒泡
 	clearEventBubble(evt) {
 		if (evt.stopPropagation) {

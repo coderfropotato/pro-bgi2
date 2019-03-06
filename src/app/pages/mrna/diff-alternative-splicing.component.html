@@ -42,8 +42,20 @@
                 [tableHeight]="tableHeight"
                 [pageEntity]="defaultEntity"
                 [url]="defaultUrl"
-                        [tableId]="defaultTableId"
+                        [tableId]="diffDefaultTableId"
                         [(computedScrollHeight)]="computedScrollHeight"
-              ></app-big-table> -->
+              ></app-big-table>   [tableType]="defaultTableType"  [defaultMartix]="defaultMartix"-->
+              <app-geneTable
+                #diffDefaultTable
+                [url]="diffDefaultTableUrl"
+                [pageEntity]="diffDefaultTableEntity"
+                [tableId]="defaultDiffTableId"
+                [defaultChecked]="defaultDiffChecked"
+                [tableHeight]="tableHeight"
+                
+                [checkStatusInParams]="defaultCheckStatusInParams"
+                
+                [(computedScrollHeight)]="computedScrollHeight"
+            ></app-geneTable>
         </div>
 </div>

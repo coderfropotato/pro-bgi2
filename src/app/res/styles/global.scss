@@ -492,7 +492,7 @@ button{
 }
 
 // 转换表 大表
-.transformation-table-component,.big-table-component{
+.transformation-table-component,.big-table-component,.gene-table-component{
 	padding:8px;
 }
 
@@ -1621,14 +1621,14 @@ button{
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 0.1px solid #EEEEEE;
+		border: 1px solid #EEEEEE;
 		border-radius: 4px;
 	}
 	.t-content{
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 0px solid #EEEEEE;
+		border: 1px solid #EEEEEE;
 		border-radius: 4px;
 	}
 	.title{
@@ -1813,7 +1813,7 @@ button{
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 0.5px solid #EEEEEE;
+		border: 1px solid #EEEEEE;
 		border-radius: 4px;
 	}
 	.t-content{
@@ -1871,6 +1871,10 @@ button{
 
 // 图表说明
 .descTitle{
+	padding-bottom: 6px;
+	width: 98%;
+	cursor: pointer;
+    margin: 0 auto;
 	&:hover{
 		color: $font_active_color;
 	}
@@ -1919,4 +1923,9 @@ button{
 	width:stretch;
 	height: 100%;
 	display: flex;
+}
+
+.fusionRow{
+	height: 40px;
+	line-height: 40px;
 }

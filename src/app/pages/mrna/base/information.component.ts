@@ -24,6 +24,9 @@ export class InformationComponent implements OnInit {
 	@ViewChild('exonsNum') exonsNum;
 
 	species_name: string;
+	genome_source: string;
+	genome_url: string;
+	genome_version: string;
 	ref_info: object;
 
 	//2.2 RNA分类
@@ -94,7 +97,12 @@ export class InformationComponent implements OnInit {
 
 		this.species_name = this.store.getStore('species_name');
 
-		this.ref_info = this.store.getStore('ref_info');
+		if(this.store.store.hasOwnProperty("ref_info")){
+			this.genome_source = this.store.getStore('ref_info')["genome_source"];
+			this.genome_url = this.store.getStore('ref_info')["genome_url"];
+			this.genome_version = this.store.getStore('ref_info')["genome_version"];
+			//console.log(this.genome_source)
+		}
 
 		//2.2 RNA分类
 

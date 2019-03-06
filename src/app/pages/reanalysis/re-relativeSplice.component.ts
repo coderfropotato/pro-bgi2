@@ -364,6 +364,7 @@ export class RelativeSpliceComponent implements OnInit {
 
     //画图
     drawChart(data) {
+        document.getElementById('relativeSpliceDiv').innerHTML = "";
         let that = this;
 
         // if(data.length == 0){
@@ -448,8 +449,8 @@ export class RelativeSpliceComponent implements OnInit {
         let temp_y_width = yAxis_length + bottom_xlength + temp_add_width;
 
         draw_x_y_axis();
-        drawRightTopLegend();
-        drawRightBottomLegend();
+        drawRightFirstLegend();
+        drawRightSecondLegend();
         drawCenter();
         drawBottomLegend();
 
@@ -484,9 +485,9 @@ export class RelativeSpliceComponent implements OnInit {
                 .call(yAxis);
         }
 
-        function drawRightTopLegend(){
+        function drawRightFirstLegend(){
 
-            let temp_width = 80;
+            let temp_width = right_name_length;
             let padding_left = temp_x_width + left_title+10;
 
             let r_legend = svg
@@ -523,7 +524,7 @@ export class RelativeSpliceComponent implements OnInit {
             .scale(symbolScale)
             .orient("vertical")
             .labelWrap(temp_width)
-            .labelOffset(0)
+            .labelOffset(5)
             .shapePadding(5)
             .title("Type")
             .titleWidth(temp_width)
@@ -533,7 +534,7 @@ export class RelativeSpliceComponent implements OnInit {
             r_legend.select(".legendSymbol").call(legendPath);
         }
 
-        function drawRightBottomLegend(){
+        function drawRightSecondLegend(){
 
             // let padding_left = temp_x_width + left_title+10;
             // let padding_top = 140 + top_title +10;
@@ -556,7 +557,7 @@ export class RelativeSpliceComponent implements OnInit {
                 .append('g')
                 .attr('transform', 'translate(' + padding_left + ',' + top_title + ')')
                 .attr('width',right_name_length)
-                .attr('height',yAxis_length)
+                // .attr('height',yAxis_length)
                 ;
 
             r_legend_bottom.append('text').attr("class","titleText").attr('dx', '0').attr('dy', '0').text("Group");

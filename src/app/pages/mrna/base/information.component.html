@@ -2,10 +2,10 @@
     <h2 class="title">2 参考信息</h2>
     <hr class="mhr" />
 
-    <h3 class="title" *ngIf="species_name.length !=0 && ref_info['genome_source'].length !=0 && ref_info['genome_url'].length !=0">2.1 参考物种</h3>
-    <p class="help_text" *ngIf="species_name.length !=0">物种名：<span style="font-style: italic">{{species_name}}</span></p>
-    <p class="help_text" *ngIf="ref_info['genome_source'].length !=0">来源：<span>{{ref_info['genome_source']}}</span></p>
-    <p class="help_text" *ngIf="ref_info['genome_url'].length !=0">参考基因组版本：<span><a href="{{ref_info['genome_url']}}" target="_blank">{{ref_info['genome_version']}}</a></span></p>
+    <h3 class="title" *ngIf="species_name || genome_source || genome_url">2.1 参考物种</h3>
+    <p class="help_text" *ngIf="species_name">物种名：<span style="font-style: italic">{{species_name}}</span></p>
+    <p class="help_text" *ngIf="genome_source">来源：<span>{{genome_source}}</span></p>
+    <p class="help_text" *ngIf="genome_url">参考基因组版本：<span><a href="{{genome_url}}" target="_blank">{{genome_version}}</a></span></p>
 
     <h3 class="title">2.2 RNA分类</h3>
     <div class="f-content">
@@ -103,7 +103,7 @@
     </div> -->
 
     <h3 class="title">2.7 miRNA首位碱基分布</h3>
-    <div class="t-content">
+    <div class="f-content">
         <app-table-switch-chart
             #miRNAFchart
             [id]="'miRNAFchart'"
