@@ -46,7 +46,7 @@
                 </nz-dropdown>
             </div>
         </div>
-        <div class="table-thead tableHeader">
+        <div class="table-thead tableHeader hasbordert">
             <div class="fRight">
                 <i class="iconfont icon-shuaxin" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="getAnalysisList()"></i>
             </div>
@@ -65,7 +65,12 @@
                 </thead>
                 <tbody>
                     <tr class="center" *ngFor="let data of analysisList">
-                        <td>{{data['nickname']}} <span *ngIf="data['isEdited']" style="color:red;">（已编辑）</span></td>
+                        <td>
+                            <nz-badge [nzDot]="!data['isCheck']">{{data['nickname']}} 
+                                <span *ngIf="data['isEdited']" style="color:red;">（已编辑）</span>
+                                &emsp;
+                            </nz-badge>
+                        </td>
                         <!-- process -1 pending 1 success 0 error -->
                         <td>
                             <span *ngIf="data['process'] == 1"><i class="anticon anticon-check-circle success"></i>&nbsp;成功</span>

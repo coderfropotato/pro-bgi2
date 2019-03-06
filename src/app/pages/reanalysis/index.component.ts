@@ -39,6 +39,7 @@ export class ReanalysisIndexComponent implements OnInit {
             try {
                 await this.getLcInfo();
                 // await this.getClassRichConfig();
+                this.getUnReadAnalysisCount();
                 this.ready = true;
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
@@ -89,6 +90,25 @@ export class ReanalysisIndexComponent implements OnInit {
                 );
         });
     }
+
+    getUnReadAnalysisCount(){
+		let getCount = ()=>{
+			this.ajaxService.getDeferData({
+				data: { 
+					LCID:sessionStorage.getItem('LCID')
+				},
+				url: `${config['javaPath']}/reAnalysis/count`
+			}).subscribe(data=>{
+				if(data['status']==0) this.storeService.setStore('analysisCount',data['data'][0]);
+			})
+		}
+
+		getCount();
+		
+		setInterval(()=>{
+			getCount();
+		},config['getAnalysisCountInterval'])
+	}
 
     // 获取分类 富集下拉列表数据
     // async getClassRichConfig(){
