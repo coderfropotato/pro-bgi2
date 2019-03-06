@@ -17,6 +17,7 @@ declare const $:any;
 })
 export class ReanalysisIndexComponent implements OnInit {
     ready:boolean = false;
+    getUnReadAnalysisCountTimer:any = null;
 
 	constructor(
         private router:Router,
@@ -100,12 +101,14 @@ export class ReanalysisIndexComponent implements OnInit {
 				url: `${config['javaPath']}/reAnalysis/count`
 			}).subscribe(data=>{
 				if(data['status']==0) this.storeService.setStore('analysisCount',data['data'][0]);
-			})
+			},error=>{
+                clearInterval(this.getUnReadAnalysisCountTimer);
+            })
 		}
 
 		getCount();
 		
-		setInterval(()=>{
+		this.getUnReadAnalysisCountTimer = setInterval(()=>{
 			getCount();
 		},config['getAnalysisCountInterval'])
 	}

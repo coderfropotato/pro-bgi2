@@ -142,6 +142,7 @@ export class ReListComponent implements OnInit {
 				(err) => {
 					this.total = 0;
 					this.error = 'error';
+					clearInterval(this.intervalTimer);
 				},
 				() => {
 					this.loading = false;
