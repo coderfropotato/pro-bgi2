@@ -4,15 +4,15 @@
     ];
     // 匹配规则
     export const matchRule:object = {
-        "cellmarker_desc":{"url":"javascript:;","arg":[]},
-        "cr2cancer_desc":{"url":"javascript:;","arg":[]},
-        "phi_desc":{"url":"javascript:;","arg":[]},
-        "prg_desc":{"url":"javascript:;","arg":[]},
-        "genebank_desc":{"url":"javascript:;","arg":[]},
+        "cellmarker_desc":{"url":"","arg":[]},
+        "cr2cancer_desc":{"url":"","arg":[]},
+        "phi_desc":{"url":"","arg":[]},
+        "prg_desc":{"url":"","arg":[]},
+        "genebank_desc":{"url":"","arg":[]},
 
-        "rfam_term_id":{"url":"javascript:;","arg":[]},
-        "rfam_term":{"url":"javascript:;","arg":[]},
-        "rfam_desc":{"url":"javascript:;","arg":[]},
+        "rfam_term_id":{"url":"","arg":[]},
+        "rfam_term":{"url":"","arg":[]},
+        "rfam_desc":{"url":"","arg":[]},
 
         "pfam_term_id":{"url":"http://pfam.xfam.org/family/@","arg":[0]},
         "pfam_term":{"url":"http://pfam.xfam.org/family/@","arg":[0]},
