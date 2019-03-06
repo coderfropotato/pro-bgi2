@@ -97,8 +97,16 @@ export class GeneFusionComponent implements OnInit {
 		
   }
 
-  setClick(){
+  handlerRefresh(){
+	  this.fusionChartTable.reGetData();
+  }
 
+	showGene(){
+		this.fusionChartTable.redraw();
+	}
+
+	showColumn(){
+		this.fusionChartTable.redraw();
 	}
 
 	//画 circos 图
@@ -118,7 +126,7 @@ export class GeneFusionComponent implements OnInit {
 			height = 600,
 			tick_margin = 38,
 			outer_margin = max_chrNameLength * 8 + tick_margin,
-			outer_padding = 10,
+			outer_padding = this.isShowColumn ? 10 : 20,
 			outerRadius = Math.min(width, height) * 0.5 - outer_margin,
 			innerRadius = outerRadius - outer_padding,
 
@@ -145,14 +153,16 @@ export class GeneFusionComponent implements OnInit {
 			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 		//柱状图容器
-		var column1_g = body_g.append("g")
-			.attr("class", "innerRing1");
-
-		var column2_g = body_g.append("g")
-			.attr("class", "innerRing2");
-
-		var column3_g = body_g.append("g")
-			.attr("class", "innerRing3");
+		if(this.isShowColumn){
+			var column1_g = body_g.append("g")
+				.attr("class", "innerRing1");
+	
+			var column2_g = body_g.append("g")
+				.attr("class", "innerRing2");
+	
+			var column3_g = body_g.append("g")
+				.attr("class", "innerRing3");
+		}
 
 		//外环
 		var outer_space = 8;
@@ -238,14 +248,16 @@ export class GeneFusionComponent implements OnInit {
 				}
 			}
 
-			for (var j = 0; j < column3_len; j++) {
-				var column3_d = d.column3[j];
-				allColumn3.push(column3_d);
-				chartData[i].column3.push({
-					"value": d.column3[j],
-					"width": column3_w,
-					"rotateAngle": j * ((each_angle * 180 / Math.PI) / column3_len) + startAngle * 180 / Math.PI
-				})
+			if(column3_len){
+				for (var j = 0; j < column3_len; j++) {
+					var column3_d = d.column3[j];
+					allColumn3.push(column3_d);
+					chartData[i].column3.push({
+						"value": d.column3[j],
+						"width": column3_w,
+						"rotateAngle": j * ((each_angle * 180 / Math.PI) / column3_len) + startAngle * 180 / Math.PI
+					})
+				}
 			}
 
 			if (point_len) {
@@ -272,7 +284,7 @@ export class GeneFusionComponent implements OnInit {
 		if (!this.isShowGene) {
 			inner_padding = 40;
 		}
-		var innerRadius4 = innerRadius3 - inner_padding - inner_margin;
+		var innerRadius4 = this.isShowColumn ? (innerRadius3 - inner_padding - inner_margin) : (innerRadius - inner_padding - inner_margin);
 		var innerRadius5 = 10;
 		var circle_r = 2;
 		var gene_text_y = -(innerRadius4 + circle_r);
@@ -468,20 +480,22 @@ export class GeneFusionComponent implements OnInit {
 				});
 		}
 
-		if (outerRing[0].column1.length) {
-			//第一环柱状图
-			var columnTipText1 = "SNP数目";
-			drawColumn(column1_g, "column1", innerRadius1, yScale_column1, "#10afff", columnTipText1);
+		if(this.isShowColumn){
+			if (outerRing[0].column1.length) {
+				//第一环柱状图
+				var columnTipText1 = "SNP数目";
+				drawColumn(column1_g, "column1", innerRadius1, yScale_column1, "#10afff", columnTipText1);
+			}
+	
+			if (outerRing[0].column2.length) {
+				//第二环柱状图
+				var columnTipText2 = "InDel数目";
+				drawColumn(column2_g, "column2", innerRadius2, yScale_column2, "#ffd226", columnTipText2);
+			}
+	
+			//第三环柱状图
+			drawColumn2();
 		}
-
-		if (outerRing[0].column2.length) {
-			//第二环柱状图
-			var columnTipText2 = "InDel数目";
-			drawColumn(column2_g, "column2", innerRadius2, yScale_column2, "#ffd226", columnTipText2);
-		}
-
-		//第三环柱状图
-		drawColumn2();
 
 		//画第一、二环柱状图
 		function drawColumn(container_g, type, radius, yScale_column, color, columnTipText) {

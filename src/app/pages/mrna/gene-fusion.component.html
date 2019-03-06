@@ -11,11 +11,11 @@
         </div>
         <div class="left-bottom-layout">
             <ng-template #setTemplate>
-                <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="isShowSetPanel" (nzVisibleChange)="setClick()">
+                <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="isShowSetPanel">
                     <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
-                    <div class="setPanel" nz-menu>
-                        <div class="fusionRow">是否显示基因名：<nz-switch [(ngModel)]="isShowGene"></nz-switch></div>
-                        <div class="fusionRow">是否显示内三圈：<nz-switch [(ngModel)]="isShowColumn"></nz-switch></div>
+                    <div class="setPanel" style="width: 200px" nz-menu>
+                        <div class="fusionRow">是否显示基因名：<nz-switch [(ngModel)]="isShowGene" (ngModelChange)="showGene()"></nz-switch></div>
+                        <div class="fusionRow">是否显示内三圈：<nz-switch [(ngModel)]="isShowColumn" (ngModelChange)="showColumn()"></nz-switch></div>
                      </div>
                 </nz-dropdown>
             </ng-template>
