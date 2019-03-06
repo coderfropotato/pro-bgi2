@@ -4,13 +4,13 @@
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-bottom-layout">
             <app-table-switch-chart
-                #alternativeSpliceChart
-                [id]="'alternativeSpliceChart'"
+                #diffAlternativeSpliceChart
+                [id]="'diffAlternativeSpliceChart'"
                 [tableUrl]="chartUrl"
                 [apiEntity]="chartEntity"
                 (drawChartEmit)="drawChart($event)"
-                [chartId]="'alternativeSpliceDiv'"
-                [chartName]="'可变剪接事件统计'"
+                [chartId]="'diffAlternativeSpliceDiv'"
+                [chartName]="'差异可变剪接事件统计'"
                 [flex]="true"
                 (refresh)="handlerRefresh()"
             >
@@ -42,17 +42,15 @@
                 [tableHeight]="tableHeight"
                 [pageEntity]="defaultEntity"
                 [url]="defaultUrl"
-                        [tableId]="defaultTableId"
+                        [tableId]="diffDefaultTableId"
                         [(computedScrollHeight)]="computedScrollHeight"
-              ></app-big-table> -->
-
-              <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix"-->
+              ></app-big-table>   [tableType]="defaultTableType"  [defaultMartix]="defaultMartix"-->
               <app-geneTable
-                #defaultSpliceTable
-                [url]="defaultTableUrl"
-                [pageEntity]="defaultTableEntity"
-                [tableId]="defaultTableId"
-                [defaultChecked]="defaultSpliceChecked"
+                #diffDefaultTable
+                [url]="diffDefaultTableUrl"
+                [pageEntity]="diffDefaultTableEntity"
+                [tableId]="defaultDiffTableId"
+                [defaultChecked]="defaultDiffChecked"
                 [tableHeight]="tableHeight"
                 
                 [checkStatusInParams]="defaultCheckStatusInParams"

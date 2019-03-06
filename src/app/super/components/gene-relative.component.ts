@@ -58,8 +58,6 @@ export class GeneRelativeComponent implements OnInit {
 			}
 		}
 
-		console.log(this.currentTableRelative);
-		console.log(this.disabledRelative);
 	}
 
 	// 选择关系

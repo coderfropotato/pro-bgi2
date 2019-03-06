@@ -553,13 +553,27 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     drawChart(data, type) {
-        if (type) {
-            this.drawChartEmit.emit({
-                data: data,
-                type: type
-            });
-        } else {
-            this.drawChartEmit.emit(data);
+        let then = ()=>{
+            if (type) {
+                this.drawChartEmit.emit({
+                    data: data,
+                    type: type
+                });
+            } else {
+                this.drawChartEmit.emit(data);
+            }
+        }
+        if(document.querySelector(`#${this.chartId}`)){
+            then();
+        }else{
+            let timer = null;
+            clearInterval(timer);
+            timer = setInterval(()=>{
+                if(document.querySelector(`#${this.chartId}`)){
+                    then();
+                    clearInterval(timer);
+                }
+            },100)
         }
     }
 

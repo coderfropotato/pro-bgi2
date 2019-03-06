@@ -16,16 +16,16 @@ declare const d4: any;
 declare const $: any;
 
 @Component({
-  selector: 'app-alternative-splicing',
-  templateUrl: './alternative-splicing.component.html',
+  selector: 'app-diff-alternative-splicing',
+  templateUrl: './diff-alternative-splicing.component.html',
   styles: []
 })
-export class AlternativeSplicingComponent implements OnInit {
-  @ViewChild("alternativeSpliceChart") alternativeSpliceChart;
+export class DiffAlternativeSplicingComponent implements OnInit {
+  @ViewChild("diffAlternativeSpliceChart") diffAlternativeSpliceChart;
   @ViewChild('right') right;
   @ViewChild('func') func;
   @ViewChild('switchChart') switchChart;
-  @ViewChild('defaultSpliceTable') defaultSpliceTable;
+  @ViewChild('diffDefaultTable') diffDefaultTable;
 
   chartUrl: string;
   chartEntity: object;
@@ -46,15 +46,15 @@ export class AlternativeSplicingComponent implements OnInit {
   version: string = null;
 
   // table
-  defaultTableEntity: object;
-  defaultTableUrl: string;
-  defaultTableId: string;
-  defaultSpliceChecked: boolean;
+  diffDefaultTableEntity: object;
+  diffDefaultTableUrl: string;
+  defaultDiffTableId: string;
+  defaultDiffChecked: boolean;
   defaultCheckStatusInParams: boolean;
   baseThead: any[] = [];
 
   asType: string;
-  sample: string;
+  group: string;
 
   constructor(
     private message: MessageService,
@@ -86,20 +86,19 @@ export class AlternativeSplicingComponent implements OnInit {
           this.geneType = params["params"]["geneType"];
           this.storeService.setTid(this.tid);
       });
-
    }
 
   ngOnInit() {
-      this.chartUrl = `${config["javaPath"]}/alternativeSplice/sampleAs`;
+      this.chartUrl = `${config["javaPath"]}/alternativeSplice/groupAs`;
       this.chartEntity = {
           LCID: sessionStorage.getItem("LCID"),
       };
 
       this.asType = "A3SS";
-      this.sample = this.storeService.getStore("sample")[0];
+      this.group = this.storeService.getStore("group")[0];
       // table
-      this.defaultTableUrl = `${config["javaPath"]}/alternativeSplice/tableAs`;
-      this.defaultTableEntity = {
+      this.diffDefaultTableUrl = `${config["javaPath"]}/alternativeSplice/tableAs`;
+      this.diffDefaultTableEntity = {
           LCID: sessionStorage.getItem("LCID"),
           pageIndex: 1, //分页
           pageSize: 20,
@@ -112,10 +111,10 @@ export class AlternativeSplicingComponent implements OnInit {
           checked: [],
           unChecked: [],
           asType:this.asType,
-          sample:this.sample
+          sample:this.group
       };
-      this.defaultTableId = 'alternative_default_splicing';
-      this.defaultSpliceChecked = true;
+      this.defaultDiffTableId = 'diff_alternative_default_splicing';
+      this.defaultDiffChecked = true;
       this.defaultCheckStatusInParams = true;
 
   }
@@ -123,7 +122,7 @@ export class AlternativeSplicingComponent implements OnInit {
   computedTableHeight() {
 		try {
 			let h = this.tableHeight;
-      this.tableHeight = this.right.nativeElement.offsetHeight  - config['layoutContentPadding'] * 2;
+			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
   }
@@ -133,7 +132,7 @@ export class AlternativeSplicingComponent implements OnInit {
 			this.computedTableHeight();
 		}, 30);
   }
-  
+
   // 切换左右布局 计算左右表格的滚动高度
 	switchChange(status) {
 		this.switch = status;
@@ -152,7 +151,7 @@ export class AlternativeSplicingComponent implements OnInit {
 
 		for (var j = 0; j < rows.length; j++) {
 			chartData.push({
-				sample_name: rows[j].sample_name,
+				compare_group: rows[j].compare_group,
 				as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
 				as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
 				as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
@@ -164,23 +163,18 @@ export class AlternativeSplicingComponent implements OnInit {
 		let that = this;
 		let config: object = {
 			chart: {
-				title: '可变剪接事件统计',
+				title: '差异可变剪接事件统计',
 				dblclick: function(event,title) {
           let text = title.firstChild.nodeValue;
           that.promptService.open(text,(data)=>{
               title.textContent = data;
           })
         },
-				el: '#alternativeSpliceDiv',
+				el: '#diffAlternativeSpliceDiv',
 				type: 'stackBarPercent',
 				width: 660,
-				custom: [ 'sample_name' ],
-        data: chartData,
-        enableChartSelect: true,
-        onselect: function(data) {
-          //console.log(data);
-          that.handleData(data);
-        },
+				custom: [ 'compare_group' ],
+				data: chartData
 			},
 			axis: {
 				x: {
@@ -232,12 +226,12 @@ export class AlternativeSplicingComponent implements OnInit {
   handleData(data){
     //console.log(data);
     this.asType = data[0].key.split("_")[1].toUpperCase();
-    this.sample = data[0].data["sample_name"];
+    this.group = data[0].data["compare_group"];
 
-    this.defaultSpliceTable._setParamsOfEntityWithoutRequest('sample', this.sample);
-    this.defaultSpliceTable._setParamsOfEntityWithoutRequest('asType', this.asType);
-    this.defaultSpliceTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
-    this.defaultSpliceTable._getData();
+    this.diffDefaultTable._setParamsOfEntityWithoutRequest('group', this.group);
+    this.diffDefaultTable._setParamsOfEntityWithoutRequest('asType', this.asType);
+    this.diffDefaultTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
+    this.diffDefaultTable._getData();
   }
 
   //color change 回调函数

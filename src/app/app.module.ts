@@ -43,6 +43,8 @@ import { LoadingComponent } from './pages/reanalysis/loading.component';
 import { BigTableCheckComponent } from './super/components/big-table-check.component';
 
 // 页面
+/* 基因总表 */
+import { GeneComponent } from './pages/mrna/gene.component';
 /* 基础模块 */
 import { OverviewComponent } from './pages/mrna/base/overview.component';
 import { InformationComponent } from './pages/mrna/base/information.component';
@@ -67,17 +69,19 @@ import { GoHelpComponent } from './pages/mrna/go-help.component';
 import { KeggClassComponent } from './pages/mrna/kegg-class.component';
 import { KeggRichComponent } from './pages/mrna/kegg-rich.component';
 import { KeggHelpComponent } from './pages/mrna/kegg-help.component';
-/* 结构变异 */
-import { SnpComponent } from './pages/mrna/snp.component';
-import { IndelComponent } from './pages/mrna/indel.component';
+/* 剪接/变异 */
 import { AlternativeSplicingComponent } from './pages/mrna/alternative-splicing.component';
+import { DiffAlternativeSplicingComponent } from './pages/mrna/diff-alternative-splicing.component';
 import { GeneFusionComponent } from './pages/mrna/gene-fusion.component';
-import { StructureVariationHelpComponent } from './pages/mrna/structure-variation-help.component';
-/* 基因总表 */
-import { GeneComponent } from './pages/mrna/gene.component';
+import { AsSvHelpComponent } from './pages/mrna/as-sv-help.component';
+/* SNP/Indel */
+import { SnpOverviewComponent } from './pages/mrna/snp-overview.component';
+import { SnpDistributionComponent } from './pages/mrna/snp-distribution.component';
+import { IndelOverviewComponent } from './pages/mrna/indel-overview.component';
+import { IndelDistributionComponent } from './pages/mrna/indel-distribution.component';
+import { SnpIndelHelpComponent } from './pages/mrna/snp-indel-help.component';
 /* 上传模块 */
 import { UploadComponent } from './pages/mrna/upload.component';
-
 /* 小工具 */
 import { ReanalysisIndexComponent } from './pages/reanalysis/index.component';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
@@ -93,7 +97,6 @@ import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.co
 import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
 import { ReRichComponent } from './pages/reanalysis/re-rich.component';
-
 /* 基因集 */
 import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneList/venn.component';
 
@@ -311,21 +314,16 @@ const ROUTES: Routes = [
 				component:KeggHelpComponent,
 				data:{keep:true,module:'keggHelp'}
 			},
-			// 结构变异
-			{
-				path:'snp',
-				component:SnpComponent,
-				data:{keep:true,module:'SNP'}
-			},
-			{
-				path:'indel',
-				component:IndelComponent,
-				data:{keep:true,module:'INDEL'}
-			},
+			// 剪接/变异
 			{
 				path:'alternative-splicing',
 				component:AlternativeSplicingComponent,
 				data:{keep:true,module:'alternativeSplicing'}
+			},
+			{
+				path:'diff-alternative-splicing',
+				component:DiffAlternativeSplicingComponent,
+				data:{keep:true,module:'diffAlternativeSplicing'}
 			},
 			{
 				path:'gene-fusion',
@@ -333,9 +331,35 @@ const ROUTES: Routes = [
 				data:{keep:true,module:'geneFusion'}
 			},
 			{
-				path:'structure-variation-help',
-				component:StructureVariationHelpComponent,
-				data:{keep:true,module:'structureVariationHelp'}
+				path:'as-sv-help',
+				component:AsSvHelpComponent,
+				data:{keep:true,module:'asSvHelp'}
+			},
+			// SNP/InDel
+			{
+				path:'snp-overview',
+				component:SnpOverviewComponent,
+				data:{keep:true,module:'snpOverview'}
+			},
+			{
+				path:'snp-distribution',
+				component:SnpDistributionComponent,
+				data:{keep:true,module:'snpDistribution'}
+			},
+			{
+				path:'indel-overview',
+				component:IndelOverviewComponent,
+				data:{keep:true,module:'indelOverview'}
+			},
+			{
+				path:'indel-distribution',
+				component:IndelDistributionComponent,
+				data:{keep:true,module:'indelDistribution'}
+			},
+			{
+				path:'snp-indel-help',
+				component:SnpIndelHelpComponent,
+				data:{keep:true,module:'snpIndelHelp'}
 			},
 			// 基因总表
 			{
@@ -585,14 +609,9 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
 	// 组件，指令，过滤器（管道） 申明在declarations 里
 	declarations: [
-		DiffVennPage,
-		ExpressVennPage,
-		GeneListIndexComponent,
 		SysDefendComponent,
 		LoginComponent,
 		IndexComponent,
-		GoRichComponent,
-		ClusterComponent,
 		GeneTableComponent,
 		NotFoundComponent,
 		AppComponent,
@@ -601,7 +620,6 @@ export function createTranslateLoader(http: HttpClient) {
 		FilterComponent,
 		ErrorComponent,
 		DnaIndexComponent,
-		ReanalysisIndexComponent,
 		SyserrorComponent,
 		AddColumnComponent,
 		ChartExportComponent,
@@ -617,53 +635,76 @@ export function createTranslateLoader(http: HttpClient) {
 		GridExportComponent,
 		PaginationComponent,
 		TreeItemComponent,
-		ExpressVennComponent,
-		DiffExpressionComponent,
 		TreeComponent,
 		ToolsComponent,
-		UploadComponent,
 		ColorPickerComponent,
 		ReListComponent,
-		ReHeatmapComponent,
-		reRelationHeatmapComponent,
 		TooltipDirective,
-		ReNetComponent,
-		ReKdaComponent,
-		reRelationNetComponent,
-		ReLineComponent,
-		KaFunComponent,
-		RelativeSpliceComponent,
 		LayoutSwitchComponent,
-		ReMultiOmicsComponent,
 		LoadingComponent,
+		BigTableCheckComponent,
+		PromtComponent,
+		TableSpecialTheadFilter,
+
+		// 页面
+		GeneComponent,
+		
+		OverviewComponent,
+		InformationComponent,
+		ReadsFilterComponent,
+		ReadsComparisonComponent,
+		LrnaComponent,
+		BasicHelpComponent,
+		
+		DiffVennPage,
+		DiffExpressionComponent,
+		DiffExpressionHelpComponent,
+		
+		ExpressVennPage,
+		ExpressVennComponent,
 		ExpressionHelpComponent,
+		
+		ClusterComponent,
         ClusterHelpComponent,
+		
         GoClassPage,
 		GoClassComponent,
 		GoHelpComponent,
+		GoRichComponent,
+		
 		KeggClassComponent,
 		KeggRichComponent,
 		KeggHelpComponent,
-		SnpComponent,
-		IndelComponent,
+		
 		AlternativeSplicingComponent,
+		DiffAlternativeSplicingComponent,
 		GeneFusionComponent,
-		StructureVariationHelpComponent,
-		GeneComponent,
-		GeneListVennComponent,
-		DiffExpressionHelpComponent,
-		GeneListVennPageComponent,
-		BigTableCheckComponent,
+		AsSvHelpComponent,
+		
+		SnpOverviewComponent,
+		SnpDistributionComponent,
+		IndelOverviewComponent,
+		IndelDistributionComponent,
+		SnpIndelHelpComponent,
+
+		UploadComponent,
+
+		ReanalysisIndexComponent,
+		ReMultiOmicsComponent,
+		ReHeatmapComponent,
+		reRelationHeatmapComponent,
+		reRelationNetComponent,
+		ReNetComponent,
+		ReKdaComponent,
+		ReLineComponent,
+		KaFunComponent,
+		RelativeSpliceComponent,
+		GeneListIndexComponent,
 		ReClassComponent,
 		ReRichComponent,
-		PromtComponent,
-		OverviewComponent,
-		InformationComponent,
-		ReadsComparisonComponent,
-		LrnaComponent,
-		ReadsFilterComponent,
-		BasicHelpComponent,
-		TableSpecialTheadFilter
+
+		GeneListVennComponent,
+		GeneListVennPageComponent
 	],
 	// 路由模块在imports 导入
 	imports: [

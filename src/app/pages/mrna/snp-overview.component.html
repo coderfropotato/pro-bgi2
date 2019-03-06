@@ -1,16 +1,17 @@
-<div class="content row  alternativeSplicing">
-  <!-- <app-menu [menu]="[]" [geneSwitch]="false">
-  </app-menu> -->
+<!-- <p>
+  snp-overview works!
+</p> -->
+<div class="content row  overview">
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-bottom-layout">
             <app-table-switch-chart
-                #alternativeSpliceChart
-                [id]="'alternativeSpliceChart'"
+                #snpOverview
+                [id]="'snpOverview'"
                 [tableUrl]="chartUrl"
                 [apiEntity]="chartEntity"
                 (drawChartEmit)="drawChart($event)"
-                [chartId]="'alternativeSpliceDiv'"
-                [chartName]="'可变剪接事件统计'"
+                [chartId]="'snpOverviewDiv'"
+                [chartName]="'SNP类型统计'"
                 [flex]="true"
                 (refresh)="handlerRefresh()"
             >
@@ -46,13 +47,13 @@
                         [(computedScrollHeight)]="computedScrollHeight"
               ></app-big-table> -->
 
-              <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix"-->
+              <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix" -->
               <app-geneTable
-                #defaultSpliceTable
+                #defaultSNPTable
                 [url]="defaultTableUrl"
                 [pageEntity]="defaultTableEntity"
                 [tableId]="defaultTableId"
-                [defaultChecked]="defaultSpliceChecked"
+                [defaultChecked]="defaultTableChecked"
                 [tableHeight]="tableHeight"
                 
                 [checkStatusInParams]="defaultCheckStatusInParams"

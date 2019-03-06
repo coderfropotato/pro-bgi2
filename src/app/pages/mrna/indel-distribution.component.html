@@ -1,0 +1,76 @@
+<div class="content row  distribution">
+  <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+      <div class="left-bottom-layout">
+          <ng-template #searchTemplate>
+              <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
+                  <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+              </nz-select>
+          </ng-template>
+          <app-table-switch-chart
+              #indelDataChart
+              [id]="'indelDataChart'"
+              [tableUrl]="tableUrl"
+              [apiEntity]="tableEntity"
+              (drawChartEmit)="drawIndelReads($event)"
+              [flex]="true"
+              [chartId]="'indelDataID'"
+              [chartName]="'Indel位点区域分布'"
+              [otherLeftTemplate]='searchTemplate'
+              (refresh)="handlerRefresh()"
+          >
+          </app-table-switch-chart>
+          <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+                  ></app-color-picker>
+      </div>
+      </div>
+      <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+          <div class="switch">
+              <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+          </div>
+          <!-- <div class="func" #func (click)="resize($event)"> -->
+              <!-- 增删列 -->
+              <!-- <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column> -->
+              <!-- 关系 -->
+              <!-- <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative> -->
+              <!-- 返回 -->
+              <!-- <button class="ml12" [hidden]="addColumnShow || !showBackButton" nzSize="small" nz-button nzType="Default" (click)="back()">返回</button> -->
+              <!-- 只看表 -->
+              <!-- <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i> -->
+          <!-- </div> -->
+          <!-- 表格转换 -->  
+          <!-- <app-big-table
+              *ngIf="defaultEntity"
+              class="no-outside-border"
+              #bigTable
+              [tableHeight]="tableHeight"
+              [pageEntity]="defaultEntity"
+              [url]="defaultUrl"
+                      [tableId]="defaultTableId"
+                      [(computedScrollHeight)]="computedScrollHeight"
+            ></app-big-table> -->
+
+            <!-- [showFilterStatus]="defaultShowFilterStatus" -->
+            <!-- <app-geneTable
+              #defaultSNPTable
+              [url]="defaultTableUrl"
+              [pageEntity]="defaultTableEntity"
+              [tableId]="defaultTableId"
+              [defaultChecked]="defaultTableDefaultChecked"
+              [tableHeight]="tableHeight"
+              [tableType]="defaultTableType"
+              [checkStatusInParams]="defaultTableCheckStatusInParams"
+              [defaultMartix]="defaultMartix"
+              [(computedScrollHeight)]="computedScrollHeight"
+          ></app-geneTable> -->
+          <app-big-table
+              *ngIf="defaultTableEntity"
+              class="no-outside-border"
+              #defaultIndelTable
+              [tableHeight]="tableHeight"
+              [pageEntity]="defaultTableEntity"
+              [url]="defaultTableUrl"
+              [tableId]="defaultTableId"
+              [(computedScrollHeight)]="computedScrollHeight"
+          ></app-big-table>
+      </div>
+</div>
