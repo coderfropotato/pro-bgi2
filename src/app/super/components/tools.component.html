@@ -42,12 +42,12 @@
                             </p>
 							<span *ngIf="expressData.length && expressUpload.length">原始数据</span>
 							<div *ngIf="expressData.length">
-								<button (click)="handlerHeatmapSelect(ex,expressSelect,'express')" [class.active]="ex['checked']" *ngFor="let ex of expressData;index as i;"
+								<button (click)="handlerHeatmapSelect(ex,'express')" [class.active]="ex['checked']" *ngFor="let ex of expressData;index as i;"
 								 nz-button nzType="default" nzSize="middle">{{ex['name']}}</button>
 							</div>
 							<span *ngIf="expressUpload.length">上传数据</span>
 							<div *ngIf="expressUpload.length">
-								<button (click)="handlerHeatmapSelect(exup,expressSelect,'express')" [class.active]="exup['checked']" *ngFor="let exup of expressUpload;index as i;"
+								<button (click)="handlerHeatmapSelect(exup,'express')" [class.active]="exup['checked']" *ngFor="let exup of expressUpload;index as i;"
 								 nz-button nzType="default" nzSize="middle">{{exup['name']}}</button>
 							</div>
 							<nz-alert *ngIf="expressError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
@@ -74,12 +74,12 @@
 							<p *ngIf="diffData.length || diffUpload.length">数据选择</p>
 							<span *ngIf="diffData.length && diffUpload.length">原始数据</span>
 							<div *ngIf="diffData.length">
-								<button (click)="handlerHeatmapSelect(diff,diffSelect,'diff')" [class.active]="diff['checked']" *ngFor="let diff of diffData;index as i;"
+								<button (click)="handlerHeatmapSelect(diff,'diff')" [class.active]="diff['checked']" *ngFor="let diff of diffData;index as i;"
 								 nz-button nzType="default" nzSize="middle">{{diff['name']}}</button>
 							</div>
 							<span *ngIf="diffUpload.length">上传数据</span>
 							<div *ngIf="diffUpload.length">
-								<button (click)="handlerHeatmapSelect(diffUp,diffSelect,'diff')" [class.active]="diffUp['checked']" *ngFor="let diffUp of diffUpload;index as i;"
+								<button (click)="handlerHeatmapSelect(diffUp,'diff')" [class.active]="diffUp['checked']" *ngFor="let diffUp of diffUpload;index as i;"
 								 nz-button nzType="default" nzSize="middle">{{diffUp['name']}}</button>
 							</div>
 							<nz-alert *ngIf="diffError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
@@ -111,12 +111,12 @@
 							<p *ngIf="customData.length || customUpload.length">数据选择</p>
 							<span *ngIf="customData.length && customUpload.length">原始数据</span>
 							<div *ngIf="customData.length">
-								<button (click)="handlerHeatmapSelect(custom,customSelect,'custom')" [class.active]="custom['checked']" *ngFor="let custom of customData;index as i;"
+								<button (click)="handlerHeatmapSelect(custom,'custom')" [class.active]="custom['checked']" *ngFor="let custom of customData;index as i;"
 								 nz-button nzType="default" nzSize="middle">{{custom['name']}}</button>
 							</div>
 							<span *ngIf="customUpload.length">上传数据</span>
 							<div *ngIf="customUpload.length">
-								<button (click)="handlerHeatmapSelect(customUp,customSelect,'custom')" [class.active]="customUp['checked']"
+								<button (click)="handlerHeatmapSelect(customUp,'custom')" [class.active]="customUp['checked']"
 								 *ngFor="let customUp of customUpload;index as i;" nz-button nzType="default" nzSize="middle">{{customUp['name']}}</button>
 							</div>
 							<nz-alert *ngIf="customError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>

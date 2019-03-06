@@ -332,31 +332,30 @@ export class ToolsComponent implements OnInit {
 	 * @author Yangwd<277637411@qq.com>
 	 * @date 2018-11-27
 	 * @param {*} target 当前点击的对象
-	 * @param {*} selected 当前分类选中的数据集合
 	 * @param {*} type 当前分类类型  用于设置错误信息
 	 * @returns
 	 * @memberof ToolsComponent
 	 */
-	handlerHeatmapSelect(target, selected, type) {
+	handlerHeatmapSelect(target, type) {
 		// 选中变为不选中
 		if (target['checked']) {
 			target['checked'] = false;
-			let index = this.findIndex(target['name'], selected, 'name');
-			if (index != -1) selected.splice(index, 1);
+			let index = this.findIndex(target['name'], this[`${type}Select`], 'name');
+			if (index != -1) this[`${type}Select`].splice(index, 1);
 			this[`${type}Error`] = false;
 		} else {
 			// 不选中变为选中
 			// 最多选择20个
-			if (selected.length >= 20) {
+			if (this[`${type}Select`].length >= 20) {
 				this[`${type}Error`] = 'maxover';
 				return;
 			}
 			this[`${type}Error`] = false;
 			target['checked'] = true;
-			selected.push(target);
+			this[`${type}Select`].push(target);
 		}
 
-		if (!selected.length) this[`${type}Error`] = 'nodata';
+		if (!this[`${type}Select`].length) this[`${type}Error`] = 'nodata';
 	}
 
 	// 基因分类选择 默认不选 只能选一个
@@ -474,12 +473,20 @@ export class ToolsComponent implements OnInit {
 
 	// 提交聚类重分析  需要生信重分析 需要1 不需要2
 	heatmapConfirm(type) {
-		// this.isSubmitReanalysis = true;
-		// let tempChooseList = this[`${type}Select`].map((val) => {
-		// 	let temp = {};
-		// 	temp[val['category']] = val['name'];
-		// 	return temp;
-		// });
+		
+		let trueType = '';
+		switch(type){
+			case 'Express':
+				trueType = 'express';
+				break;
+			case 'Diff':
+				trueType = 'diff';
+				break;
+			case 'Custom':
+				trueType = 'custom';
+				break;
+		}
+
 		let tableEntity = this.toolsService.get('tableEntity');
 		tableEntity['mongoId'] = this.toolsService.get('mongoId');
         if(this.selectGeneType.length) this.selectGeneType[0]['choose'] = this.clusterByGeneType;
@@ -489,8 +496,7 @@ export class ToolsComponent implements OnInit {
 					LCID: sessionStorage.getItem('LCID'),
 					reanalysisType: `heatmap${type}`,
 					needReanalysis: 1,
-					// chooseType: [ this.switchType(type) ],
-					chooseList: this[`${type}Select`],
+					chooseList: this[`${trueType}Select`],
 					verticalDefault: this.selectGeneType,
                     ...tableEntity,
                     standardization:this.stand,
@@ -526,14 +532,6 @@ export class ToolsComponent implements OnInit {
 			);
 	}
 
-	switchType(type) {
-		switch (type) {
-			case 'express':
-				return 'expression';
-			default:
-				return type;
-		}
-	}
 
 	// 获取多组学参数
 	getmultiOmicsParams() {
