@@ -11,11 +11,11 @@
         </div>
         <div class="left-bottom-layout">
             <ng-template #setTemplate>
-                <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="isShowSetPanel" (nzVisibleChange)="setClick()">
+                <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="isShowSetPanel">
                     <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
-                    <div class="setPanel" nz-menu>
-                        <div class="fusionRow">是否显示基因名：<nz-switch [(ngModel)]="isShowGene"></nz-switch></div>
-                        <div class="fusionRow">是否显示内三圈：<nz-switch [(ngModel)]="isShowColumn"></nz-switch></div>
+                    <div class="setPanel" style="width: 200px" nz-menu>
+                        <div class="fusionRow">是否显示基因名：<nz-switch [(ngModel)]="isShowGene" (ngModelChange)="showGene()"></nz-switch></div>
+                        <div class="fusionRow">是否显示内三圈：<nz-switch [(ngModel)]="isShowColumn" (ngModelChange)="showColumn()"></nz-switch></div>
                      </div>
                 </nz-dropdown>
             </ng-template>
@@ -31,6 +31,7 @@
                 [flex]="true"
                 [chartId]="'fusionCircos'"
                 [chartName]="'基因融合 Circos 图'"
+                [chartDescContent]="'从外到内，第 1 个圆表示染色体；第 2、3、4 个圆分别显示的是以 1,000,000 个碱基为滑动窗口时，SNP 数目、INDEL 数目、基因 FPKM 值的变化情况；如果内部有连线，则显示的是基因融合的情况（ 红线是染色体间的基因融合，绿线是染色体内的基因融合，基因融合分析仅限人的项目 ）。'"
                 (refresh)="handlerRefresh()"
             >
             </app-table-switch-chart>

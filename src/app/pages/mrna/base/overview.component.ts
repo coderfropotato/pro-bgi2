@@ -470,23 +470,30 @@ export class OverviewComponent implements OnInit {
 
 	//箱线图
 	drawBoxReads(data) {
-		console.log(data);
-		var dataLength = data['data'].length;
+		
+		//console.log(data['data']);
+
+		var tempBoxData = data['data'];
+
+		var dataLength = tempBoxData.length;
 		var xData = [],
 		yData = [],
 		lineData = [];
 
 		for (var i = 0; i < dataLength; i++) {
-			xData.push(data['data'][i].name);
-			var spotLength = data['data'][i].spotData.length;
+
+			tempBoxData[i].boxData = tempBoxData[i].boxData[0];
+
+			xData.push(tempBoxData[i].name);
+			var spotLength = tempBoxData[i].spotData.length;
 
 			for (var j = 0; j < spotLength; j++) {
-				yData.push(data['data'][i].spotData[j].y);
+				yData.push(tempBoxData[i].spotData[j].y);
 			}
 
 			lineData.push({
-				x: data['data'][i].name,
-				y: data['data'][i].spotData[spotLength - 1].y
+				x: tempBoxData[i].name,
+				y: tempBoxData[i].spotData[spotLength - 1].y
 			});
 		}
 
@@ -517,17 +524,17 @@ export class OverviewComponent implements OnInit {
 				onselect: data => {
 					console.log(data);
 				},
-				style: {
-				  fill: "#ffffff",
-				  stroke: "#000000"
-				},
+				// style: {
+				//   fill: "#ffffff",
+				//   stroke: "#000000"
+				// },
 				scatter: {
 				  show: true,
 				  style: {
-					fill: "#000",
-					stroke: "#000",
-					"stroke-width": 1,
-					radius: 4
+					// fill: "#000",
+					// stroke: "#000",
+					// "stroke-width": 1,
+					// radius: 4
 				  }
 				},
 				line: {
@@ -543,7 +550,7 @@ export class OverviewComponent implements OnInit {
 					return "<span>x轴：d.x</span><br><span>y轴：d.y</span>";
 				  }
 				},
-				data: data.data
+				data: tempBoxData
 			  },
 			  axis: {
 				x: {
@@ -581,9 +588,9 @@ export class OverviewComponent implements OnInit {
 					that.isBoxShowColorPanel = true;
 				},
 			  },
-			  tooltip: function(d) {
-				return "<span>样本："+d.x+"</span><br><span>y："+d.y+"</span>";
-			  }
+			//   tooltip: function(d) {
+			// 	return "<span>样本："+d.x+"</span><br><span>y："+d.y+"</span>";
+			//   }
 		}
 
 		this.chartBox = new d4().init(config);
@@ -591,7 +598,7 @@ export class OverviewComponent implements OnInit {
 
 	//密度图
 	drawMapReads(data){
-		console.log(data);
+		//console.log(data);
 		let tempData = data.data;
 		let targetData = [];
 		for(var i = 0;i < tempData.length;i++){
@@ -682,6 +689,7 @@ export class OverviewComponent implements OnInit {
 			chartData.push(row);
 		}
 
+		//console.log(chartData)
 		// for (var i = 0; i < rows.length; i++) {
 		// 	let temp = {};
 		// 	let total = 0;
