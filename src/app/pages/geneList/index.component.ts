@@ -33,6 +33,7 @@ export class GeneListIndexComponent implements OnInit {
         (async () => {
             try {
                 await this.getLcInfo();
+                this.getUnReadAnalysisCount();
                 // await this.getAddThead();
                 this.ready = true;
                 setTimeout(() => {
@@ -71,6 +72,25 @@ export class GeneListIndexComponent implements OnInit {
                 );
         });
     }
+
+    getUnReadAnalysisCount(){
+		let getCount = ()=>{
+			this.ajaxService.getDeferData({
+				data: { 
+					LCID:sessionStorage.getItem('LCID')
+				},
+				url: `${config['javaPath']}/reAnalysis/count`
+			}).subscribe(data=>{
+				if(data['status']==0) this.storeService.setStore('analysisCount',data['data'][0]);
+			})
+		}
+
+		getCount();
+		
+		setInterval(()=>{
+			getCount();
+		},config['getAnalysisCountInterval'])
+	}
 
     // async getAddThead() {
     //     return new Promise((resolve, reject) => {

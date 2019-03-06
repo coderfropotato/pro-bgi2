@@ -19,6 +19,9 @@ ul,ol {
     list-style: none;
 }
 
+.ant-badge > span{
+    padding-right:8px;
+}
 
 
 

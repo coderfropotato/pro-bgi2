@@ -125,7 +125,7 @@ export class GoClassComponent implements OnInit {
 
 	isExceed: any = null;
 	selectedVal: string = '';
-	annotation: string = 'kegg';
+	annotation: string = 'go';
 	selectData: any = [];
 
 	isMultipleSelect: boolean = false;
@@ -175,6 +175,7 @@ export class GoClassComponent implements OnInit {
 	ngOnInit() {
 		(async () => {
 			this.selectData = await this.getSelect();
+			console.log(this.selectData)
             this.selectedVal = this.selectData.length ? this.selectData[0] : null;
 
             this.compareGroupList = this.storeService.getStore('diff_plan');

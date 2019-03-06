@@ -35,7 +35,7 @@
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
             <div class="switch">
-                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+                <app-layout-switch [analysisCount]="storeService['store']['analysisCount']" [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
             </div>
             <div class="func" #func (click)="resize($event)">
                 <!-- 增删列 -->
