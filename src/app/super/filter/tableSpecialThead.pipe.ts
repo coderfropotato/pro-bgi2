@@ -1,5 +1,7 @@
 import { GlobalService } from 'src/app/super/service/globalService';
 import { Pipe, PipeTransform } from "@angular/core";
+import config from '../../../config';
+
 /**
  *  表格特殊字段过滤
  */
