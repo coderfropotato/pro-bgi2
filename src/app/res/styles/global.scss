@@ -53,6 +53,9 @@
 .pathLinkArea path.active {
 	opacity: .5;
 }
+.hasbordert{
+	border-top: 1px solid $border-color;
+}
 
 // report
 .anticon.active {
@@ -571,19 +574,28 @@ button{
 	}
 
 	& .switch {
-		position: fixed;
-		right: 224px;
+		position: fixed; 
+		right: 254px;  // 265
 		top: 46px;
+		
 	}
 
 	&.gene-list-content{
 		.switch{
 			position: fixed;
-			right: 106px;
+			right: 148px;
 			top: 46px;
 		}
 	}
 }
+
+// @media screen and (max-width: 1350px) {
+// 	.content{
+// 		.switch{
+// 			display: none;
+// 		}
+// 	}
+// }
 
 .menufunc{
     opacity:0.8;
@@ -591,11 +603,17 @@ button{
 	&:hover{
 		opacity: 1.0;
 	}
-
+	.ant-badge{
+		margin-top:-20px;
+	}
 }
 
 // 布局切换
 .layout-switch-wrap{
+	margin-right: -18px;
+	&.hasAnalysisCount{
+		margin-right:10px;
+	}
 	.layout-src-ele{
 		position: absolute;
 		left: 0;
@@ -1905,4 +1923,9 @@ button{
 	width:stretch;
 	height: 100%;
 	display: flex;
+}
+
+.fusionRow{
+	height: 40px;
+	line-height: 40px;
 }

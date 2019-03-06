@@ -113,7 +113,7 @@ export class ReListComponent implements OnInit {
 
 		this.intervalTimer = setInterval(() => {
 			this.getList(false);
-		}, 5000);
+		}, config['getAnalysisListCountInterval']);
 	}
 
 	getList(loadingFlag: boolean = true) {
@@ -163,6 +163,11 @@ export class ReListComponent implements OnInit {
 
 		let href = location.href.split('/report');
 
+		if(!data['isCheck']) {
+			data['isCheck'] = true;
+			this.checkAnalysis(data['_id']);
+		} 
+
 		if (type === 'classification' || type === 'enrichment') {
 			window.open(
 				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data[ 'annotation' ]}/${data['isEdited']}`
@@ -174,6 +179,15 @@ export class ReListComponent implements OnInit {
 			);
 			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
 		}
+	}
+
+	checkAnalysis(tid){
+		this.ajaxService.getDeferData({
+			url:`${config['javaPath']}/reAnalysis/check`,
+			data:{
+				tid,
+			}
+		}).subscribe();
 	}
 
 	handleDelete(data) {

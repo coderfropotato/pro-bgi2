@@ -25,6 +25,8 @@
     <div class="fRight menufunc" (click)="analysisFn()" style="margin-top: 7px;">
         <span><i class="iconfont icon-fenxi" style="color:rgb(122, 212, 138);margin-right:2px;"></i></span>
         <b>{{'myAnalysis' | translate}}</b>
+        <nz-badge [nzCount]="+storeService['store']['analysisCount']" [nzOverflowCount]="10"></nz-badge>
+        <!-- <em *ngIf="storeService['store']['analysisCount']" style="font-style:normal;margin-left:-10px;color:#f40;">（{{storeService['store']['analysisCount']}}）</em> -->
     </div>
     <!-- 我的基因集 -->
     <div *ngIf="showGeneList" class="savegenelist fRight menufunc" (click)="handleSaveGeneListClick()">
