@@ -89,10 +89,9 @@ export class ReMultiOmicsComponent implements OnInit {
 	// 图的设置
 	constructor(
 		private message: MessageService,
-		private store: StoreService,
 		private ajaxService: AjaxService,
 		private globalService: GlobalService,
-		private storeService: StoreService,
+		public storeService: StoreService,
 		public pageModuleService: PageModuleService,
 		private router: Router,
 		private routes: ActivatedRoute,

@@ -6,6 +6,10 @@
         "diff_venn_title":"差异基因聚类",
         "diff_venn_content":"对每个比较组差异基因的FPKM值进行聚类"
     },
+    "express_venn":{
+        "express_venn_title":"表达量基因聚类",
+        "express_venn_content":"对每个比较组表达量基因的FPKM值进行聚类"
+    },
     "top":{
         "pdf":"导出pdf",
         "upload":"上传数据",
