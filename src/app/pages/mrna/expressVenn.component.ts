@@ -56,7 +56,7 @@ export class ExpressVennComponent implements OnInit {
 	// 默认收起模块描述
 	expandModuleDesc: boolean = false;
 
-	switch: boolean = false;
+	switch: string = 'right';
 	tableUrl: string;
 	chartUrl: string;
 

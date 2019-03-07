@@ -2,14 +2,29 @@
   indel-overview works!
 </p> -->
 <div>
-    <app-geneTable
-      #defaultIndelTable
-      [url]="defaultTableUrl"
-      [pageEntity]="defaultTableEntity"
-      [tableId]="defaultTableId"
-      [defaultChecked]="defaultTableChecked"
-      [tableHeight]="tableHeight"
-      [checkStatusInParams]="defaultCheckStatusInParams"
-      [(computedScrollHeight)]="computedScrollHeight"
-  ></app-geneTable>
+    
+</div>
+
+<div class="content row overview">
+    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+        <div class="left-bottom-layout">
+        </div>
+    </div>
+    <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+        <div class="switch">
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+        </div>
+
+        <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix" -->
+        <app-geneTable
+            #defaultIndelTable
+            [url]="defaultTableUrl"
+            [pageEntity]="defaultTableEntity"
+            [tableId]="defaultTableId"
+            [defaultChecked]="defaultTableChecked"
+            [tableHeight]="tableHeight"
+            [checkStatusInParams]="defaultCheckStatusInParams"
+            [(computedScrollHeight)]="computedScrollHeight"
+        ></app-geneTable>
+    </div>
 </div>
