@@ -80,9 +80,8 @@ export class IndelOverviewComponent implements OnInit {
 
   computedTableHeight() {
 		try {
-			let h = this.tableHeight;
-      this.tableHeight = this.right.nativeElement.offsetHeight  - config['layoutContentPadding'] * 2;
-			if (this.tableHeight === h) this.computedScrollHeight = true;
+      this.tableHeight = document.getElementById("indel_overview_id").offsetHeight;
+      this.computedScrollHeight = true;
 		} catch (error) {}
   }
 

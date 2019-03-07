@@ -1,30 +1,13 @@
-<!-- <p>
-  indel-overview works!
-</p> -->
-<div>
-    
-</div>
-
-<div class="content row overview">
-    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
-        <div class="left-bottom-layout">
-        </div>
-    </div>
-    <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-        <div class="switch">
-            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
-        </div>
-
-        <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix" -->
-        <app-geneTable
-            #defaultIndelTable
-            [url]="defaultTableUrl"
-            [pageEntity]="defaultTableEntity"
-            [tableId]="defaultTableId"
-            [defaultChecked]="defaultTableChecked"
-            [tableHeight]="tableHeight"
-            [checkStatusInParams]="defaultCheckStatusInParams"
-            [(computedScrollHeight)]="computedScrollHeight"
-        ></app-geneTable>
-    </div>
+<!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix" -->
+<div id="indel_overview_id" style="height:100%;background-color: #fff;">
+    <app-geneTable
+        #defaultIndelTable
+        [url]="defaultTableUrl"
+        [pageEntity]="defaultTableEntity"
+        [tableId]="defaultTableId"
+        [defaultChecked]="defaultTableChecked"
+        [tableHeight]="tableHeight"
+        [checkStatusInParams]="defaultCheckStatusInParams"
+        [(computedScrollHeight)]="computedScrollHeight"
+    ></app-geneTable>
 </div>
