@@ -89,7 +89,7 @@ export class BasicHelpComponent implements OnInit {
             this.mflag = 0;
         }
 
-        this.mflag = 3;
+        //this.mflag = 3;
         ///////////////////////////////////////////////////////////////////////
 
         this.seq_platform = this.store.getStore("seq_platform");

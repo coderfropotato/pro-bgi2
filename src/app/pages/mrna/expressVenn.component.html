@@ -1,9 +1,16 @@
 <!-- venn -->
 <div class="content row venn">
-    <div #left class="left-layout column" [class.unexpand]="switch">
+    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
-            <h4>title</h4>
-            <p>我是表达量韦恩图</p>
+            <!-- <h4>title</h4>
+            <p>我是表达量韦恩图</p> -->
+            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                {{'express_venn.express_venn_title' | translate}}
+            </span>
+            <p [hidden]="!expandModuleDesc">{{'express_venn.express_venn_content' | translate}}</p>
+            <ng-content select=".gene-switch-module"></ng-content>
         </div>
         <div class="left-bottom-layout">
             <ng-template #setTemplate>
@@ -61,9 +68,9 @@
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
     </div>
-    <div #right class="right-layout" [class.expand]="switch" >
+    <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
         <div class="switch">
-            <nz-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" ></nz-switch>
+            <app-layout-switch [analysisCount]="storeService['store']['analysisCount']"  [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
         </div>
         <div class="func" #func (click)="resize($event)">
            <!-- 增删列 -->
@@ -95,6 +102,7 @@
             (extendBaseTheadChange)="baseTheadChange($event)"
             [extendTableCheckStatusInParams]="extendCheckStatusInParams"
             [(applyOnceSearchParams)]="applyOnceSearchParams"
+            (selectGeneCountChange)="handleSelectGeneCountChange($event)"
             [(computedScrollHeight)]="computedScrollHeight"
         ></app-table-transformation>
     </div>

@@ -111,7 +111,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
           checked: [],
           unChecked: [],
           asType:this.asType,
-          sample:this.group
+          group:this.group
       };
       this.defaultDiffTableId = 'diff_alternative_default_splicing';
       this.defaultDiffChecked = true;

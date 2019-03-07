@@ -4,26 +4,29 @@
 
     <h3 class="title">4.1 参考基因组比对</h3>
     <p class="help_text">得到clean reads之后，我们使用 HISAT 将 clean reads 比对到参考基因组序列。 比对结果统计如下。另外，我们提供了 Reads 在基因组上比对结果的bam格式文件，<span><a href="http://cdts-wh.genomics.cn/" target="_blank">点击进入 FTP 下载</a>，</span>使用 IGV(Integrative Genomics Viewer) 工具可以对其进行不同尺度下的可视化查看。IGV 的帮助信息请参考 FAQ。</p>
-    <app-big-table
-        *ngIf="defaultEntity"
-        class="no-outside-border"
-        #bigTable
-        [pageEntity]="defaultEntity"
-        [url]="defaultUrl"
-        [tableId]="defaultTableId"
-    ></app-big-table>
+    <div class="f-content">
+        <app-big-table
+            *ngIf="defaultEntity"
+            class="no-outside-border"
+            #bigTable
+            [pageEntity]="defaultEntity"
+            [url]="defaultUrl"
+            [tableId]="defaultTableId"
+        ></app-big-table>
+    </div>
 
     <h3 class="title">4.2 参考基因比对</h3>
     <p class="help_text">使用 Bowtie2 将 clean reads 比对到参考基因序列得到比对结果。</p>
-    <app-big-table
-        *ngIf="defaultgeneEntity"
-        class="no-outside-border"
-        #bigGeneTable
-        [pageEntity]="defaultgeneEntity"
-        [url]="defaultgeneUrl"
-        [tableId]="defaultgeneTableId"
-    ></app-big-table>
-
+    <div class="f-content">
+        <app-big-table
+            *ngIf="defaultgeneEntity"
+            class="no-outside-border"
+            #bigGeneTable
+            [pageEntity]="defaultgeneEntity"
+            [url]="defaultgeneUrl"
+            [tableId]="defaultgeneTableId"
+        ></app-big-table>
+    </div>
 
     <h3 class="title">4.3 随机性</h3>
     <p class="help_text">对于样品质量好同时测序数据足够的样品，大部分的转录本将会被完整地覆盖，同时 reads 将均匀分布在转录本的各个区域。</p>
