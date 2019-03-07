@@ -269,7 +269,7 @@ export class InformationComponent implements OnInit {
 				el: '#TranscriptData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'item', 'all' ],
+				custom: [ 'rna_len_item', 'rna_len_all_rna' ],
 				data: chartData
 			},
 			axis: {
@@ -436,7 +436,7 @@ export class InformationComponent implements OnInit {
 				el: '#exonsNumData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'ref_item', 'ref_all' ],
+				custom: [ 'exon_num_item', 'exon_num_all_rna' ],
 				data: chartData
 			},
 			axis: {
