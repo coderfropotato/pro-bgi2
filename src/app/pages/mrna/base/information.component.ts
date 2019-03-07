@@ -112,7 +112,7 @@ export class InformationComponent implements OnInit {
 		};
 
 		//2.3 基因长度
-		let m_geneTypeList = [ 'mrna|known', 'mrna|novel', 'lncrna|known', 'lncrna|novel' ];
+		let m_geneTypeList = [ 'mrna_known', 'mrna_novel', 'lncrna_known', 'lncrna_novel' ];
 
 		this.selectPanelData = [
 			{
