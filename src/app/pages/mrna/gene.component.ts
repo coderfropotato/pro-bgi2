@@ -4,12 +4,12 @@ import { PageModuleService } from './../../super/service/pageModuleService';
 import { MessageService } from './../../super/service/messageService';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Component, OnInit, ViewChild, AfterViewInit, Input, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
-import {GeneService} from './../../super/service/geneService'
+import { GeneService } from './../../super/service/geneService';
 
 declare const d3: any;
 declare const d4: any;
@@ -63,7 +63,7 @@ declare const Venn: any;
                                 </div>
                                 </div>
                             </div>
-                            <app-gene-component *ngIf="showModule" [defaultGeneType]="defaultGeneType"></app-gene-component>
+                            <app-gene-component #geneTable *ngIf="showModule" [defaultGeneType]="defaultGeneType"></app-gene-component>
                         </div>
                         <div class="gene_pop" [hidden]="!expandModuleSetting">
                         <div class="gene_pop_top gene_center">
@@ -97,6 +97,8 @@ declare const Venn: any;
 	styles: []
 })
 export class GenePage {
+    @ViewChild('geneTable') geneTable;
+
 	private moduleRouteName: string = 'gene'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
 	config: object = config;
 	rootGeneType: string = this.storeService.getStore('menuRouteMap')[this.moduleRouteName]['geneType']; // 来自菜单 可配置  all gene transcript
@@ -140,8 +142,8 @@ export class GenePage {
 		private translate: TranslateService,
 		private promptService: PromptService,
 		private addColumnService: AddColumnService,
-        private router: Router,
-        private geneService:GeneService
+		private router: Router,
+		private geneService: GeneService
 	) {
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
@@ -182,9 +184,9 @@ export class GenePage {
 	moduleDescChange() {
 		this.expandModuleDesc = !this.expandModuleDesc;
 		// 重新计算表格切换组件表格的滚动高度
-		// setTimeout(() => {
-		// 	this.tableSwitchChart.scrollHeight();
-		// }, 30);
+        setTimeout(()=>{
+            this.geneTable['computedTableHeight']();
+        },30)
 	}
 
 	moduleSetChange() {
@@ -202,7 +204,9 @@ export class GenePage {
 			}
 		});
 
-		console.log(this.selectedList)
+		this.geneService.set("selectedList",this.selectedList);
+
+		//console.log(this.selectedList)
 		if (this.selectPanelList.length == this.selectedList.length) {
 			this.icon_color = 'blue';
 		} else {
@@ -224,6 +228,7 @@ export class GenePage {
 	inputChange() {
 		console.log(this.inputValue);
 		if (this.inputValue) {
+			this.geneService.set("inputValue",this.inputValue);
 			this.getSearchback();
 		} else {
 			this.expandSearchList = false;
@@ -269,6 +274,7 @@ export class GenePage {
 	radioChange() {
 		//
 		this.icon_color = 'blue';
+		this.geneService.set("radioValue",this.radioValue);
 	}
 
 	//下方取消按钮
@@ -294,6 +300,7 @@ export class GenePage {
 	//点击搜索返回面板其中一项
 	searchBackSelect(item) {
 		this.inputValue = item;
+		this.geneService.set("inputValue",this.inputValue);
 		this.expandSearchList = false;
 	}
 
@@ -337,7 +344,6 @@ export class GenePage {
 	}
 }
 
-
 // 表
 @Component({
 	selector: 'app-gene-component',
@@ -345,14 +351,11 @@ export class GenePage {
 	styles: []
 })
 export class GeneComponent implements OnInit {
-    @Input('defaultGeneType') defaultGeneType;
+	@Input('defaultGeneType') defaultGeneType;
 
 	// 表格高度相关
-	@ViewChild('left') left;
-	@ViewChild('right') right;
 	@ViewChild('func') func;
 	@ViewChild('addColumn') addColumn;
-	@ViewChild('tableSwitchChart') tableSwitchChart;
 	@ViewChild('transformTable') transformTable;
 
 	tableUrl: string;
@@ -384,15 +387,11 @@ export class GeneComponent implements OnInit {
 
 	constructor(
 		private message: MessageService,
-		private ajaxService: AjaxService,
-		private globalService: GlobalService,
 		private storeService: StoreService,
 		public pageModuleService: PageModuleService,
 		private translate: TranslateService,
-		private promptService: PromptService,
-		private addColumnService: AddColumnService,
-        private router: Router,
-        private geneService:GeneService
+		private router: Router,
+		private geneService: GeneService
 	) {
 		// 订阅windowResize 重新计算表格滚动高度
 		this.message.getResize().subscribe((res) => {
@@ -403,6 +402,7 @@ export class GeneComponent implements OnInit {
 		this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) this.computedTableHeight();
 		});
+
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
 	}
@@ -465,11 +465,21 @@ export class GeneComponent implements OnInit {
 		this.extendCheckStatusInParams = false;
     }
 
-    computedTableHeight() {
+    ngAfterViewInit() {
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
+	}
+
+	computedTableHeight() {
 		try {
 			let h = this.tableHeight;
-            this.tableHeight = document.querySelector('.gene')['offsetHeight'] - document.querySelector('.left-top-layout')['offsetHeight'] - config['layoutContentPadding'] * 2 -12;
-            console.log(this.tableHeight)
+			this.tableHeight =
+				document.querySelector('.gene')['offsetHeight'] -
+				document.querySelector('.left-top-layout')['offsetHeight'] -
+				config['layoutContentPadding'] * 2 -
+				this.func.nativeElement.offsetHeight -
+				12;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
 	}
@@ -480,10 +490,8 @@ export class GeneComponent implements OnInit {
 
 	addThead(thead) {
 		this.transformTable._initCheckStatus();
-
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
 		this.transformTable._setParamsNoRequest('pageIndex', 1);
-
 		this.transformTable._addThead(thead['add']);
 	}
 
