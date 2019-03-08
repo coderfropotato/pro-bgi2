@@ -11,7 +11,7 @@
 |	reactome_term_id	|		|	reactome_term	|	reactome_desc	|		|	https://reactome.org/	|	待定	|	待确定	
 |	cog_term_id	|	cog1816	|	cog_term	|	cog_desc	|		|	ftp://ftp.ncbi.nih.gov/pub/COG/COG2014/static/byCOG/[替换内容]	|		|		
 |	eggnog_term_id	|		|	eggnog_term	|	eggnog_desc	|		|	http://eggnogdb.embl.de/#/app/home	|		|		
-|	tf_term_id	|		|	tf_term	|	tf_desc	|		|	"动物：http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family=[替换内容] 植物：http://planttfdb.cbi.pku.edu.cn/family.php?fam=[替换内容]"	|	根据info中的species_kingdom 的值判断  animal/plant/fungi/other	|	待数据	
+|	tf_term_id	|		|	tf_term	|	tf_desc	|		|	动物：http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family=[替换内容] 植物：http://planttfdb.cbi.pku.edu.cn/family.php?fam=[替换内容]	|	根据info中的species_kingdom 的值判断  animal/plant/fungi/other	|	待数据	
 |	tf_cofactors_id	|		|	tf_cofactors_term	|	tf_cofactors_desc	|		|	http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/	|		|		
 |	go_f_term_id	|		|	go_f_term	|	go_f_desc	|		|	http://amigo.geneontology.org/amigo/term/[替换内容]	|		|		
 |	go_p_term_id	|		|	go_p_term	|	go_p_desc	|		|		|		|		
