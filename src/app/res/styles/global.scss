@@ -493,7 +493,7 @@ button{
 
 // 转换表 大表
 .transformation-table-component,.big-table-component,.gene-table-component{
-	padding:8px;
+	padding:4px;
 }
 
 .content {
@@ -574,10 +574,10 @@ button{
 	}
 
 	& .switch {
-		position: fixed; 
+		position: fixed;
 		right: 254px;  // 265
 		top: 46px;
-		
+
 	}
 
 	&.gene-list-content{
