@@ -265,7 +265,7 @@ export class GeneListVennComponent implements OnInit {
 
 			setTimeout(() => {
 				this.scrollHeight();
-				this.computedTableHeight();
+                this.computedTableHeight();
 			}, 30);
 		})();
 	}
