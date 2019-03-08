@@ -3,8 +3,16 @@ import { Pipe, PipeTransform } from "@angular/core";
 import config from '../../../config';
 
 /**
- *  表格特殊字段过滤
+ * @description 表格特殊字段过滤
+ * @author Yangwd<277637411@qq.com>
+ * @date 2019-03-08
+ * @param {*} value 表格值
+ * @param {*} thead 表头
+ * @param {boolean} whitespace 表格内部不换行为false 外部popover换行为true
+ * @returns {string}
+ * @memberof TableSpecialTheadFilter
  */
+
 @Pipe({
     name: "tableSpecialTheadFilter",
     pure: true
@@ -12,7 +20,7 @@ import config from '../../../config';
 export class TableSpecialTheadFilter implements PipeTransform {
     constructor(private globalService:GlobalService){}
 
-    transform(value: any,thead:any): any {
+    transform(value: any,thead:any,whitespace:boolean = false): object {
         if(!value && value!=0) return this.globalService.trustStringHtml(`<span>NA</span>`);
 
         if(thead==='splie_site'){
@@ -21,14 +29,47 @@ export class TableSpecialTheadFilter implements PipeTransform {
                 let htmlstring = '';
                 strArr.forEach((v,index)=>{
                     htmlstring+=`<span>${v}</span>`;
-                    if(index!=strArr.length-1) htmlstring+='<br>'
+                    if(index!==strArr.length-1) htmlstring+='<br>';
                 })
                 return this.globalService.trustStringHtml(htmlstring);
             }else{
                 return this.globalService.trustStringHtml(`<span>${value}</span>`);
             }
         }else{
-            return this.globalService.trustStringHtml(`<span>${value}</span>`);
+
+            let matchList = config['matchList'];
+            let matchRule = config['matchRule'];
+            let flag = config['urlSplitFlag'];
+            let valSplitFlag = config['valSplitFlag'];
+            let idFlag = config['idComposeDesc'];
+            let htmlStr = '',urlArr = [];
+            let whiteWrapReg = /.+(\_desc)|(\_term)$/g;
+
+            if(matchList.includes(thead)){
+                let curRule = matchRule[thead];
+                let curUrl = curRule['url'];
+
+                // if((typeof curUrl) ==='string'){
+                //     urlArr = curUrl.split(flag);
+                // }else{
+                //     urlArr = curUrl[0].split(flag);
+                // }
+
+                urlArr = (typeof curUrl === 'string')?curUrl.split(flag):curUrl[0].split(flag);
+
+                if(whiteWrapReg.test(thead)){
+                    let textArr = value.split(valSplitFlag);
+                    textArr.forEach((v,i)=>{
+                        let id = v.indexOf(idFlag)!=-1?v.split(idFlag)[0]:null;
+                        htmlStr+=`<a href="${urlArr[0]+id+urlArr[1]}" target="_blank">${v}</a>`;
+                        htmlStr+=(i!==textArr.length-1 && whitespace)?'<br>':'&emsp;';
+                    })
+                }else{
+                    htmlStr+=`<a href="${urlArr[0]+value+urlArr[1]}" target="_blank">${value}</a>`;
+                }
+            }
+
+            return this.globalService.trustStringHtml(htmlStr);
         }
     }
 }
