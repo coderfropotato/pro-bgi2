@@ -469,7 +469,7 @@ export class GeneComponent implements OnInit {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
-	}
+    }
 
 	computedTableHeight() {
 		try {
@@ -579,5 +579,17 @@ export class GeneComponent implements OnInit {
 			this.transformTable._setParamsNoRequest('pageIndex', 1);
 			this.transformTable._getData();
 		}
-	}
+    }
+
+    // 重新获取数据
+    reGetData(){
+        this.transformTable._getData();
+    }
+
+    // 选择范围的时候调用  不需要调用reGetData重新获取数据
+    // head {} | Object[]    {key:'123',category:'xxx'}
+    selectRange(head){
+        this.addColumn._addThead(head)
+    }
+
 }
