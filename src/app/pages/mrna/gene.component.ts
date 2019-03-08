@@ -469,7 +469,11 @@ export class GeneComponent implements OnInit {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
-	}
+    }
+
+    reGetData(){
+        this.transformTable._getData();
+    }
 
 	computedTableHeight() {
 		try {
