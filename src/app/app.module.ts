@@ -44,7 +44,7 @@ import { BigTableCheckComponent } from './super/components/big-table-check.compo
 
 // 页面
 /* 基因总表 */
-import { GeneComponent } from './pages/mrna/gene.component';
+import { GeneComponent,GenePage } from './pages/mrna/gene.component';
 /* 基础模块 */
 import { OverviewComponent } from './pages/mrna/base/overview.component';
 import { InformationComponent } from './pages/mrna/base/information.component';
@@ -364,7 +364,7 @@ const ROUTES: Routes = [
 			// 基因总表
 			{
 				path:'gene',
-				component:GeneComponent,
+				component:GenePage,
 				data:{keep:true,module:'gene'}
 			},
 			{
@@ -647,6 +647,7 @@ export function createTranslateLoader(http: HttpClient) {
 		TableSpecialTheadFilter,
 
 		// 页面
+		GenePage,
 		GeneComponent,
 		
 		OverviewComponent,

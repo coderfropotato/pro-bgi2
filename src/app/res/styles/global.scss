@@ -1929,3 +1929,147 @@ button{
 	height: 40px;
 	line-height: 40px;
 }
+
+
+//基因总表
+.gene{
+	position: relative;
+	width: 100%;
+}
+
+.gene_margin_right{
+	margin-right: 0 !important;
+}
+
+.gene_center{
+	display:flex;
+	justify-content: flex-start;
+	align-items:center;
+}
+
+.gene_top_content{
+	width:100%;
+	height: 120px;
+	position: relative;
+	
+	.gene_search{
+		width: 60%;
+		height: 40px;
+		margin: 0 auto;
+	}
+
+	.gene_row{
+		width: 100%;
+	}
+	.gene_col_div{
+		width: 100%;
+		height: auto;
+		max-height: 240px;
+		position: absolute;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		background: #FEFEFE;
+		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.16);
+		top: 40px;
+		left: 0;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		.gene_col_content{
+			width: 98%;
+			height: 40px;
+			text-indent: 2em;
+			line-height: 40px;
+			margin: 4px auto;
+			border-radius: 4px;
+			background: #FEFEFE;
+			border: 1px solid #ccc;
+			.content_top{
+				width: 100%;
+				height: 30px;
+				text-indent: 2em;
+				font-size: 18px;
+			}
+			.content_bottom{
+				width: 100%;
+				height: 30px;
+				text-indent: 2em;
+			}
+		}
+	}
+	.gene_col{
+		display: flex;
+		justify-content: flex-end;
+	}
+	.gene_fast{
+		width: 60%;
+		height: 40px;
+		margin: 0 auto;
+		.gene_fast_set{
+			margin-left:10px;
+			margin-right:10px;
+			color:#98df8a;
+			cursor: pointer;
+		}
+	}
+
+	.icon_pointer{
+		cursor: pointer;
+	}
+}
+
+.gene_pop{
+	width:60%;
+	height: auto;
+	position: absolute;
+	top: 80px;
+	left: 20%;
+	z-index: 999;
+	border:1px solid #ccc;
+	background: #FEFEFE;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.16);
+	border-radius: 4px;
+
+	.gene_pop_top{
+		width: 100%;
+		height: 40px;
+		text-indent:2em;
+		border-bottom:1px solid #ccc;
+	}
+
+	.gene_pop_content{
+		width: 100%;
+		height: auto;
+		border-bottom: 1px solid #ccc;
+		.mselect{
+			width: 100%;
+			height: 40px;
+			text-indent:2em;
+		}
+		.mselect2{
+			width: 100%;
+			height: auto;
+			text-indent:2em;
+			button{
+				margin-top:6px; 
+				margin-bottom:6px;
+				margin-left:10px;
+				border-radius: 4px;
+				display:inline-block;
+			}
+		}
+	}
+
+	.gene_pop_bottom{
+		width: 100%;
+		height: 50px;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		button{
+			margin-left: 10px;
+			margin-right: 10px;
+		}
+	}
+}
+
+

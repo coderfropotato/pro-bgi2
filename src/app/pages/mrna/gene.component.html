@@ -1,3 +1,77 @@
-<p>
-  gene works!
-</p>
+<div class="content gene">
+    <div class="left-layout column gene_margin_right">
+        <div class="left-top-layout"><!-- 上部份 -->
+            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+            </span>
+            <div [hidden]="!expandModuleDesc" class="gene_top_content" (click)="expandModuleDescClick()"><!-- 切换隐藏的内容 -->
+              <div class="gene_search gene_center"><!-- 上部搜索 -->
+                <div nz-row class="gene_row">
+                  <div nz-col nzSpan="22" class="gene_col">
+                    <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate"><!-- 搜索框 -->
+                      <input type="text" nz-input [(ngModel)]="inputValue" (ngModelChange)="inputChange()">
+                    </nz-input-group>
+                    <ng-template #addOnBeforeTemplate>
+                      <nz-select [(ngModel)]="selectTargetName" (ngModelChange)="selectTypeChange()">
+                        <nz-option  *ngFor="let item of selectTarget" [nzLabel]="item.label" [nzValue]="item.value" [nzDisabled]="item.isChecked"></nz-option>
+                      </nz-select>
+                    </ng-template>
+                    <ng-template #addOnAfterTemplate><!-- 设置按钮 -->
+                      <i class="iconfont icon-shezhi icon_pointer" [style.color]="icon_color" (click)="moduleSetChange()"></i>
+                    </ng-template>
+                    <div class="gene_col_div" [hidden]="!expandSearchList"><!-- 输入框返回结果面板 -->
+                      <div class="gene_col_content" *ngFor="let item of searchBackList" (click)="searchBackSelect(item)" >
+                          <!-- <div class="content_top">
+                            {{item.key}}
+                          </div> -->
+                          {{item}}
+                          <!-- <div class="content_bottom">
+                            {{item.value}}
+                          </div> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div nz-col nzSpan="2" class="gene_col"><!-- 搜索按钮 -->
+                      <button nz-button nzType="primary" (click)="goSearch()">搜素</button>
+                  </div>
+                </div>
+              </div>
+              <div class="gene_fast gene_center"><!-- 快捷操作 -->
+                  <span>快捷操作：</span>
+                  <span class="gene_fast_set" *ngFor="let item of fastSearchList">{{item.value}}</span>
+              </div>
+            </div>
+        </div>
+        <div class="left-bottom-layout" ><!-- 下部份 -->
+          666666
+        </div>
+    </div>
+    <div class="gene_pop" [hidden]="!expandModuleSetting">
+      <div class="gene_pop_top gene_center">
+        自定义
+      </div>
+      <div class="gene_pop_content">
+        <div class="mselect gene_center">
+          多个关键词之间关系:
+          <div>
+            <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="radioChange()">
+              <label nz-radio nzValue="or">或</label>
+              <label nz-radio nzValue="and">且</label>
+            </nz-radio-group>
+          </div>
+        </div>
+        <div class="mselect2 gene_center">
+          <!-- <div>搜索范围:</div> -->
+          <div>
+              <span>搜索范围:</span>&nbsp;
+              <button nz-button nzType="default" *ngFor="let item of selectPanelList" [nzSize]="'small'" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.key}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="gene_pop_bottom">
+          <button nz-button [nzSize]="small" nzType="primary" (click)="btnCancle()">取消</button>
+          <button nz-button [nzSize]="small" nzType="primary" (click)="btnConfirm()">确定</button>
+      </div>
+    </div>
+</div>
