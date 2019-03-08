@@ -75,7 +75,7 @@
       </div>
 </div> -->
 
-<div>
+<div style="height:100%">
     <ng-template #searchTemplate>
         <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
             <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>

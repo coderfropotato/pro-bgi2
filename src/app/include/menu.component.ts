@@ -27,7 +27,7 @@ export class MenuComponent implements OnChanges {
         private router: Router,
         private globalService: GlobalService,
         public pageModuleService:PageModuleService,
-        private storeService: StoreService,
+        public storeService: StoreService,
         private translate: TranslateService
         ) {
             let browserLang = this.storeService.getLang();

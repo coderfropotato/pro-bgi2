@@ -136,7 +136,7 @@ export class LrnaComponent implements OnInit {
 				outerRadius:120,
 				startAngle:0,
 				endAngle:360,
-				showLabel:true,
+				showLabel:false,
 				custom: ["name", "value"],
 				el: "#RNADataID",
 				type: "pie",

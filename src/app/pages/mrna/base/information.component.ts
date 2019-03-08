@@ -112,7 +112,7 @@ export class InformationComponent implements OnInit {
 		};
 
 		//2.3 基因长度
-		let m_geneTypeList = [ 'mrna|known', 'mrna|novel', 'lncrna|known', 'lncrna|novel' ];
+		let m_geneTypeList = [ 'mrna_known', 'mrna_novel', 'lncrna_known', 'lncrna_novel' ];
 
 		this.selectPanelData = [
 			{
@@ -198,7 +198,7 @@ export class InformationComponent implements OnInit {
 				outerRadius: 120,
 				startAngle: 0,
 				endAngle: 360,
-				showLabel: true,
+				showLabel: false,
 				custom: [ 'name', 'value' ],
 				el: '#RNAClassID',
 				type: 'pie',
@@ -269,7 +269,7 @@ export class InformationComponent implements OnInit {
 				el: '#TranscriptData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'item', 'all' ],
+				custom: [ 'rna_len_item', 'rna_len_all_rna' ],
 				data: chartData
 			},
 			axis: {
@@ -436,7 +436,7 @@ export class InformationComponent implements OnInit {
 				el: '#exonsNumData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'ref_item', 'ref_all' ],
+				custom: [ 'exon_num_item', 'exon_num_all_rna' ],
 				data: chartData
 			},
 			axis: {

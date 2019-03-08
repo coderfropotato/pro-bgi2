@@ -51,9 +51,12 @@ export class ExpressVennComponent implements OnInit {
 	@ViewChild('addColumn') addColumn;
 	@ViewChild('tableSwitchChart') tableSwitchChart;
     @ViewChild('transformTable') transformTable;
-    @Input('defaultGeneType') defaultGeneType;
+	@Input('defaultGeneType') defaultGeneType;
+	
+	// 默认收起模块描述
+	expandModuleDesc: boolean = false;
 
-	switch: boolean = false;
+	switch: string = 'right';
 	tableUrl: string;
 	chartUrl: string;
 
@@ -129,13 +132,15 @@ export class ExpressVennComponent implements OnInit {
 
 	addColumnShow:boolean = false;
 	showBackButton:boolean = false;
+
+	selectGeneCount: number = 0;
 	computedScrollHeight:boolean = false;
 
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
 		private globalService: GlobalService,
-		private storeService: StoreService,
+		public storeService: StoreService,
 		public pageModuleService: PageModuleService,
 		private translate: TranslateService,
 		private promptService:PromptService,
@@ -295,7 +300,19 @@ export class ExpressVennComponent implements OnInit {
             this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
             this.transformTable._getData();
         }
-    }
+	}
+	
+	moduleDescChange() {
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.tableSwitchChart.scrollHeight();
+		}, 30);
+	}
+
+	handleSelectGeneCountChange(selectGeneCount) {
+		this.selectGeneCount = selectGeneCount;
+	}
 
 	/*-------- 表格转换开始 ----------*/
 

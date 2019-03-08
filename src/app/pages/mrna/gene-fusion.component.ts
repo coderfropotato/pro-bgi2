@@ -27,7 +27,11 @@ export class GeneFusionComponent implements OnInit {
   tableUrl: string;
   chartUrl:string;
   tableChartEntity: object;
-  
+
+
+  rightImgUrl: string;
+  imgEntity: string;
+
 	// 默认收起模块描述
   expandModuleDesc: boolean = false;
   
@@ -62,6 +66,14 @@ export class GeneFusionComponent implements OnInit {
 	ngOnInit() {
 		this.chartUrl=`http://localhost:8086/fusion`;
 
+	}
+
+	drawRightImg(data){
+
+	}
+
+	rightHandlerRefresh(){
+		
 	}
 
 	moduleDescChange() {

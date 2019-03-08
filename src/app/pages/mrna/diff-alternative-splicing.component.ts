@@ -58,10 +58,8 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 
   constructor(
     private message: MessageService,
-    private store: StoreService,
-    private ajaxService: AjaxService,
     private globalService: GlobalService,
-    private storeService: StoreService,
+    public storeService: StoreService,
     public pageModuleService: PageModuleService,
     private router: Router,
     private routes: ActivatedRoute,
@@ -95,7 +93,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
       };
 
       this.asType = "A3SS";
-      this.group = this.storeService.getStore("group")[0];
+      this.group = this.storeService.getStore("diff_plan")[0];
       // table
       this.diffDefaultTableUrl = `${config["javaPath"]}/alternativeSplice/tableAs`;
       this.diffDefaultTableEntity = {
@@ -111,7 +109,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
           checked: [],
           unChecked: [],
           asType:this.asType,
-          sample:this.group
+          group:this.group
       };
       this.defaultDiffTableId = 'diff_alternative_default_splicing';
       this.defaultDiffChecked = true;
@@ -122,7 +120,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
   computedTableHeight() {
 		try {
 			let h = this.tableHeight;
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
+			this.tableHeight = this.right.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
   }
@@ -174,7 +172,12 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 				type: 'stackBarPercent',
 				width: 660,
 				custom: [ 'compare_group' ],
-				data: chartData
+        data: chartData,
+        enableChartSelect: true,
+        onselect: function(data) {
+          //console.log(data);
+          that.handleData(data);
+        },
 			},
 			axis: {
 				x: {
@@ -209,10 +212,10 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-        //console.log(d);
+        console.log(d);
         // console.log(d.data[d.key])
         //return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Number：'+d.data[d.key]/100*d.data['as_total']+'</span><br><span>Sample：'+d.data['sample_name']+'</span>';
-        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
+        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Group：'+d.data['compare_group']+'</span>';
 			}
 		};
 
@@ -224,7 +227,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
   }
 
   handleData(data){
-    //console.log(data);
+    ///console.log(data);
     this.asType = data[0].key.split("_")[1].toUpperCase();
     this.group = data[0].data["compare_group"];
 

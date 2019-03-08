@@ -6,6 +6,10 @@
         "diff_venn_title":"Differential gene clustering",
         "diff_venn_content":"Clustering the FPKM values of different genes in each comparison group"
     },
+    "express_venn":{
+        "express_venn_title":"express gene clustering",
+        "express_venn_content":"Clustering the FPKM values of express genes in each comparison group"
+    },
     "top":{
         "pdf":"Export as pdf",
         "upload":"Upload data",

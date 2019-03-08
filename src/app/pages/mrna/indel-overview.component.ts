@@ -19,7 +19,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class IndelOverviewComponent implements OnInit {
   @ViewChild('defaultIndelTable') defaultIndelTable;
+  @ViewChild('right') right;
 
+  switch = 'left';
   // table
   defaultTableEntity: object;
   defaultTableUrl: string;
@@ -78,7 +80,8 @@ export class IndelOverviewComponent implements OnInit {
 
   computedTableHeight() {
 		try {
-			this.computedScrollHeight = true;
+      this.tableHeight = document.getElementById("indel_overview_id").offsetHeight;
+      this.computedScrollHeight = true;
 		} catch (error) {}
   }
 
@@ -87,5 +90,16 @@ export class IndelOverviewComponent implements OnInit {
 			this.computedTableHeight();
 		}, 30);
   }
+  
+  // 切换左右布局 计算左右表格的滚动高度
+	switchChange(status) {
+		this.switch = status;
+		setTimeout(() => {
+			// try {
+			// 	this.switchChart.scrollHeight();
+			// } catch (e) {}
+			this.computedTableHeight();
+		}, 320);
+	}
 
 }

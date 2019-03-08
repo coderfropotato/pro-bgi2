@@ -112,10 +112,9 @@ export class ReNetComponent implements OnInit {
 
     constructor(
         private message: MessageService,
-		private store: StoreService,
 		private ajaxService: AjaxService,
 		private globalService: GlobalService,
-		private storeService: StoreService,
+		public storeService: StoreService,
 		public pageModuleService: PageModuleService,
         private router: Router,
         private routes:ActivatedRoute,

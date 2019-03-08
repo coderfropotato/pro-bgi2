@@ -1,15 +1,13 @@
-<!-- <p>
-  indel-overview works!
-</p> -->
-<div>
+<!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix" -->
+<div id="indel_overview_id" style="height:100%;background-color: #fff;">
     <app-geneTable
-      #defaultIndelTable
-      [url]="defaultTableUrl"
-      [pageEntity]="defaultTableEntity"
-      [tableId]="defaultTableId"
-      [defaultChecked]="defaultTableChecked"
-      [tableHeight]="tableHeight"
-      [checkStatusInParams]="defaultCheckStatusInParams"
-      [(computedScrollHeight)]="computedScrollHeight"
-  ></app-geneTable>
+        #defaultIndelTable
+        [url]="defaultTableUrl"
+        [pageEntity]="defaultTableEntity"
+        [tableId]="defaultTableId"
+        [defaultChecked]="defaultTableChecked"
+        [tableHeight]="tableHeight"
+        [checkStatusInParams]="defaultCheckStatusInParams"
+        [(computedScrollHeight)]="computedScrollHeight"
+    ></app-geneTable>
 </div>
