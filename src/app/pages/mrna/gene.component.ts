@@ -115,9 +115,7 @@ export class GenePage {
 	radioValue: string = 'or'; //默认选择or
 
 	selectPanelList: object[]; //搜索范围数据
-	selectedList: string[] = []; //选中的数据
-	selectedAllList: string[] = []; //所有数据选中
-	selectedListLength: number = 0; //选中数据的长度
+	selectedList: object[]; //选中的数据
 
 	selectTarget: object[]; //基因或者转录本
 	selectTargetName: string; //初始化为基因
@@ -200,11 +198,12 @@ export class GenePage {
 		this.selectedList = [];
 		this.selectPanelList.forEach((d) => {
 			if (d['isChecked']) {
-				this.selectedList.push(d['key']);
+				this.selectedList.push(d);
 			}
 		});
 
-		if (this.selectedAllList.length == this.selectedList.length) {
+		console.log(this.selectedList)
+		if (this.selectPanelList.length == this.selectedList.length) {
 			this.icon_color = 'blue';
 		} else {
 			this.icon_color = 'gray';
@@ -332,11 +331,7 @@ export class GenePage {
 						data['data'][i]['isChecked'] = false;
 					}
 					this.selectPanelList = data['data'];
-					this.selectedListLength = this.selectedList.length;
-					this.selectPanelList.forEach((d) => {
-						this.selectedAllList.push(d['key']);
-					});
-					console.log(this.selectPanelList);
+					//console.log(this.selectPanelList);
 				}
 			});
 	}
@@ -427,7 +422,7 @@ export class GeneComponent implements OnInit {
             reAnaly: false,
             content:this.geneService["geneOptions"]["content"],
             andOr: this.geneService["geneOptions"]["radioValue"],
-            checkedAddThead:this.geneService["geneOptions"]["range"],
+            checkedAddThead:this.geneService["geneOptions"]["selectedList"],
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
@@ -454,7 +449,7 @@ export class GeneComponent implements OnInit {
             sortValue: null,
             content:this.geneService["geneOptions"]["content"],
             andOr: this.geneService["geneOptions"]["radioValue"],
-            checkedAddThead:this.geneService["geneOptions"]["range"],
+            checkedAddThead:this.geneService["geneOptions"]["selectedList"],
 			// matchAll: false,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）

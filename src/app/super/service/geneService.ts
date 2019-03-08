@@ -16,7 +16,7 @@ export class GeneService {
     geneOptions:object = {
         radioValue:'or',
         content:"",
-        range:[]
+        selectedList:[]
     };
 
     set(key,value){
