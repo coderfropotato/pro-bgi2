@@ -111,6 +111,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SysDefendService } from './super/service/sysDefendService';
+import { GeneService } from './super/service/geneService';
 import { PageModuleService } from './super/service/pageModuleService';
 import { AddColumnService } from './super/service/addColumnService';
 import { PromptService } from './super/service/promptService';
@@ -649,39 +650,39 @@ export function createTranslateLoader(http: HttpClient) {
 		// 页面
 		GenePage,
 		GeneComponent,
-		
+
 		OverviewComponent,
 		InformationComponent,
 		ReadsFilterComponent,
 		ReadsComparisonComponent,
 		LrnaComponent,
 		BasicHelpComponent,
-		
+
 		DiffVennPage,
 		DiffExpressionComponent,
 		DiffExpressionHelpComponent,
-		
+
 		ExpressVennPage,
 		ExpressVennComponent,
 		ExpressionHelpComponent,
-		
+
 		ClusterComponent,
         ClusterHelpComponent,
-		
+
         GoClassPage,
 		GoClassComponent,
 		GoHelpComponent,
 		GoRichComponent,
-		
+
 		KeggClassComponent,
 		KeggRichComponent,
 		KeggHelpComponent,
-		
+
 		AlternativeSplicingComponent,
 		DiffAlternativeSplicingComponent,
 		GeneFusionComponent,
 		AsSvHelpComponent,
-		
+
 		SnpOverviewComponent,
 		SnpDistributionComponent,
 		IndelOverviewComponent,
@@ -737,7 +738,8 @@ export function createTranslateLoader(http: HttpClient) {
 		SysDefendService,
 		PageModuleService,
 		AddColumnService,
-		PromptService,
+        PromptService,
+        GeneService,
 		// , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
 		{
 			provide: NZ_MESSAGE_CONFIG,
