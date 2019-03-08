@@ -352,6 +352,7 @@ export class IndexComponent implements OnInit {
 
                             //动态跳第一个页面  需要替换  /report/mrna 为当前url  不然后退的时候会回到 /report/mrna 导致路由容器为空
                             let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
+                            // let url = window.location.href.split('/report')[0]+`/report/mrna/diff-expression`;
                             window.location.replace(url);
 
 							let menuRouteMap = {};
@@ -542,7 +543,7 @@ export class IndexComponent implements OnInit {
 	getUnReadAnalysisCount(){
 		let getCount = ()=>{
 			this.ajaxService.getDeferData({
-				data: { 
+				data: {
 					LCID:sessionStorage.getItem('LCID')
 				},
 				url: `${config['javaPath']}/reAnalysis/count`
@@ -554,7 +555,7 @@ export class IndexComponent implements OnInit {
 		}
 
 		getCount();
-		
+
 		this.getUnReadAnalysisCountTimer = setInterval(()=>{
 			getCount();
 		},config['getAnalysisCountInterval'])
