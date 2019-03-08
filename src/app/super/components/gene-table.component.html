@@ -206,7 +206,9 @@
                         </tr>
                     </tbody>
                 </nz-table>
-                <app-error *ngIf="error" [error]="error"></app-error>
+                <div *ngIf="error" [style.height]="tableHeight && (tableHeight-40)+'px'">
+                    <app-error [error]="error"></app-error>
+                </div>
                 <div #tableBottom class="table-bottom" *ngIf="!error">
                     <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total"
                         [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()"
