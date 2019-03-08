@@ -63,7 +63,7 @@ declare const Venn: any;
                                 </div>
                                 </div>
                             </div>
-                            <app-gene-component *ngIf="showModule" [(radioValue)]="radioValue" [defaultGeneType]="defaultGeneType"></app-gene-component>
+                            <app-gene-component *ngIf="showModule" [defaultGeneType]="defaultGeneType"></app-gene-component>
                         </div>
                         <div class="gene_pop" [hidden]="!expandModuleSetting">
                         <div class="gene_pop_top gene_center">
@@ -342,6 +342,8 @@ export class GenePage {
 	}
 }
 
+
+// 表
 @Component({
 	selector: 'app-gene-component',
 	templateUrl: './gene.component.html',
@@ -349,9 +351,6 @@ export class GenePage {
 })
 export class GeneComponent implements OnInit {
     @Input('defaultGeneType') defaultGeneType;
-    @Input('radioValue') radioValue;
-    @Output() radioValueChange: EventEmitter<any> = new EventEmitter();
-
 
 	// 表格高度相关
 	@ViewChild('left') left;
