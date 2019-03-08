@@ -132,7 +132,7 @@
             <!-- 增删列 -->
             <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType" ></app-add-column>
             <!-- 关系 -->
-            <app-gene-relative class="ml-12" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
+            <app-gene-relative class="ml-12" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)" [relative]="transformTable['relative']"></app-gene-relative>
             <!-- 返回 -->
             <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
             <!-- 只看表 -->
@@ -140,9 +140,9 @@
         </div>
         <!-- 表格转换 [defaultShowFilterStatus]="defaultShowFilterStatus"-->
         <app-table-transformation
+            #transformTable
             *ngIf="getGeneListDone"
             class="no-outside-border"
-            #transformTable
             [isFirst]="first"
             [tableHeight]="tableHeight"
             [defaultTableEntity]="defaultEntity"

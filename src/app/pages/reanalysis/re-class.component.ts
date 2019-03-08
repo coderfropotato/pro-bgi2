@@ -422,7 +422,9 @@ export class ReClassComponent implements OnInit {
 		this.transformTable._clearFilterWithoutRequest();
 		this.resetCheckGraph = true;
 
-		let checkedList = this.spliceKey([ ...this.checkedList ]);
+        // 把对应的level name 提取出来
+        let checkedList = this.spliceKey([ ...this.checkedList ]);
+
 		this.checkedList.length = 0;
 		this.checkedList.push(...checkedList);
 
@@ -614,40 +616,44 @@ export class ReClassComponent implements OnInit {
 	spliceKey(data: Array<Object>): any {
 		if (!data.length) return data;
 
-		let temp = [];
-		if (this.selectedVal.indexOf(this.level2Key) != -1) {
-			// level_2
-			let level1TrueKey, level2TrueKey;
-			for (let name in data[0]) {
-				if (name.indexOf(this.level1Key) != -1) level1TrueKey = name;
-				if (name.indexOf(this.level2Key) != -1) level2TrueKey = name;
-			}
-			data.forEach((v) => {
-				temp.push(`${v[level1TrueKey]}+${v[level2TrueKey]}`);
-			});
-			return temp;
-		} else if (this.selectedVal.indexOf(this.level1Key) != -1) {
-			// level1
-			let level1TrueKey;
-			for (let name in data[0]) {
-				if (name.indexOf(this.level1Key) != -1) level1TrueKey = name;
-			}
+        let temp = [];
+        if(typeof data[0]==='string'){
+            return data;
+        }else{
+            if (this.selectedVal.indexOf(this.level2Key) != -1) {
+                // level_2
+                let level1TrueKey, level2TrueKey;
+                for (let name in data[0]) {
+                    if (name.indexOf(this.level1Key) != -1) level1TrueKey = name;
+                    if (name.indexOf(this.level2Key) != -1) level2TrueKey = name;
+                }
+                data.forEach((v) => {
+                    temp.push(`${v[level1TrueKey]}+${v[level2TrueKey]}`);
+                });
+                return temp;
+            } else if (this.selectedVal.indexOf(this.level1Key) != -1) {
+                // level1
+                let level1TrueKey;
+                for (let name in data[0]) {
+                    if (name.indexOf(this.level1Key) != -1) level1TrueKey = name;
+                }
 
-			data.forEach((v) => {
-				temp.push(v[level1TrueKey]);
-			});
-			return temp;
-		} else if (this.selectedVal.endsWith(this.termKey)) {
-			// term
-			let termTrueKey;
-			for (let name in data[0]) {
-				if (name.endsWith(this.termKey)) termTrueKey = name;
-			}
+                data.forEach((v) => {
+                    temp.push(v[level1TrueKey]);
+                });
+                return temp;
+            } else if (this.selectedVal.endsWith(this.termKey)) {
+                // term
+                let termTrueKey;
+                for (let name in data[0]) {
+                    if (name.endsWith(this.termKey)) termTrueKey = name;
+                }
 
-			data.forEach((v) => {
-				temp.push(v[termTrueKey]);
-			});
-		}
+                data.forEach((v) => {
+                    temp.push(v[termTrueKey]);
+                });
+            }
+        }
 		return temp;
 	}
 

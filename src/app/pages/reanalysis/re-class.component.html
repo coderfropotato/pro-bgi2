@@ -9,7 +9,7 @@
 
                 <!-- 下拉选择 -->
                 <ng-template #selectTemplate>
-                    <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                    <nz-select  class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
                         <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
                     </nz-select>
                 </ng-template>

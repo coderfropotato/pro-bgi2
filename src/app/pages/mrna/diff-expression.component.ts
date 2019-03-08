@@ -273,7 +273,7 @@ export class DiffExpressionComponent implements OnInit {
 		// 	}
 		// };
 		this.applyOnceSearchParams = true;
-		this.defaultUrl = `${config['javaPath']}/Venn/diffGeneTable`;
+		this.defaultUrl = `${config['javaPath']}/Venn/diffGeneTable`;  // `${config['url']}/theadFilter`
 		this.defaultEntity = {
 			pageIndex: 1, //分页
 			pageSize: 20,
