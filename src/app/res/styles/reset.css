@@ -195,5 +195,12 @@ ul,ol {
     margin:7px 6px 0;
 }
 
+/* 表格poppver*/
+.ant-popover-inner-content{
+    max-width:400px;
+    max-height:600px;
+    overflow: auto;
+}
+
 
 
