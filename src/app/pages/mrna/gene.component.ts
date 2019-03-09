@@ -426,9 +426,7 @@ export class GeneComponent implements OnInit {
 			sortKey: null, //排序
 			sortValue: null,
             reAnaly: false,
-            content:this.geneService["geneOptions"]["content"],
-            andOr: this.geneService["geneOptions"]["radioValue"],
-            checkedAddThead:this.geneService["geneOptions"]["selectedList"],
+            searchParams:this.geneService["geneOptions"],
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
@@ -453,10 +451,7 @@ export class GeneComponent implements OnInit {
 			mongoId: null,
 			sortKey: null, //排序
             sortValue: null,
-            content:this.geneService["geneOptions"]["content"],
-            andOr: this.geneService["geneOptions"]["radioValue"],
-            checkedAddThead:this.geneService["geneOptions"]["selectedList"],
-			// matchAll: false,
+            searchParams:this.geneService["geneOptions"],
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript

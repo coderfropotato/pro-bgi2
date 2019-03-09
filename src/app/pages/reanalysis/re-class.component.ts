@@ -99,7 +99,8 @@ export class ReClassComponent implements OnInit {
 	// level标志key
 	level1Key: string = 'level_1';
 	level2Key: string = 'level_2';
-	termKey: string = 'term';
+    termKey: string = 'term';
+    idKey:string = 'id';
 
 	// 设置
 	set: object = { width: 600, len: 40 };
@@ -651,6 +652,16 @@ export class ReClassComponent implements OnInit {
 
                 data.forEach((v) => {
                     temp.push(v[termTrueKey]);
+                });
+            }else if(this.selectedVal.endsWith(this.idKey)){
+                // id
+                let idTrueKey;
+                for (let name in data[0]) {
+                    if (name.endsWith(this.idKey)) idTrueKey = name;
+                }
+
+                data.forEach((v) => {
+                    temp.push(v[idTrueKey]);
                 });
             }
         }

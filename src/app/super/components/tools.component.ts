@@ -43,7 +43,7 @@ export class ToolsComponent implements OnInit {
 		{ type: 'line', name: '折线图', desc: '以折线图方式呈现数据', limit: [1, 100], category: 'common' },
 		{ type: 'KDA', name: 'KDA', desc: 'kda', limit: [1, 500], category: 'common' },
 		{ type: 'multiOmics', name: '多组学关联', desc: '多组学', limit: [1], category: 'common' },
-		{ type: 'chiSquare', name: '卡方检测', desc: '卡方', limit: [1], category: 'relation' },
+		{ type: 'chiSquare', name: '卡方检测', desc: '卡方', limit: [1], category: 'common' },
 		{ type: 'as', name: '可变剪切', desc: '可变剪切', limit: [1, 100], category: 'common' },
 		{ type: 'linkedNetwork', name: '关联网络图', desc: '关联网络图', limit: [1, 500], category: 'relation' },
 		{ type: 'heatmapRelation', name: '关联聚类热图', desc: '关联聚类热图', limit: [1, 2000], category: 'relation' }
@@ -473,7 +473,7 @@ export class ToolsComponent implements OnInit {
 
 	// 提交聚类重分析  需要生信重分析 需要1 不需要2
 	heatmapConfirm(type) {
-		
+
 		let trueType = '';
 		switch(type){
 			case 'Express':

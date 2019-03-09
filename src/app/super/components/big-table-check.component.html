@@ -10,6 +10,8 @@
                             nz-tooltip (click)="beginFilter()"></i>
                         <!-- 下拉框 -->
                         <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate: ''"></ng-container>
+                        <!-- 其他下拉框 -->
+                        <ng-container *ngTemplateOutlet="otherLeftTemplate ? otherLeftTemplate: ''"></ng-container>
                     </div>
                     <div class="fRight">
                         <button *ngIf="showConfirmButton" class="mr12" nz-button nzType="primary" nzSize="small" (click)="handleConfirmButton()">确定</button>

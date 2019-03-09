@@ -66,7 +66,7 @@ import { GoClassComponent,GoClassPage } from './pages/mrna/go-class.component';
 import { GoRichComponent } from './pages/mrna/go-rich.component';
 import { GoHelpComponent } from './pages/mrna/go-help.component';
 /* KEGG */
-import { KeggClassComponent } from './pages/mrna/kegg-class.component';
+import { KeggClassComponent,KeggClassPage } from './pages/mrna/kegg-class.component';
 import { KeggRichComponent } from './pages/mrna/kegg-rich.component';
 import { KeggHelpComponent } from './pages/mrna/kegg-help.component';
 /* 剪接/变异 */
@@ -286,7 +286,7 @@ const ROUTES: Routes = [
 			// GO
 			{
 				path:'go-class',
-				component:GoClassComponent,
+				component:GoClassPage,
 				data:{keep:true,module:'goClass'}
 			},
 			{
@@ -302,7 +302,7 @@ const ROUTES: Routes = [
 			// KEGG
 			{
 				path:'kegg-class',
-				component:KeggClassComponent,
+				component:KeggClassPage,
 				data:{keep:true,module:'keggClass'}
 			},
 			{
@@ -674,6 +674,7 @@ export function createTranslateLoader(http: HttpClient) {
 		GoHelpComponent,
 		GoRichComponent,
 
+        KeggClassPage,
 		KeggClassComponent,
 		KeggRichComponent,
 		KeggHelpComponent,

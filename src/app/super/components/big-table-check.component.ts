@@ -30,6 +30,7 @@ export class BigTableCheckComponent implements OnInit {
 	@Input() pageEntity: object;
 	@Input() fileName: string; // 表格下载名称
 	@Input() selectTemplate: TemplateRef<any>; // 下拉选项模板插槽 TemplateRef
+	@Input() otherLeftTemplate: TemplateRef<any>; // 下拉选项模板插槽 TemplateRef
 	@Input() tableHeight: number = 0; // 计算后的表格高度?
 	@Input() tableType: string = 'common'; // 表的类型  普通 还是 transform
 	@Input() emitBaseThead: boolean = false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
@@ -636,7 +637,7 @@ export class BigTableCheckComponent implements OnInit {
 		if(this.theadInitTimer) clearInterval(this.theadInitTimer);
 		if (tableHeight && tableHeight>0) {
 			// 固定头的高度
-			let head; 
+			let head;
 			this.theadInitTimer = setInterval(()=>{
 				head = $(`#${this.tableId} .ant-table-thead`).outerHeight();
 				if(head) {
@@ -659,7 +660,7 @@ export class BigTableCheckComponent implements OnInit {
 							$(`#${this.tableId} .table-content tbody tr td`).eq(i).css('min-width',w).css('max-width',w);
 						})
 					} catch (error) {
-		
+
 					}
 				}
 			},100)
@@ -892,7 +893,7 @@ export class BigTableCheckComponent implements OnInit {
      * @memberof GeneTableComponent
      */
 	_setParamsOfEntityWithoutRequest(key, value) {
-		this.tableEntity[key] = value;
+        this.tableEntity[key] = value;
 	}
 
 	/**

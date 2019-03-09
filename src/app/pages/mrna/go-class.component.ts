@@ -30,6 +30,7 @@ export class GoClassPage {
 	private moduleRouteName: string = 'go-class'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
 	config: object = config;
 	rootGeneType: string = this.storeService.getStore('menuRouteMap')[this.moduleRouteName]['geneType']; // 来自菜单 可配置  all gene transcript
+
 	defaultGeneType: string = this.rootGeneType === this.config['geneTypeAll']
 		? this.config['geneTypeOfGene']
 		: this.rootGeneType;
@@ -69,7 +70,9 @@ export class GoClassComponent implements OnInit {
 	@Input('defaultGeneType') defaultGeneType;
 
 	chartUrl: string;
-	chartEntity: object;
+    chartEntity: object;
+
+    expandModuleDesc: boolean = false;
 
 	chart: any;
 
@@ -125,7 +128,7 @@ export class GoClassComponent implements OnInit {
 
 	isExceed: any = null;
 	selectedVal: string = '';
-	annotation: string = 'go';
+	annotation: string = 'go_c';
 	selectData: any = [];
 
 	isMultipleSelect: boolean = false;
@@ -137,15 +140,17 @@ export class GoClassComponent implements OnInit {
 	// level标志key
 	level1Key: string = 'level_1';
 	level2Key: string = 'level_2';
-	termKey: string = 'term';
+    termKey: string = 'term';
+    idKey:string = 'id';
+    descKey:string = 'desc';
 
 	// 设置
 	set: object = { width: 600, len: 40 };
 	beforeSet: object = { width: 600, len: 40 };
-    setVisible: boolean = false;
+	setVisible: boolean = false;
 
-    compareGroupList:any[] = [];
-    compareGroup:any = '';
+	compareGroupList: any[] = [];
+	compareGroup: any = '';
 
 	constructor(
 		private message: MessageService,
@@ -174,18 +179,17 @@ export class GoClassComponent implements OnInit {
 	ngOnInit() {
 		(async () => {
 			this.selectData = await this.getSelect();
-			console.log(this.selectData)
-            this.selectedVal = this.selectData.length ? this.selectData[0] : null;
+			this.selectedVal = this.selectData.length ? this.selectData[0] : null;
 
-            this.compareGroupList = this.storeService.getStore('diff_plan');
-            this.compareGroup = this.compareGroupList[0]
+			this.compareGroupList = this.storeService.getStore('diff_plan');
+			this.compareGroup = this.compareGroupList[0];
 
 			this.first = true;
 			this.resetCheckGraph = true;
 			this.applyOnceSearchParams = true;
 			this.defaultUrl = `${config['javaPath']}/classification/table`;
 			this.defaultEntity = {
-                tid:null,
+				tid: null,
 				LCID: sessionStorage.getItem('LCID'),
 				annotation: this.annotation,
 				pageIndex: 1,
@@ -197,8 +201,8 @@ export class GoClassComponent implements OnInit {
 				relations: [],
 				sortValue: null,
 				sortKey: null,
-                reAnaly: false,
-                compareGroup:this.compareGroup,
+				reAnaly: false,
+				compareGroup: this.compareGroup,
 				geneType: this.defaultGeneType,
 				species: this.storeService.getStore('genome'),
 				version: this.storeService.getStore('version'),
@@ -216,7 +220,7 @@ export class GoClassComponent implements OnInit {
 
 			this.extendUrl = `${config['javaPath']}/classification/table`;
 			this.extendEntity = {
-                tid:null,
+				tid: null,
 				LCID: sessionStorage.getItem('LCID'),
 				annotation: this.annotation,
 				pageIndex: 1,
@@ -229,8 +233,8 @@ export class GoClassComponent implements OnInit {
 				relations: [],
 				sortValue: null,
 				sortKey: null,
-                reAnaly: false,
-                compareGroup:this.compareGroup,
+				reAnaly: false,
+				compareGroup: this.compareGroup,
 				geneType: this.defaultGeneType,
 				species: this.storeService.getStore('genome'),
 				version: this.storeService.getStore('version'),
@@ -259,22 +263,30 @@ export class GoClassComponent implements OnInit {
 				pageSize: 20,
 				sortKey: null,
 				sortValue: null,
-                tid: null,
-                compareGroup:this.compareGroup,
+				tid: null,
+				compareGroup: this.compareGroup,
 				version: this.storeService.getStore('version')
 			};
 		})();
+    }
+
+    moduleDescChange() {
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
 	}
 
 	ngAfterViewInit() {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
-    }
+	}
 
-    async getSelect(){
-        return new Promise((resolve,reject)=>{
-            this.ajaxService
+	async getSelect() {
+		return new Promise((resolve, reject) => {
+			this.ajaxService
 				.getDeferData({
 					url: `${config['javaPath']}/classification/level`,
 					data: {
@@ -295,8 +307,8 @@ export class GoClassComponent implements OnInit {
 						resolve([]);
 					}
 				);
-        })
-    }
+		});
+	}
 
 	async getGeneCount() {
 		return new Promise((resolve, reject) => {
@@ -309,7 +321,7 @@ export class GoClassComponent implements OnInit {
 						geneType: this.defaultGeneType,
 						species: this.storeService.getStore('genome'),
 						checkedClassifyType: this.selectedVal,
-						tid: this.tid
+						compareGroup: this.compareGroup
 					}
 				})
 				.subscribe(
@@ -423,15 +435,16 @@ export class GoClassComponent implements OnInit {
 	handlerRefresh() {
 		this.selectGeneList.length = 0;
 		// this.chartBackStatus();
-    }
+	}
 
-    handleCompareGroupChange(){
-        (async () => {
+	handleCompareGroupChange() {
+		(async () => {
 			// 转换表重新获取数据
 			this.checkedList.length = 0;
 			this.chartBackStatus();
 
-			let curExceed = await this.getGeneCount();
+            let curExceed = await this.getGeneCount();
+
 			if (this.isExceed != curExceed) {
 				this.chartEntity['compareGroup'] = this.compareGroup;
 			} else {
@@ -447,7 +460,7 @@ export class GoClassComponent implements OnInit {
 			this.checkedList.length = 0;
 			this.isExceed = curExceed;
 		})();
-    }
+	}
 
 	handleSelectChange() {
 		(async () => {
@@ -482,7 +495,9 @@ export class GoClassComponent implements OnInit {
 
 		let checkedList = this.spliceKey([ ...this.checkedList ]);
 		this.checkedList.length = 0;
-		this.checkedList.push(...checkedList);
+        this.checkedList.push(...checkedList);
+
+        console.log(this.checkedList)
 
 		if (!this.first) {
 			this.defaultEntity['checkGraph'] = true;
@@ -491,11 +506,13 @@ export class GoClassComponent implements OnInit {
 			this.defaultEntity['rootSearchContentList'] = [];
 			this.defaultEntity['pageIndex'] = 1;
 			this.defaultEntity['checkedClassifyType'] = this.selectedVal;
+			this.defaultEntity['compareGroup'] = this.compareGroup;
 			this.first = true;
 		} else {
 			this.transformTable._setParamsNoRequest('checkGraph', true);
 			this.transformTable._setParamsNoRequest('pageIndex', 1);
 			this.transformTable._setParamsNoRequest('checkedClassifyType', this.selectedVal);
+			this.transformTable._setParamsNoRequest('compareGroup', this.compareGroup);
 			this.transformTable._getData();
 		}
 	}
@@ -526,11 +543,14 @@ export class GoClassComponent implements OnInit {
 	computedTableHeight() {
 		try {
 			let h = this.tableHeight;
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
+			this.tableHeight =
+				this.right.nativeElement.offsetHeight -
+				this.func.nativeElement.offsetHeight -
+				config['layoutContentPadding'] * 2;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 
 			let l = this.leftTableHeight;
-			this.leftTableHeight = this.leftBottom.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
+			this.leftTableHeight = this.leftBottom.nativeElement.offsetHeight;
 			if (this.leftTableHeight === l) this.leftComputedScrollHeight = true;
 		} catch (error) {}
 	}
@@ -679,9 +699,11 @@ export class GoClassComponent implements OnInit {
 
 	spliceKey(data: Array<Object>): any {
 		if (!data.length) return data;
+        let temp = [];
 
-		let temp = [];
-		if (this.selectedVal.indexOf(this.level2Key) != -1) {
+        if(typeof data[0]==='string'){
+            return data;
+        }else if(this.selectedVal.indexOf(this.level2Key) != -1) {
 			// level_2
 			let level1TrueKey, level2TrueKey;
 			for (let name in data[0]) {
@@ -713,7 +735,17 @@ export class GoClassComponent implements OnInit {
 			data.forEach((v) => {
 				temp.push(v[termTrueKey]);
 			});
-		}
+		}else if(this.selectedVal.endsWith(this.idKey)){
+            // id
+            let idTrueKey;
+            for (let name in data[0]) {
+				if (name.endsWith(this.idKey)) idTrueKey = name;
+			}
+
+			data.forEach((v) => {
+				temp.push(v[idTrueKey]);
+			});
+        }
 		return temp;
 	}
 

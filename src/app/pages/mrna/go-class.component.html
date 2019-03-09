@@ -1,7 +1,16 @@
 <div class="content row goclass">
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
-        <div #leftBottom class="left-bottom-layout">
+        <div class="left-top-layout">
+            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                go
+            </span>
+            <p [hidden]="!expandModuleDesc">go</p>
+            <ng-content select=".gene-switch-module"></ng-content>
+        </div>
 
+        <div #leftBottom class="left-bottom-layout">
             <!-- compareGroup下拉选择 -->
             <ng-template #otherLeftTemplate>
                 <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select compareGroup" [(ngModel)]="compareGroup" (ngModelChange)="handleCompareGroupChange()">
@@ -11,7 +20,7 @@
 
             <!-- level下拉选择 -->
             <ng-template #selectTemplate>
-                <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                <nz-select  class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
                     <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
                 </nz-select>
             </ng-template>
@@ -47,7 +56,7 @@
             </ng-container>
             <!-- 大表 -->
             <ng-container *ngIf="isExceed!=null && isExceed">
-                <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl" tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight" (checkedChange)="handleCheckChange($event)" [showConfirmButton]="true"></app-big-table-check>
+                <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [otherLeftTemplate]="otherLeftTemplate" [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl" tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight" (checkedChange)="handleCheckChange($event)" [showConfirmButton]="true"></app-big-table-check>
             </ng-container>
         </div>
     </div>
