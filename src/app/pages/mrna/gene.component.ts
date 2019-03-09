@@ -183,6 +183,11 @@ export class GenePage {
 	//是否折叠显示框
 	moduleDescChange() {
 		this.expandModuleDesc = !this.expandModuleDesc;
+		// 收起自定义面板
+		this.expandModuleSetting = false;
+		// 收起搜索结果面板
+		this.expandSearchList = false;
+		
 		// 重新计算表格切换组件表格的滚动高度
         setTimeout(()=>{
             this.geneTable['computedTableHeight']();
