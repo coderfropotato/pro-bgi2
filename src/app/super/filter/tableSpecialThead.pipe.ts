@@ -45,7 +45,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				urlArr = [];
 			let whiteWrapReg = /.+(\_desc)|(\_term)$/g;
 
-			if (matchList.includes(thead)) {
+			if (matchList.includes(thead) && matchRule[thead]['url']) {
 				let curRule = matchRule[thead];
 				let curUrl = curRule['url'];
 
