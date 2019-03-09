@@ -14,6 +14,7 @@ import { GeneService } from './../../super/service/geneService';
 declare const d3: any;
 declare const d4: any;
 declare const Venn: any;
+declare const $:any;
 
 @Component({
 	selector: 'app-gene-page',
