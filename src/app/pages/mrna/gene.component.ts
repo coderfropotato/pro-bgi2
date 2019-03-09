@@ -14,6 +14,7 @@ import { GeneService } from './../../super/service/geneService';
 declare const d3: any;
 declare const d4: any;
 declare const Venn: any;
+declare const $:any;
 
 @Component({
 	selector: 'app-gene-page',
@@ -187,7 +188,7 @@ export class GenePage {
 		this.expandModuleSetting = false;
 		// 收起搜索结果面板
 		this.expandSearchList = false;
-		
+
 		// 重新计算表格切换组件表格的滚动高度
         setTimeout(()=>{
             this.geneTable['computedTableHeight']();
