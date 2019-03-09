@@ -89,8 +89,8 @@ declare const $:any;
                             </div>
                         </div>
                         <div class="gene_pop_bottom">
-                            <button nz-button [nzSize]="small" nzType="primary" (click)="btnCancle()">取消</button>
-                            <button nz-button [nzSize]="small" nzType="primary" (click)="btnConfirm()">确定</button>
+                            <button nz-button [nzSize]="'small'" nzType="primary" (click)="btnCancle()">取消</button>
+                            <button nz-button [nzSize]="'small'" nzType="primary" (click)="btnConfirm()">确定</button>
                         </div>
                         </div>
                     </div>

@@ -60,12 +60,18 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				if (whiteWrapReg.test(thead)) {
 					let textArr = value.split(valSplitFlag);
 					textArr.forEach((v, i) => {
-						let id = v.indexOf(idFlag) != -1 ? v.split(idFlag)[0] : null;
-						htmlStr += `<a href="${urlArr[0] + id + urlArr[1]}" target="_blank">${v}</a>`;
+                        let id = v.indexOf(idFlag) != -1 ? v.split(idFlag)[0] : null;
+                        let url = urlArr[0] + id ;
+                        if(urlArr[1]) url+=urlArr[1];
+
+						htmlStr += `<a href="${url}" target="_blank">${v}</a>`;
 						htmlStr += i !== textArr.length - 1 && whitespace ? '<br>' : '&emsp;';
 					});
 				} else {
-					htmlStr += `<a href="${urlArr[0] + value + urlArr[1]}" target="_blank">${value}</a>`;
+                    let url = urlArr[0] + value ;
+                    if(urlArr[1]) url+=urlArr[1];
+
+					htmlStr += `<a href="${url}" target="_blank">${value}</a>`;
 				}
 			} else {
 				htmlStr += value;
