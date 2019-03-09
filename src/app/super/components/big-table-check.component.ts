@@ -723,12 +723,12 @@ export class BigTableCheckComponent implements OnInit {
 		}
 	}
 
-	// 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
-	setPopoverText(text, type, thead) {
-		this.popoverText = text;
-		this.popoverSearchType = type;
-		this.poppverThead = thead;
-	}
+	// // 表格单元格hover的时候 把单元格的值存起来 传到统一的ng-template里
+	// setPopoverText(text, type, thead) {
+	// 	this.popoverText = text;
+	// 	this.popoverSearchType = type;
+	// 	this.poppverThead = thead;
+	// }
 
 	// 删除筛选条件
 	deleteFilterItem(item) {
