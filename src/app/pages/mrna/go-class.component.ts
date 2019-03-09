@@ -497,8 +497,6 @@ export class GoClassComponent implements OnInit {
 		this.checkedList.length = 0;
         this.checkedList.push(...checkedList);
 
-        console.log(this.checkedList)
-
 		if (!this.first) {
 			this.defaultEntity['checkGraph'] = true;
 			this.defaultEntity['addThead'] = [];

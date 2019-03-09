@@ -1043,7 +1043,6 @@ export class DiffExpressionComponent implements OnInit {
 							_self.singleMultiSelect['total_name'] = '';
 							_self.doSingleData();
 						}
-						console.log(_self.singleMultiSelect);
 					} else {
 						//多选
 						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
@@ -1062,7 +1061,6 @@ export class DiffExpressionComponent implements OnInit {
 								bar_name[i]
 							);
 						}
-						console.log(_self.doubleMultiSelect);
 					}
 				});
 
@@ -1191,7 +1189,6 @@ export class DiffExpressionComponent implements OnInit {
 							_self.singleMultiSelect['bar_name'] = '';
 							_self.doSingleData();
 						}
-						console.log(_self.singleMultiSelect);
 					} else {
 						//多选
 						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
@@ -1210,7 +1207,6 @@ export class DiffExpressionComponent implements OnInit {
 								total_name[i]
 							);
 						}
-						console.log(_self.doubleMultiSelect);
 					}
 				});
 

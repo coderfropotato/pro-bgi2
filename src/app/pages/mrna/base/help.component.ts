@@ -64,14 +64,14 @@ export class BasicHelpComponent implements OnInit {
         let temp = [];
 
         if(this.store.store.hasOwnProperty("project_type"))
-        {   
+        {
             this.project_type = this.store.getStore("project_type");
         }else{
             return;
         }
 
         if(this.store.store.hasOwnProperty("library_method"))
-        {   
+        {
             this.library_method = this.store.getStore("library_method");
         }else{
             return;
@@ -110,9 +110,7 @@ export class BasicHelpComponent implements OnInit {
        if(this.library_method == "rRNA_removal"){
             this.tflag = 6;
        }
-        
-       console.log(this.tflag)
-       ////////////////////////////////////////////////////////////////////////
+
 
 
        if(this.project_type=="RNAseq"){

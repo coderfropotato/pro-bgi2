@@ -131,7 +131,7 @@ export class AlternativeSplicingComponent implements OnInit {
 			this.computedTableHeight();
 		}, 30);
   }
-  
+
   // 切换左右布局 计算左右表格的滚动高度
 	switchChange(status) {
 		this.switch = status;
@@ -142,7 +142,7 @@ export class AlternativeSplicingComponent implements OnInit {
 			this.computedTableHeight();
 		}, 320);
 	}
-  
+
   drawChart(data) {
     var baseThead = data.baseThead;
 		var rows = data.rows;
@@ -176,7 +176,6 @@ export class AlternativeSplicingComponent implements OnInit {
         data: chartData,
         enableChartSelect: true,
         onselect: function(data) {
-          //console.log(data);
           that.handleData(data);
         },
 			},
@@ -213,9 +212,6 @@ export class AlternativeSplicingComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-        //console.log(d);
-        // console.log(d.data[d.key])
-        //return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Number：'+d.data[d.key]/100*d.data['as_total']+'</span><br><span>Sample：'+d.data['sample_name']+'</span>';
         return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
 			}
 		};
@@ -224,7 +220,7 @@ export class AlternativeSplicingComponent implements OnInit {
   }
 
   handlerRefresh() {
-  
+
   }
 
   handleData(data){

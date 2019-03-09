@@ -152,7 +152,6 @@ export class GoRichComponent implements OnInit {
 
     //多选确定
     multipleConfirm() {
-        console.log(this.selectedData);
     }
 
     //默认选中数据

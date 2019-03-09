@@ -135,7 +135,7 @@ export class OverviewComponent implements OnInit {
 		}else{
 			this.PCASearchType = "";
 		}
-		
+
 
 		this.tablePCAUrl = `${config['javaPath']}/basicModule/PCA`;
 		this.tablePCAEntity = {
@@ -165,7 +165,6 @@ export class OverviewComponent implements OnInit {
 
 	//相关性热图
 	drawRelevanceReads(data) {
-		//console.log(data);
 		document.getElementById('relevanceData').innerHTML = '';
 
 		var that = this;
@@ -470,9 +469,6 @@ export class OverviewComponent implements OnInit {
 
 	//箱线图
 	drawBoxReads(data) {
-		
-		//console.log(data['data']);
-
 		var tempBoxData = data['data'];
 
 		var dataLength = tempBoxData.length;
@@ -598,7 +594,6 @@ export class OverviewComponent implements OnInit {
 
 	//密度图
 	drawMapReads(data){
-		//console.log(data);
 		let tempData = data.data;
 		let targetData = [];
 		for(var i = 0;i < tempData.length;i++){
@@ -613,7 +608,6 @@ export class OverviewComponent implements OnInit {
 			}
 		}
 
-		//console.log(targetData)
 		let that = this;
 		let config: object = {
 			chart: {
@@ -704,7 +698,6 @@ export class OverviewComponent implements OnInit {
 		// 	temp["total"] = total;
 		// 	chartData.push(temp)
 		// }
-		console.log(chartData)
 
 		let that = this;
 

@@ -1,14 +1,14 @@
-import { AddColumnService } from "./../../super/service/addColumnService";
-import { StoreService } from "./../../super/service/storeService";
-import { PageModuleService } from "./../../super/service/pageModuleService";
-import { MessageService } from "./../../super/service/messageService";
-import { AjaxService } from "src/app/super/service/ajaxService";
-import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
-import { GlobalService } from "src/app/super/service/globalService";
-import config from "../../../config";
-import { PromptService } from "./../../super/service/promptService";
-import { ToolsService } from "./../../super/service/toolsService";
+import { AddColumnService } from './../../super/service/addColumnService';
+import { StoreService } from './../../super/service/storeService';
+import { PageModuleService } from './../../super/service/pageModuleService';
+import { MessageService } from './../../super/service/messageService';
+import { AjaxService } from 'src/app/super/service/ajaxService';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { GlobalService } from 'src/app/super/service/globalService';
+import config from '../../../config';
+import { PromptService } from './../../super/service/promptService';
+import { ToolsService } from './../../super/service/toolsService';
 import { TranslateService } from '@ngx-translate/core';
 
 declare const d3: any;
@@ -16,122 +16,121 @@ declare const d4: any;
 declare const $: any;
 
 @Component({
-  selector: 'app-diff-alternative-splicing',
-  templateUrl: './diff-alternative-splicing.component.html',
-  styles: []
+	selector: 'app-diff-alternative-splicing',
+	templateUrl: './diff-alternative-splicing.component.html',
+	styles: []
 })
 export class DiffAlternativeSplicingComponent implements OnInit {
-  @ViewChild("diffAlternativeSpliceChart") diffAlternativeSpliceChart;
-  @ViewChild('right') right;
-  @ViewChild('func') func;
-  @ViewChild('switchChart') switchChart;
-  @ViewChild('diffDefaultTable') diffDefaultTable;
+	@ViewChild('diffAlternativeSpliceChart') diffAlternativeSpliceChart;
+	@ViewChild('right') right;
+	@ViewChild('func') func;
+	@ViewChild('switchChart') switchChart;
+	@ViewChild('diffDefaultTable') diffDefaultTable;
 
-  chartUrl: string;
-  chartEntity: object;
-  chart: any;
+	chartUrl: string;
+	chartEntity: object;
+	chart: any;
 
-  legendIndex: number = 0; //当前点击图例的索引
-  color: string; //当前选中的color
-  isShowColorPanel: boolean = false;
+	legendIndex: number = 0; //当前点击图例的索引
+	color: string; //当前选中的color
+	isShowColorPanel: boolean = false;
 
-  tableHeight = 0;
-  computedScrollHeight: boolean = false;
+	tableHeight = 0;
+	computedScrollHeight: boolean = false;
 
-  switch = 'right';
+	switch = 'right';
 
-  // 路由参数
-  tid: string = null;
-  geneType: string = "";
-  version: string = null;
+	// 路由参数
+	tid: string = null;
+	geneType: string = '';
+	version: string = null;
 
-  // table
-  diffDefaultTableEntity: object;
-  diffDefaultTableUrl: string;
-  defaultDiffTableId: string;
-  defaultDiffChecked: boolean;
-  defaultCheckStatusInParams: boolean;
-  baseThead: any[] = [];
+	// table
+	diffDefaultTableEntity: object;
+	diffDefaultTableUrl: string;
+	defaultDiffTableId: string;
+	defaultDiffChecked: boolean;
+	defaultCheckStatusInParams: boolean;
+	baseThead: any[] = [];
 
-  asType: string;
-  group: string;
+	asType: string;
+	group: string;
 
-  constructor(
-    private message: MessageService,
-    private globalService: GlobalService,
-    public storeService: StoreService,
-    public pageModuleService: PageModuleService,
-    private router: Router,
-    private routes: ActivatedRoute,
-    private promptService: PromptService,
-    public toolsService: ToolsService,
-    private addColumnService: AddColumnService,
-    private translate: TranslateService,
-  ) {
-      // 订阅windowResize 重新计算表格滚动高度
-      this.message.getResize().subscribe((res) => {
-        if (res['message'] === 'resize') this.computedTableHeight();
-      });
+	constructor(
+		private message: MessageService,
+		private globalService: GlobalService,
+		public storeService: StoreService,
+		public pageModuleService: PageModuleService,
+		private router: Router,
+		private routes: ActivatedRoute,
+		private promptService: PromptService,
+		public toolsService: ToolsService,
+		private addColumnService: AddColumnService,
+		private translate: TranslateService
+	) {
+		// 订阅windowResize 重新计算表格滚动高度
+		this.message.getResize().subscribe((res) => {
+			if (res['message'] === 'resize') this.computedTableHeight();
+		});
 
-      // 每次切换路由计算表格高度
-      this.router.events.subscribe((event) => {
-        if (event instanceof NavigationEnd) this.computedTableHeight();
-      });
+		// 每次切换路由计算表格高度
+		this.router.events.subscribe((event) => {
+			if (event instanceof NavigationEnd) this.computedTableHeight();
+		});
 
-      this.routes.paramMap.subscribe(params => {
-          this.tid = params["params"]["tid"];
-          this.version = params["params"]["version"];
-          this.geneType = params["params"]["geneType"];
-          this.storeService.setTid(this.tid);
-      });
-   }
+		this.routes.paramMap.subscribe((params) => {
+			this.tid = params['params']['tid'];
+			this.version = params['params']['version'];
+			this.geneType = params['params']['geneType'];
+			this.storeService.setTid(this.tid);
+		});
+	}
 
-  ngOnInit() {
-      this.chartUrl = `${config["javaPath"]}/alternativeSplice/groupAs`;
-      this.chartEntity = {
-          LCID: sessionStorage.getItem("LCID"),
-      };
+	ngOnInit() {
+		this.chartUrl = `${config['javaPath']}/alternativeSplice/groupAs`;
+		this.chartEntity = {
+			LCID: sessionStorage.getItem('LCID')
+		};
 
-      this.asType = "A3SS";
-      this.group = this.storeService.getStore("diff_plan")[0];
-      // table
-      this.diffDefaultTableUrl = `${config["javaPath"]}/alternativeSplice/tableAs`;
-      this.diffDefaultTableEntity = {
-          LCID: sessionStorage.getItem("LCID"),
-          pageIndex: 1, //分页
-          pageSize: 20,
-          sortValue: null,
-          sortKey: null, //排序
-          searchList: [],
-          geneType: "gene", //基因类型gene和transcript
-          species: this.storeService.getStore("genome"), //物种
-          checkStatus: true,
-          checked: [],
-          unChecked: [],
-          asType:this.asType,
-          group:this.group
-      };
-      this.defaultDiffTableId = 'diff_alternative_default_splicing';
-      this.defaultDiffChecked = true;
-      this.defaultCheckStatusInParams = true;
+		this.asType = 'A3SS';
+		this.group = this.storeService.getStore('diff_plan')[0];
+		// table
+		this.diffDefaultTableUrl = `${config['javaPath']}/alternativeSplice/tableAs`;
+		this.diffDefaultTableEntity = {
+			LCID: sessionStorage.getItem('LCID'),
+			pageIndex: 1, //分页
+			pageSize: 20,
+			sortValue: null,
+			sortKey: null, //排序
+			searchList: [],
+			geneType: 'gene', //基因类型gene和transcript
+			species: this.storeService.getStore('genome'), //物种
+			checkStatus: true,
+			checked: [],
+			unChecked: [],
+			asType: this.asType,
+			group: this.group
+		};
+		this.defaultDiffTableId = 'diff_alternative_default_splicing';
+		this.defaultDiffChecked = true;
+		this.defaultCheckStatusInParams = true;
+	}
 
-  }
-
-  computedTableHeight() {
+	computedTableHeight() {
 		try {
 			let h = this.tableHeight;
 			this.tableHeight = this.right.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
-  }
+	}
 
-  ngAfterViewInit() {
+	ngAfterViewInit() {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
-  }
+	}
 
-  // 切换左右布局 计算左右表格的滚动高度
+	// 切换左右布局 计算左右表格的滚动高度
 	switchChange(status) {
 		this.switch = status;
 		setTimeout(() => {
@@ -141,9 +140,9 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 			this.computedTableHeight();
 		}, 320);
 	}
-  
-  drawChart(data) {
-    var baseThead = data.baseThead;
+
+	drawChart(data) {
+		var baseThead = data.baseThead;
 		var rows = data.rows;
 		var chartData = [];
 
@@ -153,8 +152,8 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 				as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
 				as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
 				as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
-        as_ri: rows[j].as_ri * 100 / rows[j].as_total,
-        as_se: rows[j].as_se * 100 / rows[j].as_total
+				as_ri: rows[j].as_ri * 100 / rows[j].as_total,
+				as_se: rows[j].as_se * 100 / rows[j].as_total
 			});
 		}
 
@@ -162,22 +161,22 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 		let config: object = {
 			chart: {
 				title: '差异可变剪接事件统计',
-				dblclick: function(event,title) {
-          let text = title.firstChild.nodeValue;
-          that.promptService.open(text,(data)=>{
-              title.textContent = data;
-          })
-        },
+				dblclick: function(event, title) {
+					let text = title.firstChild.nodeValue;
+					that.promptService.open(text, (data) => {
+						title.textContent = data;
+					});
+				},
 				el: '#diffAlternativeSpliceDiv',
 				type: 'stackBarPercent',
 				width: 660,
 				custom: [ 'compare_group' ],
-        data: chartData,
-        enableChartSelect: true,
-        onselect: function(data) {
-          //console.log(data);
-          that.handleData(data);
-        },
+				data: chartData,
+				enableChartSelect: true,
+				onselect: function(data) {
+					//console.log(data);
+					that.handleData(data);
+				}
 			},
 			axis: {
 				x: {
@@ -188,7 +187,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 							this.setXTitle(name);
 							this.updateTitle();
 						}
-					},
+					}
 					// rotate: 60
 				},
 				y: {
@@ -206,41 +205,43 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 				show: true,
 				position: 'right',
 				click: function(d, index) {
-          that.color = d3.select(d).attr('fill');
+					that.color = d3.select(d).attr('fill');
 					that.legendIndex = index;
 					that.isShowColorPanel = true;
 				}
 			},
 			tooltip: function(d) {
-        console.log(d);
-        // console.log(d.data[d.key])
-        //return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Number：'+d.data[d.key]/100*d.data['as_total']+'</span><br><span>Sample：'+d.data['sample_name']+'</span>';
-        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Group：'+d.data['compare_group']+'</span>';
+				return (
+					'<span>Type：' +
+					d.key +
+					'</span><br><span>Percentage：' +
+					(d[1] - d[0]) +
+					'%</span><br><span>Group：' +
+					d.data['compare_group'] +
+					'</span>'
+				);
 			}
 		};
 
 		this.chart = new d4().init(config);
-  }
+	}
 
-  handlerRefresh() {
-  
-  }
+	handlerRefresh() {}
 
-  handleData(data){
-    ///console.log(data);
-    this.asType = data[0].key.split("_")[1].toUpperCase();
-    this.group = data[0].data["compare_group"];
+	handleData(data) {
+		///console.log(data);
+		this.asType = data[0].key.split('_')[1].toUpperCase();
+		this.group = data[0].data['compare_group'];
 
-    this.diffDefaultTable._setParamsOfEntityWithoutRequest('group', this.group);
-    this.diffDefaultTable._setParamsOfEntityWithoutRequest('asType', this.asType);
-    this.diffDefaultTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
-    this.diffDefaultTable._getData();
-  }
+		this.diffDefaultTable._setParamsOfEntityWithoutRequest('group', this.group);
+		this.diffDefaultTable._setParamsOfEntityWithoutRequest('asType', this.asType);
+		this.diffDefaultTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
+		this.diffDefaultTable._getData();
+	}
 
-  //color change 回调函数
-  colorChange(curColor) {
-      this.chart.setColor(curColor, this.legendIndex);
-      this.chart.redraw();
-  }
-
+	//color change 回调函数
+	colorChange(curColor) {
+		this.chart.setColor(curColor, this.legendIndex);
+		this.chart.redraw();
+	}
 }

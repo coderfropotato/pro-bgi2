@@ -202,7 +202,6 @@ export class GenePage {
 	}
 
 	moduleSetChange() {
-		console.log(this.expandModuleSetting);
 		this.expandModuleSetting = !this.expandModuleSetting;
 	}
 
@@ -228,7 +227,6 @@ export class GenePage {
 
 	//搜索按钮
 	goSearch() {
-		console.log(this.geneService);
 		// 收起自定义面板
 		this.expandModuleSetting = false;
 		// 收起搜索结果面板
@@ -244,11 +242,9 @@ export class GenePage {
 
 	//输入数据，弹出面板
 	inputChange() {
-		console.log(this.inputValue);
 		if (this.inputValue) {
 			this.searchPanelFlag = false;
 			this.geneService.set("content",this.inputValue);
-			console.log(this.geneService)
 			this.getSearchback();
 		} else {
 			this.expandSearchList = false;
@@ -429,7 +425,6 @@ export class GeneComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(this.geneService["geneOptions"])
 		this.applyOnceSearchParams = true;
 		this.defaultUrl = `${config['javaPath']}/home/table`; // `${config['url']}/theadFilter`
 		this.defaultEntity = {
@@ -610,7 +605,6 @@ export class GeneComponent implements OnInit {
     // 选择范围的时候调用  不需要调用reGetData重新获取数据
     // head {} | Object[]    {key:'123',category:'xxx'}
     selectRange(head){
-		console.log(head);
 		this.addColumn._addThead(head);
 		this.addColumn._confirm();
     }

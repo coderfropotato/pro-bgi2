@@ -92,7 +92,7 @@ export class UploadComponent implements OnInit {
 			this.now_page -=1;
 			this.getHistoryList();
 		}
-		
+
 	}
 
 	rightPage(){
@@ -103,9 +103,8 @@ export class UploadComponent implements OnInit {
 		}else{
 			this.now_page +=1;
 			this.getHistoryList();
-			console.log(this.now_page == this.total_page)
 		}
-		
+
 	}
 
 	getHistoryList(){//查看历史信息列表
@@ -129,7 +128,7 @@ export class UploadComponent implements OnInit {
 					//self.total_page = Math.floor(data["data"].total/self.pageSize) +1;
 					self.total_page =Math.floor((data["data"].total + self.pageSize-1) / self.pageSize);
 					//console.log(self.total_page)
-					
+
 					for (let index = 0; index < tempArray.length; index++) {
 						const element = tempArray[index];
 						let tempobj = {
@@ -193,7 +192,7 @@ export class UploadComponent implements OnInit {
 					nzTitle: "上传结果",
 					nzContent: data.message
 				});
-				
+
 				self.isShowTab = true;
 				self.PercentNum = 0;
 				self.go_ResponseText = {};
@@ -202,11 +201,11 @@ export class UploadComponent implements OnInit {
 				console.log(error)
 			}
 		)
-		
+
     }
 
 	//先判断上一次文件是否传递完成
-    updateLoad() { 
+    updateLoad() {
 		this.selectAble = false;
 		let tempflag = false;
 		let self = this;
@@ -234,7 +233,7 @@ export class UploadComponent implements OnInit {
 					}else{
 						self.uploadTask()
 					}
-					
+
 				}
 			},
 			error => {
@@ -242,23 +241,22 @@ export class UploadComponent implements OnInit {
 			}
 		)
 	}
-	
+
 	uploadTask(){ //上传进行
 		let self = this;
 		this.isShowTab = false;
 		const formData = new FormData();
 		let nfileLength = this.nfileList.length;
 		let fileReader = new FileReader();
-		
+
         this.nfileList.forEach((file: any,index) => {
 			if(nfileLength == index+1){
 				formData.append("file", file);
-				
+
 				self.file_obj={
 					name:self.getType(self.m_index+1),
 					time:self.pattern(file.lastModified)
 				}
-				console.log(self.file_obj);
 				fileReader.onload = function(e){
 					//console.log(e);
 					//console.log(SparkMD5.hashBinary(e.target['result']));
@@ -266,14 +264,12 @@ export class UploadComponent implements OnInit {
 				}
 				// fileReader.readAsBinaryString(file);
 				fileReader.readAsText(file);
-				
+
 			}
         });
 
 		formData.append('LCID',this.storeService.getStore('LCID'))
 		formData.append('type',(this.m_index+1)+'');
-
-		console.log(formData.get('md5'));
 
         let p_url = `${config["javaPath"]}/upload/do`;
         let head = {
@@ -282,7 +278,7 @@ export class UploadComponent implements OnInit {
                 Authorization: `token ${localStorage.getItem("token")}` // curToken
             })
 		};
-		
+
         this.ajaxService.validToken().subscribe(status => {
 			if(status==200){
 				let xhr = new XMLHttpRequest();
@@ -290,7 +286,7 @@ export class UploadComponent implements OnInit {
 					let temp_num = status.loaded/status.total*100;
 					self.PercentNum = Math.floor(temp_num);
 				},false)
-				
+
 				xhr.open('post',p_url,true);
 				//xhr.setRequestHeader("Content-Type","multipart/form-data");
 				xhr.setRequestHeader("Authorization", `token ${localStorage.getItem("token")}`);
@@ -298,7 +294,6 @@ export class UploadComponent implements OnInit {
 
 				xhr.onreadystatechange = function(){
 					if(xhr.readyState==4 && xhr.status == 200){
-						console.log(xhr.responseText);
 						self.go_ResponseText = JSON.parse(xhr.responseText);
 						self.selectAble = true;
 						self.getHistoryList();
@@ -387,8 +382,8 @@ export class UploadComponent implements OnInit {
 	}
 
 	pattern(fmt){ //时间格式转换
-		var dateee = new Date(fmt).toJSON();  
-		var date = new Date(+new Date(dateee)+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'')    
+		var dateee = new Date(fmt).toJSON();
+		var date = new Date(+new Date(dateee)+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'')
 		return date;
 	}
 }

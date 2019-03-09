@@ -52,7 +52,7 @@ export class ExpressVennComponent implements OnInit {
 	@ViewChild('tableSwitchChart') tableSwitchChart;
     @ViewChild('transformTable') transformTable;
 	@Input('defaultGeneType') defaultGeneType;
-	
+
 	// 默认收起模块描述
 	expandModuleDesc: boolean = false;
 
@@ -301,7 +301,7 @@ export class ExpressVennComponent implements OnInit {
             this.transformTable._getData();
         }
 	}
-	
+
 	moduleDescChange() {
 		this.expandModuleDesc = !this.expandModuleDesc;
 		// 重新计算表格切换组件表格的滚动高度
@@ -419,7 +419,6 @@ export class ExpressVennComponent implements OnInit {
             default:this.storeService.getStore('expression_threshold').default,
             max:value[1]
         }
-        console.log(this.expression_threshold)
     }
 
     formatter(value){
@@ -497,8 +496,6 @@ export class ExpressVennComponent implements OnInit {
 			bar_name: [],
 			total_name: []
         };
-        console.log(this.singleMultiSelect)
-        console.log(this.doubleMultiSelect)
 	}
 
 	//venn和upsetR只能单选时候
@@ -545,7 +542,6 @@ export class ExpressVennComponent implements OnInit {
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
-        console.log(data)
 		this.selectConfirmData = data;
 	}
 
@@ -854,7 +850,6 @@ export class ExpressVennComponent implements OnInit {
 							_self.singleMultiSelect['total_name'] = '';
 							_self.doSingleData();
 						}
-						console.log(_self.singleMultiSelect)
 					} else { //多选
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
@@ -865,7 +860,6 @@ export class ExpressVennComponent implements OnInit {
 							d3.select(this).select('.MyRect').attr('fill', '#333');
 							_self.doubleMultiSelect['bar_name'] = selectName2(_self.doubleMultiSelect['bar_name'],bar_name[i]);;
 						}
-						console.log(_self.doubleMultiSelect)
 					}
 				});
 
@@ -985,7 +979,6 @@ export class ExpressVennComponent implements OnInit {
 							_self.singleMultiSelect['bar_name'] = '';
 							_self.doSingleData();
 						}
-						console.log(_self.singleMultiSelect)
 					} else { //多选
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
@@ -996,7 +989,6 @@ export class ExpressVennComponent implements OnInit {
 							d3.select(this).select('.MyRect').attr('fill', '#333');
 							_self.doubleMultiSelect['total_name'] = selectName2(_self.doubleMultiSelect['total_name'],total_name[i]);
 						}
-						console.log(_self.doubleMultiSelect);
 					}
 				});
 

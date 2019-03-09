@@ -101,7 +101,6 @@ export class InformationComponent implements OnInit {
 			this.genome_source = this.store.getStore('ref_info')["genome_source"];
 			this.genome_url = this.store.getStore('ref_info')["genome_url"];
 			this.genome_version = this.store.getStore('ref_info')["genome_version"];
-			//console.log(this.genome_source)
 		}
 
 		//2.2 RNA分类
@@ -223,7 +222,6 @@ export class InformationComponent implements OnInit {
 
 	//2.3基因长度
 	drawTranscriptLength(data) {
-		//console.log(data);
 		var baseThead = data.baseThead;
 		var rows = data.rows;
 		var chartData = [];
@@ -252,7 +250,6 @@ export class InformationComponent implements OnInit {
 			//temp["total"] = total;
 			chartData.push(temp)
 		}
-		//console.log(chartData);
 
 		let that = this;
 
@@ -400,7 +397,6 @@ export class InformationComponent implements OnInit {
 
   //2.5 外显子数量
   drawExonsNum(data){
-    // console.log(data);
     var baseThead = data.baseThead;
     var rows = data.rows;
     var chartData = [];
@@ -419,7 +415,6 @@ export class InformationComponent implements OnInit {
       //temp["total"] = total;
       chartData.push(temp)
     }
-    // console.log(chartData);
 
     let that = this;
 
@@ -556,7 +551,6 @@ export class InformationComponent implements OnInit {
 
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
-		// console.log(data);
 		this.selectConfirmData = data;
 		this.transcriptLengthEntity['geneTypeList'] = this.selectConfirmData;
 		this.transcriptLength.reGetData();
@@ -564,13 +558,11 @@ export class InformationComponent implements OnInit {
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
-		// console.log(data);
 		this.selectConfirmData = data;
 	}
 
 	//选择面板 确定筛选的数据
 	selectConfirmE(data) {
-		//console.log(data)
 		this.selectConfirmDataE = data;
 		this.exonsNumEntity['RefGeneTypeList'] = this.selectConfirmDataE;
 		this.exonsNum.reGetData();
@@ -578,7 +570,6 @@ export class InformationComponent implements OnInit {
 
 	//选择面板，默认选中数据
 	defaultSelectListE(data) {
-		//console.log(data)
 		this.selectConfirmDataE = data;
 	}
 
