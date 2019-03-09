@@ -53,7 +53,7 @@ declare const Venn: any;
                                         </div>
                                     </div>
                                     <div nz-col nzSpan="2" class="gene_col"><!-- 搜索按钮 -->
-                                        <button nz-button nzType="primary" (click)="goSearch()">搜素</button>
+                                        <button nz-button nzType="primary" (click)="goSearch()" [disabled]="searchPanelFlag">搜素</button>
                                     </div>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@ declare const Venn: any;
                                 </div>
                                 </div>
                             </div>
-                            <app-gene-component #geneTable *ngIf="showModule" [defaultGeneType]="defaultGeneType"></app-gene-component>
+                            <app-gene-component #geneTable *ngIf="showModule && initializationFlag" [defaultGeneType]="defaultGeneType"></app-gene-component>
                         </div>
                         <div class="gene_pop" [hidden]="!expandModuleSetting">
                         <div class="gene_pop_top gene_center">
@@ -133,6 +133,10 @@ export class GenePage {
 	// 默认收起搜索结果面板
 	expandSearchList: boolean = false;
 
+	initializationFlag: boolean = false;
+
+	searchPanelFlag: boolean = true;
+
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -178,6 +182,8 @@ export class GenePage {
 				value: 'mrna'
 			}
 		];
+
+		this.geneService.set("andOr",this.radioValue);
 	}
 
 	//是否折叠显示框
@@ -187,7 +193,7 @@ export class GenePage {
 		this.expandModuleSetting = false;
 		// 收起搜索结果面板
 		this.expandSearchList = false;
-		
+
 		// 重新计算表格切换组件表格的滚动高度
         setTimeout(()=>{
             this.geneTable['computedTableHeight']();
@@ -209,31 +215,39 @@ export class GenePage {
 			}
 		});
 
-		this.geneService.set("selectedList",this.selectedList);
-
 		//console.log(this.selectedList)
 		if (this.selectPanelList.length == this.selectedList.length) {
 			this.icon_color = 'blue';
+			//this.geneService.set("checkedAddThead",this.selectedList);
 		} else {
 			this.icon_color = 'gray';
+			this.geneService.set("checkedAddThead",this.selectedList);
 		}
 	}
 
 	//搜索按钮
 	goSearch() {
-		/*
-          this.inputValue;
-          this.radioValue;
-          this.selectedList;
-      */
-		console.log('我在搜索');
+		console.log(this.geneService);
+		// 收起自定义面板
+		this.expandModuleSetting = false;
+		// 收起搜索结果面板
+		this.expandSearchList = false;
+
+		if (this.selectPanelList.length == this.selectedList.length) {
+			this.geneTable['reGetData']();
+		}else{
+			this.geneTable['selectRange'](this.selectedList);
+		}
+		
 	}
 
 	//输入数据，弹出面板
 	inputChange() {
 		console.log(this.inputValue);
 		if (this.inputValue) {
-			this.geneService.set("inputValue",this.inputValue);
+			this.searchPanelFlag = false;
+			this.geneService.set("content",this.inputValue);
+			console.log(this.geneService)
 			this.getSearchback();
 		} else {
 			this.expandSearchList = false;
@@ -279,7 +293,7 @@ export class GenePage {
 	radioChange() {
 		//
 		this.icon_color = 'blue';
-		this.geneService.set("radioValue",this.radioValue);
+		this.geneService.set("andOr",this.radioValue);
 	}
 
 	//下方取消按钮
@@ -291,21 +305,20 @@ export class GenePage {
 				d['isChecked'] = false;
 			}
 		});
+		this.geneService.set("checkedAddThead",this.selectPanelList);
 		this.expandModuleSetting = !this.expandModuleSetting;
 	}
 
 	//下方确定
 	btnConfirm() {
 		this.icon_color = 'gray';
-		console.log(this.radioValue);
-		console.log(this.selectedList);
 		this.expandModuleSetting = !this.expandModuleSetting;
 	}
 
 	//点击搜索返回面板其中一项
 	searchBackSelect(item) {
 		this.inputValue = item;
-		this.geneService.set("inputValue",this.inputValue);
+		this.geneService.set("content",this.inputValue);
 		this.expandSearchList = false;
 	}
 
@@ -343,7 +356,9 @@ export class GenePage {
 						data['data'][i]['isChecked'] = false;
 					}
 					this.selectPanelList = data['data'];
-					//console.log(this.selectPanelList);
+					this.selectedList = data['data'];
+					this.geneService.set("checkedAddThead",this.selectPanelList);
+					this.initializationFlag = true;
 				}
 			});
 	}
@@ -413,6 +428,7 @@ export class GeneComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		console.log(this.geneService["geneOptions"])
 		this.applyOnceSearchParams = true;
 		this.defaultUrl = `${config['javaPath']}/home/table`; // `${config['url']}/theadFilter`
 		this.defaultEntity = {
@@ -424,10 +440,8 @@ export class GeneComponent implements OnInit {
 			mongoId: null,
 			sortKey: null, //排序
 			sortValue: null,
-            reAnaly: false,
-            content:this.geneService["geneOptions"]["content"],
-            andOr: this.geneService["geneOptions"]["radioValue"],
-            checkedAddThead:this.geneService["geneOptions"]["selectedList"],
+			reAnaly: false,
+			searchParams:this.geneService["geneOptions"],
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
@@ -452,10 +466,8 @@ export class GeneComponent implements OnInit {
 			mongoId: null,
 			sortKey: null, //排序
             sortValue: null,
-            content:this.geneService["geneOptions"]["content"],
-            andOr: this.geneService["geneOptions"]["radioValue"],
-            checkedAddThead:this.geneService["geneOptions"]["selectedList"],
-			// matchAll: false,
+            searchParams:this.geneService["geneOptions"],
+			matchAll: false,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
@@ -474,7 +486,11 @@ export class GeneComponent implements OnInit {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
-    }
+	}
+	
+	handleSelectGeneCountChange(selectGeneCount) {
+		this.selectGeneCount = selectGeneCount;
+	}
 
 	computedTableHeight() {
 		try {
@@ -594,7 +610,9 @@ export class GeneComponent implements OnInit {
     // 选择范围的时候调用  不需要调用reGetData重新获取数据
     // head {} | Object[]    {key:'123',category:'xxx'}
     selectRange(head){
-        this.addColumn._addThead(head)
+		console.log(head);
+		this.addColumn._addThead(head);
+		this.addColumn._confirm();
     }
 
 }

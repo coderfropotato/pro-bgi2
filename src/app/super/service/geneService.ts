@@ -14,9 +14,9 @@ import { Injectable } from "@angular/core";
 export class GeneService {
 
     geneOptions:object = {
-        radioValue:'or',
+        andOr:"",
         content:"",
-        selectedList:[]
+        checkedAddThead:[]
     };
 
     set(key,value){
