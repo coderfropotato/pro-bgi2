@@ -92,6 +92,9 @@ export class ClusterSetComponent implements OnInit {
 
     treeTempSelect:any[] = [];
 
+    isVhasTitle:boolean;
+    isHhasTitle:boolean;
+
     constructor(
         private ajaxService: AjaxService,
         private storeService: StoreService,
@@ -193,6 +196,7 @@ export class ClusterSetComponent implements OnInit {
         this.horizontalClassList=trueData.horizontal;
         this.horizontalEditList=trueData.horizontal;
 
+        let htitle=false;
         if(this.horizontalClassList.length){
             this.horizontalClassList.forEach(d=>{
                 d['children'].forEach(m=>{
@@ -201,23 +205,32 @@ export class ClusterSetComponent implements OnInit {
                     })
                 })
     
-                if(d['category']===config['outerDataBaseIndex']){
-                    d['children'].forEach(v=>{
-                        if(!('children' in v)) v['children'] = [];
-                        v['modalVisible'] = false;
-                        v['children'].forEach(item=>{
-                            this.initTreeData(item['treeData']);
+                if(d['category']){
+                    if(d['category']===config['outerDataBaseIndex']){
+                        d['children'].forEach(v=>{
+                            if(!('children' in v)) v['children'] = [];
+                            v['modalVisible'] = false;
+                            v['children'].forEach(item=>{
+                                this.initTreeData(item['treeData']);
+                            })
                         })
-                    })
+                    }
+                }
+
+                if(d['category']){
+                    htitle=true;
+                    return;
                 }
             })
         }
 
+        this.isHhasTitle= htitle ? true : false;
 
         //纵向
         this.verticalClassList=trueData.vertical;
         this.verticalEditList=trueData.vertical;
 
+        let vtitle=false;
         if(this.verticalClassList.length){
             this.verticalClassList.forEach(d=>{
                 d['children'].forEach(m=>{
@@ -235,8 +248,15 @@ export class ClusterSetComponent implements OnInit {
                         })
                     })
                 }
+
+                if(d['category']){
+                    vtitle=true;
+                    return;
+                }
             })
         }
+
+        this.isVhasTitle=vtitle ? true : false;
         
     }
 

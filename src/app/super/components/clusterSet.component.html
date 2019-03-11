@@ -135,7 +135,15 @@
 <!-- 纵向添加面板 弹窗 -->
 <nz-modal [(nzVisible)]="isShowAddVertical && verticalClassList.length" nzWidth="440" nzTitle="添加纵向分类" (nzOnCancel)="addVCance()" (nzOnOk)="addVConfirm()">
     <div class="items">
-        <nz-tabset>
+        <div *ngIf="!isVhasTitle">
+            <div *ngFor="let item of verticalClassList;index as i">
+                <div *ngFor="let it of item['children'];index as m;">
+                    <button class="head-item" style="margin-right:10px;margin-bottom: 10px" nz-button nzSize="small" nzType="default" [class.btnActive]='d.isChecked' *ngFor="let d of it['children']" (click)="addVBtnClick(d)">{{d['name']}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <nz-tabset *ngIf="isVhasTitle">
             <nz-tab *ngFor="let item of verticalClassList;index as i" [nzTitle]="titleTemplate">
                 <ng-template #titleTemplate>
                     <span class="add-thead-head-item">{{ item['category'] | translate }}</span>
@@ -167,7 +175,15 @@
  <!-- 横向添加面板 弹窗-->
  <nz-modal [(nzVisible)]="isShowAddHorizontal && horizontalClassList.length" nzWidth="440" nzTitle="添加横向分类" (nzOnCancel)="addHCance()" (nzOnOk)="addHConfirm()">
         <div class="items">
-            <nz-tabset>
+            <div *ngIf="!isHhasTitle">
+                <div *ngFor="let item of horizontalClassList;index as i">
+                    <div *ngFor="let it of item['children'];index as m;">
+                        <button class="head-item" style="margin-right:10px;margin-bottom: 10px" nz-button nzSize="small" nzType="default" [class.btnActive]='d.isChecked' *ngFor="let d of it['children']" (click)="addHBtnClick(d)">{{d['name']}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nz-tabset *ngIf="isHhasTitle">
                 <nz-tab *ngFor="let item of horizontalClassList;index as i" [nzTitle]="titleTemplate">
                     <ng-template #titleTemplate>
                         <span class="add-thead-head-item">{{ item['category'] | translate }}</span>
