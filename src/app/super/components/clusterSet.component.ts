@@ -88,8 +88,12 @@ export class ClusterSetComponent implements OnInit {
     horizontalEditList:object[]=[];
     curHEditItem_i:number;
 
+    config=config;
+
+    treeTempSelect:any[] = [];
+
     constructor(
-        private ajaxservice: AjaxService,
+        private ajaxService: AjaxService,
         private storeService: StoreService,
         private notification: NzNotificationService,
         private pageModuleService:PageModuleService
@@ -184,74 +188,119 @@ export class ClusterSetComponent implements OnInit {
     //获取分类
     getClassification(){
         let trueData=this.setData;
+
         //横向
-        let horizontalClassList=trueData.horizontal;
-        horizontalClassList.forEach(d=>{
-            this.horizontalClassList.push({
-                key:d.key,
-                name:d.name,
-                category:d.category,
-                isChecked:false
-            });
-        })
-        this.horizontalEditList=horizontalClassList;
+        this.horizontalClassList=trueData.horizontal;
+        this.horizontalEditList=trueData.horizontal;
+
+        if(this.horizontalClassList.length){
+            this.horizontalClassList.forEach(d=>{
+                d['children'].forEach(m=>{
+                    m['children'].forEach(v=>{
+                        v['isChecked']=false;
+                    })
+                })
+    
+                if(d['category']===config['outerDataBaseIndex']){
+                    d['children'].forEach(v=>{
+                        if(!('children' in v)) v['children'] = [];
+                        v['modalVisible'] = false;
+                        v['children'].forEach(item=>{
+                            this.initTreeData(item['treeData']);
+                        })
+                    })
+                }
+            })
+        }
+
 
         //纵向
         this.verticalClassList=trueData.vertical;
         this.verticalEditList=trueData.vertical;
-        this.verticalClassList.forEach(d=>{
-            d['isChecked']=false;
-        })
+
+        if(this.verticalClassList.length){
+            this.verticalClassList.forEach(d=>{
+                d['children'].forEach(m=>{
+                    m['children'].forEach(v=>{
+                        v['isChecked']=false;
+                    })
+                })
+    
+                if(d['category']===config['outerDataBaseIndex']){
+                    d['children'].forEach(v=>{
+                        if(!('children' in v)) v['children'] = [];
+                        v['modalVisible'] = false;
+                        v['children'].forEach(item=>{
+                            this.initTreeData(item['treeData']);
+                        })
+                    })
+                }
+            })
+        }
         
     }
 
     //纵向分类 添加
     addVclass(){
+        this.isShowSetPanel=false;
         this.isShowAddVertical=true;
         this.isShowAddHorizontal=false;
         this.isShowEditHorizontal=false;
         this.isShowEditVertical=false;
 
-        this.verticalClassList.forEach(d=>{
-            d['isChecked']=false;
-            if(this.verticalInfos.length){
-                this.verticalInfos.forEach(m=>{
-                    if(d['key']===m['key']){
-                        d['isChecked']=true;
-                    }
-                })
-            }
-        })
+        if(this.verticalClassList){
+            this.verticalClassList.forEach(d=>{
+                d['children'].forEach(m => {
+                    m['children'].forEach(v=>{
+                        v['isChecked']=false;
+                        if(this.verticalInfos.length){
+                            this.verticalInfos.forEach(n=>{
+                                if(v['key']===n['key']){
+                                    v['isChecked']=true;
+                                }
+                            })
+                        }
+                    })
+                });
+            })
+        }
     }
 
     addVBtnClick(item){
-        item['isChecked'] = !item['isChecked'];
+        if(this.verticalClassList.length){
+            this.verticalClassList.forEach(d=>{
+                d['children'].forEach(m => {
+                    m['children'].forEach(v=>{
+                        v['isChecked']=false;
+                    })
+                });
+            })
+        }
+        item['isChecked'] = true;
     }
 
     addVConfirm(){
-        let count=0;
-        this.verticalClassList.forEach(d => {
-            if (d['isChecked']) {
-                count++;
-            }
-        })
+        this.isShowAddVertical=false;
+        this.isShowSetPanel=true;
+        this.verticalInfos=[];
 
-        if(count>1){
-            this.notification.warning('添加纵向分类','最多允许添加1个');
-        }else{
-            this.verticalInfos=[];
-            this.verticalClassList.forEach(d => {
-                if (d['isChecked']) {
-                    this.verticalInfos.push(d);
-                }
+        if(this.verticalClassList.length){
+            this.verticalClassList.forEach(d=>{
+                d['children'].forEach(m => {
+                    m['children'].forEach(v=>{
+                        if (v['isChecked']) {
+                            this.verticalInfos.push(v);
+                        }
+                    })
+                });
             })
-            this.isShowAddVertical=false;
         }
 
     }
 
     addVCance(){
         this.isShowAddVertical=false;
+        this.isShowSetPanel=true;
     }
 
     // 纵向分类 修改
@@ -280,50 +329,65 @@ export class ClusterSetComponent implements OnInit {
 
     // 横向分类 添加
     addHclass(){
+        this.isShowSetPanel=false;
         this.isShowAddHorizontal=true;
         this.isShowAddVertical=false;
         this.isShowEditHorizontal=false;
         this.isShowEditVertical=false;
 
-        this.horizontalClassList.forEach(d=>{
-            d['isChecked']=false;
-            if(this.horizontalInfos.length){
-                this.horizontalInfos.forEach(m=>{
-                    if(d['key']===m['key']){
-                        d['isChecked']=true;
-                    }
-                })
-            }
-        })
+        if(this.horizontalClassList){
+            this.horizontalClassList.forEach(d=>{
+                d['children'].forEach(m => {
+                    m['children'].forEach(v=>{
+                        v['isChecked']=false;
+                        if(this.horizontalInfos.length){
+                            this.horizontalInfos.forEach(n=>{
+                                if(v['key']===n['key']){
+                                    v['isChecked']=true;
+                                }
+                            })
+                        }
+                    })
+                });
+            })
+        }
+
     }
 
     addHBtnClick(item){
-        item['isChecked'] = !item['isChecked'];
+        if(this.horizontalClassList.length){
+            this.horizontalClassList.forEach(d=>{
+                d['children'].forEach(m => {
+                    m['children'].forEach(v=>{
+                        v['isChecked']=false;
+                    })
+                });
+            })
+        }
+        item['isChecked'] = true;
     }
 
     addHConfirm(){
-        let count=0;
-        this.horizontalClassList.forEach(d => {
-            if (d['isChecked']) {
-                count++;
-            }
-        })
+        this.isShowAddHorizontal=false;
+        this.isShowSetPanel=true;
+        this.horizontalInfos=[];
 
-        if(count>1){
-            this.notification.warning('添加横向分类','最多允许添加1个');
-        }else{
-            this.horizontalInfos=[];
-            this.horizontalClassList.forEach(d => {
-                if (d['isChecked']) {
-                    this.horizontalInfos.push(d);
-                }
+        if(this.horizontalClassList.length){
+            this.horizontalClassList.forEach(d=>{
+                d['children'].forEach(m => {
+                    m['children'].forEach(v=>{
+                        if (v['isChecked']) {
+                            this.horizontalInfos.push(v);
+                        }
+                    })
+                });
             })
-            this.isShowAddHorizontal=false;
         }
     }
 
     addHCance(){
        this.isShowAddHorizontal=false;
+       this.isShowSetPanel=true;
     }
 
      // 横向分类 修改
@@ -349,6 +413,128 @@ export class ClusterSetComponent implements OnInit {
 
         this.horizontalInfos.splice(i,1);
     }
+
+    // 初始化 树节点数据
+    initTreeData(treeData){
+        if (!treeData || !treeData.length) return;
+        let stack = [];
+        for (var i = 0, len = treeData.length; i < len; i++) {
+            stack.push(treeData[i]);
+        }
+        let item;
+        while (stack.length) {
+            item = stack.shift();
+
+            if(item['isRoot']) item['isExpand'] = true;
+            item['isExpand'] = true;
+            item['isChecked'] = false;
+            item['disabled'] = false;
+
+            if (item.children && item.children.length) {
+                stack = stack.concat(item.children);
+            }
+        }
+    }
+
+    addTreeThead(it) {
+		it['modalVisible'] = true;
+    }
+
+    // 树选择可匹配的头 改变
+	handlerSelectDataChange(thead) {
+		this.treeTempSelect = thead;
+	}
+    
+    handleCancel(it) {
+		it['modalVisible'] = false;
+	}
+
+	handleOk(it) {
+        it['modalVisible'] = false;
+
+        // 选择的头是不是重复选择
+        let n = it['children'].findIndex((val,index)=>{
+            return val['key'] === this.treeTempSelect[0];
+        })
+        if(n!=-1) {
+            this.notification.create('warning','Reprot notification', `重复选择 ${this.treeTempSelect[0]}`);
+            this.treeTempSelect.length = 0;
+            return;
+        }else{
+            (async ()=>{
+                if(this.treeTempSelect.length){
+                    let res = await this.saveThead({
+                        "category":it['category'],
+                        "key":this.treeTempSelect[0],
+						"name":this.treeTempSelect[0],
+						"geneType":this.geneType['type']
+                    });
+                    if(res!=='error'){
+                        let tempIt = JSON.parse(JSON.stringify(it));
+                        it.children.length = 0;
+                        it.children.push(...res['data']);
+
+                        if(tempIt['children'].length){
+                            it['children'].forEach(val=>{
+                                let index = tempIt['children'].findIndex((v,i)=>{
+                                    return val['key'] === v['key'];
+                                })
+
+                                if(index!=-1){
+                                    it['children'][index]['checked'] = tempIt['children'][index]['checked'];
+                                    tempIt['children'].splice(index,1);
+                                }
+                            })
+                        }
+
+                        // this.initIndex(this.verticalClassList);
+
+                        this.notification.create('success','Reprot notification', `${this.treeTempSelect[0]} 添加成功`);
+                    }else{
+                        this.notification.create('warning','Reprot notification', `${this.treeTempSelect[0]} 添加失败`);
+                    }
+                    this.treeTempSelect.length = 0;
+                }
+            })()
+        }
+    }
+
+    // 初始化索引
+	initIndex(data) {
+		data.forEach((val, index) => {
+			if (val['children'] && val['children'].length) {
+				val['children'].forEach((v, i) => {
+					if (v['children'] && v['children'].length) {
+						for (let m = 0; m < v['children'].length; m++) {
+							v['children'][m]['index'] = index;
+						}
+					}
+				});
+			}
+		});
+	}
+    
+    // 保存树选择的头
+	async saveThead(thead: object) {
+		return new Promise((resolve, reject) => {
+			this.ajaxService
+				.getDeferData({
+					data: {
+						LCID: sessionStorage.getItem('LCID'),
+						columns: [ thead ]
+					},
+					url: `${config['javaPath']}/savePublicColumns`
+				})
+				.subscribe(
+					(res) => {
+						res['status'] === '0' ? resolve(res) : reject('error');
+					},
+					(error) => {
+						reject('error');
+					}
+				);
+		});
+	}
 
     //设置 确定
     setConfirm(){
