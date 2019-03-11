@@ -2,123 +2,124 @@
     <h2 class="title">2 参考信息</h2>
     <hr class="mhr" />
 
-    <h3 class="title" *ngIf="species_name || genome_source || genome_url">2.1 参考物种</h3>
-    <p class="help_text" *ngIf="species_name">物种名：<span style="font-style: italic">{{species_name}}</span></p>
-    <p class="help_text" *ngIf="genome_source">来源：<span>{{genome_source}}</span></p>
-    <p class="help_text" *ngIf="genome_url">参考基因组版本：<span><a href="{{genome_url}}" target="_blank">{{genome_version}}</a></span></p>
-
-    <h3 class="title">2.2 RNA分类</h3>
-    <div class="f-content">
-        <app-table-switch-chart
-            #RNAClassChart
-            [id]="'RNAClassChart'"
-            [tableUrl]="tableUrl"
-            [apiEntity]="tableEntity"
-            (drawChartEmit)="drawRNAClass($event)"
-            [flex]="true"
-            [chartId]="'RNAClassID'"
-            [chartName]="'各类型RNA数量统计'"
-            (refresh)="handlerRefresh()"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-                ></app-color-picker>
+    <div calss="base_module">
+        <h3 class="title" *ngIf="species_name || genome_source || genome_url">2.1 参考物种</h3>
+        <p class="help_text" *ngIf="species_name">物种名：<span style="font-style: italic">{{species_name}}</span></p>
+        <p class="help_text" *ngIf="genome_source">来源：<span>{{genome_source}}</span></p>
+        <p class="help_text" *ngIf="genome_url">参考基因组版本：<span><a href="{{genome_url}}" target="_blank">{{genome_version}}</a></span></p>
+    </div>
+    
+    <div calss="base_module">
+        <h3 class="title">2.2 RNA分类</h3>
+        <div class="f-content">
+            <app-table-switch-chart
+                #RNAClassChart
+                [id]="'RNAClassChart'"
+                [tableUrl]="tableUrl"
+                [apiEntity]="tableEntity"
+                (drawChartEmit)="drawRNAClass($event)"
+                [flex]="true"
+                [chartId]="'RNAClassID'"
+                [chartName]="'各类型RNA数量统计'"
+                (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+                    ></app-color-picker>
+        </div>
+    </div>
+    
+    <div calss="base_module">
+        <h3 class="title">2.3 基因长度</h3>
+        <div class="f-content">
+            <app-table-switch-chart
+                #transcriptLength
+                [id]="'transcriptLength'"
+                [tableUrl]="transcriptLengthUrl"
+                [apiEntity]="transcriptLengthEntity"
+                (drawChartEmit)="drawTranscriptLength($event)"
+                [flex]="true"
+                [chartId]="'TranscriptData'"
+                [chartName]="'转录本长度分布图'"
+                (refresh)="handlerRefresh()"
+                [selectPanelData]="selectPanelData"
+                (selectConfirmEmit)="selectConfirm($event)"
+                [defaultSelectNum]="-1"
+                (defaultSelectList)="defaultSelectList($event)"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="colorT" (colorChange)="colorTChange($event)" [(show)]="isShowColorPanelT"
+                    ></app-color-picker>
+        </div>
     </div>
 
-    <h3 class="title">2.3 基因长度</h3>
-    <div class="f-content">
-        <app-table-switch-chart
-            #transcriptLength
-            [id]="'transcriptLength'"
-            [tableUrl]="transcriptLengthUrl"
-            [apiEntity]="transcriptLengthEntity"
-            (drawChartEmit)="drawTranscriptLength($event)"
-            [flex]="true"
-            [chartId]="'TranscriptData'"
-            [chartName]="'转录本长度分布图'"
-            (refresh)="handlerRefresh()"
-            [selectPanelData]="selectPanelData"
-            (selectConfirmEmit)="selectConfirm($event)"
-            [defaultSelectNum]="-1"
-            (defaultSelectList)="defaultSelectList($event)"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="colorT" (colorChange)="colorTChange($event)" [(show)]="isShowColorPanelT"
-                ></app-color-picker>
+    <div calss="base_module">
+        <h3 class="title">2.4 miRNA长度分布</h3>
+        <div class="f-content">
+            <app-table-switch-chart
+                #RNALchart
+                [id]="'RNALchart'"
+                [tableUrl]="tableRNAUrl"
+                [apiEntity]="tableRNAEntity"
+                (drawChartEmit)="drawRNALengthReads($event)"
+                [flex]="true"
+                [chartId]="'RNALData'"
+                [chartName]="'miRNA长度分布'"
+                (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="colorL" (colorChange)="colorLChange($event)" [(show)]="isShowColorPanelL"
+                    ></app-color-picker>
+        </div>
     </div>
 
-
-    <h3 class="title">2.4 miRNA长度分布</h3>
-    <div class="f-content">
-        <app-table-switch-chart
-            #RNALchart
-            [id]="'RNALchart'"
-            [tableUrl]="tableRNAUrl"
-            [apiEntity]="tableRNAEntity"
-            (drawChartEmit)="drawRNALengthReads($event)"
-            [flex]="true"
-            [chartId]="'RNALData'"
-            [chartName]="'miRNA长度分布'"
-            (refresh)="handlerRefresh()"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="colorL" (colorChange)="colorLChange($event)" [(show)]="isShowColorPanelL"
-                ></app-color-picker>
+    <div calss="base_module">
+        <h3 class="title">2.5 外显子数量</h3>
+        <div class="f-content">
+            <app-table-switch-chart
+                #exonsNum
+                [id]="'exonsNum'"
+                [tableUrl]="exonsNumUrl"
+                [apiEntity]="exonsNumEntity"
+                (drawChartEmit)="drawExonsNum($event)"
+                [flex]="true"
+                [chartId]="'exonsNumData'"
+                [chartName]="'转录本长度分布图'"
+                (refresh)="handlerRefresh()"
+                [selectPanelData]="selectPanelDataE"
+                (selectConfirmEmit)="selectConfirmE($event)"
+                [defaultSelectNum]="-1"
+                (defaultSelectList)="defaultSelectListE($event)"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="colorE" (colorChange)="colorEChange($event)" [(show)]="isShowColorPanelE"
+                    ></app-color-picker>
+        </div>
     </div>
 
-    <h3 class="title">2.5 外显子数量</h3>
-    <div class="f-content">
-        <app-table-switch-chart
-            #exonsNum
-            [id]="'exonsNum'"
-            [tableUrl]="exonsNumUrl"
-            [apiEntity]="exonsNumEntity"
-            (drawChartEmit)="drawExonsNum($event)"
-            [flex]="true"
-            [chartId]="'exonsNumData'"
-            [chartName]="'转录本长度分布图'"
-            (refresh)="handlerRefresh()"
-            [selectPanelData]="selectPanelDataE"
-            (selectConfirmEmit)="selectConfirmE($event)"
-            [defaultSelectNum]="-1"
-            (defaultSelectList)="defaultSelectListE($event)"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="colorE" (colorChange)="colorEChange($event)" [(show)]="isShowColorPanelE"
-                ></app-color-picker>
-    </div>
-
-    <h3 class="title">2.6 注释统计表</h3>
-    <app-little-table [url]="defaultUrl"></app-little-table>
-    <!-- <div class="f-content">
-        <app-big-table
-          *ngIf="defaultEntity"
-          class="no-outside-border"
-          #bigTable
-          [pageEntity]="defaultEntity"
-          [url]="defaultUrl"
-          [tableId]="defaultTableId"
-        ></app-big-table>
+    <div calss="base_module">
+        <h3 class="title">2.6 注释统计表</h3>
         <app-little-table [url]="defaultUrl"></app-little-table>
-    </div> -->
-
-    <h3 class="title">2.7 miRNA首位碱基分布</h3>
-    <div class="f-content">
-        <app-table-switch-chart
-            #miRNAFchart
-            [id]="'miRNAFchart'"
-            [tableUrl]="tableRNAFUrl"
-            [apiEntity]="tableRNAFEntity"
-            (drawChartEmit)="drawRNAFristReads($event)"
-            [flex]="true"
-            [chartId]="'RNAFData'"
-            [chartName]="'miRNA首位碱基分布'"
-            (refresh)="handlerRefresh()"
-            [chartDescContent]="'X轴表示miRNA长度，Y轴表示某一长度miRNA  5’ 端第一个碱基的百分比。'"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="colorF" (colorChange)="colorFChange($event)" [(show)]="isShowColorPanelF"
-                ></app-color-picker>
     </div>
-
+    
+    <div calss="base_module">
+        <h3 class="title">2.7 miRNA首位碱基分布</h3>
+        <div class="f-content">
+            <app-table-switch-chart
+                #miRNAFchart
+                [id]="'miRNAFchart'"
+                [tableUrl]="tableRNAFUrl"
+                [apiEntity]="tableRNAFEntity"
+                (drawChartEmit)="drawRNAFristReads($event)"
+                [flex]="true"
+                [chartId]="'RNAFData'"
+                [chartName]="'miRNA首位碱基分布'"
+                (refresh)="handlerRefresh()"
+                [chartDescContent]="'X轴表示miRNA长度，Y轴表示某一长度miRNA  5’ 端第一个碱基的百分比。'"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="colorF" (colorChange)="colorFChange($event)" [(show)]="isShowColorPanelF"
+                    ></app-color-picker>
+        </div>
+    </div>
 </div>

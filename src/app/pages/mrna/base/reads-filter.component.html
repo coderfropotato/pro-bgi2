@@ -2,106 +2,119 @@
     <h2 class="title">3.Reads过滤</h2>
     <hr class="mhr" />
 
-    <h4 class="title" *ngIf="seq_platform">测序平台：<span>{{seq_platform}}</span></h4>
-    <h4 class="title" *ngIf="seq_length">测序长度：<span>{{seq_length}}</span></h4>
-    <h4 class="title" *ngIf="fragment_peak">文库峰值长度：<span>{{fragment_peak}}</span></h4>
-
-    <h3 class="title">3.1 过滤后的 Reads 质量统计</h3>
-    <div class="f-content">
-        <h4 class="title">3.1.1 Reads过滤</h4>
-        <app-big-table
-          *ngIf="defaultEntity"
-          class="no-outside-border"
-          #bigTable
-          [pageEntity]="defaultEntity"
-          [url]="defaultUrl"
-          [tableId]="defaultTableId"
-         
-        ></app-big-table>
-    </div>
-    <div class="f-content">
-        <h4 class="title">3.1.2 Reads过滤（小RNA）</h4>
-        <app-big-table
-          *ngIf="defaultRNAEntity"
-          class="no-outside-border"
-          #bigRNATable
-          [pageEntity]="defaultRNAEntity"
-          [url]="defaultRNAUrl"
-          [tableId]="defaultRNAId"
-        ></app-big-table>
+    <div calss="base_module">
+        <div class="f-content" style="border:0;">
+            <h4 class="title" *ngIf="seq_platform">测序平台：<span>{{seq_platform}}</span></h4>
+            <h4 class="title" *ngIf="seq_length">测序长度：<span>{{seq_length}}</span></h4>
+            <h4 class="title" *ngIf="fragment_peak">文库峰值长度：<span>{{fragment_peak}}</span></h4>
+        </div>
     </div>
 
-    <h3 class="title">3.2 原始数据过滤成分统计</h3>
-    <div class="f-content">
-        <ng-template #searchTemplate>
-            <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
-                <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
-            </nz-select>
-        </ng-template>
-        <app-table-switch-chart
-            #rawDataChart
-            [id]="'rawDataChart'"
-            [tableUrl]="tableUrl"
-            [apiEntity]="tableEntity"
-            (drawChartEmit)="drawRawReads($event)"
-            [flex]="true"
-            [chartId]="'rawDataID'"
-            [chartName]="'原始数据过滤成分统计'"
-            [otherLeftTemplate]='searchTemplate'
-            (refresh)="handlerRefresh()"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-                ></app-color-picker>
-    </div>
-    
-    <h3 class="title">3.3 Clean reads 碱基含量分布</h3>
-    <div class="f-content">
-        <ng-template #searchTemplateTwo>
-            <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="baseSearchType" [nzSize]="'small'" (ngModelChange)="searchBaseTypeChange()" nzShowSearch>
-                <nz-option *ngFor="let item of baseSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
-            </nz-select>
-        </ng-template>
-        <app-table-switch-chart
-            #rawBaseChart
-            [id]="'rawBaseChart'"
-            [tableUrl]="tableBaseUrl"
-            [apiEntity]="tableBaseEntity"
-            (drawChartEmit)="drawBaseReads($event)"
-            [flex]="true"
-            [chartId]="'rawBaseID'"
-            [chartName]="'Clean reads 碱基含量分布'"
-            [otherLeftTemplate]='searchTemplateTwo'
-            (refresh)="handlerRefresh()"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="colorContent" (colorChange)="colorContentChange($event)" [(show)]="isShowContentColorPanel"
-                ></app-color-picker>
+    <div calss="base_module">
+        <h3 class="title">3.1 过滤后的 Reads 质量统计</h3>
+        <div class="f-content">
+            <h4 class="title">3.1.1 Reads过滤</h4>
+            <app-big-table
+                *ngIf="defaultEntity"
+                class="no-outside-border"
+                #bigTable
+                [pageEntity]="defaultEntity"
+                [url]="defaultUrl"
+                [tableId]="defaultTableId"
+                
+            ></app-big-table>
+        </div>
+
+        <div class="f-content">
+            <h4 class="title">3.1.2 Reads过滤（小RNA）</h4>
+            <app-big-table
+                *ngIf="defaultRNAEntity"
+                class="no-outside-border"
+                #bigRNATable
+                [pageEntity]="defaultRNAEntity"
+                [url]="defaultRNAUrl"
+                [tableId]="defaultRNAId"
+            ></app-big-table>
+        </div>
     </div>
 
-
-    <h3 class="title">3.4 Clean reads 碱基质量分布</h3>
-    <div class="f-content">
-        <ng-template #searchTemplateThree>
-            <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="qualitySearchType" [nzSize]="'small'" (ngModelChange)="searchQualityTypeChange()" nzShowSearch>
-                <nz-option *ngFor="let item of qualitySelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
-            </nz-select>
-        </ng-template>
-        <app-table-switch-chart
-            #rawQualityChart
-            [id]="'rawQualityChart'"
-            [chartUrl]="tableQualityUrl"
-            [apiEntity]="tableQualityEntity"
-            (drawChartEmit)="drawQualityReads($event)"
-            [flex]="true"
-            [chartId]="'rawQualityID'"
-            [chartName]="'Clean reads 碱基质量分布'"
-            [otherLeftTemplate]='searchTemplateThree'
-            (refresh)="handlerRefresh()"
-            [chartDescContent]="'X轴代表碱基在reads中的位置，Y轴代表碱基质量值，图中每个点表示此位置达到某一质量值的碱基总数，颜色越深表示数目越多。碱基质量分布反映了测序reads的准确性，测序仪、测序试剂、样品质量等均能影响碱基质量。正常情况下，reads中的前几个碱基质量值不高，是因为反转录时随机引物不能很好地结合RNA模板；随着测序长度的增加，高质量碱基的比例会有所提高；但长度达到一定阈值后，由于测序试剂的消耗，高质量碱基的比例会降低。从整体上看，如果低质量(Quality<20)的碱基比例较低，说明测序质量较好。'"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="colorQuality" (colorChange)="colorQualityChange($event)" [(show)]="isShowQualityColorPanel"
-                ></app-color-picker>
+    <div calss="base_module">
+        <h3 class="title">3.2 原始数据过滤成分统计</h3>
+        <div class="f-content">
+            <ng-template #searchTemplate>
+                <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
+                    <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+                </nz-select>
+            </ng-template>
+            <app-table-switch-chart
+                #rawDataChart
+                [id]="'rawDataChart'"
+                [tableUrl]="tableUrl"
+                [apiEntity]="tableEntity"
+                (drawChartEmit)="drawRawReads($event)"
+                [flex]="true"
+                [chartId]="'rawDataID'"
+                [chartName]="'原始数据过滤成分统计'"
+                [otherLeftTemplate]='searchTemplate'
+                (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+                    ></app-color-picker>
+        </div>
     </div>
+
+    <div calss="base_module">
+        <h3 class="title">3.3 Clean reads 碱基含量分布</h3>
+        <div class="f-content">
+            <ng-template #searchTemplateTwo>
+                <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="baseSearchType" [nzSize]="'small'" (ngModelChange)="searchBaseTypeChange()" nzShowSearch>
+                    <nz-option *ngFor="let item of baseSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+                </nz-select>
+            </ng-template>
+            <app-table-switch-chart
+                #rawBaseChart
+                [id]="'rawBaseChart'"
+                [tableUrl]="tableBaseUrl"
+                [apiEntity]="tableBaseEntity"
+                (drawChartEmit)="drawBaseReads($event)"
+                [flex]="true"
+                [chartId]="'rawBaseID'"
+                [chartName]="'Clean reads 碱基含量分布'"
+                [otherLeftTemplate]='searchTemplateTwo'
+                (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="colorContent" (colorChange)="colorContentChange($event)" [(show)]="isShowContentColorPanel"
+                    ></app-color-picker>
+        </div>
+    </div>
+
+    <div calss="base_module">
+        <h3 class="title">3.4 Clean reads 碱基质量分布</h3>
+        <div class="f-content">
+            <ng-template #searchTemplateThree>
+                <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="qualitySearchType" [nzSize]="'small'" (ngModelChange)="searchQualityTypeChange()" nzShowSearch>
+                    <nz-option *ngFor="let item of qualitySelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+                </nz-select>
+            </ng-template>
+            <app-table-switch-chart
+                #rawQualityChart
+                [id]="'rawQualityChart'"
+                [chartUrl]="tableQualityUrl"
+                [apiEntity]="tableQualityEntity"
+                (drawChartEmit)="drawQualityReads($event)"
+                [flex]="true"
+                [chartId]="'rawQualityID'"
+                [chartName]="'Clean reads 碱基质量分布'"
+                [otherLeftTemplate]='searchTemplateThree'
+                (refresh)="handlerRefresh()"
+                [chartDescContent]="'X轴代表碱基在reads中的位置，Y轴代表碱基质量值，图中每个点表示此位置达到某一质量值的碱基总数，颜色越深表示数目越多。碱基质量分布反映了测序reads的准确性，测序仪、测序试剂、样品质量等均能影响碱基质量。正常情况下，reads中的前几个碱基质量值不高，是因为反转录时随机引物不能很好地结合RNA模板；随着测序长度的增加，高质量碱基的比例会有所提高；但长度达到一定阈值后，由于测序试剂的消耗，高质量碱基的比例会降低。从整体上看，如果低质量(Quality<20)的碱基比例较低，说明测序质量较好。'"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="colorQuality" (colorChange)="colorQualityChange($event)" [(show)]="isShowQualityColorPanel"
+                    ></app-color-picker>
+        </div>
+    </div>
+
 </div>
