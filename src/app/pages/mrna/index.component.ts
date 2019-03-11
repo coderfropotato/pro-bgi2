@@ -363,7 +363,8 @@ export class IndexComponent implements OnInit {
 										menuRouteMap[val['url']] = val;
 									});
 								}
-							});
+                            });
+                            this.storeService.setStore('menu',this.menuList);
 							this.storeService.setStore('menuRouteMap', menuRouteMap);
 							resolve('success');
 						} else {

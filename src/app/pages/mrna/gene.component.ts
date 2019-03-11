@@ -19,7 +19,7 @@ declare const $:any;
 @Component({
 	selector: 'app-gene-page',
 	template: `
-                    <div class="content gene">
+                    <div class="content row gene">
                         <div class="left-layout column gene_margin_right">
                             <div class="left-top-layout"><!-- 上部份 -->
                                 <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" nz-tooltip>
