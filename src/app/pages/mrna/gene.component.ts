@@ -128,7 +128,7 @@ export class GenePage {
 	searchBackList: string[] = []; //输入框返回结果
 
 	// 默认收起模块描述
-	expandModuleDesc: boolean = false;
+	expandModuleDesc: boolean = true;
 	// 默认收起自定义面板
 	expandModuleSetting: boolean = false;
 	// 默认收起搜索结果面板
