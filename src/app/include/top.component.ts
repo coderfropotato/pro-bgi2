@@ -121,15 +121,6 @@ export class TopComponent implements OnInit {
 			count++;
 		} while (count < this.pageRoutes.length);
 
-		// while (count < this.pageRoutes.length) {
-		//     if (count === this.pageRoutes.length - 1) {
-		//         await asyncNavigatePage(this.pageRoutes[count], true);
-		//     } else {
-		//         await asyncNavigatePage(this.pageRoutes[count]);
-		//     }
-		//     count++;
-		// }
-
 		async function asyncNavigatePage(pageUrl, flag = false) {
 			// flag true表示最后一次导航马上要下载pdf
 			return new Promise((resolve, reject) => {
@@ -157,6 +148,7 @@ export class TopComponent implements OnInit {
 
 		window.print();
 		window.location.reload();
+        cb && cb();
 	}
 
 	analysisFn() {
