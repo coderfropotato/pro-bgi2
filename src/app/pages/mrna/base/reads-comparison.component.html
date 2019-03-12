@@ -78,6 +78,7 @@
                 [chartName]="'转录本的 reads 覆盖度'"
                 [otherLeftTemplate]='searchCoverTemplate'
                 (refresh)="handlerRefresh()"
+                [chartDescContent]="'X 轴表示 reads 对转录本的覆盖度，Y 轴表示转录本的比例。'"
             >
             </app-table-switch-chart>
             <!-- <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
