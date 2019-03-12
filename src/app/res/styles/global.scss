@@ -48,15 +48,15 @@
 //     border-color: $them-color;
 //     box-shadow: 0 0 0 2px rgba($them-color,.2)!important;
 // }
-.anticon.icon-disabled{
-    cursor: not-allowed;
-    opacity: .2;
+.anticon.icon-disabled {
+	cursor: not-allowed;
+	opacity: .2;
 }
 // 韦恩图选中的状态
 .pathLinkArea path.active {
 	opacity: .5;
 }
-.hasbordert{
+.hasbordert {
 	border-top: 1px solid $border-color;
 }
 
@@ -81,7 +81,7 @@
 .selectPanel .selectContent {
 	max-height: 200px;
 	overflow: auto;
-	padding-top:6px;
+	padding-top: 6px;
 }
 
 .table-content {
@@ -89,10 +89,10 @@
 	// min-height: 400px;
 	position: relative;
 	border: $border;
-    border-radius: 0 0 4px 4px;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 0;
+	border-radius: 0 0 4px 4px;
+	border-left: 0;
+	border-right: 0;
+	border-bottom: 0;
 	background-color: #fff;
 	// overflow: auto;
 }
@@ -109,7 +109,7 @@
 
 .table-top {
 	padding: 8px 16px;
-    background-color: #f5f5f5;
+	background-color: #f5f5f5;
 	border: $border;
 	border-top: 0;
 	border-bottom: 0;
@@ -117,71 +117,70 @@
 	white-space: nowrap;
 	& > span {
 		// float:left;
-		display:inline-block;
-		height:36px;
-    }
-    .filter-head{
+		display: inline-block;
+		height: 36px;
+	}
+	.filter-head {
 		margin-top: 7px;
 		position: relative;
 		padding: 6px 4px;
-		overflow:hidden;
-		text-overflow:ellipsis;
-		white-space:nowrap;
-    }
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 	.filter-item {
 		padding: 6px 4px;
 		background-color: #fff;
 		border: 1px solid #f5f5f5;
 		border-radius: 2px;
-        margin-left: 6px;
-        position: relative;
+		margin-left: 6px;
+		position: relative;
 		padding-left: 12px;
-		max-width:360px;
-		overflow:hidden;
-		text-overflow:ellipsis;
-		white-space:nowrap;
-        &:hover{
-            i{
-                visibility: visible;
-            }
-        }
-        em{
-            font-style: normal;
-        }
-        i{
-            visibility: hidden;
-            position: absolute;
-            right: 0;
-            top: 4px;
-            font-size: 12px;
-            transform: rotate(-90deg);
-            opacity: .5;
-            transition: .2s all ease-in;
-            cursor: pointer;
-            &:hover{
-                transform: rotate(0);
-                opacity: 1;
-            }
-        }
-    }
-    &:after{
-        clear: both;
-        display: block;
-        content:"";
-    }
+		max-width: 360px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		&:hover {
+			i {
+				visibility: visible;
+			}
+		}
+		em {
+			font-style: normal;
+		}
+		i {
+			visibility: hidden;
+			position: absolute;
+			right: 0;
+			top: 4px;
+			font-size: 12px;
+			transform: rotate(-90deg);
+			opacity: .5;
+			transition: .2s all ease-in;
+			cursor: pointer;
+			&:hover {
+				transform: rotate(0);
+				opacity: 1;
+			}
+		}
+	}
+	&:after {
+		clear: both;
+		display: block;
+		content: "";
+	}
 }
 
-
-.head-item-content{
-    max-height: 200px;
-    overflow-x: auto;
-    padding-bottom: 20px;
-    border-bottom: 1px solid $border-color;
-    .head-item {
-        margin-right: 10px;
-        margin-bottom: 10px;
-        cursor: pointer;
-    }
+.head-item-content {
+	max-height: 200px;
+	overflow-x: auto;
+	padding-bottom: 20px;
+	border-bottom: 1px solid $border-color;
+	.head-item {
+		margin-right: 10px;
+		margin-bottom: 10px;
+		cursor: pointer;
+	}
 }
 
 .add-head {
@@ -197,18 +196,18 @@
 	flex: 1;
 }
 
-.add-foot{
-    padding: 12px 0;
-    button {
-        float: right;
-        margin-left: 8px;
-    }
+.add-foot {
+	padding: 12px 0;
+	button {
+		float: right;
+		margin-left: 8px;
+	}
 
-    &:after {
-        display: block;
-        content: "";
-        clear: both;
-    }
+	&:after {
+		display: block;
+		content: "";
+		clear: both;
+	}
 }
 
 .add-thead-head-item {
@@ -250,13 +249,13 @@
 	}
 	&::-webkit-scrollbar-corner {
 		background: #ccc;
-    }
-    .tag{
-        div{
-            background-color: $them-color;
-            opacity: 1;
-        }
-    }
+	}
+	.tag {
+		div {
+			background-color: $them-color;
+			opacity: 1;
+		}
+	}
 }
 .outer-tab {
 	.outer-select-wrap.tag-wrap {
@@ -293,9 +292,9 @@
 	margin: 6px;
 	margin-left: 0;
 	background-color: $btn_active_color;
-	color:#fff;
-	i{
-		color:#fff;
+	color: #fff;
+	i {
+		color: #fff;
 	}
 }
 
@@ -327,10 +326,10 @@
 	padding: 8px;
 	// border: $border;
 	// border-bottom: 1px solid #efefef;
-    background-color: $white_bg;
-    &.gene-table{
-        background-color:$background_color;
-    }
+	background-color: $white_bg;
+	&.gene-table {
+		background-color: $background_color;
+	}
 }
 
 tbody > tr:nth-child(odd) {
@@ -358,7 +357,7 @@ tbody > tr:nth-child(even) {
 	width: 100%;
 	margin: 0 auto;
 	.selectContent {
-		button:not(last-child){
+		button:not(last-child) {
 			margin-bottom: 12px;
 		}
 	}
@@ -372,7 +371,7 @@ tbody > tr:nth-child(even) {
 	display: flex;
 	// padding-top: 40px;
 	// justify-content: center;
-    // align-items: center;
+	// align-items: center;
 }
 .clearfix {
 	display: block;
@@ -398,15 +397,15 @@ tbody > tr:nth-child(even) {
 	padding: 4px $padding;
 }
 
-button{
-    &.btnActive {
-        border: 1px solid $btn_active_color !important;
-        color: #fff !important;
-        background: $btn_active_color !important;
-    }
-    &.active-disabled{
-        border: 1px solid $btn_active_color !important;
-    }
+button {
+	&.btnActive {
+		border: 1px solid $btn_active_color !important;
+		color: #fff !important;
+		background: $btn_active_color !important;
+	}
+	&.active-disabled {
+		border: 1px solid $btn_active_color !important;
+	}
 }
 
 .table-bottom {
@@ -484,19 +483,21 @@ button{
 .func {
 	background-color: #fff;
 	padding: 8px;
-	position:relative;
-	.only-table{
-		position:absolute;
-		right:16px;
-		top:16px;
-		font-size:18px;
-		cursor:pointer;
+	position: relative;
+	.only-table {
+		position: absolute;
+		right: 16px;
+		top: 16px;
+		font-size: 18px;
+		cursor: pointer;
 	}
 }
 
 // 转换表 大表
-.transformation-table-component,.big-table-component,.gene-table-component{
-	padding:4px;
+.transformation-table-component,
+.big-table-component,
+.gene-table-component {
+	padding: 4px;
 }
 
 .content {
@@ -509,46 +510,46 @@ button{
 	flex-direction: row;
 	&.reanalysis-content {
 		height: calc(100% - 80px);
-    }
-    &.base-content{
-        height: 100%;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        background-color: #fff;
-        display: block;
-    }
+	}
+	&.base-content {
+		height: 100%;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		background-color: #fff;
+		display: block;
+	}
 	.left-layout {
 		overflow: hidden;
 		flex: 7;
 		margin-right: 16px;
-        display: flex;
-        transition: 0.2s all ease;
+		display: flex;
+		transition: 0.2s all ease;
 		&.unexpand {
 			flex: 4;
 		}
-		&.expand{
+		&.expand {
 			flex: 7;
 		}
-        &.table-only{
-			flex:0;
+		&.table-only {
+			flex: 0;
 			margin-right: 0;
-        }
+		}
 		.left-top-layout {
 			@include module-style;
 			margin-bottom: 12px;
 			padding: 12px;
-			i{
+			i {
 				font-style: normal;
 			}
-			p{
-				margin-top:5px;
+			p {
+				margin-top: 5px;
 				margin-bottom: 0;
 				// text-indent: 2em;
 			}
-			.expand-icon{
-				font-size:13px;
+			.expand-icon {
+				font-size: 13px;
 			}
-			.zhankai-shouqi:hover{
+			.zhankai-shouqi:hover {
 				color: #5278f8;
 			}
 		}
@@ -557,7 +558,7 @@ button{
 			// padding: 12px;
 			flex: 1;
 			overflow: hidden;
-        }
+		}
 	}
 	.right-layout {
 		height: 100%;
@@ -568,23 +569,22 @@ button{
 		&.expand {
 			flex: 7;
 		}
-		&.unexpand{
-			flex:4;
+		&.unexpand {
+			flex: 4;
 		}
-        &.table-only{
-            flex:1;
-        }
+		&.table-only {
+			flex: 1;
+		}
 	}
 
 	& .switch {
 		position: fixed;
-		right: 254px;  // 265
+		right: 254px; // 265
 		top: 46px;
-
 	}
 
-	&.gene-list-content{
-		.switch{
+	&.gene-list-content {
+		.switch {
 			position: fixed;
 			right: 148px;
 			top: 46px;
@@ -600,77 +600,76 @@ button{
 // 	}
 // }
 
-.menufunc{
-    opacity:0.8;
-    cursor: pointer;
-	&:hover{
+.menufunc {
+	opacity: 0.8;
+	cursor: pointer;
+	&:hover {
 		opacity: 1.0;
 	}
-	.ant-badge{
-        margin-top:-20px;
-        margin-left: 4px;
+	.ant-badge {
+		margin-top: -20px;
+		margin-left: 4px;
 	}
 }
 
 // 布局切换
-.layout-switch-wrap{
+.layout-switch-wrap {
 	margin-right: -18px;
-	&.hasAnalysisCount{
-		margin-right:10px;
+	&.hasAnalysisCount {
+		margin-right: 10px;
 	}
-	.layout-src-ele{
+	.layout-src-ele {
 		position: absolute;
 		left: 0;
-		top:2px;
+		top: 2px;
 		width: 100%;
 		height: 20px;
 		z-index: 10;
 		display: flex;
 		flex-direction: row;
 		cursor: pointer;
-		li{
-			flex:1;
+		li {
+			flex: 1;
 		}
 	}
-    .layout-switch {
-        width: 88px;
-        height: 24px;
-        background: $layout_switch_bgcolor;
-        border-radius: 4px;
-        position: relative;
-        cursor: pointer;
-        display: inline-block;
-        vertical-align: middle;
-        span {
-            position: absolute;
-            top: 4px;
-            left:4px;
-            transform: translateX(0);
-            width: 40px;
-            height: 16px;
-            background: #ffffff;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
-            border-radius: 2px;
-            transition: .2s all ease;
-            &.left{
-                transform: translateX(2px);
-            }
-            &.right{
-                transform: translateX(38px);
+	.layout-switch {
+		width: 88px;
+		height: 24px;
+		background: $layout_switch_bgcolor;
+		border-radius: 4px;
+		position: relative;
+		cursor: pointer;
+		display: inline-block;
+		vertical-align: middle;
+		span {
+			position: absolute;
+			top: 4px;
+			left: 4px;
+			transform: translateX(0);
+			width: 40px;
+			height: 16px;
+			background: #ffffff;
+			box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
+			border-radius: 2px;
+			transition: .2s all ease;
+			&.left {
+				transform: translateX(2px);
 			}
-			&.center{
-				transform: translateX(21px)
+			&.right {
+				transform: translateX(38px);
 			}
-        }
-    }
-    i{
-        font-size: 16px;
-        font-weight: bold;
-        margin-top: 6px;
-        cursor: pointer;
-    }
+			&.center {
+				transform: translateX(21px);
+			}
+		}
+	}
+	i {
+		font-size: 16px;
+		font-weight: bold;
+		margin-top: 6px;
+		cursor: pointer;
+	}
 }
-
 
 .bar {
 	width: 12px;
@@ -702,23 +701,23 @@ button{
 		margin: 0;
 		box-sizing: border-box;
 		background-color: #fff;
-        @include display-flex;
-        cursor: pointer;
+		@include display-flex;
+		cursor: pointer;
 		li {
-            // padding: 8px 4px;
-            width: 80px;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
+			// padding: 8px 4px;
+			width: 80px;
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
 			&:hover {
 				@include hover-animate;
-            }
-            &.active{
-                span{
-                    color: $menu_active_font_color;
-                }
-                border-bottom:2px solid $menu_active_font_color;
-            }
+			}
+			&.active {
+				span {
+					color: $menu_active_font_color;
+				}
+				border-bottom: 2px solid $menu_active_font_color;
+			}
 			span {
 				color: $menu_font_color;
 			}
@@ -800,13 +799,13 @@ button{
 			}
 		}
 	}
-	.savegenelist{
+	.savegenelist {
 		margin-top: 7px;
 		margin-right: 16px;
 		cursor: pointer;
-		i{
-			color:rgb(90,202,255);
-			font-size:16px;
+		i {
+			color: rgb(90, 202, 255);
+			font-size: 16px;
 		}
 	}
 }
@@ -934,7 +933,7 @@ button{
 	p {
 		padding-top: 200px;
 	}
-	&.curNodata{
+	&.curNodata {
 		background: url(../img/curNodata.png) no-repeat center 60px;
 	}
 }
@@ -957,10 +956,10 @@ button{
 				margin-bottom: 16px;
 				text-align: center;
 				cursor: pointer;
-				&.disabled{
+				&.disabled {
 					color: #ccc;
 					cursor: not-allowed;
-					.tool-imgs{
+					.tool-imgs {
 						opacity: .6;
 					}
 				}
@@ -978,51 +977,51 @@ button{
 					// border-color: transparent;
 				}
 
-				&:not(.disabled):hover{
-					.tool-imgs{
+				&:not(.disabled):hover {
+					.tool-imgs {
 						transform: translate(0, -4px);
 						// border-color: $btn_active_color;
 						box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
 					}
 				}
 				.heatmap-img {
-					background-image:url('../img/聚类热图.png');
+					background-image: url('../img/聚类热图.png');
 				}
 				.classification-img {
-					background-image:url('../img/基因分类.png');
+					background-image: url('../img/基因分类.png');
 				}
 				.enrichment-img {
-					background-image:url('../img/基因富集.png');
+					background-image: url('../img/基因富集.png');
 				}
 				.keggClass-img {
-					background-image:url('../img/KEGG.png');
+					background-image: url('../img/KEGG.png');
 				}
 				.keggRich-img {
-					background-image:url('../img/Group20.png');
+					background-image: url('../img/Group20.png');
 				}
 				.net-img {
-					background-image:url('../img/蛋白网络互作.png');
+					background-image: url('../img/蛋白网络互作.png');
 				}
 				.KDA-img {
-					background-image:url('../img/KDA.png');
+					background-image: url('../img/KDA.png');
 				}
 				.multiOmics-img {
-					background-image:url('../img/多组学关联.png');
+					background-image: url('../img/多组学关联.png');
 				}
 				.line-img {
-					background-image:url('../img/折线图.png');
+					background-image: url('../img/折线图.png');
 				}
 				.chiSquare-img {
-					background-image:url('../img/卡方检验.png');
+					background-image: url('../img/卡方检验.png');
 				}
 				.as-img {
-					background-image:url('../img/可变剪切.png');
+					background-image: url('../img/可变剪切.png');
 				}
 				.linkedNetwork-img {
-					background-image:url('../img/关联网络图.png');
+					background-image: url('../img/关联网络图.png');
 				}
 				.heatmapRelation-img {
-					background-image:url('../img/关联聚类热图.png');
+					background-image: url('../img/关联聚类热图.png');
 				}
 				// .reanalysisList-img {
 				// 	background-image:url('../img/查看重分析列表.png');
@@ -1033,12 +1032,12 @@ button{
 	.tools-desc {
 		max-height: 180px;
 		overflow-y: auto;
-		&.disabled{
+		&.disabled {
 			h5 {
-				color:#ccc;
+				color: #ccc;
 			}
 			p {
-				color:#ccc;
+				color: #ccc;
 			}
 		}
 
@@ -1098,15 +1097,14 @@ button{
 }
 
 // 树容器
-.tree-component{
-
-	.tree-head{
-		padding:12px 0;
+.tree-component {
+	.tree-head {
+		padding: 12px 0;
 		display: inline-block;
 	}
 
-	.tree-content{
-		.tree{
+	.tree-content {
+		.tree {
 			overflow: auto;
 			max-height: 240px;
 		}
@@ -1132,98 +1130,98 @@ button{
 }
 
 .analysis-list {
-    padding: 100px;
-    .search-box{
-        &:after{
-            display: block;
-            content:"";
-            clear: both;
-        }
-        .search{
-            margin-bottom: 6px;
-            float:right;
-        }
-        .ant-input-search{
-            margin-right: 12px;
-            width: 180px;
-        }
-    }
+	padding: 100px;
+	.search-box {
+		&:after {
+			display: block;
+			content: "";
+			clear: both;
+		}
+		.search {
+			margin-bottom: 6px;
+			float: right;
+		}
+		.ant-input-search {
+			margin-right: 12px;
+			width: 180px;
+		}
+	}
 }
 
-.analysis-list-panel{
-    background-color:$white_bg;
-    border:1px solid $border-color;
-    width: 460px;
-    &>div:not(.btn-group):not(.temp-group):not(.category-group){
+.analysis-list-panel {
+	background-color: $white_bg;
+	border: 1px solid $border-color;
+	width: 460px;
+	& > div:not(.btn-group):not(.temp-group):not(.category-group) {
 		flex-wrap: wrap;
 		width: 430px;
-		margin:6px auto;
+		margin: 6px auto;
 		display: flex;
-		border-bottom: 1px solid #EEEEEE;
+		border-bottom: 1px solid #eeeeee;
 		height: 40px;
 		align-items: center;
-        &:after{
-            display: block;
-            clear: both;
-			content:"";
-        }
-        &>span{
+		&:after {
+			display: block;
+			clear: both;
+			content: "";
+		}
+		& > span {
 			width: 80px;
 			color: #333333;
-        }
-        &>div{
-            flex:1;
-            button{
-                margin-right: 6px;
-                margin-bottom: 6px;
-            }
-        }
-    }
-    .btn-group{
-        display: flex;
+		}
+		& > div {
+			flex: 1;
+			button {
+				margin-right: 6px;
+				margin-bottom: 6px;
+			}
+		}
+	}
+	.btn-group {
+		display: flex;
 		flex-direction: row-reverse;
 		height: 40px;
 		align-items: center;
-        button{
-            width: auto;
-            margin-right: 12px;
-        }
+		button {
+			width: auto;
+			margin-right: 12px;
+		}
 	}
-	.temp-group{
+	.temp-group {
 		display: flex;
 		width: 100%;
-		border-bottom: 1px solid #EEEEEE;
-		&>span{
+		border-bottom: 1px solid #eeeeee;
+		& > span {
 			width: 80px;
 			height: 40px;
 			line-height: 40px;
 			color: #333333;
 			margin-left: 12px;
-        }
+		}
 	}
-	.category-group{
+	.category-group {
 		height: auto;
 		flex-wrap: wrap;
 		width: 430px;
-		margin:0 auto;
+		margin: 0 auto;
 		display: flex;
-		border-bottom: 1px solid #EEEEEE;
-        &:after{
-            display: block;
-            clear: both;
-			content:"";
-        }
-        &>span{
+		border-bottom: 1px solid #eeeeee;
+		&:after {
+			display: block;
+			clear: both;
+			content: "";
+		}
+		& > span {
 			width: 80px;
 			color: #333333;
-        }
-        &>div{
-            flex:1;
-            button{
-                margin-right: 6px;
-                margin-bottom: 6px;
-            }
-        }
+		}
+		& > div {
+			flex: 1;
+			button {
+				margin-right: 6px;
+				margin-bottom: 6px;
+			}
+		}
 	}
 }
 
@@ -1232,7 +1230,7 @@ button{
 	p {
 		font-size: 14px;
 		color: #333;
-		margin-bottom: 0!important;
+		margin-bottom: 0 !important;
 	}
 	button {
 		margin-bottom: 12px;
@@ -1266,17 +1264,16 @@ button{
 	white-space: nowrap;
 }
 
-
-.tool-params-kafun{
+.tool-params-kafun {
 	width: 100%;
 	height: auto;
 	display: flex;
 	flex-direction: column;
-	.tool-params-kafun-top{
+	.tool-params-kafun-top {
 		width: 96%;
 		height: auto;
 		margin: 0 auto 10px auto;
-		.my-nz-row{
+		.my-nz-row {
 			height: 40px;
 			line-height: 40px;
 			margin-bottom: 10px;
@@ -1330,8 +1327,8 @@ button{
 .mb12 {
 	margin-bottom: 12px;
 }
-.mr12{
-	margin-right:12px;
+.mr12 {
+	margin-right: 12px;
 }
 
 .ml6 {
@@ -1343,10 +1340,9 @@ button{
 .mb6 {
 	margin-bottom: 6px;
 }
-.mr6{
-	margin-right:6px;
+.mr6 {
+	margin-right: 6px;
 }
-
 
 .top {
 	.top_left {
@@ -1428,21 +1424,21 @@ button{
 	.gene-switch {
 		position: absolute;
 		top: 9px;
-        right: 0px;
-        height: 28px;
+		right: 0px;
+		height: 28px;
 		border-radius: 16px 0 0 16px;
 		background-color: $them_color;
 		color: #fff;
 		padding: 2px 16px;
-        font-size: 12px;
-        line-height: 24px;
+		font-size: 12px;
+		line-height: 24px;
 		transition: 0.1s all ease;
 		cursor: pointer;
 		&:not(.nocursor):hover {
 			@include hover-animate($them_color);
 		}
-		&.nocursor{
-			cursor:unset;
+		&.nocursor {
+			cursor: unset;
 		}
 		i {
 			margin-left: 8px;
@@ -1451,10 +1447,10 @@ button{
 }
 
 // 保存基因集 备注容器
-.counter-content{
+.counter-content {
 	position: relative;
 	padding-bottom: 20px;
-	span{
+	span {
 		position: absolute;
 		bottom: 0;
 		right: 0;
@@ -1462,170 +1458,169 @@ button{
 	}
 }
 
-.pointer{
-	cursor:pointer;
+.pointer {
+	cursor: pointer;
 }
-.icon-theme{
-	color:$them-color;
+.icon-theme {
+	color: $them-color;
 }
 
 // 禁用状态
-.disabled{
-    cursor: not-allowed!important;
+.disabled {
+	cursor: not-allowed !important;
 }
 
 // popover service
-.popover-service{
-    max-width: 320px;
-    word-break: break-all;
+.popover-service {
+	max-width: 320px;
+	word-break: break-all;
 }
 
 // 带删除图标的按钮
-.closeable-button{
+.closeable-button {
 	text-align: center;
-	display:inline-block;
-    padding-right:4px;
-    position: relative;
-    margin-right:6px;
-    button{
-        margin-right: 0!important;
-        padding-right: 24px;
-    }
-	i{
-        font-size:14px;
-        line-height: 12px;
-        position: absolute;
-        right: 10px;
-        top: 6px;
-        width: 12px;
-        height: 12px;
+	display: inline-block;
+	padding-right: 4px;
+	position: relative;
+	margin-right: 6px;
+	button {
+		margin-right: 0 !important;
+		padding-right: 24px;
+	}
+	i {
+		font-size: 14px;
+		line-height: 12px;
+		position: absolute;
+		right: 10px;
+		top: 6px;
+		width: 12px;
+		height: 12px;
 		transition: .3s all ease;
 		z-index: 2;
-        cursor: pointer;
-        // background-color: $close_icon_bg;
-        // color: $close_icon_color;
-        // border-radius: 50%;
-        transform: rotate(45deg);
-        opacity: .6;
-		&:hover{
+		cursor: pointer;
+		// background-color: $close_icon_bg;
+		// color: $close_icon_color;
+		// border-radius: 50%;
+		transform: rotate(45deg);
+		opacity: .6;
+		&:hover {
 			opacity: .8;
 		}
 	}
 }
 
-
 //venn图设置参数
 .ex_container {
-    height: auto;
+	height: auto;
 	width: 320px;
 	padding-bottom: 60px;
-    background: #FFFFFF;
-    position: relative;
-    background: #FFFFFF;
-    box-shadow: 0 4px 8px 0 rgba(57, 65, 79, 0.16);
-    border-radius: 4px;
+	background: #ffffff;
+	position: relative;
+	background: #ffffff;
+	box-shadow: 0 4px 8px 0 rgba(57, 65, 79, 0.16);
+	border-radius: 4px;
 }
 
 .con_PessionDis {
-    height: auto;
-    width: 92%;
-    margin: 0 auto;
-    background: #ffffff;
-    position: relative;
+	height: auto;
+	width: 92%;
+	margin: 0 auto;
+	background: #ffffff;
+	position: relative;
 }
 
 .con_PessionDis_title {
-    height: 36px;
-    width: 100%;
-    line-height: 36px;
-    margin: 0 auto;
+	height: 36px;
+	width: 100%;
+	line-height: 36px;
+	margin: 0 auto;
 }
 
 .con_PessionDis_in {
-    height: 80px;
-    width: 100%;
+	height: 80px;
+	width: 100%;
 }
 
 .con_PessionDis_row {
-    width: 100%;
-    height: 40px;
+	width: 100%;
+	height: 40px;
 }
 
 .con_PessionDis_left {
-    height: 40px;
-    width: 60px;
-    float: left;
-    margin-left: 18px;
-    line-height: 40px;
+	height: 40px;
+	width: 60px;
+	float: left;
+	margin-left: 18px;
+	line-height: 40px;
 }
 
 .con_PessionDis_right {
-    height: 40px;
-    width: 80px;
-    float: left;
-    margin-left: 15px;
+	height: 40px;
+	width: 80px;
+	float: left;
+	margin-left: 15px;
 }
 
 .ex_button1 {
-    width: 80px;
-    height: 32px;
-    border: 1px solid #E1E2E6;
-    border-radius: 4px;
-    position: absolute;
-    bottom: 20px;
-    right: 110px;
-    font-size: 14px;
-    color: #262629;
-
+	width: 80px;
+	height: 32px;
+	border: 1px solid #e1e2e6;
+	border-radius: 4px;
+	position: absolute;
+	bottom: 20px;
+	right: 110px;
+	font-size: 14px;
+	color: #262629;
 }
 .ex_button2 {
-    width: 80px;
-    height: 32px;
-    background: $them-color;
-    border-radius: 4px;
-    position: absolute;
-    bottom: 20px;
-    right: 10px;
-    font-size: 14px;
-    color: #FFFFFF;
+	width: 80px;
+	height: 32px;
+	background: $them-color;
+	border-radius: 4px;
+	position: absolute;
+	bottom: 20px;
+	right: 10px;
+	font-size: 14px;
+	color: #ffffff;
 }
 
-.text-info{
+.text-info {
 	color: red;
 	height: 40px;
 	line-height: 40px;
 	text-indent: 2em;
 }
 
-.dropdownTitle{
+.dropdownTitle {
 	margin-left: 10px;
-    background-color: #fff;
-    border-radius: 4px;
-    border: 1px solid #d9d9d9;
+	background-color: #fff;
+	border-radius: 4px;
+	border: 1px solid #d9d9d9;
 	height: 24px;
-    width: 140px;
+	width: 140px;
 	text-align: center;
 	border-top-width: 1.02px;
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
-.richDropdownMenu{
+.richDropdownMenu {
 	max-height: 400px;
 	width: 200px;
 	overflow: auto;
 }
 
-.richDropdownMenu li{
-	margin: 0!important;
+.richDropdownMenu li {
+	margin: 0 !important;
 }
 
 //基础模块-帮助页面
-.title{
+.title {
 	width: 98%;
 	margin: 20px auto 0 auto;
 }
 
-.mhr{//分割线
+.mhr {
+	//分割线
 	border: 0;
 	height: 0;
 	border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -1633,124 +1628,124 @@ button{
 	margin-top: 20px;
 }
 
-.help{
-	.help_option{
-		.help_content{
+.help {
+	.help_option {
+		.help_content {
 			width: 100%;
 			height: auto;
 
-			.img_one{
+			.img_one {
 				width: 348px;
 				height: 890px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help2/Illumina_Experiment_FlowChart.png");
 				background-size: 100% 100%;
 				background-repeat: no-repeat;
 				background-position: center;
 			}
-			.img_one_f{
+			.img_one_f {
 				width: 497px;
 				height: 486px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help2/BGISEQ_Experiment_FlowChart.png");
 				background-repeat: no-repeat;
 				background-position: center;
 			}
 
-			.img_one_s{
+			.img_one_s {
 				width: 809px;
 				height: 677px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help2/rRNA_Removal_Experiment_FlowChartl.png");
 				background-repeat: no-repeat;
 				background-position: center;
 			}
 
-			.img_two{
+			.img_two {
 				width: 928px;
 				height: 880px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help2/RNAseq_Analysis_FlowChart.png");
 				background-size: 100% 100%;
 				background-repeat: no-repeat;
 				background-position: center;
 			}
-			.img_two_f{
+			.img_two_f {
 				// width: 1551px;
 				// height: 1988px;
 				width: 928px;
 				height: 880px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help2/RNAref_Analysis_FlowChart.png");
 				background-size: 100% 100%;
 				background-repeat: no-repeat;
 				background-position: center;
 			}
-			.img_two_s{
+			.img_two_s {
 				width: 838px;
 				height: 768px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help2/lncRNA_Analysis_FlowChart.png");
 				background-repeat: no-repeat;
 				background-position: center;
 			}
 
-			.img_three{
+			.img_three {
 				width: 585px;
 				height: 692px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help/ckjyzdb.png");
 				background-repeat: no-repeat;
 				background-position: center;
 			}
-			.img_four{
+			.img_four {
 				width: 380px;
 				height: 83px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help/gs.png");
 				background-repeat: no-repeat;
 				background-position: center;
 			}
-			.img_five{
+			.img_five {
 				width: 1000px;
 				height: 800px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help/IGV.png");
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: 100% 100%;
 			}
-			.img_six{
+			.img_six {
 				width: 1000px;
 				height: 800px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help/IGV2.png");
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: 100% 100%;
 			}
-			.img_seven{
+			.img_seven {
 				width: 553px;
 				height: 535px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help2/BGISEQ_smallRNA_Experiment_FlowChart.png");
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: 100% 100%;
 			}
-			.img_eight{
+			.img_eight {
 				width: 623px;
 				height: 601px;
-				margin:  10px auto;
+				margin: 10px auto;
 				background-image: url("../img/help/smrna2.png");
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: 100% 100%;
 			}
-			.help_text{
+			.help_text {
 				width: 98%;
 				margin: 10px auto 0 auto;
-				text-indent:2em;
+				text-indent: 2em;
 			}
 			.help_bg {
 				background-color: #eee;
@@ -1760,23 +1755,24 @@ button{
 				border: 1px solid #dfe2e5;
 				border-radius: 4px;
 			}
-			.sjx2{
-				text-indent:2em;
+			.sjx2 {
+				text-indent: 2em;
 			}
-			.img_title{
+			.img_title {
 				width: 98%;
 				display: flex;
 				justify-content: center;
 				color: #000;
 			}
 
-			.table{
+			.table {
 				width: 95%;
 				margin: 10px auto 0 auto;
 				word-break: break-all;
 				word-wrap: break-word;
 				border: 1px solid #ddd;
-				td,tr{
+				td,
+				tr {
 					height: 37px;
 				}
 			}
@@ -1785,165 +1781,168 @@ button{
 }
 
 //基础模块-数据过滤/对比
-.base_module{
+.base_module {
 	width: 100%;
-	height:auto;
+	height: auto;
 }
 
-.filter,.comparison,.lrna,.information,.overview{
-	.f-content{
+.filter,
+.comparison,
+.lrna,
+.information,
+.overview {
+	.f-content {
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 1px solid #EEEEEE;
+		border: 1px solid #eeeeee;
 		border-radius: 4px;
 	}
-	.t-content{
+	.t-content {
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 1px solid #EEEEEE;
+		border: 1px solid #eeeeee;
 		border-radius: 4px;
 	}
-	.title{
+	.title {
 		width: 98%;
 		margin: 10px auto;
 	}
-	.help_text{
+	.help_text {
 		width: 98%;
 		margin: 10px auto 0 auto;
-		text-indent:2em;
+		text-indent: 2em;
 	}
 }
 
 // 设置面板
-.set-panel{
-    padding:24px;
-    li{
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 12px;
-        line-height: 32px;
-        span{
-            flex:1;
-            margin-right: 12px;
-        }
-        input{
-            width: 80px;
-        }
-    }
-    .set-btn-group{
-        button{
-            float:right;
-            margin-left: 12px;
-        }
-        &:after{
-            content:"";
-            display: block;
-            clear: both;
-        }
-    }
+.set-panel {
+	padding: 24px;
+	li {
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 12px;
+		line-height: 32px;
+		span {
+			flex: 1;
+			margin-right: 12px;
+		}
+		input {
+			width: 80px;
+		}
+	}
+	.set-btn-group {
+		button {
+			float: right;
+			margin-left: 12px;
+		}
+		&:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+	}
 }
-.cursor{
-	cursor:pointer;
+.cursor {
+	cursor: pointer;
 }
-.color-picker-mask{
-    z-index:10;
+.color-picker-mask {
+	z-index: 10;
 }
 
 // 图表说明
-.descTitle{
+.descTitle {
 	padding-bottom: 6px;
 	width: 98%;
 	cursor: pointer;
-    margin: 0 auto;
-	&:hover{
+	margin: 0 auto;
+	&:hover {
 		color: $font_active_color;
 	}
-	&.active{
-		color:$font_active_color;
+	&.active {
+		color: $font_active_color;
 	}
 }
 
-.desc{
+.desc {
 	margin-top: 20px;
 }
 
-.descContent{
+.descContent {
 	background-color: #f5f5f5;
-	font-size: 12px!important;
+	font-size: 12px !important;
 	color: #636a82;
 	padding: 12px;
 	margin-top: 12px;
 	border: $border;
 	border-radius: 4px;
 	text-align: justify;
-	text-indent: 2em!important;
+	text-indent: 2em !important;
 	max-height: 200px;
-    overflow: auto;
+	overflow: auto;
 }
 
-.success{
-    color: $success-color;
+.success {
+	color: $success-color;
 }
 
-.error{
-    color: $error-color;
+.error {
+	color: $error-color;
 }
 
-.pending{
-    color: $them-color;
+.pending {
+	color: $them-color;
 }
 
-.isEdit{
-    color: $error-color;
-    margin-left: 6px;
+.isEdit {
+	color: $error-color;
+	margin-left: 6px;
 }
 
-.chart{
+.chart {
 	// width: fill-available;
-	width:stretch;
+	width: stretch;
 	height: 100%;
 	display: flex;
 }
 
-.fusionRow{
+.fusionRow {
 	height: 40px;
 	line-height: 40px;
 }
 
-
 //基因总表
-.gene{
+.gene {
 	position: relative;
 	width: 100%;
 }
 
-.gene_margin_right{
+.gene_margin_right {
 	margin-right: 0 !important;
 }
 
-.gene_center{
-	display:flex;
+.gene_center {
+	display: flex;
 	justify-content: flex-start;
-	align-items:center;
+	align-items: center;
 }
 
-.gene_top_content{
-	width:100%;
+.gene_top_content {
+	width: 100%;
 	height: 120px;
 	position: relative;
 
-	.gene_search{
+	.gene_search {
 		width: 60%;
 		height: 40px;
 		margin: 0 auto;
 	}
 
-	.gene_row{
+	.gene_row {
 		width: 100%;
 	}
-	.gene_col_div{
+	.gene_col_div {
 		width: 100%;
 		height: auto;
 		max-height: 240px;
@@ -1951,108 +1950,137 @@ button{
 		position: absolute;
 		border: 1px solid #ccc;
 		border-radius: 4px;
-		background: #FEFEFE;
-		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.16);
+		background: #fefefe;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
 		top: 40px;
 		left: 0;
 		overflow-y: scroll;
 		overflow-x: hidden;
-		.gene_col_content{
+		.gene_col_content {
 			width: 98%;
 			height: 40px;
 			text-indent: 2em;
 			line-height: 40px;
 			margin: 4px auto;
 			border-radius: 4px;
-			background: #FEFEFE;
+			background: #fefefe;
 			border: 1px solid #ccc;
-			.content_top{
+			.content_top {
 				width: 100%;
 				height: 30px;
 				text-indent: 2em;
 				font-size: 18px;
 			}
-			.content_bottom{
+			.content_bottom {
 				width: 100%;
 				height: 30px;
 				text-indent: 2em;
 			}
 		}
 	}
-	.gene_col{
+	.gene_col {
 		display: flex;
 		justify-content: flex-end;
 	}
-	.gene_fast{
+	.gene_fast {
 		width: 60%;
 		height: 40px;
 		margin: 0 auto;
-		.gene_fast_set{
-			margin-left:10px;
-			margin-right:10px;
-			color:#98df8a;
+		.gene_fast_set {
+			margin-left: 10px;
+			margin-right: 10px;
+			color: #98df8a;
 			cursor: pointer;
 		}
 	}
 
-	.icon_pointer{
+	.icon_pointer {
 		cursor: pointer;
 	}
 }
 
-.gene_pop{
-	width:60%;
+.gene_pop {
+	width: 60%;
 	height: auto;
 	position: absolute;
 	top: 80px;
 	left: 20%;
 	z-index: 999;
-	border:1px solid #ccc;
-	background: #FEFEFE;
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.16);
+	border: 1px solid #ccc;
+	background: #fefefe;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
 	border-radius: 4px;
 
-	.gene_pop_top{
+	.gene_pop_top {
 		width: 100%;
 		height: 40px;
-		text-indent:2em;
-		border-bottom:1px solid #ccc;
+		text-indent: 2em;
+		border-bottom: 1px solid #ccc;
 	}
 
-	.gene_pop_content{
+	.gene_pop_content {
 		width: 100%;
 		height: auto;
 		border-bottom: 1px solid #ccc;
-		.mselect{
+		.mselect {
 			width: 100%;
 			height: 40px;
-			text-indent:2em;
+			text-indent: 2em;
 		}
-		.mselect2{
+		.mselect2 {
 			width: 100%;
 			height: auto;
-			text-indent:2em;
-			button{
-				margin-top:6px;
-				margin-bottom:6px;
-				margin-left:10px;
+			text-indent: 2em;
+			button {
+				margin-top: 6px;
+				margin-bottom: 6px;
+				margin-left: 10px;
 				border-radius: 4px;
-				display:inline-block;
+				display: inline-block;
 			}
 		}
 	}
 
-	.gene_pop_bottom{
+	.gene_pop_bottom {
 		width: 100%;
 		height: 50px;
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		button{
+		button {
 			margin-left: 10px;
 			margin-right: 10px;
 		}
 	}
 }
-
-
+@keyframes rotate {
+	from {
+		transform: rotate(0);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+.custom-loading-service {
+	i {
+		margin-top: 60px;
+		font-size: 40px;
+        color: #fff;
+        animation: rotate 1.5s linear infinite;
+	}
+	p {
+		line-height: 1 !important;
+		margin-top: 24px;
+	}
+	.custom-loading-service-content {
+		width: 200px;
+		height: 200px;
+		position: absolute;
+		top: 30%;
+		left: 50%;
+		margin-top: -100px;
+		margin-left: -100px;
+		font-size: 16px;
+		color: #fff;
+	}
+}
