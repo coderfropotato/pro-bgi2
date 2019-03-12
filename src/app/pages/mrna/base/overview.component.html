@@ -142,6 +142,7 @@
                 [chartId]="'stackMapData'"
                 [chartName]="'表达量堆积图'"
                 (refresh)="handlerRefresh()"
+                [chartDescContent]="'X 轴表示样品名称，Y 轴表示基因数目，颜色深浅表示不同表达量水平：FPKM <= 1的为极低表达水平的基因，FPKM在1-10之间的为较低表达水平的基因，FPKM >= 10的为中高表达水平的基因。'"
             >
             </app-table-switch-chart>
             <app-color-picker [(color)]="colorT" (colorChange)="colorTChange($event)" [(show)]="isShowColorPanelT"
