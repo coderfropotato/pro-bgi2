@@ -1922,8 +1922,12 @@ button {
 	margin-right: 0 !important;
 }
 
-.gene_center {
-	display: flex;
+.myicon_pointer{
+	background: rgba(83,120,248,0.08);
+	border-radius: 8px;
+}
+.gene_center{
+	display:flex;
 	justify-content: flex-start;
 	align-items: center;
 }
@@ -1981,6 +1985,9 @@ button {
 	.gene_col {
 		display: flex;
 		justify-content: flex-end;
+		button{
+			width: 100%;
+		}
 	}
 	.gene_fast {
 		width: 60%;
@@ -2030,11 +2037,12 @@ button {
 		.mselect2 {
 			width: 100%;
 			height: auto;
-			text-indent: 2em;
-			button {
-				margin-top: 6px;
-				margin-bottom: 6px;
-				margin-left: 10px;
+			text-indent:2em;
+			button{
+				line-height: 24px;
+				margin-top:10px;
+				margin-bottom:10px;
+				margin-left:10px;
 				border-radius: 4px;
 				display: inline-block;
 			}

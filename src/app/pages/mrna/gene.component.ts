@@ -23,10 +23,10 @@ declare const $:any;
                         <div class="left-layout column gene_margin_right">
                             <div class="left-top-layout"><!-- 上部份 -->
                                 <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" nz-tooltip>
-                                    <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                                    <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                                    <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleTop"></i>
+                                    <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleTop"></i>
                                 </span>
-                                <div [hidden]="!expandModuleDesc" class="gene_top_content" (click)="expandModuleDescClick()"><!-- 切换隐藏的内容 -->
+                                <div [hidden]="!expandModuleTop" class="gene_top_content" (click)="expandModuleDescClick()">
                                 <div class="gene_search gene_center"><!-- 上部搜索 -->
                                     <div nz-row class="gene_row">
                                     <div nz-col nzSpan="22" class="gene_col">
@@ -39,9 +39,9 @@ declare const $:any;
                                         </nz-select>
                                         </ng-template>
                                         <ng-template #addOnAfterTemplate><!-- 设置按钮 -->
-                                        <i class="iconfont icon-shezhi icon_pointer" [style.color]="icon_color" (click)="moduleSetChange()"></i>
+                                        <i class="iconfont icon-shezhi icon_pointer myicon_pointer" [style.color]="icon_color" (click)="moduleSetChange()"></i>
                                         </ng-template>
-                                        <div class="gene_col_div" [hidden]="!expandSearchList"><!-- 输入框返回结果面板 -->
+                                        <div class="gene_col_div" [hidden]="!expandHistoryPanel"><!-- 输入框返回结果面板 -->
                                         <div class="gene_col_content" *ngFor="let item of searchBackList" (click)="searchBackSelect(item)" >
                                             <!-- <div class="content_top">
                                                 {{item.key}}
@@ -54,7 +54,7 @@ declare const $:any;
                                         </div>
                                     </div>
                                     <div nz-col nzSpan="2" class="gene_col"><!-- 搜索按钮 -->
-                                        <button nz-button nzType="primary" (click)="goSearch()" [disabled]="searchPanelFlag">搜素</button>
+                                        <button nz-button nzType="primary" (click)="goSearch()" [disabled]="searchButtonFlag">搜索</button>
                                     </div>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@ declare const $:any;
                             </div>
                             <app-gene-component #geneTable *ngIf="showModule && initializationFlag" [defaultGeneType]="defaultGeneType"></app-gene-component>
                         </div>
-                        <div class="gene_pop" [hidden]="!expandModuleSetting">
+                        <div class="gene_pop" [hidden]="!expandSetPanel">
                         <div class="gene_pop_top gene_center">
                             自定义
                         </div>
@@ -75,8 +75,8 @@ declare const $:any;
                             多个关键词之间关系:
                             <div>
                                 <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="radioChange()">
-                                <label nz-radio nzValue="or">或</label>
-                                <label nz-radio nzValue="and">且</label>
+									<label nz-radio nzValue="or" title="在同一个单元格中匹配上多个关键词中的任意一个。不同单元格之间是“或”关系。">或</label>
+									<label nz-radio nzValue="and" title="在同一个单元格中，要求多个关键词同时匹配。不同单元格之间是“或”关系。">且</label>
                                 </nz-radio-group>
                             </div>
                             </div>
@@ -89,7 +89,7 @@ declare const $:any;
                             </div>
                         </div>
                         <div class="gene_pop_bottom">
-                            <button nz-button [nzSize]="'small'" nzType="primary" (click)="btnCancle()">取消</button>
+                            <button nz-button [nzSize]="'small'" nzType="primary" (click)="btnCancle()">重置</button>
                             <button nz-button [nzSize]="'small'" nzType="primary" (click)="btnConfirm()">确定</button>
                         </div>
                         </div>
@@ -127,16 +127,13 @@ export class GenePage {
 
 	searchBackList: string[] = []; //输入框返回结果
 
-	// 默认收起模块描述
-	expandModuleDesc: boolean = true;
-	// 默认收起自定义面板
-	expandModuleSetting: boolean = false;
-	// 默认收起搜索结果面板
-	expandSearchList: boolean = false;
+	
+	expandModuleTop: boolean = true;// 默认收起模块描述
+	expandSetPanel: boolean = false;// 默认收起设置面板
+	expandHistoryPanel: boolean = false;// 默认收起搜索结果面板
 
 	initializationFlag: boolean = false;
-
-	searchPanelFlag: boolean = true;
+	searchButtonFlag: boolean = true;
 
 	constructor(
 		private message: MessageService,
@@ -187,13 +184,12 @@ export class GenePage {
 		this.geneService.set("andOr",this.radioValue);
 	}
 
-	//是否折叠显示框
+	//是否折叠显示框 最外层
 	moduleDescChange() {
-		this.expandModuleDesc = !this.expandModuleDesc;
-		// 收起自定义面板
-		this.expandModuleSetting = false;
-		// 收起搜索结果面板
-		this.expandSearchList = false;
+		this.expandModuleTop = !this.expandModuleTop;
+		
+		this.expandSetPanel = false;// 收起设置面板
+		this.expandHistoryPanel = false;// 收起搜索结果面板
 
 		// 重新计算表格切换组件表格的滚动高度
         setTimeout(()=>{
@@ -201,8 +197,10 @@ export class GenePage {
         },30)
 	}
 
+	//设置按钮
 	moduleSetChange() {
-		this.expandModuleSetting = !this.expandModuleSetting;
+		this.expandHistoryPanel = false;// 收起搜索结果面板
+		this.expandSetPanel = !this.expandSetPanel;
 	}
 
 	//选择面板 选择
@@ -215,22 +213,15 @@ export class GenePage {
 			}
 		});
 
-		//console.log(this.selectedList)
-		if (this.selectPanelList.length == this.selectedList.length) {
-			this.icon_color = 'blue';
-			//this.geneService.set("checkedAddThead",this.selectedList);
-		} else {
-			this.icon_color = 'gray';
-			this.geneService.set("checkedAddThead",this.selectedList);
-		}
+		this.icon_color = 'blue';
+		this.geneService.set("checkedAddThead",this.selectedList);
 	}
 
 	//搜索按钮
 	goSearch() {
-		// 收起自定义面板
-		this.expandModuleSetting = false;
-		// 收起搜索结果面板
-		this.expandSearchList = false;
+		
+		this.expandSetPanel = false;// 收起设置面板
+		this.expandHistoryPanel = false;// 收起搜索结果面板
 
 		if (this.selectPanelList.length == this.selectedList.length) {
 			this.geneTable['reGetData']();
@@ -242,12 +233,73 @@ export class GenePage {
 
 	//输入数据，弹出面板
 	inputChange() {
+		
+		this.expandSetPanel = false;// 收起设置面板
+
 		if (this.inputValue) {
-			this.searchPanelFlag = false;
+			this.searchButtonFlag = false;
 			this.geneService.set("content",this.inputValue);
 			this.getSearchback();
 		} else {
-			this.expandSearchList = false;
+			this.expandHistoryPanel = false;
+		}
+	}
+
+	//或且切换
+	radioChange() {
+		this.geneService.set("andOr",this.radioValue);
+	}
+
+	//下方取消按钮
+	btnCancle() {
+		this.icon_color = 'gray';
+		this.radioValue = 'or';
+		this.selectPanelList.forEach((d) => {
+			if (d['isChecked']) {
+				d['isChecked'] = false;
+			}
+		});
+		this.geneService.set("checkedAddThead",this.selectPanelList);
+		this.expandSetPanel = !this.expandSetPanel;
+	}
+
+	//下方确定
+	btnConfirm() {
+		this.icon_color = 'gray';
+		this.expandSetPanel = !this.expandSetPanel;
+	}
+
+	//点击搜索返回面板其中一项
+	searchBackSelect(item) {
+		let tempArray = this.inputValue.split(" ");
+		if(tempArray.length==1){
+			this.inputValue = item;
+		}else{
+			this.inputValue = tempArray.slice(0,-1).toString().replace(/,/g," ")+" "+item;
+		}
+
+		this.geneService.set("content",this.inputValue);
+		this.expandHistoryPanel = false;
+	}
+
+	//最外层点击事件关闭弹出面板
+	expandModuleDescClick() {
+		var e = e || window.event; //如果提供了事件对象，则这是一个非IE浏览器
+		if (e.target.className == 'gene_top_content') {
+			e.preventDefault();
+			// 收起设置面板
+			this.expandSetPanel = false;
+			// 收起搜索结果面板
+			this.expandHistoryPanel = false;
+
+			this.icon_color = 'gray';
+			this.radioValue = 'or';
+			this.selectPanelList.forEach((d) => {
+				if (d['isChecked']) {
+					d['isChecked'] = false;
+				}
+			});
+			this.geneService.set("checkedAddThead",this.selectPanelList);
 		}
 	}
 
@@ -257,8 +309,8 @@ export class GenePage {
 				? config['geneTypeOfTranscript']
 				: config['geneTypeOfGene'];
 		this.showModule = false;
-		this.expandModuleSetting = false;
-		this.expandSearchList = false;
+		this.expandSetPanel = false;
+		this.expandHistoryPanel = false;
 		setTimeout(() => {
 			this.showModule = true;
 		}, 30);
@@ -281,60 +333,10 @@ export class GenePage {
 					return;
 				} else {
 					this.searchBackList = data['data'].data;
-					this.expandModuleSetting = false;
-					this.expandSearchList = true;
+					this.expandSetPanel = false;
+					this.expandHistoryPanel = true;
 				}
 			});
-	}
-	//或且切换
-	radioChange() {
-		//
-		this.icon_color = 'blue';
-		this.geneService.set("andOr",this.radioValue);
-	}
-
-	//下方取消按钮
-	btnCancle() {
-		this.icon_color = 'gray';
-		this.radioValue = 'or';
-		this.selectPanelList.forEach((d) => {
-			if (d['isChecked']) {
-				d['isChecked'] = false;
-			}
-		});
-		this.geneService.set("checkedAddThead",this.selectPanelList);
-		this.expandModuleSetting = !this.expandModuleSetting;
-	}
-
-	//下方确定
-	btnConfirm() {
-		this.icon_color = 'gray';
-		this.expandModuleSetting = !this.expandModuleSetting;
-	}
-
-	//点击搜索返回面板其中一项
-	searchBackSelect(item) {
-		let tempArray = this.inputValue.split(" ");
-		if(tempArray.length==1){
-			this.inputValue = item;
-		}else{
-			this.inputValue = tempArray.slice(0,-1).toString().replace(/,/g," ")+" "+item;
-		}
-
-		this.geneService.set("content",this.inputValue);
-		this.expandSearchList = false;
-	}
-
-	//最外层点击事件关闭弹出面板
-	expandModuleDescClick() {
-		var e = e || window.event; //如果提供了事件对象，则这是一个非IE浏览器
-		if (e.target.className == 'gene_top_content') {
-			e.preventDefault();
-			// 收起自定义面板
-			this.expandModuleSetting = false;
-			// 收起搜索结果面板
-			this.expandSearchList = false;
-		}
 	}
 
 	getDefaultData() {
