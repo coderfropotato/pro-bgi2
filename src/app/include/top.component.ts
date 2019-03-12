@@ -60,32 +60,34 @@ export class TopComponent implements OnInit {
 
 	ngOnInit() {
         // 所有当前需要导出pdf的页面的路由  组合在一起导出
-        let prefix = `/report/${sessionStorage.getItem('LCTYPE')}/`;
-        this.pageRoutes = [];
-        this.storeService.getStore('menu').forEach(v=>{
-            if(v['children'].length){
-                v['children'].forEach(val=>{
-                    if(val['isExport'])this.pageRoutes.push(prefix+val['url']);
-                })
-            }
-        })
+        if(this.pdf){
+            let prefix = `/report/${sessionStorage.getItem('LCTYPE')}/`;
+            this.pageRoutes = [];
+            this.storeService.getStore('menu').forEach(v=>{
+                if(v['children'].length){
+                    v['children'].forEach(val=>{
+                        if(val['isExport'])this.pageRoutes.push(prefix+val['url']);
+                    })
+                }
+            })
 
-		// this.pageRoutes = [ '/report/mrna/layout1', '/report/mrna/table' ];
-		// 路由导航完成钩子 仅仅针对导出pdf的时候收集dom元素内容使用
-		this.router.events.subscribe((event) => {
-			if (event instanceof NavigationEnd && this.exportPdfFlag) {
-				// 给一个导航完成跳转的时间
-				setTimeout(() => {
-					this.htmlString.push($('.report-content').html());
-					if (this.exportPdfFlag === 'done') {
-						this.downloadPdf(() => {
-                            console.log(this.htmlString);
-							this.exportPdfFlag = false;
-						});
-					}
-				}, 1000);
-			}
-        });
+            // this.pageRoutes = [ '/report/mrna/layout1', '/report/mrna/table' ];
+            // 路由导航完成钩子 仅仅针对导出pdf的时候收集dom元素内容使用
+            this.router.events.subscribe((event) => {
+                if (event instanceof NavigationEnd && this.exportPdfFlag) {
+                    // 给一个导航完成跳转的时间
+                    setTimeout(() => {
+                        this.htmlString.push($('.report-content').html());
+                        if (this.exportPdfFlag === 'done') {
+                            this.downloadPdf(() => {
+                                console.log(this.htmlString);
+                                this.exportPdfFlag = false;
+                            });
+                        }
+                    }, 1000);
+                }
+            });
+        }
 	}
 
 	// 获取各个路由需要导出模块的html，导出pdf；
