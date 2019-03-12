@@ -97,7 +97,15 @@ export class ToolsComponent implements OnInit {
 	lineCustomData: object[] = [];
 	lineCustomSelect: object[] = [];
 	lineCustomError: boolean = false;
-	doLineAjax: boolean = false;
+    doLineAjax: boolean = false;
+
+    // KDA
+    kdaKeyGeneCountRange :number[] = [1,40,10];
+    kdaRelationGeneCountRange :number[] = [1,50,20];
+    kdaPpiScore:any[] = [];
+    kdaKeyRelationComposeMax:number = 400;
+    ppiFlagKey:string = 'ppi';
+    kdaError:boolean = false;
 
 	//卡方图参数
 	geneNum: number;
@@ -222,7 +230,13 @@ export class ToolsComponent implements OnInit {
 		this.lineCustomError = false;
 		this.lineCustomData = [];
 		this.lineCustomSelect = [];
-		this.doLineAjax = false;
+        this.doLineAjax = false;
+
+        // KDA参数
+        this.kdaError = false;
+        this.kdaKeyGeneCountRange = [1,40,10];
+        this.kdaRelationGeneCountRange  = [1,50,20];
+        this.kdaPpiScore = [];
 
 		//卡方检验
 		this.geneNum = 1;
@@ -800,7 +814,85 @@ export class ToolsComponent implements OnInit {
 					this.isSubmitReanalysis = false;
 				}
 			);
-	}
+    }
+
+    // KDA
+    getKDAParams(){
+        try {
+            let relations = JSON.parse(sessionStorage.getItem('relations'));
+            relations.forEach(v=>{
+                if(v['key'] === this.ppiFlagKey) this.kdaPpiScore = v['max'];
+            });
+            if(this.kdaPpiScore.length) this.kdaError = false;
+        } catch (error) {
+            this.kdaError = true;
+        }
+    }
+
+    /**
+     * @description
+     * @author Yangwd<277637411@qq.com>
+     * @date 2019-03-11
+     * @param {*} event
+     * @param {*} type  relation / key
+     * @memberof ToolsComponent
+     */
+    handleKdaSliderChange(event,type){
+        if(type === 'key'){
+            this.kdaRelationGeneCountRange[2] = Math.floor(this.kdaKeyRelationComposeMax / this.kdaKeyGeneCountRange[2]);
+        }else{
+            this.kdaKeyGeneCountRange[2] = Math.floor(this.kdaKeyRelationComposeMax / (this.kdaRelationGeneCountRange[2]+1));
+        }
+    }
+
+    kdaConfirm(reanalysisType){
+        let tableEntity = this.toolsService.get('tableEntity');
+		tableEntity['mongoId'] = this.toolsService.get('mongoId');
+		this.ajaxService
+			.getDeferData({
+				data: {
+					reanalysisType,
+					needReanalysis: 1,
+					kdaParam:{
+                        keyGeneNum:this.kdaKeyGeneCountRange[2],
+                        maxNum:this.kdaRelationGeneCountRange[2],
+                        minScore:this.kdaPpiScore[2]
+                    },
+					...tableEntity
+				},
+				url: this.toolsService.get('tableUrl')
+			})
+			.subscribe(
+				data => {
+					if (data['status'] === '0') {
+						if (data['data'].length) {
+							this.selectType = '';
+							this.childVisible = false;
+                            this.toolsService.hide();
+                            this.notify.blank('tips：', 'KDA分析提交成功', {
+                                nzStyle: { width: '200px' }
+                            });
+						} else {
+							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
+								nzStyle: { width: '200px' }
+							});
+						}
+					} else {
+						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
+							nzStyle: { width: '200px' }
+						});
+					}
+				},
+				err => {
+					this.notify.blank('tips：', `重分析提交失败,请重试`, {
+						nzStyle: { width: '200px' }
+					});
+				},
+				() => {
+					this.isSubmitReanalysis = false;
+				}
+			);
+    }
 
 	// 折线图
 	getlineParams() {

@@ -557,9 +557,9 @@ export class IndexComponent implements OnInit {
 
 		getCount();
 
-		// this.getUnReadAnalysisCountTimer = setInterval(()=>{
-		// 	getCount();
-		// },config['getAnalysisCountInterval'])
+		this.getUnReadAnalysisCountTimer = setInterval(()=>{
+			getCount();
+		},config['getAnalysisCountInterval'])
 	}
 
 	// async getAddThead() {
