@@ -1616,33 +1616,6 @@ button{
 	margin: 0!important;
 }
 
-//基础模块-项目概况
-.overview{
-	.f-content{
-		width: 96%;
-		height: auto;
-		margin: 10px auto;
-		border: 1px solid #EEEEEE;
-		border-radius: 4px;
-	}
-	.t-content{
-		width: 96%;
-		height: auto;
-		margin: 10px auto;
-		border: 1px solid #EEEEEE;
-		border-radius: 4px;
-	}
-	.title{
-		width: 98%;
-		margin: 10px auto;
-	}
-	.help_text{
-		width: 98%;
-		margin: 10px auto 0 auto;
-		text-indent:2em;
-	}
-}
-
 //基础模块-帮助页面
 .title{
 	width: 98%;
@@ -1809,7 +1782,12 @@ button{
 }
 
 //基础模块-数据过滤/对比
-.filter,.comparison,.lrna,.information{
+.base_module{
+	width: 100%;
+	height:auto;
+}
+
+.filter,.comparison,.lrna,.information,.overview{
 	.f-content{
 		width: 96%;
 		height: auto;
@@ -1821,7 +1799,7 @@ button{
 		width: 96%;
 		height: auto;
 		margin: 10px auto;
-		border: 0px solid #EEEEEE;
+		border: 1px solid #EEEEEE;
 		border-radius: 4px;
 	}
 	.title{

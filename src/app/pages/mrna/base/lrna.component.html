@@ -2,62 +2,69 @@
     <h2 class="title">5 小RNA检测</h2>
     <hr class="mhr" />
 
-    <h3 class="title">5.1 小RNA数量</h3>
-    <div class="f-content">
-        <app-big-table
-          *ngIf="defaultEntity"
-          class="no-outside-border"
-          #bigTable
-          [pageEntity]="defaultEntity"
-          [url]="defaultUrl"
-          [tableId]="defaultTableId"
-        ></app-big-table>
+    <div calss="base_module">
+        <h3 class="title">5.1 小RNA数量</h3>
+        <div class="f-content">
+            <app-big-table
+                *ngIf="defaultEntity"
+                class="no-outside-border"
+                #bigTable
+                [pageEntity]="defaultEntity"
+                [url]="defaultUrl"
+                [tableId]="defaultTableId"
+            ></app-big-table>
+        </div>
     </div>
-
-    <h3 class="title">5.2 小RNA分类</h3>
-    <div class="f-content">
-        <ng-template #searchTemplate>
-            <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
-                <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
-            </nz-select>
-        </ng-template>
-        <app-table-switch-chart
-            #smallRNAChart
-            [id]="'smallRNAChart'"
-            [tableUrl]="tableUrl"
-            [apiEntity]="tableEntity"
-            (drawChartEmit)="drawRNAReads($event)"
-            [flex]="true"
-            [chartId]="'RNADataID'"
-            [chartName]="'Count number distribution of total Small RNAs in YK'"
-            [otherLeftTemplate]='searchTemplate'
-            (refresh)="handlerRefresh()"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-                ></app-color-picker>
+    
+    <div calss="base_module">
+        <h3 class="title">5.2 小RNA分类</h3>
+        <div class="f-content">
+            <ng-template #searchTemplate>
+                <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
+                    <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+                </nz-select>
+            </ng-template>
+            <app-table-switch-chart
+                #smallRNAChart
+                [id]="'smallRNAChart'"
+                [tableUrl]="tableUrl"
+                [apiEntity]="tableEntity"
+                (drawChartEmit)="drawRNAReads($event)"
+                [flex]="true"
+                [chartId]="'RNADataID'"
+                [chartName]="'Count number distribution of total Small RNAs in YK'"
+                [otherLeftTemplate]='searchTemplate'
+                (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+                    ></app-color-picker>
+        </div>
     </div>
-
-    <h3 class="title">5.3 小RNA长度分布</h3>
-    <div class="f-content">
-        <app-table-switch-chart
-            #RNALchart
-            [id]="'RNALchart'"
-            [tableUrl]="tableRNAUrl"
-            [apiEntity]="tableRNAEntity"
-            (drawChartEmit)="drawRNALengthReads($event)"
-            [flex]="true"
-            [chartId]="'RNALData'"
-            [chartName]="'小RNA长度分布'"
-            (refresh)="handlerRefresh()"
-            [selectPanelData]="selectPanelData"
-            (selectConfirmEmit)="selectConfirm($event)"
-            [defaultSelectNum]="-1"
-            (defaultSelectList)="defaultSelectList($event)"
-            [chartDescContent]="'X轴表示smallRNA长度（测序得到的片段去除接头后的长度），Y轴表示该长度smallRNA占所有smallRNA长度的百分比。该图反映直接测序得到的smallRNA长度分布情况，若同一种smallRNA被测多次，按多次计算。'"
-        >
-        </app-table-switch-chart>
-        <app-color-picker [(color)]="colorL" (colorChange)="colorLChange($event)" [(show)]="isShowColorPanelL"
-                ></app-color-picker>
+    
+    <div calss="base_module">
+        <h3 class="title">5.3 小RNA长度分布</h3>
+        <div class="f-content">
+            <app-table-switch-chart
+                #RNALchart
+                [id]="'RNALchart'"
+                [tableUrl]="tableRNAUrl"
+                [apiEntity]="tableRNAEntity"
+                (drawChartEmit)="drawRNALengthReads($event)"
+                [flex]="true"
+                [chartId]="'RNALData'"
+                [chartName]="'小RNA长度分布'"
+                (refresh)="handlerRefresh()"
+                [selectPanelData]="selectPanelData"
+                (selectConfirmEmit)="selectConfirm($event)"
+                [defaultSelectNum]="-1"
+                (defaultSelectList)="defaultSelectList($event)"
+                [chartDescContent]="'X轴表示smallRNA长度（测序得到的片段去除接头后的长度），Y轴表示该长度smallRNA占所有smallRNA数量百分比。该图反映直接测序得到的smallRNA长度分布情况，若同一种smallRNA被测多次，按多次计算。'"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="colorL" (colorChange)="colorLChange($event)" [(show)]="isShowColorPanelL"
+                    ></app-color-picker>
+        </div>
     </div>
+    
 </div>

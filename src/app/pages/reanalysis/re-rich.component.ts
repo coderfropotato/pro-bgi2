@@ -165,7 +165,7 @@ export class ReRichComponent implements OnInit {
                 pageSize:20,
                 sortKey:null,
                 sortValue:null,
-                tid: "04c0d1923fc746fb8188175e124ac269",
+                tid: this.tid,
                 version:this.storeService.getStore('version')
             };
 

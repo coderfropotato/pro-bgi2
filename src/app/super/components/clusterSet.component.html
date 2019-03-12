@@ -76,9 +76,9 @@
                     <nz-col class="left textEllipsis" nzSpan="12" nzOffset="4" nz-tooltip [nzTitle]="vertical.name">
                         <span>{{vertical.name}}</span>
                     </nz-col>
-                    <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="修改" (click)="editVclass(i)">
+                    <!-- <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="修改" (click)="editVclass(i)">
                         <i nz-icon class="anticon anticon-edit" theme="outline"></i>
-                    </nz-col>
+                    </nz-col> -->
                     <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteVclass(i)">
                         <i nz-icon class="anticon anticon-close-circle" theme="outline"></i>
                     </nz-col>
@@ -94,12 +94,12 @@
 
             <div *ngIf="horizontalInfos.length">
                 <nz-row class="center" *ngFor="let horizon of horizontalInfos;let i=index">
-                    <nz-col class="left textEllipsis" nzSpan="12" nzOffset="4" nz-tooltip [nzTitle]="horizon">
+                    <nz-col class="left textEllipsis" nzSpan="12" nzOffset="4" nz-tooltip [nzTitle]="horizon.name">
                         <span>{{horizon.name}}</span>
                     </nz-col>
-                    <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="修改" (click)="editHclass(i)">
+                    <!-- <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="修改" (click)="editHclass(i)">
                         <i nz-icon class="anticon anticon-edit" theme="outline"></i>
-                    </nz-col>
+                    </nz-col> -->
                     <nz-col nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteHclass(i)">
                         <i nz-icon class="anticon anticon-close-circle" theme="outline"></i>
                     </nz-col>
@@ -114,44 +114,101 @@
         </div>
      </div>
 
-     <!-- 纵向添加面板 -->
-     <div class="addPanel" [hidden]='!isShowAddVertical'>
-         <div class="addTitle">添加纵向分类</div>
-         <div class="rationClassifyRow">
-             <button [class.btnActive]='item.isChecked' (click)="addVBtnClick(item)" nz-button nzType="default" *ngFor="let item of verticalClassList">{{item.name}}</button>&nbsp;
-         </div>
-         <div class="setBtns right">
-            <button nz-button nzType="default" (click)="addVCance()">取消</button>&nbsp;
-            <button nz-button nzType="primary" (click)="addVConfirm()">确定</button>
-        </div>
-     </div>
-
      <!-- 纵向修改面板 -->
-     <div class="addPanel" [hidden]='!isShowEditVertical'>
+     <!-- <div class="addPanel" [hidden]='!isShowEditVertical'>
         <div class="addTitle">修改纵向分类</div>
         <div class="rationClassifyRow">
             <button (click)="editVBtnClick(item)" nz-button nzType="default" *ngFor="let item of verticalEditList">{{item.name}}</button>&nbsp;
         </div>
-    </div>
-
-     <!-- 横向添加面板 -->
-     <div class="addPanel" [hidden]='!isShowAddHorizontal'>
-        <div class="addTitle">添加横向分类</div>
-        <div class="rationClassifyRow">
-            <button [class.btnActive]='item.isChecked' (click)="addHBtnClick(item)" nz-button nzType="default" *ngFor="let item of horizontalClassList">{{item.name}}</button>&nbsp;
-        </div>
-        <div class="setBtns right">
-            <button nz-button nzType="default" (click)="addHCance()">取消</button>&nbsp;
-            <button nz-button nzType="primary" (click)="addHConfirm()">确定</button>
-        </div>
-    </div>
+    </div> -->
 
      <!-- 横向修改面板 -->
-     <div class="addPanel" [hidden]='!isShowEditHorizontal'>
+     <!-- <div class="addPanel" [hidden]='!isShowEditHorizontal'>
         <div class="addTitle">修改纵向分类</div>
         <div class="rationClassifyRow">
             <button (click)="editHBtnClick(item)" nz-button nzType="default" *ngFor="let item of horizontalEditList">{{item.name}}</button>&nbsp;
         </div>
-    </div>
+    </div> -->
      
 </nz-dropdown>
+
+<!-- 纵向添加面板 弹窗 -->
+<nz-modal [(nzVisible)]="isShowAddVertical && verticalClassList.length" nzWidth="440" nzTitle="添加纵向分类" (nzOnCancel)="addVCance()" (nzOnOk)="addVConfirm()">
+    <div class="items">
+        <div *ngIf="!isVhasTitle">
+            <div *ngFor="let item of verticalClassList;index as i">
+                <div *ngFor="let it of item['children'];index as m;">
+                    <button class="head-item" style="margin-right:10px;margin-bottom: 10px" nz-button nzSize="small" nzType="default" [class.btnActive]='d.isChecked' *ngFor="let d of it['children']" (click)="addVBtnClick(d)">{{d['name']}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <nz-tabset *ngIf="isVhasTitle">
+            <nz-tab *ngFor="let item of verticalClassList;index as i" [nzTitle]="titleTemplate">
+                <ng-template #titleTemplate>
+                    <span class="add-thead-head-item">{{ item['category'] | translate }}</span>
+                </ng-template>
+                <div class="head-item-content" *ngIf="item['children'].length" style="border-bottom:0">
+                    <ng-container *ngFor="let it of item['children'];index as m;">
+                        <p>
+                            {{it['category'] | translate}}
+                            <ng-container *ngIf="it['category'].startsWith(config['outerDataBaseIndex'])">
+                                <button nz-button nzType="default" nzSize="small" (click)="addTreeThead(it)" >
+                                    <i class="anticon anticon-plus"></i>
+                                </button>
+                                <nz-modal [(nzVisible)]="it['modalVisible']"  (nzOnCancel)="handleCancel(it)" (nzOnOk)="handleOk(it)">
+                                    <app-tree [defaultExpandAll]="true" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event)" [treeData]="it['treeData']" [theadMap]="it['theadMap']">
+                                    </app-tree>
+                                </nz-modal>
+                            </ng-container>
+                        </p>
+                        <ng-container *ngIf="it['children'].length">
+                            <button class="head-item" nz-button nzSize="small" nzType="default" [class.btnActive]='d.isChecked' *ngFor="let d of it['children']" (click)="addVBtnClick(d)">{{d['name']}}</button>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+</nz-modal>
+
+ <!-- 横向添加面板 弹窗-->
+ <nz-modal [(nzVisible)]="isShowAddHorizontal && horizontalClassList.length" nzWidth="440" nzTitle="添加横向分类" (nzOnCancel)="addHCance()" (nzOnOk)="addHConfirm()">
+        <div class="items">
+            <div *ngIf="!isHhasTitle">
+                <div *ngFor="let item of horizontalClassList;index as i">
+                    <div *ngFor="let it of item['children'];index as m;">
+                        <button class="head-item" style="margin-right:10px;margin-bottom: 10px" nz-button nzSize="small" nzType="default" [class.btnActive]='d.isChecked' *ngFor="let d of it['children']" (click)="addHBtnClick(d)">{{d['name']}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nz-tabset *ngIf="isHhasTitle">
+                <nz-tab *ngFor="let item of horizontalClassList;index as i" [nzTitle]="titleTemplate">
+                    <ng-template #titleTemplate>
+                        <span class="add-thead-head-item">{{ item['category'] | translate }}</span>
+                    </ng-template>
+                    <div class="head-item-content" *ngIf="item['children'].length" style="border-bottom:0">
+                        <ng-container *ngFor="let it of item['children'];index as m;">
+                            <p>
+                                {{it['category'] | translate}}
+                                <ng-container *ngIf="it['category'].startsWith(config['outerDataBaseIndex'])">
+                                    <button nz-button nzType="default" nzSize="small" (click)="addTreeThead(it)" >
+                                        <i class="anticon anticon-plus"></i>
+                                    </button>
+                                    <nz-modal [(nzVisible)]="it['modalVisible']"  (nzOnCancel)="handleCancel(it)" (nzOnOk)="handleOk(it)">
+                                        <app-tree [defaultExpandAll]="true" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event)" [treeData]="it['treeData']" [theadMap]="it['theadMap']">
+                                        </app-tree>
+                                    </nz-modal>
+                                </ng-container>
+                            </p>
+                            <ng-container *ngIf="it['children'].length">
+                                <button class="head-item" nz-button nzSize="small" nzType="default" [class.btnActive]='d.isChecked' *ngFor="let d of it['children']" (click)="addHBtnClick(d)">{{d['name']}}</button>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </nz-tab>
+            </nz-tabset>
+        </div>
+    </nz-modal>
+    
