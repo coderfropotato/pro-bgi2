@@ -128,7 +128,7 @@ export class GenePage {
 	searchBackList: string[] = []; //输入框返回结果
 
 	// 默认收起模块描述
-	expandModuleDesc: boolean = false;
+	expandModuleDesc: boolean = true;
 	// 默认收起自定义面板
 	expandModuleSetting: boolean = false;
 	// 默认收起搜索结果面板
@@ -314,7 +314,13 @@ export class GenePage {
 
 	//点击搜索返回面板其中一项
 	searchBackSelect(item) {
-		this.inputValue = item;
+		let tempArray = this.inputValue.split(" ");
+		if(tempArray.length==1){
+			this.inputValue = item;
+		}else{
+			this.inputValue = tempArray.slice(0,-1).toString().replace(/,/g," ")+" "+item;
+		}
+
 		this.geneService.set("content",this.inputValue);
 		this.expandSearchList = false;
 	}
