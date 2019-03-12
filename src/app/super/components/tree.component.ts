@@ -139,10 +139,29 @@ export class TreeComponent implements OnInit, OnChanges {
         }
         // 遍历树把不匹配的字段 disabled = true
         this.treeSetDisabledStatus(this.treeData, suitableItems, true);
+
+        this.computedStatus()
     }
 
     expandChange(floder) {
+        console.log(floder)
         this.expandChangeEvent.emit(floder);
+    }
+
+    computedStatus(){
+        let deepItemRoot = [];   // 所有有子节点的树节点 从最底层开始收集
+        this.forLeaves(this.treeData,(item)=>{
+            deepItemRoot.unshift(item);
+        })
+
+        deepItemRoot.forEach(v=>{
+            v['hidden'] = v['children'].every(val=>val['hidden']);
+            v['expandDisabled'] = v['children'].every(val=>val['hidden']);
+        })
+
+
+
+        console.log(this.treeData)
     }
 
     /**
@@ -192,10 +211,13 @@ export class TreeComponent implements OnInit, OnChanges {
             if (treeItemNames !== "all") {
                 if (treeItemNames.includes(item.name)) {
                     item.disabled = !status;
+                    item.hidden = !status;
                 } else {
                     item.disabled = status;
+                    item.hidden = status;
                 }
             } else {
+                item.hidden = false;
                 item.disabled = false;
             }
 
@@ -367,6 +389,8 @@ export class TreeComponent implements OnInit, OnChanges {
             item.isChecked = false;
             item.isExpand = this.defaultExpandAll;
             item.disabled = false;
+            item.hidden = false;
+            item.expandDisabled = false;
             if (item.children && item.children.length) {
                 stack = stack.concat(item.children);
             }
