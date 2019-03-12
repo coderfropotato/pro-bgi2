@@ -150,7 +150,7 @@ export class AddColumnComponent implements OnInit {
 							})
 							this.thead = d;
 							this.initIndexAndChecked();
-							
+
                             resolve("success");
                         }else{
                             reject('error');
@@ -175,8 +175,10 @@ export class AddColumnComponent implements OnInit {
 
             if(item['isRoot']) item['isExpand'] = true;
             item['isExpand'] = true;
+            item['expandDisabled'] = false;
             item['isChecked'] = false;
             item['disabled'] = false;
+            item['hidden'] = false;
 
             if (item.children && item.children.length) {
                 stack = stack.concat(item.children);
