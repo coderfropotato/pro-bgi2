@@ -604,7 +604,8 @@ button{
 		opacity: 1.0;
 	}
 	.ant-badge{
-		margin-top:-20px;
+        margin-top:-20px;
+        margin-left: 4px;
 	}
 }
 
@@ -1929,7 +1930,7 @@ button{
 	width:100%;
 	height: 120px;
 	position: relative;
-	
+
 	.gene_search{
 		width: 60%;
 		height: 40px;
@@ -2029,7 +2030,7 @@ button{
 			height: auto;
 			text-indent:2em;
 			button{
-				margin-top:6px; 
+				margin-top:6px;
 				margin-bottom:6px;
 				margin-left:10px;
 				border-radius: 4px;
