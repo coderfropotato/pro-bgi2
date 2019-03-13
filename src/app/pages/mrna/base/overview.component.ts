@@ -650,8 +650,11 @@ export class OverviewComponent implements OnInit {
 			legend: {
 				show: true,
 				position: "right",
-				dblclick: function(el) {
-					console.log(el);
+				click: function(d,index) {
+					//console.log(el);
+					that.colorMap = d3.select(d).attr('fill');
+					that.legendIndexMap = index;
+					that.isMapShowColorPanel = true;
 				}
 			},
 			tooltip: function(d) {
@@ -774,11 +777,12 @@ export class OverviewComponent implements OnInit {
 		let config: object = {
 			chart: {
 				title: '主成分分析',
-				dblclick: function(event, title) {
-					let text = title.firstChild.nodeValue;
-					that.promptService.open(text, (data) => {
-						title.textContent = data;
-					});
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					  this.setChartTitle(name);
+					  this.updateTitle();
+					}
 				},
 				width: 660,
 				el: '#PCADataID',

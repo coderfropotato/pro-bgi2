@@ -185,11 +185,12 @@ export class InformationComponent implements OnInit {
 		let config: object = {
 			chart: {
 				title: '各类型RNA数量统计',
-				dblclick: function(event, title) {
-					let text = title.firstChild.nodeValue;
-					that.promptService.open(text, (data) => {
-						title.textContent = data;
-					});
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+						this.setChartTitle(name);
+						this.updateTitle();
+					}
 				},
 				width: 600,
 				height: 400,
@@ -485,9 +486,10 @@ export class InformationComponent implements OnInit {
 			chartData.push({
 				sample_name: rows[j].mirna_first_len,
 				mirna_first_a: rows[j].mirna_first_a * 100 / total,
+				mirna_first_u: rows[j].mirna_first_u * 100 / total,
 				mirna_first_c: rows[j].mirna_first_c * 100 / total,
-				mirna_first_g: rows[j].mirna_first_g * 100 / total,
-				mirna_first_u: rows[j].mirna_first_u * 100 / total
+				mirna_first_g: rows[j].mirna_first_g * 100 / total
+				
 			});
 		}
 

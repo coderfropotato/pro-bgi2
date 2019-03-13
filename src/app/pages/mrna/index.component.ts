@@ -347,6 +347,16 @@ export class IndexComponent implements OnInit {
 											isExport: true
 										}
 									]
+								},
+								{
+									category: '基因详情',
+									children: [
+										{
+											url: 'gene-detail',
+											name: '基因详情',
+											isExport: true
+										}
+									]
 								}
 							];
 

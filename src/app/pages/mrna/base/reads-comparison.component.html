@@ -106,7 +106,7 @@
                 [chartName]="'测序饱和度曲线'"
                 [otherLeftTemplate]='searchSaturationTemplate'
                 (refresh)="handlerRefresh()"
-                [chartDescContent]="'X轴表示转录本的位置（设置200个滑动窗口），Y轴表示reads的数目（以每个滑动窗口来计算）。'"
+                [chartDescContent]="'横坐标表示clean reads数，单位为100k，值是该样品当前的测序量；纵坐标表示检测到的基因数目比例，单位为%。'"
             >
             </app-table-switch-chart>
             <!-- <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
