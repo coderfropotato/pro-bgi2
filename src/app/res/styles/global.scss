@@ -494,10 +494,17 @@ button {
 }
 
 // 转换表 大表
-.transformation-table-component,
-.big-table-component,
+.transformation-table-component{
+    padding:8px;
+    .gene-table-component{
+        padding:0;
+    }
+}
 .gene-table-component {
-	padding: 4px;
+	padding: 8px;
+}
+.big-table-component{
+    padding:8px;
 }
 
 .content {

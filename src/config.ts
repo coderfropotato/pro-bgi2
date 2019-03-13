@@ -11,7 +11,7 @@ const config: object = {
 	getAnalysisListCountInterval: 5000, // 获取重分析任务列表的时间间隔
 	getAnalysisCountInterval: 5000, // 获取未查看重分析任务条数的时间间隔
 	sysDefend: false, // 是否系统维护
-	layoutContentPadding: 4,
+	layoutContentPadding: 8,
 	matchList,
 	matchRule,
 	urlSplitFlag: '@', // 切割url的标志字符
