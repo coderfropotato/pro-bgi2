@@ -169,7 +169,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	labelSelect: any[] = [];
 	labelSelectError: boolean = false;
 	delSelect: any[] = [];
-	textareaMaxLen: number = 100;
+	textareaMaxLen: number = 200;
 
 	computedTimer = null;
 
@@ -919,7 +919,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			widthConfig[i] += 'px';
 		});
 		colLeftConfig.map((v, i) => (colLeftConfig[i] += 'px'));
-		totalWidth = tempTotalWidth + 'px';
+        totalWidth = tempTotalWidth + 'px';
 
 		return { widthConfig, twoLevelHead, twoLevelWidth, colLeftConfig, totalWidth, tableRelative };
 	}
@@ -928,7 +928,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		if(this.theadInitTimer) clearInterval(this.theadInitTimer);
 		if (tableHeight && tableHeight>0) {
 			// 固定头的高度
-			let head; 
+			let head;
 			this.theadInitTimer = setInterval(()=>{
 				head = $(`#${this.tableId} .ant-table-thead`).outerHeight();
 				if(head) {
@@ -987,10 +987,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
 	initFormValue() {
-		// 数字 字母 下划线  不能以数字开头 16位
+		// 数字 字母 下划线  不能以数字开头 30位  label 20
 		this.validateForm = this.fb.group({
-			name: [ '', [ Validators.required, Validators.pattern('^[a-zA-Z_][a-zA-Z0-9]{0,15}$') ] ],
-			label: [ null ],
+			name: [ '', [ Validators.required, Validators.pattern('^[a-zA-Z_][a-zA-Z0-9_]{0,29}$') ] ],
+			label: [ null,[ Validators.pattern('^[a-zA-Z_][a-zA-Z0-9_]{0,19}$') ] ],
 			mark: [ '' ]
 		});
 		this.labelSelectError = false;
@@ -1036,7 +1036,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			this.validateForm.controls[i].updateValueAndValidity();
 		}
 
-		if (this.validateForm.controls['name']['valid'] && !this.labelSelectError) {
+		if (this.validateForm.controls['name']['valid'] && this.validateForm.controls['label']['valid']) {
 			this.isSaveGeneList = false;
 			let innerParams = JSON.parse(JSON.stringify(this._getInnerStatusParams()));
 			let params = innerParams['tableEntity'];
