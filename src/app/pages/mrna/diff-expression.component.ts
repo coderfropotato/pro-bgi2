@@ -102,8 +102,11 @@ export class DiffExpressionComponent implements OnInit {
 	color = '#fff'; // 默认颜色
 	show = false; // 是否显示颜色选择器
 
-	isShowSpan: boolean = false;
-
+	isShowSpan_PossionDis: boolean = false;
+	isShowSpan_NOIseq: boolean = false;
+	isShowSpan_DEGseq: boolean = false;
+	isShowSpan_DESeq2: boolean = false;
+	isShowSpan_EBSeq: boolean = false;
 
 	//参数名字设置
 	tempThreshold: object;
@@ -497,10 +500,25 @@ export class DiffExpressionComponent implements OnInit {
 
 	OnChange(value,type) {
 		if(parseInt(value)<0){
-			this.isShowSpan = true;
+			if(type=="PossionDis"){
+				this.isShowSpan_PossionDis = true;
+			}else if(type=="NOIseq"){
+				this.isShowSpan_NOIseq = true;
+			}else if(type=="DEGseq"){
+				this.isShowSpan_DEGseq = true;
+			}else if(type=="DESeq2"){
+				this.isShowSpan_DESeq2 = true;
+			}else if(type=="EBSeq"){
+				this.isShowSpan_EBSeq = true;
+			}
+			
 			return;
 		}else{
-			this.isShowSpan = false;
+			this.isShowSpan_PossionDis = false;
+			this.isShowSpan_NOIseq = false;
+			this.isShowSpan_DEGseq = false;
+			this.isShowSpan_DESeq2 = false;
+			this.isShowSpan_EBSeq = false;
 			if(type=="PossionDis"){
 				this.PossionDis['log2FC'] = value;
 			}else if(type=="NOIseq"){
@@ -970,6 +988,13 @@ export class DiffExpressionComponent implements OnInit {
 		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on(
 			'click',
 			function(d) {
+				if(_self.leftSelect.length != 0 || _self.upSelect.length != 0){
+					_self.updateVenn();
+					_self.leftSelect.length = 0;
+					_self.upSelect.length = 0;
+					_self.defaultShowFilterStatus = false;
+					_self.chartBackStatus();
+				}
 				// _self.updateVenn();
 				// _self.leftSelect.length = 0;
 				// _self.upSelect.length = 0;
@@ -986,13 +1011,15 @@ export class DiffExpressionComponent implements OnInit {
 
 		function drawSvg() {
 			let width1 = d3_width + padding1.left + padding1.right;
-			let height1 = 300;
+			let height1 = 240;
 
 			let svg1 = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', '320')
-				.attr('y', '0')
+				//.attr('x', '320')
+				//.attr('y', '0')
+				.attr('x', '280')
+				.attr('y', '60')
 				.attr('width', width1)
 				.attr('height', height1)
 				.attr('class', 'svg1');
@@ -1130,7 +1157,8 @@ export class DiffExpressionComponent implements OnInit {
 		}
 
 		function drawSvg2() {
-			let width2 = 320 - left_name_length - kong_name_right;
+			//let width2 = 320 - left_name_length - kong_name_right;
+			let width2 = 320 - left_name_length - kong_name_right - 40;
 			let height2 = d3_height + padding2.top + padding2.bottom;
 
 			let svg2 = d3
@@ -1251,7 +1279,8 @@ export class DiffExpressionComponent implements OnInit {
 			let svgk = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', 320 - left_name_length - kong_name_right + padding1.left)
+				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left)
+				.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 40)
 				.attr('y', '300')
 				.attr('width', widthk)
 				.attr('height', heightk)
@@ -1332,7 +1361,8 @@ export class DiffExpressionComponent implements OnInit {
 			let svg3 = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', '320')
+				//.attr('x', '320')
+				.attr('x', '280')
 				.attr('y', '300')
 				.attr('width', width3)
 				.attr('height', height3);
