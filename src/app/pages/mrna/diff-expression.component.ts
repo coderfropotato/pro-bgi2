@@ -988,6 +988,13 @@ export class DiffExpressionComponent implements OnInit {
 		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on(
 			'click',
 			function(d) {
+				if(_self.leftSelect.length != 0 || _self.upSelect.length != 0){
+					_self.updateVenn();
+					_self.leftSelect.length = 0;
+					_self.upSelect.length = 0;
+					_self.defaultShowFilterStatus = false;
+					_self.chartBackStatus();
+				}
 				// _self.updateVenn();
 				// _self.leftSelect.length = 0;
 				// _self.upSelect.length = 0;
