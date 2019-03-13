@@ -12,19 +12,21 @@ declare const document: any;
 })
 export class LoadingService {
     mask: any = null;
+    selector:any = null;
     constructor() {}
 
-    open(selector) {
+    open(selector,text = 'loading...') {
+        this.selector = selector;
         let mask = document.createElement("div");
         let wrap = document.querySelector(selector);
         if (this.mask) return;
         if (wrap && !this.mask) {
             try {
                 wrap.style.position = 'relative';
-                mask.innerHTML = "Loading...";
+                mask.className = 'custom-loading-service'
+                mask.innerHTML = '<div class="custom-loading-service-content"><i class="anticon anticon-loading"></i><p>'+text+'</p></div>';
                 mask.style.fontSize = "24px";
                 mask.style.textAlign = "center";
-                mask.style.lineHeight = "200px";
                 mask.style.position = "absolute";
                 mask.style.left = 0;
                 mask.style.top = 0;
@@ -40,7 +42,8 @@ export class LoadingService {
         }
     }
 
-    close(selector) {
+    close(selector?) {
+        if(!selector) selector = this.selector;
         let wrap = document.querySelector(selector);
         if (wrap) {
             try {
