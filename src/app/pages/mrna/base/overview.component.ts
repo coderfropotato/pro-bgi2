@@ -450,7 +450,7 @@ export class OverviewComponent implements OnInit {
 			});
 
 		//色盘指令回调函数
-		this.colorChange = function(curColor) {
+		this.colorQualityChange = function(curColor) {
 			this.colorArr.splice(this.colorArr_i, 1, curColor);
 			drawLegend(this.colorArr);
 			drawRect(this.colorArr);
@@ -467,6 +467,79 @@ export class OverviewComponent implements OnInit {
 
 	}
 
+	drawPCAReads(data) {
+		let lengendtitle = [];
+		data.rows.forEach((d) => {
+			lengendtitle.push(d.sample_name);
+		});
+
+		let that = this;
+		let config: object = {
+			chart: {
+				title: '主成分分析',
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					  this.setChartTitle(name);
+					  this.updateTitle();
+					}
+				},
+				width: 660,
+				el: '#PCADataID',
+				type: 'scatter',
+				radius: 3, // custom radius
+				hoverRadius: 6, // custom hover radius
+				custom: [ 'pca_comp1', 'pca_comp2', 'sample_name' ], // x y category
+				data: data.rows
+			},
+			axis: {
+				x: {
+					title: 'PC1',
+					dblclick: function(event) {
+						var name = prompt('请输入需要修改的标题', '');
+						if (name) {
+							this.setXTitle(name);
+							this.updateTitle();
+						}
+					}
+				},
+				y: {
+					title: 'PC2',
+					dblclick: function(event) {
+						var name = prompt('请输入需要修改的标题', '');
+						if (name) {
+							this.setYTitle(name);
+							this.updateTitle();
+						}
+					}
+				}
+			},
+			legend: {
+				show: true,
+				position: 'right',
+				click: function(d, index) {
+					that.color = d3.select(d).attr('fill');
+					that.legendIndex = index;
+					that.isShowColorPanel = true;
+				},
+				data: lengendtitle
+			},
+			tooltip: function(d) {
+				return (
+					'<span>Sample：' +
+					d.sample_name +
+					'</span><br><span>pca_comp1：' +
+					d.pca_comp1 +
+					'</span><br><span>pca_comp2：' +
+					d.pca_comp2 +
+					'</span>'
+				);
+			}
+		};
+
+		this.chartPCA = new d4().init(config);
+	}
+	
 	//箱线图
 	drawBoxReads(data) {
 		var tempBoxData = data['data'];
@@ -767,78 +840,7 @@ export class OverviewComponent implements OnInit {
 		this.relevanceChart.reGetData();
 	}
 
-	drawPCAReads(data) {
-		let lengendtitle = [];
-		data.rows.forEach((d) => {
-			lengendtitle.push(d.sample_name);
-		});
-
-		let that = this;
-		let config: object = {
-			chart: {
-				title: '主成分分析',
-				dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-					  this.setChartTitle(name);
-					  this.updateTitle();
-					}
-				},
-				width: 660,
-				el: '#PCADataID',
-				type: 'scatter',
-				radius: 3, // custom radius
-				hoverRadius: 6, // custom hover radius
-				custom: [ 'pca_comp1', 'pca_comp2', 'sample_name' ], // x y category
-				data: data.rows
-			},
-			axis: {
-				x: {
-					title: 'PC1',
-					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
-							this.updateTitle();
-						}
-					}
-				},
-				y: {
-					title: 'PC2',
-					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
-							this.updateTitle();
-						}
-					}
-				}
-			},
-			legend: {
-				show: true,
-				position: 'right',
-				click: function(d, index) {
-					that.color = d3.select(d).attr('fill');
-					that.legendIndex = index;
-					that.isShowColorPanel = true;
-				},
-				data: lengendtitle
-			},
-			tooltip: function(d) {
-				return (
-					'<span>Sample：' +
-					d.sample_name +
-					'</span><br><span>pca_comp1：' +
-					d.pca_comp1 +
-					'</span><br><span>pca_comp2：' +
-					d.pca_comp2 +
-					'</span>'
-				);
-			}
-		};
-
-		this.chartPCA = new d4().init(config);
-	}
+	
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
@@ -862,7 +864,7 @@ export class OverviewComponent implements OnInit {
 	//legend color change
 	colorQualityChange(curColor){
 		this.colorQuality = curColor;
-		this.colorArr.splice(this.legendIndex, 1, curColor);
+		this.colorArr.splice(this.legendIndexThree, 1, curColor);
 		this.relevanceChart.redraw();
 	}
 
