@@ -566,7 +566,7 @@ export class InformationComponent implements OnInit {
 	//选择面板 确定筛选的数据
 	selectConfirmE(data) {
 		this.selectConfirmDataE = data;
-		this.exonsNumEntity['RefGeneTypeList'] = this.selectConfirmDataE;
+		this.exonsNumEntity['refGeneTypeList'] = this.selectConfirmDataE;
 		this.exonsNum.reGetData();
 	}
 
