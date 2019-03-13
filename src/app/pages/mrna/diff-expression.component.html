@@ -29,11 +29,11 @@
                                         <input style="margin-top: 8px;" (ngModelChange)="OnChange($event,item)" nz-input
                                             placeholder="" nzSize="small" [ngModel]="tempThreshold[item].log2FC" />
                                     </div>
-                                    <span *ngIf="isShowSpan && item=='PossionDis'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
-                                    <span *ngIf="isShowSpan && item=='NOIseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
-                                    <span *ngIf="isShowSpan && item=='DEGseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
-                                    <span *ngIf="isShowSpan && item=='DESeq2'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
-                                    <span *ngIf="isShowSpan && item=='EBSeq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                    <span *ngIf="isShowSpan_PossionDis && item=='PossionDis'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                    <span *ngIf="isShowSpan_NOIseq && item=='NOIseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                    <span *ngIf="isShowSpan_DEGseq && item=='DEGseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                    <span *ngIf="isShowSpan_DESeq2 && item=='DESeq2'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                    <span *ngIf="isShowSpan_EBSeq && item=='EBSeq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
                                 </div>
                                 <div class="con_PessionDis_row">
                                     <div class="con_PessionDis_left" *ngIf="item=='PossionDis'">
