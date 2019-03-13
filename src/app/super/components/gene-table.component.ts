@@ -921,8 +921,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		colLeftConfig.map((v, i) => (colLeftConfig[i] += 'px'));
         totalWidth = tempTotalWidth + 'px';
 
-        console.log(widthConfig);
-
 		return { widthConfig, twoLevelHead, twoLevelWidth, colLeftConfig, totalWidth, tableRelative };
 	}
 
