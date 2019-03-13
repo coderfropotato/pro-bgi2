@@ -120,6 +120,16 @@ export class MenuComponent implements OnChanges {
         window.open(href)
     }
 
+    jumpToFirst(item,index){
+        this.initMenuStatus();
+        this.menu[index]["active"] = true;
+        if(item['children'].length){
+            item['children'][0]['active'] = true;
+            this.router.navigateByUrl(`/report/mrna/${item['children'][0]["url"]}`);
+            this.expand = false;
+        }
+    }
+
     /**
      * @description 外部重置路由激活状态
      * @author Yangwd<277637411@qq.com>
