@@ -45,33 +45,39 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				urlArr = [];
 			let whiteWrapReg = /.+(\_desc)|(\_term)$/g;
 
-			if (matchList.includes(thead) && matchRule[thead]['url']) {
+			if (matchList.includes(thead)) {
 				let curRule = matchRule[thead];
 				let curUrl = curRule['url'];
 
-				// if((typeof curUrl) ==='string'){
-				//     urlArr = curUrl.split(flag);
-				// }else{
-				//     urlArr = curUrl[0].split(flag);
-				// }
+				if(matchRule[thead]['url']){
+					urlArr = typeof curUrl === 'string' ? curUrl.split(flag) : curUrl[0].split(flag);
 
-				urlArr = typeof curUrl === 'string' ? curUrl.split(flag) : curUrl[0].split(flag);
+					if (whiteWrapReg.test(thead)) {
+						let textArr = value.split(valSplitFlag);
+						textArr.forEach((v, i) => {
+							let id = v.indexOf(idFlag) != -1 ? v.split(idFlag)[0] : null;
+							let url = urlArr[0] + id ;
+							if(urlArr[1]) url+=urlArr[1];
 
-				if (whiteWrapReg.test(thead)) {
-					let textArr = value.split(valSplitFlag);
-					textArr.forEach((v, i) => {
-                        let id = v.indexOf(idFlag) != -1 ? v.split(idFlag)[0] : null;
-                        let url = urlArr[0] + id ;
-                        if(urlArr[1]) url+=urlArr[1];
+							htmlStr += `<a href="${url}" target="_blank">${v}</a>`;
+							htmlStr += i !== textArr.length - 1 && whitespace ? '<br>' : '&emsp;';
+						});
+					} else {
+						let url = urlArr[0] + value ;
+						if(urlArr[1]) url+=urlArr[1];
 
-						htmlStr += `<a href="${url}" target="_blank">${v}</a>`;
-						htmlStr += i !== textArr.length - 1 && whitespace ? '<br>' : '&emsp;';
-					});
-				} else {
-                    let url = urlArr[0] + value ;
-                    if(urlArr[1]) url+=urlArr[1];
-
-					htmlStr += `<a href="${url}" target="_blank">${value}</a>`;
+						htmlStr += `<a href="${url}" target="_blank">${value}</a>`;
+					}
+				}else{
+					if (whiteWrapReg.test(thead)){
+						let textArr = value.split(valSplitFlag);
+						textArr.forEach((v, i) => {
+							htmlStr += `<span>${v}</span>`;
+							htmlStr += i !== textArr.length - 1 && whitespace ? '<br>' : '&emsp;';
+						});
+					}else{
+						htmlStr+=value;
+					}
 				}
 			} else {
 				htmlStr += value;

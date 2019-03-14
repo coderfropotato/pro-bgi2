@@ -5,8 +5,11 @@ declare const $: any;
     template: `<div class="tree-component">
                     <b class="tree-head">当前匹配的头:{{selectComposeThead.length?selectComposeThead[0]:"暂无"}}</b>
                     <div class="tree-content">
-                        <p *ngIf="showExpandAll"><button nz-button nzType="default" nzSize="small" (click)="handlerExpandAll()">Toggle expand</button></p>
-                        <div class="tree">
+                    <p>
+                        <button class="mr12" *ngIf="showExpandAll" nz-button nzType="default" nzSize="small" (click)="handlerExpandAll()">Toggle expand</button>
+                        <button *ngIf="selectComposeThead.length" nz-button nzType="default" nzSize="small" (click)="reChoose()">重新选择</button>
+                    </p>
+                    <div class="tree">
                             <ul *ngFor="let root of treeData;index as i">
                                 <app-tree-item [floder]="root" (treeItemCheckedChange)="checkedChange($event)" (treeItemExpandChange)="expandChange($event)"></app-tree-item>
                             </ul>
@@ -144,7 +147,6 @@ export class TreeComponent implements OnInit, OnChanges {
     }
 
     expandChange(floder) {
-        console.log(floder)
         this.expandChangeEvent.emit(floder);
     }
 
@@ -158,10 +160,11 @@ export class TreeComponent implements OnInit, OnChanges {
             v['hidden'] = v['children'].every(val=>val['hidden']);
             v['expandDisabled'] = v['children'].every(val=>val['hidden']);
         })
+    }
 
-
-
-        console.log(this.treeData)
+    reChoose(){
+        this._reset();
+        setTimeout(() => { this.reset = false; }, 30);
     }
 
     /**

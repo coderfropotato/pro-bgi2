@@ -127,7 +127,7 @@ export class GenePage {
 
 	searchBackList: string[] = []; //输入框返回结果
 
-	
+
 	expandModuleTop: boolean = true;// 默认收起模块描述
 	expandSetPanel: boolean = false;// 默认收起设置面板
 	expandHistoryPanel: boolean = false;// 默认收起搜索结果面板
@@ -187,7 +187,7 @@ export class GenePage {
 	//是否折叠显示框 最外层
 	moduleDescChange() {
 		this.expandModuleTop = !this.expandModuleTop;
-		
+
 		this.expandSetPanel = false;// 收起设置面板
 		this.expandHistoryPanel = false;// 收起搜索结果面板
 
@@ -219,7 +219,7 @@ export class GenePage {
 
 	//搜索按钮
 	goSearch() {
-		
+
 		this.expandSetPanel = false;// 收起设置面板
 		this.expandHistoryPanel = false;// 收起搜索结果面板
 
@@ -233,7 +233,7 @@ export class GenePage {
 
 	//输入数据，弹出面板
 	inputChange() {
-		
+
 		this.expandSetPanel = false;// 收起设置面板
 
 		if (this.inputValue) {
@@ -363,9 +363,10 @@ export class GenePage {
 					this.selectPanelList = data['data'];
 					this.selectedList = data['data'];
 					this.geneService.set("checkedAddThead",this.selectPanelList);
-					this.initializationFlag = true;
 				}
-			});
+			},error=>console.log(error),()=>{
+                this.initializationFlag = true;
+            });
 	}
 }
 

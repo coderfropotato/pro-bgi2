@@ -40,17 +40,6 @@ declare const $: any;
 	templateUrl: './gene-table.component.html'
 })
 export class GeneTableComponent implements OnInit, OnChanges {
-	/** 默认参数
-     * this.tableEntity["pageIndex"] = 1;
-        this.tableEntity["pageSize"] = 10;
-        this.tableEntity["sortValue"] = null;
-        this.tableEntity["sortKey"] = null;
-        this.tableEntity["searchList"] = [];
-        this.tableEntity["rootSearchContentList"] = [];
-        this.tableEntity["addThead"] = [];
-        如果有默认参数之外的参数 需要传进来，如果没有可以不传。
-     */
-
 	@Input() defaultChecked: boolean = false; // 基因表的默认选中还是不选中
 	@Input() tableId: string; // 表的id
 	@Input() url: string; // 表格的请求api
@@ -64,38 +53,26 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	@Output() emitBaseTheadChange: EventEmitter<any> = new EventEmitter();
 	@Output() baseTheadChange: EventEmitter<any> = new EventEmitter();
 	@Input() defaultMartix: boolean = false; // 是否默认是矩阵表  针对关联聚类/关联网络图  默认矩阵表 表格转换的默认表是矩阵 会把默认表加上mongoId
-
 	@Input() applyOnceSearchParams: boolean = false;
-	// TODO 双向绑定applyOnceSearchParams 下次再次触发
 	@Output() applyOnceSearchParamsChange: EventEmitter<any> = new EventEmitter();
-
 	@Output() selectGeneCountChange: EventEmitter<any> = new EventEmitter();
-
 	@Input() resetCheckGraph: boolean = false; // true的时候会重置checkGraph为false
 	@Output() resetCheckGraphChange: EventEmitter<any> = new EventEmitter();
-
 	@Input() computedScrollHeight: boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
 	@Output() computedScrollHeightChange: EventEmitter<any> = new EventEmitter();
-
-	// 过滤表头字段 用tid区分是报告还是小工具 isKeggClass 区分是kegg的分类还是富集
-	@Input() isKeggClass: boolean = false; // 区分是kegg的分类还是富集
+	@Input() isKeggClass: boolean = false; // 区分是kegg的分类还是富集  过滤表头字段 用tid区分是报告还是小工具 isKeggClass 区分是kegg的分类还是富集
 	@Input() tid: string = '';
-
 	@Input() showFilterStatus: boolean = false; // 是否显示 表格是否通过外部操作更新
-
 	@Output() saveGeneListSuccess: EventEmitter<any> = new EventEmitter(); // 成功保存基因集的时候 发出的事件
-
 	@Output() syncRelative: EventEmitter<any> = new EventEmitter(); // 同步表头
 
 
+	@ViewChildren('child') children;
 	count: number = 0; // 选中的基因个数
 	mongoId: any = null;
 	scroll: any = { x: '0', y: '0' };
 	isLoading: boolean = true;
-	@ViewChildren('child') children;
-	// 初始选中状态
 	checkStatus: boolean;
-	// 开始排序
 	beginFilterStatus: boolean = false;
 
 	head: string[] = [];
@@ -103,9 +80,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	total = 1;
 	dataSet = [];
 	accuracy = -1;
-	// 并集筛选条件
 	unionSearchConditionList: object[] = [];
-	// 交集筛选条件
 	interSearchConditionList: object[] = [];
 	sortMap: object = {};
 
@@ -121,8 +96,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	popoverText = '';
 	popoverSearchType = '';
-
-	// filter html string
 	filterHtmlString: object[] = [];
 	interConditionHtmlString: object[] = [];
 	unionConditionHtmlStirng: object[] = [];
@@ -284,7 +257,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	// 获取表格数据
 	getRemoteData(reset: boolean = false, cb: any = null): void {
-		// this.loadingService.open(`#${this.parentId}`);
 		this.isLoading = true;
 
 		if (reset) {
@@ -310,7 +282,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			(responseData: any) => {
 				// 如果需要保存基因集合id 并且 返回值有id这个key （针对转换表) 就保存下来
 				this.isLoading = false;
-				if (responseData.status == '0') {
+				if (responseData.status == '0' && responseData['data']['baseThead'].length && responseData['data']['rows'].length) {
 					if (this.tableType === 'transform') {
 						this.tableEntity['transform'] = false;
 						this.tableEntity['matrix'] = true;
@@ -431,7 +403,12 @@ export class GeneTableComponent implements OnInit, OnChanges {
 							this.isErrorDelete = false;
 						}, 30);
 					}
-				} else {
+				}else if(responseData.status == '0' && (!responseData['data']['baseThead'].length || !responseData['data']['rows'].length)){
+                    this.total = 0;
+                    this.srcTotal = 0;
+                    this.error = 'nodata';
+                    this.syncRelative.emit([]);
+                } else {
 					this.total = 0;
 					this.srcTotal = 0;
 					this.error = 'error';
@@ -740,22 +717,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.unionSearchConditionList = [];
 		this.interSearchConditionList = [];
 		if (this.tableEntity['searchList'].length) {
-			// this.tableEntity["searchList"].forEach(val => {
-			//     val["crossUnion"] === "union"
-			//         ? this.unionSearchConditionList.push(val)
-			//         : this.interSearchConditionList.push(val);
-			// });
 			this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
 		} else {
 			this.filterHtmlString.length = 0;
 		}
-
-		// this.interConditionHtmlString = this.globalService.transformFilter(
-		//     this.interSearchConditionList
-		// );
-		// this.unionConditionHtmlStirng = this.globalService.transformFilter(
-		//     this.unionSearchConditionList
-		// );
 
 		// 每次分类筛选条件的时候 重新计算表格滚动区域高度
 		setTimeout(() => {
@@ -848,23 +813,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	/**
      * @description  根据表头层级关系计算表头宽度
-        {
-            "name":1,
-            "true_key":2,
-            "hover":3,
-            "colspan":children.length?children.length:1,
-            "rowspan":children.length?2:1,
-            "searchType""string",
-            "children":[]
-        }
-        一级表头:
-        1，如果当前表头没有子表头 rowspan 2 colspan 1
-        2，如果当前表头有子表头 rowspan 1 colspan children.length
-        3，如果当前的表头只有一个子表头 rowspan = colspan = 1
-            如果children的length =0  rowspan2
-            ！=0  rowspan 1 colspan = children.length
-
-        二级表头:不用算
      * @author Yangwd<277637411@qq.com>
      * @date 2018-10-09
      * @param {*} head
@@ -949,11 +897,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	}
 
 	pageSizeChange() {
-		// this.checkedMap = {};
-		// this.unCheckedMap = {};
-		// this.checked = [];
-		// this.unChecked = [];
-
 		this.tableEntity['pageIndex'] = 1;
 		this.pageSizeChangeFlag = true;
 		this.getRemoteData(true, () => {
@@ -1388,9 +1331,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
 	_getInnerStatusParams() {
-		// if('checked' in this.tableEntity) this.tableEntity['checked'] = this.checked;
-		// if('unChecked' in this.tableEntity) this.tableEntity['unChecked'] = this.unChecked;
-		// if('checkStatus' in this.tableEntity) this.tableEntity['checkStatus'] = this.checkStatus;
 		return {
 			tableEntity: this.tableEntity,
 			url: this.url,
