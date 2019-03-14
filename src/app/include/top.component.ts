@@ -14,7 +14,7 @@ declare const ActiveXObject: any;
 	selector: 'app-top',
 	templateUrl: './top.component.html'
 })
-export class TopComponent implements OnInit {
+export class TopComponent{
 	@ViewChild('reportContent') reportContent: ElementRef;
 	@ViewChild('fullScreen') fullScreen;
 
@@ -58,66 +58,6 @@ export class TopComponent implements OnInit {
 		}
 		sessionStorage.setItem('lang', this.browserLang);
 		this.storeService.setLang(this.browserLang);
-	}
-
-	ngOnInit() {
-		// 所有当前需要导出pdf的页面的路由  组合在一起导出
-		if (this.pdf) {
-			let prefix = `/report/${sessionStorage.getItem('LCTYPE')}/`;
-			this.pageRoutes = [];
-			this.storeService.getStore('menu').forEach((v) => {
-				if (v['children'].length) {
-					v['children'].forEach((val) => {
-						if (val['isExport']) this.pageRoutes.push(prefix + val['url']);
-					});
-				}
-			});
-		}
-	}
-
-	// 获取各个路由需要导出模块的html，导出pdf；
-	async exportPdf() {
-        this.loading.open('body','正在导出pdf请稍后...')
-		let _self = this;
-		let count: number = 0;
-		this.navigatedRoutes = this.storeService.getNavigatedRoutes();
-
-		await asyncNavigatePage();
-
-		async function asyncNavigatePage() {
-			let pageUrl = _self.pageRoutes[count];
-			_self.router.navigateByUrl(pageUrl);
-			setTimeout(() => {
-				$('.content').css('page-break-before', 'always');
-				_self.htmlString.push($('.report-content').html());
-                count++;
-                let flag = count === _self.pageRoutes.length;
-				if (!flag) {
-					(async () => {
-						await asyncNavigatePage();
-					})();
-				}else{
-                    _self.downloadPdf();
-                }
-			}, 6000);
-		}
-	}
-
-	// download pdf orderby htmlstring
-	downloadPdf() {
-        document.body.style.overflow="auto";
-        $('.menu').remove();
-        $('.top').css('opacity', 0);
-        $('.report').css('height','auto');
-        $('body').css('height','auto');
-		$('html').css('overflow', 'auto');
-        $('.report').html(this.htmlString.join(''));
-        $('.switch').remove();
-		document.body.style.width = window.screen.width + 'px';
-        this.loading.close();
-
-		window.print();
-		window.location.reload();
 	}
 
 	analysisFn() {
