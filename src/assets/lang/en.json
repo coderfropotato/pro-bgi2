@@ -16,7 +16,7 @@
         "showGeneID":"show transcripts ID",
         "noShowGeneID":"close transcripts ID",
         "expressive_information":"Expressive Information",
-        "sample_expression":"Sample Expression",
+        "sample_expression":"Sample Expression（FPKM）",
         "expression_polygraph":"Expression Polygraph",
         "differential_expression":"Differential Expression",
         "group_differences":"Group Differences",

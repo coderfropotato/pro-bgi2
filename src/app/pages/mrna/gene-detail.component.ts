@@ -51,10 +51,18 @@ export class GeneDetailComponent implements OnInit {
 
 	btn_show: boolean = true;
 
+	//转录本信息
 	defaultUrl: string;
 	rna_params: object;
 	rows: object[] = [];
 	baseThead: object[] = [];
+
+	//转录本信息
+	expressive_defaultUrl: string;
+	expressive_params: object;
+	expressive_rows: object[] = [];
+	expressive_baseThead: object[] = [];
+	expressive_geneType: string;
 
   	constructor(
 		private message: MessageService,
@@ -90,10 +98,21 @@ export class GeneDetailComponent implements OnInit {
 			geneType: "gene",
 			geneID: this.geneID
 		};
+
+		//样本表达量
+		this.expressive_geneType = "gene";
+		this.expressive_defaultUrl = `${config['javaPath']}/geneDetail/exp`;
+		this.expressive_params = {
+			LCID: this.storeService.getStore('LCID'),
+			geneType: this.expressive_geneType,
+			geneID: this.geneID
+		};
+
 		(async () => {
 			try {
 				await this.getGeneInformation();
 				await this.getRnaInformation();
+				await this.sampleExpression();
 			}catch (error){
 
 			}
@@ -145,6 +164,34 @@ export class GeneDetailComponent implements OnInit {
 				} else {
 					this.rows = data['data']['rows'];
 					this.baseThead = data['data']['baseThead'];
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			);
+		})
+	}
+
+	//样本表达量
+	async sampleExpression(){
+		return new Promise((resolve, reject) => {
+			this.ajaxService
+			.getDeferData({
+				url: this.expressive_defaultUrl,
+				data: this.expressive_params
+			})
+			.subscribe((data: any) => {
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.expressive_rows = data['data']['rows'];
+					this.expressive_baseThead = data['data']['baseThead'];
 				}
 				resolve("success");
 			},

@@ -87,8 +87,24 @@
       
       <div class="mgene_content">
           <h4>{{'gene_detail.expressive_information' | translate}}</h4>
+          <h5>{{'gene_detail.sample_expression' | translate}}</h5>
+          <div class="transcripts_table">
+              <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'">
+                  <thead>
+                      <tr>
+                          <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of expressive_baseThead;index as i">{{thead.name}}</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let row of expressive_rows;index as idx">
+                          <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of expressive_baseThead">
+                            {{row[thead.true_key]}}
+                          </td>
+                      </tr>
+                  </tbody>
+              </nz-table>
+          </div>
       </div>
-      <h5>样本表达量（FPKM）</h5>
     </div>
   </div>
 </div>

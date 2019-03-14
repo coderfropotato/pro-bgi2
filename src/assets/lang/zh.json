@@ -16,7 +16,7 @@
         "showGeneID":"显示转录本ID",
         "noShowGeneID":"收起转录本ID",
         "expressive_information":"表达量信息",
-        "sample_expression":"样本表达量",
+        "sample_expression":"样本表达量（FPKM）",
         "expression_polygraph":"表达量折线图",
         "differential_expression":"差异表达",
         "group_differences":"组间差异",
