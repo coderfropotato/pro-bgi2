@@ -484,7 +484,6 @@
 					 class="center">缺少必要数据</p>
 				</div>
                 <nz-divider></nz-divider>
-                {{heatmapReError}}
 				<div *ngIf="heatmapReStand.length && heatmapReRelations.length" class="tool-params-button-group">
 					<button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
 					<button nz-button nzType="primary" [disabled]="!heatmapReSelectStand || !heatmapReSelectRelation || heatmapReError"
