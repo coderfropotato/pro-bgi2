@@ -14,7 +14,7 @@ import { GeneService } from './../../super/service/geneService';
 declare const d3: any;
 declare const d4: any;
 declare const Venn: any;
-declare const $:any;
+declare const $: any;
 
 @Component({
 	selector: 'app-gene-page',
@@ -98,7 +98,7 @@ declare const $:any;
 	styles: []
 })
 export class GenePage {
-    @ViewChild('geneTable') geneTable;
+	@ViewChild('geneTable') geneTable;
 
 	private moduleRouteName: string = 'gene'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
 	config: object = config;
@@ -127,10 +127,9 @@ export class GenePage {
 
 	searchBackList: string[] = []; //输入框返回结果
 
-
-	expandModuleTop: boolean = true;// 默认收起模块描述
-	expandSetPanel: boolean = false;// 默认收起设置面板
-	expandHistoryPanel: boolean = false;// 默认收起搜索结果面板
+	expandModuleTop: boolean = true; // 默认收起模块描述
+	expandSetPanel: boolean = false; // 默认收起设置面板
+	expandHistoryPanel: boolean = false; // 默认收起搜索结果面板
 
 	initializationFlag: boolean = false;
 	searchButtonFlag: boolean = true;
@@ -181,25 +180,25 @@ export class GenePage {
 			}
 		];
 
-		this.geneService.set("andOr",this.radioValue);
+		this.geneService.set('andOr', this.radioValue);
 	}
 
 	//是否折叠显示框 最外层
 	moduleDescChange() {
 		this.expandModuleTop = !this.expandModuleTop;
 
-		this.expandSetPanel = false;// 收起设置面板
-		this.expandHistoryPanel = false;// 收起搜索结果面板
+		this.expandSetPanel = false; // 收起设置面板
+		this.expandHistoryPanel = false; // 收起搜索结果面板
 
 		// 重新计算表格切换组件表格的滚动高度
-        setTimeout(()=>{
-            this.geneTable['computedTableHeight']();
-        },30)
+		setTimeout(() => {
+			this.geneTable['computedTableHeight']();
+		}, 30);
 	}
 
 	//设置按钮
 	moduleSetChange() {
-		this.expandHistoryPanel = false;// 收起搜索结果面板
+		this.expandHistoryPanel = false; // 收起搜索结果面板
 		this.expandSetPanel = !this.expandSetPanel;
 	}
 
@@ -214,31 +213,28 @@ export class GenePage {
 		});
 
 		this.icon_color = 'blue';
-		this.geneService.set("checkedAddThead",this.selectedList);
+		this.geneService.set('checkedAddThead', this.selectedList);
 	}
 
 	//搜索按钮
 	goSearch() {
-
-		this.expandSetPanel = false;// 收起设置面板
-		this.expandHistoryPanel = false;// 收起搜索结果面板
+		this.expandSetPanel = false; // 收起设置面板
+		this.expandHistoryPanel = false; // 收起搜索结果面板
 
 		if (this.selectPanelList.length == this.selectedList.length) {
 			this.geneTable['reGetData']();
-		}else{
+		} else {
 			this.geneTable['selectRange'](this.selectedList);
 		}
-
 	}
 
 	//输入数据，弹出面板
 	inputChange() {
-
-		this.expandSetPanel = false;// 收起设置面板
+		this.expandSetPanel = false; // 收起设置面板
 
 		if (this.inputValue) {
 			this.searchButtonFlag = false;
-			this.geneService.set("content",this.inputValue);
+			this.geneService.set('content', this.inputValue);
 			this.getSearchback();
 		} else {
 			this.expandHistoryPanel = false;
@@ -247,7 +243,7 @@ export class GenePage {
 
 	//或且切换
 	radioChange() {
-		this.geneService.set("andOr",this.radioValue);
+		this.geneService.set('andOr', this.radioValue);
 	}
 
 	//下方取消按钮
@@ -259,7 +255,7 @@ export class GenePage {
 				d['isChecked'] = false;
 			}
 		});
-		this.geneService.set("checkedAddThead",this.selectPanelList);
+		this.geneService.set('checkedAddThead', this.selectPanelList);
 		this.expandSetPanel = !this.expandSetPanel;
 	}
 
@@ -271,14 +267,14 @@ export class GenePage {
 
 	//点击搜索返回面板其中一项
 	searchBackSelect(item) {
-		let tempArray = this.inputValue.split(" ");
-		if(tempArray.length==1){
+		let tempArray = this.inputValue.split(' ');
+		if (tempArray.length == 1) {
 			this.inputValue = item;
-		}else{
-			this.inputValue = tempArray.slice(0,-1).toString().replace(/,/g," ")+" "+item;
+		} else {
+			this.inputValue = tempArray.slice(0, -1).toString().replace(/,/g, ' ') + ' ' + item;
 		}
 
-		this.geneService.set("content",this.inputValue);
+		this.geneService.set('content', this.inputValue);
 		this.expandHistoryPanel = false;
 	}
 
@@ -299,7 +295,7 @@ export class GenePage {
 					d['isChecked'] = false;
 				}
 			});
-			this.geneService.set("checkedAddThead",this.selectPanelList);
+			this.geneService.set('checkedAddThead', this.selectPanelList);
 		}
 	}
 
@@ -348,25 +344,29 @@ export class GenePage {
 					species: this.storeService.getStore('genome') //物种
 				}
 			})
-			.subscribe((data: any) => {
-				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-					return;
-				} else if (data.status == '-1') {
-					return;
-				} else if (data.status == '-2') {
-					return;
-				} else {
-					//console.log(data);
-					for (var i = 0; i < data['data'].length; i++) {
-						data['data'][i]['isChecked'] = false;
+			.subscribe(
+				(data: any) => {
+					if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+						return;
+					} else if (data.status == '-1') {
+						return;
+					} else if (data.status == '-2') {
+						return;
+					} else {
+						//console.log(data);
+						for (var i = 0; i < data['data'].length; i++) {
+							data['data'][i]['isChecked'] = false;
+						}
+						this.selectPanelList = data['data'];
+						this.selectedList = data['data'];
+						this.geneService.set('checkedAddThead', this.selectPanelList);
 					}
-					this.selectPanelList = data['data'];
-					this.selectedList = data['data'];
-					this.geneService.set("checkedAddThead",this.selectPanelList);
+				},
+				(error) => console.log(error),
+				() => {
+					this.initializationFlag = true;
 				}
-			},error=>console.log(error),()=>{
-                this.initializationFlag = true;
-            });
+			);
 	}
 }
 
@@ -400,7 +400,8 @@ export class GeneComponent implements OnInit {
 	extendCheckStatusInParams: boolean;
 	extendEmitBaseThead: boolean;
 	baseThead: any[] = [];
-	applyOnceSearchParams: boolean;
+    applyOnceSearchParams: boolean;
+    defaultApplyOnceSearchParams:boolean;
 
 	tableHeight = 0;
 	first = true;
@@ -434,7 +435,8 @@ export class GeneComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.applyOnceSearchParams = true;
+        this.applyOnceSearchParams = true;
+        this.defaultApplyOnceSearchParams = true;
 		this.defaultUrl = `${config['javaPath']}/home/table`; // `${config['url']}/theadFilter`
 		this.defaultEntity = {
 			pageIndex: 1, //分页
@@ -446,12 +448,13 @@ export class GeneComponent implements OnInit {
 			sortKey: null, //排序
 			sortValue: null,
 			reAnaly: false,
-			searchParams:this.geneService["geneOptions"],
+			searchParams: this.geneService['geneOptions'],
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			version: this.storeService.getStore('version'),
+			clickSearch: false,
 			searchList: [],
 			sortThead: this.addColumn['sortThead']
 		};
@@ -470,13 +473,14 @@ export class GeneComponent implements OnInit {
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
 			sortKey: null, //排序
-            sortValue: null,
-            searchParams:this.geneService["geneOptions"],
+			sortValue: null,
+			searchParams: this.geneService['geneOptions'],
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			version: this.storeService.getStore('version'),
+			clickSearch: false,
 			searchList: [],
 			sortThead: this.addColumn['sortThead']
 		};
@@ -484,9 +488,9 @@ export class GeneComponent implements OnInit {
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
-    }
+	}
 
-    ngAfterViewInit() {
+	ngAfterViewInit() {
 		setTimeout(() => {
 			this.computedTableHeight();
 		}, 30);
@@ -524,7 +528,8 @@ export class GeneComponent implements OnInit {
 		this.showBackButton = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
-		this.applyOnceSearchParams = true;
+        this.applyOnceSearchParams = true;
+        this.defaultApplyOnceSearchParams = true;
 		this.extendEmitBaseThead = true;
 		this.addColumn._clearThead();
 		if (this.first) {
@@ -604,18 +609,25 @@ export class GeneComponent implements OnInit {
 			this.transformTable._setParamsNoRequest('pageIndex', 1);
 			this.transformTable._getData();
 		}
-    }
+	}
 
-    // 重新获取数据
-    reGetData(){
+	// 重新获取数据
+	reGetData() {
+		this.applyOnceSearchParams = true;
+        this.defaultApplyOnceSearchParams = true;
+
+		this.transformTable._setParamsNoRequest('clickSearch', true);
         this.transformTable._getData();
-    }
+	}
 
-    // 选择范围的时候调用  不需要调用reGetData重新获取数据
-    // head {} | Object[]    {key:'123',category:'xxx'}
-    selectRange(head){
+	// 选择范围的时候调用  不需要调用reGetData重新获取数据
+	// head {} | Object[]    {key:'123',category:'xxx'}
+	selectRange(head) {
+        this.applyOnceSearchParams = true;
+        this.defaultApplyOnceSearchParams = true;
+
+		this.transformTable._setParamsNoRequest('clickSearch', true);
 		this.addColumn._addThead(head);
 		this.addColumn._confirm();
-    }
-
+	}
 }

@@ -39,6 +39,9 @@ export class TransformationTableComponent implements OnInit {
     @Input() applyOnceSearchParams:boolean = false;
     @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
 
+    @Input() defaultApplyOnceSearchParams:boolean = false;
+    @Output() defaultApplyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
+
     @Input() resetCheckGraph:boolean = false;
     @Output() resetCheckGraphChange:EventEmitter<any> = new EventEmitter();
 
@@ -108,6 +111,10 @@ export class TransformationTableComponent implements OnInit {
 
     handlerApplyOnceSearchParamsChange(status){
         this.applyOnceSearchParamsChange.emit(status);
+    }
+
+    handlerDefaultAppluOnceSearchParamsChange(status){
+        this.defaultApplyOnceSearchParamsChange.emit(status);
     }
 
     handleResetCheckGraphChange(status){
