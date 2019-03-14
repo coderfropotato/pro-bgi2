@@ -5,8 +5,11 @@ declare const $: any;
     template: `<div class="tree-component">
                     <b class="tree-head">当前匹配的头:{{selectComposeThead.length?selectComposeThead[0]:"暂无"}}</b>
                     <div class="tree-content">
-                        <p *ngIf="showExpandAll"><button nz-button nzType="default" nzSize="small" (click)="handlerExpandAll()">Toggle expand</button></p>
-                        <div class="tree">
+                    <p>
+                        <button class="mr12" *ngIf="showExpandAll" nz-button nzType="default" nzSize="small" (click)="handlerExpandAll()">Toggle expand</button>
+                        <button *ngIf="selectComposeThead.length" nz-button nzType="default" nzSize="small" (click)="reChoose()">重新选择</button>
+                    </p>
+                    <div class="tree">
                             <ul *ngFor="let root of treeData;index as i">
                                 <app-tree-item [floder]="root" (treeItemCheckedChange)="checkedChange($event)" (treeItemExpandChange)="expandChange($event)"></app-tree-item>
                             </ul>
@@ -139,10 +142,29 @@ export class TreeComponent implements OnInit, OnChanges {
         }
         // 遍历树把不匹配的字段 disabled = true
         this.treeSetDisabledStatus(this.treeData, suitableItems, true);
+
+        this.computedStatus()
     }
 
     expandChange(floder) {
         this.expandChangeEvent.emit(floder);
+    }
+
+    computedStatus(){
+        let deepItemRoot = [];   // 所有有子节点的树节点 从最底层开始收集
+        this.forLeaves(this.treeData,(item)=>{
+            deepItemRoot.unshift(item);
+        })
+
+        deepItemRoot.forEach(v=>{
+            v['hidden'] = v['children'].every(val=>val['hidden']);
+            v['expandDisabled'] = v['children'].every(val=>val['hidden']);
+        })
+    }
+
+    reChoose(){
+        this._reset();
+        setTimeout(() => { this.reset = false; }, 30);
     }
 
     /**
@@ -192,10 +214,13 @@ export class TreeComponent implements OnInit, OnChanges {
             if (treeItemNames !== "all") {
                 if (treeItemNames.includes(item.name)) {
                     item.disabled = !status;
+                    item.hidden = !status;
                 } else {
                     item.disabled = status;
+                    item.hidden = status;
                 }
             } else {
+                item.hidden = false;
                 item.disabled = false;
             }
 
@@ -367,6 +392,8 @@ export class TreeComponent implements OnInit, OnChanges {
             item.isChecked = false;
             item.isExpand = this.defaultExpandAll;
             item.disabled = false;
+            item.hidden = false;
+            item.expandDisabled = false;
             if (item.children && item.children.length) {
                 stack = stack.concat(item.children);
             }

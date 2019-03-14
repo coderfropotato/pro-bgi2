@@ -348,6 +348,7 @@ export class IndexComponent implements OnInit {
 										}
 									]
 								}
+								
 							];
 
                             //动态跳第一个页面  需要替换  /report/mrna 为当前url  不然后退的时候会回到 /report/mrna 导致路由容器为空
@@ -557,9 +558,9 @@ export class IndexComponent implements OnInit {
 
 		getCount();
 
-		// this.getUnReadAnalysisCountTimer = setInterval(()=>{
-		// 	getCount();
-		// },config['getAnalysisCountInterval'])
+		this.getUnReadAnalysisCountTimer = setInterval(()=>{
+			getCount();
+		},config['getAnalysisCountInterval'])
 	}
 
 	// async getAddThead() {

@@ -7,6 +7,7 @@
             <h4 class="title" *ngIf="seq_platform">测序平台：<span>{{seq_platform}}</span></h4>
             <h4 class="title" *ngIf="seq_length">测序长度：<span>{{seq_length}}</span></h4>
             <h4 class="title" *ngIf="fragment_peak">文库峰值长度：<span>{{fragment_peak}}</span></h4>
+            <p class="help_text">测序的原始数据包含低质量、接头污染以及未知碱基N含量过高的reads，数据分析之前需要去除这些reads以保证结果的可靠性。过滤后reads的质量指标见过滤后reads质量统计表，原始数据过滤成分统计图，碱基含量分布以及质量分布见Clean reads碱基含量分布图 和Clean reads的碱基质量分布图。</p>
         </div>
     </div>
 
@@ -57,6 +58,7 @@
                 [chartName]="'原始数据过滤成分统计'"
                 [otherLeftTemplate]='searchTemplate'
                 (refresh)="handlerRefresh()"
+                [chartDescContent]="'N：未知碱基N含量⼤于5%的reads的数目及占总raw reads的比例；Adapter：包含接头的reads（接头污染的reads）的数目及占总raw reads的比例；Low Quality：低质量的reads（质量值低于15的碱基占该reads总碱基数的比例⼤于20%的reads）的数目及占总raw reads的比例；Clean Reads：过滤后的reads数目及占总raw reads的比例。'"
             >
             </app-table-switch-chart>
             <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
@@ -83,6 +85,7 @@
                 [chartName]="'Clean reads 碱基含量分布'"
                 [otherLeftTemplate]='searchTemplateTwo'
                 (refresh)="handlerRefresh()"
+                [chartDescContent]="'X轴代表碱基在read中的位置，Y轴代表此类碱基的含量比例。正常情况下，reads每个位置的碱基含量稳定，无AT或GC分离现象。由于Illumina平台在RNA-Seq测序中，反转录成cDNA时所用的6bp随机引物会使前6个位置的碱基组成存在偏好性，故图中前6bp碱基比例的波动为正常现象。'"
             >
             </app-table-switch-chart>
             <app-color-picker [(color)]="colorContent" (colorChange)="colorContentChange($event)" [(show)]="isShowContentColorPanel"

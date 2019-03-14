@@ -45,6 +45,8 @@ import { BigTableCheckComponent } from './super/components/big-table-check.compo
 // 页面
 /* 基因总表 */
 import { GeneComponent,GenePage } from './pages/mrna/gene.component';
+/* 基因详情表 */
+import { GeneDetailComponent } from './pages/mrna/gene-detail.component';
 /* 基础模块 */
 import { OverviewComponent } from './pages/mrna/base/overview.component';
 import { InformationComponent } from './pages/mrna/base/information.component';
@@ -368,6 +370,15 @@ const ROUTES: Routes = [
 				component:GenePage,
 				data:{keep:true,module:'gene'}
 			},
+			// 基因详情
+			{
+				path:'gene-detail',
+				component:GeneDetailComponent,
+				data:{
+					keep:true,
+					module:'geneDetail'
+				}
+			},
 			{
 				path: 'upload', // 上传数据
 				component: UploadComponent,
@@ -650,6 +661,7 @@ export function createTranslateLoader(http: HttpClient) {
 		// 页面
 		GenePage,
 		GeneComponent,
+		GeneDetailComponent,
 
 		OverviewComponent,
 		InformationComponent,

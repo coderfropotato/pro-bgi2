@@ -1,9 +1,11 @@
+import { LoadingService } from './../super/service/loadingService';
 import { ToolsService } from './../super/service/toolsService';
 import { StoreService } from '../super/service/storeService';
 import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import config from '../../config';
+import { async } from '@angular/core/testing';
 
 declare const $: any;
 declare const ActiveXObject: any;
@@ -12,17 +14,16 @@ declare const ActiveXObject: any;
 	selector: 'app-top',
 	templateUrl: './top.component.html'
 })
-export class TopComponent implements OnInit {
+export class TopComponent{
 	@ViewChild('reportContent') reportContent: ElementRef;
 	@ViewChild('fullScreen') fullScreen;
 
 	pageRoutes: string[];
 	htmlString: string[] = [];
-	exportPdfFlag: any = false;
 	browserLang: string;
-    navigatedRoutes: Array<string> = [];
-    themeColor:string = '#5278f8';
-    isFull:boolean = false;
+	navigatedRoutes: Array<string> = [];
+	themeColor: string = '#5278f8';
+	isFull: boolean = false;
 
 	@Input() pdf: boolean = true;
 	@Input() analysis: boolean = true;
@@ -36,7 +37,8 @@ export class TopComponent implements OnInit {
 		private translate: TranslateService,
 		private router: Router,
 		private storeService: StoreService,
-		private toolService: ToolsService
+        private toolService: ToolsService,
+        private loading:LoadingService
 	) {
 		this.translate.addLangs([ 'zh', 'en' ]);
 		this.translate.setDefaultLang('zh');
@@ -58,105 +60,6 @@ export class TopComponent implements OnInit {
 		this.storeService.setLang(this.browserLang);
 	}
 
-	ngOnInit() {
-        // 所有当前需要导出pdf的页面的路由  组合在一起导出
-        let prefix = `/report/${sessionStorage.getItem('LCTYPE')}/`;
-        this.pageRoutes = [];
-        this.storeService.getStore('menu').forEach(v=>{
-            if(v['children'].length){
-                v['children'].forEach(val=>{
-                    if(val['isExport'])this.pageRoutes.push(prefix+val['url']);
-                })
-            }
-        })
-
-		// this.pageRoutes = [ '/report/mrna/layout1', '/report/mrna/table' ];
-		// 路由导航完成钩子 仅仅针对导出pdf的时候收集dom元素内容使用
-		this.router.events.subscribe((event) => {
-			if (event instanceof NavigationEnd && this.exportPdfFlag) {
-				// 给一个导航完成跳转的时间
-				setTimeout(() => {
-					this.htmlString.push($('.report-content').html());
-					if (this.exportPdfFlag === 'done') {
-						this.downloadPdf(() => {
-                            console.log(this.htmlString);
-							this.exportPdfFlag = false;
-						});
-					}
-				}, 1000);
-			}
-        });
-	}
-
-	// 获取各个路由需要导出模块的html，导出pdf；
-	async exportPdf() {
-		let _self = this;
-		let count: number = 0;
-		this.exportPdfFlag = true;
-		this.navigatedRoutes = this.storeService.getNavigatedRoutes();
-		$('body').css('overflow', 'unset');
-		$('.menu').remove();
-		$('.top').remove();
-
-		if (this.route['_routerState'].snapshot.url === this.pageRoutes[0] && this.pageRoutes.length > 1) {
-			this.htmlString = [ $('.report-content').html() ];
-			count++;
-		} else if (this.pageRoutes.length == 1) {
-			this.htmlString = [ $('.report-content').html() ];
-			this.downloadPdf(() => {
-				this.exportPdfFlag = false;
-			});
-		} else {
-			this.htmlString = [];
-		}
-
-		do {
-			if (count === this.pageRoutes.length - 1) {
-				await asyncNavigatePage(this.pageRoutes[count], true);
-			} else {
-				await asyncNavigatePage(this.pageRoutes[count]);
-			}
-			count++;
-		} while (count < this.pageRoutes.length);
-
-		// while (count < this.pageRoutes.length) {
-		//     if (count === this.pageRoutes.length - 1) {
-		//         await asyncNavigatePage(this.pageRoutes[count], true);
-		//     } else {
-		//         await asyncNavigatePage(this.pageRoutes[count]);
-		//     }
-		//     count++;
-		// }
-
-		async function asyncNavigatePage(pageUrl, flag = false) {
-			// flag true表示最后一次导航马上要下载pdf
-			return new Promise((resolve, reject) => {
-				_self.router.navigateByUrl(pageUrl);
-				// 之前导航过
-				if (_self.navigatedRoutes.includes(pageUrl)) {
-					setTimeout(() => {
-						resolve();
-					}, 1000);
-				} else {
-					// 初始化的页面要等待加载完成
-					setTimeout(() => {
-						resolve();
-					}, 5000);
-				}
-				if (flag) _self.exportPdfFlag = 'done';
-			});
-		}
-	}
-
-	// download pdf orderby htmlstring
-	downloadPdf(cb) {
-		$('.report-wrap').html(`<div>${this.htmlString.join('')}</div>`);
-		document.body.style.width = window.screen.width + 'px';
-
-		window.print();
-		window.location.reload();
-	}
-
 	analysisFn() {
 		let url = `${location.href.substring(0, location.href.indexOf('/report'))}/report/reanalysis/index`;
 		window.open(url);
@@ -172,7 +75,7 @@ export class TopComponent implements OnInit {
 
 	handleFullScreenClick() {
 		let el = document.documentElement;
-        this.isFull = this.isFullscreen();
+		this.isFull = this.isFullscreen();
 		if (!this.isFull) {
 			let requestMethod =
 				el['requestFullscreen'] ||
@@ -186,17 +89,17 @@ export class TopComponent implements OnInit {
 				if (wscript !== null) {
 					wscript.SendKeys('{F11}');
 				}
-            }
-            this.isFull = true;
+			}
+			this.isFull = true;
 		} else {
 			let exitMethod =
 				document['exitFullscreen'] ||
 				document['webkitCancelFullScreen'] ||
 				document['mozCancelFullScreen'] ||
 				document['msExitFullscreen'];
-            if (exitMethod) exitMethod.call(document);
+			if (exitMethod) exitMethod.call(document);
 
-            this.isFull = false;
+			this.isFull = false;
 		}
 	}
 
@@ -207,15 +110,15 @@ export class TopComponent implements OnInit {
 			document['mozFullScreenElement'] ||
 			document['webkitFullscreenElement']
 		);
-    }
+	}
 
-    handleColorChange(event){
-        let color = event.target.value;
-        let style = $('head > style');
-        let reg = new RegExp(this.themeColor,'g');
-        $.each(style,(index,val)=>{
-            $(val).html($(val).html().replace(reg,color))
-        })
-        this.themeColor = color;
-    }
+	handleColorChange(event) {
+		let color = event.target.value;
+		let style = $('head > style');
+		let reg = new RegExp(this.themeColor, 'g');
+		$.each(style, (index, val) => {
+			$(val).html($(val).html().replace(reg, color));
+		});
+		this.themeColor = color;
+	}
 }

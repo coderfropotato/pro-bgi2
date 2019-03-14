@@ -59,7 +59,7 @@
                 (selectConfirmEmit)="selectConfirm($event)"
                 [defaultSelectNum]="-1"
                 (defaultSelectList)="defaultSelectList($event)"
-                [chartDescContent]="'X轴表示smallRNA长度（测序得到的片段去除接头后的长度），Y轴表示该长度smallRNA占所有smallRNA长度的百分比。该图反映直接测序得到的smallRNA长度分布情况，若同一种smallRNA被测多次，按多次计算。'"
+                [chartDescContent]="'X轴表示smallRNA长度（测序得到的片段去除接头后的长度），Y轴表示该长度smallRNA占所有smallRNA数量百分比。该图反映直接测序得到的smallRNA长度分布情况，若同一种smallRNA被测多次，按多次计算。'"
             >
             </app-table-switch-chart>
             <app-color-picker [(color)]="colorL" (colorChange)="colorLChange($event)" [(show)]="isShowColorPanelL"

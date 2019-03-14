@@ -77,7 +77,7 @@ export class GeneListIndexComponent implements OnInit {
     getUnReadAnalysisCount(){
 		let getCount = ()=>{
 			this.ajaxService.getDeferData({
-				data: { 
+				data: {
 					LCID:sessionStorage.getItem('LCID')
 				},
 				url: `${config['javaPath']}/reAnalysis/count`
@@ -89,7 +89,7 @@ export class GeneListIndexComponent implements OnInit {
 		}
 
 		getCount();
-		
+
 		this.getUnReadAnalysisCountTimer = setInterval(()=>{
 			getCount();
 		},config['getAnalysisCountInterval'])

@@ -19,7 +19,8 @@
 			<i class="anticon anticon-arrow-left mr12 cursor" (click)="handlerChildClose()"></i>
 			<span *ngIf="childVisible && selectType==='heatmap'">聚类热图</span>
 			<span *ngIf="childVisible && selectType==='multiOmics'">多组学</span>
-			<span *ngIf="childVisible && selectType==='line'">折线图</span>
+            <span *ngIf="childVisible && selectType==='line'">折线图</span>
+            <span *ngIf="childVisible && selectType==='KDA'">KDA</span>
 			<span *ngIf="childVisible && selectType==='chiSquare'">卡方检验</span>
 			<span *ngIf="childVisible && selectType==='net'">蛋白网络互作</span>
 			<span *ngIf="childVisible && selectType==='linkedNetwork'">关联网络图</span>
@@ -213,7 +214,51 @@
 				</nz-tabset>
 
 			</nz-spin>
-		</nz-drawer>
+        </nz-drawer>
+
+        <!-- KDA -->
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='KDA'" [nzClosable]="false"
+		 [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }"
+		 [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
+            <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
+                <div class="tools-params-kda">
+                    <nz-row class="mb12">
+                        <span nz-col nzSpan="6">关键基因</span>
+                        <nz-col nzSpan="10">
+                            <nz-slider [nzMin]="kdaKeyGeneCountRange[0]" [nzMax]="kdaKeyGeneCountRange[1]" [(ngModel)]="kdaKeyGeneCountRange[2]" (ngModelChange)="handleKdaSliderChange($event,'key')"></nz-slider>
+                        </nz-col>
+                        <div nz-col nzSpan="2">
+                            <nz-input-number [nzMin]="kdaKeyGeneCountRange[0]" [nzMax]="kdaKeyGeneCountRange[1]" [ngStyle]="{ 'marginLeft': '16px' }" [(ngModel)]="kdaKeyGeneCountRange[2]" (ngModelChange)="handleKdaSliderChange($event,'key')"></nz-input-number>
+                        </div>
+                    </nz-row>
+                    <nz-row class="mb12">
+                        <span nz-col nzSpan="6">关联基因</span>
+                        <nz-col nzSpan="10">
+                            <nz-slider [nzMin]="kdaRelationGeneCountRange[0]" [nzMax]="kdaRelationGeneCountRange[1]" [(ngModel)]="kdaRelationGeneCountRange[2]" (ngModelChange)="handleKdaSliderChange($event,'relation')"></nz-slider>
+                        </nz-col>
+                        <div nz-col nzSpan="2">
+                            <nz-input-number [nzMin]="kdaRelationGeneCountRange[0]" [nzMax]="kdaRelationGeneCountRange[1]" [(ngModel)]="kdaRelationGeneCountRange[2]" (ngModelChange)="handleKdaSliderChange($event,'relation')" [ngStyle]="{ 'marginLeft': '16px' }"></nz-input-number>
+                        </div>
+                    </nz-row>
+                    <nz-row>
+                        <span nz-col nzSpan="6">score</span>
+                        <nz-col nzSpan="10">
+                            <nz-slider [nzMin]="kdaPpiScore[0]" [nzMax]="kdaPpiScore[1]" [(ngModel)]="kdaPpiScore[2]"></nz-slider>
+                        </nz-col>
+                        <div nz-col nzSpan="2">
+                            <nz-input-number [nzMin]="kdaPpiScore[0]" [nzMax]="kdaPpiScore[1]" [(ngModel)]="kdaPpiScore[2]" [ngStyle]="{ 'marginLeft': '16px' }"></nz-input-number>
+                        </div>
+                    </nz-row>
+                    <p *ngIf="kdaError" class="center">缺少score数据</p>
+                </div>
+                <nz-divider></nz-divider>
+                <div class="tool-params-button-group" *ngIf="!kdaError">
+                    <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                    <button nz-button nzType="primary"  (click)="kdaConfirm('kda')"
+                        nzSize="middle">确定</button>
+                </div>
+			</nz-spin>
+        </nz-drawer>
 
 		<!-- 卡方检验 -->
 		<nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='chiSquare'" [nzClosable]="false"
@@ -439,7 +484,6 @@
 					 class="center">缺少必要数据</p>
 				</div>
                 <nz-divider></nz-divider>
-                {{heatmapReError}}
 				<div *ngIf="heatmapReStand.length && heatmapReRelations.length" class="tool-params-button-group">
 					<button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
 					<button nz-button nzType="primary" [disabled]="!heatmapReSelectStand || !heatmapReSelectRelation || heatmapReError"
