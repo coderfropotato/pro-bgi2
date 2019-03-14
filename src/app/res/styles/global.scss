@@ -2122,13 +2122,21 @@ button {
 			width: 100%;
 			height: auto;
 			margin-top: 40px;
-			h4{
-				height: 32px;
+
+			.mgene_content{
 				width: 100%;
+				height: auto;
+			}
+
+			.info_name{
+				
+			}
+
+			h4{
 				font-size: 20px;
 				font-weight: 700;
 				color: #333;
-				padding-bottom: 10px;
+				margin-bottom: 10px;
 			}
 			h4::before {
 				content: "";
@@ -2137,7 +2145,25 @@ button {
 				height: 20px;
 				background-color: #5378f8;
 				margin-right: 10px;
-				vertical-align: bottom;
+				margin-bottom: 5px;
+				vertical-align: sub;
+			}
+
+			h5{
+				font-size: 18px;
+				font-weight: 700;
+				color: #333;
+				margin-bottom: 10px;
+				margin-left:25px;
+			}
+			h5::before {
+				content: "";
+				display: inline-block;
+				width: 4px;
+				height: 20px;
+				background-color: #5378f8;
+				margin-right: 10px;
+				vertical-align: sub;
 			}
 		}
 	}
