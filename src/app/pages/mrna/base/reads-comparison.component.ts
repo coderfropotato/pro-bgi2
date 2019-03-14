@@ -153,12 +153,13 @@ export class ReadsComparisonComponent implements OnInit {
     let config: object={
       chart: {
         title: "reads 在转录本上的分布",
-        dblclick: function(event,title) {
-          let text = title.firstChild.nodeValue;
-          that.promptService.open(text,(data)=>{
-              title.textContent = data;
-          })
-        },
+        dblclick: function(event) {
+				  var name = prompt("请输入需要修改的标题", "");
+				  if (name) {
+					this.setChartTitle(name);
+					this.updateTitle();
+				  }
+				},
         width:660,
         el: "#rondData",
         custom: ["window_pos", "window_read_num"],
@@ -174,8 +175,8 @@ export class ReadsComparisonComponent implements OnInit {
           dblclick: function(event) {
             var name = prompt("请输入需要修改的标题", "");
             if (name) {
-              this.setYTitle(name);
-              this.updateTitle();
+              this.setXTitle(name);
+							this.updateTitle();
             }
           }
         },
@@ -234,11 +235,12 @@ export class ReadsComparisonComponent implements OnInit {
     let config: object={
         chart: {
           title: "转录本的 reads 覆盖度",
-          dblclick: function(event,title) {
-            let text = title.firstChild.nodeValue;
-            that.promptService.open(text,(data)=>{
-                title.textContent = data;
-            })
+          dblclick: function(event) {
+            var name = prompt("请输入需要修改的标题", "");
+            if (name) {
+            this.setChartTitle(name);
+            this.updateTitle();
+            }
           },
           width:600,
           custom: ["percent_covered", "percent_transcript"],
@@ -252,7 +254,7 @@ export class ReadsComparisonComponent implements OnInit {
             dblclick: function(event) {
               var name = prompt("请输入需要修改的标题", "");
               if (name) {
-                this.setYTitle(name);
+                this.setXTitle(name);
                 this.updateTitle();
               }
             }
@@ -297,12 +299,13 @@ export class ReadsComparisonComponent implements OnInit {
     let config: object={
       chart: {
         title: "测序饱和度曲线",
-        dblclick: function(event,title) {
-          let text = title.firstChild.nodeValue;
-          that.promptService.open(text,(data)=>{
-              title.textContent = data;
-          })
-        },
+        dblclick: function(event) {
+				  var name = prompt("请输入需要修改的标题", "");
+				  if (name) {
+					this.setChartTitle(name);
+					this.updateTitle();
+				  }
+				},
         width:660,
         interpolate:'cardinal',
         el: "#saturationData",
@@ -318,8 +321,8 @@ export class ReadsComparisonComponent implements OnInit {
           dblclick: function(event) {
             var name = prompt("请输入需要修改的标题", "");
             if (name) {
-              this.setYTitle(name);
-              this.updateTitle();
+              this.setXTitle(name);
+							this.updateTitle();
             }
           }
         },

@@ -123,11 +123,12 @@ export class LrnaComponent implements OnInit {
 		let config: object = {
 			chart: {
 				title: 'Count number distribution of total Small RNAs in YK',
-				dblclick: function(event, title) {
-					let text = title.firstChild.nodeValue;
-					that.promptService.open(text, (data) => {
-						title.textContent = data;
-					});
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					  this.setChartTitle(name);
+					  this.updateTitle();
+					}
 				},
 				width: 600,
 				height: 400,
@@ -261,7 +262,7 @@ export class LrnaComponent implements OnInit {
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
 		this.selectConfirmData = data;
-		this.tableRNAEntity['Sample'] = this.selectConfirmData;
+		this.tableRNAEntity['smallRNASampleList'] = this.selectConfirmData;
 		this.RNALchart.reGetData();
 	}
 

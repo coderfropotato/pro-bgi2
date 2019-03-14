@@ -183,12 +183,13 @@ export class ReadsFilterComponent implements OnInit {
     let config:object={
       chart: {
 				title: "原始数据过滤成分统计",
-        dblclick: function(event,title) {
-          let text = title.firstChild.nodeValue;
-          that.promptService.open(text,(data)=>{
-              title.textContent = data;
-          })
-        },
+                dblclick: function(event) {
+                    var name = prompt("请输入需要修改的标题", "");
+                    if (name) {
+                      this.setChartTitle(name);
+                      this.updateTitle();
+                    }
+                  },
         width:600,
         height:400,
         padding:0,
@@ -242,11 +243,12 @@ export class ReadsFilterComponent implements OnInit {
     let config:object={
         chart: {
           title: "Clean reads 碱基含量分布",
-          dblclick: function(event,title) {
-            let text = title.firstChild.nodeValue;
-            that.promptService.open(text,(data)=>{
-                title.textContent = data;
-            })
+          dblclick: function(event) {
+            var name = prompt("请输入需要修改的标题", "");
+            if (name) {
+              this.setChartTitle(name);
+              this.updateTitle();
+            }
           },
           width:600,
           custom: ["name", "value", "category"],
@@ -261,8 +263,8 @@ export class ReadsFilterComponent implements OnInit {
             dblclick: function(event) {
               var name = prompt("请输入需要修改的标题", "");
               if (name) {
-                this.setYTitle(name);
-                this.updateTitle();
+                this.setXTitle(name);
+				this.updateTitle();
               }
             }
           },
