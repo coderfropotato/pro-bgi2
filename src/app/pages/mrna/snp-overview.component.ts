@@ -165,12 +165,13 @@ export class SnpOverviewComponent implements OnInit {
 		let config: object = {
 			chart: {
 				title: 'SNP类型统计',
-				dblclick: function(event,title) {
-          let text = title.firstChild.nodeValue;
-          that.promptService.open(text,(data)=>{
-              title.textContent = data;
-          })
-        },
+				dblclick: function(event) {
+					var name = prompt('请输入需要修改的标题', '');
+					if (name) {
+						this.setChartTitle(name);
+						this.updateTitle();
+					}
+				},
 				el: '#snpOverviewDiv',
 				type: 'stackBarPercent',
 				width: 660,
