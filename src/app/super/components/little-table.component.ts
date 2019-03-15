@@ -10,8 +10,9 @@ declare const $: any;
     styles: []
 })
 export class LittleTableComponent implements OnInit {
-    @Input()
-    url: string;
+    @Input() url: string;
+    @Input() pageEntity: object;
+
     tableError: string;
 
     isLoading: boolean = false;
@@ -33,9 +34,7 @@ export class LittleTableComponent implements OnInit {
         this.ajaxService
             .getDeferData({
                 url: this.url,
-                data: {
-                    LCID: sessionStorage.getItem("LCID")
-                }
+                data: this.pageEntity
             })
             .subscribe(
                 (data: any) => {
@@ -64,5 +63,9 @@ export class LittleTableComponent implements OnInit {
 
     refresh() {
         this.getData();
+    }
+
+    down(){
+
     }
 }

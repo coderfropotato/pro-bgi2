@@ -12,12 +12,12 @@
         <div class="f-content">
             <h4 class="title">1.2.1 样品分组设置</h4>
             <p class="help_text">生物学实验一般要有生物学重复，把生物学重复的多个样品归为一组，下表是分析时使用的样品分组情况：</p>
-            <app-little-table [url]="defaultUrl"></app-little-table>
+            <app-little-table [url]="defaultUrl" [pageEntity]="EntityOne"></app-little-table>
         </div>
         <div class="f-content">
             <h4 class="title">1.2.2 差异分组设置</h4>
             <p class="help_text">转录组测序的重要分析点之一是表达量的差异比较，在两两比较中设定对照和处理的情况如下表：</p>
-            <app-little-table [url]="defaultUrlTwo"></app-little-table>
+            <app-little-table [url]="defaultUrlTwo" [pageEntity]="EntityTwo"></app-little-table>
         </div>
     </div>
 

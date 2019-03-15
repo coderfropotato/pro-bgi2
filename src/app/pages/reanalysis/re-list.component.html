@@ -57,8 +57,8 @@
                     <tr>
                         <th>名称</th>
                         <th>状态</th>
-                        <th>类型</th>
                         <th>创建时间</th>
+                        <th>前置任务</th>
                         <th>备注</th>
                         <th>操作</th>
                     </tr>
@@ -77,9 +77,33 @@
                             <span *ngIf="data['process'] == 0"><i class="anticon anticon-close-circle error"></i>&nbsp;失败</span>
                             <span *ngIf="data['process'] == -1"><i class="anticon anticon-hourglass pending"></i>&nbsp;{{data['restTime']}}</span>
                         </td>
-                        <td>{{data['reanalysisType']}}</td>
                         <td>{{data['date']}}</td>
-                        <td>{{data['remark']?data['remark']:'-'}}</td>
+                        <td>
+                            <div class="links">
+                                <span>{{data['parent'].length}}
+                                    <ul *ngIf="data['parent'].length" class="link-lists">
+                                        <li *ngFor="let item of data['parent']" (click)="toDetail(item)">
+                                            <p>类型：{{item['reanalysisType']}}</p>
+                                            <p>任务名称：{{item['projectName']}}</p>
+                                        </li>
+                                    </ul>
+                                </span>
+
+                            </div>
+                        </td>
+                        <!-- <td>{{data['remark']?data['remark']:'-'}}</td> -->
+                        <td class="editRemark">
+                            <span class="popover-table-tools"  style="display:inline-block;">
+                                <span *ngIf="!data.isEditRemark">{{data['remark'] ? data['remark'] : '-'}}
+                                </span>
+                            </span>
+                            <!-- ng-focus：获取到焦点，ng-blur: 失去焦点，ng-keyup（onkeyup）:回车-->
+                            <input *ngIf="data.isEditRemark" type="text" placeholder="字数限制100"
+                            (blur)="updateRemark(data,data.remark)"
+                            (keyup.enter)="updateRemarkEnter(data,data.remark)"
+                            [(ngModel)]="data.remark">
+                            <i class="iconfont icon-xiugai" (click)=updateRemarkCheck(data)></i>
+                        </td>
                         <td>
                             <a (click)="toDetail(data)">Check</a>
                             <nz-divider nzType="vertical"></nz-divider>

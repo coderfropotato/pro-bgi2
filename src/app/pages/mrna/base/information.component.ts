@@ -83,6 +83,8 @@ export class InformationComponent implements OnInit {
 	legendIndexF: number = 0; //当前点击图例的索引
 	colorF: string; //当前选中的color
 
+	EntityOne: object;
+
 	constructor(
 		private message: MessageService,
 		private store: StoreService,
@@ -146,6 +148,10 @@ export class InformationComponent implements OnInit {
 			LCID: this.store.getStore('LCID'),
 			refGeneTypeList: m_geneTypeList
 		};
+
+		this.EntityOne = {
+			LCID: this.store.getStore('LCID')
+		}
 
 		//2.6 小RNA数量
 		this.defaultUrl = `${config['javaPath']}/basicModule/annotationStat`;
