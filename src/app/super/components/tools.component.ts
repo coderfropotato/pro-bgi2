@@ -1512,14 +1512,30 @@ export class ToolsComponent implements OnInit {
 					this.geneClassSelect.length = 0;
 
 					if (res['status'] == 0 && res['data'].length) {
-						this.geneClassData = res['data'].map((v, index) => {
-							let obj = {
-								name: v,
-								checked: index ? false : true
-							};
-							return obj;
-						});
-						this.geneClassSelect.push(this.geneClassData[0]);
+                        res['data'].forEach((v,i)=>{
+                            if(v['value'].length){
+                                v['value'] = v['value'].map((val,index)=>{
+                                    let obj = {
+                                        name: val,
+                                        checked: (index || i) ? false : true
+                                    };
+
+                                    if(!i && !index)  this.geneClassSelect.push(obj);
+                                    return obj;
+                                })
+                            }
+                        })
+
+                        this.geneClassData = res['data'];
+						// this.geneClassData = res['data'].map((v, index) => {
+						// 	let obj = {
+						// 		name: v,
+						// 		checked: index ? false : true
+						// 	};
+						// 	return obj;
+						// });
+                        // this.geneClassSelect.push(this.geneClassData[0]);
+
 						this.geneClassError = false;
 					} else {
 						this.geneClassError = true;
@@ -1618,7 +1634,7 @@ export class ToolsComponent implements OnInit {
 		let entity = this.toolsService.get('tableEntity');
 		this.ajaxService
 			.getDeferData({
-				url: `${config['javaPath']}/classification/config`,
+				url: `${config['javaPath']}/enrichment/config`,
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
 					geneType: entity['geneType'],
@@ -1631,15 +1647,30 @@ export class ToolsComponent implements OnInit {
 					this.geneRichData.length = 0;
 					this.geneRichSelect.length = 0;
 					if (res['status'] == 0 && res['data'].length) {
-						this.geneRichData = res['data'].map((v, index) => {
-							let obj = {
-								name: v,
-								checked: index ? false : true
-							};
-							return obj;
-						});
-						this.geneRichSelect.push(this.geneRichData[0]);
-						this.geneRichError = false;
+                        res['data'].forEach((v,i)=>{
+                            if(v['value'].length){
+                                v['value'] = v['value'].map((val,index)=>{
+                                    let obj = {
+                                        name: val,
+                                        checked: (index || i) ? false : true
+                                    };
+                                    if(!i && !index)  this.geneRichSelect.push(obj);
+                                    return obj;
+                                })
+                            }
+                        })
+
+						// this.geneRichData = res['data'].map((v, index) => {
+						// 	let obj = {
+						// 		name: v,
+						// 		checked: index ? false : true
+						// 	};
+						// 	return obj;
+						// });
+						// this.geneRichSelect.push(this.geneRichData[0]);
+
+                        this.geneRichData = res['data'];
+                        this.geneRichError = false;
 					} else {
 						this.geneRichError = true;
 					}
