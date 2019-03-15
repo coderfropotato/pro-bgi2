@@ -604,6 +604,17 @@ button {
     }
 }
 
+.alternativeSplicing{
+	.small_text{
+		width: 100%;
+		height: 30px;
+		line-height: 30px;
+		text-indent: 1em;
+	}
+	.small_span{
+		color: red;
+	}
+}
 // @media screen and (max-width: 1350px) {
 // 	.content{
 // 		.switch{
@@ -804,9 +815,94 @@ button {
                 //     box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
                 // }
             }
-            .diff-venn-img {
-                background-image: url('../img/韦恩图.png');
-            }
+			.gene-img {
+                background-image: url('../img/list/基因总表.png');
+			}
+			.diff-expression-img {
+				background-image: url('../img/list/差异表达.png');
+			}
+			.diff-expression-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+			.expression-img {
+				background-image: url('../img/list/表达量.png');
+			}
+			.expression-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+			.cluster-img {
+				background-image: url('../img/list/差异聚类.png');
+			}
+			.cluster-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+			.go-class-img {
+				background-image: url('../img/list/go分类.png');
+			}
+			.go-enrichment-img {
+                background-image: url('../img/list/GO富集.png');
+			}
+			.go-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+			.kegg-class-img {
+				background-image: url('../img/list/kegg分类.png');
+			}
+			.kegg-enrichment-img {
+                background-image: url('../img/list/kegg富集.png');
+			}
+			.kegg-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+
+			.alternative-splicing-img {
+                background-image: url('../img/list/可变剪切.png');
+			}
+			.diff-alternative-splicing-img {
+				background-image: url('../img/list/差异可变剪切.png');
+			}
+			.gene-fusion-img {
+                background-image: url('../img/list/基因融合.png');
+			}
+			.as-sv-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+
+			
+			.snp-overview-img {
+                background-image: url('../img/list/SNP总览.png');
+			}
+			.snp-distribution-img {
+				background-image: url('../img/list/SNP区域分布.png');
+			}
+			.indel-overview-img {
+                background-image: url('../img/list/indel总览.png');
+			}
+			.indel-distribution-img {
+                background-image: url('../img/list/indel区域分布.png');
+			}
+			.snp-indel-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+
+			.overview-img {
+                background-image: url('../img/list/项目概况.png');
+			}
+			.reference-img {
+				background-image: url('../img/list/参考信息.png');
+			}
+			.reads-filter-img {
+                background-image: url('../img/list/reads过滤.png');
+			}
+			.reads-alignment-img {
+                background-image: url('../img/list/reads比对.png');
+			}
+			.smallrna-img {
+                background-image: url('../img/list/检测.png');
+			}
+			.basic-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
         }
     }
     .savegenelist {
@@ -2256,4 +2352,148 @@ button {
     border-radius: 2px;
     border: 1px solid #DFE3F2;
     height: 25px;
+}
+.mgeneDetail{
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	background: #ffffff;
+	.mgeneDetail_conetnt{
+		padding: 40px 100px;
+		.mgene_title{
+			width: 100%;
+			height: 64px;
+			line-height: 64px;
+			text-align: center;
+			background: rgb(83, 120, 248);
+			color: #fff;
+			font-size: 24px;
+		}
+		.mgene_page{
+			width: 100%;
+			height: auto;
+			margin-top: 40px;
+
+			.mgene_content{
+				width: 100%;
+				height: auto;
+				margin-bottom: 10px;
+			}
+
+			// .img_one{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/ncbi.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_two{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/hgnc.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_three{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/ense.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_four{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/cards.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_five{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/kegg.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_six{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/mir.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+
+			.info_name{
+				display: inline-block;
+				width: 150px;
+				text-indent: 2em;
+			}
+
+			.transcripts_table{
+				margin: 10px auto;
+				width: 96%;
+				height: auto;
+			}
+
+			.mlineChartDiv{
+				width: 600px;
+				height: 550px;
+				margin: 0 auto;
+			}
+			.m_img{
+				width: 600px;
+				height: 500px;
+				margin: 0 auto;
+			}
+
+			.mlink{
+				margin-left:20px;
+				a{
+					margin-left:6px;
+					font-weight: 700;
+				}
+			}
+
+			h4{
+				font-size: 20px;
+				font-weight: 700;
+				color: #333;
+				margin-bottom: 10px;
+			}
+			h4::before {
+				content: "";
+				display: inline-block;
+				width: 8px;
+				height: 20px;
+				background-color: #5378f8;
+				margin-right: 10px;
+				margin-bottom: 5px;
+				vertical-align: sub;
+			}
+
+			h5{
+				font-size: 18px;
+				font-weight: 700;
+				color: #333;
+				margin-bottom: 10px;
+				// margin-left:25px;
+			}
+			h5::before {
+				content: "";
+				display: inline-block;
+				width: 4px;
+				height: 20px;
+				background-color: #5378f8;
+				margin-right: 10px;
+				vertical-align: sub;
+			}
+		}
+	}
 }

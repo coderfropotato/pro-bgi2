@@ -7,47 +7,94 @@
             </ng-template>
 
             <ng-template #modalContent>
-                <div class="relative-params-top">
+                <nz-select class="mb12"  [(ngModel)]="selectedType" >
+                    <nz-option *ngFor="let type of selectType" [nzValue]="type" [nzLabel]="type"></nz-option>
+                </nz-select>
+                <div class="relative-params-top" *ngIf="selectedType===selectType[0]">
                     <p *ngIf="currentTableRelative.length">当前表格中的关系：<span class="mr12" *ngFor="let re of currentTableRelative;index as i;">{{re}}</span></p>
                     <!-- [class.active-disabled]="currentTableRelative.includes(relation['name'])" -->
                     <button style="margin-right: 8px;" [class.active]="relation['checked'] && !relations['disabled']"  *ngFor="let relation of relations;index as i;" [nzSize]="middle" nz-button nzType="Default" [disabled]="relation['disabled']" (click)="select(relation)">{{relation['name']}}</button>
                 </div>
                 <div class="relative-params-content">
-                    <ng-container *ngFor="let relation of relations;index as i;">
-                        <div [hidden]="!relation['checked']">
-                            <nz-divider [nzText]="relation['name']" nzOrientation="left"></nz-divider>
-                            <!-- min score -->
-                            <nz-row>
-                                <nz-col nzSpan="4">min score</nz-col>
+                    <!-- 功能关系 -->
+                    <ng-container *ngIf="selectedType===selectType[0]">
+                        <ng-container  *ngFor="let relation of relations;index as i;">
+                            <div [hidden]="!relation['checked']">
+                                <nz-divider [nzText]="relation['name']" nzOrientation="left"></nz-divider>
+                                <!-- min score -->
+                                <nz-row>
+                                    <nz-col nzSpan="4">min score</nz-col>
+                                    <nz-col nzSpan="10">
+                                        <nz-slider [nzDisabled]="relation['disabled']" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]"  [(ngModel)]="relation['score'][2]"></nz-slider>
+                                    </nz-col>
+                                    <nz-col nzSpan="1"></nz-col>
+                                    <nz-col nzSpan="1">
+                                        <nz-input-number [nzDisabled]="relation['disabled']" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]"   [(ngModel)]="relation['score'][2]"></nz-input-number>
+                                    </nz-col>
+                                </nz-row>
+                                <!-- max num -->
+                                <nz-row>
+                                    <nz-col nzSpan="4">max num</nz-col>
+                                    <nz-col nzSpan="10">
+                                        <nz-row>
+                                            <nz-col>
+                                                <nz-radio-group [nzDisabled]="relation['disabled']" [(ngModel)]="relation['limit']">
+                                                    <label nz-radio [nzValue]="true">limit</label>
+                                                    <label nz-radio [nzValue]="false">no limit</label>
+                                                </nz-radio-group>
+                                            </nz-col>
+                                        </nz-row>
+                                        <nz-row>
+                                            <nz-col nzSpan="20">
+                                                <nz-slider [nzDisabled]="relation['disabled']" [nzMin]="relation['max'][0]" [nzMax]="relation['max'][1]"  [(ngModel)]="relation['max'][2]" [nzDisabled]="!relation['limit']"></nz-slider>
+                                            </nz-col>
+                                            <nz-col nzSpan="1"></nz-col>
+                                            <nz-col nzSpan="1">
+                                                <nz-input-number [nzDisabled]="relation['disabled']" [nzMin]="relation['max'][0]" [nzDisabled]="!relation['limit']" [nzMax]="relation['max'][1]"   [(ngModel)]="relation['max'][2]"></nz-input-number>
+                                            </nz-col>
+                                        </nz-row>
+                                    </nz-col>
+                                </nz-row>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <!-- 位置关系 -->
+                    <ng-container *ngIf="selectedType===selectType[1]">
+                        <div>
+                            <p>上下游参数选择</p>
+                            <nz-row class="mb12">
+                                <nz-col nzSpan="2"></nz-col>
+                                <nz-col nzSpan="2">上游</nz-col>
                                 <nz-col nzSpan="10">
-                                    <nz-slider [nzDisabled]="relation['disabled']" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]"  [(ngModel)]="relation['score'][2]"></nz-slider>
+                                    <nz-slider  [nzMin]="PosRange[0]" [nzMax]="PosRange[1]"  [(ngModel)]="upDefault"></nz-slider>
                                 </nz-col>
                                 <nz-col nzSpan="1"></nz-col>
+                                <nz-col nzSpan="5">
+                                    <nz-input-number [nzMin]="PosRange[0]" [nzMax]="PosRange[1]"   [(ngModel)]="upDefault"></nz-input-number>
+                                </nz-col>
                                 <nz-col nzSpan="1">
-                                    <nz-input-number [nzDisabled]="relation['disabled']" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]"   [(ngModel)]="relation['score'][2]"></nz-input-number>
+                                    <span>{{unit}}</span>
                                 </nz-col>
                             </nz-row>
-                            <!-- max num -->
-                            <nz-row>
-                                <nz-col nzSpan="4">max num</nz-col>
+                            <nz-row class="mb12">
+                                <nz-col nzSpan="2"></nz-col>
+                                <nz-col nzSpan="2">下游</nz-col>
                                 <nz-col nzSpan="10">
-                                    <nz-row>
-                                        <nz-col>
-                                            <nz-radio-group [nzDisabled]="relation['disabled']" [(ngModel)]="relation['limit']">
-                                                <label nz-radio [nzValue]="true">limit</label>
-                                                <label nz-radio [nzValue]="false">no limit</label>
-                                            </nz-radio-group>
-                                        </nz-col>
-                                    </nz-row>
-                                    <nz-row>
-                                        <nz-col nzSpan="20">
-                                            <nz-slider [nzDisabled]="relation['disabled']" [nzMin]="relation['max'][0]" [nzMax]="relation['max'][1]"  [(ngModel)]="relation['max'][2]" [nzDisabled]="!relation['limit']"></nz-slider>
-                                        </nz-col>
-                                        <nz-col nzSpan="1"></nz-col>
-                                        <nz-col nzSpan="1">
-                                            <nz-input-number [nzDisabled]="relation['disabled']" [nzMin]="relation['max'][0]" [nzDisabled]="!relation['limit']" [nzMax]="relation['max'][1]"   [(ngModel)]="relation['max'][2]"></nz-input-number>
-                                        </nz-col>
-                                    </nz-row>
+                                    <nz-slider  [nzMin]="PosRange[0]" [nzMax]="PosRange[1]"  [(ngModel)]="downDefault"></nz-slider>
+                                </nz-col>
+                                <nz-col nzSpan="1"></nz-col>
+                                <nz-col nzSpan="5">
+                                    <nz-input-number [nzMin]="PosRange[0]" [nzMax]="PosRange[1]"   [(ngModel)]="downDefault"></nz-input-number>
+                                </nz-col>
+                                <nz-col nzSpan="1">
+                                    <span>{{unit}}</span>
+                                </nz-col>
+                            </nz-row>
+                            <nz-row>
+                                <nz-col nzSpan="2"></nz-col>
+                                <nz-col nzSpan="2">链</nz-col>
+                                <nz-col nzSpan="10">
+                                    <label nz-radio *ngFor="let r of link" [(ngModel)]="r['checked']">{{r['name']}}</label>
                                 </nz-col>
                             </nz-row>
                         </div>

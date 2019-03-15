@@ -1,6 +1,6 @@
 <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix" -->
 <div id="indel_overview_id" style="height:100%;background-color: #fff;">
-    <app-geneTable
+    <!-- <app-geneTable
         #defaultIndelTable
         [url]="defaultTableUrl"
         [pageEntity]="defaultTableEntity"
@@ -9,5 +9,14 @@
         [tableHeight]="tableHeight"
         [checkStatusInParams]="defaultCheckStatusInParams"
         [(computedScrollHeight)]="computedScrollHeight"
-    ></app-geneTable>
+    ></app-geneTable> -->
+    <app-big-table
+        class="no-outside-border"
+        #bigTable
+        [tableHeight]="tableHeight"
+        [pageEntity]="defaultTableEntity"
+        [url]="defaultTableUrl"
+        [tableId]="defaultTableId"
+        [(computedScrollHeight)]="computedScrollHeight"
+    ></app-big-table>
 </div>

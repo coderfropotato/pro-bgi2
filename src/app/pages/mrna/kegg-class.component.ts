@@ -128,7 +128,7 @@ export class KeggClassComponent implements OnInit {
 
 	isExceed: any = null;
 	selectedVal: string = '';
-	annotation: string = 'kegg_module';
+	annotation: string = 'kegg_pathway';
 	selectData: any = [];
 
 	isMultipleSelect: boolean = false;

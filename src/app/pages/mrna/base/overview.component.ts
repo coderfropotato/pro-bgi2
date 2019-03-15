@@ -36,6 +36,9 @@ export class OverviewComponent implements OnInit {
 	selectPanelData: object[] = [];
 	selectConfirmData: string[] = [];
 
+	EntityOne: object;
+	EntityTwo: object;
+
 	//主成分分析
 	PCASelectType: any = [];
 	PCASearchType: string;
@@ -99,9 +102,15 @@ export class OverviewComponent implements OnInit {
 
 		//样品分组设置
 		this.defaultUrl = `${config['javaPath']}/basicModule/groupPlan`;
+		this.EntityOne = {
+			LCID: this.store.getStore('LCID')
+		}
 
 		//差异分组设置
 		this.defaultUrlTwo = `${config['javaPath']}/basicModule/diffExpPlan`;
+		this.EntityTwo = {
+			LCID: this.store.getStore('LCID')
+		}
 
 		this.colorArr = this.store.colors;
 

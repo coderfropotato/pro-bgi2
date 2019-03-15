@@ -23,7 +23,16 @@ export class GeneRelativeComponent implements OnInit {
 	relations: object[] = [];
 	beforeRelation: object[] = [];
 	disabledRelative: string[] = [];
-	currentTableRelative: string[] = [];
+    currentTableRelative: string[] = [];
+
+    selectType:string[] = ["功能关系","位置关系"];
+    selectedType:string = '功能关系';
+    PosRange:number[] = [1,100000];
+    upDefault:number = 100;
+    downDefault:number = 100;
+
+    unit:string = 'BP';
+    link:object[] = [{"name":"同义链","checked":true},{"name":"反义链","checked":true}];
 
 	constructor(private storeService: StoreService) {}
 

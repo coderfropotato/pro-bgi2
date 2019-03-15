@@ -484,7 +484,6 @@
 					 class="center">缺少必要数据</p>
 				</div>
                 <nz-divider></nz-divider>
-                {{heatmapReError}}
 				<div *ngIf="heatmapReStand.length && heatmapReRelations.length" class="tool-params-button-group">
 					<button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
 					<button nz-button nzType="primary" [disabled]="!heatmapReSelectStand || !heatmapReSelectRelation || heatmapReError"
@@ -499,8 +498,10 @@
 		 [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
 			<nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
 				<div *ngIf="geneClassData.length">
-					<button class="mb12 mr12" (click)="handlerGeneClassSelect(klass)" [class.active]="klass['checked']" *ngFor="let klass of geneClassData;index as i;"
-					 nz-button nzType="default" nzSize="middle">{{klass['name']}}</button>
+                    <div class="tool-params-tab" *ngFor="let item of geneClassData;index as i;">
+                        <p>{{item['key']}}</p>
+                        <button class="mb12 mr12" (click)="handlerGeneClassSelect(klass)" [class.active]="klass['checked']" *ngFor="let klass of item['value'];" nz-button nzType="default" nzSize="middle">{{klass['name']}}</button>
+                    </div>
 					<nz-alert *ngIf="!geneClassSelect.length" nzShowIcon nzType="warning" nzMessage="请选择一个分类"></nz-alert>
 				</div>
 				<p *ngIf="!geneClassData.length && doGeneClassAjax" class="center">缺少必要数据</p>
@@ -519,8 +520,11 @@
 		 [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
 			<nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
 				<div *ngIf="geneRichData.length">
-					<button class="mb12 mr12" (click)="handlerGeneRichSelect(rich)" [class.active]="rich['checked']" *ngFor="let rich of geneRichData;index as i;"
-					 nz-button nzType="default" nzSize="middle">{{rich['name']}}</button>
+                    <div class="tool-params-tab" *ngFor="let item of geneRichData;index as i;">
+                        <p>{{item['key']}}</p>
+                        <button class="mb12 mr12" (click)="handlerGeneRichSelect(rich)" [class.active]="rich['checked']" *ngFor="let rich of item['value'];index as i;"
+                        nz-button nzType="default" nzSize="middle">{{rich['name']}}</button>
+                    </div>
 					<nz-alert *ngIf="!geneRichSelect.length" nzShowIcon nzType="warning" nzMessage="请选择一个分类"></nz-alert>
 				</div>
 				<p *ngIf="!geneRichData.length && doGeneRichAjax" class="center">缺少必要数据</p>

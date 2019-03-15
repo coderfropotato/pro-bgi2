@@ -558,6 +558,7 @@ export class ReNetComponent implements OnInit {
             .style('cursor','pointer')
             .attr("marker-end",d=> d.type==='target' ? 'url(#end-arrow)' :'')
             .on("mouseover", m => {
+                // target='_blank' href='https://www.ncbi.nlm.nih.gov/pubmed/${m.references}'
                 let text = `source：${m.source.geneID}<br>target：${m.target.geneID}<br>type：${m.type}<br>score：${m.score}<br>文献：<a>${m.references}</a>`;
                 this.globalService.showPopOver(d3.event, text);
             })
