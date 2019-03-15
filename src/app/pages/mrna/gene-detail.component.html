@@ -1,3 +1,142 @@
-<p>
-  geneDetail works!
-</p>
+<div class="mgeneDetail">
+  <div class="mgeneDetail_conetnt">
+    <div class="mgene_title">
+      {{geneID}} {{'gene_detail.gene_detail' | translate}}
+    </div>
+
+    <div class="mgene_page">
+      <div class="mgene_content">
+          <h4>{{'gene_detail.gene_information' | translate}}</h4>
+          <p *ngIf="geneInfoList['gene_id']">
+            <span class="info_name">{{'gene_detail.gene_id' | translate}}</span>
+            <span class="info_content">
+              {{geneInfoList.gene_id}}
+            </span>
+            <span *ngIf="geneInfoList['url_ncbi_gene_id']" class="mlink">link to<a href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">NCBI</a></span>
+            <span *ngIf="geneInfoList['url_hgnc_gene_id']" class="mlink">link to<a href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:{{geneInfoList['url_hgnc_gene_id']}}" target="_blank">HGNC</a></span>
+            <span *ngIf="geneInfoList['url_ensembl_gene_id']" class="mlink">link to<a href=" https://www.ensembl.org/Homo_sapiens/Gene/Summary?g={{geneInfoList['url_ensembl_gene_id']}}" target="_blank">Ensembl</a></span>
+            <span *ngIf="geneInfoList['url_genecard_gene_id']" class="mlink">link to<a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={{geneInfoList['url_genecard_gene_id']}}" target="_blank">GeneCards</a></span>
+            <span *ngIf="geneInfoList['url_kegg_gene_id']" class="mlink">link to<a href="https://www.kegg.jp/dbget-bin/www_bget?ko:{{geneInfoList['url_kegg_gene_id']}}" target="_blank">KEGG</a></span>
+            <span *ngIf="geneInfoList['url_mirbase_gene_id']" class="mlink">link to<a href=" http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{geneInfoList['url_mirbase_gene_id']}}" target="_blank">miRBase</a></span>
+          </p>
+          <p *ngIf="geneInfoList['gene_symbol']">
+            <span class="info_name">{{'gene_detail.gene_symbol' | translate}}</span>
+            <span class="info_content">
+                {{geneInfoList['gene_symbol']}}
+            </span>
+          </p>
+          <p *ngIf="geneInfoList['gene_full_name']">
+            <span class="info_name">{{'gene_detail.gene_full_name' | translate}}</span>
+            <span class="info_content">
+                {{geneInfoList['gene_full_name']}}
+            </span>
+          </p>
+          <p *ngIf="geneInfoList['gene_other_symbol']">
+            <span class="info_name">{{'gene_detail.gene_other_symbol' | translate}}</span>
+            <span class="info_content">
+                {{geneInfoList['gene_other_symbol']}}
+            </span>
+          </p>
+          <p *ngIf="geneInfoList['tf_family']">
+            <span class="info_name">{{'gene_detail.tf_family' | translate}}</span>
+            <span class="info_content">
+                {{geneInfoList['tf_family']}}
+            </span>
+          </p>
+          <p *ngIf="geneInfoList['gene_chr']">
+            <span class="info_name">{{'gene_detail.gene_chr' | translate}}</span>
+            <span class="info_content">
+                {{geneInfoList['gene_chr']}}<span *ngIf="geneInfoList['gene_start']">:</span>{{geneInfoList['gene_start']}}<span *ngIf="geneInfoList['gene_end']">-</span>{{geneInfoList['gene_end']}}
+            </span>
+          </p>
+          <p *ngIf="geneInfoList['gene_map_loc']">
+            <span class="info_name">{{'gene_detail.gene_map_loc' | translate}}</span>
+            <span class="info_content">
+                {{geneInfoList['gene_map_loc']}}
+            </span>
+          </p>
+          <p *ngIf="geneInfoList['genome_version']">
+            <span class="info_name">{{'gene_detail.genome_version' | translate}}</span>
+            <span class="info_content">
+                {{geneInfoList['genome_version']}}
+            </span>
+          </p>
+          <button *ngIf="btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.showGeneID' | translate}}</button>
+          <button *ngIf="!btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.noShowGeneID' | translate}}</button>
+          <div class="transcripts_table" *ngIf="!btn_show">
+              <nz-table [nzData]="rows" nzShowPagination="false" [nzSize]="'small'">
+                  <thead>
+                      <tr>
+                          <th style="min-width:160px;max-width: 160px;" *ngFor="let thead of baseThead;index as i">{{thead.name}}</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let row of rows;index as idx">
+                          <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of baseThead">
+                              <a href="https://www.ncbi.nlm.nih.gov/nuccore/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank" *ngIf="thead.true_key=='rna_id'">{{row[thead.true_key]}}</a>
+                              <span *ngIf="thead.true_key!='rna_id'">{{row[thead.true_key]}}</span>
+                          </td>
+                          <!-- <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of baseThead" *ngIf="thead.true_key!='rna_id'">
+                            {{row[thead.true_key]}}
+                          </td> -->
+                      </tr>
+                  </tbody>
+              </nz-table>
+          </div>
+      </div>
+      
+      <div class="mgene_content">
+          <h4>{{'gene_detail.expressive_information' | translate}}</h4>
+          <h5>{{'gene_detail.sample_expression' | translate}}</h5>
+          <div class="transcripts_table">
+              <nz-tabset [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)">
+                <nz-tab nzTitle="基因">
+                    <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'">
+                        <thead>
+                            <tr>
+                                <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of expressive_baseThead;index as i">{{thead.name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of expressive_rows;index as idx">
+                                <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of expressive_baseThead">
+                                  {{row[thead.true_key]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </nz-tab>
+                <nz-tab nzTitle="转录本">
+                    <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'">
+                        <thead>
+                            <tr>
+                                <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of expressive_baseThead;index as i">{{thead.name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of expressive_rows;index as idx">
+                                <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of expressive_baseThead">
+                                  {{row[thead.true_key]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </nz-tab>
+              </nz-tabset>
+          </div>
+
+          <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
+          <div class="transcripts_table">
+              <div id="lineChartDiv" class="mlineChartDiv">
+
+              </div>
+          </div>
+      </div>
+
+      <div class="mgene_content">
+          <h4>{{'gene_detail.differential_expression' | translate}}</h4>
+          
+      </div>
+    </div>
+  </div>
+</div>

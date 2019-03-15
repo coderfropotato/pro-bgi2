@@ -20,6 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class IndelOverviewComponent implements OnInit {
   @ViewChild('defaultIndelTable') defaultIndelTable;
   @ViewChild('right') right;
+  @ViewChild('bigTable') bigTable;
 
   switch = 'left';
   // table

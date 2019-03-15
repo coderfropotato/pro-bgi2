@@ -8,10 +8,10 @@
                        <span>宽度</span>
                    </nz-col>
                     <nz-col nzSpan="10">
-                        <nz-slider [nzMin]="200" [nzMax]="2000" [(ngModel)]="width"></nz-slider>
+                        <nz-slider [nzMin]="200" [nzMax]="type && type === 'relation' ? 1200 : 2000" [(ngModel)]="width"></nz-slider>
                     </nz-col>
                     <nz-col nzSpan="7">
-                        <nz-input-number [nzMin]="200" [nzMax]="2000" [(ngModel)]="width"></nz-input-number>
+                        <nz-input-number [nzMin]="200" [nzMax]="type && type === 'relation' ? 1200 : 2000" [(ngModel)]="width"></nz-input-number>
                     </nz-col>
                     <nz-col nzSpan='3' class="textCol">
                         <span>像素</span>
@@ -23,10 +23,10 @@
                         <span>高度</span>
                     </nz-col>
                     <nz-col nzSpan="10">
-                        <nz-slider [nzMin]="200" [nzMax]="2000" [(ngModel)]="height"></nz-slider>
+                        <nz-slider [nzMin]="200" [nzMax]="type && type === 'relation' ? 4000 : 2000" [(ngModel)]="height"></nz-slider>
                     </nz-col>
                     <nz-col nzSpan="7">
-                        <nz-input-number [nzMin]="200" [nzMax]="2000" [(ngModel)]="height"></nz-input-number>
+                        <nz-input-number [nzMin]="200" [nzMax]="type && type === 'relation' ? 4000 : 2000" [(ngModel)]="height"></nz-input-number>
                     </nz-col>
                     <nz-col nzSpan="3" class="textCol">
                         <span>像素</span>

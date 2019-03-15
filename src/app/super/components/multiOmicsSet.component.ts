@@ -118,11 +118,13 @@ export class MultiOmicsSetComponent implements OnInit {
         })
         this.relationList.forEach(d => {
             d['isDisabled']= false;
+            d['isSelected']=false;
             // if(d['key']!=="false"){
             //     d['limit']=true;
             // }
         })
         
+        this.relationList[0]['isSelected']=true;
         this.curRelation = {...this.relationList[0]};
 
     }
@@ -214,6 +216,10 @@ export class MultiOmicsSetComponent implements OnInit {
         })
 
         //关联关系恢复默认
+        this.relationList.forEach(d=>{
+            d['isSelected']=false;
+        })
+        this.relationList[0]['isSelected']=true;
         this.curRelation = {...this.relationList[0]};
 
     }
@@ -221,17 +227,22 @@ export class MultiOmicsSetComponent implements OnInit {
     // 添加关联关系
 
      //关联基因change
-     relationChange() {
+     relationChange(item) {
          this.isShowAddPanel = false;
          this.isShowUpdatePanel = false;
-         
+
          this.relationList.forEach(d => {
             //改变当前关联关系对应obj
-            if (this.curRelation['key'] === d['key']){
-                this.curRelation = {...d};
-            } 
+            // if (this.curRelation['key'] === d['key']){
+            //     this.curRelation = {...d};
+            // } 
+            d['isSelected']=false;
                     
        })
+
+       item['isSelected']=true;
+
+       this.curRelation = {...item};
 
    }
 

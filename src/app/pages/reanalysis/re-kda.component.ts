@@ -772,7 +772,7 @@ export class ReKdaComponent implements OnInit {
 
      //清空所有的选择
      clearSelected(){
-        d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.value));
+        d3.selectAll('path.node').attr('fill',d=>this.nodeColorScale(d.type));
         d3.selectAll('path.link').attr('stroke',d=>d.scale(d.score));
         this.selectedNodes.length=0;
         this.selectedLinks.length=0;

@@ -26,7 +26,8 @@ export class SnpOverviewComponent implements OnInit {
   @ViewChild('right') right;
   @ViewChild('func') func;
   @ViewChild('switchChart') switchChart;
-  @ViewChild('defaultSNPTable') defaultSNPTable;
+  //@ViewChild('defaultSNPTable') defaultSNPTable;
+  @ViewChild('bigTable') bigTable;
 
   chartUrl: string;
   chartEntity: object;
@@ -62,7 +63,7 @@ export class SnpOverviewComponent implements OnInit {
     private store: StoreService,
     private ajaxService: AjaxService,
     private globalService: GlobalService,
-    private storeService: StoreService,
+    public storeService: StoreService,
     public pageModuleService: PageModuleService,
     private router: Router,
     private routes: ActivatedRoute,
@@ -110,9 +111,7 @@ export class SnpOverviewComponent implements OnInit {
           species: this.storeService.getStore("genome"), //物种
           checkStatus: true,
           checked: [],
-          unChecked: [],
-          // asType:this.asType,
-          // sample:this.sample
+          unChecked: []
       };
       this.defaultTableId = 'snp_default_overview';
       this.defaultTableChecked = true;

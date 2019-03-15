@@ -604,6 +604,17 @@ button {
     }
 }
 
+.alternativeSplicing{
+	.small_text{
+		width: 100%;
+		height: 30px;
+		line-height: 30px;
+		text-indent: 1em;
+	}
+	.small_span{
+		color: red;
+	}
+}
 // @media screen and (max-width: 1350px) {
 // 	.content{
 // 		.switch{
@@ -2118,7 +2129,7 @@ button {
 	overflow-x: hidden;
 	overflow-y: scroll;
 	background: #ffffff;
-	.mgene_conetnt{
+	.mgeneDetail_conetnt{
 		padding: 40px 100px;
 		.mgene_title{
 			width: 100%;
@@ -2137,10 +2148,82 @@ button {
 			.mgene_content{
 				width: 100%;
 				height: auto;
+				margin-bottom: 10px;
 			}
 
+			// .img_one{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/ncbi.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_two{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/hgnc.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_three{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/ense.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_four{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/cards.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_five{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/kegg.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+			// .img_six{
+			// 	width: 70px;
+			// 	height: 24px;
+			// 	display: inline-block;
+            //     background-image: url("../img/small/mir.png");
+            //     background-repeat: no-repeat;
+            //     background-position: center;
+			// }
+
 			.info_name{
-				
+				display: inline-block;
+				width: 150px;
+				text-indent: 2em;
+			}
+
+			.transcripts_table{
+				margin: 10px auto;
+				width: 96%;
+				height: auto;
+			}
+
+			.mlineChartDiv{
+				width: 600px;
+				height: 450px;
+				margin: 0 auto;
+			}
+
+			.mlink{
+				margin-left:20px;
+				a{
+					margin-left:6px;
+					font-weight: 700;
+				}
 			}
 
 			h4{
