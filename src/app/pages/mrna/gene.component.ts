@@ -58,10 +58,10 @@ declare const $: any;
                                     </div>
                                     </div>
                                 </div>
-                                <div class="gene_fast gene_center"><!-- 快捷操作 -->
-                                    <span>快捷操作：</span>
-                                    <span class="gene_fast_set" *ngFor="let item of fastSearchList">{{item.value}}</span>
-                                </div>
+                                <!-- <div class="gene_fast gene_center"> --><!-- 快捷操作 -->
+								<!-- <span>快捷操作：</span> -->
+								<!-- <span class="gene_fast_set" *ngFor="let item of fastSearchList">{{item.value}}</span> -->
+                                <!-- </div> -->
                                 </div>
                             </div>
                             <app-gene-component #geneTable *ngIf="showModule && initializationFlag" [defaultGeneType]="defaultGeneType"></app-gene-component>
