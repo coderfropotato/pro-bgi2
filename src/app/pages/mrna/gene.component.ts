@@ -221,11 +221,7 @@ export class GenePage {
 		this.expandSetPanel = false; // 收起设置面板
 		this.expandHistoryPanel = false; // 收起搜索结果面板
 
-		if (this.selectPanelList.length == this.selectedList.length) {
-			this.geneTable['reGetData']();
-		} else {
-			this.geneTable['selectRange'](this.selectedList);
-		}
+        this.geneTable['search']();
 	}
 
 	//输入数据，弹出面板
@@ -609,25 +605,16 @@ export class GeneComponent implements OnInit {
 			this.transformTable._setParamsNoRequest('pageIndex', 1);
 			this.transformTable._getData();
 		}
-	}
+    }
 
-	// 重新获取数据
-	reGetData() {
-		this.applyOnceSearchParams = true;
-        this.defaultApplyOnceSearchParams = true;
-
-		this.transformTable._setParamsNoRequest('clickSearch', true);
-        this.transformTable._getData();
-	}
-
-	// 选择范围的时候调用  不需要调用reGetData重新获取数据
-	// head {} | Object[]    {key:'123',category:'xxx'}
-	selectRange(head) {
+    search(){
         this.applyOnceSearchParams = true;
         this.defaultApplyOnceSearchParams = true;
-
-		this.transformTable._setParamsNoRequest('clickSearch', true);
-		this.addColumn._addThead(head);
-		this.addColumn._confirm();
-	}
+        this.transformTable._initCheckStatus();
+        this.transformTable._clearFilterWithoutRequest();
+        this.addColumn._updateInitStatus();
+        this.first?this.defaultEmitBaseThead = true:this.extendEmitBaseThead = true;
+        this.transformTable._setParamsNoRequest('clickSearch', true);
+        this.transformTable._getData();
+    }
 }

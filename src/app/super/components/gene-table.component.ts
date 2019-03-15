@@ -413,12 +413,22 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.total = 0;
 					this.srcTotal = 0;
 					this.error = 'nodata';
-					this.syncRelative.emit([]);
+                    this.syncRelative.emit([]);
+                    if (this.emitBaseThead) {
+						this.emitBaseThead = false;
+						this.emitBaseTheadChange.emit(this.emitBaseThead);
+						this.baseTheadChange.emit({ baseThead: [] });
+					}
 				} else {
 					this.total = 0;
 					this.srcTotal = 0;
 					this.error = 'error';
-					this.syncRelative.emit([]);
+                    this.syncRelative.emit([]);
+                    if (this.emitBaseThead) {
+						this.emitBaseThead = false;
+						this.emitBaseTheadChange.emit(this.emitBaseThead);
+						this.baseTheadChange.emit({ baseThead: [] });
+					}
 				}
 
 				setTimeout(() => {
