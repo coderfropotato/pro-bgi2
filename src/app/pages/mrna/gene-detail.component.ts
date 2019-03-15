@@ -21,6 +21,7 @@ declare const $:any;
   templateUrl: './gene-detail.component.html'
 })
 export class GeneDetailComponent implements OnInit {
+	@ViewChild('lineChart') lineChart;
 
 	title: string;
 	geneID: string;
@@ -63,7 +64,13 @@ export class GeneDetailComponent implements OnInit {
 	expressive_rows: object[] = [];
 	expressive_baseThead: object[] = [];
 	expressive_geneType: string;
+	expressive_index: number = 0;
 
+	//折线图
+	// chartUrl: string;
+    // chartEntity: object;
+	// chart:any;
+	
   	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -107,6 +114,12 @@ export class GeneDetailComponent implements OnInit {
 			geneType: this.expressive_geneType,
 			geneID: this.geneID
 		};
+
+		// //折线图
+		// this.chartUrl=`${config['javaPath']}/geneDetail/exp`;
+        // this.chartEntity = {
+
+		// };
 
 		(async () => {
 			try {
@@ -192,6 +205,7 @@ export class GeneDetailComponent implements OnInit {
 				} else {
 					this.expressive_rows = data['data']['rows'];
 					this.expressive_baseThead = data['data']['baseThead'];
+					this.drawLineChart();
 				}
 				resolve("success");
 			},
@@ -202,6 +216,72 @@ export class GeneDetailComponent implements OnInit {
 		})
 	}
 
+	drawLineChart(){
+		let tempArray = [];
+		for (const key in this.expressive_rows[0]) {
+			let tempObj = {};
+			if( key != "gene_id"){
+				tempObj["x"] = key;
+				tempObj["y"] = this.expressive_rows[0][key];
+				tempArray.push(tempObj);
+			}
+		}
+		console.log(tempArray);
+		let config: object = {
+			chart: {
+				title: "折线图",
+				smooth:true,
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					this.setChartTitle(name);
+					this.updateTitle();
+				}
+			},
+			el: "#lineChartDiv",
+			type: "line",
+			data: tempArray
+			},
+			axis: {
+				x: {
+					title: "Sample name",
+					rotate: 60,
+					dblclick: function(event) {
+						var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setXTitle(name);
+							this.updateTitle();
+						}
+					}
+				},
+				y: {
+					title: "log10(FPKM+1)",
+					dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+						this.setYTitle(name);
+						this.updateTitle();
+					}
+					}
+				}
+			},
+			"tooltip": function(d) {
+				return "<span>x:"+d.key+"</span><br><span>y:"+d.value+"</span>"
+			}
+		}
+		new d4().init(config);
+	}
+
+	SelectedExpressiveChange(num) {
+		//console.log(num);
+		this.expressive_index = num;
+		if(num==0){
+			this.expressive_params["geneType"] = "gene";
+		}else{
+			this.expressive_params["geneType"] = "transcript";
+		}
+		this.sampleExpression();
+    }
 	btnShow(){
 		this.btn_show = !this.btn_show;
 	}

@@ -89,21 +89,53 @@
           <h4>{{'gene_detail.expressive_information' | translate}}</h4>
           <h5>{{'gene_detail.sample_expression' | translate}}</h5>
           <div class="transcripts_table">
-              <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'">
-                  <thead>
-                      <tr>
-                          <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of expressive_baseThead;index as i">{{thead.name}}</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr *ngFor="let row of expressive_rows;index as idx">
-                          <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of expressive_baseThead">
-                            {{row[thead.true_key]}}
-                          </td>
-                      </tr>
-                  </tbody>
-              </nz-table>
+              <nz-tabset [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)">
+                <nz-tab nzTitle="基因">
+                    <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'">
+                        <thead>
+                            <tr>
+                                <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of expressive_baseThead;index as i">{{thead.name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of expressive_rows;index as idx">
+                                <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of expressive_baseThead">
+                                  {{row[thead.true_key]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </nz-tab>
+                <nz-tab nzTitle="转录本">
+                    <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'">
+                        <thead>
+                            <tr>
+                                <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of expressive_baseThead;index as i">{{thead.name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of expressive_rows;index as idx">
+                                <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of expressive_baseThead">
+                                  {{row[thead.true_key]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </nz-tab>
+              </nz-tabset>
           </div>
+
+          <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
+          <div class="transcripts_table">
+              <div id="lineChartDiv" class="mlineChartDiv">
+
+              </div>
+          </div>
+      </div>
+
+      <div class="mgene_content">
+          <h4>{{'gene_detail.differential_expression' | translate}}</h4>
+          
       </div>
     </div>
   </div>

@@ -2,29 +2,29 @@
   snp-overview works!
 </p> -->
 <div class="content row  overview">
-    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
-        <div class="left-bottom-layout">
-            <app-table-switch-chart
-                #snpOverview
-                [id]="'snpOverview'"
-                [tableUrl]="chartUrl"
-                [apiEntity]="chartEntity"
-                (drawChartEmit)="drawChart($event)"
-                [chartId]="'snpOverviewDiv'"
-                [chartName]="'SNP类型统计'"
-                [flex]="true"
-                (refresh)="handlerRefresh()"
-            >
-            </app-table-switch-chart>
+        <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+            <div class="left-bottom-layout">
+                <app-table-switch-chart
+                    #snpOverview
+                    [id]="'snpOverview'"
+                    [tableUrl]="chartUrl"
+                    [apiEntity]="chartEntity"
+                    (drawChartEmit)="drawChart($event)"
+                    [chartId]="'snpOverviewDiv'"
+                    [chartName]="'SNP类型统计'"
+                    [flex]="true"
+                    (refresh)="handlerRefresh()"
+                >
+                </app-table-switch-chart>
 
-            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-            ></app-color-picker>
-        </div>
+                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+                ></app-color-picker>
+            </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-            <div class="switch">
-                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
-            </div>
+                <div class="switch">
+                    <app-layout-switch [analysisCount]="storeService['store']['analysisCount']"  [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+                </div>
             <!-- <div class="func" #func (click)="resize($event)"> -->
                 <!-- 增删列 -->
                 <!-- <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column> -->
@@ -36,19 +36,18 @@
                 <!-- <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i> -->
             <!-- </div> -->
             <!-- 表格转换 -->
-            <!-- <app-big-table
-                *ngIf="defaultEntity"
+            <app-big-table
                 class="no-outside-border"
                 #bigTable
                 [tableHeight]="tableHeight"
-                [pageEntity]="defaultEntity"
-                [url]="defaultUrl"
-                        [tableId]="defaultTableId"
-                        [(computedScrollHeight)]="computedScrollHeight"
-              ></app-big-table> -->
+                [pageEntity]="defaultTableEntity"
+                [url]="defaultTableUrl"
+                [tableId]="defaultTableId"
+                [(computedScrollHeight)]="computedScrollHeight"
+              ></app-big-table>
 
               <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix" -->
-              <app-geneTable
+              <!-- <app-geneTable
                 #defaultSNPTable
                 [url]="defaultTableUrl"
                 [pageEntity]="defaultTableEntity"
@@ -59,6 +58,6 @@
                 [checkStatusInParams]="defaultCheckStatusInParams"
                 
                 [(computedScrollHeight)]="computedScrollHeight"
-            ></app-geneTable>
+            ></app-geneTable> -->
         </div>
 </div>
