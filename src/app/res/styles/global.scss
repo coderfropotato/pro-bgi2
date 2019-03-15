@@ -815,9 +815,94 @@ button {
                 //     box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
                 // }
             }
-            .diff-venn-img {
-                background-image: url('../img/韦恩图.png');
-            }
+			.gene-img {
+                background-image: url('../img/list/基因总表.png');
+			}
+			.diff-expression-img {
+				background-image: url('../img/list/差异表达.png');
+			}
+			.diff-expression-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+			.expression-img {
+				background-image: url('../img/list/表达量.png');
+			}
+			.expression-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+			.cluster-img {
+				background-image: url('../img/list/差异聚类.png');
+			}
+			.cluster-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+			.go-class-img {
+				background-image: url('../img/list/go分类.png');
+			}
+			.go-enrichment-img {
+                background-image: url('../img/list/go富集.png');
+			}
+			.go-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+			.kegg-class-img {
+				background-image: url('../img/list/kegg分类.png');
+			}
+			.kegg-enrichment-img {
+                background-image: url('../img/list/kegg富集.png');
+			}
+			.kegg-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+
+			.alternative-splicing-img {
+                background-image: url('../img/list/可变剪切.png');
+			}
+			.diff-alternative-splicing-img {
+				background-image: url('../img/list/差异可变剪切.png');
+			}
+			.gene-fusion-img {
+                background-image: url('../img/list/基因融合.png');
+			}
+			.as-sv-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+
+			
+			.snp-overview-img {
+                background-image: url('../img/list/SNP总览.png');
+			}
+			.snp-distribution-img {
+				background-image: url('../img/list/SNP区域分布.png');
+			}
+			.indel-overview-img {
+                background-image: url('../img/list/indel总览.png');
+			}
+			.indel-distribution-img {
+                background-image: url('../img/list/indel区域分布.png');
+			}
+			.snp-indel-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
+
+			.overview-img {
+                background-image: url('../img/list/项目概况.png');
+			}
+			.reference-img {
+				background-image: url('../img/list/参考信息.png');
+			}
+			.reads-filter-img {
+                background-image: url('../img/list/reads过滤.png');
+			}
+			.reads-alignment-img {
+                background-image: url('../img/list/reads比对.png');
+			}
+			.smallrna-img {
+                background-image: url('../img/list/检测.png');
+			}
+			.basic-help-img {
+                background-image: url('../img/list/帮助.png');
+			}
         }
     }
     .savegenelist {
@@ -2217,6 +2302,11 @@ button {
 				height: 550px;
 				margin: 0 auto;
 			}
+			.m_img{
+				width: 600px;
+				height: 500px;
+				margin: 0 auto;
+			}
 
 			.mlink{
 				margin-left:20px;
@@ -2248,7 +2338,7 @@ button {
 				font-weight: 700;
 				color: #333;
 				margin-bottom: 10px;
-				margin-left:25px;
+				// margin-left:25px;
 			}
 			h5::before {
 				content: "";

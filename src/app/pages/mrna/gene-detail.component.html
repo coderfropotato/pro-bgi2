@@ -5,6 +5,7 @@
     </div>
 
     <div class="mgene_page">
+      <!-- 基因信息 -->
       <div class="mgene_content">
           <h4>{{'gene_detail.gene_information' | translate}}</h4>
           <p *ngIf="geneInfoList['gene_id']">
@@ -63,8 +64,16 @@
           </p>
           <button *ngIf="btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.showGeneID' | translate}}</button>
           <button *ngIf="!btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.noShowGeneID' | translate}}</button>
+          <!-- 转录本信息 -->
           <div class="transcripts_table" *ngIf="!btn_show">
-              <nz-table [nzData]="rows" nzShowPagination="false" [nzSize]="'small'">
+              <!-- <ng-template #titleTemplate>
+                  <div class="table-thead">
+                      <div class="fRight">
+                          <i class="iconfont icon-xiazai" (click)="down_transcripts()"></i>
+                      </div>
+                  </div>
+              </ng-template>
+              <nz-table [nzData]="rows" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate">
                   <thead>
                       <tr>
                           <th style="min-width:160px;max-width: 160px;" *ngFor="let thead of baseThead;index as i">{{thead.name}}</th>
@@ -76,22 +85,30 @@
                               <a href="https://www.ncbi.nlm.nih.gov/nuccore/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank" *ngIf="thead.true_key=='rna_id'">{{row[thead.true_key]}}</a>
                               <span *ngIf="thead.true_key!='rna_id'">{{row[thead.true_key]}}</span>
                           </td>
-                          <!-- <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of baseThead" *ngIf="thead.true_key!='rna_id'">
-                            {{row[thead.true_key]}}
-                          </td> -->
                       </tr>
                   </tbody>
-              </nz-table>
+              </nz-table> -->
+              <app-little-table [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table>
           </div>
       </div>
       
+      <!-- 样本表达量（FPKM） -->
       <div class="mgene_content">
           <h4>{{'gene_detail.expressive_information' | translate}}</h4>
-          <h5>{{'gene_detail.sample_expression' | translate}}</h5>
+         
           <div class="transcripts_table">
-              <nz-tabset [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)">
+              <h5>{{'gene_detail.sample_expression' | translate}}</h5>
+              <!-- [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)" -->
+              <nz-tabset>
                 <nz-tab nzTitle="基因">
-                    <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'">
+                    <!-- <ng-template #expressiveGeneTemplate>
+                        <div class="table-thead">
+                            <div class="fRight">
+                                <i class="iconfont icon-xiazai" (click)="down_expressive_gene()"></i>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="expressiveGeneTemplate">
                         <thead>
                             <tr>
                                 <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of expressive_baseThead;index as i">{{thead.name}}</th>
@@ -104,10 +121,18 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </nz-table>
+                    </nz-table> -->
+                    <app-little-table [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
                 </nz-tab>
                 <nz-tab nzTitle="转录本">
-                    <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'">
+                    <!-- <ng-template #expressiveTranTemplate>
+                        <div class="table-thead">
+                            <div class="fRight">
+                                <i class="iconfont icon-xiazai" (click)="down_expressive_transcripts()"></i>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <nz-table [nzData]="expressive_rows" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="expressiveTranTemplate">
                         <thead>
                             <tr>
                                 <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of expressive_baseThead;index as i">{{thead.name}}</th>
@@ -120,23 +145,155 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </nz-table>
+                    </nz-table> -->
+                    <app-little-table [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
                 </nz-tab>
               </nz-tabset>
           </div>
 
-          <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
+          <!-- 折线图 -->
           <div class="transcripts_table">
+              <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
               <div id="lineChartDiv" class="mlineChartDiv">
-
               </div>
           </div>
       </div>
 
+      <!-- 差异表达 -->
       <div class="mgene_content">
           <h4>{{'gene_detail.differential_expression' | translate}}</h4>
+          <div class="transcripts_table"><!-- 组间差异 -->
+              <h5>{{'gene_detail.group_differences' | translate}}</h5>
+              <nz-tabset [nzSelectedIndex]="groupDiff_index" (nzSelectedIndexChange)="SelectedGroupDiffChange($event)">
+                  <nz-tab nzTitle="基因">
+                      <!-- <ng-template #groupTemplate>
+                          <div class="table-thead">
+                              <div class="fRight">
+                                  <i class="iconfont icon-xiazai" (click)="down_gene_group()"></i>
+                              </div>
+                          </div>
+                      </ng-template>
+                      <nz-table [nzData]="groupDiff_rows" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="groupTemplate">
+                          <thead>
+                              <tr>
+                                  <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of groupDiff_baseThead;index as i">{{thead.name}}</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let row of groupDiff_rows;index as idx">
+                                  <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of groupDiff_baseThead">
+                                    {{row[thead.true_key]}}
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </nz-table> -->
+                      <app-little-table [url]="groupDiff_defaultUrl" [pageEntity]="groupDiff_params_g"></app-little-table>
+                  </nz-tab>
+                  <nz-tab nzTitle="转录本">
+                      <!-- <ng-template #expressiveTranTemplate>
+                          <div class="table-thead">
+                              <div class="fRight">
+                                  <i class="iconfont icon-xiazai" (click)="down_expressive_transcripts()"></i>
+                              </div>
+                          </div>
+                      </ng-template>
+                      <nz-table [nzData]="groupDiff_rows" nzShowPagination="false" [nzSize]="'small'">
+                          <thead>
+                              <tr>
+                                  <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of groupDiff_baseThead;index as i">{{thead.name}}</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let row of groupDiff_rows;index as idx">
+                                  <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of groupDiff_baseThead">
+                                    {{row[thead.true_key]}}
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </nz-table> -->
+                      <app-little-table [url]="groupDiff_defaultUrl" [pageEntity]="groupDiff_params_t"></app-little-table>
+                  </nz-tab>
+              </nz-tabset>
+          </div>
           
+          <div class="transcripts_table"> <!-- 样本差异 -->
+            <h5>{{'gene_detail.sample_differences' | translate}}</h5>
+            <nz-tabset [nzSelectedIndex]="sampleDiff_index" (nzSelectedIndexChange)="SelectedSampleDiffChange($event)">
+                <nz-tab nzTitle="基因">
+                    <!-- <ng-template #expressiveTranTemplate>
+                        <div class="table-thead">
+                            <div class="fRight">
+                                <i class="iconfont icon-xiazai" (click)="down_expressive_transcripts()"></i>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <nz-table [nzData]="sampleDiff_rows" nzShowPagination="false" [nzSize]="'small'">
+                        <thead>
+                            <tr>
+                                <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of sampleDiff_baseThead;index as i">{{thead.name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of sampleDiff_rows;index as idx">
+                                <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of sampleDiff_baseThead">
+                                  {{row[thead.true_key]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table> -->
+                    <app-little-table [url]="sampleDiff_defaultUrl" [pageEntity]="sampleDiff_params_g"></app-little-table>
+                </nz-tab>
+                <nz-tab nzTitle="转录本">
+                    <!-- <ng-template #expressiveTranTemplate>
+                        <div class="table-thead">
+                            <div class="fRight">
+                                <i class="iconfont icon-xiazai" (click)="down_expressive_transcripts()"></i>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <nz-table [nzData]="sampleDiff_rows" nzShowPagination="false" [nzSize]="'small'">
+                        <thead>
+                            <tr>
+                                <th style="min-width:160px;max-width: 160px;color: #5378f8;" *ngFor="let thead of sampleDiff_baseThead;index as i">{{thead.name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of sampleDiff_rows;index as idx">
+                                <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of sampleDiff_baseThead">
+                                  {{row[thead.true_key]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table> -->
+                    <app-little-table [url]="sampleDiff_defaultUrl" [pageEntity]="sampleDiff_params_t"></app-little-table>
+                </nz-tab>
+            </nz-tabset>
+          </div>
       </div>
+
+      <!-- 表达量信息 -->
+      <div class="mgene_content">
+        <h4>{{'gene_detail.miRNA_second_structure' | translate}}</h4>
+        <div class="transcripts_table">
+          <p>下图展示miRNA的二级截图和reads与前体（precursor）的比对情况，reads来自于公共数据，与本项目数据无关。</p>
+          <img [src]="precursor_image" class="m_img" />
+        </div>
+      </div>
+    
+      <!-- 变异信息 -->
+      <div class="mgene_content">
+          <h4>{{'gene_detail.variation_information' | translate}}</h4>
+          <div class="transcripts_table">
+              <h5>SNP</h5>
+
+          </div>
+
+          <div class="transcripts_table">
+              <h5>InDel</h5>
+              
+          </div>
+      </div>
+    
     </div>
   </div>
 </div>
