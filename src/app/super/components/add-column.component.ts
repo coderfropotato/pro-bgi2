@@ -25,49 +25,49 @@ export class AddColumnComponent implements OnInit {
 	@Output() addThead: EventEmitter<any> = new EventEmitter(); // 添加头的时候发出的事件
 	@Output() clearThead: EventEmitter<any> = new EventEmitter(); // 清除头的时候发出的事件 (没用  现在清除默认发出addThead事件)
 	@Output() computedTableEvent: EventEmitter<any> = new EventEmitter(); // 在树选择表头的时候，有选择的项需要重新计算表格的高度
-	@Input() geneType:object = {};
+	@Input() geneType: object = {};
 	show: boolean = false;
 
-    thead:Array<object> = [];
+	thead: Array<object> = [];
 	selected: Array<any> = [];
 	selectCount: Array<any> = [];
 	beforeSelected: Array<any> = [];
 	theadInBase: string[] = []; // 哪些基础表头在增删列的数据里面
-	treeTempSelect:any[] = [];
-	baseTheadChangeWithoutThead:boolean = false; // 基础头改变的时候 增删列的头是否无数据
-	doAjax:boolean = false;
-	public sortThead:any[] = [];
+	treeTempSelect: any[] = [];
+	baseTheadChangeWithoutThead: boolean = false; // 基础头改变的时候 增删列的头是否无数据
+	doAjax: boolean = false;
+	public sortThead: any[] = [];
 
-	subscribtion:any = null;
+	subscribtion: any = null;
 
 	config = config;
 
 	constructor(
 		private storeService: StoreService,
 		private translate: TranslateService,
-        private ajaxService: AjaxService,
-        private addColumnService:AddColumnService,
-        private router:Router,
-        private notification:NzNotificationService,
-	){
+		private ajaxService: AjaxService,
+		private addColumnService: AddColumnService,
+		private router: Router,
+		private notification: NzNotificationService
+	) {
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
 
 		// 每次进入路由重新获取增删列 并应用之前的选中状态
-        // this.subscribtion = this.router.events.subscribe((event) => {
+		// this.subscribtion = this.router.events.subscribe((event) => {
 		// 	if (event instanceof NavigationEnd) {
 		// 		(async ()=>{
 		// 			await this.getAddThead();
 		// 			this.applyCheckedStatus(); // 每次进路由 把当前选中的增删列的顺序保存到服务
 		// 		})()
 		// 		// this.thead = this.addColumnService.get();
-        //     }
+		//     }
 		// });
 	}
 
 	ngOnInit() {
 		// this.thead = this.addColumnService.get();
-		(async ()=>{
+		(async () => {
 			try {
 				await this.getAddThead();
 			} catch (error) {}
@@ -77,29 +77,30 @@ export class AddColumnComponent implements OnInit {
 			this.initBeforeSelected();
 			this.initSelectCount();
 
-			if(this.baseTheadChangeWithoutThead) {
+			if (this.baseTheadChangeWithoutThead) {
 				this.baseTheadChange();
 				this.baseTheadChangeWithoutThead = false;
 			}
-		})()
+		})();
 	}
 
-	ngOnDestory(){
+	ngOnDestory() {
 		this.subscribtion.unsubscribe();
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
-		if ('baseThead' in changes && !changes['baseThead'].firstChange && changes['baseThead'].currentValue.length) {
-			if(this.thead.length){
+		// && changes['baseThead'].currentValue.length
+		if ('baseThead' in changes && !changes['baseThead'].firstChange) {
+			if (this.thead.length) {
 				this.baseTheadChange();
 				this.baseTheadChangeWithoutThead = false;
-			}else{
+			} else {
 				this.baseTheadChangeWithoutThead = true;
 			}
 		}
 	}
 
-	baseTheadChange(){
+	baseTheadChange() {
 		this.theadInBase = [];
 		this.initSelected();
 
@@ -107,16 +108,16 @@ export class AddColumnComponent implements OnInit {
 			item['checked'] = false;
 		});
 
-		this.baseThead.forEach(v=>{
-			this.forLeaves(this.thead,item=>{
+		this.baseThead.forEach((v) => {
+			this.forLeaves(this.thead, (item) => {
 				if (v.includes(item['key'])) {
 					item['checked'] = true;
 					this.selected[item['index']].push(item);
 					this.theadInBase.push(item);
 					return;
 				}
-			})
-		})
+			});
+		});
 
 		this.getCheckCount();
 		this.beforeSelected = this.copy(this.selected);
@@ -124,78 +125,81 @@ export class AddColumnComponent implements OnInit {
 	}
 
 	async getAddThead() {
-        return new Promise((resolve, reject) => {
-            let LCID = sessionStorage.getItem("LCID");
-            this.ajaxService
-                .getDeferData({
-                    data: {
-						geneType:this.geneType['type']
+		return new Promise((resolve, reject) => {
+			let LCID = sessionStorage.getItem('LCID');
+			this.ajaxService
+				.getDeferData({
+					data: {
+						geneType: this.geneType['type']
 					},
-                    url: `${config['javaPath']}/addColumn/${LCID}`
-                })
-                .subscribe(
-                    data => {
-                        if(data['status']==='0'){
-                            let d = data['data'];
-                            d.forEach((val,index)=>{
-                                if(val['category']===config['outerDataBaseIndex']){
-                                    val['children'].forEach(v=>{
-                                        if(!('children' in v)) v['children'] = [];
-                                        v['modalVisible'] = false;
-                                        v['children'].forEach(item=>{
-                                            this.initTreeData(item['treeData']);
-                                        })
-                                    })
-                                }
-							})
+					url: `${config['javaPath']}/addColumn/${LCID}`
+				})
+				.subscribe(
+					(data) => {
+						if (data['status'] === '0') {
+							let d = data['data'];
+							d.forEach((val, index) => {
+								if (val['category'] === config['outerDataBaseIndex']) {
+									val['children'].forEach((v) => {
+										if (!('children' in v)) v['children'] = [];
+										v['modalVisible'] = false;
+										v['children'].forEach((item) => {
+											this.initTreeData(item['treeData']);
+										});
+									});
+								}
+							});
 							this.thead = d;
 							this.initIndexAndChecked();
 
-                            resolve("success");
-                        }else{
-                            reject('error');
-                        }
-                    },
-					() => reject("error"),
-					()=>{this.doAjax = true}
-                );
-        });
+							resolve('success');
+						} else {
+							reject('error');
+						}
+					},
+					() => reject('error'),
+					() => {
+						this.doAjax = true;
+					}
+				);
+		});
 	}
 
 	// 初始化 增删列树节点数据
-    initTreeData(treeData){
-        if (!treeData || !treeData.length) return;
-        let stack = [];
-        for (var i = 0, len = treeData.length; i < len; i++) {
-            stack.push(treeData[i]);
-        }
-        let item;
-        while (stack.length) {
-            item = stack.shift();
+	initTreeData(treeData) {
+		if (!treeData || !treeData.length) return;
+		let stack = [];
+		for (var i = 0, len = treeData.length; i < len; i++) {
+			stack.push(treeData[i]);
+		}
+		let item;
+		while (stack.length) {
+			item = stack.shift();
 
-            if(item['isRoot']) item['isExpand'] = true;
-            item['isExpand'] = true;
-            item['expandDisabled'] = false;
-            item['isChecked'] = false;
-            item['disabled'] = false;
-            item['hidden'] = false;
+			if (item['isRoot']) item['isExpand'] = true;
+			item['isExpand'] = true;
+			item['expandDisabled'] = false;
+			item['isChecked'] = false;
+			item['disabled'] = false;
+			item['hidden'] = false;
 
-            if (item.children && item.children.length) {
-                stack = stack.concat(item.children);
-            }
-        }
-    }
+			if (item.children && item.children.length) {
+				stack = stack.concat(item.children);
+			}
+		}
+	}
 
-	setSortThead(thead){  // thead:[[],[],[]]
-        this.sortThead.length = 0;
-        if(thead.length){
-            let temp = [];
-            thead.forEach(v=>temp = temp.concat(v));
-            temp.forEach(v=>{
-                this.sortThead.push(v['key']);
-            })
-        }
-    }
+	setSortThead(thead) {
+		// thead:[[],[],[]]
+		this.sortThead.length = 0;
+		if (thead.length) {
+			let temp = [];
+			thead.forEach((v) => (temp = temp.concat(v)));
+			temp.forEach((v) => {
+				this.sortThead.push(v['key']);
+			});
+		}
+	}
 
 	// 初始化索引和选中状态
 	initIndexAndChecked() {
@@ -210,7 +214,7 @@ export class AddColumnComponent implements OnInit {
 					}
 				});
 			}
-        });
+		});
 	}
 
 	// 初始化索引
@@ -235,11 +239,11 @@ export class AddColumnComponent implements OnInit {
 			this.toggle.emit(this.show);
 		}, 0);
 
-		if(this.show){
-			(async ()=>{
+		if (this.show) {
+			(async () => {
 				await this.getAddThead();
 				this.applyCheckedStatus();
-			})()
+			})();
 		}
 		this.cancelStatus();
 	}
@@ -267,15 +271,15 @@ export class AddColumnComponent implements OnInit {
 		} else {
 			let classifyBeforeSelected = this.classifyCollection(this.beforeSelected);
 
-            this.forLeaves(this.thead, (item) => {
-                let index = classifyBeforeSelected.findIndex((val,index)=>{
-                    return val['key'] === item['key'];
-                })
-                item['checked'] = index!=-1;
-            })
-        }
+			this.forLeaves(this.thead, (item) => {
+				let index = classifyBeforeSelected.findIndex((val, index) => {
+					return val['key'] === item['key'];
+				});
+				item['checked'] = index != -1;
+			});
+		}
 
-        this.setSortThead(this.beforeSelected);
+		this.setSortThead(this.beforeSelected);
 		this.getCheckCount();
 
 		function everySuit(item) {
@@ -331,10 +335,10 @@ export class AddColumnComponent implements OnInit {
 
 		this.addThead.emit({ add, remove });
 
-        // 保存已经添加的列的顺序
-        this.setSortThead(this.selected);
+		// 保存已经添加的列的顺序
+		this.setSortThead(this.selected);
 
-        this.show = false;
+		this.show = false;
 		setTimeout(() => {
 			this.toggle.emit(this.show);
 		}, 0);
@@ -350,8 +354,8 @@ export class AddColumnComponent implements OnInit {
 	}
 
 	initSelected() {
-        this.selected = this.thead.map((v) => []);
-        this.setSortThead([]);
+		this.selected = this.thead.map((v) => []);
+		this.setSortThead([]);
 	}
 
 	initBeforeSelected() {
@@ -375,43 +379,43 @@ export class AddColumnComponent implements OnInit {
 		this.initTheadStatus();
 		this.getCheckCount();
 		this.confirm();
-    }
+	}
 
-    // 重置按钮  （重置到基础头激活的状态）
-    reset(){
-        this.theadInBase = [];
-        this.initSelected();
+	// 重置按钮  （重置到基础头激活的状态）
+	reset() {
+		this.theadInBase = [];
+		this.initSelected();
 
-        this.forLeaves(this.thead, (item) => {
-            item['checked'] = false;
-        });
+		this.forLeaves(this.thead, (item) => {
+			item['checked'] = false;
+		});
 
-        this.baseThead.forEach(v=>{
-            this.forLeaves(this.thead,item=>{
-                if (v.includes(item['key'])) {
-                    item['checked'] = true;
-                    this.selected[item['index']].push(item);
-                    this.theadInBase.push(item);
-                    return;
-                }
-            })
-        })
+		this.baseThead.forEach((v) => {
+			this.forLeaves(this.thead, (item) => {
+				if (v.includes(item['key'])) {
+					item['checked'] = true;
+					this.selected[item['index']].push(item);
+					this.theadInBase.push(item);
+					return;
+				}
+			});
+		});
 
-        // this.forLeaves(this.thead, (item) => {
-        //     if (this.baseThead.includes(item['key'])) {
-        //         item['checked'] = true;
-        //         this.selected[item['index']].push(item);
-        //         this.theadInBase.push(item);
-        //     } else {
-        //         item['checked'] = false;
-        //     }
-        // });
+		// this.forLeaves(this.thead, (item) => {
+		//     if (this.baseThead.includes(item['key'])) {
+		//         item['checked'] = true;
+		//         this.selected[item['index']].push(item);
+		//         this.theadInBase.push(item);
+		//     } else {
+		//         item['checked'] = false;
+		//     }
+		// });
 
-        this.getCheckCount();
+		this.getCheckCount();
 		this.beforeSelected = this.copy(this.selected);
 
-        this.confirm();
-    }
+		this.confirm();
+	}
 
 	// 取消按钮
 	cancel() {
@@ -428,31 +432,31 @@ export class AddColumnComponent implements OnInit {
 		setTimeout(() => {
 			this.toggle.emit(this.show);
 		}, 0);
-    }
+	}
 
-    // 分类全选 不确定
-    categoryCheckAll(categorys){
-        categorys.forEach(v=>{
-            if(v['children'].length){
-                v['children'].forEach(val=>{
-                    val['checked'] = false;
-                    this.toggleSelect(val,val['index']);
-                })
-            }
-        })
-    }
+	// 分类全选 不确定
+	categoryCheckAll(categorys) {
+		categorys.forEach((v) => {
+			if (v['children'].length) {
+				v['children'].forEach((val) => {
+					val['checked'] = false;
+					this.toggleSelect(val, val['index']);
+				});
+			}
+		});
+	}
 
-    // 分类清空 不确定
-    categoryClear(categorys){
-        categorys.forEach(v=>{
-            if(v['children'].length){
-                v['children'].forEach(val=>{
-                    val['checked'] = true;
-                    this.toggleSelect(val,val['index']);
-                })
-            }
-        })
-    }
+	// 分类清空 不确定
+	categoryClear(categorys) {
+		categorys.forEach((v) => {
+			if (v['children'].length) {
+				v['children'].forEach((val) => {
+					val['checked'] = true;
+					this.toggleSelect(val, val['index']);
+				});
+			}
+		});
+	}
 
 	// 删除单个头
 	closeTag(d) {
@@ -473,55 +477,57 @@ export class AddColumnComponent implements OnInit {
 	}
 
 	handleOk(it) {
-        it['modalVisible'] = false;
+		it['modalVisible'] = false;
 
-        // 选择的头是不是重复选择
-        let n = it['children'].findIndex((val,index)=>{
-            return val['key'] === this.treeTempSelect[0];
-        })
-        if(n!=-1) {
-            this.notification.create('warning','Reprot notification', `重复选择 ${this.treeTempSelect[0]}`);
-            this.treeTempSelect.length = 0;
-            return;
-        }else{
-            (async ()=>{
-                if(this.treeTempSelect.length){
-                    let res = await this.saveThead({
-                        "category":it['category'],
-                        "key":this.treeTempSelect[0],
-						"name":this.treeTempSelect[0],
-						"geneType":this.geneType['type']
-                    });
-                    if(res!=='error'){
-                        let tempIt = JSON.parse(JSON.stringify(it));
-                        it.children.length = 0;
-                        it.children.push(...res['data']);
+		// 选择的头是不是重复选择
+		let n = it['children'].findIndex((val, index) => {
+			return val['key'] === this.treeTempSelect[0];
+		});
+		if (n != -1) {
+			this.notification.create('warning', 'Reprot notification', `重复选择 ${this.treeTempSelect[0]}`);
+			this.treeTempSelect.length = 0;
+			return;
+		} else {
+			(async () => {
+				if (this.treeTempSelect.length) {
+					let res = await this.saveThead({
+						category: it['category'],
+						key: this.treeTempSelect[0],
+						name: this.treeTempSelect[0],
+						geneType: this.geneType['type']
+					});
+					if (res !== 'error') {
+						let tempIt = JSON.parse(JSON.stringify(it));
+						it.children.length = 0;
+						it.children.push(...res['data']);
 
-                        if(tempIt['children'].length){
-                            it['children'].forEach(val=>{
-                                let index = tempIt['children'].findIndex((v,i)=>{
-                                    return val['key'] === v['key'];
-                                })
+						if (tempIt['children'].length) {
+							it['children'].forEach((val) => {
+								let index = tempIt['children'].findIndex((v, i) => {
+									return val['key'] === v['key'];
+								});
 
-                                if(index!=-1){
-                                    it['children'][index]['checked'] = tempIt['children'][index]['checked'];
-                                    tempIt['children'].splice(index,1);
-                                }
-                            })
-                        }
+								if (index != -1) {
+									it['children'][index]['checked'] = tempIt['children'][index]['checked'];
+									tempIt['children'].splice(index, 1);
+								}
+							});
+						}
 
-                        this.initIndex();
-                        this.addColumnService.set(this.thead);
+						this.initIndex();
+						this.addColumnService.set(this.thead);
 
-                        setTimeout(() => { this.computedTableEvent.emit()}, 30);
-                        this.notification.create('success','Reprot notification', `${this.treeTempSelect[0]} 添加成功`);
-                    }else{
-                        this.notification.create('warning','Reprot notification', `${this.treeTempSelect[0]} 添加失败`);
-                    }
-                    this.treeTempSelect.length = 0;
-                }
-            })()
-        }
+						setTimeout(() => {
+							this.computedTableEvent.emit();
+						}, 30);
+						this.notification.create('success', 'Reprot notification', `${this.treeTempSelect[0]} 添加成功`);
+					} else {
+						this.notification.create('warning', 'Reprot notification', `${this.treeTempSelect[0]} 添加失败`);
+					}
+					this.treeTempSelect.length = 0;
+				}
+			})();
+		}
 	}
 
 	forTree(data, callback) {
@@ -581,8 +587,15 @@ export class AddColumnComponent implements OnInit {
 		// 清空头的选中状态 不清空索引  需要两者清空 参考 initIndexAndChecked
 		this.initTheadStatus();
 		this.initSelectCount();
-        this.getCheckCount();
+		this.getCheckCount();
 	}
+
+    // 更新增删列的初始状态
+	_updateInitStatus() {
+		this._clearThead();
+		this.sortThead.length = 0;
+        this.theadInBase = [];
+    }
 
 	_addThead(head) {
 		if (head instanceof Array) {
