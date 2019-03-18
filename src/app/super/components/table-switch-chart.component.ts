@@ -195,11 +195,11 @@ export class TableSwitchChartComponent implements OnInit {
                     this.isHasSelectPanel = false;
                     this.reGetData();
                 }
-        
+
                 if (this.defaultSetUrl) {
                     this.getDefaultSet();
                 }else{
-                    this.reGetData();  
+                    this.reGetData();
                 }
             }else{
                 this.reGetData();
@@ -226,10 +226,11 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     tableBtnClick() {
+        let height = this.tableChartContent.nativeElement.offsetHeight;
         this.isShowTable = true;
         this.showChange.emit(this.isShowTable);
         setTimeout(() => {
-            this.scrollHeight();
+            this.scrollHeight(height);
         }, 0);
     }
 
@@ -289,9 +290,9 @@ export class TableSwitchChartComponent implements OnInit {
         }, 200);
     }
 
-    scrollHeight() {
+    scrollHeight(height = 0) {
         try {
-            let tableChartContentH = this.tableChartContent.nativeElement .offsetHeight;
+            let tableChartContentH = height || this.tableChartContent.nativeElement .offsetHeight;
             let bottomPageH = this.tableBottom
                 ? this.tableBottom.nativeElement.offsetHeight
                 : 0;

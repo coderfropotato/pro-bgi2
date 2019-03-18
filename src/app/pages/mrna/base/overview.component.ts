@@ -36,6 +36,9 @@ export class OverviewComponent implements OnInit {
 	selectPanelData: object[] = [];
 	selectConfirmData: string[] = [];
 
+	EntityOne: object;
+	EntityTwo: object;
+
 	//主成分分析
 	PCASelectType: any = [];
 	PCASearchType: string;
@@ -99,9 +102,15 @@ export class OverviewComponent implements OnInit {
 
 		//样品分组设置
 		this.defaultUrl = `${config['javaPath']}/basicModule/groupPlan`;
+		this.EntityOne = {
+			LCID: this.store.getStore('LCID')
+		}
 
 		//差异分组设置
 		this.defaultUrlTwo = `${config['javaPath']}/basicModule/diffExpPlan`;
+		this.EntityTwo = {
+			LCID: this.store.getStore('LCID')
+		}
 
 		this.colorArr = this.store.colors;
 
@@ -484,7 +493,7 @@ export class OverviewComponent implements OnInit {
 					  this.updateTitle();
 					}
 				},
-				width: 660,
+                width: 660,
 				el: '#PCADataID',
 				type: 'scatter',
 				radius: 3, // custom radius
@@ -539,7 +548,7 @@ export class OverviewComponent implements OnInit {
 
 		this.chartPCA = new d4().init(config);
 	}
-	
+
 	//箱线图
 	drawBoxReads(data) {
 		var tempBoxData = data['data'];
@@ -840,7 +849,7 @@ export class OverviewComponent implements OnInit {
 		this.relevanceChart.reGetData();
 	}
 
-	
+
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {

@@ -25,6 +25,21 @@ export class GeneRelativeComponent implements OnInit {
 	disabledRelative: string[] = [];
 	currentTableRelative: string[] = [];
 
+	selectType: string[] = [ '功能关系', '位置关系' ];
+	selectedType: string = '功能关系';
+	PosRange: number[] = [ 1, 100000 ];
+
+	posRelative: object = {
+		key: 'updown',
+		up: 100,
+		down: 100,
+		slink: true,
+		alink: true
+	};
+
+	unit: string = 'BP';
+	link: object[] = [ { name: '同义链', checked: true }, { name: '反义链', checked: true } ];
+
 	constructor(private storeService: StoreService) {}
 
 	ngOnInit() {
@@ -40,7 +55,7 @@ export class GeneRelativeComponent implements OnInit {
 		// ];
 
 		this.relations = this.storeService.getStore('relations');
-		this.beforeRelation = JSON.parse(JSON.stringify(this.relations));
+		// this.beforeRelation = JSON.parse(JSON.stringify(this.relations));
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -57,7 +72,19 @@ export class GeneRelativeComponent implements OnInit {
 				this.currentTableRelative.length = 0;
 			}
 		}
+	}
 
+	initPosRelation() {
+		this.selectType = [ '功能关系', '位置关系' ];
+		this.PosRange = [ 1, 100000 ];
+
+		this.posRelative = {
+			key: 'updown',
+			up: 100,
+			down: 100,
+			slink: true,
+			alink: true
+		};
 	}
 
 	// 选择关系
@@ -75,35 +102,46 @@ export class GeneRelativeComponent implements OnInit {
 
 	showRelationModal() {
 		this.isVisible = true;
+		this.selectedType = '功能关系';
 		this.initRelations();
 	}
 
 	handleCancel() {
 		this.isVisible = false;
-		this.relations = JSON.parse(JSON.stringify(this.beforeRelation));
+		// this.relations = JSON.parse(JSON.stringify(this.beforeRelation));
 	}
 
 	confirm(): void {
 		this.isVisible = false;
 		this.confirmEvent.emit(this.selectRelations);
-		this.relations = JSON.parse(JSON.stringify(this.beforeRelation));
+        // this.relations = JSON.parse(JSON.stringify(this.beforeRelation));
+	}
+
+	selectChange() {
+        this.initRelations();
 	}
 
 	initRelations() {
-		this.relations.forEach((v) => {
-			v['checked'] = false;
-			let include = this.disabledRelative.includes(v['name']);
-			v['checked'] = include;
-			v['disabled'] = include;
-		});
-
 		this.selectRelations.length = 0;
-		for (let i = 0; i < this.relations.length; i++) {
-			if (!this.relations[i]['checked'] && !this.relations[i]['disabled']) {
-				this.relations[i]['checked'] = true;
-				this.selectRelations.push(this.relations[i]);
-				break;
+        this.initPosRelation();
+
+		if (this.selectedType === '功能关系') {
+			this.relations.forEach((v) => {
+				v['checked'] = false;
+				let include = this.disabledRelative.includes(v['name']);
+				v['checked'] = include;
+				v['disabled'] = include;
+			});
+
+			for (let i = 0; i < this.relations.length; i++) {
+				if (!this.relations[i]['checked'] && !this.relations[i]['disabled']) {
+					this.relations[i]['checked'] = true;
+					this.selectRelations.push(this.relations[i]);
+					break;
+				}
 			}
+		} else {
+			this.selectRelations.push(this.posRelative);
 		}
 	}
 
