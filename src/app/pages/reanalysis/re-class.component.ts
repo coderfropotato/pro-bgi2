@@ -143,8 +143,19 @@ export class ReClassComponent implements OnInit {
 
 	ngOnInit() {
 		(async () => {
-			this.selectData = await this.getSelect();
-			this.selectedVal = this.selectData.length?this.selectData[0]:null;
+            let order = ['level_2','level_1','term_id'];
+            this.selectData = await this.getSelect();
+
+            for(let i = 0;i<order.length;i++){
+                this.selectData.forEach(val=>{
+                    if(val.endsWith(order[i])){
+                        this.selectedVal = val;
+                    }
+                })
+                break;
+            }
+
+			// this.selectedVal = this.selectData.length?this.selectData[0]:null;
 
 			this.first = true;
 			this.resetCheckGraph = true;

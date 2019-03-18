@@ -37,7 +37,7 @@ export class FilterComponent implements OnInit {
     */
 
     // 表头的数据类型
-    @Input() searchType: string;
+    @Input() searchType:string;
     // 表头的查询名称
     @Input() filterName: string;
     // 表头在页面显示的名称
@@ -101,6 +101,10 @@ export class FilterComponent implements OnInit {
                 break;
             case "number":
                 this.selectType = "$and";
+                break;
+            default:
+                this.searchType = 'string';
+                this.selectType = 'regExp';
                 break;
 
         }

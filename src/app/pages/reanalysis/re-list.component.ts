@@ -1,7 +1,7 @@
 import { debounceTime } from 'rxjs/operators';
 import { AjaxService } from './../../super/service/ajaxService';
 import { StoreService } from './../../super/service/storeService';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, QueryList, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NzNotificationService } from 'ng-zorro-antd';
@@ -21,7 +21,7 @@ export class ReListComponent implements OnInit {
 		pageIndex: 1,
 		pageSize: 10,
 		searchContent: {
-            label: null,
+			label: null,
 			timeStart: '',
 			timeEnd: '',
 			geneType: [],
@@ -37,28 +37,34 @@ export class ReListComponent implements OnInit {
 
 	label: string = '';
 	src: any = {
-		data: [ { name: '基因', key: 'gene', checked: false }, { name: '转录本', key: 'transcript', checked: false } ],
+		data: [{ name: '基因', key: 'gene', checked: false }, { name: '转录本', key: 'transcript', checked: false }],
 		dateRange: [],
 		category: [
-			{ key: 'heatmap', name: '聚类重分析', checked: false ,value:['heatmapDiff','heatmapExpress','heatmapCustom']},
-			{ key: 'classification', name: '基因分类', checked: false,value:['classification'] },
-			{ key: 'enrichment', name: '基因富集', checked: false,value:['enrichment'] },
-			{ key: 'net', name: '蛋白网络互作', checked: false,value:['net'] },
-			{ key: 'line', name: '折线图', checked: false,value:['line'] },
-			{ key: 'kda', name: 'KDA', checked: false,value:['kda'] },
-			{ key: 'multiOmics', name: '多组学关联', checked: false,value:['multiOmics'] },
-			{ key: 'chiSquare', name: '卡方检测', checked: false,value:['chiSquare'] },
-			{ key: 'as', name: '可变剪切', checked: false,value:['as'] },
-			{ key: 'linkedNetwork', name: '关联网络图', checked: false,value:['linkedNetwork'] },
-			{ key: 'heatmapRelation', name: '关联聚类热图', checked: false,value:['heatmapRelation'] }
+			{ key: 'heatmap', name: '聚类重分析', checked: false, value: ['heatmapDiff', 'heatmapExpress', 'heatmapCustom'] },
+			{ key: 'classification', name: '基因分类', checked: false, value: ['classification'] },
+			{ key: 'enrichment', name: '基因富集', checked: false, value: ['enrichment'] },
+			{ key: 'net', name: '蛋白网络互作', checked: false, value: ['net'] },
+			{ key: 'line', name: '折线图', checked: false, value: ['line'] },
+			{ key: 'kda', name: 'KDA', checked: false, value: ['kda'] },
+			{ key: 'multiOmics', name: '多组学关联', checked: false, value: ['multiOmics'] },
+			{ key: 'chiSquare', name: '卡方检测', checked: false, value: ['chiSquare'] },
+			{ key: 'as', name: '可变剪切', checked: false, value: ['as'] },
+			{ key: 'linkedNetwork', name: '关联网络图', checked: false, value: ['linkedNetwork'] },
+			{ key: 'heatmapRelation', name: '关联聚类热图', checked: false, value: ['heatmapRelation'] }
 		],
 		status: [
 			{ key: '1', name: '成功', checked: false },
 			{ key: '0', name: '失败', checked: false },
 			{ key: '-1', name: '进行中', checked: false }
 		]
-    };
-    intervalTimer = null;
+	};
+	intervalTimer = null;
+
+	//修改昵称和备注
+	isTyping: boolean = false;//是否正在输入
+	labelIsSave: boolean = false;
+	@ViewChild('inputRemark') inputRemark: ElementRef;
+	@ViewChild('inputNickname') inputNickname: ElementRef;
 
 	constructor(
 		private routes: ActivatedRoute,
@@ -68,7 +74,7 @@ export class ReListComponent implements OnInit {
 		private ajaxService: AjaxService,
 		private notify: NzNotificationService
 	) {
-		let langs = [ 'zh', 'en' ];
+		let langs = ['zh', 'en'];
 		this.translate.addLangs(langs);
 		this.translate.setDefaultLang('zh');
 		let curLang = sessionStorage.getItem('lang');
@@ -76,9 +82,9 @@ export class ReListComponent implements OnInit {
 	}
 
 	ngOnInit() {
-        this.getAnalysisList();
+		this.getAnalysisList();
 
-        let observerObj;
+		let observerObj;
 		observerObj = this.getListObserver.pipe(debounceTime(300)).subscribe((loadingFlag) => {
 			this.loading = loadingFlag;
 			this.ajaxService
@@ -88,6 +94,7 @@ export class ReListComponent implements OnInit {
 				})
 				.subscribe(
 					(data) => {
+						if (this.isTyping) return;
 						if (data['status'] === '0') {
 							this.analysisList = data['data']['list'];
 							this.total = data['data']['sumCount'];
@@ -100,10 +107,10 @@ export class ReListComponent implements OnInit {
 					},
 					(err) => {
 						this.total = 0;
-                        this.error = 'error';
-                        // 如果是可观察对象发出的token error 信息  就需要清空轮询定时器
-                        clearInterval(this.intervalTimer);
-                        observerObj.unsubscribe();
+						this.error = 'error';
+						// 如果是可观察对象发出的token error 信息  就需要清空轮询定时器
+						clearInterval(this.intervalTimer);
+						observerObj.unsubscribe();
 					},
 					() => {
 						this.loading = false;
@@ -164,14 +171,14 @@ export class ReListComponent implements OnInit {
 
 		let href = location.href.split('/report');
 
-		if(!data['isCheck']) {
+		if (!data['isCheck']) {
 			data['isCheck'] = true;
 			this.checkAnalysis(data['_id']);
-		} 
+		}
 
 		if (type === 'classification' || type === 'enrichment') {
 			window.open(
-				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data[ 'annotation' ]}/${data['isEdited']}`
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}/${data['isEdited']}`
 			);
 			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
 		} else {
@@ -182,10 +189,10 @@ export class ReListComponent implements OnInit {
 		}
 	}
 
-	checkAnalysis(tid){
+	checkAnalysis(tid) {
 		this.ajaxService.getDeferData({
-			url:`${config['javaPath']}/reAnalysis/check`,
-			data:{
+			url: `${config['javaPath']}/reAnalysis/check`,
+			data: {
 				tid,
 			}
 		}).subscribe();
@@ -271,5 +278,92 @@ export class ReListComponent implements OnInit {
 		this.tableEntity['pageIndex'] = 1;
 
 		this.getList();
+	}
+
+
+	//备注修改
+	updateRemarkCheck(data) {
+		this.isTyping = true;
+		this.analysisList.forEach(analysis => {
+			analysis['isEditRemark'] = false;
+		})
+		data['isEditRemark'] = true;
+		setTimeout(() => { this.inputRemark.nativeElement.focus(); });
+	}
+	//修改备注之后回车
+	updateRemarkEnter(data, remark) {
+		data.remark = remark.length > 100 ? remark.substring(0, 100) : remark;
+		if (this.labelIsSave) return;
+		this.updateRemark(data, remark);
+	}
+	//调用接口修改备注
+	updateRemark(data, remark) {
+		this.labelIsSave = true;
+		//发送请求，修改备注
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/reAnalysis/remark`,
+				data: {
+					tid: data['_id'],
+					remark: remark
+				}
+			})
+			.subscribe(
+				(res) => {
+					if (res['status'] == 0) {
+						this.getList();
+					}
+					this.isTyping = false;
+					this.labelIsSave = false;
+				},
+				(error) => {
+					console.log(error);
+					this.isTyping = false;
+					this.labelIsSave = false;
+				}
+			);
+	}
+
+	//备注昵称
+	updateNicknameCheck(data) {
+		this.isTyping = true;
+		this.analysisList.forEach(analysis => {
+			analysis['isEditNickname'] = false;
+		})
+		data['isEditNickname'] = true;
+		setTimeout(() => { this.inputNickname.nativeElement.focus(); });
+	}
+	//修改备注之后回车
+	updateNicknameEnter(data, nickname) {
+		data.nickname = nickname.length > 50 ? nickname.substring(0, 50) : nickname;
+		if (this.labelIsSave) return;
+		this.updateNickname(data, nickname);
+	}
+	//调用接口修改备注
+	updateNickname(data, nickname) {
+		this.labelIsSave = true;
+		//发送请求，修改备注
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/reAnalysis/nickname`,
+				data: {
+					tid: data['_id'],
+					nickname: nickname
+				}
+			})
+			.subscribe(
+				(res) => {
+					if (res['status'] == 0) {
+						this.getList();
+					}
+					this.isTyping = false;
+					this.labelIsSave = false;
+				},
+				(error) => {
+					console.log(error);
+					this.isTyping = false;
+					this.labelIsSave = false;
+				}
+			);
 	}
 }

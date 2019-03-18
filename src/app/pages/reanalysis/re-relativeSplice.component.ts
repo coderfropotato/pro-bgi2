@@ -26,7 +26,7 @@ export class RelativeSpliceComponent implements OnInit {
     @ViewChild("func") func;
     @ViewChild("tableSwitchChart") tableSwitchChart;
     @ViewChild("bigTable") bigTable;
-    @ViewChild("addColumn") addColumn;
+    // @ViewChild("addColumn") addColumn;
 
     chartUrl: string;
     chartEntity: object;
@@ -158,7 +158,7 @@ export class RelativeSpliceComponent implements OnInit {
                     species: this.storeService.getStore("genome"), //物种
                     version: this.version,
                     searchList: [],
-                    sortThead: this.addColumn["sortThead"],
+                    // sortThead: this.addColumn["sortThead"],
                     as_type: this.AS_type_select,
                     as_group_name: this.group_select
                 };

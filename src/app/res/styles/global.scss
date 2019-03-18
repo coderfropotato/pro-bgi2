@@ -48,6 +48,7 @@
 //     border-color: $them-color;
 //     box-shadow: 0 0 0 2px rgba($them-color,.2)!important;
 // }
+
 .anticon.icon-disabled {
     cursor: not-allowed;
     opacity: .2;
@@ -754,7 +755,7 @@ button {
         width: 100%;
         min-width: $min-width;
         margin: 0;
-        height: 240px;
+        // height: 224px;
         transition: 0.3s all ease;
         position: absolute;
         left: 0;
@@ -868,7 +869,7 @@ button {
                 background-image: url('../img/list/帮助.png');
 			}
 
-			
+
 			.snp-overview-img {
                 background-image: url('../img/list/SNP总览.png');
 			}
@@ -1236,7 +1237,7 @@ button {
 }
 
 .analysis-list {
-    padding: 100px;
+    padding: 20px 200px;
     .search-box {
         &:after {
             display: block;
@@ -1980,6 +1981,8 @@ button {
 
 .desc {
     margin-top: 20px;
+    text-align: left;
+    padding: 12px;
 }
 
 .descContent {
@@ -2018,11 +2021,7 @@ button {
     width: stretch;
     height: 100%;
     display: flex;
-}
-
-.fusionRow {
-    height: 40px;
-    line-height: 40px;
+    flex-direction: column;
 }
 
 //基因总表
@@ -2208,6 +2207,159 @@ button {
 }
 
 //基因详情表
+.mgeneDetail {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background: #ffffff;
+    .mgene_conetnt {
+        padding: 40px 100px;
+        .mgene_title {
+            width: 100%;
+            height: 64px;
+            line-height: 64px;
+            text-align: center;
+            background: rgb(83, 120, 248);
+            color: #fff;
+            font-size: 24px;
+        }
+        .mgene_page {
+            width: 100%;
+            height: auto;
+            margin-top: 40px;
+            h4 {
+                height: 32px;
+                width: 100%;
+                font-size: 20px;
+                font-weight: 700;
+                color: #333;
+                padding-bottom: 10px;
+            }
+            h4::before {
+                content: "";
+                display: inline-block;
+                width: 8px;
+                height: 20px;
+                background-color: #5378f8;
+                margin-right: 10px;
+                vertical-align: bottom;
+            }
+        }
+    }
+}
+
+.links>span {
+    position: relative;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 20px;
+}
+
+.links :hover .link-lists {
+    display: block;
+}
+.link-lists {
+    transition: .3s all ease;
+    position: absolute;
+    left: 40px;
+    top: -24px;
+    background-color: #FFFFFF;
+    padding: 16px;
+    display: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 1000;
+    width: 360px;
+    border: 1px solid #ECECEC;
+    max-height: 276px;
+    overflow-y: auto;
+}
+
+.link-lists p {
+    margin: 0;
+    text-align: left;
+    text-indent: 0%;
+    font-size: 14px;
+    width: auto;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.link-lists li {
+    font-size: 12px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #F0F1F5;
+    border-radius: 2px;
+    transition: .3s all ease;
+}
+
+.link-lists li:hover {
+    background: #F0F1F5;
+}
+
+.link-lists li:last-child {
+    margin-bottom: 0;
+}
+
+.link-lists:after {
+    position: absolute;
+    left: -10px;
+    top: 22px;
+    display: block;
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-right: 10px solid #ccc;
+    border-bottom: 8px solid transparent;
+}
+
+.editProject,
+.editRemark {
+    position: relative;
+}
+
+.editProject i,
+.editRemark i {
+    position: absolute;
+    right: -2px;
+    top: 12px;
+    font-size: 12px;
+    margin-left: 6px;
+    visibility: hidden;
+}
+
+.editProject:hover i,
+.editRemark:hover i {
+    visibility: visible;
+}
+
+.editProject>span,
+.editRemark>span {
+    max-width: calc(100% - 18px);
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.editProject>input {
+    text-align: center;
+    width: calc(100% - 40px);
+    background: #FFFFFF;
+    border-radius: 2px;
+    border: 1px solid #DFE3F2;
+    height: 25px;
+}
+.editRemark>input {
+    text-align: center;
+    width: calc(100% - 40px);
+    background: #FFFFFF;
+    border-radius: 2px;
+    border: 1px solid #DFE3F2;
+    height: 25px;
+}
 .mgeneDetail{
 	width: 100%;
 	height: 100%;

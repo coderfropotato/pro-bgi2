@@ -493,7 +493,7 @@ export class OverviewComponent implements OnInit {
 					  this.updateTitle();
 					}
 				},
-				width: 660,
+                width: 660,
 				el: '#PCADataID',
 				type: 'scatter',
 				radius: 3, // custom radius
@@ -548,7 +548,7 @@ export class OverviewComponent implements OnInit {
 
 		this.chartPCA = new d4().init(config);
 	}
-	
+
 	//箱线图
 	drawBoxReads(data) {
 		var tempBoxData = data['data'];
@@ -688,8 +688,8 @@ export class OverviewComponent implements OnInit {
 				}
 				targetData.push(tempObj)
 			}
-		}
-
+        }
+        
 		let that = this;
 		let config: object = {
 			chart: {
@@ -849,7 +849,7 @@ export class OverviewComponent implements OnInit {
 		this.relevanceChart.reGetData();
 	}
 
-	
+
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
@@ -885,7 +885,7 @@ export class OverviewComponent implements OnInit {
 
 	//legend color change
 	colorMapChange(curColor){
-		this.chartMap.setColor(curColor, this.legendIndexMap);
+		this.chartMap.setColor(curColor, this.legendIndexMap,'aColors');
 		this.chartMap.redraw();
 	}
 

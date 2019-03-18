@@ -559,7 +559,7 @@ export class ReNetComponent implements OnInit {
             .attr("marker-end",d=> d.type==='target' ? 'url(#end-arrow)' :'')
             .on("mouseover", m => {
                 // target='_blank' href='https://www.ncbi.nlm.nih.gov/pubmed/${m.references}'
-                let text = `source：${m.source.geneID}<br>target：${m.target.geneID}<br>type：${m.type}<br>score：${m.score}<br>文献：<a>${m.references}</a>`;
+                let text = `source：<a target='_blank' href=''>${m.source.geneID}</a><br>target：<a target='_blank' href=''>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}<br>文献：<a>${m.references}</a>`;
                 this.globalService.showPopOver(d3.event, text);
             })
             .on("mouseout", () => {
@@ -614,7 +614,7 @@ export class ReNetComponent implements OnInit {
             .attr("cursor", "pointer")
             .on("mouseover", m => {
                 let value=isLinkNum ? 'node连接数' : that.chartEntity['quantity']['name'];
-                let text = `geneID：<a>${m.geneID}</a><br>type：${m.type}<br>${value}：${m.value}<br>geneSymbol：${m.symbol}`;
+                let text = `geneID：<a target='_blank' href=''>${m.geneID}</a><br>type：${m.type}<br>${value}：${m.value}<br>geneSymbol：${m.symbol}`;
                 this.globalService.showPopOver(d3.event, text);
             })
             .on("mouseout", () => {
