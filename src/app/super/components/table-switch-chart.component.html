@@ -133,6 +133,16 @@
                     <!-- chart -->
                     <div class="center chart" [hidden]="isShowTable || chartError">
                         <div [attr.id]="chartId" style='margin: auto;'></div>
+                        <div class="desc" *ngIf="chartDescContent && !isShowTable && !chartError">
+                            <div class="descTitle" [class.active]='isShowChartDesc' (click)='isShowChartDesc=!isShowChartDesc'>
+                                <i nz-icon class="anticon anticon-info-circle" theme="outline"></i>&nbsp;
+                                <span *ngIf="!chartDescTitle">图说明</span>
+                                <span *ngIf="chartDescTitle">{{chartDescTitle}}</span>
+                            </div>
+                            <div class="descContent" *ngIf="isShowChartDesc">
+                                {{chartDescContent}}
+                            </div>
+                        </div>
                     </div>
 
                     <!-- error -->
@@ -144,7 +154,7 @@
         </div>
     </nz-spin>
     <!-- 图说明 -->
-    <div class="desc" *ngIf="chartDescContent && !isShowTable && !chartError">
+    <!-- <div class="desc" *ngIf="chartDescContent && !isShowTable && !chartError">
         <div class="descTitle" [class.active]='isShowChartDesc' (click)='isShowChartDesc=!isShowChartDesc'>
             <i nz-icon class="anticon anticon-info-circle" theme="outline"></i>&nbsp;
             <span *ngIf="!chartDescTitle">图说明</span>
@@ -153,7 +163,7 @@
         <div class="descContent" *ngIf="isShowChartDesc">
             {{chartDescContent}}
         </div>
-    </div>
+    </div> -->
     <!-- 表说明 -->
     <div class="desc" *ngIf="tableDescContent && isShowTable && !tableError">
         <div class="descTitle" [class.active]='isShowTableDesc' (click)='isShowTableDesc=!isShowTableDesc'>

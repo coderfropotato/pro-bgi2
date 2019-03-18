@@ -48,6 +48,7 @@
 //     border-color: $them-color;
 //     box-shadow: 0 0 0 2px rgba($them-color,.2)!important;
 // }
+
 .anticon.icon-disabled {
     cursor: not-allowed;
     opacity: .2;
@@ -754,7 +755,7 @@ button {
         width: 100%;
         min-width: $min-width;
         margin: 0;
-        height: 240px;
+        // height: 224px;
         transition: 0.3s all ease;
         position: absolute;
         left: 0;
@@ -868,7 +869,7 @@ button {
                 background-image: url('../img/list/帮助.png');
 			}
 
-			
+
 			.snp-overview-img {
                 background-image: url('../img/list/SNP总览.png');
 			}
@@ -1980,6 +1981,8 @@ button {
 
 .desc {
     margin-top: 20px;
+    text-align: left;
+    padding: 12px;
 }
 
 .descContent {
@@ -2018,6 +2021,7 @@ button {
     width: stretch;
     height: 100%;
     display: flex;
+    flex-direction: column;
 }
 
 .fusionRow {

@@ -20,6 +20,9 @@ $font_active_color:#5278f8;
 $error-color:#f40;
 $success-color:#52c41a;
 
+$btn-border-color:#d9d9d9; // 按钮的border
+$btn-color:rgba(0, 0, 0, 0.65); // 按钮字体颜色
+
 // flex 兼容
 @mixin display-flex {
     display: flex;
