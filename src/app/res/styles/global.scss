@@ -1981,6 +1981,8 @@ button {
 
 .desc {
     margin-top: 20px;
+    text-align: left;
+    padding: 12px;
 }
 
 .descContent {
@@ -2019,6 +2021,7 @@ button {
     width: stretch;
     height: 100%;
     display: flex;
+    flex-direction: column;
 }
 
 .fusionRow {
