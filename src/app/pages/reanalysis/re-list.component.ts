@@ -1,7 +1,7 @@
 import { debounceTime } from 'rxjs/operators';
 import { AjaxService } from './../../super/service/ajaxService';
 import { StoreService } from './../../super/service/storeService';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, QueryList, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NzNotificationService } from 'ng-zorro-antd';
@@ -60,10 +60,11 @@ export class ReListComponent implements OnInit {
 	};
 	intervalTimer = null;
 
+	//修改昵称和备注
+	isTyping: boolean = false;//是否正在输入
 	labelIsSave: boolean = false;
-
-	//是否正在输入
-	isTyping: boolean = false;
+	@ViewChild('inputRemark') inputRemark: ElementRef;
+	@ViewChild('inputNickname') inputNickname: ElementRef;
 
 	constructor(
 		private routes: ActivatedRoute,
@@ -282,28 +283,22 @@ export class ReListComponent implements OnInit {
 
 	//备注修改
 	updateRemarkCheck(data) {
-		console.log("check")
 		this.isTyping = true;
 		this.analysisList.forEach(analysis => {
 			analysis['isEditRemark'] = false;
 		})
-		console.log('修改前：', data)
-
 		data['isEditRemark'] = true;
+		setTimeout(() => { this.inputRemark.nativeElement.focus(); });
 	}
 	//修改备注之后回车
 	updateRemarkEnter(data, remark) {
-		console.log("enter")
-		data.remark = remark.length > 10 ? remark.substring(0, 10) : remark;
+		data.remark = remark.length > 100 ? remark.substring(0, 100) : remark;
 		if (this.labelIsSave) return;
 		this.updateRemark(data, remark);
 	}
 	//调用接口修改备注
 	updateRemark(data, remark) {
 		this.labelIsSave = true;
-		console.log('update')
-		console.log(data.remark)
-		console.log(remark)
 		//发送请求，修改备注
 		this.ajaxService
 			.getDeferData({
@@ -315,8 +310,49 @@ export class ReListComponent implements OnInit {
 			})
 			.subscribe(
 				(res) => {
-					console.log('send')
-					console.log(res['status'])
+					if (res['status'] == 0) {
+						this.getList();
+					}
+					this.isTyping = false;
+					this.labelIsSave = false;
+				},
+				(error) => {
+					console.log(error);
+					this.isTyping = false;
+					this.labelIsSave = false;
+				}
+			);
+	}
+
+	//备注昵称
+	updateNicknameCheck(data) {
+		this.isTyping = true;
+		this.analysisList.forEach(analysis => {
+			analysis['isEditNickname'] = false;
+		})
+		data['isEditNickname'] = true;
+		setTimeout(() => { this.inputNickname.nativeElement.focus(); });
+	}
+	//修改备注之后回车
+	updateNicknameEnter(data, nickname) {
+		data.nickname = nickname.length > 50 ? nickname.substring(0, 50) : nickname;
+		if (this.labelIsSave) return;
+		this.updateNickname(data, nickname);
+	}
+	//调用接口修改备注
+	updateNickname(data, nickname) {
+		this.labelIsSave = true;
+		//发送请求，修改备注
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/reAnalysis/nickname`,
+				data: {
+					tid: data['_id'],
+					nickname: nickname
+				}
+			})
+			.subscribe(
+				(res) => {
 					if (res['status'] == 0) {
 						this.getList();
 					}

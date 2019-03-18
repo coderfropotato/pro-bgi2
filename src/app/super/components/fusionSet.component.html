@@ -1,0 +1,38 @@
+<nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="isShowSetPanel" (nzVisibleChange)="setClick()">
+    <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
+    <div class="setPanel" nz-menu>
+        <div class="fusionRow">是否显示基因名<nz-switch [(ngModel)]="isShowGene"></nz-switch></div>
+        <div class="fusionRow">是否显示内三圈<nz-switch [(ngModel)]="isShowColumn"></nz-switch></div>
+        <div class="fusionRow">
+            <nz-row>
+                <nz-col nzSpan="7">筛选link</nz-col>
+                <nz-col nzSpan="17">
+                    <nz-select style="width: 180px;" [(ngModel)]="linkSerach">
+                        <nz-option *ngFor="let link of linkSerachList" [nzLabel]="link.name" [nzValue]="link.key"></nz-option>
+                    </nz-select>
+                </nz-col>
+            </nz-row>
+        </div>
+        <div class="fusionRow" *ngIf="linkSerach==='score'">
+            <nz-row>
+                <nz-col nzSpan='5'>
+                    <span>Score</span>
+                </nz-col>
+                 <nz-col nzSpan="5" style="text-align: center;">
+                     <!-- <nz-slider [nzMin]="0" [nzMax]="1000" [(ngModel)]="score"></nz-slider> -->
+                     &gt;
+                 </nz-col>
+                 <nz-col nzSpan="12">
+                     <nz-input-number [nzMin]="0" [(ngModel)]="score"></nz-input-number>
+                 </nz-col>
+             </nz-row>
+        </div>
+        <div class="fusionRow" *ngIf="linkSerach==='linkId'">
+            <textarea rows="4" nz-input [(ngModel)]="linkIdText"></textarea>
+        </div>
+        <div class="setBtns right">
+            <button nz-button nzType="default" (click)="setCance()">取消</button>&nbsp;
+            <button nz-button nzType="primary" (click)="setConfirm()">确定</button>
+        </div>
+     </div>
+</nz-dropdown>

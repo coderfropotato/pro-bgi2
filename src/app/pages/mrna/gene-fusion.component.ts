@@ -22,23 +22,25 @@ export class GeneFusionComponent implements OnInit {
 	@ViewChild('right') right;
 	@ViewChild('fusionChartTable') fusionChartTable;
 
-  switch: string = 'right';
+	switch: string = 'right';
+	
+	tableUrl: string;
+	chartUrl:string;
+	tableChartEntity: object;
+
+
+	rightImgUrl: string;
+	imgEntity: string;
+
+		// 默认收起模块描述
+	expandModuleDesc: boolean = false;
   
-  tableUrl: string;
-  chartUrl:string;
-  tableChartEntity: object;
-
-
-  rightImgUrl: string;
-  imgEntity: string;
-
-	// 默认收起模块描述
-  expandModuleDesc: boolean = false;
-  
-  //设置
-  isShowSetPanel:boolean=false;
+  	//设置
 	isShowGene:boolean=true;
 	isShowColumn:boolean=true;
+	linkSerach:string='score';
+	score:number=100;
+	linkIds:any[]=[];
 
 	constructor(
 		private message: MessageService,
@@ -113,13 +115,19 @@ export class GeneFusionComponent implements OnInit {
 	  this.fusionChartTable.reGetData();
   }
 
-	showGene(){
-		this.fusionChartTable.redraw();
+  setConfirm(setdata){
+	this.isShowGene=setdata.isShowGene;
+	this.isShowColumn=setdata.isShowColumn;
+	this.linkSerach=setdata.linkSerach;
+	this.score=setdata.score;
+	let linkIdText=setdata.linkIdText;
+	let curlinkIdText=linkIdText.replace(/(^\s*)|(\s*$)/g, "");  // 去掉string两端空格
+	if(curlinkIdText){
+		let req=/\,|\，|\s+|[\r\n]/g; //匹配,，空格和换行符
+		this.linkIds = curlinkIdText.split(req);
 	}
-
-	showColumn(){
-		this.fusionChartTable.redraw();
-	}
+	this.fusionChartTable.redraw();
+  }
 
 	//画 circos 图
 	drawChart(data) {
@@ -127,7 +135,25 @@ export class GeneFusionComponent implements OnInit {
 		d3.selectAll("#fusionCircos svg").remove();
 		//定义数据
 		var outerRing = data.outRing;
-		var lineData = data.lineData;
+		var lineData = [];
+
+		if(this.linkSerach==='score'){
+			data.lineData.forEach(d => {
+				if(d.fusion_score > this.score){
+					lineData.push(d);
+				}
+			});
+		}else if(this.linkSerach==='linkId'){
+			data.lineData.forEach(d=>{
+				this.linkIds.forEach(m=>{
+					if(d.fusion_link_id===m){
+						lineData.push(d);
+					}
+				})
+			})
+		}else{
+			lineData = data.lineData;
+		}
 
 		var max_chrNameLength = d3.max(outerRing, function(d) {
 			return d.name.length;

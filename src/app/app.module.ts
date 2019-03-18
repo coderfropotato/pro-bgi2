@@ -29,6 +29,7 @@ import { TableSwitchChartComponent } from './super/components/table-switch-chart
 import { MultiOmicsSetComponent } from './super/components/multiOmicsSet.component';
 import { ClusterSetComponent } from './super/components/clusterSet.component';
 import { NetSetComponent } from './super/components/netSet.component';
+import { FusionSetComponent } from './super/components/fusionSet.component';
 import { TransformationTableComponent } from './super/components/transformation-table.component';
 import { GeneRelativeComponent } from './super/components/gene-relative.component';
 import { GridExportComponent } from './super/components/grid-export.component';
@@ -127,6 +128,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AccuracyPipe } from './super/filter/accuracy.pipe';
 import { TableSpecialTheadFilter } from './super/filter/tableSpecialThead.pipe';
 import config from '../config';
+import { from } from 'rxjs';
 
 
 /**
@@ -641,6 +643,7 @@ export function createTranslateLoader(http: HttpClient) {
 		MultiOmicsSetComponent,
 		ClusterSetComponent,
 		NetSetComponent,
+		FusionSetComponent,
 		AccuracyPipe,
 		TransformationTableComponent,
 		GeneRelativeComponent,

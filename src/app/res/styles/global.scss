@@ -2024,11 +2024,6 @@ button {
     flex-direction: column;
 }
 
-.fusionRow {
-    height: 40px;
-    line-height: 40px;
-}
-
 //基因总表
 .gene {
     position: relative;
@@ -2348,6 +2343,14 @@ button {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+.editProject>input {
+    text-align: center;
+    width: calc(100% - 40px);
+    background: #FFFFFF;
+    border-radius: 2px;
+    border: 1px solid #DFE3F2;
+    height: 25px;
 }
 .editRemark>input {
     text-align: center;
