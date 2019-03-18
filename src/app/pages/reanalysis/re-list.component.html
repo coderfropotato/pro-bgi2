@@ -70,7 +70,7 @@
                                 <span *ngIf="data['isEdited']" style="color:red;">（已编辑）</span>
                                 &emsp;
                             </nz-badge>
-                            <input *ngIf="data.isEditNickname" type="text" placeholder="字数限制50"
+                            <input #inputNickname *ngIf="data.isEditNickname" type="text" placeholder="字数限制50"
                             (keyup.enter)="updateNicknameEnter(data,data.nickname)"
                             (blur)="updateNickname(data,data.nickname)"
                             [(ngModel)]="data.nickname">
@@ -103,7 +103,7 @@
                                 </span>
                             </span>
                             <!-- ng-focus：获取到焦点，ng-blur: 失去焦点，ng-keyup（onkeyup）:回车-->
-                            <input *ngIf="data.isEditRemark" type="text" placeholder="字数限制100"
+                            <input #inputRemark *ngIf="data.isEditRemark" type="text" placeholder="字数限制100"
                             (blur)="updateRemark(data,data.remark)"
                             (keyup.enter)="updateRemarkEnter(data,data.remark)"
                             [(ngModel)]="data.remark">
