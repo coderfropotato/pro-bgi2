@@ -65,11 +65,16 @@
                 </thead>
                 <tbody>
                     <tr class="center" *ngFor="let data of analysisList">
-                        <td>
-                            <nz-badge [nzDot]="!data['isCheck']">{{data['nickname']}} 
+                        <td class="editProject">
+                            <nz-badge *ngIf="!data.isEditNickname" [nzDot]="!data['isCheck']">{{data['nickname']}} 
                                 <span *ngIf="data['isEdited']" style="color:red;">（已编辑）</span>
                                 &emsp;
                             </nz-badge>
+                            <input *ngIf="data.isEditNickname" type="text" placeholder="字数限制50"
+                            (keyup.enter)="updateNicknameEnter(data,data.nickname)"
+                            (blur)="updateNickname(data,data.nickname)"
+                            [(ngModel)]="data.nickname">
+                            <i class="iconfont icon-xiugai" (click)=updateNicknameCheck(data)></i>
                         </td>
                         <!-- process -1 pending 1 success 0 error -->
                         <td>

@@ -60,10 +60,9 @@ export class ReListComponent implements OnInit {
 	};
 	intervalTimer = null;
 
+	//修改昵称和备注
+	isTyping: boolean = false;//是否正在输入
 	labelIsSave: boolean = false;
-
-	//是否正在输入
-	isTyping: boolean = false;
 
 	constructor(
 		private routes: ActivatedRoute,
@@ -329,5 +328,60 @@ export class ReListComponent implements OnInit {
 					this.labelIsSave = false;
 				}
 			);
+	}
+
+	//备注昵称
+	updateNicknameCheck(data) {
+		console.log("check")
+		this.isTyping = true;
+		this.analysisList.forEach(analysis => {
+			analysis['isEditNickname'] = false;
+		})
+		console.log('修改前：', data)
+
+		data['isEditNickname'] = true;
+	}
+	//修改备注之后回车
+	updateNicknameEnter(data, nickname) {
+		console.log("enter")
+		data.nickname = nickname.length > 50 ? nickname.substring(0, 50) : nickname;
+		if (this.labelIsSave) return;
+		this.updateNickname(data, nickname);
+	}
+	//调用接口修改备注
+	updateNickname(data, nickname) {
+		this.labelIsSave = true;
+		console.log('update')
+		console.log(data.nickname)
+		console.log(nickname)
+		//发送请求，修改备注
+		this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/reAnalysis/nickname`,
+				data: {
+					tid: data['_id'],
+					nickname: nickname
+				}
+			})
+			.subscribe(
+				(res) => {
+					console.log('send')
+					console.log(res['status'])
+					if (res['status'] == 0) {
+						this.getList();
+					}
+					this.isTyping = false;
+					this.labelIsSave = false;
+				},
+				(error) => {
+					console.log(error);
+					this.isTyping = false;
+					this.labelIsSave = false;
+				}
+			);
+	}
+
+	update(){
+		alert('aa');
 	}
 }
