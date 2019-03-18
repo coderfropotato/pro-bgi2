@@ -754,7 +754,7 @@ button {
         width: 100%;
         min-width: $min-width;
         margin: 0;
-        height: 240px;
+        // height: 224px;
         transition: 0.3s all ease;
         position: absolute;
         left: 0;
@@ -868,7 +868,7 @@ button {
                 background-image: url('../img/list/帮助.png');
 			}
 
-			
+
 			.snp-overview-img {
                 background-image: url('../img/list/SNP总览.png');
 			}
