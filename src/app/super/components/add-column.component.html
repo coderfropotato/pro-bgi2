@@ -34,7 +34,7 @@
                             </ng-container>
                         </p>
                         <ng-container *ngIf="it['children'].length">
-                            <button class="head-item" nz-button nzSize="small" nzType="default" [ngClass]="{'active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</button>
+                            <button class="head-item" nz-button nzSize="small" nzType="default" [ngClass]="{'btnActive':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</button>
                             <!-- <span class="head-item" [ngClass]="{'active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</span> -->
                         </ng-container>
                     </ng-container>
