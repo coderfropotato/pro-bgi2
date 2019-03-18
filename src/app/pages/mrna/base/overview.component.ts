@@ -493,7 +493,7 @@ export class OverviewComponent implements OnInit {
 					  this.updateTitle();
 					}
 				},
-				width: 660,
+                width: 660,
 				el: '#PCADataID',
 				type: 'scatter',
 				radius: 3, // custom radius
@@ -548,7 +548,7 @@ export class OverviewComponent implements OnInit {
 
 		this.chartPCA = new d4().init(config);
 	}
-	
+
 	//箱线图
 	drawBoxReads(data) {
 		var tempBoxData = data['data'];
@@ -849,7 +849,7 @@ export class OverviewComponent implements OnInit {
 		this.relevanceChart.reGetData();
 	}
 
-	
+
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
