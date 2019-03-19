@@ -305,7 +305,7 @@ export class ReListComponent implements OnInit {
 				url: `${config['javaPath']}/reAnalysis/remark`,
 				data: {
 					tid: data['_id'],
-					remark: remark
+					remark: remark ? remark : ''
 				}
 			})
 			.subscribe(
@@ -348,7 +348,7 @@ export class ReListComponent implements OnInit {
 				url: `${config['javaPath']}/reAnalysis/nickname`,
 				data: {
 					tid: data['_id'],
-					nickname: nickname
+					nickname: nickname ? nickname : ''
 				}
 			})
 			.subscribe(
