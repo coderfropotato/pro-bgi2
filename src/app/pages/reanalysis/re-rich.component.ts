@@ -587,6 +587,7 @@ export class ReRichComponent implements OnInit {
                 },
                 legend: {
                     show: true,
+                    separation:false,
                     click:(d,index)=>{
                         this.color = d3.select(d).attr('fill');
                         this.show = true;

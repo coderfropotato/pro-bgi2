@@ -66,11 +66,11 @@ import { ClusterComponent } from './pages/mrna/cluster.component';
 import { ClusterHelpComponent } from './pages/mrna/cluster-help.component';
 /* GO */
 import { GoClassComponent,GoClassPage } from './pages/mrna/go-class.component';
-import { GoRichComponent } from './pages/mrna/go-rich.component';
+import { GoRichComponent,GoRichPage } from './pages/mrna/go-rich.component';
 import { GoHelpComponent } from './pages/mrna/go-help.component';
 /* KEGG */
 import { KeggClassComponent,KeggClassPage } from './pages/mrna/kegg-class.component';
-import { KeggRichComponent } from './pages/mrna/kegg-rich.component';
+import { KeggRichComponent,KeggRichPage } from './pages/mrna/kegg-rich.component';
 import { KeggHelpComponent } from './pages/mrna/kegg-help.component';
 /* 剪接/变异 */
 import { AlternativeSplicingComponent } from './pages/mrna/alternative-splicing.component';
@@ -295,7 +295,7 @@ const ROUTES: Routes = [
 			},
 			{
 				path:'go-enrichment',
-				component:GoRichComponent,
+				component:GoRichPage,
 				data:{keep:true,module:'goEnrichment'}
 			},
 			{
@@ -311,7 +311,7 @@ const ROUTES: Routes = [
 			},
 			{
 				path:'kegg-enrichment',
-				component:KeggRichComponent,
+				component:KeggRichPage,
 				data:{keep:true,module:'keggEnrichment'}
 			},
 			{
@@ -684,12 +684,14 @@ export function createTranslateLoader(http: HttpClient) {
 		ClusterComponent,
         ClusterHelpComponent,
 
-        GoClassPage,
+		GoClassPage,
+		GoRichPage,
 		GoClassComponent,
 		GoHelpComponent,
 		GoRichComponent,
 
-        KeggClassPage,
+		KeggClassPage,
+		KeggRichPage,
 		KeggClassComponent,
 		KeggRichComponent,
 		KeggHelpComponent,

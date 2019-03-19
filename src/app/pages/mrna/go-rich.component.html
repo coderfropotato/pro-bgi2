@@ -1,76 +1,116 @@
-<div>
-    <ng-template #selectTemplate>
-        <nz-select
-            style="width: 180px;margin-left: 10px"
-            [(ngModel)]="tableEntity.sample"
-            [nzSize]="'small'"
-            (ngModelChange)="onSelectChange1()"
-            nzShowSearch
-        >
-            <nz-option
-                *ngFor="let sam of sampleList"
-                [nzLabel]="sam"
-                [nzValue]="sam"
-            ></nz-option>
-        </nz-select>
-        <nz-select
-            style="width: 180px;margin-left: 10px"
-            [(ngModel)]="tableEntity.compare"
-            [nzSize]="'small'"
-            (ngModelChange)="onSelectChange2()"
-            nzShowSearch
-        >
-            <nz-option
-                *ngFor="let com of compareList"
-                [nzLabel]="com"
-                [nzValue]="com"
-            ></nz-option>
-        </nz-select>
-    </ng-template>
 
-    <ng-template #setTemplate>
-        <nz-dropdown [nzPlacement]="'bottomRight'">
-            <i
-                class="iconfont icon-shezhi"
-                nz-tooltip
-                nzTitle="设置"
-                nz-dropdown
-            ></i>
-            <ul nz-menu>
-                <li nz-menu-item><a>1st menu item</a></li>
-                <li nz-menu-item><a>2nd menu item</a></li>
-                <li nz-menu-item><a>3rd menu item</a></li>
-            </ul>
-        </nz-dropdown>
-    </ng-template>
-    <div>
-        <app-table-switch-chart
-            #tableSwitchChart
-            [id]="'tableSwitchChart'"
-            [isHasMultiSelect]="true"
-            [(isMultiSelect)]="isMultiSelect"
-            (isMultiSelectChange)="multiSelectChange()"
-            (multipleConfirmEmit)="multipleConfirm()"
-            [tableUrl]="tableUrl"
-            [chartUrl]="chartUrl"
-            [apiEntity]="tableEntity"
-            [isShowAccuracy]="true"
-            [selectTemplate]="selectTemplate"
-            [setTemplate]="setTemplate"
-            (drawChartEmit)="drawChart($event)"
-            [chartId]="'chartId222'"
-            [chartName]="'散点图'"
-            [selectPanelUrl]="selectPanelUrl"
-            [selectPanelEntity]="selectPanelEntity"
-            (selectConfirmEmit)="selectConfirm($event)"
-            [defaultSelectNum]="2"
-            (defaultSelectList)="defaultSelectList($event)"
-        ></app-table-switch-chart>
+<div class="content reanalysis-content row">
+    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+        
+        <div class="left-top-layout">
+            <span class="zhankai-shouqi pointer" (click)="moduleTableChange()" [nzTitle]="(expandModuleTable ? '收起表格' : '展开表格') | translate" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleTable"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleTable"></i>
+                {{annotation}}富集结果表
+            </span>
+            <ng-content select=".gene-switch-module"></ng-content>
+        </div>
 
-        <app-color-picker
-            [(color)]="color"
-            (colorChange)="handlerColorChange($event)"
-            [(show)]="show"
-        ></app-color-picker>
+        <div #leftBottom class="left-bottom-layout" style=" overflow: auto; ">
+            <!-- 下拉选择 -->
+        <ng-template #selectTemplate>
+            <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
+            </nz-select>
+        </ng-template>
+
+            <!-- 选中数据 -->
+            <ng-template #checkedTemplate>
+                <nz-dropdown *ngIf="!isShowTable" [nzClickHide]="false" [(nzVisible)]="visible" [nzTrigger]="'click'">
+                    <div nz-dropdown class="dropdownTitle">
+                        <span>选中的{{annotation}}</span>&nbsp;
+                        <span style="color: red">({{checkedDrawGeneList.length > 60 ? 60 : checkedDrawGeneList.length}})</span>
+                    </div>
+                    <div *ngIf="checkedDrawGeneList.length" style="box-shadow: 0 2px 8px rgba(0,0,0,.15);">
+                        <ul nz-menu class="richDropdownMenu">
+                            <li nz-menu-item *ngFor="let item of checkedDrawGeneList;let i = index">
+                                <nz-row>
+                                    <nz-col class="left textEllipsis" nzSpan="18" nzOffset="1" nz-tooltip [nzTitle]="item">
+                                        <span>{{item}}</span>
+                                    </nz-col>
+                                    <nz-col class="right" nzSpan="2" nzOffset="1" nz-tooltip nzTitle="删除" (click)="deleteGene(i)">
+                                        <i nz-icon class="anticon anticon-close-circle" theme="outline"></i>
+                                    </nz-col>
+                                </nz-row>
+                            </li>
+                        </ul>
+                        <ul nz-menu>
+                            <li nz-menu-item class="right" (click)="clearGene()"><button nz-button nzType="default">清空</button></li>
+                        </ul>
+                    </div>
+                    <ul nz-menu *ngIf="!checkedDrawGeneList.length" style="box-shadow: 0 2px 8px rgba(0,0,0,.15);width:200px;">
+                        <li nz-menu-item>暂无选中的{{annotation}}</li>
+                    </ul>
+                </nz-dropdown>
+
+                <button *ngIf="!isShowTable" style="margin-left:10px" nz-button nzType="primary" [nzSize]="'small'" (click)="reDraw()">重画</button>
+
+            </ng-template>
+
+                <!-- 可选择数据的大表 -->
+                <div [hidden]='!expandModuleTable'>
+                    <ng-container>
+                    <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable
+                        [selectTemplate]="selectTemplate"
+                        [tableHeight]="leftTableHeight / 2"
+                        [defaultChecked]="false"
+                        [pageEntity]="chartEntity"
+                        [url]="bigtableUrl"
+                        tableId="goRichCheckBigTable"
+                        (checkedChange)="checkedChange($event)"
+                        [(computedScrollHeight)]="leftComputedScrollHeight">
+                    </app-big-table-check>
+                </ng-container>
+                
+                <div class="text-info">
+                    <span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>
+                </div>
+                </div>
+
+
+            <!-- 图表切换 -->
+            <div>
+                <app-table-switch-chart *ngIf="selectedVal" #switchChart
+                    [id]="'go-rich'"
+                    [tableUrl]="chartUrl"
+                    [apiEntity]="chartEntity"
+                    (drawChartEmit)="drawChart($event)"
+                    [chartId]="'goRichChartDiv'"
+                    [chartName]="'GO富集'"
+                    (refresh)="handlerRefresh()"
+                    [isHasMultiSelect]="true"
+                    [(isMultiSelect)]="isMultipleSelect"
+                    (isMultiSelectChange)="chartSelectModelChange($event)"
+                    (multipleConfirmEmit)="multipleSelectConfirm()"
+                    (showChange)="showChange($event)"
+                    [chartTypeData]="chartTypeData"
+                    [otherLeftTemplate]="checkedTemplate"
+                    [flex]="true">
+                </app-table-switch-chart>
+
+                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
+
+                <app-color-picker [(color)]="bcolor" (colorChange)="bcolorChange($event)" [(show)]="bshow"></app-color-picker>
+            </div>
+        </div>
+    </div>
+    <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+        <div class="switch">
+            <app-layout-switch [analysisCount]="storeService['store']['analysisCount']"  [ngModel]="switch" (ngModelChange)="switchChange($event)" > </app-layout-switch>
+        </div>
+        <div class="func" #func (click)="resize($event)">
+            <!-- 增删列 -->
+            <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column>
+            <!-- 关系 -->
+            <app-gene-relative class="ml-12" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
+            <!-- 返回 -->
+            <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button> </div>
+            <!-- 表格转换 -->
+            <app-table-transformation *ngIf="selectedVal" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked" [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
     </div>
 </div>
