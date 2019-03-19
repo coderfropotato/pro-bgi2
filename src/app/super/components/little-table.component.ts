@@ -12,6 +12,7 @@ declare const $: any;
 export class LittleTableComponent implements OnInit {
     @Input() url: string;
     @Input() pageEntity: object;
+    @Input() inRefreshShow: boolean = true;
 
     tableError: string;
 

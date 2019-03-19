@@ -688,8 +688,8 @@ export class OverviewComponent implements OnInit {
 				}
 				targetData.push(tempObj)
 			}
-		}
-
+        }
+        
 		let that = this;
 		let config: object = {
 			chart: {
@@ -885,7 +885,7 @@ export class OverviewComponent implements OnInit {
 
 	//legend color change
 	colorMapChange(curColor){
-		this.chartMap.setColor(curColor, this.legendIndexMap);
+		this.chartMap.setColor(curColor, this.legendIndexMap,'aColors');
 		this.chartMap.redraw();
 	}
 

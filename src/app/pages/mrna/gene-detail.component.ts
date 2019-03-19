@@ -63,10 +63,11 @@ export class GeneDetailComponent implements OnInit {
 	expressive_defaultUrl: string;
 	expressive_params_g: object;
 	expressive_params_t: object;
-	// expressive_rows: object[] = [];
-	// expressive_baseThead: object[] = [];
-	// expressive_geneType: string;
-	// expressive_index: number = 0;
+	expressive_params: object;
+	expressive_rows: object[] = [];
+	expressive_baseThead: object[] = [];
+	expressive_geneType: string;
+	expressive_index: number = 0;
 
 	//折线图
 	// chartUrl: string;
@@ -77,18 +78,12 @@ export class GeneDetailComponent implements OnInit {
 	groupDiff_defaultUrl: string;
 	groupDiff_params_g: object;
 	groupDiff_params_t: object;
-	// groupDiff_rows: object[] = [];
-	// groupDiff_baseThead: object[] = [];
-	// groupDiff_geneType: string;
 	groupDiff_index: number = 0;
 
 	//样本间差异
 	sampleDiff_defaultUrl: string;
 	sampleDiff_params_g: object;
 	sampleDiff_params_t: object;
-	// sampleDiff_rows: object[] = [];
-	// sampleDiff_baseThead: object[] = [];
-	// sampleDiff_geneType: string;
 	sampleDiff_index: number = 0;
 
 	//mRna二次结构
@@ -97,8 +92,76 @@ export class GeneDetailComponent implements OnInit {
 	precursor_geneType: string;
 	precursor_image: string;
 
+	//SNP
+	snp_defaultUrl: string;
+	snp_params: object;
+
+	//INDEL
+	indel_defaultUrl: string;
+	indel_params: object;
+
+
+	//文献信息
+	document_defaultUrl: string;
+	document_params: object;
+	documentList: object [] = [];
+	documentPage: number = 1;  //每页10条
+	documentTotal: number = 0; //文献总条数
+	load_more_show: boolean = true;
+	isSpinning: boolean = false;
+
 	geneParamsUsed: object;
 	transcriptParamsUsed: object;
+
+	//功能注释信息
+	functional_url: string;
+	go_molecular_params: object;
+
+	kegg_pathway_parameter: string = "kegg_pathway"; //KEGG Pathway
+	kegg_reaction_parameter: string = "kegg_reaction";//KEGG Reaction
+	kegg_module_parameter: string = "kegg_module";//KEGG Module
+	kegg_disease_parameter: string = "kegg_disease";//KEGG Disease
+	go_molecular_parameter: string = "go_f";//GO Molecular Function
+	go_cellular_parameter: string = "go_c";//GO Cellular Component
+	go_biological_parameter: string = "go_p";//GO Biological Process
+	pfam_parameter: string = "pfam";//Pfam
+	reactome_parameter: string = "reactome";//Reactome
+	InterPro_parameter: string = "interpro";//InterPro
+	cog_parameter: string = "cog";//COG
+	eggnog_parameter: string = "eggnog";//EggNOG
+	msigdb_H_parameter: string = "msigdb_h";//Msigdb_H
+	msigdb_C1_parameter: string = "msigdb_c1";//Msigdb C1
+	msigdb_C2_CGP_parameter: string = "msigdb_c2_cgp";//MsigDB C2_CGP
+	msigdb_C2_CP_BIOCARTA_parameter: string = "msigdb_c2_cp_biocarta";//MsigDB C2_CP_BIOCARTA
+	msigDB_C2_CP_parameter: string = "msigdb_C2_CP";//MsigDB C2_CP
+	msigdb_C2_CP_KEGG_parameter: string = "msigdb_c2_cp_kegg";//MsigDB C2_CP_KEGG
+	msigdb_C2_CP_REACTOME_parameter: string = "msigdb_c2_cp_reactome";//MsigDB C2_CP_REACTOME
+	msigdb_C3_MIR_parameter: string = "msigdb_c3_mir";//MsigDB C3_MIR
+	msigdb_C3_TFT_parameter: string = "msigdb_c3_tft";//MsigDB C3_TFT
+	msigdb_C4_CGN_parameter: string = "msigdb_c4_cgn";//MsigDB C4_CGN
+	msigdb_C4_CM_parameter: string = "msigdb_c4_cm";//MsigDB C4_CM
+	msigdb_C5_BP_parameter: string = "msigdb_c5_bp";//MsigDB C5_BP
+	msigdb_C5_CC_parameter: string = "msigdb_c5_cc";//MsigDB C5_CC
+	msigdb_C5_MF_parameter: string = "msigdb_c5_mf";//MsigDB C5_MF
+	msigdb_C6_parameter: string = "msigdb_c6";//Msigdb C6
+	msigdb_C7_parameter: string = "msigdb_c7";//Msigdb C7
+	msigdb_ARCHIVED_C5_MF_parameter: string = "msigdb_archived_c5_mf";//MsigDB ARCHIVED_C5_MF
+	msigdb_ARCHIVED_C5_CC_parameter: string = "msigdb_archived_c5_cc";//MsigDB ARCHIVED_C5_CC
+	msigdb_ARCHIVED_C5_BP_parameter: string = "msigdb_archived_c5_bp";//MsigDB ARCHIVED_C5_BP
+	tf_cofactors_parameter: string = "tf_cofactors";//TF Cofactors
+	tf_parameter: string = "tf";//Transcription Factor
+
+	//GO Molecular Function
+	go_f_list: object[] = [];
+	go_f_flag: boolean = true;
+	//GO Cellular Component
+	go_c_list: object[] = [];
+	go_c_flag: boolean = true;
+	//GO Biological Process
+	go_b_list: object[] = [];
+	go_b_flag: boolean = true;
+	//KEGG Pathway
+	kegg_way_url: string;
 
   	constructor(
 		private message: MessageService,
@@ -117,7 +180,8 @@ export class GeneDetailComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.geneID = "374443";
+		//this.geneID = "374443";
+		this.geneID = "100289635";
 
 		this.geneParamsUsed = {
 			LCID: this.storeService.getStore('LCID'),
@@ -140,17 +204,13 @@ export class GeneDetailComponent implements OnInit {
 		this.rna_params = this.geneParamsUsed;
 
 		//样本表达量
-		//this.expressive_geneType = "gene";
+		this.expressive_geneType = "gene";
 		this.expressive_defaultUrl = `${config['javaPath']}/geneDetail/exp`;
 		this.expressive_params_g = this.geneParamsUsed;
-
-		this.expressive_params_t = this.transcriptParamsUsed
+		this.expressive_params_t = this.transcriptParamsUsed;
+		this.expressive_params = this.geneParamsUsed;//折线图
 
 		// //折线图
-		// this.chartUrl=`${config['javaPath']}/geneDetail/exp`;
-        // this.chartEntity = {
-
-		// };
 
 		//组间差异
 		//this.groupDiff_geneType = "gene";
@@ -162,11 +222,7 @@ export class GeneDetailComponent implements OnInit {
 		//this.sampleDiff_geneType = "gene";
 		this.sampleDiff_defaultUrl = `${config['javaPath']}/geneDetail/sampleDiff`;
 		this.sampleDiff_params_g = this.geneParamsUsed;
-		this.sampleDiff_params_t = {
-			LCID: this.storeService.getStore('LCID'),
-			geneType: "transcript",
-			geneID: this.geneID
-		};
+		this.sampleDiff_params_t = this.transcriptParamsUsed;
 
 		//mRna二次结构
 		this.precursor_geneType = "gene";
@@ -174,14 +230,47 @@ export class GeneDetailComponent implements OnInit {
 		this.precursor_params = this.geneParamsUsed;
 		//geneID:"hsa-miR-223-3p"
 
+		//SNP
+		this.snp_defaultUrl = `${config['javaPath']}/geneDetail/snp`;
+		this.snp_params = this.geneParamsUsed;
+
+		//INDEL
+		this.indel_defaultUrl = `${config['javaPath']}/geneDetail/indel`;
+		this.indel_params = this.geneParamsUsed;
+
+		//文献信息
+		this.document_defaultUrl = `${config['javaPath']}/geneDetail/article`;
+		this.document_params = {
+			LCID: this.storeService.getStore('LCID'),
+			geneType: "gene",
+			geneID: this.geneID,
+			size:this.documentPage
+		};
+
+		// 功能注释信息
+
+		// KEGG Pathway kegg_pathway
+		this.functional_url = `${config['javaPath']}/geneDetail/annotation/`;
+		this.go_molecular_params = this.geneParamsUsed;
+
+		//KEGG Pathway
+		this.kegg_way_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_pathway_parameter;
+
 		(async () => {
 			try {
 				await this.getGeneInformation();//基因信息
-				//await this.getRnaInformation();//转录本信息
-				//await this.sampleExpression();//样本表达量
+				await this.getRnaInformation();//转录本信息
+				await this.sampleExpression();//样本表达量
 				//await this.getGroupDiff();//组间差异
 				//await this.getSampleDiff();//样本间差异
-				await this.getPrecursor();//样本间差异
+				await this.getPrecursor();//二次结构
+				await this.getDocumentInformation();//文献信息
+
+				// 功能注释信息
+				await this.getGoMolecular();// GO Molecular Function
+				await this.getGOCellular();// GO Cellular Component
+				await this.getGOBiological();// GO Cellular Component
+
 			}catch (error){
 
 			}
@@ -218,203 +307,142 @@ export class GeneDetailComponent implements OnInit {
 	//转录本信息
 	async getRnaInformation(){
 		return new Promise((resolve, reject) => {
-			// this.ajaxService
-			// .getDeferData({
-			// 	url: this.defaultUrl,
-			// 	data: this.rna_params
-			// })
-			// .subscribe((data: any) => {
-			// 	if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-			// 		return;
-			// 	} else if (data.status == '-1') {
-			// 		return;
-			// 	} else if (data.status == '-2') {
-			// 		return;
-			// 	} else {
-			// 		this.rows = data['data']['rows'];
-			// 		this.baseThead = data['data']['baseThead'];
-			// 	}
-			// 	resolve("success");
-			// },
-			// error => {
-			// 	reject("error");
-			// }
-			// );
+			this.ajaxService
+			.getDeferData({
+				url: this.defaultUrl,
+				data: this.rna_params
+			})
+			.subscribe((data: any) => {
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.rows = data['data']['rows'];
+					this.baseThead = data['data']['baseThead'];
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			);
 		})
 	}
 
 	//样本表达量
-	sampleExpression(){
-		// return new Promise((resolve, reject) => {
-		// 	this.ajaxService
-		// 	.getDeferData({
-		// 		url: this.expressive_defaultUrl,
-		// 		data: this.expressive_params
-		// 	})
-		// 	.subscribe((data: any) => {
-		// 		if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-		// 			return;
-		// 		} else if (data.status == '-1') {
-		// 			return;
-		// 		} else if (data.status == '-2') {
-		// 			return;
-		// 		} else {
-		// 			this.expressive_rows = data['data']['rows'];
-		// 			this.expressive_baseThead = data['data']['baseThead'];
-		// 			this.drawLineChart();
-		// 		}
-		// 		resolve("success");
-		// 	},
-		// 	error => {
-		// 		reject("error");
-		// 	}
-		// 	);
-		// })
+	async sampleExpression(){
+		return new Promise((resolve, reject) => {
+			this.ajaxService
+			.getDeferData({
+				url: this.expressive_defaultUrl,
+				data: this.expressive_params
+			})
+			.subscribe((data: any) => {
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.expressive_rows = data['data']['rows'];
+					this.expressive_baseThead = data['data']['baseThead'];
+					this.drawLineChart();
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			);
+		})
 	}
 
 	//折线图
 	drawLineChart(){
-		// let tempArray = [];
-		// for (const key in this.expressive_rows[0]) {
-		// 	let tempObj = {};
-		// 	if( key != "gene_id"){
-		// 		tempObj["x"] = key;
-		// 		tempObj["y"] = this.expressive_rows[0][key];
-		// 		tempArray.push(tempObj);
-		// 	}
-		// }
-		// console.log(tempArray);
-		// let config: object = {
-		// 	chart: {
-		// 		title: "折线图",
-		// 		smooth:true,
-		// 		dblclick: function(event) {
-		// 			var name = prompt("请输入需要修改的标题", "");
-		// 			if (name) {
-		// 			this.setChartTitle(name);
-		// 			this.updateTitle();
-		// 		}
-		// 	},
-		// 	width:600,
-		// 	height:450,
-		// 	el: "#lineChartDiv",
-		// 	type: "line",
-		// 	data: tempArray
-		// 	},
-		// 	axis: {
-		// 		x: {
-		// 			title: "Sample name",
-		// 			rotate: 60,
-		// 			dblclick: function(event) {
-		// 				var name = prompt("请输入需要修改的标题", "");
-		// 				if (name) {
-		// 					this.setXTitle(name);
-		// 					this.updateTitle();
-		// 				}
-		// 			}
-		// 		},
-		// 		y: {
-		// 			title: "log10(FPKM+1)",
-		// 			dblclick: function(event) {
-		// 			var name = prompt("请输入需要修改的标题", "");
-		// 			if (name) {
-		// 				this.setYTitle(name);
-		// 				this.updateTitle();
-		// 			}
-		// 			}
-		// 		}
-		// 	},
-		// 	"tooltip": function(d) {
-		// 		return "<span>x:"+d.key+"</span><br><span>y:"+d.value+"</span>"
-		// 	}
-		// }
-		// new d4().init(config);
+		document.getElementById("lineChartDiv").innerHTML = "";
+		let tempArray = [];
+		for (const key in this.expressive_rows[0]) {
+			let tempObj = {};
+			if( key != "gene_id"){
+				tempObj["x"] = key;
+				tempObj["y"] = this.expressive_rows[0][key];
+				tempArray.push(tempObj);
+			}
+		}
+		console.log(tempArray);
+		if(tempArray.length == 0){
+			return;
+		}
+
+		let config: object = {
+			chart: {
+				title: "折线图",
+				smooth:true,
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					this.setChartTitle(name);
+					this.updateTitle();
+				}
+			},
+			width:600,
+			height:450,
+			el: "#lineChartDiv",
+			type: "line",
+			data: tempArray
+			},
+			axis: {
+				x: {
+					title: "Sample name",
+					rotate: 60,
+					dblclick: function(event) {
+						var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setXTitle(name);
+							this.updateTitle();
+						}
+					}
+				},
+				y: {
+					title: "log10(FPKM+1)",
+					dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+						this.setYTitle(name);
+						this.updateTitle();
+					}
+					}
+				}
+			},
+			"tooltip": function(d) {
+				return "<span>x:"+d.key+"</span><br><span>y:"+d.value+"</span>"
+			}
+		}
+		new d4().init(config);
 	}
 
-	// SelectedExpressiveChange(num) {
-	// 	this.expressive_index = num;
-	// 	if(num==0){
-	// 		this.expressive_params["geneType"] = "gene";
-	// 	}else{
-	// 		this.expressive_params["geneType"] = "transcript";
-	// 	}
-	// 	//this.sampleExpression();
-	// }
-	
-	// //组间差异
-	// async getGroupDiff(){
-	// 	return new Promise((resolve, reject) => {
-	// 		this.ajaxService
-	// 		.getDeferData({
-	// 			url: this.groupDiff_defaultUrl,
-	// 			data: this.groupDiff_params
-	// 		})
-	// 		.subscribe((data: any) => {
-	// 			if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-	// 				return;
-	// 			} else if (data.status == '-1') {
-	// 				return;
-	// 			} else if (data.status == '-2') {
-	// 				return;
-	// 			} else {
-	// 				this.groupDiff_rows = data['data']['rows'];
-	// 				this.groupDiff_baseThead = data['data']['baseThead'];
-	// 			}
-	// 			resolve("success");
-	// 		},
-	// 		error => {
-	// 			reject("error");
-	// 		}
-	// 		);
-	// 	})
-	// }
-
-	SelectedGroupDiffChange(num) {
-	// 	this.groupDiff_index = num;
-	// 	if(num==0){
-	// 		this.groupDiff_params["geneType"] = "gene";
-	// 	}else{
-	// 		this.groupDiff_params["geneType"] = "transcript";
-	// 	}
-	// 	this.getGroupDiff();
-	}
-
-	//样本差异
-	async getSampleDiff(){
-		// return new Promise((resolve, reject) => {
-		// 	this.ajaxService
-		// 	.getDeferData({
-		// 		url: this.sampleDiff_defaultUrl,
-		// 		data: this.sampleDiff_params
-		// 	})
-		// 	.subscribe((data: any) => {
-		// 		if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-		// 			return;
-		// 		} else if (data.status == '-1') {
-		// 			return;
-		// 		} else if (data.status == '-2') {
-		// 			return;
-		// 		} else {
-		// 			this.sampleDiff_rows = data['data']['rows'];
-		// 			this.sampleDiff_baseThead = data['data']['baseThead'];
-		// 		}
-		// 		resolve("success");
-		// 	},
-		// 	error => {
-		// 		reject("error");
-		// 	}
-		// 	);
-		// })
+	SelectedExpressiveChange(num) {
+		this.expressive_index = num;
+		if(num==0){
+			this.expressive_params["geneType"] = "gene";
+		}else{
+			this.expressive_params["geneType"] = "transcript";
+		}
+		this.sampleExpression();
 	}
 
 	SelectedSampleDiffChange(num) {
-		// this.sampleDiff_index = num;
-		// if(num==0){
-		// 	this.sampleDiff_params["geneType"] = "gene";
-		// }else{
-		// 	this.sampleDiff_params["geneType"] = "transcript";
-		// }
-		// this.getSampleDiff();
+		this.sampleDiff_index = num;
+		if(num==0){
+			this.expressive_params["geneType"] = "gene";
+		}else{
+			this.expressive_params["geneType"] = "transcript";
+		}
+		this.sampleExpression();
 	}
 
 	//mRna二次结构
@@ -446,30 +474,144 @@ export class GeneDetailComponent implements OnInit {
 		})
 	}
 
+	//文献信息
+	async getDocumentInformation(){
+		this.isSpinning = true;
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.document_defaultUrl,
+				data:this.document_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					//console.log(data['data'])
+					this.isSpinning = false;
+					this.documentList = data['data']['rows'];
+					this.documentTotal = data['data']['total'];
+					if(this.documentTotal <= this.documentPage){
+						this.load_more_show = false;
+					}
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+
+	// GO Molecular Function
+	async getGoMolecular(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.functional_url+this.go_molecular_parameter,
+				data:this.go_molecular_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.go_f_list = data['data']['rows'];
+					if(data['data']['rows'].length == 0){
+						this.go_f_flag = false;
+					}
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+
+	// GO Cellular Component
+	async getGOCellular(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.functional_url+this.go_biological_parameter,
+				data:this.go_molecular_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					//console.log(data['data']);
+					this.go_b_list = data['data']['rows'];
+					if(data['data']['rows'].length == 0){
+						this.go_b_flag =false;
+					}
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+
+	//GO Biological Process
+	async getGOBiological(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.functional_url+this.go_cellular_parameter,
+				data:this.go_molecular_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					console.log(data['data']);
+					this.go_c_list = data['data']['rows'];
+					if(data['data']['rows'].length == 0){
+						this.go_c_flag =false;
+					}
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+
 	btnShow(){
 		this.btn_show = !this.btn_show;
 	}
 
-	//转录本信息
+	//转录本信息 下载
 	down_transcripts(){
 		console.log("转录本信息");
 	}
 
-	//
-	down_expressive_gene(){
-		console.log("转录本信息");
+	loadMore(){
+		this.document_params["size"] = this.documentTotal;
+		this.getDocumentInformation();
+		this.load_more_show = false;
 	}
-
-	down_expressive_transcripts(){
-
-	}
-
-	down_gene_group(){
-
-	}
-
-	down_gene_sample(){
-		
-	}
-
 }
