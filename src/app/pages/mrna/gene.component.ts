@@ -234,6 +234,7 @@ export class GenePage {
 			this.getSearchback();
 		} else {
 			this.expandHistoryPanel = false;
+			this.searchButtonFlag = true;
 		}
 	}
 
