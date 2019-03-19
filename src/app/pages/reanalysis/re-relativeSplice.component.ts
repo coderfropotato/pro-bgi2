@@ -611,11 +611,11 @@ export class RelativeSpliceComponent implements OnInit {
                 return 'translate(' + d['x'] + ',' + d['y'] + ')'
             })
             .attr("d",function(d,i){
-                return symbolScale(d["AS_type"])
+                return symbolScale(d["as_type"])
             })
             .attr("class","mynode")
             .attr("fill", function(d, i) {
-                return z(d['Group']);
+                return z(d['as_group_name']);
             })
             .on("mouseover", function(d) {
                 // let tipText = `x: ${d.x_site}

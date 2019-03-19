@@ -13,6 +13,9 @@
                 <ng-template #setTemplate>
                     <app-clusterSet *ngIf="defaultSetData && setData" [type]="'relation'" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData' [setData]="setData"></app-clusterSet>
                 </ng-template>
+                <ng-template #standardMethod>
+                    <span style="margin-left: 10px;" *ngIf="standard">标准化方法：{{standard}}</span>
+                </ng-template>
                 <!-- [selectTemplate]="selectTemplate" -->
                 <app-table-switch-chart
                     #relationClusterChart
@@ -21,6 +24,7 @@
                     [apiEntity]="chartEntity"
                     [setTemplate]="setTemplate"
                     (drawChartEmit)="drawChart($event)"
+                    [otherLeftTemplate]="standardMethod"
                     [chartId]="'relationClusterChartDiv'"
                     [chartName]="'关联聚类图'"
                     [defaultSetUrl]='defaultSetUrl'

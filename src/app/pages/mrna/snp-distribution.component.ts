@@ -40,7 +40,7 @@ export class SnpDistributionComponent implements OnInit {
 
   defaultTableEntity:object;
   defaultTableUrl:string;
-  defaultTableId:string;  
+  defaultTableId:string;
 
   tableHeight = 0;
   computedScrollHeight: boolean = false;
@@ -60,7 +60,7 @@ export class SnpDistributionComponent implements OnInit {
     public toolsService: ToolsService,
     private addColumnService: AddColumnService,
     private translate: TranslateService,
-  ) { 
+  ) {
      // 订阅windowResize 重新计算表格滚动高度
      this.message.getResize().subscribe((res) => {
       if (res['message'] === 'resize') this.computedTableHeight();
@@ -91,7 +91,7 @@ export class SnpDistributionComponent implements OnInit {
       LCID: this.store.getStore('LCID'),
       sample: this.curSearchType
     };
-     
+
   }
 
   computedTableHeight() {
@@ -121,7 +121,7 @@ export class SnpDistributionComponent implements OnInit {
 
   //SNP 位点区域分布
   drawRawReads(data){
-    
+
     let temp = data.rows[0];
     let tempArray = [
       {
@@ -163,7 +163,7 @@ export class SnpDistributionComponent implements OnInit {
         outerRadius:120,
         startAngle:0,
         endAngle:360,
-        showLabel:false,
+        showLabel:true,
         custom: ["name", "value"],
         el: "#snpDataID",
         type: "pie",
@@ -192,7 +192,7 @@ export class SnpDistributionComponent implements OnInit {
   }
 
   handlerRefresh(){
-    
+
   }
 
   //legend color change

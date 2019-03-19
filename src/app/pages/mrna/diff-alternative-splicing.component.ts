@@ -119,7 +119,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 	computedTableHeight() {
 		try {
 			let h = this.tableHeight;
-			this.tableHeight = this.right.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
+			this.tableHeight = this.right.nativeElement.offsetHeight - config['layoutContentPadding'] * 2 - 30;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
 	}

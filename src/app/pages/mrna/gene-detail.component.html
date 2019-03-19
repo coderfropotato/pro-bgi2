@@ -66,7 +66,7 @@
           <button *ngIf="!btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.noShowGeneID' | translate}}</button>
           <!-- 转录本信息 -->
           <div class="transcripts_table" *ngIf="!btn_show">
-              <ng-template #titleTemplate>
+              <!-- <ng-template #titleTemplate>
                   <div class="table-thead">
                       <div class="fRight">
                           <i class="iconfont icon-xiazai" (click)="down_transcripts()"></i>
@@ -87,8 +87,8 @@
                           </td>
                       </tr>
                   </tbody>
-              </nz-table>
-              <!-- <app-little-table [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table> -->
+              </nz-table> -->
+              <app-little-table [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table>
           </div>
       </div>
       
@@ -109,7 +109,7 @@
           </div>
 
           <!-- 折线图 -->
-          <div class="transcripts_table">
+          <div class="transcripts_table" [hidden]="!line_flag">
               <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
               <div id="lineChartDiv" class="mlineChartDiv">
               </div>
@@ -145,7 +145,7 @@
       </div>
 
       <!-- 表达量信息 -->
-      <div class="mgene_content">
+      <div class="mgene_content" *ngIf="precursor_image">
         <h4>{{'gene_detail.miRNA_second_structure' | translate}}</h4>
         <div class="transcripts_table">
           <p>下图展示miRNA的二级截图和reads与前体（precursor）的比对情况，reads来自于公共数据，与本项目数据无关。</p>
@@ -154,16 +154,16 @@
       </div>
     
       <!-- 变异信息 -->
-      <div class="mgene_content">
+      <div class="mgene_content" [hidden]="!snp_flag && !indel_flag"> 
           <h4>{{'gene_detail.variation_information' | translate}}</h4>
-          <div class="transcripts_table">
+          <div class="transcripts_table" [hidden]="!snp_flag">
               <h5>SNP</h5>
-              <app-little-table [inRefreshShow]="false" [url]="snp_defaultUrl" [pageEntity]="snp_params"></app-little-table>
+              <app-little-table [type]="'SNP'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="snp_defaultUrl" [pageEntity]="snp_params"></app-little-table>
           </div>
 
-          <div class="transcripts_table">
+          <div class="transcripts_table" [hidden]="!indel_flag">
               <h5>InDel</h5>
-              <app-little-table [inRefreshShow]="false" [url]="indel_defaultUrl" [pageEntity]="indel_params"></app-little-table>
+              <app-little-table [type]="'INDEL'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="indel_defaultUrl" [pageEntity]="indel_params"></app-little-table>
           </div>
       </div>
 
@@ -187,6 +187,26 @@
       <div class="mgene_content">
           <h4>{{'gene_detail.functional_annotation_information' | translate}}</h4>
 
+          <div class="transcripts_table" [hidden]="!kegg_way_flag">
+              <h5>KEGG Pathway</h5>
+              <app-little-table [type]="kegg_pathway_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_way_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!kegg_reaction_flag">
+              <h5>KEGG Reaction</h5>
+              <app-little-table [type]="kegg_reaction_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_reaction_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!kegg_module_flag">
+              <h5>KEGG Module</h5>
+              <app-little-table [type]="kegg_module_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_module_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!kegg_disease_flag">
+              <h5>KEGG Disease</h5>
+              <app-little-table [type]="kegg_disease_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_disease_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
           <div class="transcripts_table" *ngIf="go_f_flag">
               <h5>GO Molecular Function</h5>
                 <div *ngFor="let item of go_f_list" >
@@ -199,11 +219,6 @@
                         </div>
                     </div>
                 </div>
-          </div>
-
-          <div class="transcripts_table">
-              <h5>KEGG Pathway</h5>
-              <app-little-table [inRefreshShow]="false" [url]="kegg_way_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" *ngIf="go_c_flag">
@@ -234,6 +249,132 @@
               </div>
           </div>
 
+          <div class="transcripts_table" [hidden]="!pfam_flag">
+              <h5>Pfam</h5>
+              <app-little-table [type]="pfam_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="pfam_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!reactome_flag">
+              <h5>Reactome</h5>
+              <app-little-table [type]="reactome_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!interpro_flag">
+              <h5>InterPro</h5>
+              <app-little-table [type]="InterPro_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="interpro_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!cog_flag">
+              <h5>COG</h5>
+              <app-little-table [type]="cog_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="cog_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!eggnog_flag">
+              <h5>EggNOG</h5>
+              <app-little-table [type]="eggnog_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="eggnog_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_h_flag">
+              <h5>Msigdb_H</h5>
+              <app-little-table [type]="msigdb_H_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_h_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_c1_flag">
+              <h5>Msigdb C1</h5>
+              <app-little-table [type]="msigdb_C1_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c1_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_c2_cgp_flag">
+              <h5>MsigDB C2_CGP</h5>
+              <app-little-table [type]="msigdb_C2_CGP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cgp_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+          <div class="transcripts_table" [hidden]="!msigdb_c2_cp_biocarta_flag">
+              <h5>MsigDB C2_CP_BIOCARTA</h5>
+              <app-little-table [type]="msigdb_C2_CP_BIOCARTA_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_biocarta_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_C2_CP_flag">
+              <h5>MsigDB C2_CP</h5>
+              <app-little-table [type]="msigDB_C2_CP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_C2_CP_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+          <div class="transcripts_table" [hidden]="!msigdb_c2_cp_kegg_flag">
+              <h5>MsigDB C2_CP_KEGG</h5>
+              <app-little-table [type]="msigdb_C2_CP_KEGG_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_kegg_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_c2_cp_reactome_flag">
+              <h5>MsigDB C2_CP_REACTOME</h5>
+              <app-little-table [type]="msigdb_C2_CP_REACTOME_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+          
+          <div class="transcripts_table" [hidden]="!msigdb_c3_mir_flag">
+              <h5>MsigDB C3_MIR</h5>
+              <app-little-table [type]="msigdb_C3_MIR_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_mir_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+          <div class="transcripts_table" [hidden]="!msigdb_c3_tft_flag">
+              <h5>MsigDB C3_TFT</h5>
+              <app-little-table [type]="msigdb_C3_TFT_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_tft_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_c4_cgn_flag">
+              <h5>MsigDB C4_CGN</h5>
+              <app-little-table [type]="msigdb_C4_CGN_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cgn_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+          <div class="transcripts_table" [hidden]="!msigdb_c4_cm_flag">
+              <h5>MsigDB C4_CM</h5>
+              <app-little-table [type]="msigdb_C4_CM_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cm_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_c5_bp_flag">
+              <h5>MsigDB C5_BP</h5>
+              <app-little-table [type]="msigdb_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_c5_cc_flag">
+              <h5>MsigDB C5_CC</h5>
+              <app-little-table [type]="msigdb_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_c5_mf_flag">
+              <h5>MsigDB C5_MF</h5>
+              <app-little-table [type]="msigdb_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_c6_flag">
+              <h5>Msigdb C6</h5>
+              <app-little-table [type]="msigdb_C6_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c6_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_c7_flag">
+              <h5>Msigdb C7</h5>
+              <app-little-table [type]="msigdb_C7_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c7_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_archived_c5_mf_flag">
+              <h5>MsigDB ARCHIVED_C5_MF</h5>
+              <app-little-table [type]="msigdb_ARCHIVED_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_archived_c5_c_flag">
+              <h5>MsigDB ARCHIVED_C5_CC</h5>
+              <app-little-table [type]="msigdb_ARCHIVED_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_cc_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!msigdb_archived_c5_bp_flag">
+              <h5>MsigDB ARCHIVED_C5_BP</h5>
+              <app-little-table [type]="msigdb_ARCHIVED_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!tf_cofactors_flag">
+              <h5>TF Cofactors</h5>
+              <app-little-table [type]="tf_cofactors_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="tf_cofactors_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
+          <div class="transcripts_table" [hidden]="!tf_flag">
+              <h5>Transcription Factor</h5>
+              <app-little-table [type]="tf_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="tf_url" [pageEntity]="go_molecular_params"></app-little-table>
+          </div>
+
       </div>
 
       <!-- 文献信息 -->
@@ -250,7 +391,7 @@
                 </div>
               </nz-spin>
           </div>
-          <button *ngIf="load_more_show" nz-button [nzSize]="'small'" nzType="default" (click)="loadMore()">加载更多</button>
+          <button *ngIf="load_more_show" style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="loadMore()">加载更多</button>
       </div>
     
     </div>
