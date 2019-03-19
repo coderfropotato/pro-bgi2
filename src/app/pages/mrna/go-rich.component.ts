@@ -17,10 +17,10 @@ declare const $: any;
 @Component({
 	selector: 'app-go-rich-page',
 	template: `<app-go-rich *ngIf="showModule" [defaultGeneType]="defaultGeneType">
-                    <div *ngIf="rootGeneType===config['geneTypeAll']" rich="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
-                        <span>{{defaultGeneType | translate}}</span><i rich="iconfont icon-qiehuan"></i>
+                    <div *ngIf="rootGeneType===config['geneTypeAll']" class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
+                        <span>{{defaultGeneType | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
-                    <div *ngIf="rootGeneType!==config['geneTypeAll']" rich="gene-switch gene-switch-module nocursor">
+                    <div *ngIf="rootGeneType!==config['geneTypeAll']" class="gene-switch gene-switch-module nocursor">
                         <span>{{defaultGeneType | translate}}</span>
                     </div>
                 </app-go-rich>`,
@@ -34,7 +34,7 @@ export class GoRichPage {
 	defaultGeneType: string = this.rootGeneType === this.config['geneTypeAll']
 		? this.config['geneTypeOfGene']
 		: this.rootGeneType;
-	showModule: boolean = true;
+    showModule: boolean = true;
 
 	constructor(private storeService: StoreService, private translate: TranslateService) {
 		let browserLang = this.storeService.getLang();
