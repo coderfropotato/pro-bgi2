@@ -614,7 +614,7 @@ export class KaFunComponent implements OnInit {
 						if (data != '') {
 							self.textContent = data;
 							svgTitle.remove();
-							drawTopTitle();
+							//drawTopTitle();
 						}
 					});
 				});
@@ -937,7 +937,7 @@ export class KaFunComponent implements OnInit {
 					} else {
 						tempBucket = d.bucket;
 					}
-					let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}<br> bucket:  ${tempBucket.toString()}`;
+					let tipText = `value:  ${d.value}<br> type:  ${d.type}<br> bucket:  ${tempBucket.toString()}`;
 					that.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d) {
