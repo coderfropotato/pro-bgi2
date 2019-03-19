@@ -110,9 +110,12 @@
                             <i class="iconfont icon-xiugai" (click)=updateRemarkCheck(data)></i>
                         </td>
                         <td>
-                            <a (click)="toDetail(data)">Check</a>
-                            <nz-divider nzType="vertical"></nz-divider>
-                            <a (click)="handleDelete(data)">Delete</a>
+                            <span *ngIf="data['process'] == -1">--</span>
+                            <span *ngIf="data['process'] != -1">
+                                <a (click)="toDetail(data)">Check</a>
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <a (click)="handleDelete(data)">Delete</a>
+                            </span>
                         </td>
                     </tr>
                 </tbody>
