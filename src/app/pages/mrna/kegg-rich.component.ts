@@ -17,10 +17,10 @@ declare const $: any;
 @Component({
 	selector: 'app-kegg-rich-page',
 	template: `<app-kegg-rich *ngIf="showModule" [defaultGeneType]="defaultGeneType">
-                    <div *ngIf="rootGeneType===config['geneTypeAll']" rich="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
-                        <span>{{defaultGeneType | translate}}</span><i rich="iconfont icon-qiehuan"></i>
+                    <div *ngIf="rootGeneType===config['geneTypeAll']" class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
+                        <span>{{defaultGeneType | translate}}</span><i class="iconfont icon-qiehuan"></i>
                     </div>
-                    <div *ngIf="rootGeneType!==config['geneTypeAll']" rich="gene-switch gene-switch-module nocursor">
+                    <div *ngIf="rootGeneType!==config['geneTypeAll']" class="gene-switch gene-switch-module nocursor">
                         <span>{{defaultGeneType | translate}}</span>
                     </div>
                 </app-kegg-rich>`,
@@ -58,7 +58,7 @@ export class KeggRichPage {
     templateUrl: "./kegg-rich.component.html"
 })
 
-export class KeggRichComponent implements OnInit {  
+export class KeggRichComponent implements OnInit {
 
     @ViewChild('switchChart') switchChart;
     @ViewChild('left') left;

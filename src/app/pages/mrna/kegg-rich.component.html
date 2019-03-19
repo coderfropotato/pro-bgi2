@@ -1,7 +1,7 @@
 
-<div class="content reanalysis-content row">
+<div class="content kegg-rich row">
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
-        
+
         <div class="left-top-layout">
             <span class="zhankai-shouqi pointer" (click)="moduleTableChange()" [nzTitle]="(expandModuleTable ? '收起表格' : '展开表格') | translate" nz-tooltip>
                 <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleTable"></i>
@@ -66,7 +66,7 @@
                         [(computedScrollHeight)]="leftComputedScrollHeight">
                     </app-big-table-check>
                 </ng-container>
-                
+
                 <div class="text-info">
                     <span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>
                 </div>
