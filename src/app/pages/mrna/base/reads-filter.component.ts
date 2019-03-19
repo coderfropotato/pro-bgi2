@@ -54,7 +54,7 @@ export class ReadsFilterComponent implements OnInit {
   tableBaseEntity:object;
   chartTwo:any;
 
-  
+
   //Clean reads 碱基质量量分布
   qualitySelectType:any=[];
   qualitySearchType:string;
@@ -78,7 +78,7 @@ export class ReadsFilterComponent implements OnInit {
   isShowQualityColorPanel: boolean = false;
   legendIndexThree: number = 0; //当前点击图例的索引
   colorQuality: string; //当前选中的color
-  
+
 
   constructor(
     private message: MessageService,
@@ -88,7 +88,7 @@ export class ReadsFilterComponent implements OnInit {
     private storeService: StoreService,
     private promptService:PromptService,
     private router: Router
-  ) { 
+  ) {
 
   }
 
@@ -196,7 +196,7 @@ export class ReadsFilterComponent implements OnInit {
         outerRadius:120,
         startAngle:0,
         endAngle:360,
-        showLabel:false,
+        showLabel:true,
         custom: ["name", "value"],
         el: "#rawDataID",
         type: "pie",
@@ -222,7 +222,7 @@ export class ReadsFilterComponent implements OnInit {
 
   //Clean reads 碱基含量分布
   drawBaseReads(data){
-    
+
     var baseThead = data.baseThead;
     var rows = data.rows;
     var chartData = [];
@@ -293,7 +293,7 @@ export class ReadsFilterComponent implements OnInit {
         }
     }
     this.chartTwo=new d4().init(config);
-    
+
   }
 
   //Clean reads 碱基质量分布
@@ -333,7 +333,7 @@ export class ReadsFilterComponent implements OnInit {
 
     var legend_width = 20,
         legend_height = 180;
-    
+
     var colorScale = null;
 
     let t_chartID = document.getElementById('rawQualityID');
@@ -527,7 +527,7 @@ export class ReadsFilterComponent implements OnInit {
             .attr("x2", "0%")
             .attr("y2", "100%");
 
-        
+
         linearGradient.append("stop").attr("offset", 0 + "%").style("stop-color", colors[0]);
         linearGradient.append("stop").attr("offset", 100/midPosNum+ "%").style("stop-color", colors[1]);
         linearGradient.append("stop").attr("offset", 100 + "%").style("stop-color", colors[2]);

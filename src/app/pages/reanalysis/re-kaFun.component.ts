@@ -507,14 +507,17 @@ export class KaFunComponent implements OnInit {
 			.select('#svg') //最外层svg
 			.attr('width', svg_width)
 			.attr('height', svg_height)
-			.on(
-				'click',
-				function(d) {
-					that.updateKaFun();
+			.on('click',function(d) {
+					//console.log(d);
+					//that.clearEventBubble();
+
+					// that.updateKaFun();
+					// that.chartBackStatus();
+
 					// _self.leftSelect.length = 0;
 					// _self.upSelect.length = 0;
 					// _self.first ? _self.transformTable._getData() : (_self.first = true);
-					that.chartBackStatus();
+					
 				},
 				false
 			);
@@ -614,6 +617,7 @@ export class KaFunComponent implements OnInit {
 						if (data != '') {
 							self.textContent = data;
 							svgTitle.remove();
+							//self.updateKaFun();
 							drawTopTitle();
 						}
 					});
@@ -937,7 +941,7 @@ export class KaFunComponent implements OnInit {
 					} else {
 						tempBucket = d.bucket;
 					}
-					let tipText = `x: ${d.x}<br> y:  ${d.y}<br> value:  ${d.value}<br> type:  ${d.type}<br> bucket:  ${tempBucket.toString()}`;
+					let tipText = `value:  ${d.value}<br> type:  ${d.type}<br> bucket:  ${tempBucket.toString()}`;
 					that.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d) {
@@ -1039,7 +1043,7 @@ export class KaFunComponent implements OnInit {
 			if (num < 3) {
 				tempNum = 120;
 			} else if (num >= 3 && num < 7) {
-				tempNum = 70;
+				tempNum = 75;
 			} else if (num >= 7 && num < 11) {
 				tempNum = 55;
 			} else if (num >= 11) {

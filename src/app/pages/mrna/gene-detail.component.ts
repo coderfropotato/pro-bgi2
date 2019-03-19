@@ -68,6 +68,7 @@ export class GeneDetailComponent implements OnInit {
 	expressive_baseThead: object[] = [];
 	expressive_geneType: string;
 	expressive_index: number = 0;
+	line_flag:boolean = false;
 
 	//折线图
 	// chartUrl: string;
@@ -95,11 +96,12 @@ export class GeneDetailComponent implements OnInit {
 	//SNP
 	snp_defaultUrl: string;
 	snp_params: object;
+	snp_flag: boolean = true;
 
 	//INDEL
 	indel_defaultUrl: string;
 	indel_params: object;
-
+	indel_flag: boolean = true;
 
 	//文献信息
 	document_defaultUrl: string;
@@ -160,8 +162,67 @@ export class GeneDetailComponent implements OnInit {
 	//GO Biological Process
 	go_b_list: object[] = [];
 	go_b_flag: boolean = true;
-	//KEGG Pathway
-	kegg_way_url: string;
+	
+	kegg_way_url: string;//KEGG Pathway
+	kegg_way_flag: boolean = true;
+	kegg_reaction_url: string;//kegg_reaction
+	kegg_reaction_flag: boolean = true;
+	kegg_module_url: string;//KEGG Module
+	kegg_module_flag: boolean = true;
+	kegg_disease_url: string;//KEGG Disease
+	kegg_disease_flag: boolean = true;
+	pfam_url: string;//Pfam
+	pfam_flag: boolean = true;
+	reactome_url: string;//Reactome
+	reactome_flag: boolean = true;
+	interpro_url: string;//InterPro
+	interpro_flag: boolean = true;
+	cog_url: string;//COG
+	cog_flag: boolean = true;
+	eggnog_url: string;//EggNOG
+	eggnog_flag: boolean = true;
+	msigdb_h_url: string;//Msigdb_H
+	msigdb_h_flag: boolean = true;
+	msigdb_c1_url: string;//Msigdb C1
+	msigdb_c1_flag: boolean = true;
+	msigdb_c2_cgp_url: string;//MsigDB C2_CGP
+	msigdb_c2_cgp_flag: boolean = true;
+	msigdb_c2_cp_biocarta_url: string;//MsigDB C2_CP_BIOCARTA
+	msigdb_c2_cp_biocarta_flag: boolean = true;
+	msigdb_C2_CP_url: string;//MsigDB C2_CP
+	msigdb_C2_CP_flag: boolean = true;
+	msigdb_c2_cp_kegg_url: string;//MsigDB C2_CP_KEGG
+	msigdb_c2_cp_kegg_flag: boolean = true;
+	msigdb_c2_cp_reactome_url: string;//MsigDB C2_CP_REACTOME
+	msigdb_c2_cp_reactome_flag: boolean = true;
+	msigdb_c3_mir_url: string;//MsigDB C3_MIR
+	msigdb_c3_mir_flag: boolean = true;
+	msigdb_c3_tft_url: string;//MsigDB C3_TFT
+	msigdb_c3_tft_flag: boolean = true;
+	msigdb_c4_cgn_url: string;//MsigDB C4_CGN
+	msigdb_c4_cgn_flag: boolean = true;
+	msigdb_c4_cm_url: string;//MsigDB C4_CM
+	msigdb_c4_cm_flag: boolean = true;
+	msigdb_c5_bp_url: string;//MsigDB C5_BP
+	msigdb_c5_bp_flag: boolean = true;
+	msigdb_c5_cc_url: string;//MsigDB C5_CC
+	msigdb_c5_cc_flag: boolean = true;
+	msigdb_c5_mf_url: string;//MsigDB C5_MF
+	msigdb_c5_mf_flag: boolean = true;
+	msigdb_c6_url: string;//Msigdb C6
+	msigdb_c6_flag: boolean = true;
+	msigdb_c7_url: string;//Msigdb C7
+	msigdb_c7_flag: boolean = true;
+	msigdb_archived_c5_mf_url: string;//MsigDB ARCHIVED_C5_MF
+	msigdb_archived_c5_mf_flag: boolean = true;
+	msigdb_archived_c5_cc_url: string;//MsigDB ARCHIVED_C5_CC
+	msigdb_archived_c5_c_flag: boolean = true;
+	msigdb_archived_c5_bp_url: string;//MsigDB ARCHIVED_C5_BP
+	msigdb_archived_c5_bp_flag: boolean = true;
+	tf_cofactors_url: string;//TF Cofactors
+	tf_cofactors_flag: boolean = true;
+	tf_url: string;//Transcription Factor
+	tf_flag: boolean = true;
 
   	constructor(
 		private message: MessageService,
@@ -180,8 +241,10 @@ export class GeneDetailComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		//this.geneID = "374443";
-		this.geneID = "100289635";
+		this.geneID = "374443";
+		//this.geneID = "100289635";
+
+		//this.geneID = "122809";
 
 		this.geneParamsUsed = {
 			LCID: this.storeService.getStore('LCID'),
@@ -255,12 +318,41 @@ export class GeneDetailComponent implements OnInit {
 
 		//KEGG Pathway
 		this.kegg_way_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_pathway_parameter;
+		this.kegg_reaction_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_reaction_parameter;
+		this.kegg_module_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_module_parameter;
+		this.kegg_disease_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_disease_parameter;
+		this.pfam_url = `${config['javaPath']}/geneDetail/annotation/`+this.pfam_parameter;
+		this.reactome_url = `${config['javaPath']}/geneDetail/annotation/`+this.reactome_parameter;
+		this.interpro_url = `${config['javaPath']}/geneDetail/annotation/`+this.InterPro_parameter;
+		this.cog_url = `${config['javaPath']}/geneDetail/annotation/`+this.cog_parameter;
+		this.eggnog_url = `${config['javaPath']}/geneDetail/annotation/`+this.eggnog_parameter;
+		this.msigdb_h_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_H_parameter;
+		this.msigdb_c1_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C1_parameter;
+		this.msigdb_c2_cgp_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CGP_parameter;
+		this.msigdb_c2_cp_biocarta_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CP_BIOCARTA_parameter;
+		this.msigdb_C2_CP_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigDB_C2_CP_parameter;
+		this.msigdb_c2_cp_kegg_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CP_KEGG_parameter;
+		this.msigdb_c2_cp_reactome_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CP_REACTOME_parameter;
+		this.msigdb_c3_mir_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C3_MIR_parameter;
+		this.msigdb_c3_tft_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C3_TFT_parameter;
+		this.msigdb_c4_cgn_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C4_CGN_parameter;
+		this.msigdb_c4_cm_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C4_CM_parameter;
+		this.msigdb_c5_bp_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C5_BP_parameter;
+		this.msigdb_c5_cc_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C5_CC_parameter;
+		this.msigdb_c5_mf_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C5_MF_parameter;
+		this.msigdb_c6_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C6_parameter;
+		this.msigdb_c7_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C7_parameter;
+		this.msigdb_archived_c5_mf_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_ARCHIVED_C5_MF_parameter;
+		this.msigdb_archived_c5_cc_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_ARCHIVED_C5_CC_parameter;
+		this.msigdb_archived_c5_bp_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_ARCHIVED_C5_BP_parameter;
+		this.tf_cofactors_url = `${config['javaPath']}/geneDetail/annotation/`+this.tf_cofactors_parameter;
+		this.tf_url = `${config['javaPath']}/geneDetail/annotation/`+this.tf_parameter;
 
 		(async () => {
 			try {
 				await this.getGeneInformation();//基因信息
 				await this.getRnaInformation();//转录本信息
-				await this.sampleExpression();//样本表达量
+				await this.sampleExpression();//折线图
 				//await this.getGroupDiff();//组间差异
 				//await this.getSampleDiff();//样本间差异
 				await this.getPrecursor();//二次结构
@@ -350,7 +442,11 @@ export class GeneDetailComponent implements OnInit {
 				} else {
 					this.expressive_rows = data['data']['rows'];
 					this.expressive_baseThead = data['data']['baseThead'];
-					this.drawLineChart();
+					if(data['data']['rows'].length != 0){
+						this.drawLineChart();
+						this.line_flag = true;
+					}
+					
 				}
 				resolve("success");
 			},
@@ -363,7 +459,7 @@ export class GeneDetailComponent implements OnInit {
 
 	//折线图
 	drawLineChart(){
-		document.getElementById("lineChartDiv").innerHTML = "";
+		//document.getElementById("lineChartDiv").innerHTML = "";
 		let tempArray = [];
 		for (const key in this.expressive_rows[0]) {
 			let tempObj = {};
@@ -373,7 +469,7 @@ export class GeneDetailComponent implements OnInit {
 				tempArray.push(tempObj);
 			}
 		}
-		console.log(tempArray);
+		//console.log(tempArray);
 		if(tempArray.length == 0){
 			return;
 		}
@@ -461,8 +557,9 @@ export class GeneDetailComponent implements OnInit {
 				} else if (data.status == '-2') {
 					return;
 				} else {
-					console.log(data['data'])
-					this.precursor_image = "data:image/png;base64,"+data['data']["image"];
+					if(data['data']["image"] != ""){
+						this.precursor_image = "data:image/png;base64,"+data['data']["image"];
+					}
 
 				}
 				resolve("success");
@@ -585,7 +682,7 @@ export class GeneDetailComponent implements OnInit {
 				} else if (data.status == '-2') {
 					return;
 				} else {
-					console.log(data['data']);
+					//console.log(data['data']);
 					this.go_c_list = data['data']['rows'];
 					if(data['data']['rows'].length == 0){
 						this.go_c_flag =false;
@@ -613,5 +710,109 @@ export class GeneDetailComponent implements OnInit {
 		this.document_params["size"] = this.documentTotal;
 		this.getDocumentInformation();
 		this.load_more_show = false;
+	}
+
+	drawKEGGPathway(data){
+		let tempData = data["data"]["rows"];
+		switch (data.type) {
+			case this.kegg_pathway_parameter:
+				this.kegg_way_flag = tempData.length>0?true:false;
+				break;
+			case this.kegg_reaction_parameter:
+				this.kegg_reaction_flag = tempData.length>0?true:false;
+				break;
+			case this.kegg_module_parameter:
+				this.kegg_module_flag = tempData.length>0?true:false;
+				break;
+			case this.kegg_disease_parameter:
+				this.kegg_disease_flag = tempData.length>0?true:false;
+				break;
+				case this.pfam_parameter:
+				this.pfam_flag = tempData.length>0?true:false;
+				break;
+			case this.reactome_parameter:
+				this.reactome_flag = tempData.length>0?true:false;
+				break;
+			case this.InterPro_parameter:
+				this.interpro_flag = tempData.length>0?true:false;
+				break;
+			case this.cog_parameter:
+				this.cog_flag = tempData.length>0?true:false;
+				break;
+			case this.eggnog_parameter:
+				this.eggnog_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_H_parameter:
+				this.msigdb_h_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C1_parameter:
+				this.msigdb_c1_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C2_CGP_parameter:
+				this.msigdb_c2_cgp_flag = tempData.length>0?true:false;
+				break;
+				case this.msigdb_C2_CP_BIOCARTA_parameter:
+				this.msigdb_c2_cp_biocarta_flag = tempData.length>0?true:false;
+				break;
+			case this.msigDB_C2_CP_parameter:
+				this.msigdb_C2_CP_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C2_CP_KEGG_parameter:
+				this.msigdb_c2_cp_kegg_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C2_CP_REACTOME_parameter:
+				this.msigdb_c2_cp_reactome_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C3_MIR_parameter:
+				this.msigdb_c3_mir_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C3_TFT_parameter:
+				this.msigdb_c3_tft_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C4_CGN_parameter:
+				this.msigdb_c4_cgn_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C4_CM_parameter:
+				this.msigdb_c4_cm_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C5_BP_parameter:
+				this.msigdb_c5_bp_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C5_CC_parameter:
+				this.msigdb_c5_cc_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C5_MF_parameter:
+				this.msigdb_c5_mf_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_C6_parameter:
+				this.msigdb_c6_flag = tempData.length>0?true:false;
+				break;
+				case this.msigdb_C7_parameter:
+				this.msigdb_c7_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_ARCHIVED_C5_MF_parameter:
+				this.msigdb_archived_c5_mf_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_ARCHIVED_C5_CC_parameter:
+				this.msigdb_archived_c5_c_flag = tempData.length>0?true:false;
+				break;
+			case this.msigdb_ARCHIVED_C5_BP_parameter:
+				this.msigdb_archived_c5_bp_flag = tempData.length>0?true:false;
+				break;
+			case this.tf_cofactors_parameter:
+				this.tf_cofactors_flag = tempData.length>0?true:false;
+				break;
+			case this.tf_parameter:
+				this.tf_flag = tempData.length>0?true:false;
+				break;
+			case "SNP":
+				this.snp_flag = tempData.length>0?true:false;
+				break;
+			case "INDEL":
+				this.indel_flag = tempData.length>0?true:false;
+				break;
+			default:
+				break;
+		}
 	}
 }

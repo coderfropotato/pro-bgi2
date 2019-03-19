@@ -113,13 +113,12 @@ export class LrnaComponent implements OnInit {
 			if (rows[j].smallrna_class != 'total') {
 				chartData.push({
 					name: rows[j].smallrna_class,
-					value: rows[j].smallrna_count
+                    value: rows[j].smallrna_count
 				});
 			}
 		}
 
-		let that = this;
-
+        let that = this;
 		let config: object = {
 			chart: {
 				title: 'Count number distribution of total Small RNAs in YK',
@@ -136,7 +135,7 @@ export class LrnaComponent implements OnInit {
 				outerRadius: 120,
 				startAngle: 0,
 				endAngle: 360,
-				showLabel: false,
+				showLabel: true,
 				custom: [ 'name', 'value' ],
 				el: '#RNADataID',
 				type: 'pie',

@@ -204,7 +204,7 @@ export class InformationComponent implements OnInit {
 				outerRadius: 120,
 				startAngle: 0,
 				endAngle: 360,
-				showLabel: false,
+				showLabel: true,
 				custom: [ 'name', 'value' ],
 				el: '#RNAClassID',
 				type: 'pie',
@@ -495,7 +495,7 @@ export class InformationComponent implements OnInit {
 				mirna_first_u: rows[j].mirna_first_u * 100 / total,
 				mirna_first_c: rows[j].mirna_first_c * 100 / total,
 				mirna_first_g: rows[j].mirna_first_g * 100 / total
-				
+
 			});
 		}
 

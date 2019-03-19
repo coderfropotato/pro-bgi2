@@ -1,4 +1,13 @@
-import { Component, OnInit, Input } from "@angular/core";
+import {
+    Component,
+    OnInit,
+    Input,
+    ViewChild,
+    TemplateRef,
+    Output,
+    EventEmitter,
+    HostListener
+} from "@angular/core";
 import { AjaxService } from "../../super/service/ajaxService";
 import { LoadingService } from "../../super/service/loadingService";
 
@@ -13,6 +22,12 @@ export class LittleTableComponent implements OnInit {
     @Input() url: string;
     @Input() pageEntity: object;
     @Input() inRefreshShow: boolean = true;
+
+    @Input() type: string;
+
+    @Output() drawTableEmit: EventEmitter<any> = new EventEmitter();
+
+    //this.drawChartEmit.emit(data);
 
     tableError: string;
 
@@ -50,6 +65,11 @@ export class LittleTableComponent implements OnInit {
                        this.tableData = data.data;
                        this.rows = data["rows"];
                        this.thead = data["baseThead"];
+
+                       this.drawTableEmit.emit({
+                            type:this.type,
+                            data:data.data
+                       });
                     }
                     this.isLoading = false;
                     //console.log(data)

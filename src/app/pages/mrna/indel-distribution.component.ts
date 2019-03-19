@@ -60,7 +60,7 @@ export class IndelDistributionComponent implements OnInit {
     public toolsService: ToolsService,
     private addColumnService: AddColumnService,
     private translate: TranslateService,
-  ) { 
+  ) {
      // 订阅windowResize 重新计算表格滚动高度
      this.message.getResize().subscribe((res) => {
       if (res['message'] === 'resize') this.computedTableHeight();
@@ -91,7 +91,7 @@ export class IndelDistributionComponent implements OnInit {
       LCID: this.store.getStore('LCID'),
       sample: this.curSearchType
     };
-     
+
   }
 
   computedTableHeight() {
@@ -162,7 +162,7 @@ export class IndelDistributionComponent implements OnInit {
         outerRadius:120,
         startAngle:0,
         endAngle:360,
-        showLabel:false,
+        showLabel:true,
         custom: ["name", "value"],
         el: "#indelDataID",
         type: "pie",
@@ -191,7 +191,7 @@ export class IndelDistributionComponent implements OnInit {
   }
 
   handlerRefresh(){
-    
+
   }
 
   //legend color change
