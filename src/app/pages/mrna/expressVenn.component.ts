@@ -136,6 +136,11 @@ export class ExpressVennComponent implements OnInit {
 	selectGeneCount: number = 0;
 	computedScrollHeight:boolean = false;
 
+	targetValue: number = 0;
+
+	expression_Min_value: number = 0;
+	expression_Max_value: number = 2147483647;
+
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -165,6 +170,8 @@ export class ExpressVennComponent implements OnInit {
 		this.first = true;
 		this.selectedData = [];
 		this.chartUrl = `${config['javaPath']}/Venn/expGeneGraph`;
+
+		//this.targetValue = 3;
 
         this.expression_threshold={
             min:this.storeService.getStore('expression_threshold').min,
@@ -199,8 +206,8 @@ export class ExpressVennComponent implements OnInit {
             sample: this.storeService.getStore('sample'),
             geneType: this.pageModuleService['defaultModule'],
             species: this.storeService.getStore('genome'),
-            low:this.expression_threshold['min'],
-            high:this.expression_threshold['max']
+            low:this.targetValue,
+            high:this.expression_Max_value
         };
 
 		this.applyOnceSearchParams = true;
@@ -223,8 +230,8 @@ export class ExpressVennComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-            low:this.storeService.getStore('expression_threshold').min,
-            high:this.storeService.getStore('expression_threshold').max,
+            low:this.targetValue,
+            high:this.expression_Max_value,
 			version: this.storeService.getStore('version'),
 			searchList: []
         };
@@ -253,8 +260,8 @@ export class ExpressVennComponent implements OnInit {
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
-			low:this.storeService.getStore('expression_threshold').min,
-            high:this.storeService.getStore('expression_threshold').max,
+			low:this.targetValue,
+            high:this.expression_Max_value,
 			version: this.storeService.getStore('version'),
 			searchList: []
 		};
@@ -292,12 +299,14 @@ export class ExpressVennComponent implements OnInit {
             // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
             this.defaultEntity['compareGroup'] = this.selectConfirmData;
             this.defaultEntity['searchList'] = [];
-            this.defaultEntity['rootSearchContentList'] = [];
+			this.defaultEntity['rootSearchContentList'] = [];
+			this.defaultEntity['low'] = this.targetValue;
             setTimeout(()=>{
                 this.first = true;
             },30)
         }else{
-            this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+			this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+			this.transformTable._setParamsNoRequest('low',this.targetValue);
             this.transformTable._getData();
         }
 	}
@@ -335,8 +344,8 @@ export class ExpressVennComponent implements OnInit {
 			this.extendEntity['sample'] = this.selectConfirmData;
 			this.extendEntity['leftChooseList'] = checkParams['tableEntity']['leftChooseList'];
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
-            this.extendEntity['low'] = this.expression_threshold['min'];
-            this.extendEntity['high'] = this.expression_threshold['max'];
+            this.extendEntity['low'] = this.targetValue;
+            this.extendEntity['high'] = this.expression_Max_value;
 			this.extendEntity['relations'] = relations;
 			this.extendEntity['addThead'] = [];
 			this.first = false;
@@ -429,21 +438,24 @@ export class ExpressVennComponent implements OnInit {
 		this.panelShow = !this.panelShow;
 	}
 	setCancle() {
-		if(this.expression_temp_min!=this.expression_threshold['min'] || this.expression_temp_max!=this.expression_threshold['max']){
-			this.expression_threshold['max'] = this.expression_temp_max;
-			this.expression_threshold['min'] = this.expression_temp_min;
-		}
-        //点击取消时需要还原滑动条
+		// if(this.expression_temp_min!=this.expression_threshold['min'] || this.expression_temp_max!=this.expression_threshold['max']){
+		// 	this.expression_threshold['max'] = this.expression_temp_max;
+		// 	this.expression_threshold['min'] = this.expression_temp_min;
+		// }
+		// //点击取消时需要还原滑动条
+		
+		this.targetValue = 0;
 		this.panelShow = false;
+		
 	}
 	setConfirm() {
 
-        this.tableEntity['low'] = this.expression_threshold['min'];
-		this.tableEntity['high'] = this.expression_threshold['max'];
+        this.tableEntity['low'] = this.targetValue;
+		this.tableEntity['high'] = this.expression_Max_value;
 
 		//this.expression_threshold_temp= this.expression_threshold;
-		this.expression_temp_min = this.expression_threshold['min'];
-		this.expression_temp_max = this.expression_threshold['max'];
+		// this.expression_temp_min = this.expression_threshold['min'];
+		// this.expression_temp_max = this.expression_threshold['max'];
 
 		this.singleMultiSelect={
 			bar_name: '',
@@ -496,6 +508,11 @@ export class ExpressVennComponent implements OnInit {
 			bar_name: [],
 			total_name: []
         };
+	}
+
+	inputChange(num){
+		//console.log(num);
+		this.targetValue = num;
 	}
 
 	//venn和upsetR只能单选时候

@@ -68,6 +68,7 @@ export class GeneDetailComponent implements OnInit {
 	expressive_baseThead: object[] = [];
 	expressive_geneType: string;
 	expressive_index: number = 0;
+	line_flag:boolean = false;
 
 	//折线图
 	// chartUrl: string;
@@ -95,11 +96,12 @@ export class GeneDetailComponent implements OnInit {
 	//SNP
 	snp_defaultUrl: string;
 	snp_params: object;
+	snp_flag: boolean = true;
 
 	//INDEL
 	indel_defaultUrl: string;
 	indel_params: object;
-
+	indel_flag: boolean = true;
 
 	//文献信息
 	document_defaultUrl: string;
@@ -350,7 +352,7 @@ export class GeneDetailComponent implements OnInit {
 			try {
 				await this.getGeneInformation();//基因信息
 				await this.getRnaInformation();//转录本信息
-				await this.sampleExpression();//样本表达量
+				await this.sampleExpression();//折线图
 				//await this.getGroupDiff();//组间差异
 				//await this.getSampleDiff();//样本间差异
 				await this.getPrecursor();//二次结构
@@ -440,7 +442,11 @@ export class GeneDetailComponent implements OnInit {
 				} else {
 					this.expressive_rows = data['data']['rows'];
 					this.expressive_baseThead = data['data']['baseThead'];
-					this.drawLineChart();
+					if(data['data']['rows'].length != 0){
+						this.drawLineChart();
+						this.line_flag = true;
+					}
+					
 				}
 				resolve("success");
 			},
@@ -453,7 +459,7 @@ export class GeneDetailComponent implements OnInit {
 
 	//折线图
 	drawLineChart(){
-		document.getElementById("lineChartDiv").innerHTML = "";
+		//document.getElementById("lineChartDiv").innerHTML = "";
 		let tempArray = [];
 		for (const key in this.expressive_rows[0]) {
 			let tempObj = {};
@@ -796,8 +802,14 @@ export class GeneDetailComponent implements OnInit {
 			case this.tf_cofactors_parameter:
 				this.tf_cofactors_flag = tempData.length>0?true:false;
 				break;
-			case this.tf_flag:
-				this.kegg_way_flag = tempData.length>0?true:false;
+			case this.tf_parameter:
+				this.tf_flag = tempData.length>0?true:false;
+				break;
+			case "SNP":
+				this.snp_flag = tempData.length>0?true:false;
+				break;
+			case "INDEL":
+				this.indel_flag = tempData.length>0?true:false;
 				break;
 			default:
 				break;

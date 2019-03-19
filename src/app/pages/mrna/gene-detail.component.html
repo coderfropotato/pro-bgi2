@@ -66,7 +66,7 @@
           <button *ngIf="!btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.noShowGeneID' | translate}}</button>
           <!-- 转录本信息 -->
           <div class="transcripts_table" *ngIf="!btn_show">
-              <ng-template #titleTemplate>
+              <!-- <ng-template #titleTemplate>
                   <div class="table-thead">
                       <div class="fRight">
                           <i class="iconfont icon-xiazai" (click)="down_transcripts()"></i>
@@ -87,8 +87,8 @@
                           </td>
                       </tr>
                   </tbody>
-              </nz-table>
-              <!-- <app-little-table [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table> -->
+              </nz-table> -->
+              <app-little-table [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table>
           </div>
       </div>
       
@@ -109,7 +109,7 @@
           </div>
 
           <!-- 折线图 -->
-          <div class="transcripts_table">
+          <div class="transcripts_table" [hidden]="!line_flag">
               <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
               <div id="lineChartDiv" class="mlineChartDiv">
               </div>
@@ -154,16 +154,16 @@
       </div>
     
       <!-- 变异信息 -->
-      <div class="mgene_content">
+      <div class="mgene_content" [hidden]="!snp_flag && !indel_flag"> 
           <h4>{{'gene_detail.variation_information' | translate}}</h4>
-          <div class="transcripts_table">
+          <div class="transcripts_table" [hidden]="!snp_flag">
               <h5>SNP</h5>
-              <app-little-table [inRefreshShow]="false" [url]="snp_defaultUrl" [pageEntity]="snp_params"></app-little-table>
+              <app-little-table [type]="'SNP'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="snp_defaultUrl" [pageEntity]="snp_params"></app-little-table>
           </div>
 
-          <div class="transcripts_table">
+          <div class="transcripts_table" [hidden]="!indel_flag">
               <h5>InDel</h5>
-              <app-little-table [inRefreshShow]="false" [url]="indel_defaultUrl" [pageEntity]="indel_params"></app-little-table>
+              <app-little-table [type]="'INDEL'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="indel_defaultUrl" [pageEntity]="indel_params"></app-little-table>
           </div>
       </div>
 
@@ -391,7 +391,7 @@
                 </div>
               </nz-spin>
           </div>
-          <button *ngIf="load_more_show" nz-button [nzSize]="'small'" nzType="default" (click)="loadMore()">加载更多</button>
+          <button *ngIf="load_more_show" style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="loadMore()">加载更多</button>
       </div>
     
     </div>
