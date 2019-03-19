@@ -97,7 +97,7 @@
         <div class="rationClassifyRow">
             <span>定量类型：</span>
             <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curRationClassify" (ngModelChange)="rationClassifyChange()" nzShowSearch>
-                <nz-option *ngFor="let ration of rationClassifyList" [nzLabel]="ration?.name" [nzValue]="ration?.name"></nz-option>
+                <nz-option *ngFor="let ration of rationClassifyList" [nzLabel]="ration?.name | translate " [nzValue]="ration?.name"></nz-option>
             </nz-select>
         </div>
 
@@ -112,7 +112,7 @@
     <div class="rationClassifyRow">
         <span>定量类型：</span>
         <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curUpdateClassify" [nzSize]="'small'" (ngModelChange)="updateClassifyChange()" nzShowSearch>
-            <nz-option *ngFor="let ration of rationClassifyList" [nzLabel]="ration?.name" [nzValue]="ration?.name"></nz-option>
+            <nz-option *ngFor="let ration of rationClassifyList" [nzLabel]="ration?.name | translate " [nzValue]="ration?.name"></nz-option>
         </nz-select>
     </div>
 

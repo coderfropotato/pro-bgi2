@@ -32,6 +32,8 @@ export class ReHeatmapComponent implements OnInit {
 
     chart:any;
 
+    standard:string='';
+
     width: number;
     height: number;
     domainRange:number[]=[];
@@ -414,6 +416,7 @@ export class ReHeatmapComponent implements OnInit {
     //画图
     drawChart(data) {
         let that =this;
+        this.standard=data.standard ? data.standard : "";
 
         let legendData = [];
         let heatmapData = data.heatmaps;

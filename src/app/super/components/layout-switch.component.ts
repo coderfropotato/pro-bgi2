@@ -14,7 +14,7 @@ import { ControlValueAccessor } from '@angular/forms/src/directives';
 	selector: 'app-layout-switch',
     template: `<div class="layout-switch-wrap" [class.hasAnalysisCount]="analysisCount">
                     <ul class="layout-src-ele">
-                        <li *ngFor="let pos of ['left','center','right']" (click)="handleToggleLayout(pos)" nz-tooltip  [nzTitle]="pos" nzPlacement="top"></li>
+                        <li *ngFor="let pos of ['left','right']" (click)="handleToggleLayout(pos)" nz-tooltip  [nzTitle]="pos" nzPlacement="top"></li>
                     </ul>
                     <div class="layout-switch">
                         <span [class.left]="innerValue==='left'" [class.right]="innerValue==='right'" [class.center]="innerValue==='center'"></span>
@@ -35,10 +35,10 @@ export class LayoutSwitchComponent implements ControlValueAccessor {
     @Output() ngModelChange: EventEmitter<any> = new EventEmitter();
 
     @Input() onlyTable:boolean = false;  // 可选参数 当前是否是 只有表的状态
-    @Output() onlyTableChange:EventEmitter<any> = new EventEmitter(); 
+    @Output() onlyTableChange:EventEmitter<any> = new EventEmitter();
 
     @Input() analysisCount:number = 0; // 菜单栏是否有未读基因任务  为了改变switch的right值
-    
+
     innerValue:any = null;
 
     constructor() {}
