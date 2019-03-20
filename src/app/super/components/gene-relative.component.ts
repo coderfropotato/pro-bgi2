@@ -11,7 +11,13 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
 	selector: 'app-gene-relative',
 	templateUrl: './gene-relative.component.html',
-	styles: []
+	styles: [
+		`
+			.ant-slider{
+				margin:7px 6px 0;
+			}
+		`
+	]
 })
 export class GeneRelativeComponent implements OnInit {
 	@Input() disabled: boolean = true;
