@@ -69,7 +69,8 @@ export class GeneFusionComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.chartUrl=`${config['javaPath']}/alternativeSplice/fusionGraph`;
+		this.chartUrl = `http://localhost:8086/fusion`;
+		// this.chartUrl=`${config['javaPath']}/alternativeSplice/fusionGraph`;
 		this.samples=this.storeService.getStore('sample');
 		this.sample=this.samples[0];
 		this.tableChartEntity={
@@ -727,7 +728,7 @@ export class GeneFusionComponent implements OnInit {
 				})
 				.on("mouseover", function(d) {
 					var tipText2 = `5’端融合基因：${d.fusion_up_geneid}, ${d.fusion_up_chr}：${d.fusion_up_genome_pos},${d.fusion_up_strand}<br>
-						3’端融合基因：${d.fusion_dw_gene},${d.fusion_dw_chr}：${d.fusion_dw_genome_pos},${d.fusion_dw_strand}<br>
+						3’端融合基因：${d.fusion_dw_geneid},${d.fusion_dw_chr}：${d.fusion_dw_genome_pos},${d.fusion_dw_strand}<br>
 						比对到上下游基因的reads数：${d.fusion_span_reads_num}<br>
 						比对到融合位点的reads数：${d.fusion_junc_reads_num}<br> 
 						融合类型：${d.fusion_fusion_type}<br>
