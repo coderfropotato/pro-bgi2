@@ -594,6 +594,7 @@ button {
         position: fixed;
         right: 254px; // 265
         top: 46px;
+        margin-right: -18px;
     }
     &.gene-list-content {
         .switch {
@@ -636,7 +637,7 @@ button {
 
 // 布局切换
 .layout-switch-wrap {
-    margin-right: -18px;
+    // margin-right: -18px;
     &.hasAnalysisCount {
         margin-right: 10px;
     }
