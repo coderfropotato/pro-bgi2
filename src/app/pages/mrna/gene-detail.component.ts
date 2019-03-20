@@ -56,35 +56,50 @@ export class GeneDetailComponent implements OnInit {
 	//转录本信息
 	defaultUrl: string;
 	rna_params: object;
+	rna_flag: boolean = true;
+
 	rows: object[] = [];
 	baseThead: object[] = [];
 
 	//样本表达量（FPKM）
 	expressive_defaultUrl: string;
 	expressive_params_g: object;
+	expressive_g_flag: boolean = true;
+	expressive_g_data: object[] = [];
+
 	expressive_params_t: object;
+	expressive_t_flag: boolean = true;
+	expressive_t_data: object[] = [];
+
 	expressive_params: object;
 	expressive_rows: object[] = [];
 	expressive_baseThead: object[] = [];
 	expressive_geneType: string;
 	expressive_index: number = 0;
 	line_flag:boolean = false;
+	line_flag2:boolean = false;
 
 	//折线图
 	// chartUrl: string;
     // chartEntity: object;
 	// chart:any;
+	chartLine:any;
+	chartLine2:any;
 
 	//组间差异
 	groupDiff_defaultUrl: string;
 	groupDiff_params_g: object;
+	groupDiff_params_g_flag: boolean = true;
 	groupDiff_params_t: object;
+	groupDiff_params_t_flag: boolean = true;
 	groupDiff_index: number = 0;
 
 	//样本间差异
 	sampleDiff_defaultUrl: string;
 	sampleDiff_params_g: object;
+	sampleDiff_params_g_flag: boolean = true;
 	sampleDiff_params_t: object;
+	sampleDiff_params_t_flag: boolean = true;
 	sampleDiff_index: number = 0;
 
 	//mRna二次结构
@@ -241,8 +256,8 @@ export class GeneDetailComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.geneID = "374443";
-		//this.geneID = "100289635";
+		//this.geneID = "374443";
+		this.geneID = "100289635";
 
 		//this.geneID = "122809";
 
@@ -351,8 +366,8 @@ export class GeneDetailComponent implements OnInit {
 		(async () => {
 			try {
 				await this.getGeneInformation();//基因信息
-				await this.getRnaInformation();//转录本信息
-				await this.sampleExpression();//折线图
+				//await this.getRnaInformation();//转录本信息
+				//await this.sampleExpression();//折线图
 				//await this.getGroupDiff();//组间差异
 				//await this.getSampleDiff();//样本间差异
 				await this.getPrecursor();//二次结构
@@ -424,54 +439,70 @@ export class GeneDetailComponent implements OnInit {
 		})
 	}
 
-	//样本表达量
-	async sampleExpression(){
-		return new Promise((resolve, reject) => {
-			this.ajaxService
-			.getDeferData({
-				url: this.expressive_defaultUrl,
-				data: this.expressive_params
-			})
-			.subscribe((data: any) => {
-				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-					return;
-				} else if (data.status == '-1') {
-					return;
-				} else if (data.status == '-2') {
-					return;
-				} else {
-					this.expressive_rows = data['data']['rows'];
-					this.expressive_baseThead = data['data']['baseThead'];
-					if(data['data']['rows'].length != 0){
-						this.drawLineChart();
-						this.line_flag = true;
-					}
+	//折线图
+	// async sampleExpression(){
+	// 	return new Promise((resolve, reject) => {
+	// 		this.ajaxService
+	// 		.getDeferData({
+	// 			url: this.expressive_defaultUrl,
+	// 			data: this.expressive_params
+	// 		})
+	// 		.subscribe((data: any) => {
+	// 			if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+	// 				return;
+	// 			} else if (data.status == '-1') {
+	// 				return;
+	// 			} else if (data.status == '-2') {
+	// 				return;
+	// 			} else {
+	// 				this.expressive_rows = data['data']['rows'];
+	// 				this.expressive_baseThead = data['data']['baseThead'];
+	// 				if(data['data']['rows'].length != 0){
+	// 					this.drawLineChart();
+	// 					this.line_flag = true;
+	// 				}
 					
-				}
-				resolve("success");
-			},
-			error => {
-				reject("error");
-			}
-			);
-		})
+	// 			}
+	// 			resolve("success");
+	// 		},
+	// 		error => {
+	// 			reject("error");
+	// 		}
+	// 		);
+	// 	})
+	// }
+
+	SelectedExpressiveChange(num) {
+		this.expressive_index = num;
+		if(num==0){
+			//this.expressive_g_flag = this.expressive_g_data.length > 0?true:false;
+			this.drawLineChart(this.expressive_g_data);
+		}else{
+			//this.expressive_t_flag = this.expressive_g_data.length > 0?true:false;
+			this.drawLineChart2(this.expressive_t_data);
+		}
 	}
 
+
 	//折线图
-	drawLineChart(){
-		//document.getElementById("lineChartDiv").innerHTML = "";
+	drawLineChart(data){
+		document.getElementById("lineChartDiv").innerHTML = "";
+		let tempdata = data[0];
 		let tempArray = [];
-		for (const key in this.expressive_rows[0]) {
+		for (const key in tempdata) {
 			let tempObj = {};
 			if( key != "gene_id"){
 				tempObj["x"] = key;
-				tempObj["y"] = this.expressive_rows[0][key];
+				tempObj["y"] = tempdata[key];
 				tempArray.push(tempObj);
 			}
 		}
 		//console.log(tempArray);
+		this.line_flag2 = false;
 		if(tempArray.length == 0){
 			return;
+		}else{
+			this.line_flag = true;
 		}
 
 		let config: object = {
@@ -518,27 +549,74 @@ export class GeneDetailComponent implements OnInit {
 				return "<span>x:"+d.key+"</span><br><span>y:"+d.value+"</span>"
 			}
 		}
-		new d4().init(config);
+		this.chartLine=new d4().init(config);
 	}
 
-	SelectedExpressiveChange(num) {
-		this.expressive_index = num;
-		if(num==0){
-			this.expressive_params["geneType"] = "gene";
-		}else{
-			this.expressive_params["geneType"] = "transcript";
+	drawLineChart2(data){
+		document.getElementById("lineChartDiv2").innerHTML = "";
+		let tempdata = data[0];
+		let tempArray = [];
+		for (const key in tempdata) {
+			let tempObj = {};
+			if( key != "gene_id"){
+				tempObj["x"] = key;
+				tempObj["y"] = tempdata[key];
+				tempArray.push(tempObj);
+			}
 		}
-		this.sampleExpression();
-	}
+		//console.log(tempArray);
+		this.line_flag = false;
+		if(tempArray.length == 0){
+			return;
+		}else{
+			this.line_flag2 = true;
+		}
 
-	SelectedSampleDiffChange(num) {
-		this.sampleDiff_index = num;
-		if(num==0){
-			this.expressive_params["geneType"] = "gene";
-		}else{
-			this.expressive_params["geneType"] = "transcript";
+		let config: object = {
+			chart: {
+				title: "折线图",
+				smooth:true,
+				dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+					this.setChartTitle(name);
+					this.updateTitle();
+				}
+			},
+			width:600,
+			height:450,
+			el: "#lineChartDiv2",
+			type: "line",
+			data: tempArray
+			},
+			axis: {
+				x: {
+					title: "Sample name",
+					rotate: 60,
+					dblclick: function(event) {
+						var name = prompt("请输入需要修改的标题", "");
+						if (name) {
+							this.setXTitle(name);
+							this.updateTitle();
+						}
+					}
+				},
+				y: {
+					title: "log10(FPKM+1)",
+					dblclick: function(event) {
+					var name = prompt("请输入需要修改的标题", "");
+					if (name) {
+						this.setYTitle(name);
+						this.updateTitle();
+					}
+					}
+				}
+			},
+			"tooltip": function(d) {
+				return "<span>x:"+d.key+"</span><br><span>y:"+d.value+"</span>"
+			}
 		}
-		this.sampleExpression();
+		this.chartLine2=new d4().init(config);
 	}
 
 	//mRna二次结构
@@ -621,6 +699,7 @@ export class GeneDetailComponent implements OnInit {
 				} else if (data.status == '-2') {
 					return;
 				} else {
+					console.log(data['data']['rows'])
 					this.go_f_list = data['data']['rows'];
 					if(data['data']['rows'].length == 0){
 						this.go_f_flag = false;
@@ -810,6 +889,36 @@ export class GeneDetailComponent implements OnInit {
 				break;
 			case "INDEL":
 				this.indel_flag = tempData.length>0?true:false;
+				break;
+			case "FPKM_gene":
+				this.expressive_g_flag = tempData.length>0?true:false;
+				this.expressive_g_data = tempData;
+				if(this.expressive_index == 0){
+					this.drawLineChart(this.expressive_g_data);
+				}
+				break;
+			case "FPKM_trans":
+				this.expressive_t_flag = tempData.length>0?true:false;
+				this.expressive_t_data = tempData;
+				if(this.expressive_index == 1){
+					this.drawLineChart(this.expressive_t_data);
+				}
+				break;
+			
+			case "diff_group_gene":
+				this.groupDiff_params_g_flag = tempData.length>0?true:false;
+				break;
+			case "diff_group_trans":
+				this.groupDiff_params_t_flag = tempData.length>0?true:false;
+				break;
+			case "diff_sample_gene":
+				this.sampleDiff_params_g_flag = tempData.length>0?true:false;
+				break;
+			case "diff_sample_trans":
+				this.sampleDiff_params_t_flag = tempData.length>0?true:false;
+				break;
+			case "rna_type":
+			    this.rna_flag = tempData.length>0?true:false;
 				break;
 			default:
 				break;
