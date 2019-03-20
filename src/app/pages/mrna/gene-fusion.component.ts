@@ -7,6 +7,7 @@ import { PageModuleService } from 'src/app/super/service/pageModuleService';
 import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from 'src/app/super/service/promptService';
 import { Router, NavigationEnd } from '@angular/router';
+import config from 'src/config';
 
 declare const d3;
 
@@ -28,18 +29,20 @@ export class GeneFusionComponent implements OnInit {
 	chartUrl:string;
 	tableChartEntity: object;
 
+	sample:string;
+	samples:any[]=[];
 
 	rightImgUrl: string;
 	imgEntity: string;
 
-		// 默认收起模块描述
+	// 默认收起模块描述
 	expandModuleDesc: boolean = false;
   
   	//设置
 	isShowGene:boolean=true;
 	isShowColumn:boolean=true;
 	linkSerach:string='score';
-	score:number=100;
+	score:number=1;
 	linkIds:any[]=[];
 
 	constructor(
@@ -66,8 +69,18 @@ export class GeneFusionComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.chartUrl=`http://localhost:8086/fusion`;
+		this.chartUrl=`${config['javaPath']}/alternativeSplice/fusionGraph`;
+		this.samples=this.storeService.getStore('sample');
+		this.sample=this.samples[0];
+		this.tableChartEntity={
+			"LCID": this.storeService.getStore('LCID'),
+			"sample": this.sample
+		}
+	}
 
+	handleSelectChange(){
+		this.tableChartEntity['sample']=this.sample;
+		this.fusionChartTable.reGetData();
 	}
 
 	drawRightImg(data){
@@ -139,7 +152,7 @@ export class GeneFusionComponent implements OnInit {
 
 		if(this.linkSerach==='score'){
 			data.lineData.forEach(d => {
-				if(d.fusion_score > this.score){
+				if(d.fusion_score_order > this.score){
 					lineData.push(d);
 				}
 			});
@@ -234,14 +247,14 @@ export class GeneFusionComponent implements OnInit {
 			var startAngle = StartBeforeAngle + i * spaceAngle,
 				endAngle = EndBeforeAngle + i * spaceAngle;
 
-			var column1_len = d.column1.length,
-				column2_len = d.column2.length,
-				column3_len = d.column3.length,
-				point_len = d.pointData.length;
+			var column1_len = d.column1 && d.column1.length ? d.column1.length : 0,
+				column2_len = d.column2 && d.column2.length ? d.column2.length : 0,
+				column3_len = d.column3 && d.column3.length ? d.column3.length : 0,
+				point_len = d.pointData && d.pointData.length ? d.pointData.length : 0;
 
-			var column1_w = outerGirthScale(d.length) / column1_len,
-				column2_w = outerGirthScale(d.length) / column2_len,
-				column3_w = outerGirthScale(d.length) / column3_len;
+			var column1_w = column1_len ? outerGirthScale(d.length) / column1_len : 0,
+				column2_w = column2_len ? outerGirthScale(d.length) / column2_len : 0,
+				column3_w = column2_len ? outerGirthScale(d.length) / column3_len : 0;
 
 			var posScale = d3.scaleLinear().range([0, (endAngle - startAngle) * 180 / Math.PI]).domain([0, d.maxPos]);
 
@@ -396,24 +409,17 @@ export class GeneFusionComponent implements OnInit {
 		var tick_step = Math.pow(10, powLen);
 
 		//scale of first column
-		var max_column1_val = d3.max(allColumn1, function(d) {
-			return d;
-		})
+		var max_column1_val = allColumn1.length ? d3.max(allColumn1) : 0;
 		var yScale_column1 = d3.scaleLinear().range([0, column_h]).domain([0, max_column1_val]).clamp(true);
 
 		//scale of second column
-		var max_column2_val = d3.max(allColumn2, function(d) {
-			return d;
-		})
+		var max_column2_val = allColumn2.length ? d3.max(allColumn2) : 0;
 		var yScale_column2 = d3.scaleLinear().range([0, column_h]).domain([0, max_column2_val]).clamp(true);
 
 		//scale of three column
-		var max_column3_val = d3.max(allColumn3, function(d) {
-			return d;
-		})
-		var min_column3_val = d3.min(allColumn3, function(d) {
-			return d;
-		})
+		var column3_vals = allColumn3.length ? d3.extent(allColumn3) : [0,0];
+		var min_column3_val = column3_vals[0];
+		var max_column3_val = column3_vals[1];
 		var colors_column3 = ["#CA7499", "#b21052"];
 		var colorScale_column3 = d3.scaleLinear().range(colors_column3).domain([min_column3_val, max_column3_val]);
 
@@ -519,20 +525,22 @@ export class GeneFusionComponent implements OnInit {
 		}
 
 		if(this.isShowColumn){
-			if (outerRing[0].column1.length) {
+			if (outerRing[0].column1 && outerRing[0].column1.length) {
 				//第一环柱状图
 				var columnTipText1 = "SNP数目";
 				drawColumn(column1_g, "column1", innerRadius1, yScale_column1, "#10afff", columnTipText1);
 			}
 	
-			if (outerRing[0].column2.length) {
+			if (outerRing[0].column2 && outerRing[0].column2.length) {
 				//第二环柱状图
 				var columnTipText2 = "InDel数目";
 				drawColumn(column2_g, "column2", innerRadius2, yScale_column2, "#ffd226", columnTipText2);
 			}
 	
 			//第三环柱状图
-			drawColumn2();
+			if(outerRing[0].column3 && outerRing[0].column3.length){
+				drawColumn3();
+			}
 		}
 
 		//画第一、二环柱状图
@@ -593,7 +601,7 @@ export class GeneFusionComponent implements OnInit {
 		}
 
 		//画第三环柱状图
-		function drawColumn2() {
+		function drawColumn3() {
 			var threeRect_g = column3_g.selectAll("threeRect_g")
 				.data(chartData)
 				.enter()
@@ -718,7 +726,7 @@ export class GeneFusionComponent implements OnInit {
 					}
 				})
 				.on("mouseover", function(d) {
-					var tipText2 = `5’端融合基因：${d.fusion_up_gene}, ${d.fusion_up_chr}：${d.fusion_up_genome_pos},${d.fusion_up_strand}<br>
+					var tipText2 = `5’端融合基因：${d.fusion_up_geneid}, ${d.fusion_up_chr}：${d.fusion_up_genome_pos},${d.fusion_up_strand}<br>
 						3’端融合基因：${d.fusion_dw_gene},${d.fusion_dw_chr}：${d.fusion_dw_genome_pos},${d.fusion_dw_strand}<br>
 						比对到上下游基因的reads数：${d.fusion_span_reads_num}<br>
 						比对到融合位点的reads数：${d.fusion_junc_reads_num}<br> 
