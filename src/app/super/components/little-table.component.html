@@ -18,7 +18,10 @@
             <!-- min-width:160px;max-width: 160px; -->
             <tbody>
                 <tr *ngFor="let row of tableData['rows'];index as idx">
-                    <td style="text-align: center;min-width:120px;text-align: center;" *ngFor="let thead of tableData['baseThead']">{{row[thead.true_key]}}</td>
+                    <td style="text-align: center;min-width:120px;text-align: center;" *ngFor="let thead of tableData['baseThead']">
+                        <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID">{{row[thead.true_key]}}</a>
+                        <span *ngIf="thead.true_key!=targetID">{{row[thead.true_key]}}</span>
+                    </td>
                 </tr>
             </tbody>
         </nz-table>

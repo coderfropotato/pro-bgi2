@@ -66,44 +66,22 @@
           <button *ngIf="!btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.noShowGeneID' | translate}}</button>
           <!-- 转录本信息 -->
           <div class="transcripts_table" *ngIf="!btn_show">
-              <!-- <ng-template #titleTemplate>
-                  <div class="table-thead">
-                      <div class="fRight">
-                          <i class="iconfont icon-xiazai" (click)="down_transcripts()"></i>
-                      </div>
-                  </div>
-              </ng-template>
-              <nz-table [nzData]="rows" [nzScroll]="{x:'100%'}" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate">
-                  <thead>
-                      <tr>
-                          <th style="min-width:120px;" *ngFor="let thead of baseThead;index as i">{{thead.name}}</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr *ngFor="let row of rows;index as idx">
-                          <td style="min-width:10px; text-align: center;" *ngFor="let thead of baseThead">
-                              <a href="https://www.ncbi.nlm.nih.gov/nuccore/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank" *ngIf="thead.true_key=='rna_id'">{{row[thead.true_key]}}</a>
-                              <span *ngIf="thead.true_key!='rna_id'">{{row[thead.true_key]}}</span>
-                          </td>
-                      </tr>
-                  </tbody>
-              </nz-table> -->
-              <app-little-table [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table>
+              <app-little-table [hidden]="!rna_flag" [targetID]="'rna_id'" [targetURL]="'https://www.ncbi.nlm.nih.gov/nuccore/'" [type]="'rna_type'" (drawTableEmit)="drawKEGGPathway($event)" [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table>
           </div>
       </div>
       
       <!-- 样本表达量（FPKM） -->
-      <div class="mgene_content">
+      <div class="mgene_content" [hidden]="!expressive_g_flag && !expressive_t_flag && !line_flag && !line_flag2">
           <h4>{{'gene_detail.expressive_information' | translate}}</h4>
          
-          <div class="transcripts_table">
+          <div class="transcripts_table" [hidden]="!expressive_g_flag && !expressive_t_flag">
               <h5>{{'gene_detail.sample_expression' | translate}}</h5>
               <nz-tabset [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)">
                 <nz-tab nzTitle="基因">
-                    <app-little-table [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
+                    <app-little-table [hidden]="!expressive_g_flag" [type]="'FPKM_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
                 </nz-tab>
                 <nz-tab nzTitle="转录本">
-                    <app-little-table [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
+                    <app-little-table [hidden]="!expressive_t_flag" [type]="'FPKM_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
                 </nz-tab>
               </nz-tabset>
           </div>
@@ -114,31 +92,37 @@
               <div id="lineChartDiv" class="mlineChartDiv">
               </div>
           </div>
+
+          <div class="transcripts_table" [hidden]="!line_flag2">
+              <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
+              <div id="lineChartDiv2" class="mlineChartDiv">
+              </div>
+          </div>
       </div>
 
       <!-- 差异表达 -->
       <div class="mgene_content">
           <h4>{{'gene_detail.differential_expression' | translate}}</h4>
-          <div class="transcripts_table"><!-- 组间差异  [nzSelectedIndex]="groupDiff_index" (nzSelectedIndexChange)="SelectedGroupDiffChange($event)"-->
+          <div class="transcripts_table" [hidden]="!groupDiff_params_g_flag && !groupDiff_params_t_flag"><!-- 组间差异  [nzSelectedIndex]="groupDiff_index" (nzSelectedIndexChange)="SelectedGroupDiffChange($event)"-->
               <h5>{{'gene_detail.group_differences' | translate}}</h5>
               <nz-tabset>
                   <nz-tab nzTitle="基因">
-                      <app-little-table [inRefreshShow]="false" [url]="groupDiff_defaultUrl" [pageEntity]="groupDiff_params_g"></app-little-table>
+                      <app-little-table [hidden]="!groupDiff_params_g_flag" [type]="'diff_group_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="groupDiff_defaultUrl" [pageEntity]="groupDiff_params_g"></app-little-table>
                   </nz-tab>
                   <nz-tab nzTitle="转录本">
-                      <app-little-table [inRefreshShow]="false" [url]="groupDiff_defaultUrl" [pageEntity]="groupDiff_params_t"></app-little-table>
+                      <app-little-table [hidden]="!groupDiff_params_t_flag" [type]="'diff_group_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="groupDiff_defaultUrl" [pageEntity]="groupDiff_params_t"></app-little-table>
                   </nz-tab>
               </nz-tabset>
           </div>
           
-          <div class="transcripts_table"> <!-- 样本差异 [nzSelectedIndex]="sampleDiff_index" (nzSelectedIndexChange)="SelectedSampleDiffChange($event)"-->
+          <div class="transcripts_table" [hidden]="!sampleDiff_params_g_flag && !sampleDiff_params_t_flag"> <!-- 样本差异 [nzSelectedIndex]="sampleDiff_index" (nzSelectedIndexChange)="SelectedSampleDiffChange($event)"-->
             <h5>{{'gene_detail.sample_differences' | translate}}</h5>
             <nz-tabset>
                 <nz-tab nzTitle="基因">
-                    <app-little-table [inRefreshShow]="false" [url]="sampleDiff_defaultUrl" [pageEntity]="sampleDiff_params_g"></app-little-table>
+                    <app-little-table [hidden]="!sampleDiff_params_g_flag" [type]="'diff_sample_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="sampleDiff_defaultUrl" [pageEntity]="sampleDiff_params_g"></app-little-table>
                 </nz-tab>
                 <nz-tab nzTitle="转录本">
-                    <app-little-table [inRefreshShow]="false" [url]="sampleDiff_defaultUrl" [pageEntity]="sampleDiff_params_t"></app-little-table>
+                    <app-little-table [hidden]="!sampleDiff_params_t_flag" [type]="'diff_sample_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="sampleDiff_defaultUrl" [pageEntity]="sampleDiff_params_t"></app-little-table>
                 </nz-tab>
             </nz-tabset>
           </div>
@@ -189,25 +173,25 @@
 
           <div class="transcripts_table" [hidden]="!kegg_way_flag">
               <h5>KEGG Pathway</h5>
-              <app-little-table [type]="kegg_pathway_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_way_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'kegg_pathway_term_id'" [targetURL]="'https://www.kegg.jp/dbget-bin/www_bget?map'" [type]="kegg_pathway_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_way_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!kegg_reaction_flag">
               <h5>KEGG Reaction</h5>
-              <app-little-table [type]="kegg_reaction_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_reaction_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'kegg_reaction_term_id'" [targetURL]="'https://www.kegg.jp/dbget-bin/www_bget?rn:'" [type]="kegg_reaction_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_reaction_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!kegg_module_flag">
               <h5>KEGG Module</h5>
-              <app-little-table [type]="kegg_module_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_module_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'kegg_module_term_id'" [targetURL]="'https://www.kegg.jp/kegg-bin/show_module?'" [type]="kegg_module_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_module_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!kegg_disease_flag">
               <h5>KEGG Disease</h5>
-              <app-little-table [type]="kegg_disease_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_disease_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'kegg_disease_term_id'" [targetURL]="'https://www.kegg.jp/dbget-bin/www_bget?ds:'" [type]="kegg_disease_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_disease_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
-          <div class="transcripts_table" *ngIf="go_f_flag">
+          <div class="transcripts_table" [hidden]="go_f_flag">
               <h5>GO Molecular Function</h5>
                 <div *ngFor="let item of go_f_list" >
                     <p class="table_title">{{item.level_1}}</p>
@@ -221,7 +205,7 @@
                 </div>
           </div>
 
-          <div class="transcripts_table" *ngIf="go_c_flag">
+          <div class="transcripts_table" [hidden]="go_c_flag">
               <h5>GO Cellular Component</h5>
               <div *ngFor="let item of go_c_list" >
                   <p class="table_title">{{item.level_1}}</p>
@@ -235,7 +219,7 @@
               </div>
           </div>
 
-          <div class="transcripts_table" *ngIf="go_b_flag">
+          <div class="transcripts_table" [hidden]="go_b_flag">
               <h5>GO Biological Process</h5>
               <div *ngFor="let item of go_b_list" >
                   <p class="table_title">{{item.level_1}}</p>
@@ -249,120 +233,120 @@
               </div>
           </div>
 
-          <div class="transcripts_table" [hidden]="!pfam_flag">
+          <div class="transcripts_table" [hidden]="pfam_flag">
               <h5>Pfam</h5>
-              <app-little-table [type]="pfam_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="pfam_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'pfam_term_id'" [targetURL]="'http://pfam.xfam.org/family/'" [type]="pfam_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="pfam_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!reactome_flag">
               <h5>Reactome</h5>
-              <app-little-table [type]="reactome_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'reactome_term_id'" [targetURL]="'https://reactome.org/'" [type]="reactome_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!interpro_flag">
               <h5>InterPro</h5>
-              <app-little-table [type]="InterPro_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="interpro_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'interpro_term_id'" [targetURL]="'https://www.ebi.ac.uk/interpro/entry/'" [type]="InterPro_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="interpro_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!cog_flag">
               <h5>COG</h5>
-              <app-little-table [type]="cog_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="cog_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'cog_term_id'" [targetURL]="'ftp://ftp.ncbi.nih.gov/pub/COG/COG2014/static/byCOG/'" [type]="cog_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="cog_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!eggnog_flag">
               <h5>EggNOG</h5>
-              <app-little-table [type]="eggnog_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="eggnog_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'eggnog_term_id'" [targetFlag] = "true" [targetURL]="'http://eggnogdb.embl.de/#/app/home'" [type]="eggnog_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="eggnog_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_h_flag">
               <h5>Msigdb_H</h5>
-              <app-little-table [type]="msigdb_H_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_h_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_h_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_H_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_h_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_c1_flag">
               <h5>Msigdb C1</h5>
-              <app-little-table [type]="msigdb_C1_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c1_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c1_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C1_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c1_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_c2_cgp_flag">
               <h5>MsigDB C2_CGP</h5>
-              <app-little-table [type]="msigdb_C2_CGP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cgp_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c2_cgp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CGP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cgp_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
           <div class="transcripts_table" [hidden]="!msigdb_c2_cp_biocarta_flag">
               <h5>MsigDB C2_CP_BIOCARTA</h5>
-              <app-little-table [type]="msigdb_C2_CP_BIOCARTA_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_biocarta_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c2_cp_biocarta_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CP_BIOCARTA_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_biocarta_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_C2_CP_flag">
               <h5>MsigDB C2_CP</h5>
-              <app-little-table [type]="msigDB_C2_CP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_C2_CP_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c2_cp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigDB_C2_CP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_C2_CP_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
           <div class="transcripts_table" [hidden]="!msigdb_c2_cp_kegg_flag">
               <h5>MsigDB C2_CP_KEGG</h5>
-              <app-little-table [type]="msigdb_C2_CP_KEGG_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_kegg_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c2_cp_kegg_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CP_KEGG_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_kegg_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_c2_cp_reactome_flag">
               <h5>MsigDB C2_CP_REACTOME</h5>
-              <app-little-table [type]="msigdb_C2_CP_REACTOME_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c2_cp_reactome_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CP_REACTOME_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
           
           <div class="transcripts_table" [hidden]="!msigdb_c3_mir_flag">
               <h5>MsigDB C3_MIR</h5>
-              <app-little-table [type]="msigdb_C3_MIR_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_mir_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c3_mir_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C3_MIR_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_mir_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
           <div class="transcripts_table" [hidden]="!msigdb_c3_tft_flag">
               <h5>MsigDB C3_TFT</h5>
-              <app-little-table [type]="msigdb_C3_TFT_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_tft_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c3_tft_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C3_TFT_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_tft_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_c4_cgn_flag">
               <h5>MsigDB C4_CGN</h5>
-              <app-little-table [type]="msigdb_C4_CGN_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cgn_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c4_cgn_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C4_CGN_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cgn_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
           <div class="transcripts_table" [hidden]="!msigdb_c4_cm_flag">
               <h5>MsigDB C4_CM</h5>
-              <app-little-table [type]="msigdb_C4_CM_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cm_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c4_cm_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C4_CM_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cm_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_c5_bp_flag">
               <h5>MsigDB C5_BP</h5>
-              <app-little-table [type]="msigdb_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c5_bp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_c5_cc_flag">
               <h5>MsigDB C5_CC</h5>
-              <app-little-table [type]="msigdb_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c5_cc_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_c5_mf_flag">
               <h5>MsigDB C5_MF</h5>
-              <app-little-table [type]="msigdb_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c5_mf_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_c6_flag">
               <h5>Msigdb C6</h5>
-              <app-little-table [type]="msigdb_C6_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c6_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c6_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C6_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c6_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_c7_flag">
               <h5>Msigdb C7</h5>
-              <app-little-table [type]="msigdb_C7_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c7_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c7_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C7_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c7_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_archived_c5_mf_flag">
               <h5>MsigDB ARCHIVED_C5_MF</h5>
-              <app-little-table [type]="msigdb_ARCHIVED_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c5_mf_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_ARCHIVED_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_archived_c5_c_flag">
               <h5>MsigDB ARCHIVED_C5_CC</h5>
-              <app-little-table [type]="msigdb_ARCHIVED_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_cc_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c5_cc_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_ARCHIVED_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_cc_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!msigdb_archived_c5_bp_flag">
               <h5>MsigDB ARCHIVED_C5_BP</h5>
-              <app-little-table [type]="msigdb_ARCHIVED_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'msigdb_c5_bp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_ARCHIVED_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!tf_cofactors_flag">
@@ -372,7 +356,7 @@
 
           <div class="transcripts_table" [hidden]="!tf_flag">
               <h5>Transcription Factor</h5>
-              <app-little-table [type]="tf_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="tf_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table [targetID]="'tf_term_id'" [targetFlag] = "true" [targetURL]="'http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/'" [type]="tf_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="tf_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
       </div>

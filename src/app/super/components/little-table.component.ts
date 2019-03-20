@@ -23,6 +23,11 @@ export class LittleTableComponent implements OnInit {
     @Input() pageEntity: object;
     @Input() inRefreshShow: boolean = true;
 
+    @Input() targetID: string;
+    @Input() targetURL: string;
+    @Input() targetFlag: boolean = false;
+    goTarget: string;
+
     @Input() type: string;
 
     @Output() drawTableEmit: EventEmitter<any> = new EventEmitter();
@@ -42,6 +47,11 @@ export class LittleTableComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        if(this.targetFlag){
+            this.goTarget = this.targetURL;
+        }else{
+            this.goTarget = this.targetURL + this.targetID;
+        }
         this.getData();
     }
 
