@@ -4,7 +4,7 @@ import { StoreService } from './../../super/service/storeService';
 import { Component, OnInit, ViewChild, ElementRef, QueryList, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { NzNotificationService } from 'ng-zorro-antd';
+import { NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import config from '../../../config';
 import { Subject } from 'rxjs';
 
@@ -72,7 +72,8 @@ export class ReListComponent implements OnInit {
 		private storeService: StoreService,
 		private translate: TranslateService,
 		private ajaxService: AjaxService,
-		private notify: NzNotificationService
+		private notify: NzNotificationService,
+		private modalService: NzModalService
 	) {
 		let langs = ['zh', 'en'];
 		this.translate.addLangs(langs);
@@ -158,6 +159,15 @@ export class ReListComponent implements OnInit {
 	}
 
 	toDetail(data) {
+		//错误状态，不执行以下程序
+		if (data.process == 0){
+			this.modalService.error({
+				'nzTitle':'id：'+ data['_id'],
+				'nzContent': data['explains'],
+				'nzClosable':false
+				});
+			return;
+		}
 		let type = '';
 		if (data['reanalysisType'].indexOf('heatmap') != -1) {
 			if (data['reanalysisType'] != 'heatmapRelation') {
