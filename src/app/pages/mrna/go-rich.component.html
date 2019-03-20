@@ -105,7 +105,7 @@
         </div>
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
-            <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column>
+            <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType"></app-add-column>
             <!-- 关系 -->
             <app-gene-relative class="ml-12" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
             <!-- 返回 -->

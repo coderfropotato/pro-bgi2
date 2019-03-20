@@ -54,10 +54,10 @@
                 </ng-template>
 
                  <!-- 可选择数据的大表 -->
+                 <!-- [selectTemplate]="selectTemplate" -->
                  <div [hidden]='!expandModuleTable'>
                      <ng-container>
                         <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable
-                            [selectTemplate]="selectTemplate"
                             [tableHeight]="leftTableHeight / 2"
                             [defaultChecked]="false"
                             [pageEntity]="chartEntity"
