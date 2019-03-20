@@ -14,6 +14,13 @@
                 <app-fusionSet (confirm)="setConfirm($event)"></app-fusionSet>
             </ng-template>
 
+             <!-- 下拉选择 -->
+            <ng-template #selectTemplate>
+                <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="sample" (ngModelChange)="handleSelectChange()">
+                    <nz-option *ngFor="let item of samples;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
+                </nz-select>
+            </ng-template>
+
             <!-- [tableUrl]="tableUrl" -->
             <app-table-switch-chart
                 #fusionChartTable
@@ -21,6 +28,7 @@
                 [apiEntity]="tableChartEntity"
                 [chartUrl]="chartUrl"
                 [setTemplate]="setTemplate"
+                [selectTemplate]="selectTemplate"
                 (drawChartEmit)="drawChart($event)"
                 [flex]="true"
                 [chartId]="'fusionCircos'"

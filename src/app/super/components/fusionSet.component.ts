@@ -62,7 +62,7 @@ export class FusionSetComponent implements OnInit {
            }
        ];
        this.linkSerach=this.linkSerachList[0].key;
-       this.score=100;
+       this.score=1;
 
        this.confirmData={
             isShowGene:this.isShowGene,
