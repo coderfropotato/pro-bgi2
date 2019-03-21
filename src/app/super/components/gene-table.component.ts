@@ -66,6 +66,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	@Output() saveGeneListSuccess: EventEmitter<any> = new EventEmitter(); // 成功保存基因集的时候 发出的事件
 	@Output() syncRelative: EventEmitter<any> = new EventEmitter(); // 同步表头
 
+    @Output() totalChange:EventEmitter<number> = new EventEmitter(); // total
+
 	@ViewChildren('child') children;
 	count: number = 0; // 选中的基因个数
 	mongoId: any = null;
@@ -296,7 +298,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					if (!responseData.data['rows'].length) {
 						this.total = 0;
 						this.srcTotal = 0;
-						this.error = 'nodata';
+                        this.error = 'nodata';
+                        this.totalChange.emit(this.total);
 						return;
 					}
 
@@ -329,7 +332,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					// 根据表头生成sortmap
 					this.generatorSortMap();
 					if (responseData.data.total != this.total) this.tableEntity['pageIndex'] = 1;
-					this.total = responseData.data.total;
+                    this.total = responseData.data.total;
+                    this.totalChange.emit(this.total);
+
 					this.srcTotal = responseData.data.srcTotal;
 					this.dataSet = responseData.data.rows;
 					// 标志key
@@ -414,6 +419,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.srcTotal = 0;
 					this.error = 'nodata';
                     this.syncRelative.emit([]);
+                    this.totalChange.emit(this.total);
+
                     if (this.emitBaseThead) {
 						this.emitBaseThead = false;
 						this.emitBaseTheadChange.emit(this.emitBaseThead);
@@ -424,6 +431,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.srcTotal = 0;
 					this.error = 'error';
                     this.syncRelative.emit([]);
+                    this.totalChange.emit(this.total);
+
                     if (this.emitBaseThead) {
 						this.emitBaseThead = false;
 						this.emitBaseTheadChange.emit(this.emitBaseThead);
@@ -439,7 +448,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 				this.isLoading = false;
 				this.total = 0;
 				this.srcTotal = 0;
-				this.syncRelative.emit([]);
+                this.syncRelative.emit([]);
+                this.totalChange.emit(this.total);
 			},
 			() => {
 				cb && cb();

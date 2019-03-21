@@ -25,7 +25,7 @@
             <!-- 右-其他模块 -->
             <ng-container *ngTemplateOutlet="(otherRightTemplate && (!chartError || !tableError)) ? otherRightTemplate :''"></ng-container>
             <!-- 单选、多选 -->
-            <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
+            <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.multiple' | translate}}"></nz-switch>
             <button *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
             <!-- 精度下拉框 -->
             <!-- <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
