@@ -539,7 +539,7 @@ button {
         display: flex;
         transition: 0.2s all ease;
         &.unexpand {
-            flex: 4;
+            flex: 3;
         }
         &.expand {
             flex: 7;
@@ -577,14 +577,20 @@ button {
     .right-layout {
         height: 100%;
         overflow: hidden;
-        flex: 4;
+        flex: 3;
         transition: 0.2s all ease;
         @include module-style;
         &.expand {
             flex: 7;
+            .pagination-pagesize{
+                display: block;
+            }
         }
         &.unexpand {
-            flex: 4;
+            flex: 3;
+            .pagination-pagesize{
+                display: none;
+            }
         }
         &.table-only {
             flex: 1;
