@@ -317,7 +317,6 @@ export class ReadsComparisonComponent implements OnInit {
         x: {
           title: "Amount of reads (x100K)",
           rotate: 60,
-          ticks:5,
           dblclick: function(event) {
             var name = prompt("请输入需要修改的标题", "");
             if (name) {

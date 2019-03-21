@@ -29,7 +29,7 @@ export class IndexComponent implements OnInit {
 
 	routerState: boolean = true;
 	routerStateCode: string = 'active';
-	getUnReadAnalysisCountTimer:any = null;
+	getUnReadAnalysisCountTimer: any = null;
 	constructor(
 		private routes: ActivatedRoute,
 		private router: Router,
@@ -38,9 +38,8 @@ export class IndexComponent implements OnInit {
 		private storeService: StoreService,
 		private ngxSpinnerService: NgxSpinnerService,
 		private addColumnService: AddColumnService,
-		private modalService: NzModalService
-	) // private outerDataBaseService:OuterDataBaseService
-	{
+		private modalService: NzModalService // private outerDataBaseService:OuterDataBaseService
+	) {
 		this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) {
 				this.routerState = !this.routerState;
@@ -98,7 +97,7 @@ export class IndexComponent implements OnInit {
 								}
 							}
 
-                            //this.menuList = data["data"].menu_list;
+							//this.menuList = data["data"].menu_list;
 
 							/**
                              * 基础模块
@@ -141,29 +140,19 @@ export class IndexComponent implements OnInit {
                              * 基因总表	gene
                              */
 							this.menuList = [
-								// {
-								// 	category: '基因详情',
-								// 	children: [
-								// 		{
-								// 			url: 'gene-detail',
-								// 			name: '基因详情',
-								// 			isExport: true
-								// 		}
-								// 	]
-								// },
 								{
-									category: '基因总表',
+									category: '主页',
 									children: [
 										{
 											url: 'gene',
 											geneType: 'all',
-											name: '基因总表',
+											name: '主页',
 											isExport: true
 										}
 									]
 								},
 								{
-									category: '差异表达',
+									category: '基因表达',
 									children: [
 										{
 											url: 'diff-expression',
@@ -172,16 +161,11 @@ export class IndexComponent implements OnInit {
 											isExport: true
 										},
 										{
-											url: 'diff-expression-help',
-											geneType: null,
-											name: '帮助',
+											url: 'cluster',
+											geneType: 'all',
+											name: '聚类',
 											isExport: true
-										}
-									]
-								},
-								{
-									category: '表达量',
-									children: [
+										},
 										{
 											url: 'expression',
 											geneType: 'all',
@@ -189,7 +173,7 @@ export class IndexComponent implements OnInit {
 											isExport: true
 										},
 										{
-											url: 'expression-help',
+											url: 'gene-expression-help',
 											geneType: null,
 											name: '帮助',
 											isExport: true
@@ -197,24 +181,7 @@ export class IndexComponent implements OnInit {
 									]
 								},
 								{
-									category: '差异聚类',
-									children: [
-										{
-											url: 'cluster',
-											geneType: 'all',
-											name: '聚类',
-											isExport: true
-										},
-										{
-											url: 'cluster-help',
-											geneType: null,
-											name: '帮助',
-											isExport: true
-										}
-									]
-								},
-								{
-									category: 'GO',
+									category: '基因注释',
 									children: [
 										{
 											url: 'go-class',
@@ -229,17 +196,6 @@ export class IndexComponent implements OnInit {
 											isExport: true
 										},
 										{
-											url: 'go-help',
-											geneType: null,
-											name: '帮助',
-											isExport: true
-										}
-									]
-								},
-								{
-									category: 'KEGG',
-									children: [
-										{
 											url: 'kegg-class',
 											geneType: 'all',
 											name: 'KEGG分类',
@@ -252,7 +208,7 @@ export class IndexComponent implements OnInit {
 											isExport: true
 										},
 										{
-											url: 'kegg-help',
+											url: 'gene-annotation-help',
 											geneType: null,
 											name: '帮助',
 											isExport: true
@@ -260,7 +216,7 @@ export class IndexComponent implements OnInit {
 									]
 								},
 								{
-									category: '剪接/变异',
+									category: '基因变异',
 									children: [
 										{
 											url: 'alternative-splicing',
@@ -316,15 +272,15 @@ export class IndexComponent implements OnInit {
 											isExport: true
 										},
 										{
-											url:'snp-indel-help',
-											geneType:'all',
-											name:'帮助',
-											isExport:true
+											url: 'snp-indel-help',
+											geneType: 'all',
+											name: '帮助',
+											isExport: true
 										}
 									]
 								},
 								{
-									category: '基础模块',
+									category: '基因信息',
 									children: [
 										{
 											url: 'overview',
@@ -358,13 +314,14 @@ export class IndexComponent implements OnInit {
 										}
 									]
 								}
-								
 							];
 
-                            //动态跳第一个页面  需要替换  /report/mrna 为当前url  不然后退的时候会回到 /report/mrna 导致路由容器为空
-                            let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
-                            // let url = window.location.href.split('/report')[0]+`/report/mrna/diff-expression`;
-                            window.location.replace(url);
+							//动态跳第一个页面  需要替换  /report/mrna 为当前url  不然后退的时候会回到 /report/mrna 导致路由容器为空
+							let url =
+								window.location.href.split('/report')[0] +
+								`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
+							// let url = window.location.href.split('/report')[0]+`/report/mrna/diff-expression`;
+							window.location.replace(url);
 
 							let menuRouteMap = {};
 							this.menuList.forEach((v, index) => {
@@ -374,8 +331,8 @@ export class IndexComponent implements OnInit {
 										menuRouteMap[val['url']] = val;
 									});
 								}
-                            });
-                            this.storeService.setStore('menu',this.menuList);
+							});
+							this.storeService.setStore('menu', this.menuList);
 							this.storeService.setStore('menuRouteMap', menuRouteMap);
 							resolve('success');
 						} else {
@@ -541,7 +498,9 @@ export class IndexComponent implements OnInit {
 						];
 
 						//动态跳第一个页面
-						let url = window.location.href.split('/report')[0]+`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
+						let url =
+							window.location.href.split('/report')[0] +
+							`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
 						window.location.replace(url);
 						resolve('success');
 					},
@@ -552,25 +511,30 @@ export class IndexComponent implements OnInit {
 		});
 	}
 
-	getUnReadAnalysisCount(){
-		let getCount = ()=>{
-			this.ajaxService.getDeferData({
-				data: {
-					LCID:sessionStorage.getItem('LCID')
-				},
-				url: `${config['javaPath']}/reAnalysis/count`
-			}).subscribe(data=>{
-				if(data['status']==0) this.storeService.setStore('analysisCount',data['data'][0]);
-			},error=>{
-				clearInterval(this.getUnReadAnalysisCountTimer);
-			})
-		}
+	getUnReadAnalysisCount() {
+		let getCount = () => {
+			this.ajaxService
+				.getDeferData({
+					data: {
+						LCID: sessionStorage.getItem('LCID')
+					},
+					url: `${config['javaPath']}/reAnalysis/count`
+				})
+				.subscribe(
+					(data) => {
+						if (data['status'] == 0) this.storeService.setStore('analysisCount', data['data'][0]);
+					},
+					(error) => {
+						clearInterval(this.getUnReadAnalysisCountTimer);
+					}
+				);
+		};
 
 		getCount();
 
-		this.getUnReadAnalysisCountTimer = setInterval(()=>{
+		this.getUnReadAnalysisCountTimer = setInterval(() => {
 			getCount();
-		},config['getAnalysisCountInterval'])
+		}, config['getAnalysisCountInterval']);
 	}
 
 	// async getAddThead() {

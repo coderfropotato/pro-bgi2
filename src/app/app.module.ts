@@ -44,35 +44,20 @@ import { LoadingComponent } from './pages/reanalysis/loading.component';
 import { BigTableCheckComponent } from './super/components/big-table-check.component';
 
 // 页面
-/* 基因总表 */
+/* 主页 */
 import { GeneComponent,GenePage } from './pages/mrna/gene.component';
-/* 基因详情表 */
-import { GeneDetailComponent } from './pages/mrna/gene-detail.component';
-/* 基础模块 */
-import { OverviewComponent } from './pages/mrna/base/overview.component';
-import { InformationComponent } from './pages/mrna/base/information.component';
-import { ReadsFilterComponent } from './pages/mrna/base/reads-filter.component';
-import { ReadsComparisonComponent } from './pages/mrna/base/reads-comparison.component';
-import { LrnaComponent } from './pages/mrna/base/lrna.component';
-import { BasicHelpComponent } from './pages/mrna/base/help.component';
-/* 差异表达 */
+/* 基因表达 */
 import { DiffExpressionComponent, DiffVennPage } from './pages/mrna/diff-expression.component';
-import { DiffExpressionHelpComponent } from './pages/mrna/diff-expression-help.component';
-/* 表达量 */
-import { ExpressVennComponent, ExpressVennPage } from './pages/mrna/expressVenn.component';
-import { ExpressionHelpComponent } from './pages/mrna/expression-help.component';
-/* 差异聚类 */
 import { ClusterComponent } from './pages/mrna/cluster.component';
-import { ClusterHelpComponent } from './pages/mrna/cluster-help.component';
-/* GO */
+import { ExpressVennComponent, ExpressVennPage } from './pages/mrna/expressVenn.component';
+import { GeneExpressionHelpComponent } from './pages/mrna/gene-expression-help.component';
+/* 基因注释 */
 import { GoClassComponent,GoClassPage } from './pages/mrna/go-class.component';
 import { GoRichComponent,GoRichPage } from './pages/mrna/go-rich.component';
-import { GoHelpComponent } from './pages/mrna/go-help.component';
-/* KEGG */
 import { KeggClassComponent,KeggClassPage } from './pages/mrna/kegg-class.component';
 import { KeggRichComponent,KeggRichPage } from './pages/mrna/kegg-rich.component';
-import { KeggHelpComponent } from './pages/mrna/kegg-help.component';
-/* 剪接/变异 */
+import { GeneAnnotationHelpComponent } from './pages/mrna/gene-annotation-help.component';
+/* 基因变异 */
 import { AlternativeSplicingComponent } from './pages/mrna/alternative-splicing.component';
 import { DiffAlternativeSplicingComponent } from './pages/mrna/diff-alternative-splicing.component';
 import { GeneFusionComponent } from './pages/mrna/gene-fusion.component';
@@ -83,6 +68,15 @@ import { SnpDistributionComponent } from './pages/mrna/snp-distribution.componen
 import { IndelOverviewComponent } from './pages/mrna/indel-overview.component';
 import { IndelDistributionComponent } from './pages/mrna/indel-distribution.component';
 import { SnpIndelHelpComponent } from './pages/mrna/snp-indel-help.component';
+/* 基因信息 */
+import { OverviewComponent } from './pages/mrna/base/overview.component';
+import { InformationComponent } from './pages/mrna/base/information.component';
+import { ReadsFilterComponent } from './pages/mrna/base/reads-filter.component';
+import { ReadsComparisonComponent } from './pages/mrna/base/reads-comparison.component';
+import { LrnaComponent } from './pages/mrna/base/lrna.component';
+import { BasicHelpComponent } from './pages/mrna/base/help.component';
+/* 基因详情表 */
+import { GeneDetailComponent } from './pages/mrna/gene-detail.component';
 /* 上传模块 */
 import { UploadComponent } from './pages/mrna/upload.component';
 /* 小工具 */
@@ -130,47 +124,6 @@ import { TableSpecialTheadFilter } from './super/filter/tableSpecialThead.pipe';
 import config from '../config';
 import { from } from 'rxjs';
 
-
-/**
- * 基础模块
- * 项目概况	overview
- * 参考信息	reference
- * reads过滤	reads-filter
- * reads检测	reads-alignment
- * 小RNA检测	smallrna
- * 帮助	basic-help
- *
- * 差异表达
- * 差异表达	diff-expression
- * 帮助	diff-expression-help
- *
- * 表达量
- * 表达量	expression
- * 帮助	expression-help
- *
- * 差异聚类	cluster
- * 帮助	cluster-help
- *
- * GO
- * GO分类 go-class
- * GO富集	go-enrichment
- * 帮助	go-help
- *
- * KEGG
- * KEGG分类	kegg-class
- * KEGG富集	kegg-enrichment
- * 帮助	kegg-help
- *
- * 结构变异
- * SNP	snp
- * INDEL	indel
- * 可变剪切	alternative-splicing
- * 基因融合	gene-fusion
- * 帮助	structure-variation-help
- *
- * 基因总表
- * 基因总表	gene
- */
 const ROUTES: Routes = [
 	// mrna
 	{
@@ -246,11 +199,11 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 'diff-expression-help',
-				component: DiffExpressionHelpComponent,
+				path: 'gene-expression-help',
+				component: GeneExpressionHelpComponent,
 				data: {
 					keep: true,
-					module: 'diffExpressionHelp'
+					module: 'geneExpressionHelp'
 				}
 			},
 			// 表达量
@@ -262,14 +215,6 @@ const ROUTES: Routes = [
 					module: 'expression'
 				}
 			},
-			{
-				path: 'expression-help',
-				component: ExpressionHelpComponent,
-				data: {
-					keep: true,
-					module: 'expressionHelp'
-				}
-			},
 			// 差异聚类
 			{
 				path: 'cluster',
@@ -277,14 +222,6 @@ const ROUTES: Routes = [
 				data: {
 					keep: true,
 					module: 'cluster'
-				}
-			},
-			{
-				path: 'cluster-help',
-				component: ClusterHelpComponent,
-				data: {
-					keep: true,
-					module: 'clusterHelp'
 				}
 			},
 			// GO
@@ -299,9 +236,9 @@ const ROUTES: Routes = [
 				data:{keep:true,module:'goEnrichment'}
 			},
 			{
-				path:'go-help',
-				component:GoHelpComponent,
-				data:{keep:true,module:'goHelp'}
+				path:'gene-annotation-help',
+				component:GeneAnnotationHelpComponent,
+				data:{keep:true,module:'geneAnnotationHelp'}
 			},
 			// KEGG
 			{
@@ -313,11 +250,6 @@ const ROUTES: Routes = [
 				path:'kegg-enrichment',
 				component:KeggRichPage,
 				data:{keep:true,module:'keggEnrichment'}
-			},
-			{
-				path:'kegg-help',
-				component:KeggHelpComponent,
-				data:{keep:true,module:'keggHelp'}
 			},
 			// 剪接/变异
 			{
@@ -675,26 +607,23 @@ export function createTranslateLoader(http: HttpClient) {
 
 		DiffVennPage,
 		DiffExpressionComponent,
-		DiffExpressionHelpComponent,
+		GeneExpressionHelpComponent,
 
 		ExpressVennPage,
 		ExpressVennComponent,
-		ExpressionHelpComponent,
 
 		ClusterComponent,
-        ClusterHelpComponent,
 
 		GoClassPage,
 		GoRichPage,
 		GoClassComponent,
-		GoHelpComponent,
+		GeneAnnotationHelpComponent,
 		GoRichComponent,
 
 		KeggClassPage,
 		KeggRichPage,
 		KeggClassComponent,
 		KeggRichComponent,
-		KeggHelpComponent,
 
 		AlternativeSplicingComponent,
 		DiffAlternativeSplicingComponent,

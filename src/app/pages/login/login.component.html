@@ -1,7 +1,6 @@
-<div class="login">
+<!-- <div class="login">
     <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
         <nz-form-item>
-            <!-- username -->
             <nz-form-control>
                 <nz-input-group nzPrefixIcon="anticon anticon-user">
                     <input type="text" nz-input formControlName="userName" placeholder="Username">
@@ -10,7 +9,6 @@
                     input your username!</nz-form-explain>
             </nz-form-control>
         </nz-form-item>
-        <!-- password -->
         <nz-form-item>
             <nz-form-control>
                 <nz-input-group nzPrefixIcon="anticon anticon-lock">
@@ -20,7 +18,6 @@
                     input your Password!</nz-form-explain>
             </nz-form-control>
         </nz-form-item>
-        <!-- ma -->
         <nz-form-item>
             <nz-form-control>
                 <img (click)="handlerVerificationClick()" style="width:100px;height:40px;border:1px solid #ccc;margin-right:20px;" [src]="imgUrl" alt="验证码">
@@ -37,4 +34,187 @@
             </nz-form-control>
         </nz-form-item>
     </form>
+</div> -->
+
+
+
+<div class="login" (scroll)="scroll($event)">
+    <div class="login-top">
+        <img src="assets/img/logo_compose.svg" alt="">
+        <div class="top-right">
+            <img src="assets/img/doc.svg">
+            <span>dr.tom 文档</span>
+        </div>
+    </div>
+    <div class="login-top2" [class.show]="menuShow">
+        <img src="assets/img/logo_compose.svg" alt="">
+        <div style="flex: 1 1 0%;"></div>
+        <div class="top-right">
+            <img src="assets/img/doc.svg">
+            <span>dr.tom 文档</span>
+        </div>
+        <div class="login-btn" (click)="open()">登录</div>
+    </div>
+    <div class="login-content">
+        <div class="banner">
+            <div>
+                <div class="left">
+                    <img src="assets/img/banner1.svg" alt="">
+                    <img src="assets/img/banner2.svg" alt="">
+                    <img src="assets/img/banner3.svg" alt="">
+                </div>
+                <div class="right">
+                    <div class="t1">我们都带着一颗好奇的心</div>
+                    <div class="t2">自由便捷的深度数据挖掘平台</div>
+                    <div class="btn">
+                        <img class="bg" src="assets/img/bg.svg" alt="dot">
+                        <div (click)="open()">登录</div>
+                        <img class="email" src="assets/img/email.svg" alt="email">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="how-w">
+            <div class="t">
+                <div>Dr.Tom 是怎么工作的?</div>
+                <div>我们提供自由、便捷、深度的数据挖掘系统, 这一切都基于云端生物信息系统</div>
+            </div>
+            <div class="b">
+                <img src="assets/img/bg2.svg" alt="dot">
+                <div>
+                    <div>第&nbsp;1&nbsp;步</div>
+                    <img src="assets/img/thr1.svg" alt="">
+                    <div>提供数据</div>
+                    <div>把你的加密工作用于属于你的数据分析</div>
+                </div>
+                <div>
+                    <div>第&nbsp;2&nbsp;步</div>
+                    <img src="assets/img/thr2.svg" alt="">
+                    <div>数据分析, 深度挖掘</div>
+                    <div>根据生物信息系统的数据分析，给出数据关系，并且持续循环的再不同维度进行重复分析挖掘</div>
+                </div>
+                <div>
+                    <div>第&nbsp;3&nbsp;步</div>
+                    <img src="assets/img/thr3.svg" alt="">
+                    <div>思考, 重复, 得到规律</div>
+                    <div>思考，循环，找到其中的规律</div>
+                </div>
+                <img src="assets/img/bg2.svg" alt="dot">
+            </div>
+        </div>
+        <div class="new">
+            <div class="t">
+                <div>新一代测序，新一代体验</div>
+                <div>高质量的数据产出，≥85% 的数据高于 Q30 标准; 一站式操作流程，人性化操作指引</div>
+            </div>
+            <!-- 1 -->
+            <div class="b" [hidden]="bannerIndex!=0">
+                <div>
+                    <div class="t-text">BGISEQ-500</div>
+                    <div>A BGI Sequencer</div>
+                    <div>一代测序，新一代体验</div>
+                    <div>高质量的数据产出，≥85% 的数据高于 Q30 标准</div>
+                    <div>一站式操作流程，人性化操作指引</div>
+                    <div>多种读长模式，双芯片平台独立运行</div>
+                    <div>配套可选的 MGISP-100 自动化样本制备系统，全面优化建库操作</div>
+                </div>
+                <div>
+                    <img class="disabled" src="assets/img/arrow-left.svg" alt="" >
+                    <img  src="assets/img/arrow-right.svg" alt="" (click)="bannerIndex = 1">
+                </div>
+                <div>
+                    <img src="assets/img/p1.png" alt="">
+                </div>
+            </div>
+            <!-- 2 -->
+            <div class="b" [hidden]="bannerIndex!=1">
+                <div>
+                    <div class="t-text">MGISEQ-2000</div>
+                    <div>扩增错误零积累, 高精准碱基连续</div>
+                    <div>4种读长支持, 满负荷 PE100 运行仅需 48 小时</div>
+                    <div>双芯片平台独立运行，两种规格芯片自由选择</div>
+                    <div>加载系统内置，一站式简洁操作</div>
+                </div>
+                <div>
+                    <img src="assets/img/arrow-left.svg" alt="" (click)="bannerIndex = 0">
+                    <img class="disabled"  src="assets/img/arrow-right.svg" alt="">
+                </div>
+                <div>
+                    <img src="assets/img/p2.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="login-footer">
+        <div>
+            <div>
+                <div>华大基因旗下数据分析平台</div>
+                <div>CopyrightⒸ BGI all rights reserved. 粤ICP备16021117号</div>
+            </div>
+            <div> </div>
+            <div>
+                <div>
+                    <img src="assets/img/foot-email.svg" alt="email">
+                    <div>bgi-report@bgi.com</div>
+                </div>
+                <div>
+                    <img src="assets/img/foot-pos.svg" alt="pos">
+                    <div>深圳市盐田区洪安三街 21 号华大综合园 7 栋</div>
+                </div>
+                <div>
+                    <img src="assets/img/foot-phone.svg" alt="phone">
+                    <div>0755-36307094</div>
+                </div>
+            </div>
+            <div></div>
+            <div>
+                <img src="assets/img/ma.png" alt="二维码">
+                <div>微信公众号</div>
+            </div>
+        </div>
+    </div>
+    <div class="login-mask" [class.active]="mask" (click)="close()">
+        <div class="back"></div>
+        <div class="login-box"  [class.active]="login" (click)="boxClick($event)">
+            <div class="text"  (click)="close()">
+                <img src="assets/img/cancel.svg" alt="取消">
+                <div>取消</div>
+            </div>
+            <form #form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+                <nz-form-item>
+                    <nz-form-control>
+                        <!-- nzPrefixIcon="anticon anticon-user" -->
+                        <nz-input-group>
+                            <input type="text" nz-input formControlName="userName" placeholder="请输入用户名">
+                        </nz-input-group>
+                        <nz-form-explain *ngIf="validateForm.get('userName').dirty && validateForm.get('userName').errors">请输入用户名</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <!-- nzPrefixIcon="anticon anticon-lock" -->
+                        <nz-input-group >
+                            <input type="password" nz-input formControlName="password" placeholder="请输入密码">
+                        </nz-input-group>
+                        <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">请输入密码</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <img class="code" (click)="handlerVerificationClick()" [src]="imgUrl" alt="验证码">
+                        <!--  nzPrefixIcon="anticon anticon-lock" -->
+                        <nz-input-group class="ver-group">
+                            <input class="ver-input" type="text" nz-input formControlName="verificationCode" placeholder="请输入验证码">
+                        </nz-input-group>
+                        <nz-form-explain *ngIf="validateForm.get('verificationCode').dirty && validateForm.get('verificationCode').errors">请输入验证码</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button class="login-form-button" [nzType]="'primary'">登录</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </div>
+    </div>
 </div>
