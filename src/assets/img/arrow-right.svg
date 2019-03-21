@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/right_button_line</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icon/right_button_line" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="LC_icon_left_line" transform="translate(32.500000, 32.000000) scale(-1, 1) translate(-32.500000, -32.000000) translate(23.000000, 15.000000)" fill="#000000">
+            <polygon id="Path" points="18.0641576 34 0 16.9994833 18.0641576 0 19 0.933182029 1.92927509 16.9994833 19 33.066129"></polygon>
+        </g>
+        <path d="M32,60.5 C16.2598846,60.5 3.5,47.7401154 3.5,32 C3.5,16.2598846 16.2598846,3.5 32,3.5 C47.7401154,3.5 60.5,16.2598846 60.5,32 C60.5,47.7401154 47.7401154,60.5 32,60.5 Z M32,59.5 C47.1878306,59.5 59.5,47.1878306 59.5,32 C59.5,16.8121694 47.1878306,4.5 32,4.5 C16.8121694,4.5 4.5,16.8121694 4.5,32 C4.5,47.1878306 16.8121694,59.5 32,59.5 Z" id="Oval" fill="#000000" fill-rule="nonzero" opacity="0.200000003"></path>
+    </g>
+</svg>
