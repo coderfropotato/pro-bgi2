@@ -1,4 +1,7 @@
 <div class="left-bottom-layout" ><!-- 下部份 -->
+    <div class="top_title" [hidden]="!geneTotal">
+        在<span>自定义</span>范围内找到<span>{{geneTotal}}</span>条结果
+    </div>
     <div class="func" #func (click)="resize($event)">
         <!-- 增删列 -->
         <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType" ></app-add-column>
@@ -19,6 +22,7 @@
         [(defaultEmitBaseThead)]="defaultEmitBaseThead"
         (defaultBaseTheadChange)="baseTheadChange($event)"
         [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
+        (totalChange)="myTotalChange($event)"
         [extendTableEntity]="extendEntity"
         [extendTableUrl]="extendUrl"
         [extendTableId]="extendTableId"
