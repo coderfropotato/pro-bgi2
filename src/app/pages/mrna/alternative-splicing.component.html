@@ -28,7 +28,7 @@
             <div class="small_text">
                 当前表格，样本 : <span class="small_span">{{sample}}</span> 剪接类型 ：<span class="small_span">{{asType}}</span>
             </div>
-            <app-geneTable
+            <!-- <app-geneTable
                 #defaultSpliceTable
                 [url]="defaultTableUrl"
                 [pageEntity]="defaultTableEntity"
@@ -39,6 +39,15 @@
                 [checkStatusInParams]="defaultCheckStatusInParams"
                 
                 [(computedScrollHeight)]="computedScrollHeight"
-            ></app-geneTable>
+            ></app-geneTable> -->
+            <app-big-table
+                class="no-outside-border"
+                #defaultSpliceTable
+                [tableHeight]="tableHeight"
+                [pageEntity]="defaultTableEntity"
+                [url]="defaultTableUrl"
+                [tableId]="defaultTableId"
+                [(computedScrollHeight)]="computedScrollHeight"
+            ></app-big-table>
         </div>
 </div>
