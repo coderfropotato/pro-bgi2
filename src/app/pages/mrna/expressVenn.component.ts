@@ -144,6 +144,9 @@ export class ExpressVennComponent implements OnInit {
 	expression_Min_value: number = 0;
 	expression_Max_value: number = 2147483647;
 
+	sampleGroupTop3: string [] = [];
+	sampleGroupTarget: string [] = [];
+
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -203,10 +206,14 @@ export class ExpressVennComponent implements OnInit {
 			}
 		];
 
+		this.sampleGroupTarget = this.storeService.getStore('sample').concat(this.storeService.getStore('group'));
+		//console.log(this.sampleGroupTarget);
+		this.dowithSampleGroup();
+
 		this.tableEntity = {
 			//查询参数
             LCID: this.storeService.getStore('LCID'),
-            sample: this.storeService.getStore('sample'),
+            sample: this.sampleGroupTop3,
             geneType: this.pageModuleService['defaultModule'],
             species: this.storeService.getStore('genome'),
             low:this.targetValue,
@@ -221,7 +228,7 @@ export class ExpressVennComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'),
 			leftChooseList: this.leftSelect, //upsetR参数
 			upChooseList: this.upSelect, //胜利n图选中部分参数
-			sample: this.storeService.getStore('sample'), //比较组
+			sample: this.sampleGroupTop3, //比较组
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -252,7 +259,7 @@ export class ExpressVennComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'), //流程id
 			leftChooseList: [], //upsetR参数
 			upChooseList: [], //胜利n图选中部分参数
-			sample: this.storeService.getStore('sample'), //比较组
+			sample: this.sampleGroupTop3, //比较组
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -272,6 +279,21 @@ export class ExpressVennComponent implements OnInit {
 		this.extendDefaultChecked = true;
 		this.extendEmitBaseThead = true;
 		this.extendCheckStatusInParams = false;
+	}
+
+	dowithSampleGroup(){
+		let templength = this.sampleGroupTarget.length;
+		let i = 0;
+		if(templength <= 3){	
+			this.sampleGroupTop3 = this.sampleGroupTarget;
+		}else{
+			this.sampleGroupTarget.forEach(d => {
+				if(i < 3){
+					this.sampleGroupTop3.push(d);
+					i++;
+				}
+			})
+		}
 	}
 
 	ngAfterViewInit() {
@@ -846,7 +868,7 @@ export class ExpressVennComponent implements OnInit {
 		let d3_xScale; //矩阵圆点的x轴
 		let d3_yScale; //矩阵圆点的y轴
 		let d3_rectWidth = 16; //柱子的宽度
-		let d3_rectKong = 6; //柱子间的间宽
+		let d3_rectKong = 2; //柱子间的间宽
 		let d3_xlength = bar_value.length; //矩阵圆点的x轴有多少柱子
 		let d3_ylength = total_value.length; //矩阵圆点的y轴有多少柱子
 
@@ -867,6 +889,11 @@ export class ExpressVennComponent implements OnInit {
 
 		let svg_height = 300 + d3_height + padding1.top + padding1.bottom + padding2.top + padding2.bottom; //计算最外层svg高度
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
+
+
+		let g_map_top = 30;
+		let g_map_left = 30;
+		let g_map_height = 180;
 
 		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on(
 			'click',
@@ -894,15 +921,16 @@ export class ExpressVennComponent implements OnInit {
 
 		function drawSvg() {
 			let width1 = d3_width + padding1.left + padding1.right;
-			let height1 = 240;
+			//let height1 = 240;
+			let height1 = 150; //减小宽高
 
 			let svg1 = d3
 				.select('#svg')
 				.append('svg')
 				//.attr('x', '320')
 				//.attr('y', '0')
-				.attr('x', '280')
-				.attr('y', '60')
+				.attr('x', '190')//减小宽高 220 - g_map_left
+				.attr('y', g_map_top)
 				.attr('width', width1)
 				.attr('height', height1)
 				.attr('class', 'svg1');
@@ -1041,14 +1069,15 @@ export class ExpressVennComponent implements OnInit {
 
 		function drawSvg2() {
 			//let width2 = 320 - left_name_length - kong_name_right;
-			let width2 = 320 - left_name_length - kong_name_right - 40;
+			let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高
 			let height2 = d3_height + padding2.top + padding2.bottom;
 
 			let svg2 = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', padding1.left)
-				.attr('y', '300')
+				.attr('x', padding1.left - g_map_left)
+				//.attr('y', '300')
+				.attr('y', g_map_height)//减小宽高
 				.attr('width', width2)
 				.attr('height', height2)
 				.attr('class', 'svg2');
@@ -1059,7 +1088,7 @@ export class ExpressVennComponent implements OnInit {
 
 			d3_yScale = yScale2;
 
-			let xAxis2 = d3.axisBottom(xScale2).ticks(4);
+			let xAxis2 = d3.axisBottom(xScale2).ticks(3);
 			let yAxis2 = d3.axisRight(yScale2);
 
 			let tempSelectColor = '';
@@ -1163,8 +1192,10 @@ export class ExpressVennComponent implements OnInit {
 				.select('#svg')
 				.append('svg')
 				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left)
-				.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 40)
-				.attr('y', '300')
+				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 40)
+				.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 100 - 30)//减小宽高   g_map_left
+				//.attr('y', '300')
+				.attr('y', g_map_height)//减小宽高
 				.attr('width', widthk)
 				.attr('height', heightk)
 				.attr('class', 'svgk');
@@ -1185,7 +1216,7 @@ export class ExpressVennComponent implements OnInit {
 					return 0;
 				})
 				.attr('dy', function(d, i) {
-					return yScalek(total_name[i]) + d3_rectKong * 2;
+					return yScalek(total_name[i]) + d3_rectKong * 6;
 				})
 				.text(function(d, i) {
 					return d;
@@ -1245,8 +1276,10 @@ export class ExpressVennComponent implements OnInit {
 				.select('#svg')
 				.append('svg')
 				//.attr('x', '320')
-				.attr('x', '280')
-				.attr('y', '300')
+				//.attr('x', '280')
+				.attr('x', '190')//减小宽高 g_map_left
+				//.attr('y', '300')
+				.attr('y', g_map_height)//减小宽高
 				.attr('width', width3)
 				.attr('height', height3);
 
@@ -1265,9 +1298,9 @@ export class ExpressVennComponent implements OnInit {
 					temp = {
 						x_axis: d3_xScale(bar_name[i]) + d3_rectWidth / 2 + padding1.left,
 						y_axis: d3_yScale(total_name[j]) + d3_rectWidth / 2,
-						r: 6,
+						r: 5,
 						flag: threeC(total_name[j], bar_name[i]) ? true : false,
-						color: threeC(total_name[j], bar_name[i]) ? '#222' : '#888',
+						color: threeC(total_name[j], bar_name[i]) ? '#222' : '#C8C8C8',
 						nameX: threeC(total_name[j], bar_name[i]) ? bar_name[i] : '',
 						nameY: total_name[j],
 						sort: sortC(bar_name[i])
@@ -1289,6 +1322,26 @@ export class ExpressVennComponent implements OnInit {
 		//造点 这时候包含点的颜色 添加圆 基本圆
 		function makeBaseCircle(arr, svg_t) {
 			if (arr.length > 0) {
+
+				let tempyList = sortArr(arr, 'y_axis');
+
+				for (let i = 0; i < tempyList.length; i++) {
+					svg_t
+						.append('rect')
+						.attr('class', 'MyRect4')
+						.attr('x', padding1.left)
+						.attr('y', tempyList[i][0]['y_axis'] - d3_rectWidth / 2 - 1.5)
+						.attr('width', d3_width + padding1.right)
+						.attr('height', d3_rectWidth + 3)
+						.attr('opacity', 0.7)
+						.attr('fill', i % 2 == 0 ? '#DDD' : 'none')
+						.on('click', function(d) {
+							var event = d3.event;
+							event.stopPropagation();
+						});
+				}
+
+
 				svg_t
 					.selectAll('.MyCircle')
 					.data(arr)
@@ -1312,23 +1365,7 @@ export class ExpressVennComponent implements OnInit {
 						event.stopPropagation();
 					});
 
-				let tempyList = sortArr(arr, 'y_axis');
-
-				for (let i = 0; i < tempyList.length; i++) {
-					svg_t
-						.append('rect')
-						.attr('class', 'MyRect4')
-						.attr('x', padding1.left)
-						.attr('y', tempyList[i][0]['y_axis'] - d3_rectWidth / 2)
-						.attr('width', d3_width + padding1.right)
-						.attr('height', d3_rectWidth)
-						.attr('opacity', 0.7)
-						.attr('fill', i % 2 == 0 ? '#EEE' : 'none')
-						.on('click', function(d) {
-							var event = d3.event;
-							event.stopPropagation();
-						});
-				}
+				
 
 				// let tempList = sortArr(arr, 'x_axis');
 				// for (let i = 0; i < tempList.length; i++) {
@@ -1532,7 +1569,7 @@ export class ExpressVennComponent implements OnInit {
 					return d['y_axis'];
 				})
 				.attr('r', function(d, i) {
-					return d['r'] + 0.15;
+					return d['r'] + 0.2;
 				})
 				.style('fill', function(d) {
 					return d.color;
