@@ -11,6 +11,7 @@ import {PromptService} from './../../super/service/promptService'
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
+declare const d4: any;
 
 @Component({
 	selector: 'app-venn-page',
@@ -66,6 +67,7 @@ export class ExpressVennComponent implements OnInit {
 	defaultDefaultChecked: boolean;
 	defaultCheckStatusInParams: boolean;
 	defaultEmitBaseThead: boolean;
+	defaultShowFilterStatus: boolean = false;
 
 	extendEntity: object;
 	extendUrl: string;
@@ -123,6 +125,7 @@ export class ExpressVennComponent implements OnInit {
 	tableHeight = 0;
 	first = true;
 
+	legendIndex: number = 0;
 	color = '#fff'; // 默认颜色
 	show = false; // 是否显示颜色选择器
 	venn: any; // 韦恩图对象实例
@@ -296,8 +299,8 @@ export class ExpressVennComponent implements OnInit {
     chartBackStatus(){
         if(!this.first){
             // 比较组  引用无需考=>虑图选中/阈值
-            // this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
-            this.defaultEntity['compareGroup'] = this.selectConfirmData;
+            // this.transformTable._setParamsNoRequest('sample',this.selectConfirmData);
+            this.defaultEntity['sample'] = this.selectConfirmData;
             this.defaultEntity['searchList'] = [];
 			this.defaultEntity['rootSearchContentList'] = [];
 			this.defaultEntity['low'] = this.targetValue;
@@ -305,7 +308,7 @@ export class ExpressVennComponent implements OnInit {
                 this.first = true;
             },30)
         }else{
-			this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+			this.transformTable._setParamsNoRequest('sample',this.selectConfirmData);
 			this.transformTable._setParamsNoRequest('low',this.targetValue);
             this.transformTable._getData();
         }
@@ -394,19 +397,30 @@ export class ExpressVennComponent implements OnInit {
     }
 
 	drawVenn(data) {
-		let d_length=data['total'].length;
+		// let d_length=data['total'].length;
+		// if (d_length > 5) {
+		// 	this.venn_or_upsetR = true;
+		// 	this.tableSwitchChart.isShowTable=false;
+		// 	this.showUpSetR(data);
+		// } else if(d_length<=5&&d_length>=2){
+		// 	this.venn_or_upsetR = false;
+		// 	this.tableSwitchChart.isShowTable=false;
+		// 	this.showVenn(data);
+		// }else{
+		// 	this.venn_or_upsetR = false;
+		// 	this.tableSwitchChart.isShowTable=true;
+		// 	//this.showVenn(data);
+		// }
+		let d_length = data['total'].length;
 		if (d_length > 5) {
 			this.venn_or_upsetR = true;
-			this.tableSwitchChart.isShowTable=false;
 			this.showUpSetR(data);
-		} else if(d_length<=5&&d_length>=2){
+		} else if (d_length <= 5 && d_length >= 2) {
 			this.venn_or_upsetR = false;
-			this.tableSwitchChart.isShowTable=false;
 			this.showVenn(data);
-		}else{
+		} else {
 			this.venn_or_upsetR = false;
-			this.tableSwitchChart.isShowTable=true;
-			//this.showVenn(data);
+			this.showCircle(data);
 		}
 	}
 
@@ -470,7 +484,8 @@ export class ExpressVennComponent implements OnInit {
 
         this.panelShow = false;
         this.upSelect.length = 0;
-        this.leftSelect.length = 0 ;
+		this.leftSelect.length = 0 ;
+		this.defaultShowFilterStatus = false;
 		this.tableSwitchChart.reGetData();
 
 		// if (this.first) {
@@ -489,7 +504,8 @@ export class ExpressVennComponent implements OnInit {
 		// this.updateVenn();
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
-        // this.first?this.transformTable._getData():this.first = true;
+		// this.first?this.transformTable._getData():this.first = true;
+		this.defaultShowFilterStatus = false;
         this.chartBackStatus()
         this.updateVenn();
 	}
@@ -533,6 +549,7 @@ export class ExpressVennComponent implements OnInit {
 		// } else {
 		// 	this.first = true;
 		// }
+		this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chartBackStatus()
 	}
 
@@ -545,8 +562,8 @@ export class ExpressVennComponent implements OnInit {
 		if (tempData instanceof Array) {
 			this.upSelect.push(...tempData);
 		} else {
-			this.upSelect.push(tempData['bar_name']);
-			this.leftSelect.push(tempData['total_name']);
+			this.upSelect.push(...tempData['bar_name']);
+			this.leftSelect.push(...tempData['total_name']);
 		}
 
 		// if (this.first) {
@@ -554,6 +571,7 @@ export class ExpressVennComponent implements OnInit {
 		// } else {
 		// 	this.first = true;
 		// }
+		this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chartBackStatus()
 	}
 
@@ -574,11 +592,12 @@ export class ExpressVennComponent implements OnInit {
 		this.upSelect.length = 0;
         this.leftSelect.length = 0;
 
-		// this.transformTable._setParamsNoRequest('compareGroup',this.selectConfirmData);
+		// this.transformTable._setParamsNoRequest('sample',this.selectConfirmData);
         // this.first ? this.transformTable._getData() : (this.first = true);
         // 更新当前回来的表头为基础头
         this.chartBackStatus();
-        this.updateVenn();
+		this.updateVenn();
+		this.defaultShowFilterStatus = false;
 	}
 
 	redrawChart(width, height?) {
@@ -589,8 +608,65 @@ export class ExpressVennComponent implements OnInit {
     handlerRefresh(){
         // 清空选择的数据
         this.upSelect.length = 0;
-        this.leftSelect.length = 0;
+		this.leftSelect.length = 0;
+		this.defaultShowFilterStatus = false;
         this.chartBackStatus();
+	}
+
+	// 画拼图
+	showCircle(data) {
+		let _self = this;
+		let params: object = {
+			chart: {
+				title: '',
+				dblclick: function(event) {
+					var name = prompt('请输入需要修改的标题', '');
+					if (name) {
+						this.setChartTitle(name);
+						this.updateTitle();
+					}
+				},
+				width: 480,
+				height: 300,
+				onselect: (d) => {
+					this.singleMultiSelect = { bar_name: '', total_name: '', venn_name: '' };
+					this.doubleMultiSelect = { bar_name: [], total_name: [] };
+
+					if (d.length) {
+						this.singleMultiSelect['venn_name'] = d[0]['data']['name'];
+						this.upSelect.push(this.singleMultiSelect['venn_name']);
+					} else {
+						this.upSelect.length = 0;
+					}
+
+					this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
+					this.chartBackStatus();
+				},
+				padding: 0.02,
+				outerRadius: 120,
+				startAngle: 0,
+				endAngle: 360,
+				showLabel: true,
+				enableChartSelect: true,
+				selectedModule: _self.isMultiSelect ? 'multiple' : 'single',
+				custom: [ 'name', 'value' ],
+				el: '#chartId22122',
+				type: 'pie',
+				data: data['rows']
+			},
+			legend: {
+				show: true,
+				position: 'right',
+				click: (d, index) => {
+					this.color = d3.select(d).attr('fill');
+					this.show = true;
+					this.legendIndex = index;
+				}
+			},
+			tooltip: (d) => '<span>name：' + d.data.name + '</span><br><span>value：' + d.data.value + '</span>'
+		};
+
+		this.chart = new d4().init(params);
 	}
 
 	//显示venn图
@@ -611,7 +687,7 @@ export class ExpressVennComponent implements OnInit {
 		this.venn = new Venn({ id: 'chartId22122' })
 			.config({
 				data: tempR,
-				compareGroup: _selfV.tableEntity['compareGroup'],
+				compareGroup: _selfV.tableEntity['sample'],
 				isMultipleSelect: _selfV.isMultiSelect
 			})
 			.drawVenn()
@@ -650,7 +726,8 @@ export class ExpressVennComponent implements OnInit {
 					_selfV.singleMultiSelect['total_name'] = '';
 					_selfV.singleMultiSelect['venn_name'] = '';
                 }
-                _selfV.upSelect.length = 0;
+				_selfV.upSelect.length = 0;
+				_selfV.defaultShowFilterStatus = !!_selfV.leftSelect.length || !!_selfV.upSelect.length;
                 // _selfV.first?_selfV.transformTable._getData():_selfV.first = true;
                 _selfV.chartBackStatus();
             })
@@ -746,30 +823,17 @@ export class ExpressVennComponent implements OnInit {
 		let total_value = [];
 		let total_name_max = [];
 		for (let i = 0; i < List.total.length; i++) {
-			total_name_max.push(getBLen(List.total[i].name));
+			//total_name_max.push(getBLen(List.total[i].name));
 			total_name.push(List.total[i].name);
 			total_value.push(List.total[i].value);
 		}
 
-		let max_name = Math.max.apply(null, total_name_max);
-		let target_name = '';
-		for (let i = 0; i < total_name_max.length; i++) {
-			if (max_name == total_name_max[i]) {
-				target_name = total_name[i];
-				break;
-			}
+		let left_name_length = getNameLength(total_name);
+		if (left_name_length > 140) {
+			left_name_length = 140;
 		}
 
-		let oSvg = d3.select('#chartId22122').append('svg');
-		let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
-		let left_name_length = mText.nodes()[0].getBBox().width;
-		//let left_name_length = document.querySelector(".mText").getBBox().width;
-		if (left_name_length > 100) {
-			left_name_length = 100;
-		}
-		oSvg.remove();
 		let kong_name_right = 10;
-		//console.log(left_name_length)
 
 		//上侧数据
 		let bar_name = [];
@@ -804,12 +868,24 @@ export class ExpressVennComponent implements OnInit {
 		let svg_height = 300 + d3_height + padding1.top + padding1.bottom + padding2.top + padding2.bottom; //计算最外层svg高度
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
 
-		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on('click', function(d) {
-            // _self.updateVenn();
-            // _self.leftSelect.length = 0;
-            // _self.upSelect.length = 0;
-            // _self.chartBackStatus();
-        },false);
+		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on(
+			'click',
+			function(d) {
+				if(_self.leftSelect.length != 0 || _self.upSelect.length != 0){
+					_self.updateVenn();
+					_self.leftSelect.length = 0;
+					_self.upSelect.length = 0;
+					_self.defaultShowFilterStatus = false;
+					_self.chartBackStatus();
+				}
+				// _self.updateVenn();
+				// _self.leftSelect.length = 0;
+				// _self.upSelect.length = 0;
+				// _self.defaultShowFilterStatus = false;
+				// _self.chartBackStatus();
+			},
+			false
+		);
 
 		drawSvg();
 		drawSvg2();
@@ -818,13 +894,15 @@ export class ExpressVennComponent implements OnInit {
 
 		function drawSvg() {
 			let width1 = d3_width + padding1.left + padding1.right;
-			let height1 = 300;
+			let height1 = 240;
 
 			let svg1 = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', '320')
-				.attr('y', '0')
+				//.attr('x', '320')
+				//.attr('y', '0')
+				.attr('x', '280')
+				.attr('y', '60')
 				.attr('width', width1)
 				.attr('height', height1)
 				.attr('class', 'svg1');
@@ -838,22 +916,30 @@ export class ExpressVennComponent implements OnInit {
 			let xAxis1 = d3.axisBottom(xScale1);
 			let yAxis1 = d3.axisLeft(yScale1).ticks(5);
 
+			let tempSelectColor = '';
+
 			let rects1 = svg1
 				.selectAll('MyRect1')
 				.data(bar_value)
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
-					let tipText = `Group: ${bar_name[i]}<br>Number:  ${d}`;
+					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
+					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
+					let tipText = `Group: ${bar_name[i]}<br> Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
-				.on('mouseout', () => {
+				.on('mouseout', function(d, i) {
+					if (d3.select(this).select('.MyRect').attr('fill') == '#3D4871') {
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
+					}
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
-                    var event = d3.event;
-                    event.stopPropagation();
+					var event = d3.event;
+					event.stopPropagation();
 					if (!_self.isMultiSelect) {
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -867,15 +953,23 @@ export class ExpressVennComponent implements OnInit {
 							_self.singleMultiSelect['total_name'] = '';
 							_self.doSingleData();
 						}
-					} else { //多选
+					} else {
+						//多选
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
-							_self.doubleMultiSelect['bar_name'] = selectName2(_self.doubleMultiSelect['bar_name'],bar_name[i]);
+							_self.doubleMultiSelect['bar_name'] = selectName2(
+								_self.doubleMultiSelect['bar_name'],
+								bar_name[i]
+							);
 						} else if (d3.select(this).select('.MyRect').attr('fill') == 'steelblue') {
 							//d3.select('.svg1').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', '#333');
-							_self.doubleMultiSelect['bar_name'] = selectName2(_self.doubleMultiSelect['bar_name'],bar_name[i]);;
+							_self.doubleMultiSelect['bar_name'] = selectName2(
+								_self.doubleMultiSelect['bar_name'],
+								bar_name[i]
+							);
 						}
 					}
 				});
@@ -925,7 +1019,7 @@ export class ExpressVennComponent implements OnInit {
 		// 	return sList;
 		// }
 
-		function selectName2(sList,d) {
+		function selectName2(sList, d) {
 			if (sList.length == 0) {
 				sList.push(d);
 				sName[d] = true;
@@ -946,7 +1040,8 @@ export class ExpressVennComponent implements OnInit {
 		}
 
 		function drawSvg2() {
-			let width2 = 320 - left_name_length - kong_name_right;
+			//let width2 = 320 - left_name_length - kong_name_right;
+			let width2 = 320 - left_name_length - kong_name_right - 40;
 			let height2 = d3_height + padding2.top + padding2.bottom;
 
 			let svg2 = d3
@@ -967,22 +1062,31 @@ export class ExpressVennComponent implements OnInit {
 			let xAxis2 = d3.axisBottom(xScale2).ticks(4);
 			let yAxis2 = d3.axisRight(yScale2);
 
+			let tempSelectColor = '';
+
 			let rects2 = svg2
 				.selectAll('MyRect2')
 				.data(total_value)
 				.enter()
 				.append('g')
 				.on('mouseover', function(d, i) {
-					let tipText = `Group: ${total_name[i]}<br>Number:  ${d}`;
+					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
+					//console.log(tempSelectColor);
+					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
+					let tipText = `Group: ${total_name[i]}<br> Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
-				.on('mouseout', () => {
+				.on('mouseout', function(d, i) {
+					if (d3.select(this).select('.MyRect').attr('fill') == '#3D4871') {
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
+					}
 					_self.globalService.hidePopOver();
 				})
 				.on('click', function(d, i) {
-                    var event = d3.event;
-                    event.stopPropagation();
+					var event = d3.event;
+					event.stopPropagation();
 					if (!_self.isMultiSelect) {
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							d3.selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
@@ -996,15 +1100,23 @@ export class ExpressVennComponent implements OnInit {
 							_self.singleMultiSelect['bar_name'] = '';
 							_self.doSingleData();
 						}
-					} else { //多选
+					} else {
+						//多选
+						d3.select(this).select('.MyRect').attr('fill', tempSelectColor);
 						if (d3.select(this).select('.MyRect').attr('fill') == '#333') {
 							//d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', 'steelblue');
-							_self.doubleMultiSelect['total_name'] = selectName2(_self.doubleMultiSelect['total_name'],total_name[i]);
+							_self.doubleMultiSelect['total_name'] = selectName2(
+								_self.doubleMultiSelect['total_name'],
+								total_name[i]
+							);
 						} else if (d3.select(this).select('.MyRect').attr('fill') == 'steelblue') {
 							//d3.select('.svg2').selectAll('.MyRect').attr('fill', '#333');
 							d3.select(this).select('.MyRect').attr('fill', '#333');
-							_self.doubleMultiSelect['total_name'] = selectName2(_self.doubleMultiSelect['total_name'],total_name[i]);
+							_self.doubleMultiSelect['total_name'] = selectName2(
+								_self.doubleMultiSelect['total_name'],
+								total_name[i]
+							);
 						}
 					}
 				});
@@ -1050,7 +1162,8 @@ export class ExpressVennComponent implements OnInit {
 			let svgk = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', 320 - left_name_length - kong_name_right + padding1.left)
+				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left)
+				.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 40)
 				.attr('y', '300')
 				.attr('width', widthk)
 				.attr('height', heightk)
@@ -1060,6 +1173,7 @@ export class ExpressVennComponent implements OnInit {
 
 			let yAxisk = d3.axisLeft(yScalek);
 
+			let tempSelectColor = '';
 			let textsk = svgk
 				.selectAll('text')
 				.data(total_name)
@@ -1076,9 +1190,20 @@ export class ExpressVennComponent implements OnInit {
 				.text(function(d, i) {
 					return d;
 				})
+				.on('mouseover', function(d, i) {
+					if (d3.select(this).style('fill') != 'red') {
+						tempSelectColor = d3.select(this).style('fill');
+						d3.select(this).style('fill', '#475FB1');
+					}
+				})
+				.on('mouseout', function(d, i) {
+					if (d3.select(this).style('fill') != 'red') {
+						d3.select(this).style('fill', tempSelectColor);
+					}
+				})
 				.on('click', function(d, i) {
-                    var event = d3.event;
-                    event.stopPropagation();
+					var event = d3.event;
+					event.stopPropagation();
 					sortName(d, d3.select(this));
 				});
 			svgk
@@ -1119,7 +1244,8 @@ export class ExpressVennComponent implements OnInit {
 			let svg3 = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', '320')
+				//.attr('x', '320')
+				.attr('x', '280')
 				.attr('y', '300')
 				.attr('width', width3)
 				.attr('height', height3);
@@ -1162,7 +1288,7 @@ export class ExpressVennComponent implements OnInit {
 
 		//造点 这时候包含点的颜色 添加圆 基本圆
 		function makeBaseCircle(arr, svg_t) {
-			if(arr.length>0){
+			if (arr.length > 0) {
 				svg_t
 					.selectAll('.MyCircle')
 					.data(arr)
@@ -1180,6 +1306,10 @@ export class ExpressVennComponent implements OnInit {
 					})
 					.style('fill', function(d) {
 						return d.color;
+					})
+					.on('click', function(d) {
+						var event = d3.event;
+						event.stopPropagation();
 					});
 
 				let tempyList = sortArr(arr, 'y_axis');
@@ -1193,31 +1323,35 @@ export class ExpressVennComponent implements OnInit {
 						.attr('width', d3_width + padding1.right)
 						.attr('height', d3_rectWidth)
 						.attr('opacity', 0.7)
-						.attr('fill', i % 2 == 0 ? '#EEE' : 'none');
-				}
-
-				let tempList = sortArr(arr, 'x_axis');
-				for (let i = 0; i < tempList.length; i++) {
-					svg_t
-						.append('rect')
-						.attr('class', 'MyRect3')
-						.attr('x', tempList[i][0]['x_axis'] - d3_rectWidth / 2)
-						.attr('y', function(d, i) {
-							return 0;
-						})
-						.attr('width', d3_rectWidth)
-						.attr('height', function(d, i) {
-							return d3_height;
-						})
-						.attr('opacity', 0)
-						.attr('fill', '#87CEFA')
-						.on('mouseover', function(d, i) {
-							d3.select(this).attr('opacity', 0.5);
-						})
-						.on('mouseout', function(d) {
-							d3.select(this).attr('opacity', 0);
+						.attr('fill', i % 2 == 0 ? '#EEE' : 'none')
+						.on('click', function(d) {
+							var event = d3.event;
+							event.stopPropagation();
 						});
 				}
+
+				// let tempList = sortArr(arr, 'x_axis');
+				// for (let i = 0; i < tempList.length; i++) {
+				// 	svg_t
+				// 		.append('rect')
+				// 		.attr('class', 'MyRect3')
+				// 		.attr('x', tempList[i][0]['x_axis'] - d3_rectWidth / 2)
+				// 		.attr('y', function(d, i) {
+				// 			return 0;
+				// 		})
+				// 		.attr('width', d3_rectWidth)
+				// 		.attr('height', function(d, i) {
+				// 			return d3_height;
+				// 		})
+				// 		.attr('opacity', 0)
+				// 		.attr('fill', '#87CEFA')
+				// 		.on('mouseover', function(d, i) {
+				// 			d3.select(this).attr('opacity', 0.5);
+				// 		})
+				// 		.on('mouseout', function(d) {
+				// 			d3.select(this).attr('opacity', 0);
+				// 		});
+				// }
 			}
 		}
 
@@ -1268,6 +1402,10 @@ export class ExpressVennComponent implements OnInit {
 				})
 				.style('fill', function(d) {
 					return d.color;
+				})
+				.on('click', function(d) {
+					var event = d3.event;
+					event.stopPropagation();
 				});
 		}
 
@@ -1394,10 +1532,14 @@ export class ExpressVennComponent implements OnInit {
 					return d['y_axis'];
 				})
 				.attr('r', function(d, i) {
-					return d['r'];
+					return d['r'] + 0.15;
 				})
 				.style('fill', function(d) {
 					return d.color;
+				})
+				.on('click', function(d) {
+					var event = d3.event;
+					event.stopPropagation();
 				});
 		}
 
@@ -1407,6 +1549,35 @@ export class ExpressVennComponent implements OnInit {
 				str += '';
 			}
 			return str.replace(/[^\x00-\xff]/g, '01').length;
+		}
+
+		function getNameLength(total_name) {
+			//console.log(total_name)
+			let oSvg = d3.select('#tableSwitchChart').append('svg');
+			let mText = oSvg
+				.selectAll('MyAlltext')
+				.data(total_name)
+				.enter()
+				.append('text')
+				.text(function(d, i) {
+					return d;
+				})
+				.attr('class', 'aText');
+
+			let max_length = [];
+
+			mText.nodes().forEach((d) => {
+				max_length.push(d.getBBox().width);
+			});
+			//console.log(max_length)
+
+			max_length.sort(function(a, b) {
+				return b - a;
+			});
+
+			oSvg.remove();
+
+			return max_length[0];
 		}
 	}
 }
