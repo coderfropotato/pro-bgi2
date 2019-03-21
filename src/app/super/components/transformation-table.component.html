@@ -27,6 +27,7 @@
             [showFilterStatus]="defaultShowFilterStatus"
             (saveGeneListSuccess)="handleDefaultSaveGeneListSuccess($event)"
             (syncRelative)="handleDefaultSyncRelative($event)"
+            (totalChange)="handleTotalChange($event)"
         ></app-geneTable>
     </div>
     <div *ngIf="!isFirst" id="extend-gene-table">
@@ -50,6 +51,7 @@
             [showFilterStatus]="extendShowFilterStatus"
             (saveGeneListSuccess)="handleExtendSaveGeneListSuccess($event)"
             (syncRelative)="handleExtendSyncRelative($event)"
+            (totalChange)="handleTotalChange($event)"
         ></app-geneTable>
     </div>
 </div>
