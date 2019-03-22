@@ -51,7 +51,7 @@ export class GeneFusionComponent implements OnInit {
 		private message: MessageService,
 		private ajaxService: AjaxService,
 		private globalService: GlobalService,
-		private storeService: StoreService,
+		public storeService: StoreService,
 		public pageModuleService: PageModuleService,
 		private translate: TranslateService,
 		private promptService: PromptService,

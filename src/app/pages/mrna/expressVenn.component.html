@@ -33,7 +33,7 @@
                                     ></nz-slider>
                                 </div>
                             </div> -->
-                            FPKM值：<nz-input-number class="ex_input" (ngModelChange)="inputChange($event)" [(ngModel)]="targetValue" [nzMin]="expression_Min_value" [nzMax]="expression_Max_value" [nzStep]="0.1"></nz-input-number>
+                            EXP ><nz-input-number class="ex_input" (ngModelChange)="inputChange($event)" [(ngModel)]="targetValue" [nzMin]="expression_Min_value" [nzMax]="expression_Max_value" [nzStep]="0.1"></nz-input-number>
                         </div>
                         <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
                             {{'tableButton.cancel' | translate}}  </button>
