@@ -71,8 +71,8 @@ export class GeneFusionComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.chartUrl = `http://localhost:8086/fusion`;
-		// this.chartUrl=`${config['javaPath']}/alternativeSplice/fusionGraph`;
+		// this.chartUrl = `http://localhost:8086/fusion`;
+		this.chartUrl=`${config['javaPath']}/alternativeSplice/fusionGraph`;
 		this.samples=this.storeService.getStore('sample');
 		this.sample=this.samples[0];
 		this.tableChartEntity={
