@@ -27,7 +27,7 @@
       </div>
       </div>
       <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-          <div class="switch">
+          <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']"  >
               <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
           </div> -->
           <!-- <div class="func" #func (click)="resize($event)"> -->
@@ -40,7 +40,7 @@
               <!-- 只看表 -->
               <!-- <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i> -->
           <!-- </div> -->
-          <!-- 表格转换 -->  
+          <!-- 表格转换 -->
           <!-- <app-big-table
               *ngIf="defaultEntity"
               class="no-outside-border"

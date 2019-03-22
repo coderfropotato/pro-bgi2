@@ -3,7 +3,7 @@
     <app-menu [menu]="[]" [geneSwitch]="false"> <p class="menu-slot-text">重分析id：{{tid}}</p> </app-menu>
     <div class="content reanalysis-content row">
         <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
-            
+
             <div class="left-top-layout">
                 <span class="zhankai-shouqi pointer" (click)="moduleTableChange()" [nzTitle]="(expandModuleTable ? '收起表格' : '展开表格') | translate" nz-tooltip>
                     <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleTable"></i>
@@ -67,7 +67,7 @@
                             [(computedScrollHeight)]="leftComputedScrollHeight">
                         </app-big-table-check>
                     </ng-container>
-                    
+
                     <div class="text-info">
                         <span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>
                     </div>
@@ -101,8 +101,8 @@
             </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-            <div class="switch">
-                <app-layout-switch [analysisCount]="storeService['store']['analysisCount']"  [ngModel]="switch" (ngModelChange)="switchChange($event)" > </app-layout-switch>
+            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']" >
+                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" > </app-layout-switch>
             </div>
             <div class="func" #func (click)="resize($event)">
                 <!-- 增删列 -->

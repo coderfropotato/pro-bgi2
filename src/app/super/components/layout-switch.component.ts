@@ -12,7 +12,7 @@ import { ControlValueAccessor } from '@angular/forms/src/directives';
  */
 @Component({
 	selector: 'app-layout-switch',
-    template: `<div class="layout-switch-wrap" [class.hasAnalysisCount]="analysisCount">
+    template: `<div class="layout-switch-wrap">
                     <ul class="layout-src-ele">
                         <li *ngFor="let pos of ['left','right']" (click)="handleToggleLayout(pos)" nz-tooltip  [nzTitle]="pos" nzPlacement="top"></li>
                     </ul>
@@ -36,8 +36,6 @@ export class LayoutSwitchComponent implements ControlValueAccessor {
 
     @Input() onlyTable:boolean = false;  // 可选参数 当前是否是 只有表的状态
     @Output() onlyTableChange:EventEmitter<any> = new EventEmitter();
-
-    @Input() analysisCount:number = 0; // 菜单栏是否有未读基因任务  为了改变switch的right值
 
     innerValue:any = null;
 

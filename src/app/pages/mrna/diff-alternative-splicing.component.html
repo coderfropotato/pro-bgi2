@@ -21,8 +21,8 @@
         </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-            <div class="switch">
-                <app-layout-switch [analysisCount]="storeService['store']['analysisCount']" [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
             </div>
             <div class="small_text">
                 当前表格，比较组 : <span class="small_span">{{group}}</span> 剪接类型 ：<span class="small_span">{{asType}}</span>
@@ -34,9 +34,9 @@
                 [tableId]="defaultDiffTableId"
                 [defaultChecked]="defaultDiffChecked"
                 [tableHeight]="tableHeight"
-                
+
                 [checkStatusInParams]="defaultCheckStatusInParams"
-                
+
                 [(computedScrollHeight)]="computedScrollHeight"
             ></app-geneTable>
             <!-- <app-big-table
