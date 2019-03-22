@@ -68,7 +68,7 @@
             <div class="help_text">
                 <p>本项目使用华大自主研发的过滤软件SOAPnuke进行过滤，具体步骤如下:</p> 
                 <p>1) 去除包含接头的reads(接头污染);</p> 
-                <p>2) 去除未知碱基N含量大于10%的reads；</p> 
+                <p>2) 去除未知碱基N含量大于5%的reads；</p> 
                 <p>3) 去除低质量的reads (我们定义质量值低于 10 的碱基占该reads总碱基数的比例大于 20% 的reads为低质量的reads)。</p> 
                 <p>过滤后的"Clean Reads"保存为FASTQ格式。</p> 
             </div>
@@ -105,8 +105,8 @@
 
         <!-- 参考基因组对比 -->
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 0">6.4 参考基因组对比</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.4.1 参考基因组对比</h3>
+            <h3 class="title" *ngIf="mflag == 0">6.4 参考基因组比对</h3>
+            <h3 class="title" *ngIf="mflag == 3">6.4.1 参考基因组比对</h3>
             <p class="help_text">HISAT（Hierarchical Indexing for Spliced Alignment of Transcripts）是一款用于RNA-seq reads比对参考基因组的软件。相比其他软件，HISAT具有速度快、灵敏度和准确度高、内存消耗低等优势。HISAT基于Burrows-Wheeler transform和Ferragina-Manzini（FM）的索引采用全基因组和局部基因组两种索引形式，具体比对示意图详见HISAT比对示意图。基因组比对结果统计。</p> 
             <div class="img_three"></div>
             <p class="help_text">首先，HISAT会用全局FM索引在基因组上锚定每个read中部分序列的位置；然后，用这些比对位置的局部索引去比对每个read的剩余序列以延长比对区域。软件信息：</p> 
