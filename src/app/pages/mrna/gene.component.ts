@@ -494,7 +494,6 @@ export class GeneComponent implements OnInit {
 
 	ngAfterViewInit() {
 		setTimeout(() => {
-			console.log(this.transformTable.defaultTable.count);
 			this.computedTableHeight();
 		}, 30);
 	}
@@ -510,8 +509,8 @@ export class GeneComponent implements OnInit {
 				document.querySelector('.gene')['offsetHeight'] -
 				document.querySelector('.left-top-layout')['offsetHeight'] -
 				config['layoutContentPadding'] * 2 -
-				this.func.nativeElement.offsetHeight -
-				12;
+                this.func.nativeElement.offsetHeight - document.querySelector('.top_title')['offsetHeight'];
+            // console.log(document.querySelector('.gene')['offsetHeight'],document.querySelector('.left-top-layout')['offsetHeight'],this.func.nativeElement.offsetHeight,document.querySelector('.top_title')['offsetHeight'])
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
 	}
