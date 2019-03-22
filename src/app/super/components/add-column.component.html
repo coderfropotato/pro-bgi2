@@ -6,7 +6,11 @@
         </button>
         <div class="tag-wrap" *ngIf="show">
             <ng-container *ngFor="let s of selected;index as i;">
-                <nz-tag class="tag" *ngFor="let d of s;" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d['name']}}</nz-tag>
+                <span class="top-selected" *ngFor="let d of s;">
+                    <span>{{d['name']}}</span>
+                    <i class="anticon anticon-close-circle" (click)="closeTag(d)"></i>
+                </span>
+                <!-- <nz-tag class="tag" *ngFor="let d of s;" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d['name']}}</nz-tag> -->
             </ng-container>
         </div>
     </div>
@@ -34,8 +38,7 @@
                             </ng-container>
                         </p>
                         <ng-container *ngIf="it['children'].length">
-                            <button class="head-item" nz-button nzSize="small" nzType="default" [ngClass]="{'btnActive':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</button>
-                            <!-- <span class="head-item" [ngClass]="{'active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</span> -->
+                            <button class="head-item"  [ngClass]="{'custom-active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</button>
                         </ng-container>
                     </ng-container>
                 </div>
