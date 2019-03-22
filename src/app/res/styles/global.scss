@@ -598,9 +598,12 @@ button {
     }
     & .switch {
         position: fixed;
-        right: 254px; // 265
+        right: 226px;
         top: 46px;
         // margin-right: -18px;
+        &.hasAnalysisCount{
+            right: 254px;
+        }
     }
     &.gene-list-content {
         .switch {
