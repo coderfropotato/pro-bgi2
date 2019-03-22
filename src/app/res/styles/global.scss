@@ -564,7 +564,7 @@ button {
 		display: flex;
 		transition: 0.2s all ease;
 		&.unexpand {
-			flex: 3;
+			flex: 2.5;
 		}
 		&.expand {
 			flex: 7;
@@ -602,7 +602,7 @@ button {
 	.right-layout {
 		height: 100%;
 		overflow: hidden;
-		flex: 3;
+		flex: 2.5;
 		transition: 0.2s all ease;
 		@include module-style;
 		&.expand {
@@ -612,7 +612,7 @@ button {
 			}
 		}
 		&.unexpand {
-			flex: 3;
+			flex: 2.5;
 			.pagination-pagesize {
 				display: none;
 			}
@@ -623,17 +623,18 @@ button {
 	}
 	& .switch {
 		position: fixed;
-		right: 226px;
+		// right: 226px;
+		right: 156px;
 		top: 46px;
-		// margin-right: -18px;
-		&.hasAnalysisCount {
-			right: 254px;
-		}
+		// &.hasAnalysisCount {
+		// 	right: 254px;
+		// }
 	}
 	&.gene-list-content {
 		.switch {
 			position: fixed;
-			right: 148px;
+			right: 24px;
+			// right: 148px;
 			top: 46px;
 		}
 	}
@@ -738,7 +739,8 @@ button {
 .top {
 	height: 40px;
 	min-width: $min-width;
-	background-color: $them_color;
+    // background-color: $them_color;
+    background: #394266;
 }
 
 // menu
