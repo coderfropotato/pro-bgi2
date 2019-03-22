@@ -31,6 +31,7 @@ declare const $: any;
 })
 export class FusionSetComponent implements OnInit {
     @Output() confirm :EventEmitter<any>=new EventEmitter();
+    @Input() isDisabled:boolean;
     confirmData:object;
 
     isShowSetPanel:boolean=false;
