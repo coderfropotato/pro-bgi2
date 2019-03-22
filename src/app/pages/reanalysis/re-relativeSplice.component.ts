@@ -189,7 +189,7 @@ export class RelativeSpliceComponent implements OnInit {
     }
 
     handlerRefresh() {
-        this.chartBackStatus();
+        //this.chartBackStatus();
     }
 
     chartBackStatus() {

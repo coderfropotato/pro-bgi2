@@ -2070,11 +2070,13 @@ button {
 .bc{
     margin-bottom: 0 !important;
     border-bottom: 1px solid #EEEEEE;
+    box-shadow: none !important;
 }
 
 .top_title{
-    line-height: 30px;
-    height: 30px;
+    line-height: 20px;
+    height: 20px;
+    margin-top: 10px;
     text-indent: 1em;
     span{
         color: blue;
