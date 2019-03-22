@@ -7,7 +7,7 @@
         <button [disabled]="isRight" (click)="handlerForward()" nz-button nzType="default" [title]="'pagination.forward' | translate">
             <i class="anticon anticon-right"></i>
         </button>
-        <div class="fLeft" *ngIf="showPageSize">
+        <div class="fLeft pagination-pagesize" *ngIf="showPageSize">
             <!-- &emsp;{{'pagination.jump' | translate}}
             <input #pageIndexInput style="width: 50px"  nz-input [(ngModel)]="inputPageIndex" (keyup)="handlerKeyUp($event)" (blur)="handlerBlur()"> {{'pagination.page' | translate}}&emsp; -->
             <!-- <span style="padding-right:12px;" *ngIf="maxLimit">(max:{{maxLimit}})</span>&emsp; -->

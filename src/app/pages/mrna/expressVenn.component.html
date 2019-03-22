@@ -58,7 +58,7 @@
                 (drawChartEmit)="drawVenn($event)"
                 [selectPanelData]="selectPanelData"
                 (selectConfirmEmit)="selectConfirm($event)"
-                [defaultSelectNum]="-1"
+                [defaultSelectNum]="3"
                 (defaultSelectList)="defaultSelectList($event)"
                 [isVennTable]="true"
                 [flex]="true"
@@ -70,8 +70,8 @@
         </div>
     </div>
     <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-        <div class="switch">
-            <app-layout-switch [analysisCount]="storeService['store']['analysisCount']"  [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+        <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
         </div>
         <div class="func" #func (click)="resize($event)">
            <!-- 增删列 -->

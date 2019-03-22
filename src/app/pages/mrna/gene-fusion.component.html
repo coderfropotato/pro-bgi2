@@ -41,10 +41,10 @@
         </div>
     </div>
     <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-        <div class="switch">
+        <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
             <app-layout-switch  [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
         </div>
-       
+
         <app-table-switch-chart
                 #fusionImg
                 [id]="'fusionImg'"

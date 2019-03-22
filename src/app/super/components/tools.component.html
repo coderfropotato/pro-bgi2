@@ -267,10 +267,10 @@
 			<nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
 				<div class="tool-params-kafun">
 					<div class="tool-params-kafun-top">
-						<div nz-row class="my-nz-row">
+						<!-- <div nz-row class="my-nz-row">
 							<div nz-col nzSpan="8" class="my-nz-row">Data</div>
 							<div nz-col nzSpan="16" class="my-nz-row">{{kaFunDataName}}</div>
-						</div>
+						</div> -->
 						<div nz-row class="my-nz-row">
 							<div nz-col nzSpan="8" class="my-nz-row">Statistics</div>
 							<div nz-col nzSpan="16" class="my-nz-row">
@@ -284,14 +284,15 @@
 						<div class="tool-params-tab" *ngIf="kaFunGroupData.length">
 							<button (click)="kaFunClick(kaFun)" [class.active]="kaFun['checked']" *ngFor="let kaFun of kaFunGroupData;index as i;"
 							 nz-button nzType="default" nzSize="middle">{{kaFun['name']}}</button>
-							<nz-alert *ngIf="kaFunGroupError || !kaFunGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+							<nz-alert *ngIf="kaFunGroupError || !kaFunGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择2个数据"></nz-alert>
 							<p *ngIf="!kaFunGroupData.length && doKaFunAjax" class="center">缺少必要数据</p>
 						</div>
+						<p *ngIf="kaFunGroupData.length == 1" class="left" style="color:red">定性分类的列不少于2个</p>
 					</div>
 				</div>
 				<div class="tool-params-button-group" *ngIf="kaFunGroupData.length">
 					<button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
-					<button nz-button nzType="primary" [disabled]="kaFunGroupError || !kaFunGroupSelect.length" (click)="kaFunConfirm('chiSquare')"
+					<button nz-button nzType="primary" [disabled]="kaFunGroupError || !kaFunGroupSelect.length || kaFunGroupData.length == 1" (click)="kaFunConfirm('chiSquare')"
 					 nzSize="middle">确定</button>
 				</div>
 			</nz-spin>

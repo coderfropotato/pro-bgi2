@@ -21,15 +21,14 @@ declare const $: any;
 	template: `
                     <div class="content row gene">
                         <div class="left-layout column gene_margin_right">
-                            <div class="left-top-layout"><!-- 上部份 -->
+                            <div class="left-top-layout bc"><!-- 上部份 -->
                                 <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" nz-tooltip>
                                     <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleTop"></i>
                                     <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleTop"></i>
                                 </span>
                                 <div [hidden]="!expandModuleTop" class="gene_top_content" (click)="expandModuleDescClick()">
                                 <div class="gene_search gene_center"><!-- 上部搜索 -->
-                                    <div nz-row class="gene_row">
-                                    <div nz-col nzSpan="22" class="gene_col">
+                                    <div class="gene_col">
                                         <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate"><!-- 搜索框 -->
                                         <input type="text" nz-input [(ngModel)]="inputValue" (ngModelChange)="inputChange()">
                                         </nz-input-group>
@@ -53,9 +52,8 @@ declare const $: any;
                                         </div>
                                         </div>
                                     </div>
-                                    <div nz-col nzSpan="2" class="gene_col"><!-- 搜索按钮 -->
+                                    <div class="gene_col2"><!-- 搜索按钮 -->
                                         <button nz-button nzType="primary" (click)="goSearch()" [disabled]="searchButtonFlag">搜索</button>
-                                    </div>
                                     </div>
                                 </div>
                                 <!-- <div class="gene_fast gene_center"> --><!-- 快捷操作 -->
@@ -82,7 +80,7 @@ declare const $: any;
                             </div>
                             <div class="mselect2 gene_center">
                             <!-- <div>搜索范围:</div> -->
-                            <div>
+                            <div class="mselect2_place">
                                 <span>搜索范围:</span>&nbsp;
                                 <button nz-button nzType="default" *ngFor="let item of selectPanelList" [nzSize]="'small'" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.key}}</button>
                             </div>
@@ -409,6 +407,8 @@ export class GeneComponent implements OnInit {
 	selectGeneCount: number = 0;
 	computedScrollHeight: boolean = false;
 
+	geneTotal: number = 0;
+
 	constructor(
 		private message: MessageService,
 		private storeService: StoreService,
@@ -487,6 +487,11 @@ export class GeneComponent implements OnInit {
 		this.extendCheckStatusInParams = false;
 	}
 
+	myTotalChange(num){
+		//console.log(num);
+		this.geneTotal = num;
+	}
+
 	ngAfterViewInit() {
 		setTimeout(() => {
 			this.computedTableHeight();
@@ -504,8 +509,8 @@ export class GeneComponent implements OnInit {
 				document.querySelector('.gene')['offsetHeight'] -
 				document.querySelector('.left-top-layout')['offsetHeight'] -
 				config['layoutContentPadding'] * 2 -
-				this.func.nativeElement.offsetHeight -
-				12;
+                this.func.nativeElement.offsetHeight - document.querySelector('.top_title')['offsetHeight'] - 10;
+            // console.log(document.querySelector('.gene')['offsetHeight'],document.querySelector('.left-top-layout')['offsetHeight'],this.func.nativeElement.offsetHeight,document.querySelector('.top_title')['offsetHeight'])
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
 	}

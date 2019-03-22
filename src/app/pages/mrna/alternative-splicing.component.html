@@ -21,8 +21,8 @@
         </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-            <div class="switch">
-                <app-layout-switch [analysisCount]="storeService['store']['analysisCount']" [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
             </div>
             <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix"-->
             <div class="small_text">
@@ -35,10 +35,19 @@
                 [tableId]="defaultTableId"
                 [defaultChecked]="defaultSpliceChecked"
                 [tableHeight]="tableHeight"
-                
+
                 [checkStatusInParams]="defaultCheckStatusInParams"
-                
+
                 [(computedScrollHeight)]="computedScrollHeight"
             ></app-geneTable>
+            <!-- <app-big-table
+                class="no-outside-border"
+                #defaultSpliceTable
+                [tableHeight]="tableHeight"
+                [pageEntity]="defaultTableEntity"
+                [url]="defaultTableUrl"
+                [tableId]="defaultTableId"
+                [(computedScrollHeight)]="computedScrollHeight"
+            ></app-big-table> -->
         </div>
 </div>

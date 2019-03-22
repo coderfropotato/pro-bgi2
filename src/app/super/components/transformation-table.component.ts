@@ -69,6 +69,7 @@ export class TransformationTableComponent implements OnInit {
     @Output() extendSaveGeneListSuccess:EventEmitter<any> = new EventEmitter();
     @Output() defaultSaveGeneListSuccess:EventEmitter<any> = new EventEmitter();
 
+    @Output() totalChange:EventEmitter<number> = new EventEmitter();
 
     defaultUrl: string = "";
     params: object;
@@ -88,6 +89,10 @@ export class TransformationTableComponent implements OnInit {
     }
 
     ngOnInit() {}
+
+    handleTotalChange(total){
+        this.totalChange.emit(total);
+    }
 
     // emit default
     handlerDefaultEmitChange(status){
