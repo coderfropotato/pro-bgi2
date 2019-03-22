@@ -131,10 +131,10 @@ export class ClusterSetComponent implements OnInit {
         let trueData=this.defaultSetData;
 
         let xNum=trueData.xNum;
-        if (xNum <= 8) {
+        if (xNum <= 20) {
             this.width = 480;
         } else {
-            let single_width = 60;
+            let single_width = 24;
             this.width = single_width * xNum;
         }
         this.height=480;

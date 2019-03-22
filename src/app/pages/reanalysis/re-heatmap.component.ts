@@ -364,10 +364,10 @@ export class ReHeatmapComponent implements OnInit {
     //设置 默认
     apiEntityChange(data){
         let xNum=data.xNum;
-        if (xNum <= 8) {
+        if (xNum <= 20) {
             this.width = 480;
         } else {
-            let single_width = 60;
+            let single_width = 24;
             this.width = single_width * xNum;
         }
         this.height=480;
