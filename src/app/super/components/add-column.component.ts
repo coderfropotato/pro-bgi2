@@ -259,7 +259,18 @@ export class AddColumnComponent implements OnInit {
 			let idt = this.selected[index].findIndex((val, index) => {
 				return val['key'] === item['key'];
 			});
-			if (idt != -1) this.selected[index].splice(idt, 1);
+            if (idt != -1) {
+                this.selected[index].splice(idt, 1);
+            }
+
+            // 把原始数据的选中状态改变
+            // 因为每次打开增删列的时候会重新获取数据  这个时候选中的项和本来的增删列数据  没有保持引用
+            this.forTree(this.thead[index]['children'],(v)=>{
+                if(v['key'] === item['key']) {
+                    v['checked'] = false;
+                }
+
+            })
 		}
 		this.getCheckCount();
 	}
@@ -538,7 +549,7 @@ export class AddColumnComponent implements OnInit {
 		}
 		let item;
 		while (stack.length) {
-			item = stack.shift();
+            item = stack.shift();
 			callback && callback(item);
 			if (item.children && item.children.length) {
 				stack = stack.concat(item.children);
