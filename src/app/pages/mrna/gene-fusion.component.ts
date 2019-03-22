@@ -45,6 +45,8 @@ export class GeneFusionComponent implements OnInit {
 	score:number=1;
 	linkIds:any[]=[];
 
+	isDisabled:boolean;
+
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -69,8 +71,8 @@ export class GeneFusionComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.chartUrl = `http://localhost:8086/fusion`;
-		// this.chartUrl=`${config['javaPath']}/alternativeSplice/fusionGraph`;
+		// this.chartUrl = `http://localhost:8086/fusion`;
+		this.chartUrl=`${config['javaPath']}/alternativeSplice/fusionGraph`;
 		this.samples=this.storeService.getStore('sample');
 		this.sample=this.samples[0];
 		this.tableChartEntity={
@@ -149,6 +151,13 @@ export class GeneFusionComponent implements OnInit {
 		d3.selectAll("#fusionCircos svg").remove();
 		//定义数据
 		var outerRing = data.outRing;
+		if((outerRing[0].column1 && outerRing[0].column1.length) || (outerRing[0].column2 && outerRing[0].column2.length) || (outerRing[0].column3 && outerRing[0].column3.length)){
+			this.isDisabled=false;
+		}else{
+			this.isDisabled=true;
+			this.isShowColumn=false;
+		}
+
 		var lineData = [];
 
 		if(this.linkSerach==='score'){
@@ -169,6 +178,39 @@ export class GeneFusionComponent implements OnInit {
 			lineData = data.lineData;
 		}
 
+		var line_len=lineData.length;
+
+		let pointInLineArr=[]; //在线中的点
+
+		if(line_len){
+			lineData.forEach(d=>{
+				pointInLineArr.push({
+					chr:d.fusion_up_chr,
+					name:d.fusion_up_geneid,
+					pos:d.fusion_up_genome_pos
+				})
+				pointInLineArr.push({
+					chr:d.fusion_dw_chr,
+					name:d.fusion_dw_geneid,
+					pos:d.fusion_dw_genome_pos
+				})
+			})
+			outerRing.forEach(d=>{
+				d.points=[];
+				d.pointData.forEach(m=>{
+					pointInLineArr.forEach(n=>{
+						if(m.name===n.name && m.pos===n.pos){
+							d.points.push(m);
+						}
+					})
+				})
+			})
+		}else{
+			outerRing.forEach(d=>{
+				d.points.length=0;
+			})
+		}
+		
 		var max_chrNameLength = d3.max(outerRing, function(d) {
 			return d.name.length;
 		})
@@ -251,7 +293,7 @@ export class GeneFusionComponent implements OnInit {
 			var column1_len = d.column1 && d.column1.length ? d.column1.length : 0,
 				column2_len = d.column2 && d.column2.length ? d.column2.length : 0,
 				column3_len = d.column3 && d.column3.length ? d.column3.length : 0,
-				point_len = d.pointData && d.pointData.length ? d.pointData.length : 0;
+				point_len = d.points && d.points.length ? d.points.length : 0;
 
 			var column1_w = column1_len ? outerGirthScale(d.length) / column1_len : 0,
 				column2_w = column2_len ? outerGirthScale(d.length) / column2_len : 0,
@@ -314,12 +356,12 @@ export class GeneFusionComponent implements OnInit {
 
 			if (point_len) {
 				for (var j = 0; j < point_len; j++) {
-					var point_d = d.pointData[j].name;
-					allGeneName.push(point_d);
+					var point_name = d.points[j].name;
+					allGeneName.push(point_name);
 					chartData[i].pointData.push({
-						"name": d.pointData[j].name,
-						"pos": d.pointData[j].pos,
-						"angle": startAngle * 180 / Math.PI + posScale(d.pointData[j].pos)
+						"name": d.points[j].name,
+						"pos": d.points[j].pos,
+						"angle": startAngle * 180 / Math.PI + posScale(d.points[j].pos)
 					})
 				}
 			}
@@ -341,8 +383,8 @@ export class GeneFusionComponent implements OnInit {
 		var circle_r = 2;
 		var gene_text_y = -(innerRadius4 + circle_r);
 
-		if (lineData.length) {
-			for (var i = 0; i < lineData.length; i++) {
+		if (line_len) {
+			for (var i = 0; i < line_len; i++) {
 				var upChr = lineData[i]['fusion_up_chr'];
 				var dwChr = lineData[i]['fusion_dw_chr'];
 				chartData.forEach(function(val, index) {
@@ -633,7 +675,7 @@ export class GeneFusionComponent implements OnInit {
 				});
 		}
 
-		if (lineData.length) {
+		if (line_len) {
 			//gene name
 			drawGene();
 			//line
@@ -718,14 +760,15 @@ export class GeneFusionComponent implements OnInit {
 						return "red";
 					}
 				})
-				.attr("stroke-width", function(d) {
-					if (d.fusion_dup_num == 1) {
-						return d.fusion_dup_num;
-					}
-					if (d.fusion_dup_num > 1) {
-						return 2;
-					}
-				})
+				.attr("stroke-width", 1)
+				// function(d) {
+				// 	if (d.fusion_dup_num == 1) {
+				// 		return d.fusion_dup_num;
+				// 	}
+				// 	if (d.fusion_dup_num > 1) {
+				// 		return 2;
+				// 	}
+				// }
 				.on("mouseover", function(d) {
 					var tipText2 = `5’端融合基因：${d.fusion_up_geneid}, ${d.fusion_up_chr}：${d.fusion_up_genome_pos},${d.fusion_up_strand}<br>
 						3’端融合基因：${d.fusion_dw_geneid},${d.fusion_dw_chr}：${d.fusion_dw_genome_pos},${d.fusion_dw_strand}<br>

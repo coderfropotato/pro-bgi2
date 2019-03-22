@@ -10,8 +10,9 @@
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
         <div class="left-bottom-layout">
+            <!-- 设置 -->
             <ng-template #setTemplate>
-                <app-fusionSet (confirm)="setConfirm($event)"></app-fusionSet>
+                <app-fusionSet [isDisabled]='isDisabled' (confirm)="setConfirm($event)"></app-fusionSet>
             </ng-template>
 
              <!-- 下拉选择 -->
