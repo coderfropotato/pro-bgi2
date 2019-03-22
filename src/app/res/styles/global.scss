@@ -2005,11 +2005,8 @@ button {
 	display: flex;
 	flex-direction: column;
 }
-.fusionRow {
-	height: 40px;
-	line-height: 40px;
-}
-// 基因总表
+
+//基因总表
 .gene {
 	position: relative;
 	width: 100%;
@@ -2022,21 +2019,25 @@ button {
 	border-radius: 8px;
 }
 .gene_center {
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
-.bc {
-	margin-bottom: 0 !important;
-	border-bottom: 1px solid #eeeeee;
+
+.bc{
+    margin-bottom: 0 !important;
+    border-bottom: 1px solid #EEEEEE;
+    box-shadow: none !important;
 }
-.top_title {
-	line-height: 30px;
-	height: 30px;
-	text-indent: 1em;
-	span {
-		color: blue;
-	}
+
+.top_title{
+    line-height: 20px;
+    height: 20px;
+    margin-top: 10px;
+    text-indent: 1em;
+    span{
+        color: blue;
+    }
 }
 .gene_top_content {
 	width: 100%;

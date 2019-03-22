@@ -509,7 +509,7 @@ export class GeneComponent implements OnInit {
 				document.querySelector('.gene')['offsetHeight'] -
 				document.querySelector('.left-top-layout')['offsetHeight'] -
 				config['layoutContentPadding'] * 2 -
-                this.func.nativeElement.offsetHeight - document.querySelector('.top_title')['offsetHeight'];
+                this.func.nativeElement.offsetHeight - document.querySelector('.top_title')['offsetHeight'] - 10;
             // console.log(document.querySelector('.gene')['offsetHeight'],document.querySelector('.left-top-layout')['offsetHeight'],this.func.nativeElement.offsetHeight,document.querySelector('.top_title')['offsetHeight'])
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}

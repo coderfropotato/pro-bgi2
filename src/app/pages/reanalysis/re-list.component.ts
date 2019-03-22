@@ -166,6 +166,10 @@ export class ReListComponent implements OnInit {
 				'nzContent': data['explains'],
 				'nzClosable':false
 				});
+			if (!data['isCheck']) {
+				data['isCheck'] = true;
+				this.checkAnalysis(data['_id']);
+			}
 			return;
 		}
 		let type = '';

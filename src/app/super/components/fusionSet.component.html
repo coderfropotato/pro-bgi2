@@ -2,7 +2,7 @@
     <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
     <div class="setPanel" nz-menu>
         <div class="fusionRow">是否显示基因名<nz-switch [(ngModel)]="isShowGene"></nz-switch></div>
-        <div class="fusionRow">是否显示内三圈<nz-switch [(ngModel)]="isShowColumn"></nz-switch></div>
+        <div class="fusionRow">是否显示内圈<nz-switch [(ngModel)]="isShowColumn" [nzDisabled]="isDisabled"></nz-switch></div>
         <div class="fusionRow">
             <nz-row>
                 <nz-col nzSpan="7">筛选link</nz-col>
