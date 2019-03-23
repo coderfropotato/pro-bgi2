@@ -604,7 +604,7 @@ export class GeneListVennComponent implements OnInit {
 
     saveGeneListSuccess(argv){
         this.selectPanelEntity['tag'].length = 0;
-        this.handleTagSelectChange();
+        this.getAllGeneList();
     }
 
 	//选择面板 确定筛选的数据
