@@ -309,7 +309,8 @@ export class InformationComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				return '<span>类型：' + d.key + '</span><br><span>转录本数目：' + d.data[d.key] + '</span><br><span>转录本数目：'+ d.data["item"]+'</span>';
+				console.log(d)
+				return '<span>name：' + d.key + '</span><br><span>Number：' + d.data[d.key] + '</span><br><span>Sequence Size：'+ d.data["rna_len_item"]+'</span>';
 			}
 		};
 
