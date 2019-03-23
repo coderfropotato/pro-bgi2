@@ -129,7 +129,7 @@ export class LrnaComponent implements OnInit {
 					  this.updateTitle();
 					}
 				},
-				width: 600,
+				width: 700,
 				height: 400,
 				padding: 0,
 				outerRadius: 120,

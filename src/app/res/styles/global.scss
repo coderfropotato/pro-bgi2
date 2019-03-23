@@ -562,7 +562,7 @@ button {
 		flex: 7;
 		margin-right: 16px;
 		display: flex;
-		transition: 0.2s all ease;
+		transition:0.2s all linear;
 		&.unexpand {
 			flex: 2.5;
 		}
@@ -603,7 +603,7 @@ button {
 		height: 100%;
 		overflow: hidden;
 		flex: 2.5;
-		transition: 0.2s all ease;
+		transition: 0.2s all linear;
 		@include module-style;
 		&.expand {
 			flex: 7;
@@ -853,8 +853,12 @@ button {
 				// }
 			}
 			.gene-img {
-				background-image: url('../img/list/基因总表.png');
-			}
+                background-image: url('../img/list/基因总表.png');
+            }
+            .diff-expression-number-img {
+                background-image: url('../img/list/项目概况.png');
+            }
+            
 			.diff-expression-img {
 				background-image: url('../img/list/差异表达.png');
 			}

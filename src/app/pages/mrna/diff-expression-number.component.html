@@ -1,0 +1,171 @@
+<!-- venn -->
+<div class="content row venn">
+    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+        <div class="left-top-layout">
+            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                {{'diff_venn_number.diff_venn_title' | translate}}
+            </span>
+            <p [hidden]="!expandModuleDesc">{{'diff_venn_number.diff_venn_content' | translate}}</p>
+            <ng-content select=".gene-switch-module"></ng-content>
+        </div>
+        <div class="left-bottom-layout">
+            <ng-template #setTemplate>
+                    <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow"
+                    (nzVisibleChange)="panelChange()">
+                    <i class="iconfont icon-shezhi" nz-tooltip [nzTitle]="'tableButton.setting' | translate" nz-dropdown></i>
+                    <div class="ex_container">
+                        <div class="con_PessionDis" *ngFor="let item of thresholdName">
+                            <div class="con_PessionDis_title">
+                                {{item}}
+                            </div>
+                            <div class="con_PessionDis_in">
+                                <div class="con_PessionDis_row">
+                                    <div class="con_PessionDis_left">
+                                        log2FC
+                                    </div>
+                                    <div class="con_PessionDis_right">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange($event,item)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="tempThreshold[item].log2FC" />
+                                    </div>
+                                    <span *ngIf="isShowSpan_PossionDis && item=='PossionDis'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                    <span *ngIf="isShowSpan_NOIseq && item=='NOIseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                    <span *ngIf="isShowSpan_DEGseq && item=='DEGseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                    <span *ngIf="isShowSpan_DESeq2 && item=='DESeq2'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                    <span *ngIf="isShowSpan_EBSeq && item=='EBSeq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                </div>
+                                <div class="con_PessionDis_row">
+                                    <div class="con_PessionDis_left" *ngIf="item=='PossionDis'">
+                                        FDR
+                                    </div>
+                                    <div class="con_PessionDis_left" *ngIf="item=='NOIseq'">
+                                        probability
+                                    </div>
+                                    <div class="con_PessionDis_left" *ngIf="item=='DEGseq'">
+                                        Qvalue
+                                    </div>
+                                    <div class="con_PessionDis_left" *ngIf="item=='DESeq2'">
+                                        Qvalue
+                                    </div>
+                                    <div class="con_PessionDis_left" *ngIf="item=='EBSeq'">
+                                        PPEE
+                                    </div>
+                                    <div class="con_PessionDis_right" *ngIf="item=='PossionDis'">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="tempThreshold[item].FDR" />
+                                    </div>
+                                    <div class="con_PessionDis_right" *ngIf="item=='NOIseq'">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="tempThreshold[item].probability" />
+                                    </div>
+                                    <div class="con_PessionDis_right" *ngIf="item=='DEGseq'">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="tempThreshold[item].Qvalue" />
+                                    </div>
+                                    <div class="con_PessionDis_right" *ngIf="item=='DESeq2'">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="tempThreshold[item].Qvalue" />
+                                    </div>
+                                    <div class="con_PessionDis_right" *ngIf="item=='EBSeq'">
+                                        <input style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input
+                                            placeholder="" nzSize="small" [ngModel]="tempThreshold[item].PPEE" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
+                            {{'tableButton.cancel' | translate}} </button>
+                        <button class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">
+                           {{'tableButton.confirm' | translate}} </button>
+                    </div>
+                </nz-dropdown>
+            </ng-template>
+            <!-- [selectTemplate]="selectTemplate" -->
+
+            <!-- 
+                [isHasMultiSelect]="true"
+                [(isMultiSelect)]="isMultiSelect"
+                (isMultiSelectChange)="multiSelectChange()"
+                (multipleConfirmEmit)="multipleConfirm()"
+
+                [isVennTable]="true"
+                [selectPanelData]="selectPanelData"
+                (selectConfirmEmit)="selectConfirm($event)"
+                [defaultSelectNum]="3"
+                (defaultSelectList)="defaultSelectList($event)" 
+            
+            -->
+            <ng-template #otherLeftTemplate>
+                <nz-select style="width: 120px;" class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select compareGroup" [(ngModel)]="compareGroup" (ngModelChange)="handleCompareGroupChange()">
+                    <nz-option *ngFor="let com of compareNewGroupList;index as i;" [nzLabel]="com" [nzValue]="com"></nz-option>
+                </nz-select>
+            </ng-template>
+
+            <!-- level下拉选择 -->
+            <ng-template #selectTemplate>
+                <nz-select style="width: 120px;" class="ml12" nzSize="small" nzShowSearch  nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                    <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
+                </nz-select>
+            </ng-template>
+
+            <app-table-switch-chart
+                #diffVennNumberChart
+                [id]="'diffVennNumberChart'"
+
+                [tableUrl]="tableUrl"
+                [apiEntity]="tableEntity"
+                [selectTemplate]="selectTemplate" 
+                [otherLeftTemplate]="otherLeftTemplate"
+                [setTemplate]="setTemplate"
+                (drawChartEmit)="drawVenn($event)"
+                
+                [isShowAccuracy]="false"
+                [flex]="true"
+                [chartId]="'diffVennNumberId'"
+                [chartName]="'差异基因数量统计'"
+                (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart>
+            <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
+            <app-color-picker [(color)]="colorL" (colorChange)="colorLChange($event)" [(show)]="isShowColorPanelL"></app-color-picker>
+        </div>
+    </div>
+    <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+        <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+            <app-layout-switch  [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+        </div>
+        <div class="func" #func (click)="resize($event)">
+            <!-- 增删列 -->
+            <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType" ></app-add-column>
+            <!-- 关系  [relative]="transformTable['relative']"-->
+            <app-gene-relative class="ml-12" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)" ></app-gene-relative>
+            <!-- 返回 -->
+            <button class="ml12"  *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
+        </div>
+        <!-- 表格转换  [defaultShowFilterStatus]="defaultShowFilterStatus"-->
+        <app-table-transformation
+            #transformTable
+            class="no-outside-border"
+            [isFirst]="first"
+            [tableHeight]="tableHeight"
+            [defaultTableEntity]="defaultEntity"
+            [defaultTableUrl]="defaultUrl"
+            [defaultTableId]="defaultTableId"
+            [defaultTableDefaultChecked]="defaultDefaultChecked"
+            [(defaultEmitBaseThead)]="defaultEmitBaseThead"
+            (defaultBaseTheadChange)="baseTheadChange($event)"
+            [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
+            [extendTableEntity]="extendEntity"
+            [extendTableUrl]="extendUrl"
+            [extendTableId]="extendTableId"
+            [extendTableDefaultChecked]="extendDefaultChecked"
+            [(extendEmitBaseThead)]="extendEmitBaseThead"
+            (extendBaseTheadChange)="baseTheadChange($event)"
+            [extendTableCheckStatusInParams]="extendCheckStatusInParams"
+            [(applyOnceSearchParams)]="applyOnceSearchParams"
+            (selectGeneCountChange)="handleSelectGeneCountChange($event)"
+            [(computedScrollHeight)]="computedScrollHeight"
+        ></app-table-transformation>
+    </div>
+</div>
