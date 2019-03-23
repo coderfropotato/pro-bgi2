@@ -373,12 +373,12 @@ export class reRelationHeatmapComponent implements OnInit {
     apiEntityChange(data){
         let xNum=data.xNum;
         if (xNum <= 20) {
-            this.width = 480;
+            this.width = 400;
         } else {
-            let single_width = 24;
+            let single_width = 20;
             this.width = single_width * xNum;
         }
-        this.height=480;
+        this.height=400;
         this.domainRange=[data.min,data.max];
         this.yName='symbol';
         this.isCluster=true;

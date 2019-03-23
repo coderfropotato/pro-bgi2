@@ -132,12 +132,12 @@ export class ClusterSetComponent implements OnInit {
 
         let xNum=trueData.xNum;
         if (xNum <= 20) {
-            this.width = 480;
+            this.width = 400;
         } else {
-            let single_width = 24;
+            let single_width = 20;
             this.width = single_width * xNum;
         }
-        this.height=480;
+        this.height=400;
 
         this.isHorizontalCluster=true;
 
