@@ -191,7 +191,7 @@ export class KeggClassComponent implements OnInit {
 			this.defaultEntity = {
 				tid: null,
 				LCID: sessionStorage.getItem('LCID'),
-				annotation: this.annotation,
+				classificationType : this.annotation,
 				pageIndex: 1,
 				pageSize: 20,
 				mongoId: null,
@@ -222,7 +222,7 @@ export class KeggClassComponent implements OnInit {
 			this.extendEntity = {
 				tid: null,
 				LCID: sessionStorage.getItem('LCID'),
-				annotation: this.annotation,
+				classificationType : this.annotation,
 				pageIndex: 1,
 				pageSize: 20,
 				mongoId: null,
@@ -254,7 +254,7 @@ export class KeggClassComponent implements OnInit {
 			this.chartUrl = `${config['javaPath']}/classification/graph`;
 			this.chartEntity = {
 				LCID: this.storeService.getStore('LCID'),
-				annotation: this.annotation,
+				classificationType : this.annotation,
 				geneType: this.defaultGeneType,
 				species: this.storeService.getStore('genome'),
 				checkedClassifyType: this.selectedVal,
@@ -317,7 +317,7 @@ export class KeggClassComponent implements OnInit {
 					url: `${config['javaPath']}/classification/graphIsExceed`,
 					data: {
 						LCID: sessionStorage.getItem('LCID'),
-						annotation: this.annotation,
+						classificationType: this.annotation,
 						geneType: this.defaultGeneType,
 						species: this.storeService.getStore('genome'),
 						checkedClassifyType: this.selectedVal,
