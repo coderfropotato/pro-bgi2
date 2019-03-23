@@ -95,14 +95,21 @@
                         <button nz-button nzType="primary" disabled [nzSize]="small">查看</button>
                     </div>
 
-                    <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'">
-                        <!-- <div style="width: 60px;cursor: pointer;" *ngIf="item.hidden" (click)="goSwitch(item.id)">隐藏</div>
-                        <div style="width: 60px;cursor: pointer;" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</div> -->
-                        <button nz-button nzType="default" [nzSize]="small" *ngIf="item.hidden" (click)="goSwitch(item.id)" style="background: #5E5B78;color: #FFFFFF;">隐藏</button>
-                        <button nz-button nzType="default" [nzSize]="small" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</button>
+                    <div *ngIf="item.status=='成功'">
+                        <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'">
+                            <!-- <div style="width: 60px;cursor: pointer;" *ngIf="item.hidden" (click)="goSwitch(item.id)">隐藏</div>
+                            <div style="width: 60px;cursor: pointer;" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</div> -->
+                            <button nz-button nzType="default" [nzSize]="small" *ngIf="item.hidden" (click)="goSwitch(item.id)" style="background: #5E5B78;color: #FFFFFF;">隐藏</button>
+                            <button nz-button nzType="default" [nzSize]="small" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</button>
+                        </div>
+                        <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'">
+                            <button nz-button nzType="default" disabled [nzSize]="small">隐藏</button>
+                        </div>
                     </div>
-                    <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'">
-                        <button nz-button nzType="default" disabled [nzSize]="small">隐藏</button>
+                    <div *ngIf="item.status=='失败'">
+                        <div style="width: 60px;cursor: pointer;">
+                        
+                        </div>
                     </div>
                     
                 </div>
