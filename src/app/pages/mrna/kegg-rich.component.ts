@@ -188,7 +188,7 @@ export class KeggRichComponent implements OnInit {
             this.chartUrl=`${config['javaPath']}/enrichment/graph`;
             this.chartEntity = {
                 LCID: this.storeService.getStore('LCID'),
-                annotation:this.annotation,
+                enrichmentType:this.annotation,
                 geneType: this.defaultGeneType,
                 species: this.storeService.getStore('genome'),
                 compareGroup:this.selectedVal,
@@ -207,7 +207,7 @@ export class KeggRichComponent implements OnInit {
             this.defaultUrl = `${config['javaPath']}/enrichment/table`;
             this.defaultEntity = {
                 LCID: sessionStorage.getItem('LCID'),
-                annotation: this.annotation,
+                enrichmentType: this.annotation,
                 pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,
@@ -236,7 +236,7 @@ export class KeggRichComponent implements OnInit {
             this.extendUrl = `${config['javaPath']}/enrichment/table`;
             this.extendEntity = {
                 LCID: sessionStorage.getItem('LCID'),
-                annotation: this.annotation,
+                enrichmentType: this.annotation,
                 pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,

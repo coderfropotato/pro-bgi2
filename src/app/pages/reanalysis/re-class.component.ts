@@ -164,7 +164,7 @@ export class ReClassComponent implements OnInit {
 			this.defaultEntity = {
 				LCID: sessionStorage.getItem('LCID'),
 				tid: this.tid,
-				annotation: this.annotation,
+				classificationType : this.annotation,
 				pageIndex: 1,
 				pageSize: 20,
 				mongoId: null,
@@ -194,7 +194,7 @@ export class ReClassComponent implements OnInit {
 			this.extendEntity = {
 				LCID: sessionStorage.getItem('LCID'),
 				tid: this.tid,
-				annotation: this.annotation,
+				classificationType : this.annotation,
 				pageIndex: 1,
 				pageSize: 20,
 				mongoId: null,
@@ -225,7 +225,7 @@ export class ReClassComponent implements OnInit {
 			this.chartUrl = `${config['javaPath']}/classification/graph`;
 			this.chartEntity = {
 				LCID: this.storeService.getStore('LCID'),
-				annotation: this.annotation,
+				classificationType : this.annotation,
 				geneType: this.geneType,
 				species: this.storeService.getStore('genome'),
 				checkedClassifyType: this.selectedVal,
@@ -257,7 +257,7 @@ export class ReClassComponent implements OnInit {
 					url: `${config['javaPath']}/classification/graphIsExceed`,
 					data: {
 						LCID: sessionStorage.getItem('LCID'),
-						annotation: this.annotation,
+						classificationType : this.annotation ,
 						geneType: this.geneType,
 						species: this.storeService.getStore('genome'),
 						checkedClassifyType: this.selectedVal,

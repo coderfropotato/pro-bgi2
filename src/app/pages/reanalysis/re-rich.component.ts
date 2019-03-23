@@ -155,7 +155,7 @@ export class ReRichComponent implements OnInit {
             this.chartUrl=`${config['javaPath']}/enrichment/graph`;
             this.chartEntity = {
                 LCID: this.storeService.getStore('LCID'),
-                annotation:this.annotation,
+                enrichmentType:this.annotation,
                 geneType: this.geneType,
                 species: this.storeService.getStore('genome'),
                 checkedClassifyType:this.selectedVal,
@@ -176,7 +176,7 @@ export class ReRichComponent implements OnInit {
             this.defaultEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid: this.tid,
-                annotation: this.annotation,
+                enrichmentType: this.annotation,
                 pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,
@@ -206,7 +206,7 @@ export class ReRichComponent implements OnInit {
             this.extendEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid: this.tid,
-                annotation: this.annotation,
+                enrichmentType: this.annotation,
                 pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,
