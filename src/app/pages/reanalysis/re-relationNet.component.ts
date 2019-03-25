@@ -153,6 +153,7 @@ export class reRelationNetComponent implements OnInit {
         this.setDataUrl=`${config['javaPath']}/linkedNetwork/getQuantity`;
         this.setDataEntity={
             "geneType": this.geneType,
+            "genome":sessionStorage.getItem('genome'),
             "LCID": this.storeService.getStore('LCID')
         }
 

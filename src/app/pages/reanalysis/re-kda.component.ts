@@ -146,6 +146,7 @@ export class ReKdaComponent implements OnInit {
         this.setDataUrl=`${config['javaPath']}/kda/getQuantity`;
         this.setDataEntity={
             "geneType": this.geneType,
+            "genome":sessionStorage.getItem('genome'),
             "LCID": this.storeService.getStore('LCID')
         }
 
