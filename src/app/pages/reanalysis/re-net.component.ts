@@ -150,6 +150,7 @@ export class ReNetComponent implements OnInit {
         this.setDataUrl=`${config['javaPath']}/net/getQuantity`;
         this.setDataEntity={
             "geneType": this.geneType,
+            "genome":sessionStorage.getItem('genome'),
             "LCID": this.storeService.getStore('LCID')
         }
 
