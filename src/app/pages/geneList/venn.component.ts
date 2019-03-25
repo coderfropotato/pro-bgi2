@@ -966,7 +966,7 @@ export class GeneListVennComponent implements OnInit {
 
 		let left_name_length = getNameLength(total_name);
 		if (left_name_length > 140) {
-			left_name_length = 140;
+			left_name_length = 80;
 		}
 
 		let kong_name_right = 10;
@@ -982,7 +982,7 @@ export class GeneListVennComponent implements OnInit {
 		let d3_xScale; //矩阵圆点的x轴
 		let d3_yScale; //矩阵圆点的y轴
 		let d3_rectWidth = 16; //柱子的宽度
-		let d3_rectKong = 6; //柱子间的间宽
+		let d3_rectKong = 2; //柱子间的间宽
 		let d3_xlength = bar_value.length; //矩阵圆点的x轴有多少柱子
 		let d3_ylength = total_value.length; //矩阵圆点的y轴有多少柱子
 
@@ -1004,13 +1004,25 @@ export class GeneListVennComponent implements OnInit {
 		let svg_height = 300 + d3_height + padding1.top + padding1.bottom + padding2.top + padding2.bottom; //计算最外层svg高度
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
 
+
+		let g_map_top = 30;
+		let g_map_left = 30;
+		let g_map_height = 180;
+
 		let svg = d3.select('#svg').attr('width', svg_width).attr('height', svg_height).on(
 			'click',
 			function(d) {
+				if(_self.leftSelect.length != 0 || _self.upSelect.length != 0){
+					_self.updateVenn();
+					_self.leftSelect.length = 0;
+					_self.upSelect.length = 0;
+					_self.defaultShowFilterStatus = false;
+					_self.chartBackStatus();
+				}
 				// _self.updateVenn();
 				// _self.leftSelect.length = 0;
-                // _self.upSelect.length = 0;
-                // _self.defaultShowFilterStatus = !!_self.leftSelect.length || !!_self.upSelect.length;
+				// _self.upSelect.length = 0;
+				// _self.defaultShowFilterStatus = false;
 				// _self.chartBackStatus();
 			},
 			false
@@ -1023,13 +1035,16 @@ export class GeneListVennComponent implements OnInit {
 
 		function drawSvg() {
 			let width1 = d3_width + padding1.left + padding1.right;
-			let height1 = 300;
+			//let height1 = 240;
+			let height1 = 150; //减小宽高
 
 			let svg1 = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', '320')
-				.attr('y', '0')
+				//.attr('x', '320')
+				//.attr('y', '0')
+				.attr('x', '190')//减小宽高 220 - g_map_left
+				.attr('y', g_map_top)
 				.attr('width', width1)
 				.attr('height', height1)
 				.attr('class', 'svg1');
@@ -1053,7 +1068,7 @@ export class GeneListVennComponent implements OnInit {
 				.on('mouseover', function(d, i) {
 					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
 					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
-					let tipText = `Group: ${bar_name[i]}<br>Number:  ${d}`;
+					let tipText = `Group: ${bar_name[i]}<br> Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d, i) {
@@ -1132,6 +1147,20 @@ export class GeneListVennComponent implements OnInit {
 				.call(yAxis1);
 		}
 
+		// function selectName(sList,d) {
+		// 	if (sList.length == 0) {
+		// 		sList.push(d);
+		// 	} else {
+		// 		if(sList[0]==d){
+		// 			sList.length=0;
+		// 		}else{
+		// 			sList.length=0;
+		// 			sList.push(d)
+		// 		}
+		// 	}
+		// 	return sList;
+		// }
+
 		function selectName2(sList, d) {
 			if (sList.length == 0) {
 				sList.push(d);
@@ -1153,14 +1182,16 @@ export class GeneListVennComponent implements OnInit {
 		}
 
 		function drawSvg2() {
-			let width2 = 320 - left_name_length - kong_name_right;
+			//let width2 = 320 - left_name_length - kong_name_right;
+			let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高
 			let height2 = d3_height + padding2.top + padding2.bottom;
 
 			let svg2 = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', padding1.left)
-				.attr('y', '300')
+				.attr('x', padding1.left - g_map_left)
+				//.attr('y', '300')
+				.attr('y', g_map_height)//减小宽高
 				.attr('width', width2)
 				.attr('height', height2)
 				.attr('class', 'svg2');
@@ -1171,7 +1202,7 @@ export class GeneListVennComponent implements OnInit {
 
 			d3_yScale = yScale2;
 
-			let xAxis2 = d3.axisBottom(xScale2).ticks(4);
+			let xAxis2 = d3.axisBottom(xScale2).ticks(3);
 			let yAxis2 = d3.axisRight(yScale2);
 
 			let tempSelectColor = '';
@@ -1183,8 +1214,9 @@ export class GeneListVennComponent implements OnInit {
 				.append('g')
 				.on('mouseover', function(d, i) {
 					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
+					//console.log(tempSelectColor);
 					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
-					let tipText = `Group: ${total_name[i]}<br>Number:  ${d}`;
+					let tipText = `Group: ${total_name[i]}<br> Number:  ${d}`;
 					_self.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d, i) {
@@ -1273,8 +1305,11 @@ export class GeneListVennComponent implements OnInit {
 			let svgk = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', 320 - left_name_length - kong_name_right + padding1.left)
-				.attr('y', '300')
+				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left)
+				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 40)
+				.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 100 - 30)//减小宽高   g_map_left
+				//.attr('y', '300')
+				.attr('y', g_map_height)//减小宽高
 				.attr('width', widthk)
 				.attr('height', heightk)
 				.attr('class', 'svgk');
@@ -1295,7 +1330,7 @@ export class GeneListVennComponent implements OnInit {
 					return 0;
 				})
 				.attr('dy', function(d, i) {
-					return yScalek(total_name[i]) + d3_rectKong * 2;
+					return yScalek(total_name[i]) + d3_rectKong * 6;
 				})
 				.text(function(d, i) {
 					return d;
@@ -1354,8 +1389,11 @@ export class GeneListVennComponent implements OnInit {
 			let svg3 = d3
 				.select('#svg')
 				.append('svg')
-				.attr('x', '320')
-				.attr('y', '300')
+				//.attr('x', '320')
+				//.attr('x', '280')
+				.attr('x', '190')//减小宽高 g_map_left
+				//.attr('y', '300')
+				.attr('y', g_map_height)//减小宽高
 				.attr('width', width3)
 				.attr('height', height3);
 
@@ -1374,9 +1412,9 @@ export class GeneListVennComponent implements OnInit {
 					temp = {
 						x_axis: d3_xScale(bar_name[i]) + d3_rectWidth / 2 + padding1.left,
 						y_axis: d3_yScale(total_name[j]) + d3_rectWidth / 2,
-						r: 6,
+						r: 5,
 						flag: threeC(total_name[j], bar_name[i]) ? true : false,
-						color: threeC(total_name[j], bar_name[i]) ? '#222' : '#888',
+						color: threeC(total_name[j], bar_name[i]) ? '#222' : '#C8C8C8',
 						nameX: threeC(total_name[j], bar_name[i]) ? bar_name[i] : '',
 						nameY: total_name[j],
 						sort: sortC(bar_name[i])
@@ -1398,6 +1436,26 @@ export class GeneListVennComponent implements OnInit {
 		//造点 这时候包含点的颜色 添加圆 基本圆
 		function makeBaseCircle(arr, svg_t) {
 			if (arr.length > 0) {
+
+				let tempyList = sortArr(arr, 'y_axis');
+
+				for (let i = 0; i < tempyList.length; i++) {
+					svg_t
+						.append('rect')
+						.attr('class', 'MyRect4')
+						.attr('x', padding1.left)
+						.attr('y', tempyList[i][0]['y_axis'] - d3_rectWidth / 2 - 1.5)
+						.attr('width', d3_width + padding1.right)
+						.attr('height', d3_rectWidth + 3)
+						.attr('opacity', 0.7)
+						.attr('fill', i % 2 == 0 ? '#DDD' : 'none')
+						.on('click', function(d) {
+							var event = d3.event;
+							event.stopPropagation();
+						});
+				}
+
+
 				svg_t
 					.selectAll('.MyCircle')
 					.data(arr)
@@ -1421,23 +1479,30 @@ export class GeneListVennComponent implements OnInit {
 						event.stopPropagation();
 					});
 
-				let tempyList = sortArr(arr, 'y_axis');
+				
 
-				for (let i = 0; i < tempyList.length; i++) {
-					svg_t
-						.append('rect')
-						.attr('class', 'MyRect4')
-						.attr('x', padding1.left)
-						.attr('y', tempyList[i][0]['y_axis'] - d3_rectWidth / 2)
-						.attr('width', d3_width + padding1.right)
-						.attr('height', d3_rectWidth)
-						.attr('opacity', 0.7)
-						.attr('fill', i % 2 == 0 ? '#EEE' : 'none')
-						.on('click', function(d) {
-							var event = d3.event;
-							event.stopPropagation();
-						});
-				}
+				// let tempList = sortArr(arr, 'x_axis');
+				// for (let i = 0; i < tempList.length; i++) {
+				// 	svg_t
+				// 		.append('rect')
+				// 		.attr('class', 'MyRect3')
+				// 		.attr('x', tempList[i][0]['x_axis'] - d3_rectWidth / 2)
+				// 		.attr('y', function(d, i) {
+				// 			return 0;
+				// 		})
+				// 		.attr('width', d3_rectWidth)
+				// 		.attr('height', function(d, i) {
+				// 			return d3_height;
+				// 		})
+				// 		.attr('opacity', 0)
+				// 		.attr('fill', '#87CEFA')
+				// 		.on('mouseover', function(d, i) {
+				// 			d3.select(this).attr('opacity', 0.5);
+				// 		})
+				// 		.on('mouseout', function(d) {
+				// 			d3.select(this).attr('opacity', 0);
+				// 		});
+				// }
 			}
 		}
 
@@ -1512,9 +1577,12 @@ export class GeneListVennComponent implements OnInit {
 			if (arr.length) {
 				_tmp = arr[0][str];
 			}
+			// console.log( arr );
 			// 将相同类别的对象添加到统一个数组
 			for (let i in arr) {
+				//console.log( _tmp);
 				if (arr[i][str] === _tmp) {
+					//console.log(_tmp)
 					_t.push(arr[i]);
 				} else {
 					_tmp = arr[i][str];
@@ -1583,6 +1651,7 @@ export class GeneListVennComponent implements OnInit {
 		}
 
 		function drawLine2(targetGroup, svg_s, color) {
+			//console.log(targetGroup)
 			if (targetGroup.length > 1) {
 				let line = d3
 					.line()
@@ -1614,7 +1683,7 @@ export class GeneListVennComponent implements OnInit {
 					return d['y_axis'];
 				})
 				.attr('r', function(d, i) {
-					return d['r'] + 0.15;
+					return d['r'] + 0.2;
 				})
 				.style('fill', function(d) {
 					return d.color;
@@ -1634,6 +1703,7 @@ export class GeneListVennComponent implements OnInit {
 		}
 
 		function getNameLength(total_name) {
+			//console.log(total_name)
 			let oSvg = d3.select('#geneListTableSwitchChart_chart').append('svg');
 			let mText = oSvg
 				.selectAll('MyAlltext')
@@ -1650,6 +1720,7 @@ export class GeneListVennComponent implements OnInit {
 			mText.nodes().forEach((d) => {
 				max_length.push(d.getBBox().width);
 			});
+			//console.log(max_length)
 
 			max_length.sort(function(a, b) {
 				return b - a;

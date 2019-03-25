@@ -170,7 +170,7 @@ export class ReadsComparisonComponent implements OnInit {
       axis: {
         x: {
           title: "Relative Position in Genes(5‘->3’)(200 windows)",
-          rotate: 60,
+          // rotate: 60,
           ticks:5,
           dblclick: function(event) {
             var name = prompt("请输入需要修改的标题", "");
@@ -290,10 +290,28 @@ export class ReadsComparisonComponent implements OnInit {
   drawSaturationReads(data){
     // console.log(data);
 
-    let rows = data.rows;
+    // let rows = data.rows;
+    // rows.sort((a,b)=>{
+    //   return a["readnum_100k"]-b["readnum_100k"]
+    // })
+
+    var rows = data.rows;
     rows.sort((a,b)=>{
-      return a["readnum_100k"]-b["readnum_100k"]
+      return a["readnum_100k"] - b["readnum_100k"]
     })
+
+    var min = rows[0]['readnum_100k'];
+    var max = rows[rows.length-1]['readnum_100k'];
+
+    let scale = d3.scaleLinear().domain([min,max]).range([0,1])
+
+    let temps = [];
+    rows.forEach((d) => {
+      temps.push({
+        readnum_100k:scale(d.readnum_100k),
+        gene_idt_ratio:d.gene_idt_ratio
+      })
+    });
 
     let that = this;
     let config: object={
@@ -311,12 +329,12 @@ export class ReadsComparisonComponent implements OnInit {
         el: "#saturationData",
         custom: ["readnum_100k", "gene_idt_ratio"],
         type: "line",
-        data: rows
+        data: temps
       },
       axis: {
         x: {
           title: "Amount of reads (x100K)",
-          rotate: 60,
+          // rotate: 60,
           dblclick: function(event) {
             var name = prompt("请输入需要修改的标题", "");
             if (name) {
