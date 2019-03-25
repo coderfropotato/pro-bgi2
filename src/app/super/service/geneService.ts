@@ -16,7 +16,8 @@ export class GeneService {
     geneOptions:object = {
         andOr:"",
         content:"",
-        checkedAddThead:[]
+        checkedAddThead:[],
+        num:0
     };
 
     set(key,value){

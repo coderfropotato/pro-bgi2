@@ -22,10 +22,12 @@ declare const $: any;
                     <div class="content row gene">
                         <div class="left-layout column gene_margin_right">
                             <div class="left-top-layout bc"><!-- 上部份 -->
-                                <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" nz-tooltip>
+								<!--
+								<span (click)="moduleDescChange()" class="zhankai-shouqi pointer" nz-tooltip>
                                     <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleTop"></i>
                                     <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleTop"></i>
-                                </span>
+								</span>
+								-->
                                 <div [hidden]="!expandModuleTop" class="gene_top_content" (click)="expandModuleDescClick()">
                                 <div class="gene_search gene_center"><!-- 上部搜索 -->
                                     <div class="gene_col">
@@ -355,6 +357,7 @@ export class GenePage {
 						this.selectPanelList = data['data'];
 						this.selectedList = data['data'];
 						this.geneService.set('checkedAddThead', this.selectPanelList);
+						this.geneService.set('num', this.selectPanelList.length);
 					}
 				},
 				(error) => console.log(error),
@@ -408,6 +411,8 @@ export class GeneComponent implements OnInit {
 	computedScrollHeight: boolean = false;
 
 	geneTotal: number = 0;
+
+	custom: string = "全部";
 
 	constructor(
 		private message: MessageService,
@@ -614,6 +619,14 @@ export class GeneComponent implements OnInit {
     }
 
     search(){
+		
+		if(this.geneService['geneOptions']['num'] != this.geneService['geneOptions']['checkedAddThead'].length){
+			let tempName = [];
+			this.geneService['geneOptions']['checkedAddThead'].forEach((d) => {
+				tempName.push(d.key)
+			});
+			this.custom = tempName.toString();
+		}
         this.applyOnceSearchParams = true;
         this.defaultApplyOnceSearchParams = true;
         this.transformTable._initCheckStatus();

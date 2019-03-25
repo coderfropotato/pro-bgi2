@@ -537,3 +537,19 @@ ol {
 	max-height: 600px;
 	overflow: auto;
 }
+
+
+/* 基因总表 */
+
+.gene .ant-input-group > .ant-input:last-child, .ant-input-group-addon:last-child {
+	border-radius: 0;
+	border-right: 0;
+}
+
+.gene .ant-input-group > .ant-input:first-child .ant-select .ant-select-selection, .ant-input-group-addon:first-child .ant-select .ant-select-selection {
+    border-radius: 0;
+}
+
+.gene .ant-input-group-addon{
+	border-radius: 0;
+}
