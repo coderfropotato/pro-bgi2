@@ -234,6 +234,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 		this.asType = data[0].key.split('_')[1].toUpperCase();
 		this.group = data[0].data['compare_group'];
 
+		this.diffDefaultTable._clearFilterWithoutRequest();
 		this.diffDefaultTable._setParamsOfEntityWithoutRequest('group', this.group);
 		this.diffDefaultTable._setParamsOfEntityWithoutRequest('asType', this.asType);
 		this.diffDefaultTable._setParamsOfEntityWithoutRequest('pageIndex', 1);

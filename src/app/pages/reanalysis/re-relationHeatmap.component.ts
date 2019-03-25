@@ -419,7 +419,18 @@ export class reRelationHeatmapComponent implements OnInit {
         this.verticalClass.length = 0;
         // 确定会重画图 清空选中的gene
         this.selectGeneList.length = 0;
-        this.verticalClass.push(...data['verticalList']);
+        let allClass = data['horizontalList'].concat(data['verticalList']);
+        for(let i=0;i<allClass.length;i++){
+            let key = allClass[i]['key'];
+            var index = allClass.findIndex(val=>{
+                return val['key'] === key;
+            });
+            if(index !=i && index!=-1){
+                allClass.splice(index,1);
+                i--;
+            }
+        }
+        this.verticalClass.push(...allClass);
     }
 
     //画图

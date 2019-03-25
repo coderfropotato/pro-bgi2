@@ -19,11 +19,11 @@ declare const $: any;
         .addInfo {
             padding: 10px;
         }
-       
+
         .infoTitle{
             margin-left: 32px;
         }
-        
+
         .infoCol.rationColInfo{
             width: 100px;
             overflow: hidden;
@@ -60,7 +60,7 @@ export class MultiOmicsSetComponent implements OnInit {
 
     // 添加、修改分类数据
     rationClassifyList: object[] = [];
-    
+
     //添加面板数据
     rations: object[] = [];
     curRationClassify: string;  //当前定量类型
@@ -84,7 +84,7 @@ export class MultiOmicsSetComponent implements OnInit {
     isShowRelationPanel:boolean=false;
 
     //修改面板数据
-    rationList: object[] = []; 
+    rationList: object[] = [];
     curUpdateClassify: string;  //当前定量类型
     curUpdateInfo: object; //当前修改项
 
@@ -123,7 +123,7 @@ export class MultiOmicsSetComponent implements OnInit {
             //     d['limit']=true;
             // }
         })
-        
+
         this.relationList[0]['isSelected']=true;
         this.curRelation = {...this.relationList[0]};
 
@@ -136,6 +136,7 @@ export class MultiOmicsSetComponent implements OnInit {
                 url: `${config['javaPath']}/multiOmics/quantity`,
                 data: {
                     "LCID": this.storeService.getStore('LCID'),
+                    "genome":sessionStorage.getItem('genome'),
                     "geneType": this.geneType  // gene 或 transcript
                 }
             })
@@ -178,7 +179,7 @@ export class MultiOmicsSetComponent implements OnInit {
 
     //点击“添加定量信息”
     addInfo() {
-        
+
         if(this.infoList.length>=5){
             this.notification.warning('添加定量信息','最多允许有5个定量信息');
             return;
@@ -195,7 +196,7 @@ export class MultiOmicsSetComponent implements OnInit {
                 if(d['key'] === 'false'){
                     d['isDisabled'] = false;
                 }else{
-                    d['isDisabled'] = true; 
+                    d['isDisabled'] = true;
                 }
             }else{
                 d['isDisabled'] = false;
@@ -235,9 +236,9 @@ export class MultiOmicsSetComponent implements OnInit {
             //改变当前关联关系对应obj
             // if (this.curRelation['key'] === d['key']){
             //     this.curRelation = {...d};
-            // } 
+            // }
             d['isSelected']=false;
-                    
+
        })
 
        item['isSelected']=true;
@@ -326,12 +327,12 @@ export class MultiOmicsSetComponent implements OnInit {
 
                 }
             })
-        
-        }  
+
+        }
 
         this.isShowAddPanel = false;
         this.isShowSetPanel=true;
-            
+
     }
 
     //添加面板， 取消
@@ -339,7 +340,7 @@ export class MultiOmicsSetComponent implements OnInit {
         this.isShowAddPanel = false;
     }
 
-    
+
     //点击“修改”
     updateInfo(info) {
         this.isShowAddPanel = false;
