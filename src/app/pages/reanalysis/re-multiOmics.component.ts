@@ -475,10 +475,23 @@ export class ReMultiOmicsComponent implements OnInit {
 			//判断极值
 			if (height >= 400) {
 				height = 400;
-			}
-			if(height<=150){
-				height=150;
+			}else{
+				let temps=0;
+				height=400;
 				width=height;
+				rectSpace = (width - allRectWidth) / spaceNum;
+
+				column.forEach((d) => {
+					let rectsLength = d.data.length;
+					eachTypeWidth = rectsLength * d.w + (rectsLength + 1) * rectSpace;
+					temps += eachTypeWidth;
+					d.transX = temps - eachTypeWidth;
+
+					d.space = rectSpace;
+					d.data.forEach((m) => {
+						m.space = rectSpace;
+					});
+				});
 			}
 
 			eachChartHeight = height;
