@@ -56,6 +56,8 @@ export class AlternativeSplicingComponent implements OnInit {
   asType: string;
   sample: string;
 
+  selectGeneCount: number = 0;
+
   constructor(
     private message: MessageService,
     private globalService: GlobalService,
@@ -243,4 +245,7 @@ export class AlternativeSplicingComponent implements OnInit {
       this.chart.redraw();
   }
 
+  // handleSelectGeneCountChange(selectGeneCount) {
+	// 	this.selectGeneCount = selectGeneCount;
+	// }
 }
