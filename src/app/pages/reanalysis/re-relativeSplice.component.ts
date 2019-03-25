@@ -528,7 +528,7 @@ export class RelativeSpliceComponent implements OnInit {
             .title("Type")
             .titleWidth(temp_width)
             //.on("cellover", function(d){alert("clicked " + d);})
-            .on("cellclick", function(d){alert("clicked " + d);});
+            .on("cellclick", function(d){});
 
             r_legend.select(".legendSymbol").call(legendPath);
         }

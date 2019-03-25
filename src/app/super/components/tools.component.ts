@@ -459,7 +459,7 @@ export class ToolsComponent implements OnInit {
 							this.customSelect = [this.customData[0]];
 						}
 
-						this.standList = res['standardization'];
+						this.standList = res['standardization'] || [];
 						this.stand = this.standList[0];
 					}
 				},

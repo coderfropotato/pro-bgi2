@@ -175,7 +175,7 @@ export class ExpressVennComponent implements OnInit {
 		this.isMultiSelect = false;
 		this.first = true;
 		this.selectedData = [];
-		this.chartUrl = `${config['javaPath']}/Venn/expGeneGraph`;
+		this.tableUrl = `${config['javaPath']}/Venn/expGeneGraph`;
 
 		//this.targetValue = 3;
 
