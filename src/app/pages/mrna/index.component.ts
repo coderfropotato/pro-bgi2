@@ -56,8 +56,9 @@ export class IndexComponent implements OnInit {
 			try {
 				await this.getLcInfo();
 				// await this.getAddThead();
-				//await this.getMenuList();
-				this.getUnReadAnalysisCount();
+                //await this.getMenuList();
+
+				// this.getUnReadAnalysisCount();
 				this.ready = true;
 				setTimeout(() => {
 					this.ngxSpinnerService.hide();
