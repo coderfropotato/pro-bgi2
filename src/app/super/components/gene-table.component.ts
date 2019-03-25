@@ -276,9 +276,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		};
 
 		// 如果是转换表把上次的mongoid 放在下一次的参数里面
-		if (this.tableType === 'transform') this.tableEntity['mongoId'] = this.mongoId;
+		if (this.tableType === 'transform' && !this.tableEntity['mongoId']) this.tableEntity['mongoId'] = this.mongoId;
 		// 如果默认表是矩阵表 需要一直把mongoId放在请求参数里
-		if (this.defaultMartix) this.tableEntity['mongoId'] = this.mongoId;
+		if (this.defaultMartix && this.mongoId) this.tableEntity['mongoId'] = this.mongoId;
 		this.ajaxService.getDeferData(ajaxConfig).subscribe(
 			(responseData: any) => {
 				// 如果需要保存基因集合id 并且 返回值有id这个key （针对转换表) 就保存下来
@@ -516,7 +516,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			this.tableEntity['transform'] = true;
 			this.tableEntity['matrix'] = true;
 			this.tableEntity['mongoId'] = this.mongoId;
-		}
+        }
+        this._clearFilterWithoutRequest();
 		// if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
 	}
 
