@@ -40,7 +40,8 @@ export class ReanalysisIndexComponent implements OnInit {
             try {
                 await this.getLcInfo();
                 // await this.getClassRichConfig();
-                this.getUnReadAnalysisCount();
+
+                // this.getUnReadAnalysisCount();
                 this.ready = true;
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
@@ -95,7 +96,7 @@ export class ReanalysisIndexComponent implements OnInit {
     getUnReadAnalysisCount(){
 		let getCount = ()=>{
 			this.ajaxService.getDeferData({
-				data: { 
+				data: {
 					LCID:sessionStorage.getItem('LCID')
 				},
 				url: `${config['javaPath']}/reAnalysis/count`
@@ -107,7 +108,7 @@ export class ReanalysisIndexComponent implements OnInit {
 		}
 
 		getCount();
-		
+
 		this.getUnReadAnalysisCountTimer = setInterval(()=>{
 			getCount();
 		},config['getAnalysisCountInterval'])

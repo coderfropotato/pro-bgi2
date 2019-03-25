@@ -34,7 +34,7 @@ export class GeneListIndexComponent implements OnInit {
         (async () => {
             try {
                 await this.getLcInfo();
-                this.getUnReadAnalysisCount();
+                // this.getUnReadAnalysisCount();
                 // await this.getAddThead();
                 this.ready = true;
                 setTimeout(() => {
