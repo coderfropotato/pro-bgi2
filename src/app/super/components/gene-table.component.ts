@@ -276,7 +276,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		};
 
 		// 如果是转换表把上次的mongoid 放在下一次的参数里面
-		if (this.tableType === 'transform' && !this.tableEntity['mongoId']) this.tableEntity['mongoId'] = this.mongoId;
+		if (this.tableType === 'transform' && this.mongoId) this.tableEntity['mongoId'] = this.mongoId;
 		// 如果默认表是矩阵表 需要一直把mongoId放在请求参数里
 		if (this.defaultMartix && this.mongoId) this.tableEntity['mongoId'] = this.mongoId;
 		this.ajaxService.getDeferData(ajaxConfig).subscribe(
