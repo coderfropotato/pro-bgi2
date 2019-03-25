@@ -229,6 +229,8 @@ export class AlternativeSplicingComponent implements OnInit {
     this.asType = data[0].key.split("_")[1].toUpperCase();
     this.sample = data[0].data["sample_name"];
 
+    //this.defaultSpliceTable._setParamsOfEntityWithoutRequest('checked', []);
+    this.defaultSpliceTable._clearFilterWithoutRequest();
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('sample', this.sample);
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('asType', this.asType);
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('pageIndex', 1);

@@ -287,7 +287,7 @@
 							<nz-alert *ngIf="kaFunGroupError || !kaFunGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择2个数据"></nz-alert>
 							<p *ngIf="!kaFunGroupData.length && doKaFunAjax" class="center">缺少必要数据</p>
 						</div>
-						<p *ngIf="kaFunGroupData.length == 1" class="left" style="color:red">定性分类的列不少于2个</p>
+						<p *ngIf="kaFunGroupData.length == 1" class="left" style="color:red">请回到表格中添加至少2个可用于定性分析的列。</p>
 					</div>
 				</div>
 				<div class="tool-params-button-group" *ngIf="kaFunGroupData.length">

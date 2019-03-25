@@ -155,6 +155,12 @@ export class IndexComponent implements OnInit {
 									category: '基因表达',
 									children: [
 										{
+											url: 'diff-expression-number',
+											geneType: 'all',
+											name: '差异基因数量',
+											isExport: true
+										},
+										{
 											url: 'diff-expression',
 											geneType: 'all',
 											name: '差异venn',

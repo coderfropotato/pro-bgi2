@@ -48,6 +48,7 @@ import { BigTableCheckComponent } from './super/components/big-table-check.compo
 import { GeneComponent,GenePage } from './pages/mrna/gene.component';
 /* 基因表达 */
 import { DiffExpressionComponent, DiffVennPage } from './pages/mrna/diff-expression.component';
+import { DiffExpressionNumberComponent, DiffVennNumberPage } from './pages/mrna/diff-expression-number.component';
 import { ClusterComponent } from './pages/mrna/cluster.component';
 import { ExpressVennComponent, ExpressVennPage } from './pages/mrna/expressVenn.component';
 import { GeneExpressionHelpComponent } from './pages/mrna/gene-expression-help.component';
@@ -190,6 +191,14 @@ const ROUTES: Routes = [
 				}
 			},
 			// 差异表达
+			{
+				path: 'diff-expression-number',
+				component: DiffVennNumberPage,
+				data: {
+					keep: true,
+					module: 'diffExpressionNumber'
+				}
+			},
 			{
 				path: 'diff-expression',
 				component: DiffVennPage,
@@ -605,6 +614,8 @@ export function createTranslateLoader(http: HttpClient) {
 		LrnaComponent,
 		BasicHelpComponent,
 
+		DiffVennNumberPage,
+		DiffExpressionNumberComponent,
 		DiffVennPage,
 		DiffExpressionComponent,
 		GeneExpressionHelpComponent,

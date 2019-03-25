@@ -176,6 +176,8 @@ export class UploadComponent implements OnInit {
 	}
 
 	goResult() {//根据id查看结果
+		console.log(this.m_index);
+		let tempNum = this.m_index;
 		let self = this;
 		self.ajaxService
 		.getDeferData(
@@ -189,13 +191,19 @@ export class UploadComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				this.modalService.success({
-					nzTitle: "上传结果",
-					nzContent: data.message
+					nzTitle: "上传成功",
+					nzContent: ""
 				});
 
+				//console.log(data)
 				self.isShowTab = true;
 				self.PercentNum = 0;
 				self.go_ResponseText = {};
+				self.m_index = tempNum;
+
+				this.fileList.length = 0;
+				this.fileList2.length = 0;
+				this.fileList3.length = 0;
 			},
 			error => {
 				console.log(error)

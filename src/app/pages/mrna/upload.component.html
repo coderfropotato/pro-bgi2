@@ -2,7 +2,7 @@
     <div class="m_content">
         <div class="h4">上传数据</div>
         <div class="m_content_1" *ngIf="isShowTab">
-            <nz-tabset [nzSelectedIndex]="index" (nzSelectedIndexChange)="SelectedIndexChange($event)">
+            <nz-tabset [nzSelectedIndex]="m_index" (nzSelectedIndexChange)="SelectedIndexChange($event)">
                 <nz-tab [nzTitle]="'基因信息'" >
                     <div class="tab_content" [hidden]="fileList.length !=0">
                         <a>数据模板下载</a>
@@ -10,7 +10,7 @@
                     </div>
                     <div class="tab_div" [hidden]="fileList.length ==0">
                       <div *ngFor="let item of fileList; let i = index" class="tab_div_item">
-                          {{i+1}} - {{item.name}}
+                          {{item.name}}
                       </div>
                     </div>
                 </nz-tab>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="tab_div" [hidden]="fileList2.length ==0">
                         <div *ngFor="let item of fileList2; let i = index" class="tab_div_item">
-                            {{i+1}} - {{item.name}}
+                            {{item.name}}
                         </div>
                     </div>
                 </nz-tab>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="tab_div" [hidden]="fileList3.length ==0">
                         <div *ngFor="let item of fileList3; let i = index" class="tab_div_item">
-                            {{i+1}} - {{item.name}}
+                            <!-- {{i+1}} - {{item.name}} -->{{item.name}}
                         </div>
                     </div>
                 </nz-tab>
@@ -77,7 +77,7 @@
             <div class="m_result_title">
                 <div style="width: 140px">上传时间</div>
                 <div style="width: 80px">数据类型</div>
-                <div style="width: 60px;">上传结果</div>
+                <div style="width: 60px;">录入结果</div>
                 <div style="width: 60px;">查看详情</div>
                 <div style="width: 50px;">隐藏</div>
             </div>
@@ -95,14 +95,21 @@
                         <button nz-button nzType="primary" disabled [nzSize]="small">查看</button>
                     </div>
 
-                    <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'">
-                        <!-- <div style="width: 60px;cursor: pointer;" *ngIf="item.hidden" (click)="goSwitch(item.id)">隐藏</div>
-                        <div style="width: 60px;cursor: pointer;" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</div> -->
-                        <button nz-button nzType="default" [nzSize]="small" *ngIf="item.hidden" (click)="goSwitch(item.id)" style="background: #5E5B78;color: #FFFFFF;">隐藏</button>
-                        <button nz-button nzType="default" [nzSize]="small" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</button>
+                    <div *ngIf="item.status=='成功'">
+                        <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'">
+                            <!-- <div style="width: 60px;cursor: pointer;" *ngIf="item.hidden" (click)="goSwitch(item.id)">隐藏</div>
+                            <div style="width: 60px;cursor: pointer;" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</div> -->
+                            <button nz-button nzType="default" [nzSize]="small" *ngIf="item.hidden" (click)="goSwitch(item.id)" style="background: #5E5B78;color: #FFFFFF;">隐藏</button>
+                            <button nz-button nzType="default" [nzSize]="small" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</button>
+                        </div>
+                        <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'">
+                            <button nz-button nzType="default" disabled [nzSize]="small">隐藏</button>
+                        </div>
                     </div>
-                    <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'">
-                        <button nz-button nzType="default" disabled [nzSize]="small">隐藏</button>
+                    <div *ngIf="item.status=='失败'">
+                        <div style="width: 60px;cursor: pointer;">
+                        
+                        </div>
                     </div>
                     
                 </div>
@@ -127,7 +134,7 @@
     }
 
     .m_content {
-        width: 90%;
+        width: 96%;
         height: 280px;
         margin: 0 auto;
         background: #FFFFFF;
@@ -155,8 +162,8 @@
         height: 120px;
         margin: 0px auto 0 auto;
         border-bottom: 1px solid rgba(0,0,0,0.07);
-        overflow-y: scroll;
-        overflow-x: hidden;
+        /* overflow-y: scroll;
+        overflow-x: hidden; */
     }
 
     .tab_div_item{
@@ -255,7 +262,7 @@
 
 
     .m_result{
-        width: 90%;
+        width: 96%;
         margin: 20px auto 0 auto;
         flex: 1;
         height: calc(100% - 300px);

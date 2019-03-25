@@ -557,7 +557,7 @@
 				flex-direction: row;
 				margin-bottom: 1.0em;
 				align-items: center;
-				width: 26em;
+				width: 20em;
 				transition: all 0.2s ease-out 0s;
 				&:hover {
 					transform: translateX(-0.35em);
@@ -575,7 +575,7 @@
 			.code {
 				font-size: inherit;
 				width: 8.3em;
-				height: 4.5em;
+				height: 3.5em;
 				border: 1px solid #ccc;
 				margin-right: 20px;
 				margin-top: 10px;
@@ -583,7 +583,7 @@
 			.user {
 				margin-top: 0.8em;
 				background-color: rgba(6, 28, 111, 0.04);
-				width: 26em;
+				width: 20em;
 				height: 3.5em;
 				color: rgb(50, 50, 50);
 				padding: 0em 0.6em;
@@ -597,7 +597,7 @@
 			.pass {
 				margin-top: 0.8em;
 				background-color: rgba(6, 28, 111, 0.04);
-				width: 26em;
+				width: 20em;
 				height: 3.5em;
 				color: rgb(50, 50, 50);
 				padding: 0em 0.6em;
@@ -613,8 +613,8 @@
 				margin-bottom: 0.8em;
 				background-color: rgb(82, 120, 248);
 				color: rgb(255, 255, 255);
-				width: 26em;
-				height: 3.5em;
+				width: 20em;
+				height: 2.5em;
 				font-weight: bold;
 				display: flex;
 				flex-direction: column;
@@ -628,8 +628,10 @@
 				transition: all 0.2s ease-out 0s;
 				font-size: 16px;
 				&:last-child {
-					width: 23.1em;
-					margin-bottom: 0;
+					//width: 17.1em;
+					// margin-bottom: 0;
+					width: 17.5em;
+					margin: 0 auto;
 					font-size: 18px;
 					font-weight: bold;
 					&:hover {
@@ -641,8 +643,8 @@
 			input {
 				margin-top: 0.8em;
 				background-color: rgba(6, 28, 111, 0.04);
-				width: 26em;
-				height: 3.5em;
+				width: 20em;
+				height: 2.5em;
 				color: rgb(50, 50, 50);
 				padding: 0em 0.6em;
 				border-radius: 0.3rem;
@@ -661,7 +663,7 @@
 					border-left: 0.7em solid rgb(67, 133, 235);
 				}
 				&.ver-input {
-					width: 18.5em;
+					width: 12.5em;
 				}
 			}
 			.ver-group {
