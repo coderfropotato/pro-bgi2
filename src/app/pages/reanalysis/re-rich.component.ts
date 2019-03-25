@@ -525,6 +525,7 @@ export class ReRichComponent implements OnInit {
                     selectedModule: _self.isMultipleSelect?'multiple':'single',
                     direction:"horizontal",
                     "stroke-width":2,
+                    interpolate: "linear",
                     data: bardata,
                     otherData:linedata,
                     otherColors:['#fd7d27'],

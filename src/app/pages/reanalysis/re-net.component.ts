@@ -559,8 +559,43 @@ export class ReNetComponent implements OnInit {
             .style('cursor','pointer')
             .attr("marker-end",d=> d.type==='target' ? 'url(#end-arrow)' :'')
             .on("mouseover", m => {
-                // target='_blank' href='https://www.ncbi.nlm.nih.gov/pubmed/${m.references}'
-                let text = `source：<a target='_blank' href=''>${m.source.geneID}</a><br>target：<a target='_blank' href=''>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}<br>文献：<a>${m.references}</a>`;
+                let referencesStr= m.references;
+                let references=[];
+                if(referencesStr){
+                    if(referencesStr.indexOf(';')!==-1){
+                      let refs= referencesStr.split(';');
+
+                      let rs1=[],rs2=[];
+
+                      if(refs[0]!=='NA'){
+                        rs1=refs[0].split(',');
+                      }
+
+                      if(refs[1]!=='NA'){
+                        rs2=refs[1].split(',');
+                      }
+
+                      references=[...rs1,...rs2];
+                    }else{
+                        if(referencesStr!=='NA'){
+                            references=referencesStr.split(',');
+                        }else{
+                            references.length=0; 
+                        }
+                    }
+                }
+                
+                let text = `source：<a target='_blank' href=''>${m.source.geneID}</a><br>target：<a target='_blank' href=''>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}`;
+                if(references.length){
+                    text=text+'<br>文献：';
+                    references.forEach((r,j)=>{
+                       let refStr=`<a target='_blank' href='https://www.ncbi.nlm.nih.gov/pubmed/${r}'>${r}</a>`;
+                       text=text+refStr;
+                       if(j!==references.length-1){
+                           text=text+'，';
+                       }
+                    })
+                }
                 this.globalService.showPopOver(d3.event, text);
             })
             .on("mouseout", () => {
