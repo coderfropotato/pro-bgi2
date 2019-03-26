@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { AddColumnService } from './../../super/service/addColumnService';
 import { StoreService } from './../../super/service/storeService';
 import { PageModuleService } from './../../super/service/pageModuleService';
@@ -239,6 +240,8 @@ export class GeneDetailComponent implements OnInit {
 	tf_url: string;//Transcription Factor
 	tf_flag: boolean = true;
 
+	lcid:string = '';
+
   	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -249,26 +252,32 @@ export class GeneDetailComponent implements OnInit {
 		private promptService: PromptService,
 		private addColumnService: AddColumnService,
 		private router: Router,
+		private routes:ActivatedRoute,
 		private geneService: GeneService
 	) {
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
+
+		this.routes.paramMap.subscribe((params) => {
+			this.lcid = params['params']['lcid'];
+			this.geneID = params['params']['id'];
+		});
 	}
 
 	ngOnInit() {
 		//this.geneID = "374443";
-		this.geneID = "100289635";
+		// this.geneID = "100289635";
 
 		//this.geneID = "122809";
 
 		this.geneParamsUsed = {
-			LCID: this.storeService.getStore('LCID'),
+			LCID: this.lcid,
 			geneType: "gene",
 			geneID: this.geneID
 		}
 
 		this.transcriptParamsUsed = {
-			LCID: this.storeService.getStore('LCID'),
+			LCID: this.lcid,
 			geneType: "transcript",
 			geneID: this.geneID
 		}
@@ -319,7 +328,7 @@ export class GeneDetailComponent implements OnInit {
 		//文献信息
 		this.document_defaultUrl = `${config['javaPath']}/geneDetail/article`;
 		this.document_params = {
-			LCID: this.storeService.getStore('LCID'),
+			LCID: this.lcid,
 			geneType: "gene",
 			geneID: this.geneID,
 			size:this.documentPage
