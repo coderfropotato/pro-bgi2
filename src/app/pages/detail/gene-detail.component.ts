@@ -26,6 +26,7 @@ export class GeneDetailComponent implements OnInit {
 
 	title: string;
 	geneID: string;
+	LCID: string;
 
 	//基因信息
 	gene_url: string;
@@ -249,26 +250,30 @@ export class GeneDetailComponent implements OnInit {
 		private promptService: PromptService,
 		private addColumnService: AddColumnService,
 		private router: Router,
-		private geneService: GeneService
+		private geneService: GeneService,
+		private routeActive: ActivatedRoute
 	) {
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
 	}
 
 	ngOnInit() {
+		this.routeActive.params.subscribe((params) => {
+			this.geneID = params.geneID;
+			this.LCID = params.LCID;
+			//console.log(params);
+		})
 		//this.geneID = "374443";
-		this.geneID = "100289635";
-
-		//this.geneID = "122809";
+		//this.geneID = "100289635";
 
 		this.geneParamsUsed = {
-			LCID: this.storeService.getStore('LCID'),
+			LCID: this.LCID,
 			geneType: "gene",
 			geneID: this.geneID
 		}
 
 		this.transcriptParamsUsed = {
-			LCID: this.storeService.getStore('LCID'),
+			LCID: this.LCID,
 			geneType: "transcript",
 			geneID: this.geneID
 		}
@@ -699,7 +704,7 @@ export class GeneDetailComponent implements OnInit {
 				} else if (data.status == '-2') {
 					return;
 				} else {
-					console.log(data['data']['rows'])
+					//console.log(data['data']['rows'])
 					this.go_f_list = data['data']['rows'];
 					if(data['data']['rows'].length == 0){
 						this.go_f_flag = false;
@@ -782,7 +787,7 @@ export class GeneDetailComponent implements OnInit {
 
 	//转录本信息 下载
 	down_transcripts(){
-		console.log("转录本信息");
+		//console.log("转录本信息");
 	}
 
 	loadMore(){
