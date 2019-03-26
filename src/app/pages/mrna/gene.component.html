@@ -1,38 +1,20 @@
-<div class="left-bottom-layout" ><!-- 下部份 -->
+<div class="left-bottom-layout">
+    <!-- 下部份 -->
     <div class="top_title">
-        <span>在</span><div class="divone" title="{{custom}}">{{custom}}</div><span>范围内找到</span><div class="divtwo">{{geneTotal}}</div><span>条结果</span>
+        <span>在</span>
+        <div class="divone" title="{{custom}}">{{custom}}</div><span>范围内找到</span>
+        <div class="divtwo">{{geneTotal}}</div><span>条结果</span>
     </div>
     <div class="func" #func (click)="resize($event)">
         <!-- 增删列 -->
-        <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType" ></app-add-column>
+        <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType"></app-add-column>
         <!-- 关系  [relative]="transformTable['relative']"-->
-        <app-gene-relative class="ml-12" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)" ></app-gene-relative>
+        <app-gene-relative class="ml-12" [geneCount]="selectGeneCount" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
         <!-- 返回 -->
-        <button class="ml12"  *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
+        <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
     </div>
-    <app-table-transformation
-        #transformTable
-        class="no-outside-border"
-        [isFirst]="first"
-        [tableHeight]="tableHeight"
-        [defaultTableEntity]="defaultEntity"
-        [defaultTableUrl]="defaultUrl"
-        [defaultTableId]="defaultTableId"
-        [defaultTableDefaultChecked]="defaultDefaultChecked"
-        [(defaultEmitBaseThead)]="defaultEmitBaseThead"
-        (defaultBaseTheadChange)="baseTheadChange($event)"
-        [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
-        (totalChange)="myTotalChange($event)"
-        [extendTableEntity]="extendEntity"
-        [extendTableUrl]="extendUrl"
-        [extendTableId]="extendTableId"
-        [extendTableDefaultChecked]="extendDefaultChecked"
-        [(extendEmitBaseThead)]="extendEmitBaseThead"
-        (extendBaseTheadChange)="baseTheadChange($event)"
-        [extendTableCheckStatusInParams]="extendCheckStatusInParams"
-        [(defaultApplyOnceSearchParams)]="defaultApplyOnceSearchParams"
-        [(applyOnceSearchParams)]="applyOnceSearchParams"
-        (selectGeneCountChange)="handleSelectGeneCountChange($event)"
-        [(computedScrollHeight)]="computedScrollHeight"
-    ></app-table-transformation>
+    <app-table-transformation #transformTable class="no-outside-border" [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
+        [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" (totalChange)="myTotalChange($event)" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl"
+        [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(defaultApplyOnceSearchParams)]="defaultApplyOnceSearchParams"
+        [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight"></app-table-transformation>
 </div>

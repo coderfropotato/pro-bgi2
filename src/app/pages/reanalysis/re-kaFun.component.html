@@ -1,79 +1,45 @@
-
 <div class="report-analysis line">
     <app-menu [menu]="[]" [geneSwitch]="false">
         <p class="menu-slot-text">重分析id：{{tid}}</p>
     </app-menu>
     <div class="content reanalysis-content row">
-    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
-        <div class="left-top-layout">
-            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
+        <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+            <div class="left-top-layout">
+                <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
                 <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
                 <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
                 <!-- {{'diff_venn.diff_venn_title' | translate}} -->
                 kaFun图
             </span>
-            <p [hidden]="!expandModuleDesc">{{k_statistic['explain']}}</p>
-            <ng-content select=".gene-switch-module"></ng-content>
-        </div>
-        <div class="left-bottom-layout">
-                <app-table-switch-chart
-                    #kaFunChart
-                    [id]="'kaFun'"
-                    [tableUrl]="tableUrl"
-                    [apiEntity]="tableEntity"
-                    (drawChartEmit)="drawChart($event)"
-                    [chartId]="'kaFunChartDiv'"
-                    [chartName]="'kaFun图'"
-                    [flex]="true"
-                    (refresh)="handlerRefresh()"
-                    [isHasMultiSelect]="isHasMultiSelectFlag"
-                    [(isMultiSelect)]="isMultiSelect"
-                    (isMultiSelectChange)="multiSelectChange()"
-                    (multipleConfirmEmit)="multipleConfirm()"
-                >
+                <p [hidden]="!expandModuleDesc">{{k_statistic['explain']}}</p>
+                <ng-content select=".gene-switch-module"></ng-content>
+            </div>
+            <div class="left-bottom-layout">
+                <app-table-switch-chart #kaFunChart [id]="'kaFun'" [tableUrl]="tableUrl" [apiEntity]="tableEntity" (drawChartEmit)="drawChart($event)" [chartId]="'kaFunChartDiv'" [chartName]="'kaFun图'" [flex]="true" (refresh)="handlerRefresh()" [isHasMultiSelect]="isHasMultiSelectFlag"
+                    [(isMultiSelect)]="isMultiSelect" (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()">
                 </app-table-switch-chart>
 
-                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-                ></app-color-picker>
+                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
 
-        </div>
+            </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']"  >
+            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
                 <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
             </div>
             <div class="func" #func (click)="resize($event)">
                 <!-- 增删列 -->
-                <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column>
+                <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column>
                 <!-- 关系 -->
-                <app-gene-relative class="ml-12" *ngIf="!addColumnShow" [disabled]="!selectGeneCount" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
+                <app-gene-relative class="ml-12" [geneCount]="selectGeneCount" *ngIf="!addColumnShow" [disabled]="!selectGeneCount" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
                 <!-- 返回 -->
                 <button class="ml12" [hidden]="addColumnShow || !showBackButton" nzSize="small" nz-button nzType="Default" (click)="back()">返回</button>
             </div>
             <!-- 表格转换 -->
-			<app-table-transformation
-				class="no-outside-border"
-				#transformTable
-				[isFirst]="first"
-				[tableHeight]="tableHeight"
-				[defaultTableEntity]="defaultEntity"
-				[defaultTableUrl]="defaultUrl"
-				[defaultTableId]="defaultTableId"
-				[defaultTableDefaultChecked]="defaultDefaultChecked"
-				[(defaultEmitBaseThead)]="defaultEmitBaseThead"
-				(defaultBaseTheadChange)="baseTheadChange($event)"
-				[defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
-				[extendTableEntity]="extendEntity"
-				[extendTableUrl]="extendUrl"
-				[extendTableId]="extendTableId"
-				[extendTableDefaultChecked]="extendDefaultChecked"
-				[(extendEmitBaseThead)]="extendEmitBaseThead"
-				(extendBaseTheadChange)="baseTheadChange($event)"
-				[extendTableCheckStatusInParams]="extendCheckStatusInParams"
-                [(applyOnceSearchParams)]="applyOnceSearchParams"
-                (selectGeneCountChange)="handleSelectGeneCountChange($event)"
-                [(computedScrollHeight)]="computedScrollHeight"
-			></app-table-transformation>
+            <app-table-transformation class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
+                [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"
+                [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams"
+                (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight"></app-table-transformation>
         </div>
     </div>
 </div>

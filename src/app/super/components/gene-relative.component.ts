@@ -1,3 +1,4 @@
+import  config  from 'src/config';
 import { StoreService } from './../service/storeService';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,6 +24,7 @@ export class GeneRelativeComponent implements OnInit {
 	@Input() disabled: boolean = true;
 	@Output() confirmEvent: EventEmitter<any> = new EventEmitter();
 	@Input() relative: any[] = [];
+	@Input() geneCount : number = 0;
 
 	isVisible: boolean = false;
 	selectRelations: object[] = [];
@@ -30,6 +32,7 @@ export class GeneRelativeComponent implements OnInit {
 	beforeRelation: object[] = [];
 	disabledRelative: string[] = [];
 	currentTableRelative: string[] = [];
+	targetGeneLimit:number = config['targetRelativeGeneLimit'];
 
 	selectType: string[] = [ '功能关系', '位置关系' ];
 	selectedType: string = '功能关系';

@@ -1,89 +1,49 @@
-
 <div class="report-analysis heatmap">
-        <app-menu [menu]="[]" [geneSwitch]="false">
-            <p class="menu-slot-text">重分析id：{{tid}}</p>
-        </app-menu>
-        <div class="content reanalysis-content row">
+    <app-menu [menu]="[]" [geneSwitch]="false">
+        <p class="menu-slot-text">重分析id：{{tid}}</p>
+    </app-menu>
+    <div class="content reanalysis-content row">
         <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
             <!-- <div class="left-top-layout">
                 <h4>title</h4>
                 <p>describe</p>
             </div> -->
             <div class="left-bottom-layout">
-                    <ng-template #setTemplate>
-                        <app-clusterSet *ngIf="defaultSetData && setData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData' [setData]="setData"></app-clusterSet>
-                    </ng-template>
-                    <ng-template #standardMethod>
-                        <span style="margin-left: 10px;" *ngIf="standard">标准化方法：{{standard}}</span>
-                    </ng-template>
-                    <!-- [selectTemplate]="selectTemplate" -->
-                    <app-table-switch-chart
-                        #clusterChart
-                        [id]="'cluster'"
-                        [chartUrl]="chartUrl"
-                        [apiEntity]="chartEntity"
-                        [setTemplate]="setTemplate"
-                        (drawChartEmit)="drawChart($event)"
-                        [otherLeftTemplate]="standardMethod"
-                        [chartId]="'clusterChartDiv'"
-                        [chartName]="'聚类图'"
-                        [defaultSetUrl]='defaultSetUrl'
-                        [defaultSetEntity]='defaultSetEntity'
-                        (defaultSet)='apiEntityChange($event)'
-                        [setDataUrl]="setDataUrl"
-                        [setDataEntity]="setDataEntity"
-                        (setData)="getSetData($event)"
-                        [flex]="true"
-                        (refresh)="handlerRefresh()"
-                    >
-                    </app-table-switch-chart>
+                <ng-template #setTemplate>
+                    <app-clusterSet *ngIf="defaultSetData && setData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData' [setData]="setData"></app-clusterSet>
+                </ng-template>
+                <ng-template #standardMethod>
+                    <span style="margin-left: 10px;" *ngIf="standard">标准化方法：{{standard}}</span>
+                </ng-template>
+                <!-- [selectTemplate]="selectTemplate" -->
+                <app-table-switch-chart #clusterChart [id]="'cluster'" [chartUrl]="chartUrl" [apiEntity]="chartEntity" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [otherLeftTemplate]="standardMethod" [chartId]="'clusterChartDiv'" [chartName]="'聚类图'"
+                    [defaultSetUrl]='defaultSetUrl' [defaultSetEntity]='defaultSetEntity' (defaultSet)='apiEntityChange($event)' [setDataUrl]="setDataUrl" [setDataEntity]="setDataEntity" (setData)="getSetData($event)" [flex]="true" (refresh)="handlerRefresh()">
+                </app-table-switch-chart>
 
-                    <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-                    ></app-color-picker>
+                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
 
-                    <app-color-picker [(color)]="oColor" (colorChange)="ocolorChange($event)" [(show)]="isoShowColorPanel"
-                    ></app-color-picker>
-            </div>
-            </div>
-            <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-                <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']"  >
-                    <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" ></app-layout-switch>
-                </div>
-                <div class="func" #func (click)="resize($event)">
-                    <!-- 增删列 -->
-                    <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column>
-                    <!-- 关系 -->
-                    <app-gene-relative class="ml-12" *ngIf="!addColumnShow" [disabled]="!selectGeneCount" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
-                    <!-- 返回 -->
-                    <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button>
-                </div>
-                <!-- 表格转换 -->
-                <ng-container *ngIf="defaultSetData && setData">
-                    <app-table-transformation
-                        class="no-outside-border"
-                        #transformTable
-                        [isFirst]="first"
-                        [tableHeight]="tableHeight"
-                        [defaultTableEntity]="defaultEntity"
-                        [defaultTableUrl]="defaultUrl"
-                        [defaultTableId]="defaultTableId"
-                        [defaultTableDefaultChecked]="defaultDefaultChecked"
-                        [(defaultEmitBaseThead)]="defaultEmitBaseThead"
-                        (defaultBaseTheadChange)="baseTheadChange($event)"
-                        [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
-                        (defaultShowFilterStatus)="defaultShowFilterStatus"
-                        [extendTableEntity]="extendEntity"
-                        [extendTableUrl]="extendUrl"
-                        [extendTableId]="extendTableId"
-                        [extendTableDefaultChecked]="extendDefaultChecked"
-                        [(extendEmitBaseThead)]="extendEmitBaseThead"
-                        (extendBaseTheadChange)="baseTheadChange($event)"
-                        [extendTableCheckStatusInParams]="extendCheckStatusInParams"
-                        [(applyOnceSearchParams)]="applyOnceSearchParams"
-                        (selectGeneCountChange)="handleSelectGeneCountChange($event)"
-                        [(computedScrollHeight)]="computedScrollHeight"
-                    ></app-table-transformation>
-                </ng-container>
+                <app-color-picker [(color)]="oColor" (colorChange)="ocolorChange($event)" [(show)]="isoShowColorPanel"></app-color-picker>
             </div>
         </div>
+        <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+            </div>
+            <div class="func" #func (click)="resize($event)">
+                <!-- 增删列 -->
+                <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column>
+                <!-- 关系 -->
+                <app-gene-relative class="ml-12" [geneCount]="selectGeneCount" *ngIf="!addColumnShow" [disabled]="!selectGeneCount" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
+                <!-- 返回 -->
+                <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button>
+            </div>
+            <!-- 表格转换 -->
+            <ng-container *ngIf="defaultSetData && setData">
+                <app-table-transformation class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
+                    [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" (defaultShowFilterStatus)="defaultShowFilterStatus" [extendTableEntity]="extendEntity"
+                    [extendTableUrl]="extendUrl" [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams"
+                    [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight"></app-table-transformation>
+            </ng-container>
+        </div>
     </div>
+</div>
