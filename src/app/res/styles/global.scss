@@ -641,15 +641,18 @@ button {
 }
 
 .alternativeSplicing {
-	.small_text {
-		width: 100%;
-		height: 30px;
-		line-height: 30px;
-		text-indent: 1em;
-	}
-	.small_span {
-		color: red;
-	}
+	
+}
+
+.small_text {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-indent: 1em;
+}
+
+.small_span {
+    color: red;
 }
 // @media screen and (max-width: 1350px) {
 // 	.content{

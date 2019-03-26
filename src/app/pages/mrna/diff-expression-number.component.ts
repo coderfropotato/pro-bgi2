@@ -203,6 +203,11 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 	allChartData: any[] = [];
 
+	m_type: string = null;
+
+	m_name1:string; //比较组
+	m_name2:string; //类型
+
 	constructor(
 		private message: MessageService,
 		private globalService: GlobalService,
@@ -230,14 +235,16 @@ export class DiffExpressionNumberComponent implements OnInit {
 		//this.isMultiSelect = false;
 		this.first = true;
 		this.selectedData = [];
-		this.tableUrl = `${config['javaPath']}/Venn/sampleDiffGraph`;
+		this.tableUrl = `${config['javaPath']}/SampleDiff/graph`;
 
 		this.compareGroupList = this.storeService.getStore('diff_plan');
 		this.compareNewGroupList = ["ALL"].concat(this.compareGroupList);
 		this.compareGroup = this.compareNewGroupList[0];
+		this.m_name1 = "全部";
 
 		this.selectData = ["Up+Down","Total"];
 		this.selectedVal = this.selectData[1];
+		this.m_name2 = this.selectedVal;
 
 		this.tempThreshold = this.storeService.getStore('diff_threshold');
 		for (const key in this.tempThreshold) {
@@ -289,20 +296,20 @@ export class DiffExpressionNumberComponent implements OnInit {
 		};
 
 		this.applyOnceSearchParams = true;
-		this.defaultUrl = `${config['javaPath']}/Venn/diffGeneTable`;  // `${config['url']}/theadFilter`
+		this.defaultUrl = `${config['javaPath']}/SampleDiff/table`;  // `${config['url']}/theadFilter`
 		this.defaultEntity = {
 			pageIndex: 1, //分页
 			pageSize: 20,
 			LCID: sessionStorage.getItem('LCID'),
-			// leftChooseList: this.leftSelect, //upsetR参数
-			// upChooseList: this.upSelect, //胜利n图选中部分参数
-			compareGroup: this.storeService.getStore('diff_plan'), //比较组
+			leftChooseList: this.leftSelect, //upsetR参数
+			upChooseList: this.upSelect, //胜利n图选中部分参数
+			compareGroup: this.compareGroupList, //比较组
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
 			sortKey: null, //排序
 			sortValue: null,
-			// matchAll: false,
+			//matchAll: false,
 			reAnaly: false,
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
@@ -311,7 +318,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 			diffThreshold: this.tempThreshold,
 			version: this.storeService.getStore('version'),
 			searchList: [],
-			sortThead: this.addColumn['sortThead']
+			sortThead: this.addColumn['sortThead'],
+			type:this.m_type
 		};
 		this.defaultTableId = 'diff_venn_number_default_gene';
 		this.defaultDefaultChecked = true;
@@ -324,15 +332,15 @@ export class DiffExpressionNumberComponent implements OnInit {
 			pageSize: 20,
 			reAnaly: false,
 			LCID: sessionStorage.getItem('LCID'), //流程id
-			// leftChooseList: [], //upsetR参数
-			// upChooseList: [], //胜利n图选中部分参数
-			compareGroup: this.storeService.getStore('diff_plan'), //比较组
+			leftChooseList: [], //upsetR参数
+			upChooseList: [], //胜利n图选中部分参数
+			compareGroup: this.compareGroupList, //比较组
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
 			sortKey: null, //排序
 			sortValue: null,
-			// matchAll: false,
+			//matchAll: false,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.defaultGeneType, //基因类型gene和transcript
@@ -340,7 +348,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 			diffThreshold: this.tempThreshold,
 			version: this.storeService.getStore('version'),
 			searchList: [],
-			sortThead: this.addColumn['sortThead']
+			sortThead: this.addColumn['sortThead'],
+			type:this.m_type
 		};
 		this.extendTableId = 'diff_venn_number_extend_gene';
 		this.extendDefaultChecked = true;
@@ -384,6 +393,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			this.defaultEntity['addThead'] = [];
 			this.defaultEntity['removeColumns'] = [];
 			this.defaultEntity['compareGroup'] = this.selectConfirmData;
+			this.defaultEntity['type'] = this.m_type;
 			this.defaultEntity['searchList'] = [];
 			this.defaultEntity['pageIndex'] = 1;
 			this.defaultEntity['rootSearchContentList'] = [];
@@ -392,6 +402,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			}, 30);
 		} else {
 			this.transformTable._setParamsNoRequest('compareGroup', this.selectConfirmData);
+			this.transformTable._setParamsNoRequest('type', this.m_type);
 			this.transformTable._setParamsNoRequest('pageIndex', 1);
 			this.transformTable._getData();
 		}
@@ -424,6 +435,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
 			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
 			this.extendEntity['compareGroup'] = this.selectConfirmData;
+			this.extendEntity['type'] = this.m_type;
 			this.extendEntity['leftChooseList'] = checkParams['tableEntity']['leftChooseList'];
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
 			this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
@@ -448,6 +460,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 				checkParams['tableEntity']['rootSearchContentList']
 			);
 			this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
+			this.transformTable._setExtendParamsWithoutRequest('type', this.m_type);
 			this.transformTable._setExtendParamsWithoutRequest('relations', relations);
 			// 每次checkStatusInParams状态变完  再去获取数据
 			this.transformTable._setExtendParamsWithoutRequest('addThead', []);
@@ -477,10 +490,6 @@ export class DiffExpressionNumberComponent implements OnInit {
 	}
 
 	drawVenn(data) {
-		console.log(data);
-		// this.compareGroup;
-		// this.selectedVal;
-		//["Up+Down","Total"];
 		this.allChartData = data;
 		this.drawTotal(data["rows"]);
 	}
@@ -501,7 +510,13 @@ export class DiffExpressionNumberComponent implements OnInit {
 			  custom: ["compareGroup", "diffexp_updown_total"],
 			  el: "#diffVennNumberId",
 			  type: "bar",
-			  data: data
+			  data: data,
+			  selectedModule: "single",
+			  enableChartSelect: true,
+			  onselect: data => {
+				that.defaultTheSelectList(data,1);
+				console.log(data);
+			  }
 			  },
 			  axis: {
 			  x: {
@@ -598,7 +613,12 @@ export class DiffExpressionNumberComponent implements OnInit {
 				innerPadding: 0.01,
 				width: 800,
 				custom: [ 'key', 'value', 'category' ],
-				data: chartData
+				data: chartData,
+				enableChartSelect: true,
+				onselect: function(data) {
+					that.defaultTheSelectList(data,2);
+					console.log(data);
+				}
 			},
 			axis: {
 				x: {
@@ -662,7 +682,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 	computedTableHeight() {
 		try {
 			let h = this.tableHeight;
-			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
+			this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2 -60;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
 	}
@@ -806,71 +826,25 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 		this.chartBackStatus();
 	}
-
-	//单、多选change
-	multiSelectChange() {
-		this.upSelect.length = 0;
-		this.leftSelect.length = 0;
-		// this.first?this.transformTable._getData():this.first = true;
-		this.defaultShowFilterStatus = false;
-		this.chartBackStatus();
-		//this.updateVenn();
-	}
-
-	//韦恩,upsetR图二次更新
-	// updateVenn() {
-	// 	this.tableEntity['compareGroup'] = this.selectConfirmData;
-	// 	this.diffVennNumberChart.reGetData();
-
-	// 	this.singleMultiSelect = {
-	// 		bar_name: '',
-	// 		total_name: '',
-	// 		venn_name: ''
-	// 	};
-
-	// 	this.doubleMultiSelect = {
-	// 		bar_name: [],
-	// 		total_name: []
-	// 	};
-	// }
-
-	//venn和upsetR只能单选时候
-	doSingleData() {
-		this.leftSelect.length = 0;
-		this.upSelect.length = 0;
-		if (this.selectConfirmData.length > 5) {
-			// upset
-			if (this.singleMultiSelect['bar_name']) this.upSelect.push(this.singleMultiSelect['bar_name']);
-			if (this.singleMultiSelect['total_name']) this.leftSelect.push(this.singleMultiSelect['total_name']);
-		} else {
-			this.upSelect.push(this.singleMultiSelect['venn_name']);
+	
+	defaultTheSelectList(data,num) {
+		if(num == 1){
+			let tempJ = [];
+			tempJ.push(data[0]["compareGroup"]);
+			this.selectConfirmData = tempJ;
+			this.m_type = null;
+			this.m_name1 = data[0]["compareGroup"];
+			this.m_name2 = "Toatl";
+		}else{
+			let tempP = [];
+			tempP.push(data[0]["key"]);
+			this.selectConfirmData = tempP;
+			this.m_type = data[0]["category"];
+			this.m_name1 = data[0]["key"];
+			this.m_name2 = data[0]["category"];
 		}
-
-		this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
 		this.chartBackStatus();
-	}
-
-	//多选确定时候,提交的数据
-	multipleConfirm() {
-		let tempData = this.venn_or_upsetR ? this.doubleMultiSelect : this.venSelectAllData;
-		this.leftSelect.length = 0;
-		this.upSelect.length = 0;
-
-		if (tempData instanceof Array) {
-			this.upSelect.push(...tempData);
-		} else {
-			this.upSelect.push(...tempData['bar_name']);
-			this.leftSelect.push(...tempData['total_name']);
-		}
-
-		this.defaultShowFilterStatus = !!this.leftSelect.length || !!this.upSelect.length;
-		this.chartBackStatus();
-	}
-
-	//选择面板，默认选中数据
-	defaultSelectList(data) {
-		this.selectConfirmData = data;
-		//console.log(this.selectConfirmData);
+		//this.selectConfirmData = data;
 	}
 
 	//选择面板 确定筛选的数据
@@ -908,55 +882,50 @@ export class DiffExpressionNumberComponent implements OnInit {
 	}
 
 	handleCompareGroupChange() {
+		console.log(this.compareGroup);
+		if(this.compareGroup == "ALL"){
+			this.selectConfirmData = this.compareGroupList;
+		}else{
+			let tempS = [];
+			tempS.push(this.compareGroup);
+			this.selectConfirmData = tempS;
+		}
+
+		if(this.selectedVal == "Total"){
+			this.m_type = null;
+			this.m_name2 = "Total";
+		}else{
+			this.m_type = 'up';
+			this.m_name2 = "up";
+		}
+
 		this.doWithSelectChange();
-		// (async () => {
-		// 	转换表重新获取数据
-		// 	this.checkedList.length = 0;
-		// 	this.chartBackStatus();
-
-		// 	let curExceed = await this.getGeneCount();
-
-		// 	if (this.isExceed != curExceed) {
-		// 		this.chartEntity['compareGroup'] = this.compareGroup;
-		// 	} else {
-		// 		if (curExceed) {
-		// 			this.bigTable._initCheckStatus();
-		// 			this.bigTable._setParamsOfEntityWithoutRequest('compareGroup', this.compareGroup);
-		// 			this.bigTable._getData(true);
-		// 		} else {
-		// 			this.chartEntity['compareGroup'] = this.compareGroup;
-		// 			this.switchChart.reGetData();
-		// 		}
-		// 	}
-		// 	this.checkedList.length = 0;
-		// 	this.isExceed = curExceed;
-		// })();
+		this.chartBackStatus();
 	}
 
 	handleSelectChange() {
 		//console.log(this.selectedVal);
-		this.doWithSelectChange();
-		// (async () => {
-		// 	转换表重新获取数据
-		// 	this.checkedList.length = 0;
-		// 	this.chartBackStatus();
 
-		// 	let curExceed = await this.getGeneCount();
-		// 	if (this.isExceed != curExceed) {
-		// 		this.chartEntity['checkedClassifyType'] = this.selectedVal;
-		// 	} else {
-		// 		if (curExceed) {
-		// 			this.bigTable._initCheckStatus();
-		// 			this.bigTable._setParamsOfEntityWithoutRequest('checkedClassifyType', this.selectedVal);
-		// 			this.bigTable._getData(true);
-		// 		} else {
-		// 			this.chartEntity['checkedClassifyType'] = this.selectedVal;
-		// 			this.switchChart.reGetData();
-		// 		}
-		// 	}
-		// 	this.checkedList.length = 0;
-		// 	this.isExceed = curExceed;
-		// })();
+		if(this.selectedVal == "Total"){
+			this.m_type = null;
+			this.m_name2 = "Total";
+		}else{
+			this.m_type = 'up';
+			this.m_name2 = "up"
+		}
+
+		if(this.compareGroup == "ALL"){
+			this.selectConfirmData = this.compareGroupList;
+			this.m_name1 = "全部";
+		}else{
+			let tempS = [];
+			tempS.push(this.compareGroup);
+			this.selectConfirmData = tempS;
+			this.m_name1 = this.compareGroup;
+		}
+
+		this.doWithSelectChange();
+		this.chartBackStatus();
 	}
 
 	doWithSelectChange(){
@@ -976,7 +945,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			if(this.compareGroup=="ALL"){
 				this.drawSingal("ALL");
 			}else{
-				this.drawSingal(this.compareGroup);
+				this.m_name1 = this.compareGroup;
 			}
 
 		}
