@@ -417,6 +417,22 @@ export class ReHeatmapComponent implements OnInit {
     drawChart(data) {
         let that =this;
         this.standard=data.standard ? data.standard : "";
+        let title=data.titleType ? data.titleType : "";
+        let chartTitle='';
+        switch (title) {
+            case 'heatmap-02':
+                chartTitle='表达量聚类热图';
+                break;
+            case 'heatmap-03':
+                chartTitle='差异聚类热图';
+                break;
+            case 'heatmap-10':
+                chartTitle='自定义数据聚类热图';
+                break;
+            default:
+                chartTitle="聚类热图";
+                break;
+        }
 
         let legendData = [];
         let heatmapData = data.heatmaps;
@@ -431,7 +447,7 @@ export class ReHeatmapComponent implements OnInit {
 
         let config:object={
             chart: {
-                title: "差异基因表达量聚类热图",
+                title: chartTitle,
                 dblclick: function(event,title) {
                     let text = title.firstChild.nodeValue;
                     that.promptService.open(text,(data)=>{
