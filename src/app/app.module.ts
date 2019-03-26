@@ -77,7 +77,7 @@ import { ReadsComparisonComponent } from './pages/mrna/base/reads-comparison.com
 import { LrnaComponent } from './pages/mrna/base/lrna.component';
 import { BasicHelpComponent } from './pages/mrna/base/help.component';
 /* 基因详情表 */
-import { GeneDetailComponent } from './pages/mrna/gene-detail.component';
+import { GeneDetailComponent } from './pages/detail/gene-detail.component';
 /* 上传模块 */
 import { UploadComponent } from './pages/mrna/upload.component';
 /* 小工具 */
@@ -314,14 +314,7 @@ const ROUTES: Routes = [
 				data:{keep:true,module:'gene'}
 			},
 			// 基因详情
-			{
-				path:'gene-detail',
-				component:GeneDetailComponent,
-				data:{
-					keep:true,
-					module:'geneDetail'
-				}
-			},
+			
 			{
 				path: 'upload', // 上传数据
 				component: UploadComponent,
@@ -331,6 +324,14 @@ const ROUTES: Routes = [
 				}
 			}
 		]
+	},
+	{
+		path:'report/gene-detail/:lcid/:id',
+		component:GeneDetailComponent,
+		data:{
+			keep:true,
+			module:'geneDetail'
+		}
 	},
 	// 基因集
 	{

@@ -1,4 +1,3 @@
-
 <div class="content kegg-rich row">
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
 
@@ -13,11 +12,11 @@
 
         <div #leftBottom class="left-bottom-layout" style=" overflow: auto; ">
             <!-- 下拉选择 -->
-        <ng-template #selectTemplate>
-            <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
-                <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
-            </nz-select>
-        </ng-template>
+            <ng-template #selectTemplate>
+                <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                    <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
+                </nz-select>
+            </ng-template>
 
             <!-- 选中数据 -->
             <ng-template #checkedTemplate>
@@ -52,44 +51,24 @@
 
             </ng-template>
 
-                <!-- 可选择数据的大表 -->
-                <div [hidden]='!expandModuleTable'>
-                    <ng-container>
-                    <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable
-                        [selectTemplate]="selectTemplate"
-                        [tableHeight]="leftTableHeight / 2"
-                        [defaultChecked]="false"
-                        [pageEntity]="chartEntity"
-                        [url]="bigtableUrl"
-                        tableId="keggRichCheckBigTable"
-                        (checkedChange)="checkedChange($event)"
-                        [(computedScrollHeight)]="leftComputedScrollHeight">
+            <!-- 可选择数据的大表 -->
+            <div [hidden]='!expandModuleTable'>
+                <ng-container>
+                    <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [tableHeight]="leftTableHeight / 2" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="bigtableUrl" tableId="keggRichCheckBigTable"
+                        (checkedChange)="checkedChange($event)" [(computedScrollHeight)]="leftComputedScrollHeight">
                     </app-big-table-check>
                 </ng-container>
 
                 <div class="text-info">
                     <span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>
                 </div>
-                </div>
+            </div>
 
 
             <!-- 图表切换 -->
             <div>
-                <app-table-switch-chart *ngIf="selectedVal" #switchChart
-                    [id]="'kegg-rich'"
-                    [tableUrl]="chartUrl"
-                    [apiEntity]="chartEntity"
-                    (drawChartEmit)="drawChart($event)"
-                    [chartId]="'keggRichChartDiv'"
-                    [chartName]="'kegg富集'"
-                    (refresh)="handlerRefresh()"
-                    [isHasMultiSelect]="true"
-                    [(isMultiSelect)]="isMultipleSelect"
-                    (isMultiSelectChange)="chartSelectModelChange($event)"
-                    (multipleConfirmEmit)="multipleSelectConfirm()"
-                    (showChange)="showChange($event)"
-                    [chartTypeData]="chartTypeData"
-                    [otherLeftTemplate]="checkedTemplate"
+                <app-table-switch-chart *ngIf="selectedVal" #switchChart [id]="'kegg-rich'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'keggRichChartDiv'" [chartName]="'kegg富集'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true"
+                    [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" (showChange)="showChange($event)" [chartTypeData]="chartTypeData" [otherLeftTemplate]="checkedTemplate"
                     [flex]="true">
                 </app-table-switch-chart>
 
@@ -101,16 +80,19 @@
     </div>
     <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
         <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
-            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)" > </app-layout-switch>
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"> </app-layout-switch>
         </div>
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
-            <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType"></app-add-column>
+            <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType"></app-add-column>
             <!-- 关系 -->
-            <app-gene-relative class="ml-12" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
+            <app-gene-relative class="ml-12" [geneCount]="selectGeneCount" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
             <!-- 返回 -->
             <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button> </div>
-            <!-- 表格转换 -->
-            <app-table-transformation *ngIf="selectedVal" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked" [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId" [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
+        <!-- 表格转换 -->
+        <app-table-transformation *ngIf="selectedVal" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
+            [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"
+            [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams"
+            (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
     </div>
 </div>
