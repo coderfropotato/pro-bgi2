@@ -193,7 +193,7 @@ export class ReRichComponent implements OnInit {
                 searchList: [],
                 checkedClassifyType: this.selectedVal,
                 checkedClassifyList: this.selectGeneList,
-                checkGraph: false,
+                checkGraph: true,
                 sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };
@@ -224,7 +224,7 @@ export class ReRichComponent implements OnInit {
                 searchList: [],
                 checkedClassifyType: this.selectedVal,
                 checkedClassifyList: this.selectGeneList,
-                checkGraph: false,
+                checkGraph: true,
                 sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };

@@ -224,7 +224,7 @@ export class KeggRichComponent implements OnInit {
                 searchList: [],
                 compareGroup: this.selectedVal,
                 checkedClassifyList: this.selectGeneList,
-                checkGraph: false,
+                checkGraph: true,
                 sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };
@@ -254,7 +254,7 @@ export class KeggRichComponent implements OnInit {
                 searchList: [],
                 compareGroup: this.selectedVal,
                 checkedClassifyList: this.selectGeneList,
-                checkGraph: false,
+                checkGraph: true,
                 sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };
