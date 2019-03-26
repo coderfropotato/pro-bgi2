@@ -10,7 +10,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
 import { GeneService } from './../../super/service/geneService';
-import { resolve } from 'url';
 
 declare const d3: any;
 declare const d4: any;

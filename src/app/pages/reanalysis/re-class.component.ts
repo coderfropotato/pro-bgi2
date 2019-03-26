@@ -680,7 +680,7 @@ export class ReClassComponent implements OnInit {
 	}
 
 	handleBlur(index) {
-		let rules = [ [ 600, 2000 ], [ 20, 50 ] ];
+		let rules = [ [ 600, 2000 ], [ 20, 100] ];
 		if (!index) {
 			if (this.set['width'] < rules[index][0]) {
 				this.set['width'] = rules[index][0];
