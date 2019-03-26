@@ -123,7 +123,7 @@ export class AlternativeSplicingComponent implements OnInit {
   computedTableHeight() {
 		try {
 			let h = this.tableHeight;
-      this.tableHeight = this.right.nativeElement.offsetHeight  - config['layoutContentPadding'] * 2 - 30;
+      this.tableHeight = this.right.nativeElement.offsetHeight  - config['layoutContentPadding'] * 2 - 60;
 			if (this.tableHeight === h) this.computedScrollHeight = true;
 		} catch (error) {}
   }
