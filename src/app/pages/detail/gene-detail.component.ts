@@ -27,6 +27,7 @@ export class GeneDetailComponent implements OnInit {
 
 	title: string;
 	geneID: string;
+	LCID: string;
 
 	//基因信息
 	gene_url: string;
@@ -265,11 +266,6 @@ export class GeneDetailComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		//this.geneID = "374443";
-		// this.geneID = "100289635";
-
-		//this.geneID = "122809";
-
 		this.geneParamsUsed = {
 			LCID: this.lcid,
 			geneType: "gene",
@@ -708,7 +704,7 @@ export class GeneDetailComponent implements OnInit {
 				} else if (data.status == '-2') {
 					return;
 				} else {
-					console.log(data['data']['rows'])
+					//console.log(data['data']['rows'])
 					this.go_f_list = data['data']['rows'];
 					if(data['data']['rows'].length == 0){
 						this.go_f_flag = false;
@@ -791,7 +787,7 @@ export class GeneDetailComponent implements OnInit {
 
 	//转录本信息 下载
 	down_transcripts(){
-		console.log("转录本信息");
+		//console.log("转录本信息");
 	}
 
 	loadMore(){
