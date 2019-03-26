@@ -97,6 +97,8 @@ import { ReClassComponent } from './pages/reanalysis/re-class.component';
 import { ReRichComponent } from './pages/reanalysis/re-rich.component';
 /* 基因集 */
 import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneList/venn.component';
+/* map */
+import { MapComponent } from './pages/map/map.component';
 
 // 服务
 import { GlobalService } from './super/service/globalService';
@@ -325,12 +327,22 @@ const ROUTES: Routes = [
 			}
 		]
 	},
+	// 基因详情页
 	{
 		path:'report/gene-detail/:lcid/:id',
 		component:GeneDetailComponent,
 		data:{
-			keep:true,
+			keep:false,
 			module:'geneDetail'
+		}
+	},
+	// Map
+	{
+		path:'report/map/:mapid/:compareGroup/:tid',
+		component:MapComponent,
+		data:{
+			keep:false,
+			module:'map'
 		}
 	},
 	// 基因集
@@ -663,9 +675,11 @@ export function createTranslateLoader(http: HttpClient) {
 		GeneListIndexComponent,
 		ReClassComponent,
 		ReRichComponent,
-
+		
 		GeneListVennComponent,
-		GeneListVennPageComponent
+		GeneListVennPageComponent,
+
+		MapComponent
 	],
 	// 路由模块在imports 导入
 	imports: [
