@@ -154,7 +154,6 @@ export class ReClassComponent implements OnInit {
                 })
                 if(this.selectedVal) break;
             }
-
 			// this.selectedVal = this.selectData.length?this.selectData[0]:null;
 
 			this.first = true;

@@ -795,7 +795,8 @@ button {
         width: 100%;
         min-width: $min-width;
         margin: 0;
-        height: 240px;
+        // height: 240px;
+        height: auto;
         transition: 0.3s all ease;
         position: absolute;
         left: 0;
@@ -2566,4 +2567,26 @@ button {
     border-top: 8px solid transparent;
     border-right: 10px solid #ccc;
     border-bottom: 8px solid transparent;
+}
+
+.logout-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    div {
+        flex: 1;
+        width: 100%;
+        text-align: center;
+        &:first-child {
+            padding-bottom: 8px;
+        }
+        &:last-child {
+            padding-top: 8px;
+            cursor: pointer;
+            border-top: $border;
+            &:hover {
+                transform: translateY(20px);
+            }
+        }
+    }
 }
