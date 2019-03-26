@@ -22,7 +22,6 @@ export class TableSpecialTheadFilter implements PipeTransform {
 
 	transform(value: any, thead: any, type:any, whitespace: boolean = false): object {
 		if (!value && value != 0) return this.globalService.trustStringHtml(`<span>NA</span>`);
-
 		if (type === 'string') {
 			if (thead.endsWith('splice_site')) {
 				if (value.indexOf('-') != -1) {
@@ -42,7 +41,13 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				} else {
 					return this.globalService.trustStringHtml(`<span>${value}</span>`);
 				}
+			}else if (config['geneInfo'].includes(thead)){
+				// 基因详情页
+				let url = `${location.href.split('/report')[0]}/report/gene-detail/${value}`;
+				let htmlStr = `<a href="${url}" target="_blank">${value}</a>`
+				return this.globalService.trustStringHtml(htmlStr);
 			} else {
+				// 其他跳转规则
 				let matchList = config['matchList'];
 				let matchRule = config['matchRule'];
 				let flag = config['urlSplitFlag'];
