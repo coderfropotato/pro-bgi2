@@ -1,64 +1,39 @@
-
 <div class="report-analysis relativeSplice">
     <app-menu [menu]="[]" [geneSwitch]="false">
         <p class="menu-slot-text">重分析id：{{tid}}</p>
     </app-menu>
     <div class="content reanalysis-content row">
-    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
-        <!-- <div class="left-top-layout">
+        <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+            <!-- <div class="left-top-layout">
             <h4>title</h4>
             <p>describe</p>
         </div> -->
-        <div class="left-bottom-layout">
-                <app-table-switch-chart
-                    #relativeSpliceChart
-                    *ngIf="chartEntity"
-                    [id]="'relativeSplice'"
-                    [chartUrl]="chartUrl"
-                    [apiEntity]="chartEntity"
-                    [selectPanelData]="selectPanelData"
-                    (selectConfirmEmit)="selectConfirm($event)"
-                    [defaultSelectNum]="defaultSelectNum"
-                    (defaultSelectList)="defaultSelectList($event)"
-                    (drawChartEmit)="drawChart($event)"
-                    [chartId]="'relativeSpliceDiv'"
-                    [chartName]="'可变剪切图'"
-                    [flex]="true"
-                    (refresh)="handlerRefresh()"
-                >
+            <div class="left-bottom-layout">
+                <app-table-switch-chart #relativeSpliceChart *ngIf="chartEntity" [id]="'relativeSplice'" [chartUrl]="chartUrl" [apiEntity]="chartEntity" [selectPanelData]="selectPanelData" (selectConfirmEmit)="selectConfirm($event)" [defaultSelectNum]="defaultSelectNum"
+                    (defaultSelectList)="defaultSelectList($event)" (drawChartEmit)="drawChart($event)" [chartId]="'relativeSpliceDiv'" [chartName]="'可变剪切图'" [flex]="true" (refresh)="handlerRefresh()">
                 </app-table-switch-chart>
 
-                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-                ></app-color-picker>
+                <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
 
-        </div>
+            </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']" >
+            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
                 <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
             </div>
             <!-- <div class="func" #func (click)="resize($event)"> -->
-                <!-- 增删列 -->
-                <!-- <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column> -->
-                <!-- 关系 -->
-                <!-- <app-gene-relative class="ml-12" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative> -->
-                <!-- 返回 -->
-                <!-- <button class="ml12" [hidden]="addColumnShow || !showBackButton" nzSize="small" nz-button nzType="Default" (click)="back()">返回</button> -->
-                <!-- 只看表 -->
-                <!-- <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i> -->
+            <!-- 增删列 -->
+            <!-- <app-add-column #addColumn  (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)"  [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column> -->
+            <!-- 关系 -->
+            <!-- <app-gene-relative class="ml-12" [geneCount]="selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative> -->
+            <!-- 返回 -->
+            <!-- <button class="ml12" [hidden]="addColumnShow || !showBackButton" nzSize="small" nz-button nzType="Default" (click)="back()">返回</button> -->
+            <!-- 只看表 -->
+            <!-- <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i> -->
             <!-- </div> -->
             <!-- 表格转换 -->
 
-            <app-big-table
-                *ngIf="defaultEntity"
-				#bigTable
-				class="no-outside-border"
-				[tableHeight]="tableHeight"
-				[pageEntity]="defaultEntity"
-				[url]="defaultUrl"
-                [tableId]="defaultTableId"
-                [(computedScrollHeight)]="computedScrollHeight"
-			></app-big-table>
+            <app-big-table *ngIf="defaultEntity" #bigTable class="no-outside-border" [tableHeight]="tableHeight" [pageEntity]="defaultEntity" [url]="defaultUrl" [tableId]="defaultTableId" [(computedScrollHeight)]="computedScrollHeight"></app-big-table>
         </div>
     </div>
 </div>

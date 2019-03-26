@@ -326,7 +326,7 @@ const ROUTES: Routes = [
 		]
 	},
 	{
-		path:'report/gene-detail',
+		path:'report/gene-detail/:lcid/:id',
 		component:GeneDetailComponent,
 		data:{
 			keep:true,

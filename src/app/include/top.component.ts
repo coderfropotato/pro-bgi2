@@ -121,4 +121,9 @@ export class TopComponent{
 		});
 		this.themeColor = color;
 	}
+
+	handleSaveGeneListClick(){
+		let href = `${location.href.split('/report')[0]}/report/gene-list/venn`;
+		window.open(href)
+	}
 }

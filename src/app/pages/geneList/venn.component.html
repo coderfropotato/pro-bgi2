@@ -39,10 +39,10 @@
                         <div class="table-thead tableHeader">
                             <div class="fLeft">
                                 <!-- 图表切换按钮 *ngIf="beforeSelectPanelEntity['setNameList'].length>1"-->
-                                <button  nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip nzTitle="{{'view.s_view' | translate}}">
+                                <button nz-button [class.btnActive]="!isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=false" nz-tooltip nzTitle="{{'view.s_view' | translate}}">
                                     <i class="anticon anticon-area-chart"></i>
                                 </button>
-                                <button  nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
+                                <button nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="isShowTable=true" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
                                     <i class="anticon anticon-table"></i>
                                 </button>
                                 <!-- 选择面板 显示隐藏icon -->
@@ -55,7 +55,7 @@
                                 <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="multiSelectChange()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
                                 <button *ngIf="!isShowTable && !chartError" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
                                 <!-- 下拉选择 [nzMaxMultipleCount]="3"-->
-                                <nz-select  style="max-width: 360px;min-width:140px;margin-right:6px;"  nzMode="multiple" nzPlaceHolder="please select tag" [(ngModel)]="selectPanelEntity['tag']" (ngModelChange)="handleTagSelectChange()">
+                                <nz-select style="max-width: 360px;min-width:140px;margin-right:6px;" nzMode="multiple" nzPlaceHolder="please select tag" [(ngModel)]="selectPanelEntity['tag']" (ngModelChange)="handleTagSelectChange()">
                                     <nz-option *ngFor="let tag of tagList" [nzLabel]="tag" [nzValue]="tag"></nz-option>
                                 </nz-select>
                                 <!-- 刷新-->
@@ -69,7 +69,7 @@
                         </div>
                         <div #tableContent class="table-content" style="flex:1;display: flex;flex-direction: column;padding: 0 1px;">
                             <!-- 选择面板 -->
-                            <div  class="selectPanel" *ngIf="isShowSelectPanel  && selectPanelData.length">
+                            <div class="selectPanel" *ngIf="isShowSelectPanel  && selectPanelData.length">
                                 <div class="selectContent">
                                     <div>
                                         <span>genelist</span>&nbsp;
@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                             <!-- 图和表的容器 -->
-                            <div #tableChartContent  class="table-chart-content" [class.center-flex]="!isShowTable && !chartError" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
+                            <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable && !chartError" style="flex:1;border-bottom: 1px solid rgba(234, 234, 235, 0.95);" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
                                 <!-- veen/upsetR表 -->
                                 <nz-table *ngIf=" isShowTable && !chartError && tableData['rows']" nzShowPagination="false" [nzData]="tableData['rows']" [nzScroll]="scroll" [nzSize]="'small'">
                                     <thead>
@@ -110,7 +110,7 @@
                                 </nz-table>
 
                                 <!-- chart -->
-                                <div class="center chart"  [hidden]="isShowTable || chartError">
+                                <div class="center chart" [hidden]="isShowTable || chartError">
                                     <div id="geneListTableSwitchChart_chart" style='margin: auto;'></div>
                                 </div>
 
@@ -124,47 +124,24 @@
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
     </div>
-    <div #right  class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+    <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
         <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
             <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"> </app-layout-switch>
         </div>
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
-            <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType" ></app-add-column>
+            <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType"></app-add-column>
             <!-- 关系  [relative]="transformTable['relative']"-->
-            <app-gene-relative class="ml-12" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)" ></app-gene-relative>
+            <app-gene-relative class="ml-12" [geneCount]="selectGeneCount" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
             <!-- 返回 -->
             <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
             <!-- 只看表 -->
             <!-- <i *ngIf="!addColumnShow" class="iconfont only-table" [class.icon-biaogezhankai]="!onlyTable" [class.icon-biaogeshouqi]="onlyTable"  [nzTitle]="(onlyTable?'unExpandTable':'expandTable') | translate" nz-tooltip [class.active]="onlyTable" (click)="handleOnlyTable()"></i> -->
         </div>
         <!-- 表格转换 [defaultShowFilterStatus]="defaultShowFilterStatus"-->
-        <app-table-transformation
-            #transformTable
-            *ngIf="getGeneListDone"
-            class="no-outside-border"
-            [isFirst]="first"
-            [tableHeight]="tableHeight"
-            [defaultTableEntity]="defaultEntity"
-            [defaultTableUrl]="defaultUrl"
-            [defaultTableId]="defaultTableId"
-            [defaultTableDefaultChecked]="defaultDefaultChecked"
-            [(defaultEmitBaseThead)]="defaultEmitBaseThead"
-            (defaultBaseTheadChange)="baseTheadChange($event)"
-            [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
-            [extendTableEntity]="extendEntity"
-            [extendTableUrl]="extendUrl"
-            [extendTableId]="extendTableId"
-            [extendTableDefaultChecked]="extendDefaultChecked"
-            [(extendEmitBaseThead)]="extendEmitBaseThead"
-            (extendBaseTheadChange)="baseTheadChange($event)"
-            [extendTableCheckStatusInParams]="extendCheckStatusInParams"
-            [(applyOnceSearchParams)]="applyOnceSearchParams"
-            (selectGeneCountChange)="handleSelectGeneCountChange($event)"
-            [(computedScrollHeight)]="computedScrollHeight"
-            (defaultSaveGeneListSuccess)="saveGeneListSuccess($event)"
-            (extendSaveGeneListSuccess)="saveGeneListSuccess($event)"
-        ></app-table-transformation>
+        <app-table-transformation #transformTable *ngIf="getGeneListDone" class="no-outside-border" [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
+            [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"
+            [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams"
+            (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" (defaultSaveGeneListSuccess)="saveGeneListSuccess($event)" (extendSaveGeneListSuccess)="saveGeneListSuccess($event)"></app-table-transformation>
     </div>
 </div>
-
