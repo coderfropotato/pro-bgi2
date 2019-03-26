@@ -14,7 +14,7 @@ declare const ActiveXObject: any;
 	selector: 'app-top',
 	templateUrl: './top.component.html'
 })
-export class TopComponent{
+export class TopComponent implements OnInit{
 	@ViewChild('reportContent') reportContent: ElementRef;
 	@ViewChild('fullScreen') fullScreen;
 
@@ -24,6 +24,7 @@ export class TopComponent{
 	navigatedRoutes: Array<string> = [];
 	themeColor: string = '#5278f8';
 	isFull: boolean = false;
+	LCID:string = '';
 
 	@Input() pdf: boolean = true;
 	@Input() analysis: boolean = true;
@@ -46,6 +47,10 @@ export class TopComponent{
 		this.translate.use(this.browserLang.match(/zh|en/) ? this.browserLang : 'zh');
 		sessionStorage.setItem('lang', this.browserLang);
 		this.storeService.setLang(this.browserLang);
+	}
+
+	ngOnInit(){
+		this.LCID = this.storeService.getStore('LCID');
 	}
 
 	changeLan() {
