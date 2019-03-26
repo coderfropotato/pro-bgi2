@@ -7,10 +7,10 @@
     <div class="top_right">
         <ng-content></ng-content>
         <div class="top_right_content">
-            <i *ngIf="pdf" nz-tooltip nzTitle="{{'top.pdf' | translate}}" class="iconfont icon-pdfwenjian"></i>
-            <i *ngIf="upload" nz-tooltip nzTitle="{{'top.upload' | translate}}" class="iconfont icon-shangchuanwenjian" (click)="uploadFn()"></i>
-            <i *ngIf="analysis" nz-tooltip nzTitle="{{'top.analysis' | translate}}" class="iconfont icon-fenxi" (click)="analysisFn()"></i>
-            <i *ngIf="lang" nz-tooltip nzTitle="{{'top.lang' | translate}}" class="iconfont" style="margin-right:16px;" [class.icon-yingwenqiehuan]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
+            <i *ngIf="pdf" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.pdf' | translate}}" class="iconfont icon-pdfwenjian"></i>
+            <i *ngIf="upload" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.upload' | translate}}" class="iconfont icon-shangchuanwenjian" (click)="uploadFn()"></i>
+            <i *ngIf="analysis" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.analysis' | translate}}" class="iconfont icon-fenxi" (click)="analysisFn()"></i>
+            <i *ngIf="lang" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.lang' | translate}}" class="iconfont" style="margin-right:16px;" [class.icon-yingwenqiehuan]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
             <!-- 修改主题色 -->
             <!-- <input type="color" (change)="handleColorChange($event)"> -->
 

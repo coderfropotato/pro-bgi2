@@ -260,3 +260,9 @@ export const matchRule: object = {
 	msigdb_h_term: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' },
 	msigdb_h_desc: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' }
 };
+
+// 跳转基因详情页的头
+export const geneInfo:string [] = [
+	'gene_id',
+	'rna_id'
+]
