@@ -1,4 +1,3 @@
-import { ActivatedRoute } from '@angular/router';
 import { AddColumnService } from './../../super/service/addColumnService';
 import { StoreService } from './../../super/service/storeService';
 import { PageModuleService } from './../../super/service/pageModuleService';
