@@ -1,4 +1,3 @@
-import { ActivatedRoute } from '@angular/router';
 import { AddColumnService } from './../../super/service/addColumnService';
 import { StoreService } from './../../super/service/storeService';
 import { PageModuleService } from './../../super/service/pageModuleService';
@@ -11,7 +10,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
 import { GeneService } from './../../super/service/geneService';
-import { resolve } from 'url';
 
 declare const d3: any;
 declare const d4: any;

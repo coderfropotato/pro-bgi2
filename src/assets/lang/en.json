@@ -189,5 +189,31 @@
     "006001": "TCGA",
     "006002": "ARCHS4",
     "007": "Upload",
-    "007001": ""
+    "007001": "",
+    "tools": {
+        "01": "Heatmap relation",
+        "02": "Heatmap",
+        "04": "MultiOmics",
+        "05": "ChiSquare",
+        "06": "Line",
+        "07": "Net",
+        "08": "Linked Network",
+        "09": "As",
+        "11": "Classification",
+        "12": "Enrichment",
+        "13": "KDA"
+    },
+    "desc": {
+        "01": "Heatmap relation",
+        "02": "Heatmap",
+        "04": "MultiOmics",
+        "05": "ChiSquare",
+        "06": "Line",
+        "07": "Net",
+        "08": "Linked Network",
+        "09": "As",
+        "11": "Classification",
+        "12": "Enrichment",
+        "13": "KDA"
+    }
 }

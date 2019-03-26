@@ -194,7 +194,10 @@ export const matchRule: object = {
 	kegg_module_term: { url: 'https://www.kegg.jp/kegg-bin/show_module?@' },
 	kegg_module_desc: { url: 'https://www.kegg.jp/kegg-bin/show_module?@' },
 
-	kegg_pathway_term_id: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' },
+
+	kegg_pathway_term_id: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@'},  // 富集跳map
+	// kegg_pathway_term: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' }, // 富集跳map
+	
 	kegg_pathway_term: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' },
 	kegg_pathway_desc: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' },
 
