@@ -201,6 +201,7 @@ export class GoRichComponent implements OnInit {
                 version:this.version
             };
 
+            
             this.first = true;
             this.resetCheckGraph = true;
             this.applyOnceSearchParams = true;

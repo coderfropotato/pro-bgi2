@@ -159,7 +159,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			// matchAll: false,
 			reAnaly: false,
 			graphRelations: this.graphRelations,
-			checkGraph: false,
+			checkGraph: true,
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.geneType, //基因类型gene和transcript
@@ -188,6 +188,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			sortValue: null,
 			// matchAll: false,
 			reAnaly: false,
+			checkGraph: true,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
 			geneType: this.geneType, //基因类型gene和transcript

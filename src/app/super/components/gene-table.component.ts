@@ -475,10 +475,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 				if ('checkGraph' in this.tableEntity) {
 					this.tableEntity['checkGraph'] = false;
-					// setTimeout(()=>{
-					// 	this.resetCheckGraph = false;
-					// 	this.resetCheckGraphChange.emit(this.resetCheckGraph);
-					// },30)
 				}
 
 				// 针对返回默认表的时候  图上如果有需要筛选的条件  就需要默认表加载完成以后初始化表上的筛选
