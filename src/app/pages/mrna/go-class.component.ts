@@ -209,7 +209,7 @@ export class GoClassComponent implements OnInit {
 				searchList: [],
 				checkedClassifyType: this.selectedVal,
 				checkedClassifyList: this.checkedList,
-				checkGraph: true,
+				checkGraph: false,
 				sortThead: this.addColumn['sortThead'],
 				removeColumns: []
 			};
@@ -241,7 +241,7 @@ export class GoClassComponent implements OnInit {
 				searchList: [],
 				checkedClassifyType: this.selectedVal,
 				checkedClassifyList: this.checkedList,
-				checkGraph: true,
+				checkGraph: false,
 				sortThead: this.addColumn['sortThead'],
 				removeColumns: []
 			};

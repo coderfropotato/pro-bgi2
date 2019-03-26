@@ -69,6 +69,7 @@ export class ReMultiOmicsComponent implements OnInit {
 	extendEmitBaseThead: boolean;
 	baseThead: any[] = [];
 	applyOnceSearchParams: boolean;
+	resetCheckGraph:boolean;
 
 	tableHeight = 0;
 	first = true;
@@ -140,6 +141,7 @@ export class ReMultiOmicsComponent implements OnInit {
 
 		// table
 		this.first = true;
+		this.resetCheckGraph = true;
 		this.applyOnceSearchParams = true;
 		this.defaultUrl = `${config['javaPath']}/multiOmics/table`;
 		this.defaultEntity = {
@@ -295,6 +297,7 @@ export class ReMultiOmicsComponent implements OnInit {
 
 	chartBackStatus() {
 		this.defaultEmitBaseThead = true;
+		this.resetCheckGraph = true;
 		this.transformTable._initCheckStatus();
 		// 清空表的筛选
 		this.transformTable._clearFilterWithoutRequest();
