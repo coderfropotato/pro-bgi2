@@ -259,8 +259,8 @@ export class GeneDetailComponent implements OnInit {
 
 	ngOnInit() {
 		this.routeActive.params.subscribe((params) => {
-			this.geneID = params.geneID;
-			this.LCID = params.LCID;
+			this.geneID = params.geneid;
+			this.LCID = params.lcid;
 			//console.log(params);
 		})
 		//this.geneID = "374443";
