@@ -113,6 +113,13 @@
         <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
             <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
         </div>
+        <div class="small_text">
+            当前表格，比较组 : <span class="small_span">{{m_name1}}</span> 上下调类别 ：<span class="small_span">{{m_name2}}</span>
+        </div>
+        <div class="small_text" style="font-style: italic;color: rgba(102,101,101,.548);">
+            注：请单击柱状图切换比较组或上下调类别。
+        </div>
+        
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
             <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType"></app-add-column>
@@ -121,6 +128,7 @@
             <!-- 返回 -->
             <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
         </div>
+        
         <!-- 表格转换  [defaultShowFilterStatus]="defaultShowFilterStatus"-->
         <app-table-transformation #transformTable class="no-outside-border" [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
             [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"
