@@ -15,6 +15,7 @@ const config: object = {
 	matchList,
 	matchRule,
 	geneInfo,
+	targetRelativeGeneLimit:1000,  // 上下游关系选择的基因限制 最大1000
 	urlSplitFlag: '@', // 切割url的标志字符
 	valSplitFlag: '+++', // 内容换行的标志字符
 	idComposeDesc: '///' // id和描述的组合标志字符
