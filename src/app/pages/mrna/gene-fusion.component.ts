@@ -158,24 +158,42 @@ export class GeneFusionComponent implements OnInit {
 			this.isShowColumn=false;
 		}
 
-		var lineData = [];
+		outerRing.forEach(d=>{
+			if(d.pointData.length){
+				d.pointData.forEach(m=>{
+					m.pos= m.pos==='NaN' ? null : m.pos;
+				})
+				d.pointData=d.pointData.filter(m=>m.pos);
+			}
+		})
 
-		if(this.linkSerach==='score'){
-			data.lineData.forEach(d => {
-				if(d.fusion_score_order > this.score){
-					lineData.push(d);
-				}
-			});
-		}else if(this.linkSerach==='linkId'){
+		var lineData = [];
+		
+		if(data.lineData.length){
 			data.lineData.forEach(d=>{
-				this.linkIds.forEach(m=>{
-					if(d.fusion_link_id===m){
+				d.fusion_up_genome_pos=d.fusion_up_genome_pos==='NaN' ? null : d.fusion_up_genome_pos;
+				d.fusion_dw_genome_pos=d.fusion_dw_genome_pos==='NaN' ? null : d.fusion_dw_genome_pos;
+			})
+			
+			data.lineData=data.lineData.filter(m=>m.fusion_up_genome_pos && m.fusion_dw_genome_pos);
+
+			if(this.linkSerach==='score'){
+				data.lineData.forEach(d => {
+					if(d.fusion_score_order > this.score){
 						lineData.push(d);
 					}
+				});
+			}else if(this.linkSerach==='linkId'){
+				data.lineData.forEach(d=>{
+					this.linkIds.forEach(m=>{
+						if(d.fusion_link_id===m){
+							lineData.push(d);
+						}
+					})
 				})
-			})
-		}else{
-			lineData = data.lineData;
+			}else{
+				lineData = data.lineData;
+			}
 		}
 
 		var line_len=lineData.length;

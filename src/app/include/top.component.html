@@ -22,6 +22,15 @@
             <!-- <button style="padding: 0 7px;height: 24px;" nz-button nzType="primary" (click)="handleFullScreenClick()">切换全屏</button> -->
 
             <!-- <i class="iconfont" nz-tooltip nzTitle="{{'top.fullscreen' | translate}}" style="margin-right:0;" [class.icon-chuangkou]="isFull" [class.icon-quanping]="!isFull" (click)="handleFullScreenClick()"></i> -->
+
+            <i nz-popover nzPlacement="bottomRight" [nzContent]="content" class="anticon anticon-poweroff" style="margin-right:16px;font-size:18px;"></i>
+            <ng-template #content>
+                <div class="logout-wrap">
+                    <div>项目编号：{{LCID}}</div>
+                    <div>退出</div>
+                </div>
+            </ng-template>
+
         </div>
     </div>
 </div>
