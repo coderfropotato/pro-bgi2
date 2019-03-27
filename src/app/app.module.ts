@@ -311,7 +311,7 @@ const ROUTES: Routes = [
 			},
 			// 基因总表
 			{
-				path:'gene',
+				path:'main',
 				component:GenePage,
 				data:{keep:true,module:'gene'}
 			},

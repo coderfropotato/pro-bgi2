@@ -3,7 +3,7 @@
         <div class="search-box">
             <div class="search">
                 <ng-template #suffixIconButton>
-                    <button nz-button nzType="default" nzSearch  (click)="search()"><i class="anticon anticon-search"></i></button>
+                    <button nz-button nzType="default" nzSearch (click)="search()"><i class="anticon anticon-search"></i></button>
                 </ng-template>
                 <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
                     <input type="text" [(ngModel)]="label" (keyup.enter)="search()" nz-input placeholder="input search text">
@@ -52,10 +52,11 @@
             </div>
         </div>
         <div class="table-content">
-            <nz-table *ngIf="!error" #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"  nzSize="middle">
+            <nz-table *ngIf="!error" #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzSize="middle">
                 <thead>
                     <tr>
                         <th>名称</th>
+                        <th>Id</th>
                         <th>状态</th>
                         <th>创建时间</th>
                         <th>前置任务</th>
@@ -66,16 +67,13 @@
                 <tbody>
                     <tr class="center" *ngFor="let data of analysisList">
                         <td class="editProject">
-                            <nz-badge *ngIf="!data.isEditNickname" [nzDot]="!data['isCheck']">{{data['nickname']}} 
-                                <span *ngIf="data['isEdited']" style="color:red;">（已编辑）</span>
-                                &emsp;
+                            <nz-badge *ngIf="!data.isEditNickname" [nzDot]="!data['isCheck']">{{data['nickname']}}
+                                <span *ngIf="data['isEdited']" style="color:red;">（已编辑）</span> &emsp;
                             </nz-badge>
-                            <input #inputNickname *ngIf="data.isEditNickname" type="text" placeholder="字数限制50"
-                            (keyup.enter)="updateNicknameEnter(data,data.nickname)"
-                            (blur)="updateNickname(data,data.nickname)"
-                            [(ngModel)]="data.nickname">
+                            <input #inputNickname *ngIf="data.isEditNickname" type="text" placeholder="字数限制50" (keyup.enter)="updateNicknameEnter(data,data.nickname)" (blur)="updateNickname(data,data.nickname)" [(ngModel)]="data.nickname">
                             <i class="iconfont icon-xiugai" (click)=updateNicknameCheck(data)></i>
                         </td>
+                        <td>{{data['_id']}}</td>
                         <!-- process -1 pending 1 success 0 error -->
                         <td>
                             <span *ngIf="data['process'] == 1"><i class="anticon anticon-check-circle success"></i>&nbsp;成功</span>
@@ -98,15 +96,12 @@
                         </td>
                         <!-- <td>{{data['remark']?data['remark']:'-'}}</td> -->
                         <td class="editRemark">
-                            <span class="popover-table-tools"  style="display:inline-block;">
+                            <span class="popover-table-tools" style="display:inline-block;">
                                 <span *ngIf="!data.isEditRemark">{{data['remark'] ? data['remark'] : '-'}}
                                 </span>
                             </span>
                             <!-- ng-focus：获取到焦点，ng-blur: 失去焦点，ng-keyup（onkeyup）:回车-->
-                            <input #inputRemark *ngIf="data.isEditRemark" type="text" placeholder="字数限制100"
-                            (blur)="updateRemark(data,data.remark)"
-                            (keyup.enter)="updateRemarkEnter(data,data.remark)"
-                            [(ngModel)]="data.remark">
+                            <input #inputRemark *ngIf="data.isEditRemark" type="text" placeholder="字数限制100" (blur)="updateRemark(data,data.remark)" (keyup.enter)="updateRemarkEnter(data,data.remark)" [(ngModel)]="data.remark">
                             <i class="iconfont icon-xiugai" (click)=updateRemarkCheck(data)></i>
                         </td>
                         <td>
@@ -122,7 +117,7 @@
             </nz-table>
             <app-error *ngIf="error" [error]="error"></app-error>
             <div class="table-bottom">
-                <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [showPageSize]="false" [total]="total" [pageSize]="10" (pageIndexChange)="getAnalysisList()"  [maxLimit]="1000"></app-pagination>
+                <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [showPageSize]="false" [total]="total" [pageSize]="10" (pageIndexChange)="getAnalysisList()" [maxLimit]="1000"></app-pagination>
             </div>
         </div>
     </nz-spin>

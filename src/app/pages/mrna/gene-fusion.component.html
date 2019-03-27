@@ -12,7 +12,7 @@
         <div class="left-bottom-layout">
             <!-- 设置 -->
             <ng-template #setTemplate>
-                <app-fusionSet [isDisabled]='isDisabled' (confirm)="setConfirm($event)"></app-fusionSet>
+                <app-fusionSet *ngIf="!isShowTable" [isDisabled]='isDisabled' (confirm)="setConfirm($event)"></app-fusionSet>
             </ng-template>
 
              <!-- 下拉选择 -->
@@ -27,10 +27,13 @@
                 #fusionChartTable
                 [id]="'fusionChart'"
                 [apiEntity]="tableChartEntity"
+                [tableUrl]="tableUrl"
                 [chartUrl]="chartUrl"
+                [isPaging]='true'
                 [setTemplate]="setTemplate"
                 [selectTemplate]="selectTemplate"
                 (drawChartEmit)="drawChart($event)"
+                (showChange)="showChange($event)"
                 [flex]="true"
                 [chartId]="'fusionCircos'"
                 [chartName]="'基因融合 Circos 图'"

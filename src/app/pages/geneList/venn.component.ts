@@ -603,8 +603,11 @@ export class GeneListVennComponent implements OnInit {
     }
 
     saveGeneListSuccess(argv){
-        this.selectPanelEntity['tag'].length = 0;
-        this.getAllGeneList();
+		(async()=>{
+			this.selectPanelEntity['tag'].length = 0;
+			await this.getAllGeneList();
+			this.updateVenn();
+		})()
     }
 
 	//选择面板 确定筛选的数据
@@ -764,7 +767,7 @@ export class GeneListVennComponent implements OnInit {
 						this.updateTitle();
 					}
 				},
-				width: 480,
+				width: 700,
 				height: 300,
 				onselect: (d) => {
 					this.singleMultiSelect = { bar_name: '', total_name: '', venn_name: '' };

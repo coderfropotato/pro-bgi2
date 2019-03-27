@@ -25,6 +25,7 @@ export class GeneFusionComponent implements OnInit {
 
 	switch: string = 'right';
 	
+	isShowTable:boolean;
 	tableUrl: string;
 	chartUrl:string;
 	tableChartEntity: object;
@@ -73,13 +74,20 @@ export class GeneFusionComponent implements OnInit {
 	ngOnInit() {
 		// this.chartUrl = `http://localhost:8086/fusion`;
 		this.chartUrl=`${config['javaPath']}/alternativeSplice/fusionGraph`;
+		this.tableUrl=`${config['javaPath']}/alternativeSplice/fusionTable`;
 		this.samples=this.storeService.getStore('sample');
 		this.sample=this.samples[0];
 		this.tableChartEntity={
 			"LCID": this.storeService.getStore('LCID'),
+			"pageSize": 10, 
+			"pageIndex": 1,
 			"sample": this.sample
 		}
 	}
+
+	showChange(isshowtable){
+        this.isShowTable=isshowtable;
+    }
 
 	handleSelectChange(){
 		this.tableChartEntity['sample']=this.sample;
