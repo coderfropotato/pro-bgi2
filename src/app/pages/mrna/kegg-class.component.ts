@@ -574,7 +574,7 @@ export class KeggClassComponent implements OnInit {
 			custom = [ x, y, category ];
 		} else {
 			showLegend = false;
-			custom = [ x, category, category ];
+			custom = [ x, category ];
 			yTitle = 'Term';
 		}
 
