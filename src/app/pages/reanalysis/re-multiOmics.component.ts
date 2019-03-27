@@ -1042,12 +1042,13 @@ export class ReMultiOmicsComponent implements OnInit {
 		// 获取图关系
 		if (setArr.length) {
 			this.graphRelations.length = 0;
-			setArr.forEach((v) => {
-                let r = this.graphRelations.map(v=>v['relations']);
-				if (v['relation'] != 'false' && !r.includes(v['relations'])) {
-					this.graphRelations.push(v);
-				}
-			});
+			this.graphRelations.push(...setArr);
+			// setArr.forEach((v) => {
+            //     let r = this.graphRelations.map(v=>v['relations']);
+			// 	if (v['relation'] != 'false' && !r.includes(v['relations'])) {
+			// 		this.graphRelations.push(v);
+			// 	}
+			// });
 		} else {
 			this.graphRelations.length = 0;
 		}
