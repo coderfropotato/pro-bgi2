@@ -237,10 +237,12 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.selectedData = [];
 		this.tableUrl = `${config['javaPath']}/SampleDiff/graph`;
 
-		this.compareGroupList = this.storeService.getStore('diff_plan');
-		this.compareNewGroupList = ["ALL"].concat(this.compareGroupList);
+		//this.compareGroupList = this.storeService.getStore('diff_plan');
+		this.compareNewGroupList = ["ALL"].concat(this.storeService.getStore('diff_plan'));
 		this.compareGroup = this.compareNewGroupList[0];
-		this.m_name1 = "全部";
+		this.m_name1 = this.compareNewGroupList[1];
+		this.compareGroupList.push(this.compareNewGroupList[1]);
+		//console.log(this.compareGroupList[1])
 
 		this.selectData = ["Up+Down","Total"];
 		this.selectedVal = this.selectData[1];
@@ -617,7 +619,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 				enableChartSelect: true,
 				onselect: function(data) {
 					that.defaultTheSelectList(data,2);
-					console.log(data);
+					///console.log(data);
 				}
 			},
 			axis: {
@@ -832,9 +834,11 @@ export class DiffExpressionNumberComponent implements OnInit {
 			let tempJ = [];
 			tempJ.push(data[0]["compareGroup"]);
 			this.selectConfirmData = tempJ;
-			this.m_type = null;
+			
 			this.m_name1 = data[0]["compareGroup"];
-			this.m_name2 = "Toatl";
+
+			this.m_name2 = "Total";
+			this.m_type = null;
 		}else{
 			let tempP = [];
 			tempP.push(data[0]["key"]);
@@ -875,29 +879,29 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.selectData = ["Up+Down","Total"];
 		this.selectedVal = this.selectData[1];
 
-		// this.upSelect.length = 0;
-		// this.leftSelect.length = 0;
 		this.defaultShowFilterStatus = false;
 		this.chartBackStatus();
 	}
 
 	handleCompareGroupChange() {
-		console.log(this.compareGroup);
+		//console.log(this.compareGroup);
 		if(this.compareGroup == "ALL"){
 			this.selectConfirmData = this.compareGroupList;
+			this.m_name1 = this.compareNewGroupList[1];
 		}else{
 			let tempS = [];
 			tempS.push(this.compareGroup);
 			this.selectConfirmData = tempS;
+			this.m_name1 = this.compareGroup;
 		}
 
-		if(this.selectedVal == "Total"){
-			this.m_type = null;
-			this.m_name2 = "Total";
-		}else{
-			this.m_type = 'up';
-			this.m_name2 = "up";
-		}
+		// if(this.selectedVal == "Total"){
+		// 	this.m_type = null;
+		// 	this.m_name2 = "Total";
+		// }else{
+		// 	this.m_type = 'up';
+		// 	this.m_name2 = "up";
+		// }
 
 		this.doWithSelectChange();
 		this.chartBackStatus();
@@ -913,16 +917,15 @@ export class DiffExpressionNumberComponent implements OnInit {
 			this.m_type = 'up';
 			this.m_name2 = "up"
 		}
-
-		if(this.compareGroup == "ALL"){
-			this.selectConfirmData = this.compareGroupList;
-			this.m_name1 = "全部";
-		}else{
-			let tempS = [];
-			tempS.push(this.compareGroup);
-			this.selectConfirmData = tempS;
-			this.m_name1 = this.compareGroup;
-		}
+		// if(this.compareGroup == "ALL"){
+		// 	this.selectConfirmData = this.compareGroupList;
+		// 	this.m_name1 = this.compareNewGroupList[1];
+		// }else{
+		// 	let tempS = [];
+		// 	tempS.push(this.compareGroup);
+		// 	this.selectConfirmData = tempS;
+		// 	this.m_name1 = this.compareGroup;
+		// }
 
 		this.doWithSelectChange();
 		this.chartBackStatus();
@@ -945,6 +948,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			if(this.compareGroup=="ALL"){
 				this.drawSingal("ALL");
 			}else{
+				this.drawSingal(this.compareGroup);
 				this.m_name1 = this.compareGroup;
 			}
 
