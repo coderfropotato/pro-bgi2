@@ -2,7 +2,7 @@
     <div style="display:inline-block" class="fLeft">
         <ul *ngIf="menu.length" (mouseenter)="rootMenuMouseEnter()" (mouseleave)="rootMenuMouseLeave()">
             <li [class.active]="item['active']" *ngFor="let item of menu;let i = index" (mouseover)="menuMouseOver(item,i)" (click)="jumpToFirst(item,i)">
-                <span>{{item.category}}</span>
+                <span>{{"menu."+item.category | translate}}</span>
             </li>
         </ul>
     </div>
@@ -13,7 +13,7 @@
             <div class="tool-imgs {{sub['url']}}-img"></div>
             <!-- <img src="../res/img/韦恩图.png" /> diff-venn-->
             <p>描述信息描述信息描述信息描述信息描述信息描述信息描述信息描述信息</p>
-            <a class="menu-button">{{sub['name']}}</a>
+            <a class="menu-button">{{"menu."+sub['name'] | translate}}</a>
         </li>
     </ol>
 
