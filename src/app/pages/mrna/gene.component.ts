@@ -100,7 +100,7 @@ declare const $: any;
 export class GenePage {
 	@ViewChild('geneTable') geneTable;
 
-	private moduleRouteName: string = 'gene'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
+	private moduleRouteName: string = 'main'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
 	config: object = config;
 	rootGeneType: string = this.storeService.getStore('menuRouteMap')[this.moduleRouteName]['geneType']; // 来自菜单 可配置  all gene transcript
 	defaultGeneType: string = this.rootGeneType === this.config['geneTypeAll']

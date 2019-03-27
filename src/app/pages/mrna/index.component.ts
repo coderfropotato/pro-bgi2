@@ -145,7 +145,7 @@ export class IndexComponent implements OnInit {
 									category: '主页',
 									children: [
 										{
-											url: 'gene',
+											url: 'main',
 											geneType: 'all',
 											name: '主页',
 											isExport: true
