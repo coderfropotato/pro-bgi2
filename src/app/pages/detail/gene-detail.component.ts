@@ -254,8 +254,15 @@ export class GeneDetailComponent implements OnInit {
 		private routes:ActivatedRoute,
 		private geneService: GeneService
 	) {
-		let browserLang = this.storeService.getLang();
-		this.translate.use(browserLang);
+		let langs = ['zh', 'en'];
+		this.translate.addLangs(langs);
+		this.translate.setDefaultLang('zh');
+		let curLang = localStorage.getItem('lang');
+		if(langs.includes(curLang)){
+			this.translate.use(curLang)
+		}else{
+			this.translate.use('zh')
+		}
 
 		this.routes.paramMap.subscribe((params) => {
 			this.lcid = params['params']['lcid'];

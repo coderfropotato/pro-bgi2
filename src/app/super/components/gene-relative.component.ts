@@ -49,7 +49,10 @@ export class GeneRelativeComponent implements OnInit {
 	unit: string = 'BP';
 	link: object[] = [ { name: '同义链', checked: true }, { name: '反义链', checked: true } ];
 
-	constructor(private storeService: StoreService) {}
+	constructor(private storeService: StoreService,private translate:TranslateService) {
+		let browserLang = this.storeService.getLang();
+		this.translate.use(browserLang);
+	}
 
 	ngOnInit() {
 		/*

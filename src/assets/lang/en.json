@@ -250,5 +250,6 @@
         "url_reads-alignment": "Reads Alignment",
         "url_smallrna": "Small Rna",
         "url_basic-help": "Basic Help"
-    }
+    },
+    "relativeButton": "Association conversion"
 }

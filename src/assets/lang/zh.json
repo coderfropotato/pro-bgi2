@@ -250,5 +250,6 @@
         "url_reads-alignment": "Reads比对",
         "url_smallrna": "小RNA检测",
         "url_basic-help": "帮助"
-    }
+    },
+    "relativeButton": "关联转换"
 }

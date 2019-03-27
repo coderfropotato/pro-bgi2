@@ -5,7 +5,6 @@ import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter }
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import config from '../../config';
-import { async } from '@angular/core/testing';
 
 declare const $: any;
 declare const ActiveXObject: any;
@@ -25,6 +24,8 @@ export class TopComponent implements OnInit{
 	themeColor: string = '#5278f8';
 	isFull: boolean = false;
 	LCID:string = '';
+	showLogout:boolean = false;
+	outTimer:any = null;
 
 	@Input() pdf: boolean = true;
 	@Input() analysis: boolean = true;
@@ -43,14 +44,14 @@ export class TopComponent implements OnInit{
 	) {
 		this.translate.addLangs([ 'zh', 'en' ]);
 		this.translate.setDefaultLang('zh');
-		this.browserLang = sessionStorage.getItem('lang') || config['lang']; // this.translate.getBrowserLang()
+		this.browserLang = localStorage.getItem('lang') || config['lang']; // this.translate.getBrowserLang()
 		this.translate.use(this.browserLang.match(/zh|en/) ? this.browserLang : 'zh');
-		sessionStorage.setItem('lang', this.browserLang);
+		localStorage.setItem('lang', this.browserLang);
 		this.storeService.setLang(this.browserLang);
 	}
 
 	ngOnInit(){
-		this.LCID = this.storeService.getStore('LCID');
+		this.LCID = sessionStorage.getItem('LCID');
 	}
 
 	changeLan() {
@@ -61,7 +62,7 @@ export class TopComponent implements OnInit{
 			this.translate.use('zh');
 			this.browserLang = 'zh';
 		}
-		sessionStorage.setItem('lang', this.browserLang);
+		localStorage.setItem('lang', this.browserLang);
 		this.storeService.setLang(this.browserLang);
 	}
 
@@ -130,5 +131,22 @@ export class TopComponent implements OnInit{
 	handleSaveGeneListClick(){
 		let href = `${location.href.split('/report')[0]}/report/gene-list/venn`;
 		window.open(href)
+	}
+
+	handleShowLogout(){
+		if(this.outTimer) clearTimeout(this.outTimer);
+		this.showLogout = true;
+	}
+
+	handleHideLogout(){
+		this.outTimer = setTimeout(()=>{
+			this.showLogout = false;
+		},300)
+	}
+
+	logout(){
+		sessionStorage.clear();
+		localStorage.removeItem('token');
+		this.router.navigateByUrl(`/report/login`);
 	}
 }
