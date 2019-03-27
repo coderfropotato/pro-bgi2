@@ -1363,7 +1363,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
 	_getInnerStatusParams() {
-		return {
+		return JSON.parse(JSON.stringify({
 			tableEntity: this.tableEntity,
 			url: this.url,
 			baseThead: this.head,
@@ -1375,7 +1375,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 				}
 			},
 			mongoId: this.mongoId || null
-		};
+		}));
 	}
 
 	_getData() {
