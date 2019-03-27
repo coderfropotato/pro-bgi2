@@ -435,11 +435,19 @@ export class RelativeSpliceComponent implements OnInit {
                 .attr('width', svg_width)
                 .attr('height', svg_height)
                 .on('click', function(d) {
-                    if(d == undefined){
+                    var e = e || window.event;
+                    if(e.target.nodeName == "rect"){
                         that.singleMultiSelect = {};
                         that.doSingleData();
-                    }
-                    that.updateRelativeSplice();
+                        that.updateRelativeSplice();
+                    }  
+                    // console.log(d)
+                    // if(d == undefined){
+                    //     that.singleMultiSelect = {};
+                    //     that.doSingleData();
+                    // }
+                    // that.updateRelativeSplice();
+
                     // that.chartBackStatus();
                 },false);
 
