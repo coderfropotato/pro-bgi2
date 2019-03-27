@@ -32,7 +32,7 @@ declare const $: any;
                                 <div class="gene_search gene_center"><!-- 上部搜索 -->
                                     <div class="gene_col">
                                         <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate"><!-- 搜索框 -->
-                                        <input type="text" nz-input [(ngModel)]="inputValue" (ngModelChange)="inputChange()">
+                                        <input placeholder="请输入基因ID或关键词" type="text" nz-input [(ngModel)]="inputValue" (ngModelChange)="inputChange()">
                                         </nz-input-group>
                                         <ng-template #addOnBeforeTemplate>
                                         <nz-select [(ngModel)]="selectTargetName" (ngModelChange)="selectTypeChange()">
@@ -100,7 +100,7 @@ declare const $: any;
 export class GenePage {
 	@ViewChild('geneTable') geneTable;
 
-	private moduleRouteName: string = 'gene'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
+	private moduleRouteName: string = 'main'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
 	config: object = config;
 	rootGeneType: string = this.storeService.getStore('menuRouteMap')[this.moduleRouteName]['geneType']; // 来自菜单 可配置  all gene transcript
 	defaultGeneType: string = this.rootGeneType === this.config['geneTypeAll']
@@ -285,14 +285,14 @@ export class GenePage {
 			// 收起搜索结果面板
 			this.expandHistoryPanel = false;
 
-			this.icon_color = 'gray';
-			this.radioValue = 'or';
-			this.selectPanelList.forEach((d) => {
-				if (d['isChecked']) {
-					d['isChecked'] = false;
-				}
-			});
-			this.geneService.set('checkedAddThead', this.selectPanelList);
+			//this.icon_color = 'gray';
+			//this.radioValue = 'or';
+			// this.selectPanelList.forEach((d) => {
+			// 	if (d['isChecked']) {
+			// 		d['isChecked'] = false;
+			// 	}
+			// });
+			// this.geneService.set('checkedAddThead', this.selectPanelList);
 		}
 	}
 

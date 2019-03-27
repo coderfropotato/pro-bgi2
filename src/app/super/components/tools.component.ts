@@ -178,7 +178,7 @@ export class ToolsComponent implements OnInit {
 
 		// 订阅打开抽屉
 		this.toolsService.getOpen().subscribe(res => {
-			this.toolList = JSON.parse(sessionStorage.getItem('tools_info'))[this.toolsService.get('tableEntity')['geneType']];
+			this.toolList = JSON.parse(sessionStorage.getItem('toolsInfo'))[this.toolsService.get('tableEntity')['geneType']];
 			this.geneCount = res[0];
             this.isRelation = res[1];
             this.relativeGeneCount = res[2];
