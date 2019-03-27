@@ -214,7 +214,7 @@ export class SnpOverviewComponent implements OnInit {
         //console.log(d);
         // console.log(d.data[d.key])
         //return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Number：'+d.data[d.key]/100*d.data['as_total']+'</span><br><span>Sample：'+d.data['sample_name']+'</span>';
-        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
+        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]).toFixed(2) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
 			}
 		};
 
