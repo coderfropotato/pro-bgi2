@@ -216,7 +216,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 					'<span>Type：' +
 					d.key +
 					'</span><br><span>Percentage：' +
-					(d[1] - d[0]) +
+					(d[1] - d[0]).toFixed(2) +
 					'%</span><br><span>Group：' +
 					d.data['compare_group'] +
 					'</span>'
@@ -234,7 +234,11 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 		this.asType = data[0].key.split('_')[1].toUpperCase();
 		this.group = data[0].data['compare_group'];
 
+		// 初始化表的选中状态
+		this.diffDefaultTable._initCheckStatus();
+		// 清空表的筛选
 		this.diffDefaultTable._clearFilterWithoutRequest();
+
 		this.diffDefaultTable._setParamsOfEntityWithoutRequest('group', this.group);
 		this.diffDefaultTable._setParamsOfEntityWithoutRequest('asType', this.asType);
 		this.diffDefaultTable._setParamsOfEntityWithoutRequest('pageIndex', 1);

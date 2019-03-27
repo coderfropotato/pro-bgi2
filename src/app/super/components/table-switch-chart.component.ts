@@ -33,7 +33,8 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() isChartThenTable:boolean; //是否是图画完后再获取表数据
 
-    @Input() isBigTable: boolean; //表是否为大表（有分页）
+    @Input() isPaging: boolean; //表是否有分页
+    @Input() isFilter:boolean; //表是否有筛选
 
     @Input() id: string; // 当前模块id
 
@@ -297,7 +298,7 @@ export class TableSwitchChartComponent implements OnInit {
                 ? this.tableBottom.nativeElement.offsetHeight
                 : 0;
             let scrollH: any = tableChartContentH - 38 - bottomPageH + "px";
-            if (this.isBigTable) {
+            if (this.isPaging) {
                 $(`#${this.id} .ant-table-body`).css("height", scrollH);
             }
             this.scroll["y"] = scrollH;
@@ -487,9 +488,9 @@ export class TableSwitchChartComponent implements OnInit {
                     this.isLoading = false;
                 },
                 error => {
-                    this.isLoading = false;
                     this.tableError = error;
                     if (!this.chartUrl) this.chartError = error;
+                    this.isLoading = false;
                 }
             );
     }
@@ -527,17 +528,17 @@ export class TableSwitchChartComponent implements OnInit {
                             this.getChartThen(data);
                     }
 
-                    this.isLoading = false;
                     if(this.isChartThenTable){
                         this.getTableData();
                     }
+                    this.isLoading = false;
                 },
                 error => {
-                    this.isLoading = false;
                     this.chartError = error;
                     if(this.isChartThenTable){
                         this.getTableData();
                     }
+                    this.isLoading = false;
                 }
             );
     }

@@ -8,6 +8,9 @@
             <button *ngIf="tableUrl" nz-button [class.btnActive]="isShowTable" [nzSize]="'small'" nzType="default" (click)="tableBtnClick()" nz-tooltip nzTitle="{{'view.t_view' | translate}}">
                 <i class="anticon anticon-table"></i>
             </button>
+            <!-- 表筛选 -->
+            <i *ngIf="isFilter" class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate"
+            nz-tooltip (click)="beginFilter()"></i>
             <!-- 选择面板 显示隐藏icon -->
             <span *ngIf="isHasSelectPanel && selectPanelList.length" style="margin-left:10px" (click)='showSelectPanel()'>
                 <i class="iconfont icon-zhankai"></i>
@@ -107,8 +110,10 @@
                         </tbody>
                     </nz-table>
 
+                    <!-- 有筛选的表 -->
+
                      <!-- 大表分页  -->
-                     <div #tableBottom class="table-bottom" *ngIf="isBigTable && !isVennTable && isShowTable && !tableError">
+                     <div #tableBottom class="table-bottom" *ngIf="isPaging && !isVennTable && isShowTable && !tableError">
                         <app-pagination style="float:left;" [(pageIndex)]="apiEntity['pageIndex']" [total]="total"
                             [(pageSize)]="apiEntity['pageSize']" (pageIndexChange)="getTableData()" (pageSizeChange)="pageSizeChange()">
                         </app-pagination>
@@ -133,6 +138,7 @@
                     <!-- chart -->
                     <div class="center chart" [hidden]="isShowTable || chartError">
                         <div [attr.id]="chartId" style='margin: auto;'></div>
+                        <!-- 图说明 -->
                         <div class="desc" *ngIf="chartDescContent && !isShowTable && !chartError">
                             <div class="descTitle" [class.active]='isShowChartDesc' (click)='isShowChartDesc=!isShowChartDesc'>
                                 <i nz-icon class="anticon anticon-info-circle" theme="outline"></i>&nbsp;

@@ -69,7 +69,7 @@
                 </ng-template>
 
                 <!-- [selectTemplate]="selectTemplate" -->
-                <app-table-switch-chart #netChart [isBigTable]='true' [id]="'netChart'" [apiEntity]="chartEntity" [chartUrl]="chartUrl" [tableUrl]='tableUrl' [setTemplate]="setTemplate" (showChange)="showChange($event)" [otherRightTemplate]='funcBtnsTemplate' [otherLeftTemplate]='searchTemplate'
+                <app-table-switch-chart #netChart [isPaging]='true' [id]="'netChart'" [apiEntity]="chartEntity" [chartUrl]="chartUrl" [tableUrl]='tableUrl' [setTemplate]="setTemplate" (showChange)="showChange($event)" [otherRightTemplate]='funcBtnsTemplate' [otherLeftTemplate]='searchTemplate'
                     (drawChartEmit)="drawChart($event)" [chartId]="'netChartDiv'" [chartName]="'网络图'" [setDataUrl]="setDataUrl" [setDataEntity]="setDataEntity" (setData)="getSetData($event)" [flex]="true" [isChartThenTable]='true' (refresh)="handlerRefresh()">
                 </app-table-switch-chart>
 

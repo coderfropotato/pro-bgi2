@@ -215,7 +215,7 @@ export class AlternativeSplicingComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
+        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]).toFixed(2) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
 			}
 		};
 
@@ -232,7 +232,11 @@ export class AlternativeSplicingComponent implements OnInit {
     this.sample = data[0].data["sample_name"];
 
     //this.defaultSpliceTable._setParamsOfEntityWithoutRequest('checked', []);
+    // 初始化表的选中状态
+		this.defaultSpliceTable._initCheckStatus();
+		// 清空表的筛选
     this.defaultSpliceTable._clearFilterWithoutRequest();
+    
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('sample', this.sample);
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('asType', this.asType);
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
