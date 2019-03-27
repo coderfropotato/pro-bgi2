@@ -640,9 +640,7 @@ button {
     }
 }
 
-.alternativeSplicing {
-	
-}
+.alternativeSplicing {}
 
 .small_text {
     width: 100%;
@@ -857,7 +855,7 @@ button {
                 //     box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
                 // }
             }
-            .gene-img {
+            .main-img {
                 background-image: url('../img/list/基因总表.png');
             }
             .diff-expression-number-img {
@@ -896,7 +894,7 @@ button {
             .kegg-enrichment-img {
                 background-image: url('../img/list/kegg富集.png');
             }
-            .kegg-help-img {
+            .enrichment-help-img {
                 background-image: url('../img/list/帮助.png');
             }
             .alternative-splicing-img {
@@ -908,7 +906,7 @@ button {
             .gene-fusion-img {
                 background-image: url('../img/list/基因融合.png');
             }
-            .as-sv-help-img {
+            .as-fusion-help-img {
                 background-image: url('../img/list/帮助.png');
             }
             .snp-overview-img {
