@@ -135,7 +135,7 @@
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <ng-container *ngIf="multiOmicsData.length">
                     <button class="mb12 mr12" *ngFor="let mu of multiOmicsData;index as i;" nz-button nzType="default" nzSize="middle" (click)="multiOmicsClick(mu)" [class.active]="mu['checked']">{{mu['name']}}</button>
-                    <nz-alert *ngIf="multiOmicsError || !multiOmicsSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                    <nz-alert *ngIf="multiOmicsError || !multiOmicsSelect.length" nzShowIcon nzType="warning" nzMessage="请选择1-5个数据"></nz-alert>
                     <nz-divider></nz-divider>
                     <div class="tool-params-button-group">
                         <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>

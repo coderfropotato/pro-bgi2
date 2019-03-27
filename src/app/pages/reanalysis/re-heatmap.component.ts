@@ -328,7 +328,8 @@ export class ReHeatmapComponent implements OnInit {
 
 	// 表格基础头改变  设置emitBaseThead为true的时候 表格下一次请求回来会把表头发出来 作为表格的基础表头传入增删列
 	baseTheadChange(thead) {
-		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
+        this.baseThead = thead['baseThead'].map((v) => v['true_key']);
+        console.log(this.baseThead);
     }
 
 	// 表格上方功能区 resize重新计算表格高度

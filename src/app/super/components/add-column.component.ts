@@ -669,6 +669,42 @@ export class AddColumnComponent implements OnInit {
 		this.getCheckCount();
 	}
 
+	_resetWithoutRequest(){
+		this.theadInBase = [];
+		this.initSelected();
+
+		this.forLeaves(this.thead, (item) => {
+			item['checked'] = false;
+		});
+
+		this.baseThead.forEach((v) => {
+			this.forLeaves(this.thead, (item) => {
+				if (v.includes(item['key'])) {
+					item['checked'] = true;
+					this.selected[item['index']].push(item);
+					this.theadInBase.push(item);
+					return;
+				}
+			});
+		});
+
+		// this.forLeaves(this.thead, (item) => {
+		//     if (this.baseThead.includes(item['key'])) {
+		//         item['checked'] = true;
+		//         this.selected[item['index']].push(item);
+		//         this.theadInBase.push(item);
+		//     } else {
+		//         item['checked'] = false;
+		//     }
+		// });
+
+		this.getCheckCount();
+		this.beforeSelected = this.copy(this.selected);
+
+		// this.confirm();
+		this._confirmWithoutEvent();
+	}
+
 	_confirm() {
 		this.confirm();
 	}

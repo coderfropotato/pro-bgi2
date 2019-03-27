@@ -97,7 +97,7 @@
                         <!-- <td>{{data['remark']?data['remark']:'-'}}</td> -->
                         <td class="editRemark">
                             <span class="popover-table-tools" style="display:inline-block;">
-                                <span *ngIf="!data.isEditRemark">{{data['remark'] ? data['remark'] : '-'}}
+                                <span nz-popover [nzContent]="data['remark'] ? data['remark'] : '-'" style="display:inline-block;max-width:200px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;" *ngIf="!data.isEditRemark">{{data['remark'] ? data['remark'] : '-'}}
                                 </span>
                             </span>
                             <!-- ng-focus：获取到焦点，ng-blur: 失去焦点，ng-keyup（onkeyup）:回车-->

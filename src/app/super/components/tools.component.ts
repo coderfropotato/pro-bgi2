@@ -597,7 +597,7 @@ export class ToolsComponent implements OnInit {
 			if (index != -1) this.multiOmicsSelect.splice(index, 1);
 		}
 
-		this.multiOmicsError = !this.multiOmicsSelect.length;
+		this.multiOmicsError = !this.multiOmicsSelect.length || this.multiOmicsSelect.length>5;
 	}
 
 	multiOmicsConfirm(type) {
@@ -822,7 +822,7 @@ export class ToolsComponent implements OnInit {
     }
 
     // KDA
-    getKDAParams(){
+    getkdaParams(){
         try {
             let relations = JSON.parse(sessionStorage.getItem('relations'));
             relations.forEach(v=>{

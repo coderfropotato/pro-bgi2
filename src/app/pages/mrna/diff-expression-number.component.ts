@@ -517,10 +517,10 @@ export class DiffExpressionNumberComponent implements OnInit {
 			  enableChartSelect: true,
 			  onselect: data => {
 				that.defaultTheSelectList(data,1);
-				console.log(data);
-			  }
-			  },
-			  axis: {
+					console.log(data);
+				}
+			},
+			axis: {
 			  x: {
 				title: "",
 				dblclick: function(event) {
@@ -541,19 +541,19 @@ export class DiffExpressionNumberComponent implements OnInit {
 				  }
 				}
 			  },
-			  legend: {
-				show: true,
-				position: "right",
-				click:function(d,index){
-				  that.color = d3.select(d).attr('fill');
-				  that.legendIndex = index;
-				  that.isShowColorPanel = true;
+			},
+			legend: {
+			show: true,
+			position: "right",
+			click:function(d,index){
+					that.color = d3.select(d).attr('fill');
+					that.legendIndex = index;
+					that.isShowColorPanel = true;
 				}
-			  },
-			  "tooltip": function(d) {
-				return "<span>compareGroup:"+d.compareGroup+"</span><span>diffexp_updown_total:"+d.diffexp_updown_total+"</span>"
-			  }
-		  }
+			},
+			tooltip: function(d) {
+				return "<span>compareGroup:"+d.compareGroup+"</span><br><span>diffexp_updown_total:"+d.diffexp_updown_total+"</span>"
+			}
 		}
 		this.chart = new d4().init(config);
 	}

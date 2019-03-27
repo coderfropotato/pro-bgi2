@@ -396,6 +396,7 @@ export class DiffExpressionComponent implements OnInit {
 		this.transformTable._initCheckStatus();
 		// 清空表的筛选
 		this.transformTable._clearFilterWithoutRequest();
+		this.addColumn._resetWithoutRequest();
 		if (!this.first) {
 			this.defaultEntity['addThead'] = [];
 			this.defaultEntity['removeColumns'] = [];
@@ -409,6 +410,7 @@ export class DiffExpressionComponent implements OnInit {
 		} else {
 			this.transformTable._setParamsNoRequest('compareGroup', this.selectConfirmData);
 			this.transformTable._setParamsNoRequest('pageIndex', 1);
+			this.transformTable._setParamsNoRequest('addThead', []);
 			this.transformTable._getData();
 		}
 	}

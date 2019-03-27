@@ -143,7 +143,7 @@
         "name": "名称",
         "name_pattern": "当前输入不可用 !",
         "name_invalid": "当前名称不可用 !",
-        "label_invalid": "当前新建标签不可用 ！",
+        "label_invalid": "标签不可用 ！",
         "tag": "标签",
         "remark": "备注",
         "cancel": "取消",
