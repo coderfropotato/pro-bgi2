@@ -213,6 +213,10 @@ export class DiffExpressionComponent implements OnInit {
 	}
 
 	ngOnInit() {
+        // this.translate.onLangChange.subscribe((params) => {
+        //     console.log(params);
+        // });
+
 		this.isMultiSelect = false;
 		this.first = true;
 		this.selectedData = [];
@@ -349,7 +353,7 @@ export class DiffExpressionComponent implements OnInit {
 	doWithCompareGroup(){
 		let templength = this.compareGroupTarget.length;
 		let i = 0;
-		if(templength <= 3){	
+		if(templength <= 3){
 			this.compareGroupTop3 = this.compareGroupTarget;
 		}else{
 			this.compareGroupTarget.forEach(d => {
@@ -396,7 +400,7 @@ export class DiffExpressionComponent implements OnInit {
 		this.transformTable._initCheckStatus();
 		// 清空表的筛选
 		this.transformTable._clearFilterWithoutRequest();
-		this.addColumn._resetWithoutRequest();
+		// this.addColumn._resetWithoutRequest();
 		if (!this.first) {
 			this.defaultEntity['addThead'] = [];
 			this.defaultEntity['removeColumns'] = [];
@@ -541,7 +545,7 @@ export class DiffExpressionComponent implements OnInit {
 			}else if(type=="EBSeq"){
 				this.isShowSpan_EBSeq = true;
 			}
-			
+
 			return;
 		}else{
 			this.isShowSpan_PossionDis = false;
@@ -1491,7 +1495,7 @@ export class DiffExpressionComponent implements OnInit {
 						event.stopPropagation();
 					});
 
-				
+
 
 				// let tempList = sortArr(arr, 'x_axis');
 				// for (let i = 0; i < tempList.length; i++) {
