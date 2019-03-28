@@ -460,7 +460,7 @@ export class TableSwitchChartComponent implements OnInit {
                 ) {
                     this.apiEntity["searchList"].splice(index, 1);
                     this.classifySearchCondition();
-                    // this.getRemoteData();
+                    // this.getTableData();
                     return;
                 }
             });
