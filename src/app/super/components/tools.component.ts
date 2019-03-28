@@ -690,17 +690,19 @@ export class ToolsComponent implements OnInit {
 								// 	category:v.category,
 								// 	checked:status
 								// };
-								this.kaFunGroupSelect.push({
-									name: v.name,
-									key: v.key,
-									category: v.category,
-									checked: true
-								});
+								if(index < 2){
+									this.kaFunGroupSelect.push({
+										name: v.name,
+										key: v.key,
+										category: v.category,
+										checked: true
+									});
+								}
 								return {
 									name: v.name,
 									key: v.key,
 									category: v.category,
-									checked: true
+									checked: index < 2?true:false
 								};
 							});
 
@@ -745,6 +747,9 @@ export class ToolsComponent implements OnInit {
 			if (index == -1) temp.push(item);
 		} else {
 			if (index != -1) temp.splice(index, 1);
+		}
+		if(this.kaFunGroupSelect.length!=2){
+			return;
 		}
 
 		this.kaFunGroupError = !this.kaFunGroupData.length;
