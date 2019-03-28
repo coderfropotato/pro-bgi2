@@ -864,6 +864,12 @@ export class TableSwitchChartComponent implements OnInit {
     })
     }
 
+    pageIndexChange(){
+        this.getTableData().then((data)=>{
+            this.isLoading=false;
+        });
+    }
+
     pageSizeChange() {
         this.apiEntity["pageIndex"] = 1;
         this.getTableData().then((data)=>{
