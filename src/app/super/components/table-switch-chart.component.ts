@@ -783,7 +783,9 @@ export class TableSwitchChartComponent implements OnInit {
      * 获取表格数据
      */
     getTableData() {
-        this.isLoading = true;
+        if(!this.chartUrl){
+            this.isLoading = true;
+        }
         this.ajaxService
             .getDeferData({
                 url: this.tableUrl,
@@ -843,6 +845,7 @@ export class TableSwitchChartComponent implements OnInit {
 
                         if (!this.chartUrl) {
                             this.chartError = "";
+                            this.isLoading = false;
                             this.chartData = data.data;
                             if (
                                 this.chartTypeData &&
@@ -858,12 +861,14 @@ export class TableSwitchChartComponent implements OnInit {
                         }
                         
                     }
-                    this.isLoading = false;
+                    
                 },
                 error => {
                     this.tableError = error;
-                    if (!this.chartUrl) this.chartError = error;
-                    this.isLoading = false;
+                    if (!this.chartUrl) {
+                        this.chartError = error;
+                        this.isLoading = false;
+                    }
                 }
             );
     }
