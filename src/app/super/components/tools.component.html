@@ -255,8 +255,8 @@
                         <div nz-row class="my-nz-row" *ngIf="kaFunGroupData.length">Classification</div>
                         <div class="tool-params-tab" *ngIf="kaFunGroupData.length">
                             <button (click)="kaFunClick(kaFun)" [class.active]="kaFun['checked']" *ngFor="let kaFun of kaFunGroupData;index as i;" nz-button nzType="default" nzSize="middle">{{kaFun['name']}}</button>
-                            <nz-alert *ngIf="kaFunGroupError || kaFunGroupSelect.length < 2" nzShowIcon nzType="warning" nzMessage="请至少选择2个数据"></nz-alert>
-                            <nz-alert *ngIf="kaFunGroupError || kaFunGroupData.length == 1" nzShowIcon nzType="warning" nzMessage="请回到表格中添加至少2个可用于定性分析的列。"></nz-alert>
+                            <nz-alert *ngIf="kaFunGroupError || kaFunGroupData.length <= 1" nzShowIcon nzType="warning" nzMessage="请回到表格中添加至少2个可用于定性分析的列。"></nz-alert>
+                            <nz-alert *ngIf="kaFunGroupError || kaFunGroupSelect.length != 2" nzShowIcon nzType="warning" nzMessage="请选择2个数据"></nz-alert>
                             <p *ngIf="!kaFunGroupData.length && doKaFunAjax" class="center">缺少必要数据</p>
                         </div>
                         <!-- <p *ngIf="kaFunGroupData.length == 1" class="left" style="color:red">请回到表格中添加至少2个可用于定性分析的列。</p> -->
@@ -264,7 +264,7 @@
                 </div>
                 <div class="tool-params-button-group" *ngIf="kaFunGroupData.length">
                     <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
-                    <button nz-button nzType="primary" [disabled]="kaFunGroupError || (kaFunGroupSelect.length < 2 && kaFunGroupData.length < 2)" (click)="kaFunConfirm('chiSquare')" nzSize="middle">确定</button>
+                    <button nz-button nzType="primary" [disabled]="kaFunGroupError || kaFunGroupSelect.length != 2 || kaFunGroupData.length < 2" (click)="kaFunConfirm('chiSquare')" nzSize="middle">确定</button>
                 </div>
             </nz-spin>
         </nz-drawer>

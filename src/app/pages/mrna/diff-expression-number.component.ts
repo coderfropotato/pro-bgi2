@@ -492,8 +492,12 @@ export class DiffExpressionNumberComponent implements OnInit {
 	}
 
 	drawVenn(data) {
+		// console.log(this.compareGroup);
+		// console.log(this.selectedVal);
+		// this.allChartData = data;
+		// this.drawTotal(data["rows"]);
 		this.allChartData = data;
-		this.drawTotal(data["rows"]);
+		this.doWithSelectChange();
 	}
 
 	drawTotal(data){
@@ -798,14 +802,24 @@ export class DiffExpressionNumberComponent implements OnInit {
 			const element = this.thresholdName[index];
 			if(element=="PossionDis"){
 				this.tableEntity['diffThreshold']['PossionDis'] = this.PossionDis;
+				this.p_log2FC = this.PossionDis['log2FC'];
+				this.p_FDR = this.PossionDis['FDR']
 			}else if(element=="NOIseq"){
 				this.tableEntity['diffThreshold']['NOIseq'] = this.NOIseq;
+				this.n_log2FC = this.NOIseq['log2FC'];
+				this.n_probability = this.NOIseq['probability']
 			}else if(element=="DEGseq"){
 				this.tableEntity['diffThreshold']['DEGseq'] = this.DEGseq;
+				this.d_log2FC = this.DEGseq['log2FC'];
+				this.d_Qvalue = this.DEGseq['Qvalue']
 			}else if(element=="DESeq2"){
 				this.tableEntity['diffThreshold']['DESeq2'] = this.DESeq2;
+				this.de_log2FC = this.DESeq2['log2FC'];
+				this.de_Qvalue = this.DESeq2['Qvalue']
 			}else if(element=="EBSeq"){
 				this.tableEntity['diffThreshold']['EBSeq'] = this.EBSeq;
+				this.e_log2FC = this.EBSeq['log2FC'];
+				this.e_PPEE = this.EBSeq['probability']
 			}
 		}
 
@@ -819,6 +833,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 		// 	bar_name: [],
 		// 	total_name: []
 		// };
+
+		//this.tableEntity["compareGroup"] = this.selectConfirmData;
 
 		this.panelShow = false;
 		// this.upSelect.length = 0;
@@ -872,13 +888,14 @@ export class DiffExpressionNumberComponent implements OnInit {
 	// 图表切换刷新
 	handlerRefresh() {
 		// 清空选择的数据
-		this.compareGroupList = this.storeService.getStore('diff_plan');
-		this.compareNewGroupList = ["ALL"].concat(this.compareGroupList);
-		this.compareGroup = this.compareNewGroupList[0];
+		// this.compareGroupList = this.storeService.getStore('diff_plan');
+		// this.compareNewGroupList = ["ALL"].concat(this.compareGroupList);
+		// this.compareGroup = this.compareNewGroupList[0];
 
-		this.selectData = ["Up+Down","Total"];
-		this.selectedVal = this.selectData[1];
+		// this.selectData = ["Up+Down","Total"];
+		// this.selectedVal = this.selectData[1];
 
+		this.tableEntity["compareGroup"] = this.selectConfirmData;
 		this.defaultShowFilterStatus = false;
 		this.chartBackStatus();
 	}
