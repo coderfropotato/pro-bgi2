@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import config from '../../../config';
+import { TranslateService } from '@ngx-translate/core';
 
 declare const window: any;
 @Component({
@@ -30,14 +31,25 @@ export class LoginComponent implements OnInit {
 		private globalService: GlobalService,
 		private ajaxService: AjaxService,
 		private nzMessageService: NzMessageService,
-		private storeService: StoreService
-	) {}
+		private storeService: StoreService,
+		private translate:TranslateService
+	) {
+		let langs = ['zh', 'en'];
+		this.translate.addLangs(langs);
+		this.translate.setDefaultLang('zh');
+		let curLang = localStorage.getItem('lang');
+		if(langs.includes(curLang)){
+			this.translate.use(curLang)
+		}else{
+			this.translate.use('zh')
+		}
+	}
 
 	ngOnInit(): void {
 		this.uuid = this.generateUuid();
 		this.config = config;
 		this.imgUrl = `${this.config['javaPath']}/checkImg/${this.uuid}`;
-		window.localStorage.clear();
+		window.localStorage.removeItem('token');
 		window.sessionStorage.clear();
 
 		this.validateForm = this.fb.group({

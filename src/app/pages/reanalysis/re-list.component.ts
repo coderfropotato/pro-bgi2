@@ -78,8 +78,12 @@ export class ReListComponent implements OnInit {
 		let langs = ['zh', 'en'];
 		this.translate.addLangs(langs);
 		this.translate.setDefaultLang('zh');
-		let curLang = sessionStorage.getItem('lang');
-		langs.includes(curLang) ? this.translate.use(curLang) : this.translate.use('zh');
+		let curLang = localStorage.getItem('lang');
+		if(langs.includes(curLang)){
+			this.translate.use(curLang)
+		}else{
+			this.translate.use('zh')
+		}
 	}
 
 	ngOnInit() {

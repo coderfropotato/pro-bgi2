@@ -7,7 +7,7 @@ $menu_active_font_color: #5278f8; // 菜单字激活颜色
 $menu_active_bg_color:#f8f8f8;
 $border: 1px solid rgba(234, 234, 235, 0.95); // 全局border
 $border-color: rgba(234, 234, 235, 0.95); // border 颜色
-$boxshadow: 0 2px 4px 0 rgba(57,65,79,0.08); // 模块阴影
+$boxshadow: 0 2px 4px 0 rgba(57, 65, 79, 0.08); // 模块阴影
 $padding: 12px; // 所有模块统一留白
 $btn_active_color: #5278f8; // 按钮激活颜色
 $table_header_bgcolor: #f5f5f5; // 表格头部背景色
@@ -16,13 +16,10 @@ $layout_switch_bgcolor:#ccc; // 布局切换按钮的背景色
 // $close_icon_bg:rgb(153, 154, 154); // 关闭按钮的背景色
 // $close_icon_color:#fff; // 关闭按钮的颜色
 $font_active_color:#5278f8;
-
 $error-color:#f40;
 $success-color:#52c41a;
-
 $btn-border-color:#d9d9d9; // 按钮的border
 $btn-color:rgba(0, 0, 0, 0.65); // 按钮字体颜色
-
 // flex 兼容
 @mixin display-flex {
     display: flex;
@@ -45,10 +42,11 @@ $btn-color:rgba(0, 0, 0, 0.65); // 按钮字体颜色
     cursor: pointer;
     font-size: 14px;
     margin-top: 12px;
-    width: 134px;
+    min-width: 134px;
     height: 35px;
     font-weight: 700;
     border-radius: 18px;
+    padding: 6px 8px;
     text-align: center;
     border: 1px solid $color;
     color: $color;

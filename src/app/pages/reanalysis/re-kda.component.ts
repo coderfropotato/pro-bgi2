@@ -106,6 +106,7 @@ export class ReKdaComponent implements OnInit {
 
     selectGeneCount:number = 0;
     computedScrollHeight:boolean = false;
+    rationAddThead:object[] = [];
 
     constructor(
         private message: MessageService,
@@ -188,6 +189,7 @@ export class ReKdaComponent implements OnInit {
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
+            rationAddThead:this.rationAddThead,
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
@@ -214,6 +216,7 @@ export class ReKdaComponent implements OnInit {
             sortValue: null,
             sortKey: null, //排序
             reAnaly: false,
+            rationAddThead:this.rationAddThead,
             geneType: this.geneType, //基因类型gene和transcript
             species: this.storeService.getStore('genome'), //物种
             version: this.version,
@@ -972,6 +975,10 @@ export class ReKdaComponent implements OnInit {
         this.chartEntity["symbolType"]=data['symbolType'];
         this.chartEntity['quantity']=data.value;
         this.kdaChart.reGetData();
+
+        this.rationAddThead.length = 0;
+        if(!$.isEmptyObject(data.value))this.rationAddThead.push(data.value);
+        this.chartBackStatus();
     }
 
 }

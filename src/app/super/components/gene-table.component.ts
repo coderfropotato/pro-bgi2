@@ -963,12 +963,40 @@ export class GeneTableComponent implements OnInit, OnChanges {
      */
 	initFormValue() {
 		// 数字 字母 下划线  不能以数字开头 30位  label 20
+		// reg 
+		// name /^[a-zA-Z_][a-zA-Z0-9_]{0,29}$/
+		// label /^[a-zA-Z_][a-zA-Z0-9_]{0,19}$/
 		this.validateForm = this.fb.group({
 			name: [ '', [ Validators.required, Validators.pattern('^[a-zA-Z_][a-zA-Z0-9_]{0,29}$') ] ],
-			label: [ null, [ Validators.pattern('^[a-zA-Z_][a-zA-Z0-9_]{0,19}$') ] ],
+			label: [ null ],
 			mark: [ '' ]
 		});
 		this.labelSelectError = false;
+	}
+
+	handleSelectChange() {
+		var timer = null;
+		if (timer) clearTimeout(timer);
+		timer = setTimeout(() => {
+			if (!this.arrEquals(this.labelSelect, this.validateForm.value['label'].concat())) {
+				let reg = /^[a-zA-Z_][a-zA-Z0-9_]{0,19}$/;
+				this.delSelect.length = 0;
+				this.labelSelect = [ ...this.validateForm.value['label'] ];
+
+				this.validateForm.value['label'].forEach((v, i) => {
+					if (!v.match(reg)) this.delSelect.push(...this.labelSelect.splice(i, 1));
+				});
+
+				this.validateForm.get('label').setValue([ ...this.labelSelect ]);
+
+				this.labelSelectError = !!this.delSelect.length;
+				// 关闭下拉选择框
+				if (this.labelSelectError) this.openSelect = false;
+				setTimeout(() => {
+					this.labelSelectError = false;
+				}, 3000);
+			}
+		}, 30);
 	}
 
 	saveGeneList() {
@@ -1049,31 +1077,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	handleSaveGeneCancel() {
 		this.isSaveGeneList = false;
-	}
-
-	handleSelectChange() {
-		var timer = null;
-		if (timer) clearTimeout(timer);
-		timer = setTimeout(() => {
-			if (!this.arrEquals(this.labelSelect, this.validateForm.value['label'].concat())) {
-				let reg = /^[a-z0-9_]{1,16}$/gi;
-				this.delSelect.length = 0;
-				this.labelSelect = [ ...this.validateForm.value['label'] ];
-
-				this.validateForm.value['label'].forEach((v, i) => {
-					if (!v.match(reg)) this.delSelect.push(...this.labelSelect.splice(i, 1));
-				});
-
-				this.validateForm.get('label').setValue([ ...this.labelSelect ]);
-
-				this.labelSelectError = !!this.delSelect.length;
-				// 关闭下拉选择框
-				if (this.labelSelectError) this.openSelect = false;
-				setTimeout(() => {
-					this.labelSelectError = false;
-				}, 3000);
-			}
-		}, 30);
 	}
 
 	arrEquals(temp, arr): boolean {

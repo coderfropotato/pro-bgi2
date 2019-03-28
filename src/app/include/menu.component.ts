@@ -66,7 +66,7 @@ export class MenuComponent implements OnChanges {
             this.expand = true;
             clearTimeout(this.delayTimer);
             this.delayTimer = null;
-        },200)
+        },100)
     }
 
     rootMenuMouseLeave() {

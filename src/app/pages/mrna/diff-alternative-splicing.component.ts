@@ -153,7 +153,8 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 				as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
 				as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
 				as_ri: rows[j].as_ri * 100 / rows[j].as_total,
-				as_se: rows[j].as_se * 100 / rows[j].as_total
+				as_se: rows[j].as_se * 100 / rows[j].as_total,
+				total:rows[j].as_total
 			});
 		}
 
@@ -212,15 +213,9 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				return (
-					'<span>Type：' +
-					d.key +
-					'</span><br><span>Percentage：' +
-					(d[1] - d[0]) +
-					'%</span><br><span>Group：' +
-					d.data['compare_group'] +
-					'</span>'
-				);
+				var p =+(d[1] - d[0]).toFixed(2);
+				var n =Math.round(p/100*d.data.total);
+				return '<span>Type：' + d.key + '</span><br><span>Percentage：' + p  + '%</span><br><span>Number：'+n+'</span><br><span>Group：'+d.data['compare_group']+'</span>';
 			}
 		};
 
@@ -234,7 +229,11 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 		this.asType = data[0].key.split('_')[1].toUpperCase();
 		this.group = data[0].data['compare_group'];
 
+		// 初始化表的选中状态
+		this.diffDefaultTable._initCheckStatus();
+		// 清空表的筛选
 		this.diffDefaultTable._clearFilterWithoutRequest();
+
 		this.diffDefaultTable._setParamsOfEntityWithoutRequest('group', this.group);
 		this.diffDefaultTable._setParamsOfEntityWithoutRequest('asType', this.asType);
 		this.diffDefaultTable._setParamsOfEntityWithoutRequest('pageIndex', 1);

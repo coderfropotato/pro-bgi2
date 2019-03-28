@@ -624,7 +624,8 @@ button {
     & .switch {
         position: fixed;
         // right: 226px;
-        right: 156px;
+        // right: 156px;
+        right: 140px;
         top: 46px;
         // &.hasAnalysisCount {
         // 	right: 254px;
@@ -640,9 +641,7 @@ button {
     }
 }
 
-.alternativeSplicing {
-	
-}
+.alternativeSplicing {}
 
 .small_text {
     width: 100%;
@@ -857,7 +856,7 @@ button {
                 //     box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
                 // }
             }
-            .gene-img {
+            .main-img {
                 background-image: url('../img/list/基因总表.png');
             }
             .diff-expression-number-img {
@@ -896,7 +895,7 @@ button {
             .kegg-enrichment-img {
                 background-image: url('../img/list/kegg富集.png');
             }
-            .kegg-help-img {
+            .enrichment-help-img {
                 background-image: url('../img/list/帮助.png');
             }
             .alternative-splicing-img {
@@ -908,7 +907,7 @@ button {
             .gene-fusion-img {
                 background-image: url('../img/list/基因融合.png');
             }
-            .as-sv-help-img {
+            .as-fusion-help-img {
                 background-image: url('../img/list/帮助.png');
             }
             .snp-overview-img {
@@ -948,7 +947,7 @@ button {
     }
     .savegenelist {
         margin-top: 7px;
-        margin-right: 16px;
+        // margin-right: 16px;
         cursor: pointer;
         i {
             color: rgb(90, 202, 255);
@@ -2569,23 +2568,38 @@ button {
     border-bottom: 8px solid transparent;
 }
 
-.logout-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    div {
-        flex: 1;
-        width: 100%;
-        text-align: center;
-        &:first-child {
-            padding-bottom: 8px;
+.logout {
+    padding-bottom: 7px;
+    margin-top: 7px;
+    .logout-wrap {
+        position: fixed;
+        top: 40px;
+        right: 0;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fff;
+        color: $menu_font_color;
+        font-size: 14px;
+        box-shadow: $boxshadow;
+        &>div {
+            opacity: .8;
+            flex: 1;
+            width: 100%;
+            text-align: center;
+            padding: 8px;
+            cursor: auto;
+            &:first-child {
+                padding-bottom: 8px;
+            }
         }
-        &:last-child {
+        .btn {
             padding-top: 8px;
             cursor: pointer;
             border-top: $border;
             &:hover {
-                transform: translateY(20px);
+                opacity: 1;
             }
         }
     }

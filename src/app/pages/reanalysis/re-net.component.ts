@@ -1135,7 +1135,7 @@ export class ReNetComponent implements OnInit {
         this.netChart.reGetData();
 
         this.rationAddThead.length = 0;
-        this.rationAddThead.push(data.value);
+        if(!$.isEmptyObject(data.value))this.rationAddThead.push(data.value);
         this.chartBackStatus();
     }
 

@@ -626,6 +626,8 @@ export class GeneComponent implements OnInit {
 				tempName.push(d.key)
 			});
 			this.custom = tempName.toString();
+		}else{
+			this.custom = "全部";
 		}
         this.applyOnceSearchParams = true;
         this.defaultApplyOnceSearchParams = true;

@@ -142,181 +142,196 @@ export class IndexComponent implements OnInit {
                              */
 							this.menuList = [
 								{
-									category: '主页',
+									category: 'category_url_main',  // category_url_main
 									children: [
 										{
 											url: 'main',
 											geneType: 'all',
-											name: '主页',
+											name: 'category_url_main',	// category_url_main
 											isExport: true
 										}
 									]
 								},
 								{
-									category: '基因表达',
+									category: 'category_gene_expression',		// category_gene_expression
 									children: [
 										{
 											url: 'diff-expression-number',
 											geneType: 'all',
-											name: '差异基因数量',
+											name: 'url_diff-expression-number',  // url_diff-expression-number
 											isExport: true
 										},
 										{
 											url: 'diff-expression',
 											geneType: 'all',
-											name: '差异venn',
+											name: 'url_diff-expression',		// url_diff-expression
 											isExport: true
 										},
 										{
 											url: 'cluster',
 											geneType: 'all',
-											name: '聚类',
+											name: 'url_cluster',		// url_cluster
 											isExport: true
 										},
 										{
 											url: 'expression',
 											geneType: 'all',
-											name: '表达量',
+											name: 'url_expression',	// url_expression
 											isExport: true
 										},
 										{
 											url: 'gene-expression-help',
 											geneType: null,
-											name: '帮助',
+											name: 'url_gene-expression-help',		// url_gene-expression-help
 											isExport: true
 										}
 									]
 								},
 								{
-									category: '基因注释',
+									category: 'category_annotation',		// category_annotation
 									children: [
 										{
-											url: 'go-class',
+											url: 'go-class',	// url_go-class
 											geneType: 'all',
-											name: 'GO分类',
+											name: 'url_go-class',
 											isExport: true
 										},
 										{
 											url: 'go-enrichment',
 											geneType: 'all',
-											name: 'GO富集',
+											name: 'url_go-enrichment',		// url_go-enrichment
 											isExport: true
 										},
 										{
 											url: 'kegg-class',
 											geneType: 'all',
-											name: 'KEGG分类',
+											name: 'url_kegg-class',		// url_kegg-class
 											isExport: true
 										},
 										{
 											url: 'kegg-enrichment',
 											geneType: 'all',
-											name: 'KEGG富集',
+											name: 'url_kegg-enrichment',		// url_kegg-enrichment
 											isExport: true
 										},
 										{
-											url: 'gene-annotation-help',
+											url: 'enrichment-help',
 											geneType: null,
-											name: '帮助',
+											name: 'url_enrichment-help',		// url_enrichment-help
 											isExport: true
 										}
 									]
 								},
 								{
-									category: '基因变异',
+									category: 'category_variation',	// category_variation
 									children: [
 										{
 											url: 'alternative-splicing',
 											geneType: 'all',
-											name: '可变剪接',
+											name: 'url_alternative-splicing',		// url_alternative-splicing
 											isExport: true
 										},
 										{
 											url: 'diff-alternative-splicing',
 											geneType: 'all',
-											name: '差异可变剪接',
+											name: 'url_diff-alternative-splicing',		// url_diff-alternative-splicing
 											isExport: true
 										},
 										{
 											url: 'gene-fusion',
 											geneType: 'all',
-											name: '基因融合',
+											name: 'url_gene-fusion',		// url_gene-fusion
 											isExport: true
 										},
 										{
-											url: 'as-sv-help',
+											url: 'as-fusion-help',
 											geneType: null,
-											name: '帮助',
+											name: 'url_fusion-help',		// url_fusion-help
 											isExport: true
 										}
 									]
 								},
 								{
-									category: 'SNP/InDel',
+									category: 'category_snp_indel',		// category_snp_indel
 									children: [
 										{
 											url: 'snp-overview',
 											geneType: 'all',
-											name: 'SNP总览',
+											name: 'url_snp-overview',	// url_snp-overview
 											isExport: true
 										},
 										{
 											url: 'snp-distribution',
 											geneType: 'all',
-											name: 'SNP区域总览',
+											name: 'url_snp-distribution',	// url_snp-distribution
 											isExport: true
 										},
 										{
 											url: 'indel-overview',
 											geneType: 'all',
-											name: 'InDel总览',
+											name: 'url_indel-overview',	// url_indel-overview
 											isExport: true
 										},
 										{
 											url: 'indel-distribution',
 											geneType: 'all',
-											name: 'InDel区域总览',
+											name: 'url_indel-distribution',	// url_indel-distribution
 											isExport: true
 										},
 										{
 											url: 'snp-indel-help',
 											geneType: 'all',
-											name: '帮助',
+											name: 'url_snp-indel-help',	// url_snp-indel-help
 											isExport: true
 										}
 									]
 								},
+								// {
+								// 	category:'url_miRNA_target',
+								// 	children:[
+								// 		{
+								// 			url:'miRNA-target',
+								// 			name:'url_miRNA-target',
+								// 			isExport:true
+								// 		},
+								// 		{
+								// 			url:'miRNA-target-help',
+								// 			name:'url_miRNA-target-help',
+								// 			isExport:true
+								// 		}
+								// 	]
+								// },
 								{
-									category: '基因信息',
+									category: 'category_basic_info',	// category_basic_info
 									children: [
 										{
 											url: 'overview',
-											name: '项目概况',
+											name: 'url_overview',	// url_overview
 											isExport: true
 										},
 										{
 											url: 'reference',
-											name: '参考信息',
+											name: 'url_reference',	// url_reference
 											isExport: true
 										},
 										{
 											url: 'reads-filter',
-											name: 'Reads过滤',
+											name: 'url_reads-filter',	// url_reads-filter
 											isExport: true
 										},
 										{
 											url: 'reads-alignment',
-											name: 'Reads比对',
+											name: 'url_reads-alignment',	// url_reads-alignment
 											isExport: true
 										},
 										{
 											url: 'smallrna',
-											name: '小RNA检测',
+											name: 'url_smallrna',	// url_smallrna
 											isExport: true
 										},
 										{
 											url: 'basic-help',
-											name: '帮助',
+											name: 'url_basic-help',	// url_basic-help
 											isExport: true
 										}
 									]

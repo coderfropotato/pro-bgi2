@@ -156,8 +156,9 @@ export class AlternativeSplicingComponent implements OnInit {
 				as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
 				as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
 				as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
-        as_ri: rows[j].as_ri * 100 / rows[j].as_total,
-        as_se: rows[j].as_se * 100 / rows[j].as_total
+				as_ri: rows[j].as_ri * 100 / rows[j].as_total,
+				as_se: rows[j].as_se * 100 / rows[j].as_total,
+				total:rows[j].as_total
 			});
 		}
 
@@ -176,11 +177,11 @@ export class AlternativeSplicingComponent implements OnInit {
 				type: 'stackBarPercent',
 				width: 660,
 				custom: [ 'sample_name' ],
-        data: chartData,
-        enableChartSelect: true,
-        onselect: function(data) {
-          that.handleData(data);
-        },
+				data: chartData,
+				enableChartSelect: true,
+				onselect: function(data) {
+					that.handleData(data);
+        		},
 			},
 			axis: {
 				x: {
@@ -209,13 +210,15 @@ export class AlternativeSplicingComponent implements OnInit {
 				show: true,
 				position: 'right',
 				click: function(d, index) {
-          that.color = d3.select(d).attr('fill');
-					that.legendIndex = index;
-					that.isShowColorPanel = true;
+					that.color = d3.select(d).attr('fill');
+						that.legendIndex = index;
+						that.isShowColorPanel = true;
 				}
 			},
 			tooltip: function(d) {
-        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
+				var p =+(d[1] - d[0]).toFixed(2);
+				var n =Math.round(p/100*d.data.total);
+				return '<span>Type：' + d.key + '</span><br><span>Percentage：' + p  + '%</span><br><span>Number：'+n+'</span><br><span>Sample：'+d.data['sample_name']+'</span>';
 			}
 		};
 
@@ -232,7 +235,11 @@ export class AlternativeSplicingComponent implements OnInit {
     this.sample = data[0].data["sample_name"];
 
     //this.defaultSpliceTable._setParamsOfEntityWithoutRequest('checked', []);
+    // 初始化表的选中状态
+		this.defaultSpliceTable._initCheckStatus();
+		// 清空表的筛选
     this.defaultSpliceTable._clearFilterWithoutRequest();
+    
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('sample', this.sample);
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('asType', this.asType);
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('pageIndex', 1);

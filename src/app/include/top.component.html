@@ -23,14 +23,12 @@
 
             <!-- <i class="iconfont" nz-tooltip nzTitle="{{'top.fullscreen' | translate}}" style="margin-right:0;" [class.icon-chuangkou]="isFull" [class.icon-quanping]="!isFull" (click)="handleFullScreenClick()"></i> -->
 
-            <i nz-popover nzPlacement="bottomRight" [nzContent]="content" class="anticon anticon-poweroff" style="margin-right:16px;font-size:18px;"></i>
-            <ng-template #content>
-                <div class="logout-wrap">
+            <i class="anticon anticon-poweroff logout" style="margin-right:0;font-size:18px;" (mouseover)="handleShowLogout()" (mouseout)="handleHideLogout()">
+                <div *ngIf="showLogout" class="logout-wrap" (mouseover)="handleShowLogout()">
                     <div>项目编号：{{LCID}}</div>
-                    <div>退出</div>
+                    <div class="btn" (click)="logout()"><span>退出</span></div>
                 </div>
-            </ng-template>
-
+            </i>
         </div>
     </div>
 </div>

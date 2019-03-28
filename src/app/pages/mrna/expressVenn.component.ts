@@ -319,6 +319,13 @@ export class ExpressVennComponent implements OnInit {
 
 	// 重置图 应用图转换前的设置
     chartBackStatus(){
+		this.defaultEmitBaseThead = true;
+		this.showBackButton = false;
+		// 初始化表的选中状态
+		this.transformTable._initCheckStatus();
+		// 清空表的筛选
+		this.transformTable._clearFilterWithoutRequest();
+
         if(!this.first){
             // 比较组  引用无需考=>虑图选中/阈值
             // this.transformTable._setParamsNoRequest('sample',this.selectConfirmData);
