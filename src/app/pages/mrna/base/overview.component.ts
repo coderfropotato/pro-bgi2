@@ -879,7 +879,7 @@ export class OverviewComponent implements OnInit {
 
 	//legend color change
 	colorBoxChange(curColor){
-		this.chartBox.setColor(curColor, this.legendIndexThree);
+		this.chartBox.setColor(curColor, this.legendIndexBox);
 		this.chartBox.redraw();
 	}
 
