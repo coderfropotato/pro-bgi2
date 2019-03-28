@@ -802,14 +802,24 @@ export class DiffExpressionNumberComponent implements OnInit {
 			const element = this.thresholdName[index];
 			if(element=="PossionDis"){
 				this.tableEntity['diffThreshold']['PossionDis'] = this.PossionDis;
+				this.p_log2FC = this.PossionDis['log2FC'];
+				this.p_FDR = this.PossionDis['FDR']
 			}else if(element=="NOIseq"){
 				this.tableEntity['diffThreshold']['NOIseq'] = this.NOIseq;
+				this.n_log2FC = this.NOIseq['log2FC'];
+				this.n_probability = this.NOIseq['probability']
 			}else if(element=="DEGseq"){
 				this.tableEntity['diffThreshold']['DEGseq'] = this.DEGseq;
+				this.d_log2FC = this.DEGseq['log2FC'];
+				this.d_Qvalue = this.DEGseq['Qvalue']
 			}else if(element=="DESeq2"){
 				this.tableEntity['diffThreshold']['DESeq2'] = this.DESeq2;
+				this.de_log2FC = this.DESeq2['log2FC'];
+				this.de_Qvalue = this.DESeq2['Qvalue']
 			}else if(element=="EBSeq"){
 				this.tableEntity['diffThreshold']['EBSeq'] = this.EBSeq;
+				this.e_log2FC = this.EBSeq['log2FC'];
+				this.e_PPEE = this.EBSeq['probability']
 			}
 		}
 
@@ -823,6 +833,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 		// 	bar_name: [],
 		// 	total_name: []
 		// };
+
+		//this.tableEntity["compareGroup"] = this.selectConfirmData;
 
 		this.panelShow = false;
 		// this.upSelect.length = 0;
