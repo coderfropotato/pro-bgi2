@@ -120,6 +120,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	// 表头宽度
 	totalWidth: string;
 	widthConfig: string[];
+
 	// 首列表头的left值
 	colLeftConfig: string[];
 	// 二级表头集合
@@ -387,6 +388,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 									}
 								}
 							}
+
 						}
 					});
 
