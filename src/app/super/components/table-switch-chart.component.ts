@@ -6,12 +6,13 @@ import {
     TemplateRef,
     Output,
     EventEmitter,
-    HostListener
+    ViewChildren
 } from "@angular/core";
 import { AjaxService } from "../../super/service/ajaxService";
 import { MessageService } from "../service/messageService";
 import { StoreService } from "./../service/storeService";
 import { TranslateService } from "@ngx-translate/core";
+import { GlobalService } from "../service/globalService";
 
 declare const $: any;
 
@@ -25,6 +26,7 @@ export class TableSwitchChartComponent implements OnInit {
     @ViewChild("selectPanel") selectPanel;
     @ViewChild("tableChartContent") tableChartContent;
     @ViewChild("tableBottom") tableBottom;
+    @ViewChildren("child") children;
 
     @Input() tableUrl: string; //表格api地址；
     @Input() chartUrl: string; //可选，图api地址；若存在表示图api与表api不一致，适用于图复杂（需要单独请求api）场景。
@@ -130,11 +132,22 @@ export class TableSwitchChartComponent implements OnInit {
 
     chartType: string;
 
+    //筛选
+    // @Input() tableHeight: number = 0; // 计算后的表格高度
+    beginFilterStatus: boolean = false; //是否筛选
+    filterHtmlString: object[] = []; //筛选条件面板数据
+    twoLevelHead:any[]=[]; //二级表头（可能存在）
+    widthConfig: string[]; // table col width config
+    tbodyOutFirstCol:any[]=[]; // 除第一列以外的其他列数据
+    sortMap: object = {}; //排序
+    isErrorDelete:boolean = false;
+
     constructor(
         private ajaxService: AjaxService,
         private messageService: MessageService,
         private storeService: StoreService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private globalService:GlobalService
     ) {
         this.messageService.getResize().subscribe(res => {
             this.scrollHeight();
@@ -146,6 +159,12 @@ export class TableSwitchChartComponent implements OnInit {
 
     ngOnInit() {
         if (this.chartTypeData && this.chartTypeData.length) this.chartType = this.chartTypeData[0]["key"];
+
+        if(this.isFilter && this.apiEntity){
+            this.apiEntity['searchList']=[];
+            this.apiEntity['sortKey']=null;
+            this.apiEntity['sortValue']=null;
+        }
 
         this.accuracyList = [
             {
@@ -212,6 +231,330 @@ export class TableSwitchChartComponent implements OnInit {
             this.getSetData();
         }else if(this.localSetData){
             this.setData.emit(this.localSetData);
+        }
+    }
+
+    // 点击筛选图标
+    beginFilter() {
+        this.beginFilterStatus = !this.beginFilterStatus;
+        // 关闭筛选 重置筛选条件
+        if (!this.beginFilterStatus) {
+            this.apiEntity["searchList"].length=0;
+            this.classifySearchCondition();
+            this.getTableData();
+        }
+    }
+
+    // 删除筛选条件
+    deleteFilterItem(item) {
+        let filterObj = item.obj;
+        if(this.tableError){
+            this.isErrorDelete = true;
+            // 没数据的时候 在表格筛选参数里找出当前的筛选条件删除 重新获取表格数据
+            let index = this.apiEntity['searchList'].findIndex((val,i)=>{
+                return (val['filterName'] === filterObj['filterName'] && val['filterType'] === filterObj['filterType'])
+            })
+            if(index!=-1) {
+                this.apiEntity['searchList'].splice(index,1);
+                this.getTableData();
+            }
+            this.filterHtmlString = this.globalService.transformFilter(this.apiEntity['searchList']);
+        }else{
+            this._deleteFilter(
+                filterObj["filterName"],
+                filterObj["filterNamezh"],
+                filterObj["filterType"]
+            );
+        }
+    }
+
+    //筛选条件
+    classifySearchCondition() {
+        if (this.apiEntity["searchList"].length) {
+            this.filterHtmlString = this.globalService.transformFilter(this.apiEntity['searchList']);
+        }else{
+            this.filterHtmlString.length = 0;
+        }
+
+        // 每次分类筛选条件的时候 重新计算表格滚动区域高度
+        // setTimeout(() => {
+        //     this.computedTbody(this.tableHeight);
+        // }, 0);
+    }
+
+    //计算表格滚动区域高度
+    computedTbody(tableHeight) {
+        if(tableHeight){
+            // 固定头的高度
+            let head = $(`#${this.id} .ant-table-fixed .ant-table-thead`).outerHeight();
+            // 分页的高度
+            let bottom = $(`#${this.id} .table-bottom`).outerHeight();
+            // 筛选条件的高度
+            let filter = $(`#${this.id} .table-filter`).outerHeight();
+            // 表头工具栏的高度
+            let tools = $(`#${this.id} .table-thead`).outerHeight();
+            // 首列gene的高度
+            let res = tableHeight - head - bottom - filter - tools  - 2;
+            $(`#${this.id} .ant-table-body`).css("height", `${res}px`);
+            this.scroll["y"] = `${res}px`;
+        }
+    }
+
+    //根据表头层级关系计算表头宽度
+    computedTheadWidth(head): object {
+        let defaultWidth = 12;
+        let widthConfig = [];
+        let twoLevelHead = [];
+        let totalWidth: string;
+
+        head.forEach(v => {
+            let singleWidth = 0;
+            if (v.children.length) {
+                v["colspan"] = v.children.length;
+                v["rowspan"] = 1;
+                v.children.forEach(val => {
+                    singleWidth = val.name.length * defaultWidth + 22;
+                    widthConfig.push(singleWidth);
+                    twoLevelHead.push(val);
+                });
+            } else {
+                v["colspan"] = 1;
+                v["rowspan"] = 2;
+                singleWidth = defaultWidth * v.name.length + 22;
+                widthConfig.push(singleWidth);
+            }
+        });
+        let colLeftConfig: any[] = [];
+        // 计算首列的left
+        if (head[0]["children"].length) {
+            head[0]["children"].forEach((v, i) => {
+                let sunDis = 0;
+                for (var k = 0; k < i + 1; k++) {
+                    sunDis += widthConfig[k];
+                }
+                colLeftConfig.push(sunDis);
+            });
+        } else {
+            colLeftConfig.push(widthConfig[0]);
+        }
+
+        let tempTotalWidth = 0;
+        widthConfig.map((v, i) => {
+            tempTotalWidth += v;
+            widthConfig[i] += 29;   // 排序和筛选按钮的宽度
+            widthConfig[i] += 'px';
+        });
+        colLeftConfig.map((v, i) => (colLeftConfig[i] += "px"));
+        totalWidth = tempTotalWidth + "px";
+
+        return { widthConfig, twoLevelHead, colLeftConfig, totalWidth };
+    }
+
+    // 根据表头生成sortmap
+    generatorSortMap() {
+        if ($.isEmptyObject(this.sortMap)) {
+            this.tableData.baseThead.forEach(val => {
+                this.sortMap[val["true_key"]] = null;
+                if (val["children"].length) {
+                    val["children"].forEach(
+                        v => (this.sortMap[v["true_key"]] = null)
+                    );
+                }
+            });
+        } else {
+            this.tableData.baseThead.forEach(val => {
+                if (!this.sortMap[val["true_key"]]) {
+                    this.sortMap[val["true_key"]] = null;
+                    if (val["children"].length) {
+                        val["children"].forEach(v => {
+                            if (!this.sortMap[v["true_key"]]) {
+                                this.sortMap[v["true_key"]] = null;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    //筛选
+    recive(argv) {
+        if (!this.apiEntity["searchList"]) {
+            this.apiEntity["searchList"] = [
+                {
+                    filterName: argv[0],
+                    filterNamezh: argv[1],
+                    filterType: argv[2],
+                    valueOne: argv[3],
+                    valueTwo: argv[4],
+                    searchType:argv[5]
+                }
+            ];
+        } else {
+            var isIn = false;
+            this.apiEntity["searchList"].forEach((val, index) => {
+                if (val["filterName"] === argv[0]) {
+                    this.apiEntity["searchList"][index] = {
+                        filterName: argv[0],
+                        filterNamezh: argv[1],
+                        filterType: argv[2],
+                        valueOne: argv[3],
+                        valueTwo: argv[4],
+                        searchType:argv[5]
+                    };
+                    isIn = true;
+                }
+            });
+
+            if (!isIn)
+                this.apiEntity["searchList"].push({
+                    filterName: argv[0],
+                    filterNamezh: argv[1],
+                    filterType: argv[2],
+                    valueOne: argv[3],
+                    valueTwo: argv[4],
+                    searchType:argv[5]
+                    // crossUnion: argv[5]
+                });
+        }
+        // 每次筛选的时候 重置选中的集合
+        this.getTableData();
+        this.classifySearchCondition();
+    }
+
+    // 清空筛选
+    // 筛选面板组件 发来的删除筛选字段的请求
+    delete(argv) {
+        if (this.apiEntity["searchList"].length) {
+            this.apiEntity["searchList"].forEach((val, index) => {
+                if (
+                    val["filterName"] === argv[0] &&
+                    val["filterNamezh"] === argv[1]
+                ) {
+                    this.apiEntity["searchList"].splice(index, 1);
+                    this.classifySearchCondition();
+                    this.getTableData();
+                    return;
+                }
+            });
+        }
+    }
+
+    deleteWithoutRequest(argv){
+        if (this.apiEntity["searchList"].length) {
+            this.apiEntity["searchList"].forEach((val, index) => {
+                if (
+                    val["filterName"] === argv[0] &&
+                    val["filterNamezh"] === argv[1]
+                ) {
+                    this.apiEntity["searchList"].splice(index, 1);
+                    this.classifySearchCondition();
+                    // this.getRemoteData();
+                    return;
+                }
+            });
+        }
+    }
+
+    //排序
+    sort(key, value): void {
+        //重置排序
+        this.tableData.baseThead.forEach(val => {
+            this.sortMap[val["true_key"]] = null;
+            if (val["children"].length) {
+                val["children"].forEach(
+                    v => (this.sortMap[v["true_key"]] = null)
+                );
+            }
+        });
+
+        this.sortMap[value] = key ;
+
+        // 取消排序
+        if (value == null) {
+            this.apiEntity["sortKey"] = null;
+            this.apiEntity["sortValue"] = null;
+        } else {
+            // 有排序
+            this.apiEntity["sortKey"] = key;
+            this.apiEntity["sortValue"] = value;
+        }
+        this.getTableData();
+    }
+
+    //外部使用的fuction
+    _deleteFilter(filterName, filterNamezh, filterType) {
+        this.children._results.forEach(val => {
+            if (
+                val.pid === this.id &&
+                val.filterName === filterName &&
+                val.selectType === filterType &&
+                val.filterNamezh === filterNamezh
+            ) {
+                val._outerDelete(filterName, filterNamezh, filterType);
+            }
+        });
+    }
+
+    _sort(filterName, sortMethod): void {
+        this.sort(filterName, sortMethod);
+    }
+
+    _filter(
+        filterName, filterNamezh, searchType, filterType, filterValueOne, filterValueTwo,
+    ) {
+        /* 向filter组件传递  tableId  filterName  filterType
+         找匹配tableId的filter子组件，并更新筛选状态；
+         手动调用本组件的 recive方法  模拟子组件发射的方法
+         */
+        // 没有打开筛选就打开
+        if (!this.beginFilterStatus) this.beginFilterStatus = true;
+        // 待筛选面板渲染完后找到匹配的筛选面板传数据
+        setTimeout(() => {
+            if(this.children._results.length){
+                this.children._results.forEach(val => {
+                    if (val.pid === this.id && val.filterName === filterName) {
+                        val._outerUpdate( filterName, filterNamezh, filterType, filterValueOne, filterValueTwo, searchType);// crossUnion
+                        this.recive([ filterName, filterNamezh, filterType, filterValueOne, filterValueTwo, searchType]);  // crossUnion
+                    }
+                });
+            }else{
+                this.recive([ filterName, filterNamezh, filterType, filterValueOne, filterValueTwo, searchType  ]); // crossUnion
+            }
+        }, 30);
+    }
+
+    _filterWithoutRequest(filterName,
+        filterNamezh,
+        searchType,
+        filterType,
+        filterValueOne,
+        filterValueTwo,
+    ) {
+        /* 向filter组件传递  tableId  filterName  filterType
+         找匹配tableId的filter子组件，并更新筛选状态；
+         手动调用本组件的 recive方法  模拟子组件发射的方法
+         */
+        // 没有打开筛选就打开
+        if (!this.beginFilterStatus) this.beginFilterStatus = true;
+        // 待筛选面板渲染完后找到匹配的筛选面板传数据
+        if(this.children._results.length){
+            setTimeout(() => {
+                this.children._results.forEach(val => {
+                    if (val.pid === this.id && val.filterName === filterName) {
+                        val._outerUpdate(
+                            filterName,
+                            filterNamezh,
+                            filterType,
+                            filterValueOne,
+                            filterValueTwo,
+                            searchType
+                        );
+
+                        this.classifySearchCondition();
+                    }
+                });
+            }, 30);
         }
     }
 
@@ -465,6 +808,39 @@ export class TableSwitchChartComponent implements OnInit {
                     } else {
                         this.tableError = "";
                         this.tableData = data.data;
+
+                        if (this.tableData.total) {
+                            if (this.tableData.total != this.total){
+                                this.apiEntity["pageIndex"] = 1;
+                            }
+                            this.total = this.tableData.total;
+                        }
+
+                        if(this.isFilter){
+                            let arr=[];
+                            this.tableData.baseThead.slice(1).forEach(val => {
+                                arr = val.children.length
+                                    ? arr.concat(val.children)
+                                    : arr.concat(val);
+                            });
+                            this.tbodyOutFirstCol = arr;
+                            let tempObj = this.computedTheadWidth(this.tableData.baseThead);
+                            this.widthConfig = tempObj["widthConfig"];
+                            this.twoLevelHead = tempObj["twoLevelHead"];
+                            // 根据表头生成sortmap
+                            this.generatorSortMap();
+
+                            if(this.isErrorDelete){ // 如果是在无数据或者系统错误的情况下 删除了筛选条件 表格获取数据初始化以后就需要重新应用之前的筛选状态
+                                setTimeout(()=>{
+                                    //如果表之前是错误的状态 筛选组件需要重新应用之前的状态
+                                    this.apiEntity['searchList'].forEach(v=>{
+                                        this._filterWithoutRequest(v['filterName'],v['filterNamezh'],v['searchType'],v['filterType'],v['valueOne'],v['valueTwo'])
+                                    })
+                                    this.isErrorDelete = false;
+                                },30)
+                            }
+                        }
+
                         if (!this.chartUrl) {
                             this.chartError = "";
                             this.chartData = data.data;
@@ -480,10 +856,7 @@ export class TableSwitchChartComponent implements OnInit {
                                 );
                             }
                         }
-
-                        if (this.tableData.total) {
-                            this.total = this.tableData.total;
-                        }
+                        
                     }
                     this.isLoading = false;
                 },
