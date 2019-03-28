@@ -258,7 +258,7 @@ export class GenePage {
 
 	//下方确定
 	btnConfirm() {
-		this.icon_color = 'gray';
+		//this.icon_color = 'gray';
 		this.expandSetPanel = !this.expandSetPanel;
 	}
 
