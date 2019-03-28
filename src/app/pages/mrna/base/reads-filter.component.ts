@@ -67,7 +67,7 @@ export class ReadsFilterComponent implements OnInit {
   //图例颜色
   isShowColorPanel: boolean = false;
   legendIndex: number = 0; //当前点击图例的索引
-  color: string; //当前选中的color
+  colorYS: string; //当前选中的color
 
   //Clean reads 碱基含量分布 图例颜色
   isShowContentColorPanel: boolean = false;
@@ -206,7 +206,7 @@ export class ReadsFilterComponent implements OnInit {
             show: true,
             position: "right",
             click:function(d,index){
-                that.color = d3.select(d).attr('fill');
+                that.colorYS = d3.select(d).attr('fill');
                 that.legendIndex = index;
                 that.isShowColorPanel = true;
             }
@@ -607,8 +607,13 @@ export class ReadsFilterComponent implements OnInit {
     this.rawQualityChart.reGetData();
   }
 
-  //legend color change
   colorChange(curColor){
+    // this.chart.setColor(curColor, this.legendIndex);
+    // this.chart.redraw();
+  }
+
+  //legend color change
+  colorYSChange(curColor){
     this.chart.setColor(curColor, this.legendIndex);
     this.chart.redraw();
   }

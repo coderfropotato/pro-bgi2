@@ -61,7 +61,7 @@
                 [chartDescContent]="'N：未知碱基N含量⼤于5%的reads的数目及占总raw reads的比例；Adapter：包含接头的reads（接头污染的reads）的数目及占总raw reads的比例；Low Quality：低质量的reads（质量值低于15的碱基占该reads总碱基数的比例⼤于20%的reads）的数目及占总raw reads的比例；Clean Reads：过滤后的reads数目及占总raw reads的比例。'"
             >
             </app-table-switch-chart>
-            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
+            <app-color-picker [(color)]="colorYS" (colorChange)="colorYSChange($event)" [(show)]="isShowColorPanel"
                     ></app-color-picker>
         </div>
     </div>
