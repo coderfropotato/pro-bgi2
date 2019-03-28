@@ -492,8 +492,12 @@ export class DiffExpressionNumberComponent implements OnInit {
 	}
 
 	drawVenn(data) {
+		// console.log(this.compareGroup);
+		// console.log(this.selectedVal);
+		// this.allChartData = data;
+		// this.drawTotal(data["rows"]);
 		this.allChartData = data;
-		this.drawTotal(data["rows"]);
+		this.doWithSelectChange();
 	}
 
 	drawTotal(data){
@@ -872,13 +876,14 @@ export class DiffExpressionNumberComponent implements OnInit {
 	// 图表切换刷新
 	handlerRefresh() {
 		// 清空选择的数据
-		this.compareGroupList = this.storeService.getStore('diff_plan');
-		this.compareNewGroupList = ["ALL"].concat(this.compareGroupList);
-		this.compareGroup = this.compareNewGroupList[0];
+		// this.compareGroupList = this.storeService.getStore('diff_plan');
+		// this.compareNewGroupList = ["ALL"].concat(this.compareGroupList);
+		// this.compareGroup = this.compareNewGroupList[0];
 
-		this.selectData = ["Up+Down","Total"];
-		this.selectedVal = this.selectData[1];
+		// this.selectData = ["Up+Down","Total"];
+		// this.selectedVal = this.selectData[1];
 
+		this.tableEntity["compareGroup"] = this.selectConfirmData;
 		this.defaultShowFilterStatus = false;
 		this.chartBackStatus();
 	}
