@@ -21,14 +21,14 @@
                     </div>
                 </div>
                 <div #tableFilter class="table-filter">
-                    <div class="table-top" *ngIf="rootHtmlString.length && !error">
+                    <div class="table-top" *ngIf="rootHtmlString.length ">
                         <span class="filter-head">{{'rootFilterTitle'| translate}}：</span>
                         <span class="filter-item" *ngFor="let item of rootHtmlString">
                             <em [innerHTML]="item['html']"></em>
                             <i class="anticon anticon-close-circle" (click)="deleteRootFilterItem(item)"></i>
                         </span>
                     </div>
-                    <div class="table-top" *ngIf="filterHtmlString.length && !error">
+                    <div class="table-top" *ngIf="filterHtmlString.length ">
                         <span class="filter-head">{{'filterTitle' | translate}}：</span>
                         <span class="filter-item" *ngFor="let item of filterHtmlString">
                             <em [innerHTML]="item['html']"></em>
