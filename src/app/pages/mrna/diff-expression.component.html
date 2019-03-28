@@ -21,8 +21,8 @@
                             </div>
                             <div class="con_PessionDis_in">
                                 <div class="con_PessionDis_row">
-                                    <div class="con_PessionDis_left" title="对照处理组的表达量倍比，计算方式为log2（对照组表达量/处理组表达量），再取绝对值。例如 |log2FC| >= N 表示对照组表达量是处理组的2N倍以上。">
-                                        |log2FC|
+                                    <div class="con_PessionDis_left">
+                                        log2FC
                                     </div>
                                     <div class="con_PessionDis_right">
                                         <!-- <input style="margin-top: 8px;" (ngModelChange)="OnChange($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].log2FC" /> -->
@@ -35,13 +35,13 @@
                                     <span *ngIf="isShowSpan_EBSeq && item=='EBSeq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
                                 </div>
                                 <div class="con_PessionDis_row">
-                                    <div class="con_PessionDis_left" *ngIf="item=='PossionDis'" title="对于无生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
+                                    <div class="con_PessionDis_left" *ngIf="item=='PossionDis'">
                                         FDR
                                     </div>
                                     <div class="con_PessionDis_left" *ngIf="item=='NOIseq'">
                                         probability
                                     </div>
-                                    <div class="con_PessionDis_left" *ngIf="item=='DEGseq'" title="对于有生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
+                                    <div class="con_PessionDis_left" *ngIf="item=='DEGseq'">
                                         Qvalue
                                     </div>
                                     <div class="con_PessionDis_left" *ngIf="item=='DESeq2'">
