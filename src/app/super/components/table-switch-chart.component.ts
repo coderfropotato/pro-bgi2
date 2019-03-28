@@ -133,7 +133,6 @@ export class TableSwitchChartComponent implements OnInit {
     chartType: string;
 
     //筛选
-    // @Input() tableHeight: number = 0; // 计算后的表格高度
     beginFilterStatus: boolean = false; //是否筛选
     filterHtmlString: object[] = []; //筛选条件面板数据
     twoLevelHead:any[]=[]; //二级表头（可能存在）
@@ -250,7 +249,7 @@ export class TableSwitchChartComponent implements OnInit {
         }
     }
 
-    // 删除筛选条件
+    // 删除某项筛选条件
     deleteFilterItem(item) {
         let filterObj = item.obj;
         if(this.tableError){
@@ -284,27 +283,9 @@ export class TableSwitchChartComponent implements OnInit {
         }
 
         // 每次分类筛选条件的时候 重新计算表格滚动区域高度
-        // setTimeout(() => {
-        //     this.computedTbody(this.tableHeight);
-        // }, 0);
-    }
-
-    //计算表格滚动区域高度
-    computedTbody(tableHeight) {
-        if(tableHeight){
-            // 固定头的高度
-            let head = $(`#${this.id} .ant-table-fixed .ant-table-thead`).outerHeight();
-            // 分页的高度
-            let bottom = $(`#${this.id} .table-bottom`).outerHeight();
-            // 筛选条件的高度
-            let filter = $(`#${this.id} .table-filter`).outerHeight();
-            // 表头工具栏的高度
-            let tools = $(`#${this.id} .table-thead`).outerHeight();
-            // 首列gene的高度
-            let res = tableHeight - head - bottom - filter - tools  - 2;
-            $(`#${this.id} .ant-table-body`).css("height", `${res}px`);
-            this.scroll["y"] = `${res}px`;
-        }
+        setTimeout(() => {
+            this.scrollHeight();
+        }, 0);
     }
 
     //根据表头层级关系计算表头宽度
@@ -649,10 +630,8 @@ export class TableSwitchChartComponent implements OnInit {
 
     scrollHeight(height = 0) {
         try {
-            let tableChartContentH = height || this.tableChartContent.nativeElement .offsetHeight;
-            let bottomPageH = this.tableBottom
-                ? this.tableBottom.nativeElement.offsetHeight
-                : 0;
+            let tableChartContentH = height || this.tableChartContent.nativeElement.offsetHeight;
+            let bottomPageH = this.tableBottom ? this.tableBottom.nativeElement.offsetHeight : 0;
             let scrollH: any = tableChartContentH - 38 - bottomPageH + "px";
             if (this.isPaging) {
                 $(`#${this.id} .ant-table-body`).css("height", scrollH);
@@ -870,7 +849,7 @@ export class TableSwitchChartComponent implements OnInit {
                                 );
                             }
                         }
-                        
+
                     }
                    resolve(data);
                 },
@@ -920,7 +899,7 @@ export class TableSwitchChartComponent implements OnInit {
                        } else {
                                this.getChartThen(data);
                        }
-   
+
                        resolve(data);
                    },
                    error => {

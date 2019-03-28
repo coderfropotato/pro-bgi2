@@ -191,7 +191,7 @@
                      <!-- 大表分页  -->
                      <div #tableBottom class="table-bottom" *ngIf="isPaging && !isVennTable && isShowTable && !tableError">
                         <app-pagination style="float:left;" [(pageIndex)]="apiEntity['pageIndex']" [total]="total"
-                            [(pageSize)]="apiEntity['pageSize']" (pageIndexChange)="getTableData()" (pageSizeChange)="pageSizeChange()">
+                            [(pageSize)]="apiEntity['pageSize']" (pageIndexChange)="pageIndexChange()" (pageSizeChange)="pageSizeChange()">
                         </app-pagination>
                     </div>
 
