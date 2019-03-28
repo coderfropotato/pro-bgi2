@@ -202,7 +202,10 @@ export class TableSwitchChartComponent implements OnInit {
         ];
 
         if(this.isChartThenTable){
-            this.getChartData();
+            this.getChartData().then((data)=>{
+                this.getTableData();
+                this.isLoading=false;
+            });
         }else{
             if(this.selectPanelData || this.selectPanelUrl || this.defaultSetUrl){
                 if (this.selectPanelData) {
@@ -241,7 +244,9 @@ export class TableSwitchChartComponent implements OnInit {
         if (!this.beginFilterStatus) {
             this.apiEntity["searchList"].length=0;
             this.classifySearchCondition();
-            this.getTableData();
+            this.getTableData().then((data)=>{
+                this.isLoading=false;
+            });
         }
     }
 
@@ -256,7 +261,9 @@ export class TableSwitchChartComponent implements OnInit {
             })
             if(index!=-1) {
                 this.apiEntity['searchList'].splice(index,1);
-                this.getTableData();
+                this.getTableData().then((data)=>{
+                    this.isLoading=false;
+                });
             }
             this.filterHtmlString = this.globalService.transformFilter(this.apiEntity['searchList']);
         }else{
@@ -418,7 +425,9 @@ export class TableSwitchChartComponent implements OnInit {
                 });
         }
         // 每次筛选的时候 重置选中的集合
-        this.getTableData();
+        this.getTableData().then((data)=>{
+            this.isLoading=false;
+        });
         this.classifySearchCondition();
     }
 
@@ -433,7 +442,9 @@ export class TableSwitchChartComponent implements OnInit {
                 ) {
                     this.apiEntity["searchList"].splice(index, 1);
                     this.classifySearchCondition();
-                    this.getTableData();
+                    this.getTableData().then((data)=>{
+                        this.isLoading=false;
+                    });
                     return;
                 }
             });
@@ -449,7 +460,7 @@ export class TableSwitchChartComponent implements OnInit {
                 ) {
                     this.apiEntity["searchList"].splice(index, 1);
                     this.classifySearchCondition();
-                    // this.getRemoteData();
+                    // this.getTableData();
                     return;
                 }
             });
@@ -479,7 +490,9 @@ export class TableSwitchChartComponent implements OnInit {
             this.apiEntity["sortKey"] = key;
             this.apiEntity["sortValue"] = value;
         }
-        this.getTableData();
+        this.getTableData().then((data)=>{
+            this.isLoading=false;
+        });
     }
 
     //外部使用的fuction
@@ -782,10 +795,9 @@ export class TableSwitchChartComponent implements OnInit {
     /**
      * 获取表格数据
      */
-    getTableData() {
-        if(!this.chartUrl){
-            this.isLoading = true;
-        }
+   getTableData() {
+    return new Promise((resolve, reject) => {
+        this.isLoading=true;
         this.ajaxService
             .getDeferData({
                 url: this.tableUrl,
@@ -845,7 +857,6 @@ export class TableSwitchChartComponent implements OnInit {
 
                         if (!this.chartUrl) {
                             this.chartError = "";
-                            this.isLoading = false;
                             this.chartData = data.data;
                             if (
                                 this.chartTypeData &&
@@ -861,64 +872,63 @@ export class TableSwitchChartComponent implements OnInit {
                         }
                         
                     }
-                    
+                   resolve(data);
                 },
                 error => {
                     this.tableError = error;
                     if (!this.chartUrl) {
                         this.chartError = error;
-                        this.isLoading = false;
                     }
+                    reject(error)
                 }
             );
+    })
     }
 
     pageSizeChange() {
         this.apiEntity["pageIndex"] = 1;
-        this.getTableData();
+        this.getTableData().then((data)=>{
+            this.isLoading=false;
+        });
     }
 
     /**
      * 获取图数据（复杂图的api与表api不是同一个）
      */
-    getChartData() {
-        this.isLoading = true;
-        this.ajaxService
-            .getDeferData({
-                url: this.chartUrl,
-                data: this.apiEntity
-            })
-            .subscribe(
-                (data: any) => {
-                    if ( data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data)) ) {
-                        this.chartError = "nodata";
-                    } else if (data.status == "0" && "flag" in data["data"]) {
-                            if (!data["data"]["flag"]) {
-                                this.chartError = "curNodata";
-                            } else {
-                                this.getChartThen(data);
-                            }
-                    } else if (data.status == "-1") {
-                        this.chartError = "error";
-                    } else if (data.status == "-2") {
-                        this.chartError = "dataOver";
-                    } else {
-                            this.getChartThen(data);
-                    }
-
-                    if(this.isChartThenTable){
-                        this.getTableData();
-                    }
-                    this.isLoading = false;
-                },
-                error => {
-                    this.chartError = error;
-                    if(this.isChartThenTable){
-                        this.getTableData();
-                    }
-                    this.isLoading = false;
-                }
-            );
+   getChartData() {
+       return new Promise((resolve,reject)=>{
+           this.isLoading=true;
+           this.ajaxService
+               .getDeferData({
+                   url: this.chartUrl,
+                   data: this.apiEntity
+               })
+               .subscribe(
+                   (data: any) => {
+                       if ( data.status == "0" && (data.data.length == 0 || $.isEmptyObject(data.data)) ) {
+                           this.chartError = "nodata";
+                       } else if (data.status == "0" && "flag" in data["data"]) {
+                               if (!data["data"]["flag"]) {
+                                   this.chartError = "curNodata";
+                               } else {
+                                   this.getChartThen(data);
+                               }
+                       } else if (data.status == "-1") {
+                           this.chartError = "error";
+                       } else if (data.status == "-2") {
+                           this.chartError = "dataOver";
+                       } else {
+                               this.getChartThen(data);
+                       }
+   
+                       resolve(data);
+                   },
+                   error => {
+                       this.chartError = error;
+                       reject(error)
+                   }
+               );
+       })
     }
 
     getChartThen(data) {
@@ -966,13 +976,20 @@ export class TableSwitchChartComponent implements OnInit {
     }
 
     reGetData() {
+        let promise1,promise2;
         if (this.tableUrl) {
-            this.getTableData();
+            promise1 = this.getTableData();
         }
         if (this.chartUrl) {
-            this.getChartData();
+            promise2 = this.getChartData();
         }
-    }
+
+        Promise.all([promise1,promise2]).then(arr=>{
+            this.isLoading=false;
+        },err=>{
+            console.log(err);
+        })
+     }
 
     //单多选按钮改变状态时的事件：获取当前状态（单/多选）
     getSelectModule() {
@@ -994,9 +1011,13 @@ export class TableSwitchChartComponent implements OnInit {
     handlerRefresh() {
         this.refresh.emit();
         if (!this.chartUrl || (this.chartUrl && this.isShowTable)) {
-            this.getTableData();
+            this.getTableData().then((data)=>{
+                this.isLoading=false;
+            });
         } else if (this.chartUrl && !this.isShowTable) {
-            this.getChartData();
+            this.getChartData().then((data)=>{
+                this.isLoading=false;
+            });
         }
     }
 }
