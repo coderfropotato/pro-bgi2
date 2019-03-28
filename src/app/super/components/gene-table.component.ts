@@ -687,7 +687,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			this.tableEntity['rootSearchContentList'] = [];
 			this.rootHtmlString = this.globalService.transformRootFilter(this.tableEntity['rootSearchContentList']);
 
-			this.getRemoteData();
+			this.getRemoteData(true);
 		}
 	}
 
@@ -740,7 +740,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.checked = [];
 		this.unChecked = [];
 
-		this.getRemoteData();
+		this.getRemoteData(true);
 		this.classifySearchCondition();
 	}
 
@@ -768,7 +768,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 				if (val['filterName'] === argv[0] && val['filterNamezh'] === argv[1]) {
 					this.tableEntity['searchList'].splice(index, 1);
 					this.classifySearchCondition();
-					this.getRemoteData();
+					this.getRemoteData(true);
 					return;
 				}
 			});
@@ -805,7 +805,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			});
 			if (index != -1) {
 				this.tableEntity['searchList'].splice(index, 1);
-				this.getRemoteData();
+				this.getRemoteData(true);
 			}
 			this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
 		} else {
@@ -963,7 +963,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
      */
 	initFormValue() {
 		// 数字 字母 下划线  不能以数字开头 30位  label 20
-		// reg 
+		// reg
 		// name /^[a-zA-Z_][a-zA-Z0-9_]{0,29}$/
 		// label /^[a-zA-Z_][a-zA-Z0-9_]{0,19}$/
 		this.validateForm = this.fb.group({

@@ -142,7 +142,7 @@
                         <button nz-button nzType="primary" [disabled]="multiOmicsError || !multiOmicsData.length" (click)="multiOmicsConfirm('multiOmics')" nzSize="middle">确定</button>
                     </div>
                 </ng-container>
-                <p *ngIf="!multiOmicsData.length" class="center">缺少必要数据</p>
+                <p *ngIf="!multiOmicsData.length && doMultiOmicsAjax" class="center">缺少必要数据</p>
             </nz-spin>
         </nz-drawer>
 
