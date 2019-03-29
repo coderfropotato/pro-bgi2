@@ -15,6 +15,7 @@ const config: object = {
 	matchList,
 	matchRule,
 	geneInfo,
+	TCGA_KEY:"006001", // TACG 外部数据库 树增加头需要请求（app-new-tree） 别的外部数据库不需要分步请求(app-tree)
 	targetRelativeGeneLimit:1000,  // 上下游关系选择的基因限制 最大1000
 	urlSplitFlag: '@', // 切割url的标志字符
 	valSplitFlag: '+++', // 内容换行的标志字符

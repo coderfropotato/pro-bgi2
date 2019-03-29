@@ -193,7 +193,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 	computedScrollHeight: boolean = false;
 
 
-	compareGroupList: any[] = [];
+	compareTableGroupList: any[] = [];   //表的参数
+	compareMapGroupList: any[] = []; //图的参数
 	compareNewGroupList: any[] = [];
 	compareGroup: any = '';
 
@@ -207,6 +208,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 	m_name1:string; //比较组
 	m_name2:string; //类型
+
+	mfirst: boolean = true;
 
 	constructor(
 		private message: MessageService,
@@ -237,12 +240,12 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.selectedData = [];
 		this.tableUrl = `${config['javaPath']}/SampleDiff/graph`;
 
-		//this.compareGroupList = this.storeService.getStore('diff_plan');
+		this.compareMapGroupList = this.storeService.getStore('diff_plan');
+
 		this.compareNewGroupList = ["ALL"].concat(this.storeService.getStore('diff_plan'));
 		this.compareGroup = this.compareNewGroupList[0];
 		this.m_name1 = this.compareNewGroupList[1];
-		this.compareGroupList.push(this.compareNewGroupList[1]);
-		//console.log(this.compareGroupList[1])
+		this.compareTableGroupList.push(this.compareNewGroupList[1]);
 
 		this.selectData = ["Up+Down","Total"];
 		this.selectedVal = this.selectData[1];
@@ -291,7 +294,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.tableEntity = {
 			//查询参数
 			LCID: this.storeService.getStore('LCID'),
-			compareGroup: this.storeService.getStore('diff_plan'),
+			compareGroup: this.compareMapGroupList,
 			geneType: this.defaultGeneType,
 			species: this.storeService.getStore('genome'),
 			diffThreshold: this.storeService.getStore('diff_threshold')
@@ -305,7 +308,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'),
 			leftChooseList: this.leftSelect, //upsetR参数
 			upChooseList: this.upSelect, //胜利n图选中部分参数
-			compareGroup: this.compareGroupList, //比较组
+			compareGroup: this.compareTableGroupList, //比较组
 			addThead: [], //扩展列
 			transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -336,7 +339,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			LCID: sessionStorage.getItem('LCID'), //流程id
 			leftChooseList: [], //upsetR参数
 			upChooseList: [], //胜利n图选中部分参数
-			compareGroup: this.compareGroupList, //比较组
+			compareGroup: this.compareTableGroupList, //比较组
 			addThead: [], //扩展列
 			transform: true, //是否转化（矩阵变化完成后，如果只筛选，就为false）
 			mongoId: null,
@@ -494,10 +497,21 @@ export class DiffExpressionNumberComponent implements OnInit {
 	drawVenn(data) {
 		// console.log(this.compareGroup);
 		// console.log(this.selectedVal);
-		// this.allChartData = data;
-		// this.drawTotal(data["rows"]);
 		this.allChartData = data;
-		this.doWithSelectChange();
+		this.drawTotal(data["rows"]);
+		// if(this.mfirst){
+		// 	this.allChartData = data;
+		// 	this.doWithSelectChange();
+		// 	this.mfirst = false;
+		// }else{
+		// 	(async () => {
+		// 		console.log(data);
+		// 		console.log(this.compareGroup);
+		// 		console.log(this.selectedVal);
+		// 	})()
+		// }
+		
+		
 	}
 
 	drawTotal(data){
@@ -842,7 +856,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.defaultShowFilterStatus = false;
 		this.diffVennNumberChart.reGetData();
 
-		this.chartBackStatus();
+		//this.chartBackStatus();
 	}
 	
 	defaultTheSelectList(data,num) {
@@ -888,22 +902,22 @@ export class DiffExpressionNumberComponent implements OnInit {
 	// 图表切换刷新
 	handlerRefresh() {
 		// 清空选择的数据
-		// this.compareGroupList = this.storeService.getStore('diff_plan');
-		// this.compareNewGroupList = ["ALL"].concat(this.compareGroupList);
+		// this.compareTableGroupList = this.storeService.getStore('diff_plan');
+		// this.compareNewGroupList = ["ALL"].concat(this.compareTableGroupList);
 		// this.compareGroup = this.compareNewGroupList[0];
 
 		// this.selectData = ["Up+Down","Total"];
 		// this.selectedVal = this.selectData[1];
 
 		this.tableEntity["compareGroup"] = this.selectConfirmData;
-		this.defaultShowFilterStatus = false;
+		//this.defaultShowFilterStatus = false;
 		this.chartBackStatus();
 	}
 
 	handleCompareGroupChange() {
 		//console.log(this.compareGroup);
 		if(this.compareGroup == "ALL"){
-			this.selectConfirmData = this.compareGroupList;
+			this.selectConfirmData = this.compareTableGroupList;
 			this.m_name1 = this.compareNewGroupList[1];
 		}else{
 			let tempS = [];
@@ -911,14 +925,6 @@ export class DiffExpressionNumberComponent implements OnInit {
 			this.selectConfirmData = tempS;
 			this.m_name1 = this.compareGroup;
 		}
-
-		// if(this.selectedVal == "Total"){
-		// 	this.m_type = null;
-		// 	this.m_name2 = "Total";
-		// }else{
-		// 	this.m_type = 'up';
-		// 	this.m_name2 = "up";
-		// }
 
 		this.doWithSelectChange();
 		this.chartBackStatus();
@@ -934,15 +940,6 @@ export class DiffExpressionNumberComponent implements OnInit {
 			this.m_type = 'up';
 			this.m_name2 = "up"
 		}
-		// if(this.compareGroup == "ALL"){
-		// 	this.selectConfirmData = this.compareGroupList;
-		// 	this.m_name1 = this.compareNewGroupList[1];
-		// }else{
-		// 	let tempS = [];
-		// 	tempS.push(this.compareGroup);
-		// 	this.selectConfirmData = tempS;
-		// 	this.m_name1 = this.compareGroup;
-		// }
 
 		this.doWithSelectChange();
 		this.chartBackStatus();

@@ -153,11 +153,18 @@ export class AlternativeSplicingComponent implements OnInit {
 		for (var j = 0; j < rows.length; j++) {
 			chartData.push({
 				sample_name: rows[j].sample_name,
-				as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
-				as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
+                as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
+                as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
 				as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
 				as_ri: rows[j].as_ri * 100 / rows[j].as_total,
-				as_se: rows[j].as_se * 100 / rows[j].as_total,
+                as_se: rows[j].as_se * 100 / rows[j].as_total,
+                number:{
+                    as_a3ss:rows[j].as_a3ss,
+                    as_a5ss:rows[j].as_a5ss,
+                    as_mxe: rows[j].as_mxe ,
+                    as_ri: rows[j].as_ri,
+                    as_se: rows[j].as_se,
+                },
 				total:rows[j].as_total
 			});
 		}
@@ -176,7 +183,7 @@ export class AlternativeSplicingComponent implements OnInit {
 				el: '#alternativeSpliceDiv',
 				type: 'stackBarPercent',
 				width: 660,
-				custom: [ 'sample_name' ],
+				custom: [ 'sample_name','total', 'as_a3ss','as_a5ss','as_mxe','as_ri','as_se'],
 				data: chartData,
 				enableChartSelect: true,
 				onselect: function(data) {
@@ -217,7 +224,7 @@ export class AlternativeSplicingComponent implements OnInit {
 			},
 			tooltip: function(d) {
 				var p =+(d[1] - d[0]).toFixed(2);
-				var n =Math.round(p/100*d.data.total);
+				var n = d.data.number[d['key']];
 				return '<span>Type：' + d.key + '</span><br><span>Percentage：' + p  + '%</span><br><span>Number：'+n+'</span><br><span>Sample：'+d.data['sample_name']+'</span>';
 			}
 		};
@@ -239,7 +246,7 @@ export class AlternativeSplicingComponent implements OnInit {
 		this.defaultSpliceTable._initCheckStatus();
 		// 清空表的筛选
     this.defaultSpliceTable._clearFilterWithoutRequest();
-    
+
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('sample', this.sample);
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('asType', this.asType);
     this.defaultSpliceTable._setParamsOfEntityWithoutRequest('pageIndex', 1);
