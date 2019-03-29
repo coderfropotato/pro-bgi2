@@ -33,7 +33,12 @@
                                     <i class="anticon anticon-plus"></i>
                                 </button>
                                 <nz-modal [(nzVisible)]="it['modalVisible']"  (nzOnCancel)="handleCancel(it)" (nzOnOk)="handleOk(it)">
-                                    <app-tree [defaultExpandAll]="false" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']" [theadMap]="it['theadMap']"></app-tree>
+                                    <ng-container *ngIf="it['category']===config['TCGA_KEY']">
+                                        <app-new-tree [defaultExpandAll]="false" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']"></app-new-tree>
+                                    </ng-container>
+                                    <ng-container *ngIf="it['category']!==config['TCGA_KEY']">
+                                        <app-tree [defaultExpandAll]="false" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']" [theadMap]="it['theadMap']"></app-tree>
+                                    </ng-container>
                                 </nz-modal>
                             </ng-container>
                         </p>
@@ -62,7 +67,7 @@
                         <span class="head-item"  *ngFor="let head of it['generatedThead'];index as o;" (click)="outerClick(head,thead.length)">{{head['name']}}
                         </span>
                         <nz-modal [(nzVisible)]="modalVisibleList[i]"  (nzOnCancel)="handleCancel(i)" (nzOnOk)="handleOk(i,it)">
-                            <app-tree (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']" [theadMap]="it['theadMap']"></app-tree>
+                            <app-new-tree (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']"></app-new-tree>
                         </nz-modal>
                     </ng-container>
                 </div>

@@ -106,11 +106,11 @@ export class TableSwitchChartComponent implements OnInit {
     // 图说明
     @Input() isShowChartDesc:boolean=false; // 可选，默认隐藏
     @Input() chartDescTitle:string;  //可选， 说明字段标题； 默认是'图说明'
-    @Input() chartDescContent:string;  //  说明的内容；传入此字段说明有图的说明
+    @Input() chartDescContent:any;  //  说明的内容；传入此字段说明有图的说明
     // 表说明
     @Input() isShowTableDesc:boolean=false;
     @Input() tableDescTitle:string;
-    @Input() tableDescContent:string;
+    @Input() tableDescContent:any;
 
     scroll: object = { x: "120%", y: "400px" };
     isShowTable: boolean = false;
@@ -400,7 +400,6 @@ export class TableSwitchChartComponent implements OnInit {
                     valueOne: argv[3],
                     valueTwo: argv[4],
                     searchType:argv[5]
-                    // crossUnion: argv[5]
                 });
         }
         // 每次筛选的时候 重置选中的集合

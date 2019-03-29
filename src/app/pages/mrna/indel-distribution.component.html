@@ -82,7 +82,7 @@
         </nz-select>
     </ng-template>
     <app-table-switch-chart #indelDataChart [id]="'indelDataChart'" [tableUrl]="tableUrl" [apiEntity]="tableEntity" (drawChartEmit)="drawIndelReads($event)" [flex]="true" [chartId]="'indelDataID'" [chartName]="'Indel位点区域分布'" [otherLeftTemplate]='searchTemplate'
-        (refresh)="handlerRefresh()">
+        (refresh)="handlerRefresh()" [chartDescContent]="'Up2k 指一个基因上游2000bp内的区域，Down2k 指一个基因下游2000bp内的区域。'">
     </app-table-switch-chart>
     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
 </div>

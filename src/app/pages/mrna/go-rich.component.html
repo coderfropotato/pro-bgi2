@@ -79,7 +79,7 @@
             <div>
                 <app-table-switch-chart *ngIf="selectedVal" #switchChart [id]="'go-rich'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'goRichChartDiv'" [chartName]="'GO富集'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true"
                     [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" (showChange)="showChange($event)" [chartTypeData]="chartTypeData" [otherLeftTemplate]="checkedTemplate"
-                    [flex]="true">
+                    [flex]="true" [chartDescContent]='chartDesc'>
                 </app-table-switch-chart>
 
                 <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>

@@ -4,7 +4,7 @@
 <div class="content row  overview">
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-bottom-layout">
-            <app-table-switch-chart #snpOverview [id]="'snpOverview'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'snpOverviewDiv'" [chartName]="'SNP类型统计'" [flex]="true" (refresh)="handlerRefresh()">
+            <app-table-switch-chart #snpOverview [id]="'snpOverview'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'snpOverviewDiv'" [chartName]="'SNP类型统计'" [flex]="true" (refresh)="handlerRefresh()" [chartDescContent]="'X轴代表变异类型，Y轴代表相应的SNP数目。'">
             </app-table-switch-chart>
 
             <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>

@@ -52,7 +52,7 @@
             <ng-container *ngIf="isExceed!=null && !isExceed">
                 <app-table-switch-chart #switchChart *ngIf="selectedVal" [id]="'re-class'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [otherLeftTemplate]="otherLeftTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)"
                     [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()"
-                    [flex]="true"> </app-table-switch-chart>
+                    [flex]="true" [chartDescContent]="'X轴代表注释到GO条目上的基因数目，Y轴代表GO功能分类。选择图中的某根柱子或者右上角“多选”模式下选择多根柱子，将在下方表格显示注释到这些GO条目的基因列表。 双击图或坐标轴的标题可以修改文字。'"> </app-table-switch-chart>
 
                 <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
             </ng-container>
