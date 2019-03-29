@@ -23,7 +23,7 @@ export class GridExportComponent implements OnInit {
 	download() {
 		let entity = $.extend(true, {}, this.tableEntity);
 		entity['isExport'] = true;
-		entity['fileName'] = this.fileName || new Date().getTime();
+		entity['fileName'] = ''+(this.fileName || new Date().getTime());
 
 		this.loadingService.open('body', '正在导出表格，请稍后...');
 
