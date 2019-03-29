@@ -52,7 +52,7 @@
             <ng-container *ngIf="isExceed!=null && !isExceed">
                 <app-table-switch-chart #switchChart *ngIf="selectedVal" [id]="'re-class'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [otherLeftTemplate]="otherLeftTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)"
                     [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()"
-                    [flex]="true"> </app-table-switch-chart>
+                    [flex]="true" [chartDescContent]="'X轴为注释到某一KEGG Pathway类别上的基因数目，Y轴为KEGG Pathway类别。 选择图中的某个柱子或者右上角“多选”模式下选择多个柱子，将在下方表格显示注释到这些KEGG Pathway分类上的差异基因情况。双击图标题或坐标轴标题可以修改文字，点击图例色块可以修改颜色。'"> </app-table-switch-chart>
 
                 <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
             </ng-container>
