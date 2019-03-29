@@ -133,7 +133,6 @@ export class TableSwitchChartComponent implements OnInit {
     chartType: string;
 
     //筛选
-    // @Input() tableHeight: number = 0; // 计算后的表格高度
     beginFilterStatus: boolean = false; //是否筛选
     filterHtmlString: object[] = []; //筛选条件面板数据
     twoLevelHead:any[]=[]; //二级表头（可能存在）
@@ -243,6 +242,7 @@ export class TableSwitchChartComponent implements OnInit {
         // 关闭筛选 重置筛选条件
         if (!this.beginFilterStatus) {
             this.apiEntity["searchList"].length=0;
+            this.apiEntity['pageIndex']=1;
             this.classifySearchCondition();
             this.getTableData().then((data)=>{
                 this.isLoading=false;
@@ -250,7 +250,7 @@ export class TableSwitchChartComponent implements OnInit {
         }
     }
 
-    // 删除筛选条件
+    // 删除某项筛选条件
     deleteFilterItem(item) {
         let filterObj = item.obj;
         if(this.tableError){
@@ -261,6 +261,7 @@ export class TableSwitchChartComponent implements OnInit {
             })
             if(index!=-1) {
                 this.apiEntity['searchList'].splice(index,1);
+                this.apiEntity['pageIndex']=1;
                 this.getTableData().then((data)=>{
                     this.isLoading=false;
                 });
@@ -275,7 +276,7 @@ export class TableSwitchChartComponent implements OnInit {
         }
     }
 
-    //筛选条件
+    //筛选条件面板的数据
     classifySearchCondition() {
         if (this.apiEntity["searchList"].length) {
             this.filterHtmlString = this.globalService.transformFilter(this.apiEntity['searchList']);
@@ -284,27 +285,9 @@ export class TableSwitchChartComponent implements OnInit {
         }
 
         // 每次分类筛选条件的时候 重新计算表格滚动区域高度
-        // setTimeout(() => {
-        //     this.computedTbody(this.tableHeight);
-        // }, 0);
-    }
-
-    //计算表格滚动区域高度
-    computedTbody(tableHeight) {
-        if(tableHeight){
-            // 固定头的高度
-            let head = $(`#${this.id} .ant-table-fixed .ant-table-thead`).outerHeight();
-            // 分页的高度
-            let bottom = $(`#${this.id} .table-bottom`).outerHeight();
-            // 筛选条件的高度
-            let filter = $(`#${this.id} .table-filter`).outerHeight();
-            // 表头工具栏的高度
-            let tools = $(`#${this.id} .table-thead`).outerHeight();
-            // 首列gene的高度
-            let res = tableHeight - head - bottom - filter - tools  - 2;
-            $(`#${this.id} .ant-table-body`).css("height", `${res}px`);
-            this.scroll["y"] = `${res}px`;
-        }
+        setTimeout(() => {
+            this.scrollHeight();
+        }, 0);
     }
 
     //根据表头层级关系计算表头宽度
@@ -384,7 +367,7 @@ export class TableSwitchChartComponent implements OnInit {
         }
     }
 
-    //筛选
+    //筛选 确定
     recive(argv) {
         if (!this.apiEntity["searchList"]) {
             this.apiEntity["searchList"] = [
@@ -425,14 +408,14 @@ export class TableSwitchChartComponent implements OnInit {
                 });
         }
         // 每次筛选的时候 重置选中的集合
+        this.apiEntity['pageIndex']=1;
         this.getTableData().then((data)=>{
             this.isLoading=false;
         });
         this.classifySearchCondition();
     }
 
-    // 清空筛选
-    // 筛选面板组件 发来的删除筛选字段的请求
+    //筛选 清空
     delete(argv) {
         if (this.apiEntity["searchList"].length) {
             this.apiEntity["searchList"].forEach((val, index) => {
@@ -442,6 +425,7 @@ export class TableSwitchChartComponent implements OnInit {
                 ) {
                     this.apiEntity["searchList"].splice(index, 1);
                     this.classifySearchCondition();
+                    this.apiEntity['pageIndex']=1;
                     this.getTableData().then((data)=>{
                         this.isLoading=false;
                     });
@@ -451,6 +435,7 @@ export class TableSwitchChartComponent implements OnInit {
         }
     }
 
+    //筛选 清空（不重新发请求）
     deleteWithoutRequest(argv){
         if (this.apiEntity["searchList"].length) {
             this.apiEntity["searchList"].forEach((val, index) => {
@@ -649,10 +634,8 @@ export class TableSwitchChartComponent implements OnInit {
 
     scrollHeight(height = 0) {
         try {
-            let tableChartContentH = height || this.tableChartContent.nativeElement .offsetHeight;
-            let bottomPageH = this.tableBottom
-                ? this.tableBottom.nativeElement.offsetHeight
-                : 0;
+            let tableChartContentH = height || this.tableChartContent.nativeElement.offsetHeight;
+            let bottomPageH = this.tableBottom ? this.tableBottom.nativeElement.offsetHeight : 0;
             let scrollH: any = tableChartContentH - 38 - bottomPageH + "px";
             if (this.isPaging) {
                 $(`#${this.id} .ant-table-body`).css("height", scrollH);
@@ -870,7 +853,7 @@ export class TableSwitchChartComponent implements OnInit {
                                 );
                             }
                         }
-                        
+
                     }
                    resolve(data);
                 },
@@ -883,6 +866,12 @@ export class TableSwitchChartComponent implements OnInit {
                 }
             );
     })
+    }
+
+    pageIndexChange(){
+        this.getTableData().then((data)=>{
+            this.isLoading=false;
+        });
     }
 
     pageSizeChange() {
@@ -920,7 +909,7 @@ export class TableSwitchChartComponent implements OnInit {
                        } else {
                                this.getChartThen(data);
                        }
-   
+
                        resolve(data);
                    },
                    error => {
