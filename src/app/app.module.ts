@@ -35,6 +35,7 @@ import { GeneRelativeComponent } from './super/components/gene-relative.componen
 import { GridExportComponent } from './super/components/grid-export.component';
 import { PaginationComponent } from './super/components/pagination.component';
 import { TreeComponent } from './super/components/tree.component';
+import { NewTreeComponent } from './super/components/tree-new.component';
 import { TreeItemComponent } from './super/components/tree-item.component';
 import { ColorPickerComponent } from './super/components/color-picker.component';
 import { ToolsComponent } from './super/components/tools.component';
@@ -605,6 +606,7 @@ export function createTranslateLoader(http: HttpClient) {
 		PaginationComponent,
 		TreeItemComponent,
 		TreeComponent,
+		NewTreeComponent,
 		ToolsComponent,
 		ColorPickerComponent,
 		ReListComponent,
