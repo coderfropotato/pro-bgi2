@@ -218,7 +218,7 @@
     },
     "menu": {
         "category_url_main": "Main",
-        "category_gene_expression": "Gene Expression",
+        "category_gene_expression": "Expression",
         "category_annotation": "Annotation",
         "category_variation": "Variation",
         "category_snp_indel": "SNP/InDel",

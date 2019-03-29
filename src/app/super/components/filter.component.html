@@ -55,9 +55,11 @@
             <!-- int double // $lt -->
             <input *ngIf="(searchType==='double' || searchType==='int') && selectType==='$lt'" type="number" nz-input placeholder="lt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.lt">
-            <!-- int double total // $gte -->
-            <input *ngIf="(searchType==='int' || searchType==='double' || searchType==='total') && selectType==='$gte'" type="number" nz-input placeholder="egt" nzSize="default" (input)="oninput()"
+            <!-- int double// $gte -->
+            <input *ngIf="(searchType==='int' || searchType==='double' ) && selectType==='$gte'" type="number" nz-input placeholder="gte" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.gte">
+            <!-- total // $gte -->
+            <nz-input-number style="width:130px;" *ngIf=" searchType==='total' && selectType==='$gte'" [nzMin]="1" [nzPlaceHolder]="'At least one'" [nzSize]="'default'" (input)="oninput()"  [(ngModel)]="filter.gte"></nz-input-number>
             <!-- int double // $lte -->
             <input *ngIf="(searchType==='double' || searchType==='int') && selectType==='$lte'" type="number" nz-input placeholder="elt" nzSize="default" (input)="oninput()"
                 [(ngModel)]="filter.lte">
