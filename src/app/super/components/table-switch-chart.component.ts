@@ -244,9 +244,7 @@ export class TableSwitchChartComponent implements OnInit {
             this.apiEntity["searchList"].length=0;
             this.apiEntity['pageIndex']=1;
             this.classifySearchCondition();
-            this.getTableData().then((data)=>{
-                this.isLoading=false;
-            });
+            this.getTableDataThen();
         }
     }
 
@@ -262,9 +260,7 @@ export class TableSwitchChartComponent implements OnInit {
             if(index!=-1) {
                 this.apiEntity['searchList'].splice(index,1);
                 this.apiEntity['pageIndex']=1;
-                this.getTableData().then((data)=>{
-                    this.isLoading=false;
-                });
+                this.getTableDataThen();
             }
             this.filterHtmlString = this.globalService.transformFilter(this.apiEntity['searchList']);
         }else{
@@ -409,9 +405,7 @@ export class TableSwitchChartComponent implements OnInit {
         }
         // 每次筛选的时候 重置选中的集合
         this.apiEntity['pageIndex']=1;
-        this.getTableData().then((data)=>{
-            this.isLoading=false;
-        });
+        this.getTableDataThen();
         this.classifySearchCondition();
     }
 
@@ -426,9 +420,7 @@ export class TableSwitchChartComponent implements OnInit {
                     this.apiEntity["searchList"].splice(index, 1);
                     this.classifySearchCondition();
                     this.apiEntity['pageIndex']=1;
-                    this.getTableData().then((data)=>{
-                        this.isLoading=false;
-                    });
+                    this.getTableDataThen();
                     return;
                 }
             });
@@ -475,9 +467,7 @@ export class TableSwitchChartComponent implements OnInit {
             this.apiEntity["sortKey"] = key;
             this.apiEntity["sortValue"] = value;
         }
-        this.getTableData().then((data)=>{
-            this.isLoading=false;
-        });
+        this.getTableDataThen();
     }
 
     //外部使用的fuction
@@ -868,23 +858,27 @@ export class TableSwitchChartComponent implements OnInit {
     })
     }
 
-    pageIndexChange(){
+    getTableDataThen(){
+        //获取数据后关闭加载状态
         this.getTableData().then((data)=>{
             this.isLoading=false;
-        });
+        })
+    }
+
+    //分页
+    pageIndexChange(){
+        this.getTableDataThen();
     }
 
     pageSizeChange() {
         this.apiEntity["pageIndex"] = 1;
-        this.getTableData().then((data)=>{
-            this.isLoading=false;
-        });
+        this.getTableDataThen();
     }
 
     /**
      * 获取图数据（复杂图的api与表api不是同一个）
      */
-   getChartData() {
+    getChartData() {
        return new Promise((resolve,reject)=>{
            this.isLoading=true;
            this.ajaxService
@@ -1000,9 +994,7 @@ export class TableSwitchChartComponent implements OnInit {
     handlerRefresh() {
         this.refresh.emit();
         if (!this.chartUrl || (this.chartUrl && this.isShowTable)) {
-            this.getTableData().then((data)=>{
-                this.isLoading=false;
-            });
+            this.getTableDataThen();
         } else if (this.chartUrl && !this.isShowTable) {
             this.getChartData().then((data)=>{
                 this.isLoading=false;
