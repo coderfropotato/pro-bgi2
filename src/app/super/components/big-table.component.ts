@@ -341,7 +341,7 @@ export class BigTableComponent implements OnInit {
                 this.tableEntity["rootSearchContentList"]
             );
 
-            this.getRemoteData();
+            this.getRemoteData(true);
         }
     }
 
@@ -388,7 +388,7 @@ export class BigTableComponent implements OnInit {
                 });
         }
         // 每次筛选的时候 重置选中的集合
-        this.getRemoteData();
+        this.getRemoteData(true);
         this.classifySearchCondition();
     }
 
@@ -448,7 +448,7 @@ export class BigTableComponent implements OnInit {
                 ) {
                     this.tableEntity["searchList"].splice(index, 1);
                     this.classifySearchCondition();
-                    this.getRemoteData();
+                    this.getRemoteData(true);
                     return;
                 }
             });
@@ -489,7 +489,7 @@ export class BigTableComponent implements OnInit {
             })
             if(index!=-1) {
                 this.tableEntity['searchList'].splice(index,1);
-                this.getRemoteData();
+                this.getRemoteData(true);
             }
             this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
         }else{

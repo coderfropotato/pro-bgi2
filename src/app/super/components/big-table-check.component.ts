@@ -574,7 +574,7 @@ export class BigTableCheckComponent implements OnInit {
 			this.tableEntity['rootSearchContentList'] = [];
 			this.rootHtmlString = this.globalService.transformRootFilter(this.tableEntity['rootSearchContentList']);
 
-			this.getRemoteData();
+			this.getRemoteData(true);
 		}
 	}
 
@@ -628,7 +628,7 @@ export class BigTableCheckComponent implements OnInit {
 		this.checked = [];
 		this.unChecked = [];
 
-		this.getRemoteData();
+		this.getRemoteData(true);
 		this.classifySearchCondition();
 	}
 
@@ -703,7 +703,7 @@ export class BigTableCheckComponent implements OnInit {
 				if (val['filterName'] === argv[0] && val['filterNamezh'] === argv[1]) {
 					this.tableEntity['searchList'].splice(index, 1);
 					this.classifySearchCondition();
-					this.getRemoteData();
+					this.getRemoteData(true);
 					return;
 				}
 			});
@@ -741,7 +741,7 @@ export class BigTableCheckComponent implements OnInit {
 			});
 			if (index != -1) {
 				this.tableEntity['searchList'].splice(index, 1);
-				this.getRemoteData();
+				this.getRemoteData(true);
 			}
 			this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
 		} else {
