@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <!-- 筛选面板 -->
-                <div *ngIf="isFilter && filterHtmlString.length && !tableError" #tableFilter class="table-filter">
+                <div *ngIf="isFilter && filterHtmlString.length" #tableFilter class="table-filter">
                     <div class="table-top">
                         <span class="filter-head">{{'filterTitle' | translate}}：</span>
                         <span class="filter-item" *ngFor="let item of filterHtmlString">
