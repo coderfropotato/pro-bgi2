@@ -140,6 +140,12 @@ export class FilterComponent implements OnInit {
     // 输入值的时候
     oninput() {
         this.nodata = false;
+        // total 类型 值需大于等于1
+        // if(this.searchType==='total' && this.selectType==='$gte'){
+        //     if(this.filter['gte']<1 || !this.filter['gte']){
+        //         this.filter['gte'] = null;
+        //     }
+        // }
     }
 
     // 确定
