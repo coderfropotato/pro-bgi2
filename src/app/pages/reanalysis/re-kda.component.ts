@@ -875,7 +875,7 @@ export class ReKdaComponent implements OnInit {
                         return;
                     } else {
                         this.chartData=data.data;
-                        this.kdaChart.getTableData();
+                        this.kdaChart.getTableDataThen();
                         this.clearSelected();
                         this.drawChart(data.data);
                     }
@@ -915,7 +915,7 @@ export class ReKdaComponent implements OnInit {
                         return;
                     } else {
                         this.chartData=data.data;
-                        this.kdaChart.getTableData();
+                        this.kdaChart.getTableDataThen();
                         this.clearSelected();
                         this.drawChart(data.data);
                     }

@@ -34,7 +34,7 @@ export class GridExportComponent implements OnInit {
 			})
 			.subscribe(
 				(data) => {
-					if (data['status'] == 0) {
+					if (data['status'] == "0") {
 						let key_info = data['data']['key_info'];
 						let actionStr = `${config['javaPath']}/CsvDownload`;
 						let formID = this.fileName + '_exportform';

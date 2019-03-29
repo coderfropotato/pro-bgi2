@@ -1034,7 +1034,7 @@ export class ReNetComponent implements OnInit {
                         return;
                     } else {
                         this.chartData=data.data;
-                        this.netChart.getTableData();
+                        this.netChart.getTableDataThen();
                         this.clearSelected();
                         this.drawChart(data.data);
                     }
@@ -1074,7 +1074,7 @@ export class ReNetComponent implements OnInit {
                         return;
                     } else {
                         this.chartData=data.data;
-                        this.netChart.getTableData();
+                        this.netChart.getTableDataThen();
                         this.clearSelected();
                         this.drawChart(data.data);
                     }

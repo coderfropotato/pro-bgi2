@@ -22,9 +22,12 @@ export class PromptService {
    * @memberof PromptService
    */
   open(value:string,confirm,cancel?){
+    // console.log(window.location.host);
+    // console.log(window.location.port);
+    let murl = window.location.host+"显示";
     let oldVal:any;
     let params = {
-      nzTitle  : '标题修改',
+      nzTitle  : murl,
       nzContent: PromtComponent,
       nzComponentParams:{
         value:{
@@ -48,10 +51,10 @@ export class PromptService {
 }
 
 
-
+// value['key']
 @Component({
     selector: "app-propmt",
-    template: `<input nz-input [attr.value]="value['key']" (keyup)="handlerChange($event)" />
+    template: `<div style="margin-bottom: 10px;">请输入需要修改的标题</div><input nz-input [attr.value]="" (keyup)="handlerChange($event)" />
     <div style="text-align:center;margin-top:10px;color:red;" [hidden]="isshowFlag != true">最多输入25位字符</div>`,
     styles: []
 })

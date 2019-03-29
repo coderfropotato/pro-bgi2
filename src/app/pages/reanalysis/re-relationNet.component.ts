@@ -1045,7 +1045,7 @@ export class reRelationNetComponent implements OnInit {
                         return;
                     } else {
                         this.chartData=data.data;
-                        this.relationNetChart.getTableData();
+                        this.relationNetChart.getTableDataThen();
                         this.clearSelected();
                         this.drawChart(data.data);
                     }
@@ -1085,7 +1085,7 @@ export class reRelationNetComponent implements OnInit {
                         return;
                     } else {
                         this.chartData=data.data;
-                        this.relationNetChart.getTableData();
+                        this.relationNetChart.getTableDataThen();
                         this.clearSelected();
                         this.drawChart(data.data);
                     }
