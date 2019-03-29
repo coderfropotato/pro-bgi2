@@ -45,7 +45,7 @@
             <!-- [selectTemplate]="selectTemplate" -->
             <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect" (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [apiEntity]="tableEntity"
                 [isShowAccuracy]="true" [setTemplate]="setTemplate" (drawChartEmit)="drawVenn($event)" [selectPanelData]="selectPanelData" (selectConfirmEmit)="selectConfirm($event)" [defaultSelectNum]="3" (defaultSelectList)="defaultSelectList($event)" [isVennTable]="true"
-                [flex]="true" [chartId]="'chartId22122'" [chartName]="'韦恩图'">
+                [flex]="true" [chartId]="'chartId22122'" [chartName]="'韦恩图'" [chartDescContent]="chartDescContent" >
             </app-table-switch-chart>
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>

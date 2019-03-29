@@ -147,6 +147,8 @@ export class ExpressVennComponent implements OnInit {
 	sampleGroupTop3: string [] = [];
 	sampleGroupTarget: string [] = [];
 
+	chartDescContent:any;
+
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -444,9 +446,11 @@ export class ExpressVennComponent implements OnInit {
 		if (d_length > 5) {
 			this.venn_or_upsetR = true;
 			this.showUpSetR(data);
+			this.chartDescContent='左侧条形图X轴表示基因数，Y轴表示基因集名称。右上方柱状图X轴表示不同基因集的交集，Y轴表示基因数。右下方的每一列，表示左侧基因集与上方交集的关系。例如某个柱子下方有2个深色圆点、1个浅色圆点，分别对应左侧基因集A、B和C，表示该柱子代表的交集是由A和B共有，但C中不包含的基因构成。深色圆点用线条连接。详细信息请参考<a target="_blank" href="http://caleydo.org/tools/upset/">UpSetR</a>。';
 		} else if (d_length <= 5 && d_length >= 2) {
 			this.venn_or_upsetR = false;
 			this.showVenn(data);
+			this.chartDescContent='一个圆圈表示一组基因集，不同圆圈叠加的区域表示这些基因集的交集。未叠加的部分表示这个基因集独有，图上的数字表示对应区域的基因个数。'
 		} else {
 			this.venn_or_upsetR = false;
 			this.showCircle(data);
