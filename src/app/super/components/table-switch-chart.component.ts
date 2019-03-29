@@ -242,6 +242,7 @@ export class TableSwitchChartComponent implements OnInit {
         // 关闭筛选 重置筛选条件
         if (!this.beginFilterStatus) {
             this.apiEntity["searchList"].length=0;
+            this.apiEntity['pageIndex']=1;
             this.classifySearchCondition();
             this.getTableData().then((data)=>{
                 this.isLoading=false;
@@ -260,6 +261,7 @@ export class TableSwitchChartComponent implements OnInit {
             })
             if(index!=-1) {
                 this.apiEntity['searchList'].splice(index,1);
+                this.apiEntity['pageIndex']=1;
                 this.getTableData().then((data)=>{
                     this.isLoading=false;
                 });
@@ -274,7 +276,7 @@ export class TableSwitchChartComponent implements OnInit {
         }
     }
 
-    //筛选条件
+    //筛选条件面板的数据
     classifySearchCondition() {
         if (this.apiEntity["searchList"].length) {
             this.filterHtmlString = this.globalService.transformFilter(this.apiEntity['searchList']);
@@ -365,7 +367,7 @@ export class TableSwitchChartComponent implements OnInit {
         }
     }
 
-    //筛选
+    //筛选 确定
     recive(argv) {
         if (!this.apiEntity["searchList"]) {
             this.apiEntity["searchList"] = [
@@ -406,14 +408,14 @@ export class TableSwitchChartComponent implements OnInit {
                 });
         }
         // 每次筛选的时候 重置选中的集合
+        this.apiEntity['pageIndex']=1;
         this.getTableData().then((data)=>{
             this.isLoading=false;
         });
         this.classifySearchCondition();
     }
 
-    // 清空筛选
-    // 筛选面板组件 发来的删除筛选字段的请求
+    //筛选 清空
     delete(argv) {
         if (this.apiEntity["searchList"].length) {
             this.apiEntity["searchList"].forEach((val, index) => {
@@ -423,6 +425,7 @@ export class TableSwitchChartComponent implements OnInit {
                 ) {
                     this.apiEntity["searchList"].splice(index, 1);
                     this.classifySearchCondition();
+                    this.apiEntity['pageIndex']=1;
                     this.getTableData().then((data)=>{
                         this.isLoading=false;
                     });
@@ -432,6 +435,7 @@ export class TableSwitchChartComponent implements OnInit {
         }
     }
 
+    //筛选 清空（不重新发请求）
     deleteWithoutRequest(argv){
         if (this.apiEntity["searchList"].length) {
             this.apiEntity["searchList"].forEach((val, index) => {
