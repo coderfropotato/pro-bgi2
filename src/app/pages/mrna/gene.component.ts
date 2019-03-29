@@ -83,9 +83,15 @@ declare const $: any;
                             <div class="mselect2 gene_center">
                             <!-- <div>搜索范围:</div> -->
                             <div class="mselect2_place">
-                                <span>搜索范围:</span>&nbsp;
-                                <button nz-button nzType="default" *ngFor="let item of selectPanelList" [nzSize]="'small'" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.key}}</button>
-                            </div>
+                                <div>搜索范围:</div>
+                                <!--<button nz-button nzType="default" *ngFor="let item of selectPanelList" [nzSize]="'small'" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.key}}</button>-->
+								
+								<div class="tool-params-tab" *ngFor="let item of selectPanelList;index as i;">
+									<p>{{item['key']}}</p>
+									<button (click)="handlerGeneClassSelect(klass)" [class.active]="klass['checked']" *ngFor="let klass of item['value'];" nz-button nzType="default" nzSize="middle">{{klass['name']}}</button>
+								</div>
+							
+							</div>
                             </div>
                         </div>
                         <div class="gene_pop_bottom">
@@ -118,7 +124,8 @@ export class GenePage {
 	radioValue: string = 'or'; //默认选择or
 
 	selectPanelList: object[]; //搜索范围数据
-	selectedList: object[]; //选中的数据
+	selectedList: any[] = []; //选中的数据
+	selectedListT: object[]; //选中的数据2
 
 	selectTarget: object[]; //基因或者转录本
 	selectTargetName: string; //初始化为基因
@@ -132,7 +139,7 @@ export class GenePage {
 	expandHistoryPanel: boolean = false; // 默认收起搜索结果面板
 
 	initializationFlag: boolean = false;
-	searchButtonFlag: boolean = true;
+	//searchButtonFlag: boolean = true;
 
 	constructor(
 		private message: MessageService,
@@ -229,12 +236,12 @@ export class GenePage {
 		this.expandSetPanel = false; // 收起设置面板
 
 		if (this.inputValue) {
-			this.searchButtonFlag = false;
+			//this.searchButtonFlag = false;
 			this.geneService.set('content', this.inputValue);
 			this.getSearchback();
 		} else {
 			this.expandHistoryPanel = false;
-			this.searchButtonFlag = true;
+			//this.searchButtonFlag = true;
 		}
 	}
 
@@ -248,11 +255,22 @@ export class GenePage {
 		this.icon_color = 'gray';
 		this.radioValue = 'or';
 		this.selectPanelList.forEach((d) => {
-			if (d['isChecked']) {
-				d['isChecked'] = false;
-			}
+			d["value"].forEach((v)=>{
+				if(v["checked"]){
+					v["checked"]=false;
+				}
+			})
 		});
-		this.geneService.set('checkedAddThead', this.selectPanelList);
+
+		let tempList = []
+		this.selectPanelList.forEach((d) => {
+			// d["value"].forEach((m) => {
+			// 	this.selectedList.push(m)
+			// });
+			tempList.push(...d["value"]);
+		});
+
+		this.geneService.set('checkedAddThead', tempList);
 		this.expandSetPanel = !this.expandSetPanel;
 	}
 
@@ -332,11 +350,35 @@ export class GenePage {
 			});
 	}
 
+	handlerGeneClassSelect(item) {
+		if (item['checked']) {
+			item['checked'] = false;
+			let index = this.selectedList.findIndex((val, index) => {
+				return val['name'] === item['name'];
+			});
+
+			if (index != -1) this.selectedList.splice(index, 1);
+		} else {
+			item['checked'] = true;
+			this.selectedList.push(item);
+		}
+		
+		if(this.selectedList.length != 0){
+			this.icon_color = "blue";
+		}else{
+			this.icon_color = "gray";
+		}
+
+		this.geneService.set('checkedAddThead', this.selectedList);
+		console.log(this.geneService);
+	}
+
 	getDefaultData() {
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/home/searchHead`,
 				data: {
+					lcid: this.storeService.getStore('LCID'),
 					geneType: this.defaultGeneType,
 					species: this.storeService.getStore('genome') //物种
 				}
@@ -350,14 +392,33 @@ export class GenePage {
 					} else if (data.status == '-2') {
 						return;
 					} else {
-						//console.log(data);
-						for (var i = 0; i < data['data'].length; i++) {
-							data['data'][i]['isChecked'] = false;
-						}
-						this.selectPanelList = data['data'];
-						this.selectedList = data['data'];
-						this.geneService.set('checkedAddThead', this.selectPanelList);
-						this.geneService.set('num', this.selectPanelList.length);
+						console.log(data);
+						this.selectPanelList = data;
+
+						let tempList = [];
+
+						this.selectPanelList.forEach((d) => {
+							// d["value"].forEach((m) => {
+							// 	this.selectedList.push(m)
+							// });
+							tempList.push(...d["value"]);
+						});
+
+						this.selectedListT = tempList;
+						
+						this.geneService.set('checkedAddThead', this.selectedListT);
+						this.geneService.set('num', tempList.length);
+
+
+						// this.selectedList = data;
+
+						// for (var i = 0; i < data['data'].length; i++) {
+						// 	data['data'][i]['isChecked'] = false;
+						// }
+						// this.selectPanelList = data['data'];
+						// this.selectedList = data['data'];
+						// this.geneService.set('checkedAddThead', this.selectPanelList);
+						// this.geneService.set('num', this.selectPanelList.length);
 					}
 				},
 				(error) => console.log(error),
@@ -437,6 +498,9 @@ export class GeneComponent implements OnInit {
 	}
 
 	ngOnInit() {
+
+		console.log(this.geneService['geneOptions']);
+
         this.applyOnceSearchParams = true;
         this.defaultApplyOnceSearchParams = true;
 		this.defaultUrl = `${config['javaPath']}/home/table`; // `${config['url']}/theadFilter`

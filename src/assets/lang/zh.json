@@ -31,16 +31,32 @@
         "document_information": "文献信息"
     },
     "diff_venn": {
-        "diff_venn_title": "差异基因聚类",
-        "diff_venn_content": "对每个比较组差异基因的FPKM值进行聚类"
+        "diff_venn_title": "差异VENN",
+        "diff_venn_content": "利用VENN/UpSetR图，展示基因在不同比较组间的差异表达情况"
     },
     "diff_venn_number": {
         "diff_venn_title": "差异基因数量",
-        "diff_venn_content": "差异基因数量"
+        "diff_venn_content": "根据各个样品基因表达水平，检测到的显著差异表达基因进行统计绘图。"
     },
     "express_venn": {
-        "express_venn_title": "表达量基因聚类",
-        "express_venn_content": "对每个比较组表达量基因的FPKM值进行聚类"
+        "express_venn_title": "表达量",
+        "express_venn_content": "选择分组或样本，绘制VENN/UpSetR图，查看各个分组或样本交/并集。"
+    },
+    "go_class": {
+        "title": "KEGG分类",
+        "content": "Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。对差异基因的GO注释分类结果进行绘图。"
+    },
+    "go_rich": {
+        "title": "GO富集",
+        "content": "根据GO注释结果以及官方分类，将差异基因进行功能分类，同时使用R软件中的phyper函数进行富集分析，计算Pvalue，然后对Pvalue进行 FDR校正，通常FDR <=0.01的功能视为显著富集。"
+    },
+    "kegg_class": {
+        "title": "GO分类",
+        "content": "将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。对差异基因的KEGG Pathway注释分类结果进行绘图。"
+    },
+    "kegg_rich": {
+        "title": "KEGG富集",
+        "content": "根据 KEGG Pathway注释分类，使用 R 软件中的 phyper 函数进行富集分析，计算 Pvalue，然后对 Pvalue 进行 FDR 校正，通常 FDR <= 0.01的功能视为显著富集。"
     },
     "top": {
         "pdf": "导出pdf",

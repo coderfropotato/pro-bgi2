@@ -4,9 +4,9 @@
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
                 <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
                 <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
-                go
+                {{'go_class.title' | translate}}
             </span>
-            <p [hidden]="!expandModuleDesc">go</p>
+            <p [hidden]="!expandModuleDesc">{{'go_class.content' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
 
