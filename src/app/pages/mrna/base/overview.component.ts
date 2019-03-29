@@ -242,7 +242,8 @@ export class OverviewComponent implements OnInit {
 
 		var svg = d3.select("#svg")
         .attr("width", width)
-        .attr("height", height);
+		.attr("height", height)
+		.attr('transform', 'translate(' + 0 + ',' + 30 + ')');
 
 		// 比例尺
 		var xScale = d3.scalePoint()
