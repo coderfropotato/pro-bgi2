@@ -83,7 +83,7 @@
             <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
         </nz-select>
     </ng-template>
-    <app-table-switch-chart #rawDataChart [id]="'rawDataChart'" [tableUrl]="tableUrl" [apiEntity]="tableEntity" (drawChartEmit)="drawRawReads($event)" [flex]="true" [chartId]="'snpDataID'" [chartName]="'SNP位点区域分布'" [otherLeftTemplate]='searchTemplate' (refresh)="handlerRefresh()">
+    <app-table-switch-chart #rawDataChart [id]="'rawDataChart'" [tableUrl]="tableUrl" [apiEntity]="tableEntity" (drawChartEmit)="drawRawReads($event)" [flex]="true" [chartId]="'snpDataID'" [chartName]="'SNP位点区域分布'" [otherLeftTemplate]='searchTemplate' [chartDescContent]="'Up2k 指一个基因上游2000bp内的区域，Down2k 指一个基因下游2000bp内的区域。'" (refresh)="handlerRefresh()">
     </app-table-switch-chart>
     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
 </div>
