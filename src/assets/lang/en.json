@@ -70,6 +70,10 @@
         "title": "gene fusion",
         "content": ""
     },
+    "snp_overview": {
+        "title": "",
+        "content": ""
+    },
     "top": {
         "pdf": "Export as pdf",
         "upload": "Upload data",

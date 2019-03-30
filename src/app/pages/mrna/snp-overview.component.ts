@@ -58,6 +58,8 @@ export class SnpOverviewComponent implements OnInit {
   // asType: string;
   // sample: string;
 
+  expandModuleDesc: boolean = false;
+
   constructor(
     private message: MessageService,
     private store: StoreService,
@@ -234,6 +236,14 @@ export class SnpOverviewComponent implements OnInit {
 
   handlerRefresh() {
   
+  }
+
+  moduleDescChange(){
+    this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
   }
 
   //color change 回调函数
