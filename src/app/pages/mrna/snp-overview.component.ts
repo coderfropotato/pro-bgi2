@@ -157,7 +157,16 @@ export class SnpOverviewComponent implements OnInit {
 				A_C: rows[j].snp_a_c * 100 / rows[j].snp_total,
         A_T: rows[j].snp_a_t * 100 / rows[j].snp_total,
         C_G: rows[j].snp_c_g * 100 / rows[j].snp_total,
-        G_T: rows[j].snp_g_t * 100 / rows[j].snp_total
+        G_T: rows[j].snp_g_t * 100 / rows[j].snp_total,
+        number:{
+          A_G:rows[j].snp_a_g,
+          C_T:rows[j].snp_c_t,
+          A_C:rows[j].snp_a_c,
+          A_T:rows[j].snp_a_t,
+          C_G:rows[j].snp_c_g,
+          G_T:rows[j].snp_g_t
+        },
+        total:rows[j].snp_total
 			});
 		}
 
@@ -175,7 +184,7 @@ export class SnpOverviewComponent implements OnInit {
 				el: '#snpOverviewDiv',
 				type: 'stackBarPercent',
 				width: 660,
-				custom: [ 'sample_name' ],
+				custom: [ 'sample_name','total', 'A_G','C_T','A_C','A_T','C_G','G_T'],
         data: chartData
 			},
 			axis: {
@@ -210,11 +219,13 @@ export class SnpOverviewComponent implements OnInit {
 					that.isShowColorPanel = true;
 				}
 			},
-			tooltip: function(d) {
-        //console.log(d);
-        // console.log(d.data[d.key])
-        //return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]) + '%</span><br><span>Number：'+d.data[d.key]/100*d.data['as_total']+'</span><br><span>Sample：'+d.data['sample_name']+'</span>';
-        return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]).toFixed(2) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
+			// tooltip: function(d) {
+      //   return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]).toFixed(2) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
+      // }
+      tooltip: function(d) {
+				var p =+(d[1] - d[0]).toFixed(2);
+				var n =Math.round(p/100*d.data.total);
+				return '<span>Type：' + d.key + '</span><br><span>Percentage：' + p  + '%</span><br><span>Number：'+n+'</span><br><span>Group：'+d.data['compare_group']+'</span>';
 			}
 		};
 

@@ -55,7 +55,7 @@ declare const $: any;
                                         </div>
                                     </div>
                                     <div class="gene_col2"><!-- 搜索按钮 -->
-                                        <button nz-button nzType="primary" (click)="goSearch()" [disabled]="searchButtonFlag">搜索</button>
+                                        <button nz-button nzType="primary" (click)="goSearch()">搜索</button>
                                     </div>
                                 </div>
                                 <!-- <div class="gene_fast gene_center"> --><!-- 快捷操作 -->

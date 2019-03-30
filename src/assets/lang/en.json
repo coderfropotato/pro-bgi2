@@ -58,6 +58,18 @@
         "title": "kegg rich",
         "content": ""
     },
+    "alternative": {
+        "title": "alternative",
+        "content": ""
+    },
+    "diff_alternative": {
+        "title": "diff alternative",
+        "content": ""
+    },
+    "gene_fusion": {
+        "title": "gene fusion",
+        "content": ""
+    },
     "top": {
         "pdf": "Export as pdf",
         "upload": "Upload data",

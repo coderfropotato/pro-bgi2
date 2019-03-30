@@ -258,6 +258,7 @@ export class InformationComponent implements OnInit {
 			chartData.push(temp)
 		}
 
+		//console.log(data)
 		let that = this;
 
 		let config: object = {
@@ -273,7 +274,7 @@ export class InformationComponent implements OnInit {
 				el: '#TranscriptData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'rna_len_item', 'rna_len_all_rna' ],
+				custom: [ 'rna_len_item', 'rna_len_all_rna',"rna_len_lncrna_known","rna_len_lncrna_novel",'rna_len_mrna_known',"rna_len_mrna_novel" ],
 				data: chartData
 			},
 			axis: {
@@ -319,6 +320,7 @@ export class InformationComponent implements OnInit {
 
 	//2.4 miRNA长度
 	drawRNALengthReads(data) {
+		console.log(data)
 		var baseThead = data.baseThead;
 		var rows = data.rows;
 		var chartData = [];
@@ -333,7 +335,7 @@ export class InformationComponent implements OnInit {
 				}
 			}
 		}
-
+		console.log(chartData)
 		let that = this;
 
 		let config: object = {
@@ -409,6 +411,7 @@ export class InformationComponent implements OnInit {
     var rows = data.rows;
     var chartData = [];
 
+	//console.log(data)
     for (var i = 0; i < rows.length; i++) {
       let temp = {};
       let total = 0;
@@ -439,7 +442,7 @@ export class InformationComponent implements OnInit {
 				el: '#exonsNumData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'exon_num_item', 'exon_num_all_rna' ],
+				custom: [ 'exon_num_item', 'exon_num_all_rna','exon_num_lncrna_known','exon_num_lncrna_novel','exon_num_mrna_known','exon_num_mrna_novel' ],
 				data: chartData
 			},
 			axis: {
@@ -495,8 +498,14 @@ export class InformationComponent implements OnInit {
 				mirna_first_a: rows[j].mirna_first_a * 100 / total,
 				mirna_first_u: rows[j].mirna_first_u * 100 / total,
 				mirna_first_c: rows[j].mirna_first_c * 100 / total,
-				mirna_first_g: rows[j].mirna_first_g * 100 / total
-
+				mirna_first_g: rows[j].mirna_first_g * 100 / total,
+				number:{
+					mirna_first_a:rows[j].mirna_first_a,
+					mirna_first_u:rows[j].mirna_first_u,
+					mirna_first_c:rows[j].mirna_first_c,
+					mirna_first_g:rows[j].mirna_first_g,
+				},
+				total:total
 			});
 		}
 
@@ -515,7 +524,7 @@ export class InformationComponent implements OnInit {
 				el: '#RNAFData',
 				type: 'stackBarPercent',
 				width: 660,
-				custom: [ 'sample_name' ],
+				custom: [ 'sample_name','total', 'mirna_first_a','mirna_first_u','mirna_first_c','mirna_first_g'],
 				data: chartData
 			},
 			axis: {
@@ -553,6 +562,11 @@ export class InformationComponent implements OnInit {
 			tooltip: function(d) {
 				return '<span>样本：' + d.data.sample_name + '</span><br><span>占比：' + (d[1] - d[0]) + '%</span>';
 			}
+			// tooltip: function(d) {
+			// 	var p =+(d[1] - d[0]).toFixed(2);
+			// 	var n =Math.round(p/100*d.data.total);
+			// 	return '<span>Type：' + d.key + '</span><br><span>Percentage：' + p  + '%</span><br><span>Number：'+n+'</span><br><span>Group：'+d.data['compare_group']+'</span>';
+			// }
 		};
 
 		this.chartFRNA = new d4().init(config);

@@ -58,6 +58,8 @@ export class AlternativeSplicingComponent implements OnInit {
 
   selectGeneCount: number = 0;
 
+  expandModuleDesc: boolean = false;
+
   constructor(
     private message: MessageService,
     private globalService: GlobalService,
@@ -235,6 +237,14 @@ export class AlternativeSplicingComponent implements OnInit {
   handlerRefresh() {
 
   }
+
+  moduleDescChange() {
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
+	}
 
   handleData(data){
     //console.log(data);
