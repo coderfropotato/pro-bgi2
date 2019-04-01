@@ -125,7 +125,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 					});
 				} else {
 					// 有+++ 按+++ 换行  没有默认
-					if (type==='string' && value.indexOf(valSplitFlag)!=-1) {
+					if ((''+value).indexOf(valSplitFlag)!=-1) {
 						let textArr = value.split(valSplitFlag);
 						textArr.forEach((v, i) => {
 							htmlStr += `<span>${v}</span>`;
