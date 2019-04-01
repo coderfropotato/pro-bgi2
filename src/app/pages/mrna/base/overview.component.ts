@@ -351,7 +351,7 @@ export class OverviewComponent implements OnInit {
 				})
 				.on("mouseover", function(d) {
 					//var tipText = ["样本1： " + d.sample1, "样本2： " + d.sample2, "相关系数：" + d.value];
-					var tipText = "<span>样本1："+d.sample1+"</span><br><span>样本2："+d.sample2+"</span><br><span>样本2："+d.value+"</span>";
+					var tipText = "<span>Sample1："+d.sample1+"</span><br><span>Sample2："+d.sample2+"</span><br><span>Pearson Value："+d.value+"</span>";
 					//reportService.GenericTip.Show(d3.event, tipText);
 					that.globalService.showPopOver(d3.event, tipText);
 				})
@@ -538,9 +538,9 @@ export class OverviewComponent implements OnInit {
 				return (
 					'<span>Sample：' +
 					d.sample_name +
-					'</span><br><span>pca_comp1：' +
+					'</span><br><span>PC1：' +
 					d.pca_comp1 +
-					'</span><br><span>pca_comp2：' +
+					'</span><br><span>PC2：' +
 					d.pca_comp2 +
 					'</span>'
 				);
@@ -626,7 +626,7 @@ export class OverviewComponent implements OnInit {
 				  },
 				  data: lineData,
 				  tooltip: function(d) {
-					return "<span>x轴：d.x</span><br><span>y轴：d.y</span>";
+					return "<span>Sample：d.x</span><br><span>log10(FPKM+1)：d.y</span>";
 				  }
 				},
 				data: tempBoxData
@@ -742,7 +742,7 @@ export class OverviewComponent implements OnInit {
 			},
 			tooltip: function(d) {
 				return (
-					"<span>x：" + d.x + "</span><br><span>y：" + d.y +"</span><br><span>name："+ d.name +"</span>"
+					"<span>log10(FPKM+1)：" + d.x + "</span><br><span>Density Value：" + d.y +"</span><br><span>Sample："+ d.name +"</span>"
 				);
 			}
 		}
@@ -761,10 +761,10 @@ export class OverviewComponent implements OnInit {
 		for (var i = 0; i < sample.length; i++) {
 			var row = {'sample': sample[i], 'total': 0}
 			for (var j = 0; j < rows.length; j++) {
-				row[rows[j].range] = rows[j]['fpkm_' + sample[i]]
+				row[rows[j].range] = rows[j]['exp_' + sample[i]]
 			}
 			for (var j = 0; j < rows.length; j++) {
-				row['total'] += rows[j]['fpkm_' + sample[i]]
+				row['total'] += rows[j]['exp_' + sample[i]]
 			}
 			chartData.push(row);
 		}
@@ -838,7 +838,7 @@ export class OverviewComponent implements OnInit {
 			},
 			tooltip: function(d) {
 				//console.log(d)
-				return '<span>类型：' + d.key + '</span><br><span>转录本数目：' + d.data[d.key] + '</span><br><span>样本名：'+ d.data["sample"]+'</span>';
+				return '<span>Range：' + d.key + '</span><br><span>Gene Number：' + d.data[d.key] + '</span><br><span>Sample：'+ d.data["sample"]+'</span>';
 			}
 		};
 
