@@ -48,6 +48,9 @@ export class BigTableCheckComponent implements OnInit {
 
     @Input() showConfirmButton: boolean = false;
 
+	// 在kegg富集需要跳转map的时候用到  其他都为默认值空
+	@Input() compareGroup:any =undefined; // 比较组
+	@Input() reanalysisId:any =undefined; // 重分析id
 
 	@ViewChildren('child') children;
 	tableEntity: object = {};
@@ -371,7 +374,7 @@ export class BigTableCheckComponent implements OnInit {
 					this.tableEntity['rootSearchContentList'] = [];
 					if ('leftChooseList' in this.tableEntity) this.tableEntity['leftChooseList'] = [];
 					if ('upChooseLIst' in this.tableEntity) this.tableEntity['upChooseList'] = [];
-					if ('compareGroup' in this.tableEntity) this.tableEntity['compareGroup'] = [];
+					if ('compareGroup' in this.tableEntity) this.tableEntity['compareGroup'] = '';
 					if ('setNameList' in this.tableEntity) this.tableEntity['setNameList'] = [];
 					if ('diffThreshold' in this.tableEntity) this.tableEntity['diffThreshold'] = {};
 					this.applyOnceSearchParams = false;

@@ -1904,6 +1904,17 @@ button {
                 background-position: center;
                 background-size: 100% 100%;
             }
+            .img{
+                margin: 10px auto;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 100% 100%;
+            }
+            .img_one_snpIndel{
+                width:690px;
+                height:737px;
+                background-image: url("../img/help/snpindelOne.png");
+            }
             .help_text {
                 width: 98%;
                 margin: 10px auto 0 auto;
