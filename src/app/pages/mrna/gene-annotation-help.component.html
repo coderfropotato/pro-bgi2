@@ -5,7 +5,7 @@
         <div class="help_option">
             <div class="help_content">
                 <h3 class="title">分析方法：</h3>
-                <p>适用产品：全部</p>
+                <p class="help_text">适用产品：全部</p>
                 <div class="help_text">
                     <p>富集分析用于帮助了解某个特定基因集在某个代谢通路、分子功能或参与的生物学过程中是否发生显著的富集。这里说的特定基因集可以是发生差异表达的基因、发生差异表达miRNA的靶基因、circRNA来源基因等需要特别关注的基因集合。以下为表述方便，把这些基因集合统称为候选基因。</p>
                     <p>其中smallRNA分析中，用于富集分析的候选基因指差异表达miRNA的靶基因，circRNA分析中，候选基因指circRNA来源基因。其它RNA分析中，候选基因指差异表达基因。</p>
@@ -18,10 +18,10 @@
                 <h3 class="title">GO 富集分析</h3>
                 <div class="help_text">
                     <p> Gene Ontology （简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个ontology（本体），分别描述基因的分子功能（molecular function）、细胞成分（cellular component）、参与的生物过程（biological process）。GO的基本单位是term（词条、节点），每个term都对应一个属性。</p>
-                    <p>GO功能显著性富集分析给出与本物种全部基因背景相比，在候选基因中显著富集的GO功能条目，从而给出候选基因与哪些生物学功能显著相关。该分析首先把所有候选基因向 Gene Ontology 数据库（http://www.geneontology.org/）的各个term映射，计算每个term的基因数目，然后应用超几何检验，找出与本物种所有基因背景相比，在候选基因中显著富集的GO条目。参照软件‘GO::TermFinder’（http://www.yeastgenome.org/help/analyze/go-term-finder）， Pvalue的计算公式如下：</p>
+                    <p>GO功能显著性富集分析给出与本物种全部基因背景相比，在候选基因中显著富集的GO功能条目，从而给出候选基因与哪些生物学功能显著相关。该分析首先把所有候选基因向 Gene Ontology 数据库（<a href="http://www.geneontology.org/" target="_blank">http://www.geneontology.org/</a>）的各个term映射，计算每个term的基因数目，然后应用超几何检验，找出与本物种所有基因背景相比，在候选基因中显著富集的GO条目。参照软件‘GO::TermFinder’（<a href="http://www.yeastgenome.org/help/analyze/go-term-finder" target="_blank">http://www.yeastgenome.org/help/analyze/go-term-finder</a>）， Pvalue的计算公式如下：</p>
                 </div>
                 <div class="img img-one-annation"></div>
-                <p>详情信息请参考：https://en.wikipedia.org/wiki/Hypergeometric_distribution 。</p>
+                <p class="help_text">详情信息请参考：<a href="https://en.wikipedia.org/wiki/Hypergeometric_distribution" target="_blank">https://en.wikipedia.org/wiki/Hypergeometric_distribution</a> 。</p>
                 <p class="help_text">其中，N为所有基因中具有GO注释的基因数目（只有一部分基因能够注释到GO数据库）；n为N中候选基因的数目；M为所有基因中注释为某特定GO term的基因数目；m为注释为某特定GO term的差异表达基因数目。计算得到的p-value通过Bonferroni [1]校正之后，以corrected p-value≤0.05为阈值，满足此条件的GO term定义为在候选基因中显著富集的GO term。通过GO功能显著性富集分析能确定候选基因行使的主要生物学功能。</p>
             </div>
         </div>
