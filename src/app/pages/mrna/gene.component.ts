@@ -240,6 +240,7 @@ export class GenePage {
 			this.geneService.set('content', this.inputValue);
 			this.getSearchback();
 		} else {
+			this.geneService.set('content', '');
 			this.expandHistoryPanel = false;
 			//this.searchButtonFlag = true;
 		}
