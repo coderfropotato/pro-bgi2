@@ -38,10 +38,10 @@ export class ReanalysisIndexComponent implements OnInit {
         this.ngxSpinnerService.show();
         (async () => {
             try {
-                await this.getLcInfo();
+                // await this.getLcInfo();
                 // await this.getClassRichConfig();
 
-                // this.getUnReadAnalysisCount();
+                this.getUnReadAnalysisCount();
                 this.ready = true;
                 setTimeout(() => {
                     this.ngxSpinnerService.hide();
