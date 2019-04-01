@@ -48,6 +48,9 @@ export class BigTableCheckComponent implements OnInit {
 
     @Input() showConfirmButton: boolean = false;
 
+	// 在kegg富集需要跳转map的时候用到  其他都为默认值空
+	@Input() compareGroup:any =undefined; // 比较组
+	@Input() reanalysisId:any =undefined; // 重分析id
 
 	@ViewChildren('child') children;
 	tableEntity: object = {};

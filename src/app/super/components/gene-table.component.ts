@@ -66,7 +66,11 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	@Output() saveGeneListSuccess: EventEmitter<any> = new EventEmitter(); // 成功保存基因集的时候 发出的事件
 	@Output() syncRelative: EventEmitter<any> = new EventEmitter(); // 同步表头
 
-    @Output() totalChange:EventEmitter<number> = new EventEmitter(); // total
+	@Output() totalChange:EventEmitter<number> = new EventEmitter(); // total
+	
+	// 在kegg富集需要跳转map的时候用到  其他都为默认值空
+	@Input() compareGroup:any =undefined; // 比较组
+	@Input() reanalysisId:any = undefined; // 重分析id
 
 	@ViewChildren('child') children;
 	count: number = 0; // 选中的基因个数

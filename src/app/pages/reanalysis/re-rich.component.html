@@ -59,7 +59,7 @@
                 <div [hidden]='!expandModuleTable'>
                     <ng-container>
                         <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [tableHeight]="leftTableHeight / 2" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="bigtableUrl" tableId="geneRichCheckBigTable" (checkedChange)="checkedChange($event)"
-                            [(computedScrollHeight)]="leftComputedScrollHeight">
+                            [(computedScrollHeight)]="leftComputedScrollHeight" [reanalysisId]="tid">
                         </app-big-table-check>
                     </ng-container>
 
@@ -97,7 +97,7 @@
             <app-table-transformation *ngIf="selectedVal" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
                 [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"
                 [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams"
-                (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
+                (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph" [reanalysisId]="tid"></app-table-transformation>
         </div>
     </div>
 </div>

@@ -25,8 +25,7 @@
             <div class="table-thead tableHeader">
                 <div class="fLeft">
                     <!-- 筛选 -->
-                    <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate"
-                        nz-tooltip (click)="beginFilter()"></i>
+                    <i class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate" nz-tooltip (click)="beginFilter()"></i>
                     <!-- 下拉框 -->
                     <!-- <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="singleValue" [nzSize]="'small'" nzShowSearch>
                                 <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
@@ -81,49 +80,35 @@
             </div>
             <div class="table-content">
                 <!-- [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getRemoteData()" (nzPageSizeChange)="getRemoteData(true)" x:head.length*150+'px'-->
-                <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="scroll"
-                    [nzData]="dataSet" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total"
-                    nzBordered>
+                <nz-table *ngIf="dataSet.length && head.length && !error" #ajaxTable nzSize="small" [nzScroll]="scroll" [nzData]="dataSet" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzBordered>
                     <thead>
                         <tr>
                             <!-- 首列 -->
-                            <th [ngStyle]="{'min-width':widthConfig[0]}" style="text-align: center;" [attr.colspan]="head[0]['colspan']" [attr.rowspan]="head[0]['rowspan']"
-                                [(nzSort)]="sortMap[head[0]['true_key']]" [nzShowSort]="head[0]['searchType']!='string'" [nzSortKey]="head[0]['true_key']"
+                            <th [ngStyle]="{'min-width':widthConfig[0]}" style="text-align: center;" [attr.colspan]="head[0]['colspan']" [attr.rowspan]="head[0]['rowspan']" [(nzSort)]="sortMap[head[0]['true_key']]" [nzShowSort]="head[0]['searchType']!='string'" [nzSortKey]="head[0]['true_key']"
                                 (nzSortChange)="sort(head[0]['true_key'],$event)">
                                 <span [nzTitle]="(head[0]['hover'] || head[0]['hover']==0)?head[0]['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{head[0]['name']}}</span>
                                 <!-- get app-filter child emit function <recive> <delete> -->
-                                <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="head[0]['searchType']"
-                                    (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="head[0]['name']"
-                                    [filterName]="head[0]['true_key']"></app-filter>
+                                <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="head[0]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="head[0]['name']" [filterName]="head[0]['true_key']"></app-filter>
                             </th>
                             <!-- 其他列 -->
-                            <th [ngStyle]="{'min-width':widthConfig[i+1]}" style="text-align: center;" [nzSortKey]="head[i+1]['true_key']" [(nzSort)]="sortMap[head[i+1]['true_key']]"
-                                (nzSortChange)="sort(head[i+1]['true_key'],$event)" [nzShowSort]="!head[i+1]['children'].length && head[i+1]['searchType']!='string'"
+                            <th [ngStyle]="{'min-width':widthConfig[i+1]}" style="text-align: center;" [nzSortKey]="head[i+1]['true_key']" [(nzSort)]="sortMap[head[i+1]['true_key']]" (nzSortChange)="sort(head[i+1]['true_key'],$event)" [nzShowSort]="!head[i+1]['children'].length && head[i+1]['searchType']!='string'"
                                 [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']" *ngFor="let h of head.slice(1);index as i;trackBy:identify">
                                 <span [nzTitle]="(head[i+1]['hover'] || head[i+1]['hover']==0)?head[i+1]['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
-                                <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="tableId"
-                                    [searchType]="head[i+1]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)"
-                                    [filterNamezh]="head[i+1]['name']" [filterName]="head[i+1]['true_key']"></app-filter>
+                                <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="tableId" [searchType]="head[i+1]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="head[i+1]['name']"
+                                    [filterName]="head[i+1]['true_key']"></app-filter>
                             </th>
                         </tr>
                         <tr ng-if="twoLevelHead.length">
                             <!-- 二级表头首列 -->
-                            <th class="two-level-thead" style="text-align: center;" *ngFor="let h of twoLevelHead.slice(0,head[0].children.length);index as i;trackBy:identify"
-                                [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
+                            <th class="two-level-thead" style="text-align: center;" *ngFor="let h of twoLevelHead.slice(0,head[0].children.length);index as i;trackBy:identify" [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
                                 (nzSortChange)="sort(h['true_key'],$event)">
                                 <span [nzTitle]="(h['hover'] || h['hover']==0)?h['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
-                                <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']"
-                                    (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="h['name']"
-                                    [filterName]="h['true_key']"></app-filter>
+                                <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="h['name']" [filterName]="h['true_key']"></app-filter>
                             </th>
                             <!-- 二级表头其他列 -->
-                            <th style="text-align: center;" *ngFor="let h of twoLevelHead.slice(head[0].children.length);index as i;trackBy:identify"
-                                [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
-                                (nzSortChange)="sort(h['true_key'],$event)">
+                            <th style="text-align: center;" *ngFor="let h of twoLevelHead.slice(head[0].children.length);index as i;trackBy:identify" [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']" (nzSortChange)="sort(h['true_key'],$event)">
                                 <span [nzTitle]="(h['hover'] || h['hover']==0)?h['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
-                                <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']"
-                                    (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="h['name']"
-                                    [filterName]="h['true_key']"></app-filter>
+                                <app-filter #child *ngIf="beginFilterStatus" [pid]="tableId" [searchType]="h['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="h['name']" [filterName]="h['true_key']"></app-filter>
                             </th>
                         </tr>
                     </thead>
@@ -132,27 +117,25 @@
                             <!-- 首列的二级头表格数据  [nzContent]="(d[two['true_key']]+'')?((d[two['true_key']]| accuracyPipe : accuracy : two['searchType']) | tableSpecialTheadFilter:two['true_key']:d[two['true_key']]):'NA'"-->
                             <td [ngStyle]="{'min-width':widthConfig[0],'max-width':widthConfig[0]}" *ngFor="let two of (head[0].children.length?head[0].children:[head[0]]);index as i;trackBy:identity" [nzContent]="tpl" nzPlacement="right" nz-popover>
                                 <ng-template #tpl>
-                                    <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:true"></span>
+                                    <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:true:compareGroup:reanalysisId"></span>
                                 </ng-template>
                                 <!--{{d[two['true_key']] | accuracyPipe : accuracy : two['searchType']}}-->
-                                <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:false"></span>
+                                <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:false:compareGroup:reanalysisId"></span>
                             </td>
                             <!-- 其他列 [nzContent]="(d[h['true_key']] || d[h['true_key']]==0)?((d[h['true_key']] | accuracyPipe : accuracy : h['searchType']) | tableSpecialTheadFilter:h['true_key']:d[h['true_key']]):'NA'"-->
                             <td [ngStyle]="{'min-width':widthConfig[i+1],'max-width':widthConfig[i+1]}" *ngFor="let h of tbodyOutFirstCol;index as i;" [nzContent]="tpl2" nzPlacement="right" nz-popover>
                                 <ng-template #tpl2>
-                                    <span [innerHTML]="(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true):'NA'"></span>
+                                    <span [innerHTML]="(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true:compareGroup:reanalysisId):'NA'"></span>
                                 </ng-template>
                                 <!--{{(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | accuracyPipe : accuracy : h['searchType']):'NA' }}-->
-                                <span  [innerHTML]="(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | tableSpecialTheadFilter:h['true_key']:h['searchType']:false):'NA'"></span>
+                                <span [innerHTML]="(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | tableSpecialTheadFilter:h['true_key']:h['searchType']:false:compareGroup:reanalysisId):'NA'"></span>
                             </td>
                         </tr>
                     </tbody>
                 </nz-table>
                 <app-error *ngIf="error" [error]="error"></app-error>
                 <div #tableBottom class="table-bottom" *ngIf="!error">
-                    <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total"
-                        [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()"
-                        [maxLimit]="1000">
+                    <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total" [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()" [maxLimit]="1000">
                     </app-pagination>
                 </div>
             </div>
