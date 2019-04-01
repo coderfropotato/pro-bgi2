@@ -52,7 +52,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	@Input() emitBaseThead: boolean = false; // 是否发射表格数据 true的时候下一次请求发射表格数据 false不发射
 	@Output() emitBaseTheadChange: EventEmitter<any> = new EventEmitter();
 	@Output() baseTheadChange: EventEmitter<any> = new EventEmitter();
-	@Input() defaultMartix: boolean = false; // 是否默认是矩阵表  针对关联聚类/关联网络图  默认矩阵表 表格转换的默认表是矩阵 会把默认表加上mongoId
+
+	// 无效参数
+	// @Input() defaultMartix: boolean = false; // 是否默认是矩阵表  针对关联聚类/关联网络图  默认矩阵表 表格转换的默认表是矩阵 会把默认表加上mongoId
+	
 	@Input() applyOnceSearchParams: boolean = false;
 	@Output() applyOnceSearchParamsChange: EventEmitter<any> = new EventEmitter();
 	@Output() selectGeneCountChange: EventEmitter<any> = new EventEmitter();
@@ -281,9 +284,13 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		};
 
 		// 如果是转换表把上次的mongoid 放在下一次的参数里面
-		if (this.tableType === 'transform' && this.mongoId) this.tableEntity['mongoId'] = this.mongoId;
+		// if (this.tableType === 'transform' && this.mongoId) this.tableEntity['mongoId'] = this.mongoId;
 		// 如果默认表是矩阵表 需要一直把mongoId放在请求参数里
-		if (this.defaultMartix && this.mongoId) this.tableEntity['mongoId'] = this.mongoId;
+		// if (this.defaultMartix && this.mongoId) this.tableEntity['mongoId'] = this.mongoId;
+
+		// date 2019.04.01 只要上一次返回了mongoId 就放在请求参数里 不然为null
+		this.tableEntity['mongoId'] = this.mongoId;
+
 		this.ajaxService.getDeferData(ajaxConfig).subscribe(
 			(responseData: any) => {
 				// 如果需要保存基因集合id 并且 返回值有id这个key （针对转换表) 就保存下来
@@ -298,7 +305,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 						this.tableEntity['matrix'] = true;
 						// if(this.isFirst) this.applyOnceBeforeStatusThenReset();
 					}
-					if ('mongoId' in responseData['data']) this.mongoId = responseData['data']['mongoId'];
+					
+					// if ('mongoId' in responseData['data']) this.mongoId = responseData['data']['mongoId'];
+					this.mongoId ='mongoId' in responseData['data']? responseData['data']['mongoId']:null;
 
 					if (!responseData.data['rows'].length) {
 						this.total = 0;
@@ -466,7 +475,13 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.tableEntity['rootSearchContentList'] = [];
 					if ('leftChooseList' in this.tableEntity) this.tableEntity['leftChooseList'] = [];
 					if ('upChooseLIst' in this.tableEntity) this.tableEntity['upChooseList'] = [];
-					if ('compareGroup' in this.tableEntity) this.tableEntity['compareGroup'] = '';
+					if ('compareGroup' in this.tableEntity) {
+						if(typeof this.tableEntity['compareGroup'] === 'string'){
+							this.tableEntity['compareGroup'] = '';
+						}else if(typeof this.tableEntity['compareGroup'] === 'object'){
+							this.tableEntity['compareGroup'] = [];
+						}
+					}
 					if ('diffThreshold' in this.tableEntity) this.tableEntity['diffThreshold'] = {};
 					if ('clickSearch' in this.tableEntity) this.tableEntity['clickSearch'] = false;
 					this.applyOnceSearchParams = false;
