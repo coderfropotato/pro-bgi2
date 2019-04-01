@@ -466,7 +466,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.tableEntity['rootSearchContentList'] = [];
 					if ('leftChooseList' in this.tableEntity) this.tableEntity['leftChooseList'] = [];
 					if ('upChooseLIst' in this.tableEntity) this.tableEntity['upChooseList'] = [];
-					if ('compareGroup' in this.tableEntity) this.tableEntity['compareGroup'] = [];
+					if ('compareGroup' in this.tableEntity) this.tableEntity['compareGroup'] = '';
 					if ('diffThreshold' in this.tableEntity) this.tableEntity['diffThreshold'] = {};
 					if ('clickSearch' in this.tableEntity) this.tableEntity['clickSearch'] = false;
 					this.applyOnceSearchParams = false;
