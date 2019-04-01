@@ -16,7 +16,19 @@
                     <i class="iconfont icon-shezhi" nz-tooltip [nzTitle]="'tableButton.setting' | translate" nz-dropdown></i>
                     <div class="ex_container">
                         <div class="con_PessionDis" *ngFor="let item of thresholdName">
-                            <div class="con_PessionDis_title">
+                            <div class="con_PessionDis_title" *ngIf="item=='PossionDis'" title="{{item=='PossionDis'?'无生物学重复的比较组使用该软件。':''}}">
+                                {{item}}
+                            </div>
+                            <div class="con_PessionDis_title" *ngIf="item=='NOIseq'">
+                                {{item}}
+                            </div>
+                            <div class="con_PessionDis_title" *ngIf="item=='DEGseq'" title="{{item=='DEGseq'?'有生物学重复的比较组使用该软件':''}}">
+                                {{item}}
+                            </div>
+                            <div class="con_PessionDis_title" *ngIf="item=='DESeq2'" title="{{item=='DESeq2'?'有生物学重复的比较组使用该软件。':''}}">
+                                {{item}}
+                            </div>
+                            <div class="con_PessionDis_title" *ngIf="item=='EBSeq'">
                                 {{item}}
                             </div>
                             <div class="con_PessionDis_in">
@@ -38,16 +50,16 @@
                                     <div class="con_PessionDis_left" *ngIf="item=='PossionDis'" title="对于无生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
                                         FDR
                                     </div>
-                                    <div class="con_PessionDis_left" *ngIf="item=='NOIseq'">
+                                    <div class="con_PessionDis_left" *ngIf="item=='NOIseq'" title="显著性阈值，一般 >= 0.8 表示某个基因在对照组与处理组间显著差异表达。">
                                         probability
                                     </div>
                                     <div class="con_PessionDis_left" *ngIf="item=='DEGseq'" title="对于有生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
                                         Qvalue
                                     </div>
-                                    <div class="con_PessionDis_left" *ngIf="item=='DESeq2'">
+                                    <div class="con_PessionDis_left" *ngIf="item=='DESeq2'" title="对于有生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
                                         Qvalue
                                     </div>
-                                    <div class="con_PessionDis_left" *ngIf="item=='EBSeq'">
+                                    <div class="con_PessionDis_left" *ngIf="item=='EBSeq'" title="显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达。">
                                         PPEE
                                     </div>
                                     <div class="con_PessionDis_right" *ngIf="item=='PossionDis'">
