@@ -623,13 +623,11 @@ button {
     }
     & .switch {
         position: fixed;
-        // right: 226px;
-        // right: 156px;
-        right: 140px;
+        right: 130px;
         top: 46px;
-        // &.hasAnalysisCount {
-        // 	right: 254px;
-        // }
+        &.hasAnalysisCount {
+            right: 166px;
+        }
     }
     &.gene-list-content {
         .switch {
@@ -640,8 +638,6 @@ button {
         }
     }
 }
-
-.alternativeSplicing {}
 
 .small_text {
     width: 100%;
@@ -1800,6 +1796,7 @@ button {
         .help_content {
             width: 100%;
             height: auto;
+            padding-bottom: 60px;
             .img_one {
                 width: 348px;
                 height: 890px;
@@ -1904,20 +1901,20 @@ button {
                 background-position: center;
                 background-size: 100% 100%;
             }
-            .img{
+            .img {
                 margin: 10px auto;
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: 100% 100%;
             }
-            .img_one_snpIndel{
-                width:690px;
-                height:737px;
+            .img_one_snpIndel {
+                width: 690px;
+                height: 737px;
                 background-image: url("../img/help/snpindelOne.png");
             }
-            .img-one-annation{
-                width:257px;
-                height:110px;
+            .img-one-annation {
+                width: 257px;
+                height: 110px;
                 background-image: url("../img/help/img-one-annation.jpg");
             }
             .help_text {
@@ -2622,25 +2619,46 @@ button {
 }
 
 // 弹出框
-.ant-modal{
-    top:0;
+.ant-modal {
+    top: 0;
 }
 
-.ant-modal-header{
+.ant-modal-header {
     border-bottom: 0;
     padding: 16px 24px 8px 24px;
 }
 
-.ant-modal-close{
+.ant-modal-close {
     display: none;
 }
-.ant-modal-body{
+
+.ant-modal-body {
     padding: 0px 24px 10px 24px;
-    input{
-        border:1px solid rgb(83, 120, 248);
+    input {
+        border: 1px solid rgb(83, 120, 248);
     }
 }
 
-.ant-modal-footer{
-    border-top:0;
+.ant-modal-footer {
+    border-top: 0;
+}
+
+.as-fusion-help_one {
+    width: 766px;
+    height: 715px;
+    margin: 10px auto;
+    background-image: url("../img/gene-fusion-help/1.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.as-fusion-help_two {
+    width: 576px;
+    height: 525px;
+    margin: 10px auto;
+    background-image: url("../img/gene-fusion-help/2.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
