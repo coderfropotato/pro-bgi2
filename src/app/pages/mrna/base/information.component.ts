@@ -220,7 +220,7 @@ export class InformationComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				return '<span>name：' + d.data.name + '</span><br><span>value：' + d.data.value + '</span>';
+				return '<span>Type：' + d.data.name + '</span><br><span>Number：' + d.data.value + '</span>';
 			}
 		};
 
@@ -311,7 +311,7 @@ export class InformationComponent implements OnInit {
 			},
 			tooltip: function(d) {
 				console.log(d)
-				return '<span>name：' + d.key + '</span><br><span>Number：' + d.data[d.key] + '</span><br><span>Sequence Size：'+ d.data["rna_len_item"]+'</span>';
+				return '<span>Type：' + d.key + '</span><br><span>Number：' + d.data[d.key] + '</span><br><span>Sequence Size(bp)：'+ d.data["rna_len_item"]+'</span>';
 			}
 		};
 
@@ -390,11 +390,11 @@ export class InformationComponent implements OnInit {
 			},
 			tooltip: function(d) {
 				return (
-					'<span>key：' +
+					'<span>miRNA Length(bp)：' +
 					d.key +
-					'</span><br><span>value：' +
+					'</span><br><span>Number：' +
 					d.value +
-					'</span><br><span>category：' +
+					'</span><br><span>Type：' +
 					d.category +
 					'</span>'
 				);
@@ -478,7 +478,7 @@ export class InformationComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				return '<span>类型：' + d.key + '</span><br><span>数量：' + d.data[d.key] + '</span>';
+				return '<span>Type：' + d.key + '</span><br><span>Number：' + d.data[d.key] + '</span>';
 			}
 		};
 
@@ -560,7 +560,7 @@ export class InformationComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				return '<span>样本：' + d.data.sample_name + '</span><br><span>占比：' + (d[1] - d[0]) + '%</span>';
+				return '<span>Type：' + d.data.sample_name + '</span><br><span>Percent(%)：' + (d[1] - d[0]) + '%</span>';
 			}
 			// tooltip: function(d) {
 			// 	var p =+(d[1] - d[0]).toFixed(2);

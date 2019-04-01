@@ -121,7 +121,7 @@
             </ng-template>
 
             <app-table-switch-chart #diffVennNumberChart [id]="'diffVennNumberChart'" [tableUrl]="tableUrl" [apiEntity]="tableEntity" [selectTemplate]="selectTemplate" [otherLeftTemplate]="otherLeftTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawVenn($event)"
-                [isShowAccuracy]="false" [flex]="true" [chartId]="'diffVennNumberId'" [chartName]="'差异基因数量统计'" [chartDescContent]="'X轴代表每组差异比对方案，Y轴代表相应的差异基因（DEG）数。红色代表上调的DEG数，蓝色代表下调的DEG数。'" (refresh)="handlerRefresh()">
+                [isShowAccuracy]="false" [flex]="true" [chartId]="'diffVennNumberId'" [tableName]="'差异基因数量统计'" [chartName]="'差异基因数量统计'" [chartDescContent]="'X轴代表每组差异比对方案，Y轴代表相应的差异基因（DEG）数。红色代表上调的DEG数，蓝色代表下调的DEG数。'" (refresh)="handlerRefresh()">
             </app-table-switch-chart>
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
             <app-color-picker [(color)]="colorL" (colorChange)="colorLChange($event)" [(show)]="isShowColorPanelL"></app-color-picker>

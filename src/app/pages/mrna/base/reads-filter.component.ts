@@ -212,7 +212,7 @@ export class ReadsFilterComponent implements OnInit {
             }
         },
         tooltip: function(d) {
-            return "<span>name："+d.data.name+"</span><br><span>value："+d.data.value+"</span>";
+            return "<span>Type："+d.data.name+"</span><br><span>Gene Number："+d.data.value+"</span>";
         }
     }
 
@@ -289,7 +289,7 @@ export class ReadsFilterComponent implements OnInit {
             }
         },
         tooltip: function(d) {
-            return "<span>name："+d.name+"</span><br><span>category："+d.category+"</span><br><span>value："+d.value+"</span>";
+            return "<span>Position Along Reads："+d.name+"</span><br><span>Type："+d.category+"</span><br><span>Percent(%)："+d.value+"</span>";
         }
     }
     this.chartTwo=new d4().init(config);
@@ -498,7 +498,7 @@ export class ReadsFilterComponent implements OnInit {
             .on("mouseover", function(d) {
                 var errY = Math.pow(10, d.y * (-1) / 10);
                 //var tipText = ["第" + d.base + "个碱基", "碱基比例：" + d.value / 10 + "%", "质量值： " + d.y, "碱基准确率：" + ((1 - errY) * 100).toFixed(2) + "%"];
-                let tipText = `第${d.base}个碱基<br>碱基比例:${d.value/10}%<br>质量值:${d.y}<br>碱基准确率：${((1 - errY) * 100).toFixed(2)}%`;
+                let tipText = `第${d.base}个碱基<br>碱基比例：${d.value/10}%<br>质量值：${d.y}<br>碱基准确率：${((1 - errY) * 100).toFixed(2)}%`;
                 that.globalService.showPopOver(d3.event, tipText);
             })
             .on("mouseout", function() {
