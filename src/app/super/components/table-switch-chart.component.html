@@ -52,7 +52,7 @@
             <i *ngIf="chartUrl && isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
             <i *ngIf="chartUrl && !isShowTable" class="iconfont icon-shuaxin" (click)="handlerRefresh()" nz-tooltip [nzTitle]="'tableButton.refresh' | translate"></i>
             <!--表下载  -->
-            <i class="iconfont icon-xiazai" *ngIf="isShowTable && !tableError" nz-tooltip [nzTitle]="'tableButton.download' | translate"></i>
+            <app-grid-export *ngIf="isShowTable && !tableError" [url]='tableUrl' [tableEntity]='apiEntity' [fileName]='tableName'></app-grid-export>
             <!-- 图下载 -->
             <app-chart-export *ngIf="!isShowTable && !chartError" [chartId]="chartId" [chartName]="chartName"></app-chart-export>
         </div>

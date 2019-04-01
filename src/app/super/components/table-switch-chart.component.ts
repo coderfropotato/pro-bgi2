@@ -33,6 +33,8 @@ export class TableSwitchChartComponent implements OnInit {
 
     @Input() apiEntity: object; //api请求参数
 
+    @Input() tableName:any; //下载的表格名称
+
     @Input() isChartThenTable:boolean; //是否是图画完后再获取表数据
 
     @Input() isPaging: boolean; //表是否有分页
@@ -41,7 +43,7 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() id: string; // 当前模块id
 
     @Input() chartId: string; // 当前图容器div的id
-    @Input() chartName: any;
+    @Input() chartName: any; //下载的图名称
 
     @Input() isShowAccuracy: boolean; //可选，是否有精度下拉选择
 
