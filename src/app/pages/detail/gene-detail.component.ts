@@ -122,7 +122,7 @@ export class GeneDetailComponent implements OnInit {
 	document_defaultUrl: string;
 	document_params: object;
 	documentList: object [] = [];
-	documentPage: number = 1;  //每页10条
+	documentPage: number = 10;  //每页10条
 	documentTotal: number = 0; //文献总条数
 	load_more_show: boolean = true;
 	isSpinning: boolean = false;

@@ -248,9 +248,9 @@ const ROUTES: Routes = [
 				data:{keep:true,module:'goEnrichment'}
 			},
 			{
-				path:'gene-annotation-help',
+				path:'enrichment-help',
 				component:GeneAnnotationHelpComponent,
-				data:{keep:true,module:'geneAnnotationHelp'}
+				data:{keep:true,module:'enrichmentHelp'}
 			},
 			// KEGG
 			{
@@ -280,9 +280,9 @@ const ROUTES: Routes = [
 				data:{keep:true,module:'geneFusion'}
 			},
 			{
-				path:'as-sv-help',
+				path:'as-fusion-help',
 				component:AsSvHelpComponent,
-				data:{keep:true,module:'asSvHelp'}
+				data:{keep:true,module:'asFusion'}
 			},
 			// SNP/InDel
 			{
