@@ -269,6 +269,7 @@ export class ReadsComparisonComponent implements OnInit {
               }
             }
           },
+          },
           legend: {
             show: true,
             position: "right",
@@ -279,10 +280,9 @@ export class ReadsComparisonComponent implements OnInit {
             }
           },
           "tooltip": function(d) {
-            return "<span>percent_covered:"+d.percent_covered+"</span><span>percent_transcript:"+d.percent_transcript+"</span>"
+            return "<span>Percent covered(%):"+d.percent_covered+"</span><br><span>Percentage of Transcripts(%):"+d.percent_transcript+"</span>"
           }
       }
-    }
     new d4().init(config);
   }
 
@@ -355,7 +355,7 @@ export class ReadsComparisonComponent implements OnInit {
         }
       },
       tooltip: function(d,index) {
-        return "<span>Reads number(x100K)："+d.readnum_100k+"</span><br><span>Gene Identification ratio(%)："+d.gene_idt_ratio+"</span>";
+        return "<span>Reads Number(x100K)："+d.readnum_100k+"</span><br><span>Gene Identification Ratio(%)："+d.gene_idt_ratio+"</span>";
       }
     }
 
