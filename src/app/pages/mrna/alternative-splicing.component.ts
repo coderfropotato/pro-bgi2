@@ -58,6 +58,8 @@ export class AlternativeSplicingComponent implements OnInit {
 
   selectGeneCount: number = 0;
 
+  expandModuleDesc: boolean = false;
+
   constructor(
     private message: MessageService,
     private globalService: GlobalService,
@@ -153,21 +155,24 @@ export class AlternativeSplicingComponent implements OnInit {
 		for (var j = 0; j < rows.length; j++) {
 			chartData.push({
 				sample_name: rows[j].sample_name,
-                as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
-                as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
+        as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
+        as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
 				as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
 				as_ri: rows[j].as_ri * 100 / rows[j].as_total,
-                as_se: rows[j].as_se * 100 / rows[j].as_total,
-                number:{
-                    as_a3ss:rows[j].as_a3ss,
-                    as_a5ss:rows[j].as_a5ss,
-                    as_mxe: rows[j].as_mxe ,
-                    as_ri: rows[j].as_ri,
-                    as_se: rows[j].as_se,
-                },
+        as_se: rows[j].as_se * 100 / rows[j].as_total,
+        number:{
+            as_a3ss:rows[j].as_a3ss,
+            as_a5ss:rows[j].as_a5ss,
+            as_mxe: rows[j].as_mxe ,
+            as_ri: rows[j].as_ri,
+            as_se: rows[j].as_se,
+        },
 				total:rows[j].as_total
 			});
 		}
+
+    console.log(data);
+    console.log(chartData);
 
 		let that = this;
 		let config: object = {
@@ -235,6 +240,14 @@ export class AlternativeSplicingComponent implements OnInit {
   handlerRefresh() {
 
   }
+
+  moduleDescChange() {
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
+	}
 
   handleData(data){
     //console.log(data);

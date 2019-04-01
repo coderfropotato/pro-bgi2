@@ -2,11 +2,12 @@
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
 
         <div class="left-top-layout">
-            <span class="zhankai-shouqi pointer" (click)="moduleTableChange()" [nzTitle]="(expandModuleTable ? '收起表格' : '展开表格') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleTable"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleTable"></i>
-                {{annotation}}富集结果表
+            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                {{'kegg_rich.title' | translate}}
             </span>
+            <p [hidden]="!expandModuleDesc">{{'kegg_rich.content' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
 
@@ -55,7 +56,7 @@
             <div [hidden]='!expandModuleTable'>
                 <ng-container>
                     <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [tableHeight]="leftTableHeight / 2" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="bigtableUrl" tableId="keggRichCheckBigTable"
-                        (checkedChange)="checkedChange($event)" [(computedScrollHeight)]="leftComputedScrollHeight">
+                        (checkedChange)="checkedChange($event)" [(computedScrollHeight)]="leftComputedScrollHeight" [compareGroup]="selectedVal">
                     </app-big-table-check>
                 </ng-container>
 
@@ -93,6 +94,6 @@
         <app-table-transformation *ngIf="selectedVal" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
             [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"
             [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams"
-            (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
+            (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph" [compareGroup]="selectedVal"></app-table-transformation>
     </div>
 </div>

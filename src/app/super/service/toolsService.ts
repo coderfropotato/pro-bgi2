@@ -94,7 +94,7 @@ export class ToolsService {
     }
 
     sendOpen(){
-        this.open.next([this.geneCount,this.isRelation,this.relativeGeneCount]);
+        this.open.next([this.geneCount,this.isRelation,this.relativeGeneCount,this.srcTotal]);
     }
 
     getOpen(){

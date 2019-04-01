@@ -42,6 +42,38 @@
         "express_venn_title": "express gene clustering",
         "express_venn_content": "Clustering the FPKM values of express genes in each comparison group"
     },
+    "go_class": {
+        "title": "go class",
+        "content": ""
+    },
+    "go_rich": {
+        "title": "go rich",
+        "content": ""
+    },
+    "kegg_class": {
+        "title": "kegg class",
+        "content": ""
+    },
+    "kegg_rich": {
+        "title": "kegg rich",
+        "content": ""
+    },
+    "alternative": {
+        "title": "alternative",
+        "content": ""
+    },
+    "diff_alternative": {
+        "title": "diff alternative",
+        "content": ""
+    },
+    "gene_fusion": {
+        "title": "gene fusion",
+        "content": ""
+    },
+    "snp_overview": {
+        "title": "",
+        "content": ""
+    },
     "top": {
         "pdf": "Export as pdf",
         "upload": "Upload data",

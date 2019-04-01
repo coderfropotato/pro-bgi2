@@ -769,6 +769,7 @@ export class OverviewComponent implements OnInit {
 			chartData.push(row);
 		}
 
+		//console.log(row)
 		//console.log(chartData)
 		// for (var i = 0; i < rows.length; i++) {
 		// 	let temp = {};
@@ -800,7 +801,7 @@ export class OverviewComponent implements OnInit {
 				el: '#stackMapData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'sample', 'total' ],
+				custom: [ 'sample', 'total','FPKM 1-10','FPKM <=1','FPKM >=10' ],
 				data: chartData
 			},
 			axis: {
@@ -836,7 +837,8 @@ export class OverviewComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				return '<span>类型：' + d.key + '</span><br><span>转录本数目：' + d.data[d.key] + '</span><br><span>转录本数目：'+ d.data["item"]+'</span>';
+				//console.log(d)
+				return '<span>类型：' + d.key + '</span><br><span>转录本数目：' + d.data[d.key] + '</span><br><span>样本名：'+ d.data["sample"]+'</span>';
 			}
 		};
 

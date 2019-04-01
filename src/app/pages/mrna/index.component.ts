@@ -148,7 +148,8 @@ export class IndexComponent implements OnInit {
 											url: 'main',
 											geneType: 'all',
 											name: 'category_url_main',	// category_url_main
-											isExport: true
+											isExport: true,
+											content:"对全基因/转录本表格进行关键词搜索"
 										}
 									]
 								},
@@ -159,31 +160,36 @@ export class IndexComponent implements OnInit {
 											url: 'diff-expression-number',
 											geneType: 'all',
 											name: 'url_diff-expression-number',  // url_diff-expression-number
-											isExport: true
+											isExport: true,
+											content:"差异表达基因数量统计"
 										},
 										{
 											url: 'diff-expression',
 											geneType: 'all',
 											name: 'url_diff-expression',		// url_diff-expression
-											isExport: true
+											isExport: true,
+											content:"差异基因VENN/UpSetR图，查看各个比较组差异基因交/并集"
 										},
 										{
 											url: 'cluster',
 											geneType: 'all',
 											name: 'url_cluster',		// url_cluster
-											isExport: true
+											isExport: true,
+											content:"差异基因聚类热图，用色彩展示差异基因的表达量高低"
 										},
 										{
 											url: 'expression',
 											geneType: 'all',
 											name: 'url_expression',	// url_expression
-											isExport: true
+											isExport: true,
+											content:"表达量 VENN/UpSetR 图，查看各个分组或样本交/并集"
 										},
 										{
 											url: 'gene-expression-help',
 											geneType: null,
 											name: 'url_gene-expression-help',		// url_gene-expression-help
-											isExport: true
+											isExport: true,
+											content:"帮助信息"
 										}
 									]
 								},
@@ -194,31 +200,36 @@ export class IndexComponent implements OnInit {
 											url: 'go-class',	// url_go-class
 											geneType: 'all',
 											name: 'url_go-class',
-											isExport: true
+											isExport: true,
+											content:"差异基因GO注释分类"
 										},
 										{
 											url: 'go-enrichment',
 											geneType: 'all',
 											name: 'url_go-enrichment',		// url_go-enrichment
-											isExport: true
+											isExport: true,
+											content:"差异基因GO富集分析，查看差异基因富集在哪些功能类或参与哪些生物学过程"
 										},
 										{
 											url: 'kegg-class',
 											geneType: 'all',
 											name: 'url_kegg-class',		// url_kegg-class
-											isExport: true
+											isExport: true,
+											content:"差异基因KEGG Pathway注释分类"
 										},
 										{
 											url: 'kegg-enrichment',
 											geneType: 'all',
 											name: 'url_kegg-enrichment',		// url_kegg-enrichment
-											isExport: true
+											isExport: true,
+											content:"差异基因KEGG Pathway富集分析，查看差异基因主要富集在哪些代谢通路上"
 										},
 										{
 											url: 'enrichment-help',
 											geneType: null,
 											name: 'url_enrichment-help',		// url_enrichment-help
-											isExport: true
+											isExport: true,
+											content:"帮助信息"
 										}
 									]
 								},
@@ -229,25 +240,29 @@ export class IndexComponent implements OnInit {
 											url: 'alternative-splicing',
 											geneType: 'all',
 											name: 'url_alternative-splicing',		// url_alternative-splicing
-											isExport: true
+											isExport: true,
+											content:"各个样本可变剪接事件统计"
 										},
 										{
 											url: 'diff-alternative-splicing',
 											geneType: 'all',
 											name: 'url_diff-alternative-splicing',		// url_diff-alternative-splicing
-											isExport: true
+											isExport: true,
+											content:"各个比较组差异可变剪接事件统计"
 										},
 										{
 											url: 'gene-fusion',
 											geneType: 'all',
 											name: 'url_gene-fusion',		// url_gene-fusion
-											isExport: true
+											isExport: true,
+											content:"展示融合基因及其在染色体上位置情况"
 										},
 										{
 											url: 'as-fusion-help',
 											geneType: null,
 											name: 'url_fusion-help',		// url_fusion-help
-											isExport: true
+											isExport: true,
+											content:"帮助信息"
 										}
 									]
 								},
@@ -258,31 +273,36 @@ export class IndexComponent implements OnInit {
 											url: 'snp-overview',
 											geneType: 'all',
 											name: 'url_snp-overview',	// url_snp-overview
-											isExport: true
+											isExport: true,
+											content:"各个样本SNP类型统计"
 										},
 										{
 											url: 'snp-distribution',
 											geneType: 'all',
 											name: 'url_snp-distribution',	// url_snp-distribution
-											isExport: true
+											isExport: true,
+											content:"各个样本中SNP位点区域分布统计"
 										},
 										{
 											url: 'indel-overview',
 											geneType: 'all',
 											name: 'url_indel-overview',	// url_indel-overview
-											isExport: true
+											isExport: true,
+											content:"各个样本InDel注释统计"
 										},
 										{
 											url: 'indel-distribution',
 											geneType: 'all',
 											name: 'url_indel-distribution',	// url_indel-distribution
-											isExport: true
+											isExport: true,
+											content:"各个样本InDel位点区域分布统计"
 										},
 										{
 											url: 'snp-indel-help',
 											geneType: 'all',
 											name: 'url_snp-indel-help',	// url_snp-indel-help
-											isExport: true
+											isExport: true,
+											content:"帮助信息"
 										}
 									]
 								},
@@ -307,32 +327,38 @@ export class IndexComponent implements OnInit {
 										{
 											url: 'overview',
 											name: 'url_overview',	// url_overview
-											isExport: true
+											isExport: true,
+											content:"分析方案、样品相关性和表达量分布等"
 										},
 										{
 											url: 'reference',
 											name: 'url_reference',	// url_reference
-											isExport: true
+											isExport: true,
+											content:"参考物种的基因长度、外显子个数等统计等"
 										},
 										{
 											url: 'reads-filter',
 											name: 'url_reads-filter',	// url_reads-filter
-											isExport: true
+											isExport: true,
+											content:"测序数据的过滤和质控"
 										},
 										{
 											url: 'reads-alignment',
 											name: 'url_reads-alignment',	// url_reads-alignment
-											isExport: true
+											isExport: true,
+											content:"Reads与参考序列的比对、测序随机性和覆盖度等"
 										},
 										{
 											url: 'smallrna',
 											name: 'url_smallrna',	// url_smallrna
-											isExport: true
+											isExport: true,
+											content:"各样本小RNA数量、分类和长度等"
 										},
 										{
 											url: 'basic-help',
 											name: 'url_basic-help',	// url_basic-help
-											isExport: true
+											isExport: true,
+											content:"帮助信息"
 										}
 									]
 								}

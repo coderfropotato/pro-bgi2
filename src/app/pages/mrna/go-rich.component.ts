@@ -145,6 +145,8 @@ export class GoRichComponent implements OnInit {
     // 图上选择的数据
     selectGeneList:string[] = [];
 
+    expandModuleDesc: boolean = false;
+
     constructor(
         private message: MessageService,
 		private ajaxService: AjaxService,
@@ -333,6 +335,13 @@ export class GoRichComponent implements OnInit {
         this.addColumnShow = status;
     }
 
+    moduleDescChange() {
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
+	}
 
     // 表
     addThead(thead) {

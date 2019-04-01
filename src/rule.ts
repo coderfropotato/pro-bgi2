@@ -8,6 +8,7 @@
 
 // 基因表和富集有选择基因功能的大表 需要特殊过滤的表头
 export const matchList: string[] = [
+	'gene_tran_list',
 	'cellmarker_desc',
 	'cr2cancer_desc',
 	'phi_desc',
@@ -52,7 +53,6 @@ export const matchList: string[] = [
 	'kegg_module_term_id',
 	'kegg_module_term',
 	'kegg_module_desc',
-	'kegg_pathway_term_id',
 	'kegg_pathway_term',
 	'kegg_pathway_desc',
 	'kegg_reaction_term_id',
@@ -116,8 +116,17 @@ export const matchList: string[] = [
 	'msigdb_h_term',
 	'msigdb_h_desc'
 ];
+
+// 跳富集的头
+export const mapMatchItems = [
+	"kegg_pathway_term_enrichment", 
+	"kegg_pathway_term_id"
+]
+
 // 匹配规则
 export const matchRule: object = {
+	gene_tran_list:{url:''},
+	
 	cellmarker_desc: { url: '' },
 	cr2cancer_desc: { url: '' },
 	phi_desc: { url: '' },
@@ -194,9 +203,9 @@ export const matchRule: object = {
 	kegg_module_term: { url: 'https://www.kegg.jp/kegg-bin/show_module?@' },
 	kegg_module_desc: { url: 'https://www.kegg.jp/kegg-bin/show_module?@' },
 
-
-	kegg_pathway_term_id: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@'},  // 富集跳map
-	// kegg_pathway_term: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' }, // 富集跳map
+	// 跳map
+	kegg_pathway_term_enrichment: { url: 'map/:mapid/:compareGroup/:tid' }, 
+	kegg_pathway_term_id: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@'}, 
 	
 	kegg_pathway_term: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' },
 	kegg_pathway_desc: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' },

@@ -43,7 +43,9 @@ export class BigTableComponent implements OnInit {
     @Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
     @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
 
-
+    // 在kegg富集需要跳转map的时候用到  其他都为默认值空
+	@Input() compareGroup:any =undefined; // 比较组
+	@Input() reanalysisId:any =undefined; // 重分析id
 
     @ViewChildren("child") children;
     tableEntity: object = {};
@@ -259,7 +261,7 @@ export class BigTableComponent implements OnInit {
                     this.tableEntity['rootSearchContentList'] = [];
                     if('leftChooseList' in this.tableEntity) this.tableEntity['leftChooseList'] = [];
                     if('upChooseLIst' in this.tableEntity) this.tableEntity['upChooseList'] = [];
-                    if('compareGroup' in this.tableEntity) this.tableEntity['compareGroup'] = [];
+                    if('compareGroup' in this.tableEntity) this.tableEntity['compareGroup'] = '';
                     if('setNameList' in this.tableEntity) this.tableEntity['setNameList'] = [];
                     if('diffThreshold' in this.tableEntity) this.tableEntity['diffThreshold'] = {};
                     this.applyOnceSearchParams = false;

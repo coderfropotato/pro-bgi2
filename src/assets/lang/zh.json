@@ -31,16 +31,48 @@
         "document_information": "文献信息"
     },
     "diff_venn": {
-        "diff_venn_title": "差异基因聚类",
-        "diff_venn_content": "对每个比较组差异基因的FPKM值进行聚类"
+        "diff_venn_title": "差异VENN",
+        "diff_venn_content": "利用VENN/UpSetR图，展示基因在不同比较组间的差异表达情况"
     },
     "diff_venn_number": {
         "diff_venn_title": "差异基因数量",
-        "diff_venn_content": "差异基因数量"
+        "diff_venn_content": "根据各个样品基因表达水平，检测到的显著差异表达基因进行统计绘图。"
     },
     "express_venn": {
-        "express_venn_title": "表达量基因聚类",
-        "express_venn_content": "对每个比较组表达量基因的FPKM值进行聚类"
+        "express_venn_title": "表达量",
+        "express_venn_content": "选择分组或样本，绘制VENN/UpSetR图，查看各个分组或样本交/并集。"
+    },
+    "go_class": {
+        "title": "GO分类",
+        "content": "Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。对差异基因的GO注释分类结果进行绘图。"
+    },
+    "go_rich": {
+        "title": "GO富集",
+        "content": "根据GO注释结果以及官方分类，将差异基因进行功能分类，同时使用R软件中的phyper函数进行富集分析，计算Pvalue，然后对Pvalue进行 FDR校正，通常FDR <=0.01的功能视为显著富集。"
+    },
+    "kegg_class": {
+        "title": "KEGG分类",
+        "content": "将基因参与的KEGG代谢通路分为7个分支：细胞过程(Cellular Processes)、环境信息处理(Environmental Information Processing)、遗传信息处理(Genetic Information Processing)、人类疾病（Human Disease）（仅限动物）、代谢(Metabolism)、有机系统(Organismal Systems)、药物开发（Drug Development）。每一分支下进一步分类统计。对差异基因的KEGG Pathway注释分类结果进行绘图。"
+    },
+    "kegg_rich": {
+        "title": "KEGG富集",
+        "content": "根据 KEGG Pathway注释分类，使用 R 软件中的 phyper 函数进行富集分析，计算 Pvalue，然后对 Pvalue 进行 FDR 校正，通常 FDR <= 0.01的功能视为显著富集。"
+    },
+    "alternative": {
+        "title": "可变剪接",
+        "content": "将reads比对到参考基因组，然后用 rMATS 检测样品的可变剪接情况。我们检测其中5种可变剪接事件，包括： Skipped Exon（SE）、 Alternative 5' Splicing Site（A5SS）、 Alternative 3' Splicing Site（A3SS）、 Mutually exclusive exons（MXE） 和 Retained Intron（RI）。"
+    },
+    "diff_alternative": {
+        "title": "差异可变剪接",
+        "content": "将reads比对到参考基因组，然后用 rMATS 检测比较组间的可变剪接情况。我们检测其中5种可变剪接事件包括： Skipped Exon（SE）、 Alternative 5' Splicing Site（A5SS）、 Alternative 3' Splicing Site（A3SS）、 Mutually exclusive exons（MXE） 和 Retained Intron（RI）。"
+    },
+    "gene_fusion": {
+        "title": "基因融合",
+        "content": "通过比对到基因组和转录本中双末端(paired-end)关系的序列检测基因融合事件。"
+    },
+    "snp_overview": {
+        "title": "SNP总览",
+        "content": "单核苷酸多态性（Single Nucleotide Polymorphisms, SNPs）指的是由单个核苷酸（A、T、C或G）的改变而引起的DNA序列的改变，造成各物种或个体间基因组的多样性，包括单个碱基的转换、巅换等。下图为不同样本中SNP类型的统计结果。"
     },
     "top": {
         "pdf": "导出pdf",
@@ -192,29 +224,29 @@
     "007001": "",
     "tools": {
         "01": "关联聚类热图",
-        "02": "聚类重分析",
-        "04": "多组学关联",
-        "05": "卡方检测",
+        "02": "聚类热图",
+        "04": "关联定量作图",
+        "05": "卡方检验",
         "06": "折线图",
-        "07": "蛋白网络互作",
-        "08": "关联网络图",
-        "09": "可变剪切",
-        "11": "基因分类",
-        "12": "基因富集",
+        "07": "网络互作",
+        "08": "关联网络互作",
+        "09": "可变剪接",
+        "11": "分类",
+        "12": "富集",
         "13": "KDA"
     },
     "desc": {
-        "01": "关联聚类热图描述",
-        "02": "聚类重分析描述",
-        "04": "多组学关联描述",
-        "05": "卡方检测描述",
-        "06": "折线图描述",
-        "07": "蛋白网络互作描述",
-        "08": "关联网络图描述",
-        "09": "可变剪切描述",
-        "11": "基因分类描述",
-        "12": "基因富集描述",
-        "13": "KDA描述"
+        "01": "对关联转换后的基因关系矩阵，绘制热图，用色彩展示基因之间的互作关系。",
+        "02": "对表格中选定的基因/转录本，使用表达量、差异倍数或自定义数据绘制聚类热图。",
+        "04": "对表格中选定的基因/转录本进行分类，绘制各个类别基因表达量、自定义数据等定量信息的箱线图，也可通过PPI、miRNA靶标等关系扩展关联基因，绘制箱线图。",
+        "05": "对表格中选定的基因/转录本，在不同属性分类中进行卡方检验。",
+        "06": "对表格中选定的基因/转录本，使用表达量绘制折线图。",
+        "07": "对表格中选定的基因/转录本绘制网络互作图，帮助了解这些基因之间的互作、共表达、调控关系等。",
+        "08": "对关联转换后的基因关系矩阵，绘制网络互作图，直观查看基因之间的互作关系。",
+        "09": "分析表格中选定基因的可变剪接位置、类型等。",
+        "11": "对表格中选定的基因/转录本进行注释分类，绘制条形图。",
+        "12": "对表格中选定的基因/转录本进行KEGG、GO等富集分析，帮助了解这些基因在哪些代谢通路、生物学过程等发生富集。",
+        "13": "对表格中选定的基因/转录本进行关键驱动基因分析，帮助了解这些基因中属于调控主要地位的基因。"
     },
     "menu": {
         "category_url_main": "主页",

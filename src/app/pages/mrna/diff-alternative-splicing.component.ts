@@ -56,6 +56,8 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 	asType: string;
 	group: string;
 
+	expandModuleDesc: boolean = false;
+
 	constructor(
 		private message: MessageService,
 		private globalService: GlobalService,
@@ -130,6 +132,14 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 		}, 30);
 	}
 
+	moduleDescChange() {
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
+	}
+
 	// 切换左右布局 计算左右表格的滚动高度
 	switchChange(status) {
 		this.switch = status;
@@ -146,14 +156,32 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 		var rows = data.rows;
 		var chartData = [];
 
+		// for (var j = 0; j < rows.length; j++) {
+		// 	chartData.push({
+		// 		compare_group: rows[j].compare_group,
+		// 		as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
+		// 		as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
+		// 		as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
+		// 		as_ri: rows[j].as_ri * 100 / rows[j].as_total,
+		// 		as_se: rows[j].as_se * 100 / rows[j].as_total,
+		// 		total:rows[j].as_total
+		// 	});
+		// }
 		for (var j = 0; j < rows.length; j++) {
 			chartData.push({
 				compare_group: rows[j].compare_group,
-				as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
-				as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
+                as_a3ss: rows[j].as_a3ss * 100 / rows[j].as_total,
+                as_a5ss: rows[j].as_a5ss * 100 / rows[j].as_total,
 				as_mxe: rows[j].as_mxe * 100 / rows[j].as_total,
 				as_ri: rows[j].as_ri * 100 / rows[j].as_total,
-				as_se: rows[j].as_se * 100 / rows[j].as_total,
+                as_se: rows[j].as_se * 100 / rows[j].as_total,
+                number:{
+                    as_a3ss:rows[j].as_a3ss,
+                    as_a5ss:rows[j].as_a5ss,
+                    as_mxe: rows[j].as_mxe ,
+                    as_ri: rows[j].as_ri,
+                    as_se: rows[j].as_se,
+                },
 				total:rows[j].as_total
 			});
 		}
@@ -172,7 +200,8 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 				el: '#diffAlternativeSpliceDiv',
 				type: 'stackBarPercent',
 				width: 660,
-				custom: [ 'compare_group' ],
+				//custom: [ 'compare_group' ],
+				custom: [ 'compare_group','total', 'as_a3ss','as_a5ss','as_mxe','as_ri','as_se'],
 				data: chartData,
 				enableChartSelect: true,
 				onselect: function(data) {

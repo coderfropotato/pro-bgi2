@@ -71,6 +71,11 @@ export class TransformationTableComponent implements OnInit {
 
     @Output() totalChange:EventEmitter<number> = new EventEmitter();
 
+    // 在kegg富集需要跳转map的时候用到  其他都为默认值空
+	@Input() compareGroup:any =undefined; // 比较组
+	@Input() reanalysisId:any =undefined; // 重分析id
+
+
     defaultUrl: string = "";
     params: object;
     url: string;

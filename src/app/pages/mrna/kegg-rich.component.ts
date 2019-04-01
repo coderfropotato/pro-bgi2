@@ -145,6 +145,8 @@ export class KeggRichComponent implements OnInit {
     // 图上选择的数据
     selectGeneList:string[] = [];
 
+    expandModuleDesc: boolean = false;
+
     constructor(
         private message: MessageService,
 		private ajaxService: AjaxService,
@@ -316,6 +318,14 @@ export class KeggRichComponent implements OnInit {
             return a[key] - b[key];
         })
     }
+
+    moduleDescChange() {
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
+	}
 
 
     ngAfterViewInit() {

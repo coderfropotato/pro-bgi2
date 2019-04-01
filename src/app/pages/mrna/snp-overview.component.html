@@ -3,6 +3,15 @@
 </p> -->
 <div class="content row  overview">
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+        <div class="left-top-layout">
+            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                {{'snp_overview.title' | translate}}
+            </span>
+            <p [hidden]="!expandModuleDesc">{{'snp_overview.content' | translate}}</p>
+            <ng-content select=".gene-switch-module"></ng-content>
+        </div>
         <div class="left-bottom-layout">
             <app-table-switch-chart #snpOverview [id]="'snpOverview'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'snpOverviewDiv'" [chartName]="'SNP类型统计'" [flex]="true" (refresh)="handlerRefresh()" [chartDescContent]="'X轴代表变异类型，Y轴代表相应的SNP数目。'">
             </app-table-switch-chart>

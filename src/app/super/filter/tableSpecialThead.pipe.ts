@@ -20,7 +20,15 @@ import config from '../../../config';
 export class TableSpecialTheadFilter implements PipeTransform {
 	constructor(private globalService: GlobalService) {}
 
-	transform(value: any, thead: any, type:any, whitespace: boolean = false): object {
+	// kegg富集表头 符合 mapMatchItems的项  需要多传compareGroup 或者 重分析id
+	transform(
+		value: any,    // 输入的值 
+		thead: any,  // 表头
+		type:any, 	// searchType
+		whitespace: boolean = false,	// 内容是否需要换行   popover里面需要换行（true） 在表格里显示不需要换行（false）
+		compareGroup:any = undefined,  // 比较组，默认为空  在KEGG富集里面会跳转map  需要比较组或者重分析id作为参数
+		id:any = undefined	// 重分析id
+	): object {
 		if (!value && value != 0) return this.globalService.trustStringHtml(`<span>NA</span>`);
 		if (type === 'string') {
 			if (thead.endsWith('splice_site')) {
@@ -51,12 +59,14 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				let matchList = config['matchList'];
 				let matchRule = config['matchRule'];
 				let flag = config['urlSplitFlag'];
+				let mapMatchItems = config['mapMatchItems'];
 				let valSplitFlag = config['valSplitFlag'];
 				let idFlag = config['idComposeDesc'];
 				let htmlStr = '',
 					urlArr = [];
 				let whiteWrapReg = /.+(\_desc)|(\_term)$/g;
 
+				// 链接跳转
 				if (matchList.includes(thead)) {
 					let curRule = matchRule[thead];
 					let curUrl = curRule['url'];
@@ -64,7 +74,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 					if (matchRule[thead]['url']) {
 						urlArr = typeof curUrl === 'string' ? curUrl.split(flag) : curUrl[0].split(flag);
 
-						if (whiteWrapReg.test(thead)) {
+						if (whiteWrapReg.test(thead) || value.indexOf(valSplitFlag)!=-1) {
 							let textArr = value.split(valSplitFlag);
 							textArr.forEach((v, i) => {
 								let id = v.indexOf(idFlag) != -1 ? v.split(idFlag)[0] : null;
@@ -81,7 +91,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 							htmlStr += `<a href="${url}" target="_blank">${value}</a>`;
 						}
 					} else {
-						if (whiteWrapReg.test(thead)) {
+						if (whiteWrapReg.test(thead) || value.indexOf(valSplitFlag)!=-1) {
 							let textArr = value.split(valSplitFlag);
 							textArr.forEach((v, i) => {
 								htmlStr += `<span>${v}</span>`;
@@ -91,8 +101,39 @@ export class TableSpecialTheadFilter implements PipeTransform {
 							htmlStr += value;
 						}
 					}
+				}else if(mapMatchItems.includes(thead)){  // map跳转
+					// 04145///Phagosome+++04540///Gap junction+++05130///Pathogenic Escherichia coli infection
+
+					// 先按+++ 切
+
+					// 04145///Phagosome
+					// 04540///Gap junction
+					// 05130///Pathogenic Escherichia coli infection
+
+					// /// 切[0]
+					let a = value.split(valSplitFlag);
+					a.forEach((v,index) => {
+						let mapid = v.split(idFlag)[0];
+						// 跳map
+						let href = `${window.location.href.split('report')[0]}report/map/${mapid}/${compareGroup}/${id}`;
+						htmlStr+=`<a href="${href}" target="_blank">${v}</a>`;
+						if(whitespace) {
+							htmlStr+=index !==a.length-1?'<br>':'';
+						}else{
+							htmlStr+='&emsp;';
+						}
+					});
 				} else {
-					htmlStr += value;
+					// 有+++ 按+++ 换行  没有默认
+					if ((''+value).indexOf(valSplitFlag)!=-1) {
+						let textArr = value.split(valSplitFlag);
+						textArr.forEach((v, i) => {
+							htmlStr += `<span>${v}</span>`;
+							htmlStr += i !== textArr.length - 1 && whitespace ? '<br>' : '&emsp;';
+						});
+					} else {
+						htmlStr += value;
+					}
 				}
 
 				return this.globalService.trustStringHtml(htmlStr);
