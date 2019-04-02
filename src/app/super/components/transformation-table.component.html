@@ -6,7 +6,7 @@
     <div *ngIf="isFirst" id="default-gene-table">
         <app-geneTable #defaultTable [url]="defaultTableUrl" [pageEntity]="defaultTableEntity" [tableId]="defaultTableId" [defaultChecked]="defaultTableDefaultChecked" [tableHeight]="tableHeight" [tableType]="defaultTableType" [(emitBaseThead)]="defaultEmitBaseThead"
             (emitBaseTheadChange)="handlerDefaultEmitChange($event)" (baseTheadChange)="handlerDefaultBaseTheadChange($event)" [checkStatusInParams]="defaultTableCheckStatusInParams" [(resetCheckGraph)]="resetCheckGraph" (resetCheckGraphChange)="handleResetCheckGraphChange($event)"
-            [(applyOnceSearchParams)]="defaultApplyOnceSearchParams" (applyOnceSearchParamsChange)="handlerDefaultAppluOnceSearchParamsChange($event)" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [defaultMartix]="defaultMartix" [(computedScrollHeight)]="computedScrollHeight"
+            [(applyOnceSearchParams)]="defaultApplyOnceSearchParams" (applyOnceSearchParamsChange)="handlerDefaultAppluOnceSearchParamsChange($event)" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight"
             (computedScrollHeightChange)="handlerComputedScrollHeightChange($event)" [showFilterStatus]="defaultShowFilterStatus" (saveGeneListSuccess)="handleDefaultSaveGeneListSuccess($event)" (syncRelative)="handleDefaultSyncRelative($event)" (totalChange)="handleTotalChange($event)"
             [compareGroup]="compareGroup" [reanalysisId]="reanalysisId"></app-geneTable>
     </div>
