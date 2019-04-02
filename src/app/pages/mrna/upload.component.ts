@@ -38,6 +38,11 @@ export class UploadComponent implements OnInit {
 		time:''
 	};
 
+	downUrl: string;
+	downUrlOne: string;
+	downUrlTwo: string;
+	downUrlThree: string;
+
     constructor(
         private modalService: NzModalService,
         private ajaxService: AjaxService,
@@ -47,6 +52,11 @@ export class UploadComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+		this.downUrl = window.location.host;
+		this.downUrlOne = this.downUrl + "/project/upload/upload_gene.txt";
+		this.downUrlTwo = this.downUrl + "/project/upload/upload_rna.txt";
+		this.downUrlThree = this.downUrl + "/project/upload/upload_sample.txt";
+ 
         this.PercentNum = 0;
         this.defaultSetEntity = {
             LCID: this.storeService.getStore("LCID"),

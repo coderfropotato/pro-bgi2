@@ -5,7 +5,7 @@
             <nz-tabset [nzSelectedIndex]="m_index" (nzSelectedIndexChange)="SelectedIndexChange($event)">
                 <nz-tab [nzTitle]="'基因信息'" >
                     <div class="tab_content" [hidden]="fileList.length !=0">
-                        <a href="/project/upload/upload_gene.txt" download="基因信息模板.text">数据模板下载</a>
+                        <a href="{{downUrlOne}}" download="基因信息模板.text">数据模板下载</a>
                         <span>基因信息数据上传说明...</span>
                     </div>
                     <div class="tab_div" [hidden]="fileList.length ==0">
@@ -16,7 +16,7 @@
                 </nz-tab>
                 <nz-tab [nzTitle]="'转录本信息'">
                     <div class="tab_content" [hidden]="fileList2.length !=0">
-                        <a href="/project/upload/upload_rna.txt" download="转录本信息模板.text">数据模板下载</a>
+                        <a href="{{downUrlTwo}}" download="转录本信息模板.text">数据模板下载</a>
                         <span>转录本信息数据上传说明...</span>
                     </div>
                     <div class="tab_div" [hidden]="fileList2.length ==0">
@@ -28,7 +28,7 @@
 
                 <nz-tab [nzTitle]="'样本信息'">
                     <div class="tab_content" [hidden]="fileList3.length !=0">
-                        <a href="/project/upload/upload_sample.txt" download="样本信息模板.text">数据模板下载</a>
+                        <a href="{{downUrlThree}}" download="样本信息模板.text">数据模板下载</a>
                         <span>样本信息数据上传说明...</span>
                         
                     </div>
