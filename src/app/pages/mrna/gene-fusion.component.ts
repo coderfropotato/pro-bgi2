@@ -43,7 +43,7 @@ export class GeneFusionComponent implements OnInit {
 	isShowGene:boolean=true;
 	isShowColumn:boolean=true;
 	linkSerach:string='score';
-	score:number=1;
+	score:number=this.storeService.getStore('circos_score');
 	linkIds:any[]=[];
 
 	isDisabled:boolean;
