@@ -63,7 +63,7 @@ export class FusionSetComponent implements OnInit {
            }
        ];
        this.linkSerach=this.linkSerachList[0].key;
-       this.score=1;
+       this.score=this.storeService.getStore('circos_score');
 
        this.confirmData={
             isShowGene:this.isShowGene,
