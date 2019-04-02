@@ -254,7 +254,8 @@ export class ReadsFilterComponent implements OnInit {
           custom: ["name", "value", "category"],
           el: "#rawBaseID",
           type: "categoryLine",
-          data: chartData
+          data: chartData,
+          interpolate: "cardinal", // cardinal basic step  linear
         },
         axis: {
           x: {
