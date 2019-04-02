@@ -1,7 +1,9 @@
+import { NzMessageService } from 'ng-zorro-antd';
 import config from 'src/config';
 import { LoadingService } from './../service/loadingService';
 import { AjaxService } from './../service/ajaxService';
 import { Component, OnInit, Input } from '@angular/core';
+
 declare const $: any;
 @Component({
 	selector: 'app-grid-export',
@@ -16,7 +18,11 @@ export class GridExportComponent implements OnInit {
 	// 表格的下载名称
 	@Input() fileName: any;
 
-	constructor(private ajaxService: AjaxService, private loadingService: LoadingService) {}
+	constructor(
+		private ajaxService: AjaxService,
+		private loadingService: LoadingService,
+		private messageService:NzMessageService
+		) {}
 
 	ngOnInit() {}
 
@@ -45,7 +51,7 @@ export class GridExportComponent implements OnInit {
 						exportFormObj = $('<form></form>');
 						$(exportFormObj).attr('id', formID);
 						$(exportFormObj).attr('method', 'post');
-						$(exportFormObj).attr('target', '_parent');
+						$(exportFormObj).attr('target', '');
 						$(exportFormObj).attr('enctype', 'application/x-www-form-urlencoded');
 						$(exportFormObj).attr('accept', 'application/octet-stream');
 
@@ -64,10 +70,12 @@ export class GridExportComponent implements OnInit {
                         $(exportFormObj).remove();
 
 						this.loadingService.close();
+						this.messageService.success('Grid Export Successful;')
 					}
 				},
 				(error) => {
 					console.log(error);
+					this.messageService.warning('Grid Export Failed;')
 				}
 			);
 	}
