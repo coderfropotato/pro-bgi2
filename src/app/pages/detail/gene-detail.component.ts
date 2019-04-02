@@ -240,6 +240,7 @@ export class GeneDetailComponent implements OnInit {
 	tf_flag: boolean = true;
 
 	lcid:string = '';
+	geneType:string = '';
 
   	constructor(
 		private message: MessageService,
@@ -267,10 +268,13 @@ export class GeneDetailComponent implements OnInit {
 		this.routes.paramMap.subscribe((params) => {
 			this.lcid = params['params']['lcid'];
 			this.geneID = params['params']['id'];
+			this.geneType = params['params']['geneType'];
 		});
 	}
 
 	ngOnInit() {
+		console.log(this.geneType)
+
 		this.geneParamsUsed = {
 			LCID: this.lcid,
 			geneType: "gene",
