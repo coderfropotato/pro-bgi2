@@ -33,7 +33,7 @@ export class GeneListIndexComponent implements OnInit {
         this.ngxSpinnerService.show();
         (async () => {
             try {
-                // await this.getLcInfo();
+                await this.getLcInfo();
                 this.getUnReadAnalysisCount();
                 // await this.getAddThead();
                 this.ready = true;
