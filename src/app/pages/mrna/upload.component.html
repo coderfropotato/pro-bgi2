@@ -6,7 +6,9 @@
                 <nz-tab [nzTitle]="'基因信息'" >
                     <div class="tab_content" [hidden]="fileList.length !=0">
                         <a href="{{downUrlOne}}" download="基因信息模板.text">数据模板下载</a>
-                        <span>基因信息数据上传说明...</span>
+                        <span>字段名称必须是字母、数字、下划线，总长度最多不超过40。单次上传数据不得大于180M。</span>
+                        <span>id：基因ID (string)  user_quantity_{{'{'}}tag{{'}'}}: 基因的自定义定量标签（double）  user_exp_{{'{'}}sample{{'}'}}: 基因的自定义表达量（double）</span>
+                        <span>user_log2fc_{{'{'}}sample{{'}'}}: 基因的自定义差异倍数（double） user_quantity_{{'{'}}tag{{'}'}}: 基因的自定义定量标签（double） user_quality_{{'{'}}tag{{'}'}}: 基因的自定义定性标签 (string)</span>
                     </div>
                     <div class="tab_div" [hidden]="fileList.length ==0">
                       <div *ngFor="let item of fileList; let i = index" class="tab_div_item">
@@ -17,7 +19,9 @@
                 <nz-tab [nzTitle]="'转录本信息'">
                     <div class="tab_content" [hidden]="fileList2.length !=0">
                         <a href="{{downUrlTwo}}" download="转录本信息模板.text">数据模板下载</a>
-                        <span>转录本信息数据上传说明...</span>
+                        <span>字段名称必须是字母、数字、下划线，总长度最多不超过40。单次上传数据不得大于180M。</span>
+                        <span>id：转录本ID (string) user_exp_{{'{'}}user_sample{{'}'}}: 转录本的自定义表达量（double） user_log2fc_{{'{'}}user_sample{{'}'}}: 转录本的自定义差异倍数（double）</span>
+                        <span>user_quantity_{{'{'}}user_tag{{'}'}}: 转录本的自定义定量标签（double） user_quality_{{'{'}}user_tag{{'}'}}: 转录本的自定义定性标签 (string)</span>
                     </div>
                     <div class="tab_div" [hidden]="fileList2.length ==0">
                         <div *ngFor="let item of fileList2; let i = index" class="tab_div_item">
@@ -29,8 +33,9 @@
                 <nz-tab [nzTitle]="'样本信息'">
                     <div class="tab_content" [hidden]="fileList3.length !=0">
                         <a href="{{downUrlThree}}" download="样本信息模板.text">数据模板下载</a>
-                        <span>样本信息数据上传说明...</span>
-                        
+                        <span>字段名称必须是字母、数字、下划线，总长度最多不超过40。单次上传数据不得大于180M。</span>
+                        <span>sample：样本  (string)</span>
+                        <span>tag_{{'{'}}user_tag{{'}'}}:自定义样本定性标签 (string)</span>
                     </div>
                     <div class="tab_div" [hidden]="fileList3.length ==0">
                         <div *ngFor="let item of fileList3; let i = index" class="tab_div_item">
