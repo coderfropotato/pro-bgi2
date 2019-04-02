@@ -835,7 +835,7 @@ export class ToolsComponent implements OnInit {
 		try {
 			let relations = JSON.parse(sessionStorage.getItem('relations'));
 			relations.forEach((v) => {
-				if (v['key'] === this.ppiFlagKey) this.kdaPpiScore = v['max'];
+				if (v['key'] === this.ppiFlagKey) this.kdaPpiScore = v['score'];
 			});
 			if (this.kdaPpiScore.length) this.kdaError = false;
 		} catch (error) {
