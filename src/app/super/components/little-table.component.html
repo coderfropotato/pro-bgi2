@@ -12,16 +12,39 @@
         <nz-table *ngIf="!tableError" [nzData]="tableData['rows']" [nzScroll]="{x:'100%'}" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate">
             <thead>
                 <tr>
-                    <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" nz-tooltip [nzTitle]="thead.name" *ngFor="let thead of tableData['baseThead'];index as i">{{thead.name}}</th>
+                    <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" [nzContent]="tp67" nzPlacement="top" nz-popover *ngFor="let thead of tableData['baseThead'];index as i">
+                        <ng-template #tp67>
+                            <span [innerHTML]="thead.name"></span>
+                        </ng-template>
+                        <span [innerHTML]="thead.name"></span>
+                    </th>
                 </tr>
             </thead>
             <!-- min-width:160px;max-width: 160px; -->
             <tbody>
                 <tr *ngFor="let row of tableData['rows'];index as idx">
-                    <td class="center textEllipsis" nz-tooltip [nzTitle]="row[thead.true_key]" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']">
+                    <!-- <td class="center textEllipsis" nz-tooltip [nzTitle]="row[thead.true_key]" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']">
                         <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID">{{row[thead.true_key]}}</a>
                         <span *ngIf="thead.true_key!=targetID">{{row[thead.true_key]?row[thead.true_key]:"NA"}}</span>
-                    </td>
+                    </td> -->
+
+                    
+
+                    <ng-container *ngFor="let thead of tableData['baseThead']">
+                        <td [nzContent]="tp66" nzPlacement="top" nz-popover style="min-width:160px;max-width: 160px;text-align: center;" *ngIf="row[thead.true_key]">
+                            <ng-template #tp66>
+                                <span [innerHTML]="row[thead.true_key]"></span>
+                            </ng-template>
+                            <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID">{{row[thead.true_key]}}</a>
+                            <span [innerHTML]="row[thead.true_key]" *ngIf="thead.true_key!=targetID"></span>
+
+                            <!-- <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID">{{row[thead.true_key]}}</a>
+                            <span *ngIf="thead.true_key!=targetID">{{row[thead.true_key]?row[thead.true_key]:"NA"}}</span> -->
+                        </td>
+                        <td *ngIf="!row[thead.true_key]" style="min-width:160px;max-width: 160px;text-align: center;">
+                            <span>NA</span>
+                        </td>
+                    </ng-container>
                 </tr>
             </tbody>
         </nz-table>

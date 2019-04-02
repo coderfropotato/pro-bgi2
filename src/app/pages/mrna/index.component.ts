@@ -56,7 +56,7 @@ export class IndexComponent implements OnInit {
 			try {
 				await this.getLcInfo();
 				// await this.getAddThead();
-                //await this.getMenuList();
+                // await this.getMenuList();
 
 				// this.getUnReadAnalysisCount();
 				this.ready = true;
@@ -380,6 +380,8 @@ export class IndexComponent implements OnInit {
 									});
 								}
 							});
+							
+							sessionStorage.setItem('menu_list',JSON.stringify(this.menuList));
 							this.storeService.setStore('menu', this.menuList);
 							this.storeService.setStore('menuRouteMap', menuRouteMap);
 							resolve('success');
