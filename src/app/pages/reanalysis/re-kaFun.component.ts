@@ -95,6 +95,7 @@ export class KaFunComponent implements OnInit {
 	selectGeneCount: number = 0;
 	computedScrollHeight: boolean = false;
 
+	selectConfirmData: any[] = [];
 	constructor(
 		private message: MessageService,
 		private globalService: GlobalService,
@@ -158,7 +159,8 @@ export class KaFunComponent implements OnInit {
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
 			searchList: [],
-			sortThead: this.addColumn['sortThead']
+			sortThead: this.addColumn['sortThead'],
+			buckets:[]
 		};
 		this.defaultTableId = 'default_kafun';
 		this.defaultDefaultChecked = true;
@@ -183,7 +185,8 @@ export class KaFunComponent implements OnInit {
 			species: this.storeService.getStore('genome'), //物种
 			version: this.version,
 			searchList: [],
-			sortThead: this.addColumn['sortThead']
+			sortThead: this.addColumn['sortThead'],
+			buckets:[]
 		};
 		this.extendTableId = 'extend_kafun';
 		this.extendDefaultChecked = true;
@@ -276,6 +279,7 @@ export class KaFunComponent implements OnInit {
 	}
 
 	handlerRefresh() {
+		this.selectConfirmData.length = 0;
 		this.chartBackStatus();
 	}
 
@@ -292,9 +296,11 @@ export class KaFunComponent implements OnInit {
 			this.defaultEntity['removeColumns'] = [];
 			this.defaultEntity['rootSearchContentList'] = [];
 			this.defaultEntity['searchList'] = [];
+			this.defaultEntity['buckets'] = this.selectConfirmData;
 			this.first = true;
 		} else {
 			this.transformTable._setParamsNoRequest('pageIndex', 1);
+			this.transformTable._setParamsNoRequest('buckets', this.selectConfirmData);
 			this.transformTable._getData();
 		}
 	}
@@ -374,36 +380,55 @@ export class KaFunComponent implements OnInit {
 
 	//单选
 	doSingleData() {
-		if (this.singleMultiSelect['bucket'].length) {
-			this.transformTable._filter(
-				`${this.geneType}_id`,
-				`${this.geneType}_id`,
-				'string',
-				'$in',
-				this.singleMultiSelect['bucket'].join(','),
-				null
-			);
-		}
+		console.log(this.singleMultiSelect);
+		this.selectConfirmData.length = 0;
+		let tempArray = [];
+		tempArray.push(this.singleMultiSelect['bucket']);
+		console.log(tempArray);
+		this.selectConfirmData = tempArray;
+		//this.singleMultiSelect['bucket']
+		// if (this.singleMultiSelect['bucket'].length) {
+		// 	this.transformTable._filter(
+		// 		`${this.geneType}_id`,
+		// 		`${this.geneType}_id`,
+		// 		'string',
+		// 		'$in',
+		// 		this.singleMultiSelect['bucket'].join(','),
+		// 		null
+		// 	);
+		// }
+		this.chartBackStatus();
 	}
 
 	//多选确定时候,提交的数据
 	multipleConfirm() {
+		console.log(this.doubleMultiSelect);
+		this.selectConfirmData.length = 0;
 		let tempArray = [];
 		for (let index = 0; index < this.doubleMultiSelect.length; index++) {
 			const element = this.doubleMultiSelect[index];
-			tempArray.push(...element.bucket);
+			tempArray.push(element["bucket"])
 		}
-		let genelist = Array.from(new Set(tempArray));
-		if (genelist.length) {
-			this.transformTable._filter(
-				`${this.geneType}_id`,
-				`${this.geneType}_id`,
-				'string',
-				'$in',
-				genelist.join(','),
-				null
-			);
-		}
+
+		console.log(tempArray);
+		this.selectConfirmData = tempArray;
+		// let tempArray = [];
+		// for (let index = 0; index < this.doubleMultiSelect.length; index++) {
+		// 	const element = this.doubleMultiSelect[index];
+		// 	tempArray.push(...element.bucket);
+		// }
+		// let genelist = Array.from(new Set(tempArray));
+		// if (genelist.length) {
+		// 	this.transformTable._filter(
+		// 		`${this.geneType}_id`,
+		// 		`${this.geneType}_id`,
+		// 		'string',
+		// 		'$in',
+		// 		genelist.join(','),
+		// 		null
+		// 	);
+		// }
+		this.chartBackStatus();
 	}
 
 	//画图
@@ -612,8 +637,8 @@ export class KaFunComponent implements OnInit {
 						y: s_width * (2 * j + 1) / 2,
 						value: temp.value,
 						name: temp.name,
-						xtype: xValue[j],
-						ytype: yValue[index],
+						xtype: xValue[index],
+						ytype: yValue[j],
 						bucket: temp.bucket
 					}
 				);
@@ -1068,6 +1093,7 @@ export class KaFunComponent implements OnInit {
 		}
 
 		function selectName(sList, d) {
+			console.log(d)
 			let mkey = d.name + d.type;
 			if (sList.length == 0) {
 				sList.push(d);
