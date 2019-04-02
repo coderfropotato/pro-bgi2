@@ -110,7 +110,7 @@ export class NewTreeComponent implements OnInit, OnChanges {
 
                 if(this.selectComposeThead[0] !== res['data']['currentName']){
                     this.selectComposeThead = [res['data']['currentName']];
-                    this.composeTheadChange.emit(this.selectComposeThead);
+                    this.composeTheadChange.emit([this.selectComposeThead,[res['data']['currentKey']]]);
                 }
         
                 if (!this.treeData || !this.treeData.length) return;
