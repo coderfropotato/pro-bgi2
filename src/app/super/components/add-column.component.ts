@@ -34,6 +34,7 @@ export class AddColumnComponent implements OnInit {
 	beforeSelected: Array<any> = [];
 	theadInBase: string[] = []; // 哪些基础表头在增删列的数据里面
 	treeTempSelect: any[] = [];
+	treeTempSelectKey:any[] = [];
 	baseTheadChangeWithoutThead: boolean = false; // 基础头改变的时候 增删列的头是否无数据
 	doAjax: boolean = false;
 	public sortThead: any[] = [];
@@ -480,7 +481,8 @@ export class AddColumnComponent implements OnInit {
 
 	// 树选择可匹配的头 改变
 	handlerSelectDataChange(thead, index) {
-		this.treeTempSelect = thead;
+		this.treeTempSelect = thead[0];
+		this.treeTempSelectKey = thead[1];
 	}
 
 	handleCancel(it) {
@@ -492,7 +494,7 @@ export class AddColumnComponent implements OnInit {
 
 		// 选择的头是不是重复选择
 		let n = it['children'].findIndex((val, index) => {
-			return val['key'] === this.treeTempSelect[0];
+			return val['key'] === this.treeTempSelectKey[0];
 		});
 		if (n != -1) {
 			this.notification.create('warning', 'Reprot notification', `重复选择 ${this.treeTempSelect[0]}`);
@@ -503,7 +505,7 @@ export class AddColumnComponent implements OnInit {
 				if (this.treeTempSelect.length) {
 					let res = await this.saveThead({
 						category: it['category'],
-						key: this.treeTempSelect[0],
+						key: this.treeTempSelectKey[0],
 						name: this.treeTempSelect[0],
 						geneType: this.geneType['type']
 					});
@@ -536,6 +538,7 @@ export class AddColumnComponent implements OnInit {
 						this.notification.create('warning', 'Reprot notification', `${this.treeTempSelect[0]} 添加失败`);
 					}
 					this.treeTempSelect.length = 0;
+					this.treeTempSelectKey.length = 0;
 				}
 			})();
 		}

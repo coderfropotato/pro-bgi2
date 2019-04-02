@@ -216,7 +216,7 @@ export class ReadsFilterComponent implements OnInit {
         }
     }
 
-      this.chart=new d4().init(config);
+      this.chart=new d4().init(config,{pointRadius:0.5});
   }
 
 

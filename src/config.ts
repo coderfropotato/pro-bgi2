@@ -3,7 +3,6 @@ import { matchList, matchRule,geneInfo,mapMatchItems } from './rule';
 const config: object = {
 	url: 'http://localhost:8086', // 本地服务测试
 	javaPath: 'http://192.168.167.24:7777/api', // api基础路径 218.106.117.7
-	mapUrl:'http://biosys.bgi.com/project/production/BGI_{LCID}/KEGG_PATHWAY/Pathway_enrichment/{CompareGroup}/{CompareGroup}_{GeneType}_kegg_pathway_map/map03410.html', // map的跳转链接    测试的 project=>test
 	outerDataBaseIndex: '006', // 增删列外部数据库的索引
 	lang: 'zh', // 默认语言
 	geneTypeAll: 'all', // 基因和转录本切换 基因类型为all表示有基因切换 默认为gene
@@ -19,6 +18,7 @@ const config: object = {
 	mapMatchItems,
 	TCGA_KEY:"006001", // TACG 外部数据库 树增加头需要请求（app-new-tree） 别的外部数据库不需要分步请求(app-tree)
 	targetRelativeGeneLimit:1000,  // 上下游关系选择的基因限制 最大1000
+	unableClickSplitFlag:'---', // 不可点击的换行分割符
 	urlSplitFlag: '@', // 切割url的标志字符
 	valSplitFlag: '+++', // 内容换行的标志字符
 	idComposeDesc: '///' // id和描述的组合标志字符
