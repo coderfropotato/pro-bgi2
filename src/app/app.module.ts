@@ -330,7 +330,7 @@ const ROUTES: Routes = [
 	},
 	// 基因详情页
 	{
-		path:'report/gene-detail/:lcid/:id',
+		path:'report/gene-detail/:lcid/:id/:geneType',
 		component:GeneDetailComponent,
 		data:{
 			keep:false,
@@ -339,7 +339,7 @@ const ROUTES: Routes = [
 	},
 	// Map
 	{
-		path:'report/map/:mapid/:compareGroup/:tid',
+		path:'report/map/:lcid/:mapid/:compareGroup/:tid/:geneType',
 		component:MapComponent,
 		data:{
 			keep:false,

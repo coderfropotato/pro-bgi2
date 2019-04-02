@@ -23,10 +23,10 @@ declare const $:any;
   templateUrl: './map.component.html',
   styles: []
 })
-export class MapComponent implements OnInit {
+export class MapComponent{
 	mapid:string = '';
 	compareGroup:string = '';
-	tid:string = '';
+	dirtyPathWayIframeUrl:string;
 	pathWayIframeUrl:any;
 	params:object = {};
 
@@ -48,15 +48,29 @@ export class MapComponent implements OnInit {
 		this.translate.use(browserLang);
 
 		this.routes.paramMap.subscribe((params) => {
+			// {"lcid":"develop" ,"mapid": "04020", "compareGroup": "undefined", "tid": "c52f2af6134e431e88d75b72053554de", "geneType": "gene" }
 			this.params = params['params'];
+			let lcid = this.params['lcid'];
+			let mapid = this.params['mapid'];
+			let compareGroup = this.params['compareGroup'];
+			let tid = this.params['tid'];
+			let geneType = this.params['geneType'];
+			this.mapid = mapid;
+			if(tid!='undefined'){
+				// 重分析内的map跳转
+			}else{
+				// 非重分析的map跳转   production test
+				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${lcid}/KEGG_PATHWAY/Pathway_enrichment/${compareGroup}/${compareGroup}_${geneType}_kegg_pathway_map/map${mapid}.html`
+			}
+
+			this.initIframe();
 		});
 	}
 
-	ngOnInit() {
-		this.pathWayIframeUrl = this.cleanUrl('http://www.baidu.com');
+	initIframe(){
+		this.pathWayIframeUrl = this.cleanUrl(this.dirtyPathWayIframeUrl);
 		let oIframe = $("#mapIdIframe");
         oIframe.on("load", function() {
-			console.log(oIframe.contents())
             let areas = oIframe.contents().find("map").children("area[target_gene]");
             areas.on("click", function() {
                 let selectList = [];

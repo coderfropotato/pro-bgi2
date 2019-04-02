@@ -3,6 +3,7 @@ import { matchList, matchRule,geneInfo,mapMatchItems } from './rule';
 const config: object = {
 	url: 'http://localhost:8086', // 本地服务测试
 	javaPath: 'http://192.168.167.24:7777/api', // api基础路径 218.106.117.7
+	mapUrl:'http://biosys.bgi.com/project/production/BGI_{LCID}/KEGG_PATHWAY/Pathway_enrichment/{CompareGroup}/{CompareGroup}_{GeneType}_kegg_pathway_map/map03410.html', // map的跳转链接    测试的 project=>test
 	outerDataBaseIndex: '006', // 增删列外部数据库的索引
 	lang: 'zh', // 默认语言
 	geneTypeAll: 'all', // 基因和转录本切换 基因类型为all表示有基因切换 默认为gene
