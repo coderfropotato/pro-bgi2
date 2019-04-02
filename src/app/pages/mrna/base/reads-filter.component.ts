@@ -199,7 +199,7 @@ export class ReadsFilterComponent implements OnInit {
         showLabel:true,
         custom: ["name", "value"],
         el: "#rawDataID",
-        //type: "pie",
+        type: "pie",
         data: tempArray
         },
         legend: {
