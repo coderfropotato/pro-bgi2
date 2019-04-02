@@ -1093,23 +1093,25 @@ export class KaFunComponent implements OnInit {
 		}
 
 		function selectName(sList, d) {
-			console.log(d)
-			let mkey = d.name + d.type;
+			let check = d.xtype + d.ytype;//选中的数据位置
 			if (sList.length == 0) {
+				//选中时，将check置为true
 				sList.push(d);
-				sName[mkey] = true;
+				sName[check] = true;
 			} else {
-				if (sName[mkey]) {
+				//反选数据，check置为false
+				if (sName[check]) {
 					for (let i = 0; i < sList.length; i++) {
-						let temp = sList[i].name + sList[i].type;
-						if (temp == mkey) {
+						let temp = sList[i].xtype + sList[i].ytype;
+						if (temp == check) {
 							sList.splice(i, 1);
-							sName[mkey] = false;
+							sName[check] = false;
 						}
 					}
 				} else {
+					//选中数据，将check置为true
 					sList.push(d);
-					sName[mkey] = true;
+					sName[check] = true;
 				}
 			}
 			return sList;
