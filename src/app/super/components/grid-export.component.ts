@@ -40,7 +40,7 @@ export class GridExportComponent implements OnInit {
 			})
 			.subscribe(
 				(data) => {
-					if (data['status'] == "0") {
+					if (data['status'] == "0" && data['data']['key_info']) {
 						let key_info = data['data']['key_info'];
 						let actionStr = `${config['javaPath']}/CsvDownload`;
 						let formID = this.fileName + '_exportform';
@@ -70,12 +70,15 @@ export class GridExportComponent implements OnInit {
                         $(exportFormObj).remove();
 
 						this.loadingService.close();
-						this.messageService.success('Grid Export Successful;')
+						this.messageService.success('Table Export Successful')
+					}else{
+						this.loadingService.close();
+						this.messageService.warning('Table Export Failed')
 					}
 				},
 				(error) => {
-					console.log(error);
-					this.messageService.warning('Grid Export Failed;')
+					this.loadingService.close();
+					this.messageService.warning('Table Export Failed')
 				}
 			);
 	}

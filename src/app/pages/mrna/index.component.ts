@@ -33,21 +33,21 @@ export class IndexComponent implements OnInit {
 	constructor(
 		private routes: ActivatedRoute,
 		private router: Router,
-		private message: MessageService,
 		private ajaxService: AjaxService,
 		private storeService: StoreService,
 		private ngxSpinnerService: NgxSpinnerService,
 		private addColumnService: AddColumnService,
+		private message: MessageService,
 		private modalService: NzModalService // private outerDataBaseService:OuterDataBaseService
 	) {
-		this.router.events.subscribe((event) => {
-			if (event instanceof NavigationEnd) {
-				this.routerState = !this.routerState;
-				this.routerStateCode = this.routerState ? 'active' : 'inactive';
+		// this.router.events.subscribe((event) => {
+		// 	if (event instanceof NavigationEnd) {
+		// 		this.routerState = !this.routerState;
+		// 		this.routerStateCode = this.routerState ? 'active' : 'inactive';
 
-				this.storeService.setNavigatedRoutes(this.router.url);
-			}
-		});
+		// 		this.storeService.setNavigatedRoutes(this.router.url);
+		// 	}
+		// });
 	}
 
 	ngOnInit() {
@@ -58,7 +58,7 @@ export class IndexComponent implements OnInit {
 				// await this.getAddThead();
                 // await this.getMenuList();
 
-				// this.getUnReadAnalysisCount();
+				this.getUnReadAnalysisCount();
 				this.ready = true;
 				setTimeout(() => {
 					this.ngxSpinnerService.hide();

@@ -317,7 +317,6 @@ const ROUTES: Routes = [
 				data:{keep:true,module:'gene'}
 			},
 			// 基因详情
-			
 			{
 				path: 'upload', // 上传数据
 				component: UploadComponent,

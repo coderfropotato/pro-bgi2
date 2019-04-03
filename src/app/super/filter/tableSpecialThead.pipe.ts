@@ -140,7 +140,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				return this.globalService.trustStringHtml(htmlStr);
 			}
 		} else {
-			return this.accuracy(value, null, type);
+			return whitespace?value:this.accuracy(value, null, type)
 		}
 	}
 
