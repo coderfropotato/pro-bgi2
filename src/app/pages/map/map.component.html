@@ -1,29 +1,29 @@
-<app-top [pdf]="false" [analysis]="false" [upload]="false" [lang]="false" (logoClick)="handlerLogoClick()">
-</app-top>
-<app-menu [menu]="[]" [geneSwitch]="true">
-    <p class="menu-slot-text">mapId：{{mapid}}</p>
-</app-menu>
-<div class="report-content">
-    <div class="content row map">
-        <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
-            <div class="left-bottom-layout">
-                <iframe name="mapIdIframe" id="mapIdIframe" width="100%" height="100%" style="border: none" [src]="pathWayIframeUrl"></iframe>
+    <app-top [pdf]="false" [analysis]="false" [upload]="false" [lang]="false" (logoClick)="handlerLogoClick()">
+    </app-top>
+    <app-menu [menu]="[]" [geneSwitch]="true">
+        <p class="menu-slot-text">mapId：{{mapid}}</p>
+    </app-menu>
+    <div class="report-content">
+        <div class="content row map">
+            <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+                <div class="left-bottom-layout">
+                    <iframe name="mapIdIframe" id="mapIdIframe" width="100%" height="100%" style="border: none" [src]="pathWayIframeUrl"></iframe>
+                </div>
             </div>
-        </div>
-        <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
-                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+            <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+                <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+                    <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+                </div>
+                <div class="func" #func (click)="resize($event)">
+                    <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType"></app-add-column>
+                    <app-gene-relative  class="ml-12" [geneCount]="selectGeneCount" [disabled]="!selectGeneCount" *ngIf="!addColumnShow && ready" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
+                    <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
+                </div>
+                <app-table-transformation *ngIf="ready" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
+                [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"
+                [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams"
+                (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
             </div>
-            <div class="func" #func (click)="resize($event)">
-                <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType"></app-add-column>
-                <app-gene-relative class="ml-12" [geneCount]="selectGeneCount" [disabled]="!selectGeneCount" *ngIf="!addColumnShow" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
-                <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
-            </div>
-            <app-table-transformation *ngIf="ready" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
-            [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"
-            [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams"
-            (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph"></app-table-transformation>
         </div>
     </div>
-</div>
-<app-tools></app-tools>
+    <app-tools></app-tools>

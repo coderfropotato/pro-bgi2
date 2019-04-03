@@ -119,7 +119,7 @@ export class MapComponent implements OnInit{
 
 	
 	mapid:string = '';
-	tid:string = '';
+	tid:any = null;
 	lcid:string = '';
 	compareGroup:string = '';
 	dirtyPathWayIframeUrl:string;
@@ -162,7 +162,7 @@ export class MapComponent implements OnInit{
 			this.lcid = this.params['lcid'];
 			this.mapid = this.params['mapid'];
 			this.defaultGeneType = this.params['geneType'];
-			this.tid = this.params['tid']=='undefined'?'':this.params['tid'];
+			this.tid = this.params['tid']=='undefined'?null:this.params['tid'];
 			this.compareGroup = this.params['compareGroup'];
 			
 			if(this.tid){
@@ -212,6 +212,7 @@ export class MapComponent implements OnInit{
 					sortValue: null,
 					sortKey: null,
 					reAnaly: false,
+					enrichmentType: "kegg_pathway",
 					compareGroup:this.compareGroup,
 					kegg_pathway_term_id:this.mapid,
 					geneType: this.defaultGeneType,
@@ -241,6 +242,7 @@ export class MapComponent implements OnInit{
 					sortValue: null,
 					sortKey: null,
 					reAnaly: false,
+					enrichmentType: "kegg_pathway",
 					compareGroup:this.compareGroup,
 					kegg_pathway_term_id:this.mapid,
 					geneType: this.defaultGeneType,
@@ -260,6 +262,7 @@ export class MapComponent implements OnInit{
 					this.ngxSpinnerService.hide();
 				}, 300);
 			} catch (error) {
+				console.log(error)
 				this.ngxSpinnerService.hide();
 				let tpl = this.modalService.error({
 					nzTitle: '系统错误',
@@ -621,7 +624,7 @@ export class MapComponent implements OnInit{
 							reject('error');
 						}
 					},
-					() => reject('error')
+					(err) => reject(err)
 				);
 		});
 	}
