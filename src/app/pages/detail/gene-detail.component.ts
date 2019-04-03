@@ -71,7 +71,7 @@ export class GeneDetailComponent implements OnInit {
 	expressive_t_flag: boolean = true;
 	expressive_t_data: object[] = [];
 
-	expressive_params: object;
+	//expressive_params: object;
 	expressive_rows: object[] = [];
 	expressive_baseThead: object[] = [];
 	expressive_geneType: string;
@@ -265,6 +265,17 @@ export class GeneDetailComponent implements OnInit {
 	c_show: boolean = false;
 	d_show: boolean = false;
 
+	t_params: object;
+	t_content: string;
+	c_params: object;
+	c_content: string;
+	d_params: object;
+	d_content: string;
+
+	tcd_defaultUrl: string;
+
+
+
   	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -327,7 +338,7 @@ export class GeneDetailComponent implements OnInit {
 				this.expressive_defaultUrl = `${config['javaPath']}/geneDetail/exp`;
 				this.expressive_params_g = this.geneParamsUsed;
 				this.expressive_params_t = this.transcriptParamsUsed;
-				this.expressive_params = this.geneParamsUsed;//折线图
+				//this.expressive_params = this.geneParamsUsed;//折线图
 		
 				//组间差异
 				this.groupDiff_defaultUrl = `${config['javaPath']}/geneDetail/groupDiff`;
@@ -373,6 +384,23 @@ export class GeneDetailComponent implements OnInit {
 					geneID: this.geneID,
 					size:this.documentPage
 				};
+
+				this.tcd_defaultUrl = `${config['javaPath']}/geneDetail/getSequence`;
+				this.t_params={
+					LCID: this.lcid,
+					type: "transcripts.fa",
+					geneID: this.geneID
+				};
+				this.c_params={
+					LCID: this.lcid,
+					type: "cds.fa",
+					geneID: this.geneID
+				};
+				this.d_params={
+					LCID: this.lcid,
+					type: "protein.fa",
+					geneID: this.geneID
+				};
 		
 				// 功能注释信息
 				this.functional_url = `${config['javaPath']}/geneDetail/annotation/`;
@@ -414,6 +442,13 @@ export class GeneDetailComponent implements OnInit {
 				await this.getGeneInformation();//基因信息
 				await this.getPrecursor();//二次结构
 				await this.getDocumentInformation();//文献信息
+
+				//转录本序列
+				//CDS序列
+				//蛋白序列
+				await this.getTsequence();
+				await this.getCsequence();
+				await this.getDsequence();
 
 				// 功能注释信息
 				await this.getGoMolecular();// GO Molecular Function
@@ -546,6 +581,7 @@ export class GeneDetailComponent implements OnInit {
 	// }
 
 	SelectedExpressiveChange(num) {
+		console.log(num)
 		this.expressive_index = num;
 		if(num==0){
 			//this.expressive_g_flag = this.expressive_g_data.length > 0?true:false;
@@ -971,16 +1007,17 @@ export class GeneDetailComponent implements OnInit {
 			case "FPKM_gene":
 				this.expressive_g_flag = tempData.length>0?true:false;
 				this.expressive_g_data = tempData;
-				if(this.expressive_index == 0){
-					this.drawLineChart(this.expressive_g_data);
-				}
+				// if(this.expressive_index == 0){
+				// 	this.drawLineChart(this.expressive_g_data);
+				// }
+				this.drawLineChart(this.expressive_g_data);
 				break;
 			case "FPKM_trans":
 				this.expressive_t_flag = tempData.length>0?true:false;
 				this.expressive_t_data = tempData;
-				if(this.expressive_index == 1){
-					this.drawLineChart(this.expressive_t_data);
-				}
+				// if(this.expressive_index == 1){
+				// 	this.drawLineChart(this.expressive_t_data);
+				// }
 				break;
 			
 			case "diff_group_gene":
@@ -1019,5 +1056,100 @@ export class GeneDetailComponent implements OnInit {
 
 	D_click(){
 		this.d_show = !this.d_show;
+	}
+
+	async getTsequence(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.tcd_defaultUrl,
+				data:this.t_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.t_content = data['data']['seq'];
+					//console.log(data['data']['seq']);
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+	async getCsequence(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.tcd_defaultUrl,
+				data:this.c_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.c_content = data['data']['seq'];
+					//console.log(data['data']['seq']);
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+	async getDsequence(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.tcd_defaultUrl,
+				data:this.d_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.d_content = data['data']['seq'];
+					//console.log(data['data']['seq']);
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+
+	download(filename, text) {
+		var date = new Date();
+		var d = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " +date.getHours()+ ":" + date.getMinutes()+":"+date.getSeconds();
+		let tempName = filename +d+".txt";
+		var pom = document.createElement('a');
+		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+		pom.setAttribute('download', tempName);
+		if (document.createEvent) {
+			var event = document.createEvent('MouseEvents');
+			event.initEvent('click', true, true);
+			pom.dispatchEvent(event);
+		} else {
+			pom.click();
+		}
 	}
 }

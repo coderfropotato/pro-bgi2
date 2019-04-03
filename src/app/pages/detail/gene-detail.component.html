@@ -70,34 +70,34 @@
           </div>
       </div>
       
-      <!-- 样本表达量（FPKM） -->
-      <div class="mgene_content" [hidden]="!expressive_g_flag && !expressive_t_flag && !line_flag && !line_flag2">
-          <h4>{{'gene_detail.expressive_information' | translate}}</h4>
-         
-          <div class="transcripts_table" [hidden]="!expressive_g_flag && !expressive_t_flag">
-              <h5>{{'gene_detail.sample_expression' | translate}}</h5>
-              <nz-tabset [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)">
-                <nz-tab nzTitle="基因">
-                    <app-little-table *ngIf="loadTable" [hidden]="!expressive_g_flag" [type]="'FPKM_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
-                </nz-tab>
-                <nz-tab nzTitle="转录本">
-                    <app-little-table *ngIf="loadTable" [hidden]="!expressive_t_flag" [type]="'FPKM_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
-                </nz-tab>
-              </nz-tabset>
-          </div>
-
-          <!-- 折线图 -->
-          <div class="transcripts_table" [hidden]="!line_flag">
-              <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
-              <div id="lineChartDiv" class="mlineChartDiv">
-              </div>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!line_flag2">
-              <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
-              <div id="lineChartDiv2" class="mlineChartDiv">
-              </div>
-          </div>
+     <!-- 样本表达量（FPKM） -->
+     <div class="mgene_content">
+            <h4>{{'gene_detail.expressive_information' | translate}}</h4>
+           
+            <div class="transcripts_table">
+                <h5>{{'gene_detail.sample_expression' | translate}}</h5>
+                <nz-tabset [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)">
+                  <nz-tab nzTitle="基因">
+                      <app-little-table *ngIf="loadTable"  [hidden]="!expressive_g_flag" [type]="'FPKM_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
+                  </nz-tab>
+                  <nz-tab nzTitle="转录本">
+                      <app-little-table *ngIf="loadTable"  [hidden]="!expressive_t_flag" [type]="'FPKM_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
+                  </nz-tab>
+                </nz-tabset>
+            </div>
+  
+            <!-- 折线图 -->
+            <div class="transcripts_table" [hidden]="!line_flag">
+                <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
+                <div id="lineChartDiv" class="mlineChartDiv" >
+                </div>
+            </div>
+  
+            <div class="transcripts_table" [hidden]="!line_flag2">
+                <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
+                <div id="lineChartDiv2" class="mlineChartDiv">
+                </div>
+            </div>
       </div>
 
       <!-- 差异表达 -->
@@ -183,32 +183,38 @@
       </div>
 
       <!-- 序列信息 -->
-      <div class="mgene_content">
+      <div class="mgene_content" [hidden]="!t_content && !c_content && !d_content">
           <h4>{{'gene_detail.sequence_information' | translate}}</h4>
           <div class="transcripts_table">
-            <div class="mc_content">
+            <div class="mc_content" [hidden]="!t_content">
                 <div class="mc_content_top">
                     <div class="name">转录本序列</div> 
-                    <button nz-button [nzSize]="'small'" nzType="default" (click)="T_click()">显示</button>
-                    <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="loadMore()">下载</button>
+                    <button nz-button [nzSize]="'small'" nzType="default" (click)="T_click()">显示/隐藏</button>
+                    <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="download('转录本序列',t_content)">下载</button>
                 </div>
-                <div class="mc_content_bottom" [hidden]="!t_show"></div>
+                <div class="mc_content_bottom" [hidden]="!t_show">
+                    {{t_content}}
+                </div>
             </div>
-            <div class="mc_content">
+            <div class="mc_content" [hidden]="!c_content">
                 <div class="mc_content_top">
                     <div class="name">CDS序列</div> 
-                    <button nz-button [nzSize]="'small'" nzType="default" (click)="CDS_click()">显示</button>
-                    <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="loadMore()">下载</button>
+                    <button nz-button [nzSize]="'small'" nzType="default" (click)="CDS_click()">显示/隐藏</button>
+                    <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="download('CDS序列',c_content)">下载</button>
                 </div>
-                <div class="mc_content_bottom" [hidden]="!c_show"></div>
+                <div class="mc_content_bottom" [hidden]="!c_show">
+                    {{c_content}}
+                </div>
             </div>
-            <div class="mc_content">
+            <div class="mc_content" [hidden]="!d_content">
                 <div class="mc_content_top">
                     <div class="name">蛋白序列</div> 
-                    <button nz-button [nzSize]="'small'" nzType="default" (click)="D_click()">显示</button>
-                    <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="loadMore()">下载</button>
+                    <button nz-button [nzSize]="'small'" nzType="default" (click)="D_click()">显示/隐藏</button>
+                    <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="download('蛋白序列',d_content)">下载</button>
                 </div>
-                <div class="mc_content_bottom" [hidden]="!d_show"></div>
+                <div class="mc_content_bottom" [hidden]="!d_show">
+                    {{d_content}}
+                </div>
             </div>
 
           </div>
@@ -238,7 +244,7 @@
               <app-little-table *ngIf="loadTable" [targetID]="'kegg_disease_term_id'" [targetURL]="'https://www.kegg.jp/dbget-bin/www_bget?ds:'" [type]="kegg_disease_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="kegg_disease_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
-          <div class="transcripts_table" [hidden]="go_f_flag">
+          <div class="transcripts_table" [hidden]="!go_f_flag">
               <h5>GO Molecular Function</h5>
                 <div *ngFor="let item of go_f_list" >
                     <p class="table_title">{{item.level_1}}</p>
@@ -252,7 +258,7 @@
                 </div>
           </div>
 
-          <div class="transcripts_table" [hidden]="go_c_flag">
+          <div class="transcripts_table" [hidden]="!go_c_flag">
               <h5>GO Cellular Component</h5>
               <div *ngFor="let item of go_c_list" >
                   <p class="table_title">{{item.level_1}}</p>
@@ -266,7 +272,7 @@
               </div>
           </div>
 
-          <div class="transcripts_table" [hidden]="go_b_flag">
+          <div class="transcripts_table" [hidden]="!go_b_flag">
               <h5>GO Biological Process</h5>
               <div *ngFor="let item of go_b_list" >
                   <p class="table_title">{{item.level_1}}</p>
