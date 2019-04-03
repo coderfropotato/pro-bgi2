@@ -86,7 +86,6 @@ export class MapComponent implements OnInit{
 	selectGeneList: string[] = []; // 图上选择的基因集字符串
 
 	// 路由参数
-	tid: string = null;
 	geneType: string = '';
 	version: string = null;
 
@@ -120,7 +119,8 @@ export class MapComponent implements OnInit{
 
 	
 	mapid:string = '';
-	tid:any = null;
+	tid:string = '';
+	lcid:string = '';
 	compareGroup:string = '';
 	dirtyPathWayIframeUrl:string;
 	pathWayIframeUrl:any;
@@ -162,7 +162,7 @@ export class MapComponent implements OnInit{
 			this.lcid = this.params['lcid'];
 			this.mapid = this.params['mapid'];
 			this.defaultGeneType = this.params['geneType'];
-			this.tid = this.params['tid']=='undefined'?null:this.params['tid'];
+			this.tid = this.params['tid']=='undefined'?'':this.params['tid'];
 			this.compareGroup = this.params['compareGroup'];
 			
 			if(this.tid){
