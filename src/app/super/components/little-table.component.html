@@ -27,19 +27,14 @@
                         <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID">{{row[thead.true_key]}}</a>
                         <span *ngIf="thead.true_key!=targetID">{{row[thead.true_key]?row[thead.true_key]:"NA"}}</span>
                     </td> -->
-
-                    
-
                     <ng-container *ngFor="let thead of tableData['baseThead']">
-                        <td [nzContent]="tp66" nzPlacement="top" nz-popover style="min-width:160px;max-width: 160px;text-align: center;" *ngIf="row[thead.true_key]">
+                        <td [nzContent]="tp66" nzPlacement="top" nz-popover style="min-width:160px;max-width: 160px;text-align: center;height: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" *ngIf="row[thead.true_key]">
                             <ng-template #tp66>
                                 <span [innerHTML]="row[thead.true_key]"></span>
                             </ng-template>
                             <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID">{{row[thead.true_key]}}</a>
-                            <span [innerHTML]="row[thead.true_key]" *ngIf="thead.true_key!=targetID"></span>
-
-                            <!-- <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID">{{row[thead.true_key]}}</a>
-                            <span *ngIf="thead.true_key!=targetID">{{row[thead.true_key]?row[thead.true_key]:"NA"}}</span> -->
+                            <a href="{{targetID2Url}}" target="_blank" *ngIf="thead.true_key==targetID2">{{row[thead.true_key]}}</a>
+                            <span [innerHTML]="row[thead.true_key]" *ngIf="thead.true_key!=targetID && thead.true_key!=targetID2"></span>
                         </td>
                         <td *ngIf="!row[thead.true_key]" style="min-width:160px;max-width: 160px;text-align: center;">
                             <span>NA</span>
