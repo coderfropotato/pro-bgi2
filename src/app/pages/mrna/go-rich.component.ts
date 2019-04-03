@@ -372,7 +372,8 @@ export class GoRichComponent implements OnInit {
 			this.extendEntity['transform'] = true;
 			this.extendEntity['matrix'] = true;
 			this.extendEntity['checkGraph'] = false;
-			this.extendEntity['compareGroup'] = checkParams['tableEntity']['compareGroup'];
+            this.extendEntity['compareGroup'] = checkParams['tableEntity']['compareGroup'];
+            this.extendEntity['enrichmentType']=checkParams['tableEntity']['enrichmentType'];
 			this.extendEntity['checkedClassifyList'] = checkParams['tableEntity']['checkedClassifyList'];
 			this.addColumn._clearThead();
 			this.extendEntity['addThead'] = [];
@@ -385,7 +386,8 @@ export class GoRichComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
 			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
-			this.transformTable._setExtendParamsWithoutRequest( 'compareGroup', checkParams['tableEntity']['compareGroup'] );
+            this.transformTable._setExtendParamsWithoutRequest( 'compareGroup', checkParams['tableEntity']['compareGroup'] );
+            this.transformTable._setExtendParamsWithoutRequest('enrichmentType',checkParams['tableEntity']['enrichmentType']);
 			this.transformTable._setExtendParamsWithoutRequest( 'checkedClassifyList', checkParams['tableEntity']['checkedClassifyList'] );
 			this.transformTable._setExtendParamsWithoutRequest('relations', relations);
 			this.transformTable._setExtendParamsWithoutRequest('transform', true);
@@ -410,6 +412,18 @@ export class GoRichComponent implements OnInit {
     handlerRefresh(){
         this.selectGeneList.length = 0;
         // this.chartBackStatus();
+    }
+
+    goSelectChange(){
+        this.chartEntity['enrichmentType'] = this.annotation;
+        this.bigTable._setParamsOfEntity('enrichmentType',this.annotation);
+        this.checkedData.length=0;
+        this.checkedDrawGeneList.length=0;
+        this.selectGeneList.length = 0;
+
+        this.bigTable._initCheckStatus();
+        this.reDraw();
+        this.chartBackStatus();
     }
 
     handleSelectChange(){
@@ -437,12 +451,14 @@ export class GoRichComponent implements OnInit {
 			this.defaultEntity['removeColumns'] = [];
 			this.defaultEntity['rootSearchContentList'] = [];
 			this.defaultEntity['pageIndex'] = 1;
-			this.defaultEntity['compareGroup'] = this.selectedVal;
+            this.defaultEntity['compareGroup'] = this.selectedVal;
+            this.defaultEntity['enrichmentType']=this.annotation;
 			this.first = true;
 		} else {
 			this.transformTable._setParamsNoRequest('checkGraph', true);
 			this.transformTable._setParamsNoRequest('pageIndex', 1);
-			this.transformTable._setParamsNoRequest('compareGroup', this.selectedVal);
+            this.transformTable._setParamsNoRequest('compareGroup', this.selectedVal);
+            this.transformTable._setParamsNoRequest('enrichmentType',this.annotation);
 			this.transformTable._getData();
 		}
 	}
