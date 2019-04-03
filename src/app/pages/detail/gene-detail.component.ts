@@ -71,7 +71,7 @@ export class GeneDetailComponent implements OnInit {
 	expressive_t_flag: boolean = true;
 	expressive_t_data: object[] = [];
 
-	expressive_params: object;
+	//expressive_params: object;
 	expressive_rows: object[] = [];
 	expressive_baseThead: object[] = [];
 	expressive_geneType: string;
@@ -102,11 +102,24 @@ export class GeneDetailComponent implements OnInit {
 	sampleDiff_params_t_flag: boolean = true;
 	sampleDiff_index: number = 0;
 
+	//miRNA靶向信息
+	miRnaTarget_defaultUrl: string;
+	miRnaTarget_params_g: object;
+	miRnaTarget_params_g_flag: boolean = true;
+	miRnaTarget_params_t: object;
+	miRnaTarget_params_t_flag: boolean = true;
+	miRnaTarget_index: number = 0;
+
 	//mRna二次结构
 	precursor_defaultUrl: string;
 	precursor_params: object;
 	precursor_geneType: string;
 	precursor_image: string;
+
+	//可变剪切
+	alternative_defaultUrl: string;
+	alternative_params: object;
+	alternative_flag: boolean = true;
 
 	//SNP
 	snp_defaultUrl: string;
@@ -117,6 +130,11 @@ export class GeneDetailComponent implements OnInit {
 	indel_defaultUrl: string;
 	indel_params: object;
 	indel_flag: boolean = true;
+
+	//融合基因
+	fusion_defaultUrl: string;
+	fusion_params: object;
+	fusion_flag: boolean = true;
 
 	//文献信息
 	document_defaultUrl: string;
@@ -240,6 +258,23 @@ export class GeneDetailComponent implements OnInit {
 	tf_flag: boolean = true;
 
 	lcid:string = '';
+	geneType:string = '';
+	loadTable: boolean = false;
+
+	t_show: boolean = false;
+	c_show: boolean = false;
+	d_show: boolean = false;
+
+	t_params: object;
+	t_content: string;
+	c_params: object;
+	c_content: string;
+	d_params: object;
+	d_content: string;
+
+	tcd_defaultUrl: string;
+
+
 
   	constructor(
 		private message: MessageService,
@@ -267,121 +302,153 @@ export class GeneDetailComponent implements OnInit {
 		this.routes.paramMap.subscribe((params) => {
 			this.lcid = params['params']['lcid'];
 			this.geneID = params['params']['id'];
+			this.geneType = params['params']['geneType'];
 		});
 	}
 
 	ngOnInit() {
-		this.geneParamsUsed = {
-			LCID: this.lcid,
-			geneType: "gene",
-			geneID: this.geneID
-		}
-
-		this.transcriptParamsUsed = {
-			LCID: this.lcid,
-			geneType: "transcript",
-			geneID: this.geneID
-		}
-		
-		//基因信息
-		this.gene_url = `${config['javaPath']}/geneDetail/info`;
-		this.gene_params = this.geneParamsUsed;
-
-		//转录本信息
-		this.defaultUrl = `${config['javaPath']}/geneDetail/rnaID`;
-		this.rna_params = this.geneParamsUsed;
-
-		//样本表达量
-		this.expressive_geneType = "gene";
-		this.expressive_defaultUrl = `${config['javaPath']}/geneDetail/exp`;
-		this.expressive_params_g = this.geneParamsUsed;
-		this.expressive_params_t = this.transcriptParamsUsed;
-		this.expressive_params = this.geneParamsUsed;//折线图
-
-		// //折线图
-
-		//组间差异
-		//this.groupDiff_geneType = "gene";
-		this.groupDiff_defaultUrl = `${config['javaPath']}/geneDetail/groupDiff`;
-		this.groupDiff_params_g = this.geneParamsUsed;
-		this.groupDiff_params_t = this.transcriptParamsUsed
-
-		//样本间差异
-		//this.sampleDiff_geneType = "gene";
-		this.sampleDiff_defaultUrl = `${config['javaPath']}/geneDetail/sampleDiff`;
-		this.sampleDiff_params_g = this.geneParamsUsed;
-		this.sampleDiff_params_t = this.transcriptParamsUsed;
-
-		//mRna二次结构
-		this.precursor_geneType = "gene";
-		this.precursor_defaultUrl = `${config['javaPath']}/geneDetail/precursor`;
-		this.precursor_params = this.geneParamsUsed;
-		//geneID:"hsa-miR-223-3p"
-
-		//SNP
-		this.snp_defaultUrl = `${config['javaPath']}/geneDetail/snp`;
-		this.snp_params = this.geneParamsUsed;
-
-		//INDEL
-		this.indel_defaultUrl = `${config['javaPath']}/geneDetail/indel`;
-		this.indel_params = this.geneParamsUsed;
-
-		//文献信息
-		this.document_defaultUrl = `${config['javaPath']}/geneDetail/article`;
-		this.document_params = {
-			LCID: this.lcid,
-			geneType: "gene",
-			geneID: this.geneID,
-			size:this.documentPage
-		};
-
-		// 功能注释信息
-
-		// KEGG Pathway kegg_pathway
-		this.functional_url = `${config['javaPath']}/geneDetail/annotation/`;
-		this.go_molecular_params = this.geneParamsUsed;
-
-		//KEGG Pathway
-		this.kegg_way_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_pathway_parameter;
-		this.kegg_reaction_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_reaction_parameter;
-		this.kegg_module_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_module_parameter;
-		this.kegg_disease_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_disease_parameter;
-		this.pfam_url = `${config['javaPath']}/geneDetail/annotation/`+this.pfam_parameter;
-		this.reactome_url = `${config['javaPath']}/geneDetail/annotation/`+this.reactome_parameter;
-		this.interpro_url = `${config['javaPath']}/geneDetail/annotation/`+this.InterPro_parameter;
-		this.cog_url = `${config['javaPath']}/geneDetail/annotation/`+this.cog_parameter;
-		this.eggnog_url = `${config['javaPath']}/geneDetail/annotation/`+this.eggnog_parameter;
-		this.msigdb_h_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_H_parameter;
-		this.msigdb_c1_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C1_parameter;
-		this.msigdb_c2_cgp_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CGP_parameter;
-		this.msigdb_c2_cp_biocarta_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CP_BIOCARTA_parameter;
-		this.msigdb_C2_CP_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigDB_C2_CP_parameter;
-		this.msigdb_c2_cp_kegg_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CP_KEGG_parameter;
-		this.msigdb_c2_cp_reactome_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CP_REACTOME_parameter;
-		this.msigdb_c3_mir_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C3_MIR_parameter;
-		this.msigdb_c3_tft_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C3_TFT_parameter;
-		this.msigdb_c4_cgn_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C4_CGN_parameter;
-		this.msigdb_c4_cm_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C4_CM_parameter;
-		this.msigdb_c5_bp_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C5_BP_parameter;
-		this.msigdb_c5_cc_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C5_CC_parameter;
-		this.msigdb_c5_mf_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C5_MF_parameter;
-		this.msigdb_c6_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C6_parameter;
-		this.msigdb_c7_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C7_parameter;
-		this.msigdb_archived_c5_mf_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_ARCHIVED_C5_MF_parameter;
-		this.msigdb_archived_c5_cc_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_ARCHIVED_C5_CC_parameter;
-		this.msigdb_archived_c5_bp_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_ARCHIVED_C5_BP_parameter;
-		this.tf_cofactors_url = `${config['javaPath']}/geneDetail/annotation/`+this.tf_cofactors_parameter;
-		this.tf_url = `${config['javaPath']}/geneDetail/annotation/`+this.tf_parameter;
-
 		(async () => {
 			try {
+				if(this.geneType == "rna"){
+					await this.getGeneID();
+				}
+				
+				this.geneParamsUsed = {
+					LCID: this.lcid,
+					geneType: "gene",
+					geneID: this.geneID
+				}
+		
+				this.transcriptParamsUsed = {
+					LCID: this.lcid,
+					geneType: "transcript",
+					geneID: this.geneID
+				}
+				
+				//基因信息
+				this.gene_url = `${config['javaPath']}/geneDetail/info`;
+				this.gene_params = this.geneParamsUsed;
+		
+				//转录本信息
+				this.defaultUrl = `${config['javaPath']}/geneDetail/rnaID`;
+				this.rna_params = this.geneParamsUsed;
+		
+				//样本表达量
+				this.expressive_geneType = "gene";
+				this.expressive_defaultUrl = `${config['javaPath']}/geneDetail/exp`;
+				this.expressive_params_g = this.geneParamsUsed;
+				this.expressive_params_t = this.transcriptParamsUsed;
+				//this.expressive_params = this.geneParamsUsed;//折线图
+		
+				//组间差异
+				this.groupDiff_defaultUrl = `${config['javaPath']}/geneDetail/groupDiff`;
+				this.groupDiff_params_g = this.geneParamsUsed;
+				this.groupDiff_params_t = this.transcriptParamsUsed
+		
+				//样本间差异
+				this.sampleDiff_defaultUrl = `${config['javaPath']}/geneDetail/sampleDiff`;
+				this.sampleDiff_params_g = this.geneParamsUsed;
+				this.sampleDiff_params_t = this.transcriptParamsUsed;
+		
+				//miRna靶向信息
+				this.miRnaTarget_defaultUrl = `${config['javaPath']}/geneDetail/miRNATarget`;
+				this.miRnaTarget_params_g = this.geneParamsUsed;
+				this.miRnaTarget_params_t = this.transcriptParamsUsed;
+
+				//mRna二次结构
+				this.precursor_geneType = "gene";
+				this.precursor_defaultUrl = `${config['javaPath']}/geneDetail/precursor`;
+				this.precursor_params = this.geneParamsUsed;
+		
+				//可变剪切
+				this.alternative_defaultUrl = `${config['javaPath']}/geneDetail/getAS`;
+				this.alternative_params = this.geneParamsUsed;
+
+				//SNP
+				this.snp_defaultUrl = `${config['javaPath']}/geneDetail/snp`;
+				this.snp_params = this.geneParamsUsed;
+		
+				//INDEL
+				this.indel_defaultUrl = `${config['javaPath']}/geneDetail/indel`;
+				this.indel_params = this.geneParamsUsed;
+
+				//融合基因
+				this.fusion_defaultUrl = `${config['javaPath']}/geneDetail/getFusion`;
+				this.fusion_params = this.geneParamsUsed;
+		
+				//文献信息
+				this.document_defaultUrl = `${config['javaPath']}/geneDetail/article`;
+				this.document_params = {
+					LCID: this.lcid,
+					geneType: "gene",
+					geneID: this.geneID,
+					size:this.documentPage
+				};
+
+				this.tcd_defaultUrl = `${config['javaPath']}/geneDetail/getSequence`;
+				this.t_params={
+					LCID: this.lcid,
+					type: "transcripts.fa",
+					geneID: this.geneID
+				};
+				this.c_params={
+					LCID: this.lcid,
+					type: "cds.fa",
+					geneID: this.geneID
+				};
+				this.d_params={
+					LCID: this.lcid,
+					type: "protein.fa",
+					geneID: this.geneID
+				};
+		
+				// 功能注释信息
+				this.functional_url = `${config['javaPath']}/geneDetail/annotation/`;
+				this.go_molecular_params = this.geneParamsUsed;
+				//KEGG Pathway
+				this.kegg_way_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_pathway_parameter;
+				this.kegg_reaction_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_reaction_parameter;
+				this.kegg_module_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_module_parameter;
+				this.kegg_disease_url = `${config['javaPath']}/geneDetail/annotation/`+this.kegg_disease_parameter;
+				this.pfam_url = `${config['javaPath']}/geneDetail/annotation/`+this.pfam_parameter;
+				this.reactome_url = `${config['javaPath']}/geneDetail/annotation/`+this.reactome_parameter;
+				this.interpro_url = `${config['javaPath']}/geneDetail/annotation/`+this.InterPro_parameter;
+				this.cog_url = `${config['javaPath']}/geneDetail/annotation/`+this.cog_parameter;
+				this.eggnog_url = `${config['javaPath']}/geneDetail/annotation/`+this.eggnog_parameter;
+				this.msigdb_h_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_H_parameter;
+				this.msigdb_c1_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C1_parameter;
+				this.msigdb_c2_cgp_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CGP_parameter;
+				this.msigdb_c2_cp_biocarta_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CP_BIOCARTA_parameter;
+				this.msigdb_C2_CP_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigDB_C2_CP_parameter;
+				this.msigdb_c2_cp_kegg_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CP_KEGG_parameter;
+				this.msigdb_c2_cp_reactome_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C2_CP_REACTOME_parameter;
+				this.msigdb_c3_mir_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C3_MIR_parameter;
+				this.msigdb_c3_tft_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C3_TFT_parameter;
+				this.msigdb_c4_cgn_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C4_CGN_parameter;
+				this.msigdb_c4_cm_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C4_CM_parameter;
+				this.msigdb_c5_bp_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C5_BP_parameter;
+				this.msigdb_c5_cc_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C5_CC_parameter;
+				this.msigdb_c5_mf_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C5_MF_parameter;
+				this.msigdb_c6_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C6_parameter;
+				this.msigdb_c7_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_C7_parameter;
+				this.msigdb_archived_c5_mf_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_ARCHIVED_C5_MF_parameter;
+				this.msigdb_archived_c5_cc_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_ARCHIVED_C5_CC_parameter;
+				this.msigdb_archived_c5_bp_url = `${config['javaPath']}/geneDetail/annotation/`+this.msigdb_ARCHIVED_C5_BP_parameter;
+				this.tf_cofactors_url = `${config['javaPath']}/geneDetail/annotation/`+this.tf_cofactors_parameter;
+				this.tf_url = `${config['javaPath']}/geneDetail/annotation/`+this.tf_parameter;
+
+				this.loadTable = true;
+
 				await this.getGeneInformation();//基因信息
-				//await this.getRnaInformation();//转录本信息
-				//await this.sampleExpression();//折线图
-				//await this.getGroupDiff();//组间差异
-				//await this.getSampleDiff();//样本间差异
 				await this.getPrecursor();//二次结构
 				await this.getDocumentInformation();//文献信息
+
+				//转录本序列
+				//CDS序列
+				//蛋白序列
+				await this.getTsequence();
+				await this.getCsequence();
+				await this.getDsequence();
 
 				// 功能注释信息
 				await this.getGoMolecular();// GO Molecular Function
@@ -392,6 +459,37 @@ export class GeneDetailComponent implements OnInit {
 
 			}
 		})();
+	}
+
+	async getGeneID(){
+		return new Promise((resolve, reject) => {
+			this.ajaxService
+			.getDeferData({
+				url: `${config['javaPath']}/geneDetail/getGeneID`,
+				data: {
+					"LCID": this.lcid,
+					"geneType": "rna",
+					"id": this.geneID
+				  }				 
+			})
+			.subscribe((data: any) => {
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					console.log(data);
+					this.geneID = data["data"].geneID;
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			);
+		})
 	}
 
 	//基因信息
@@ -483,6 +581,7 @@ export class GeneDetailComponent implements OnInit {
 	// }
 
 	SelectedExpressiveChange(num) {
+		console.log(num)
 		this.expressive_index = num;
 		if(num==0){
 			//this.expressive_g_flag = this.expressive_g_data.length > 0?true:false;
@@ -556,7 +655,7 @@ export class GeneDetailComponent implements OnInit {
 				}
 			},
 			"tooltip": function(d) {
-				return "<span>x:"+d.key+"</span><br><span>y:"+d.value+"</span>"
+				return "<span>Sample name："+d.x+"</span><br><span>log10(FPKM+1)："+d.y+"</span>"
 			}
 		}
 		this.chartLine=new d4().init(config);
@@ -894,25 +993,31 @@ export class GeneDetailComponent implements OnInit {
 			case this.tf_parameter:
 				this.tf_flag = tempData.length>0?true:false;
 				break;
+			case "alternative":
+				this.alternative_flag = tempData.length>0?true:false;
+				break;
 			case "SNP":
 				this.snp_flag = tempData.length>0?true:false;
 				break;
 			case "INDEL":
 				this.indel_flag = tempData.length>0?true:false;
 				break;
+			case "fusion":
+				this.fusion_flag = tempData.length>0?true:false;
 			case "FPKM_gene":
 				this.expressive_g_flag = tempData.length>0?true:false;
 				this.expressive_g_data = tempData;
-				if(this.expressive_index == 0){
-					this.drawLineChart(this.expressive_g_data);
-				}
+				// if(this.expressive_index == 0){
+				// 	this.drawLineChart(this.expressive_g_data);
+				// }
+				this.drawLineChart(this.expressive_g_data);
 				break;
 			case "FPKM_trans":
 				this.expressive_t_flag = tempData.length>0?true:false;
 				this.expressive_t_data = tempData;
-				if(this.expressive_index == 1){
-					this.drawLineChart(this.expressive_t_data);
-				}
+				// if(this.expressive_index == 1){
+				// 	this.drawLineChart(this.expressive_t_data);
+				// }
 				break;
 			
 			case "diff_group_gene":
@@ -930,8 +1035,121 @@ export class GeneDetailComponent implements OnInit {
 			case "rna_type":
 			    this.rna_flag = tempData.length>0?true:false;
 				break;
+			case "miRna_target_gene":
+				this.miRnaTarget_params_g_flag = tempData.length>0?true:false;
+				break;
+			case "miRna_target_trans":
+				this.miRnaTarget_params_t_flag = tempData.length>0?true:false;
+				break;
 			default:
 				break;
+		}
+	}
+
+	T_click(){
+		this.t_show = !this.t_show;
+	}
+
+	CDS_click(){
+		this.c_show = !this.c_show;
+	}
+
+	D_click(){
+		this.d_show = !this.d_show;
+	}
+
+	async getTsequence(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.tcd_defaultUrl,
+				data:this.t_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.t_content = data['data']['seq'];
+					//console.log(data['data']['seq']);
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+	async getCsequence(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.tcd_defaultUrl,
+				data:this.c_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.c_content = data['data']['seq'];
+					//console.log(data['data']['seq']);
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+	async getDsequence(){
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.tcd_defaultUrl,
+				data:this.d_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.d_content = data['data']['seq'];
+					//console.log(data['data']['seq']);
+				}
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
+	}
+
+	download(filename, text) {
+		var date = new Date();
+		var d = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " +date.getHours()+ ":" + date.getMinutes()+":"+date.getSeconds();
+		let tempName = filename +d+".txt";
+		var pom = document.createElement('a');
+		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+		pom.setAttribute('download', tempName);
+		if (document.createEvent) {
+			var event = document.createEvent('MouseEvents');
+			event.initEvent('click', true, true);
+			pom.dispatchEvent(event);
+		} else {
+			pom.click();
 		}
 	}
 }

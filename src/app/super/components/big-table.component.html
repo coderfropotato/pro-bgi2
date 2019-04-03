@@ -119,9 +119,9 @@
                                 <!-- 正常值 -->
                                 <td *ngIf="d[two['true_key']] || d[two['true_key']]==0" [ngStyle]="{'min-width':widthConfig[0],'max-width':widthConfig[0]}" [nzContent]="tpl" nzPlacement="right" nz-popover>
                                     <ng-template #tpl>
-                                        <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:true:compareGroup:reanalysisId"></span>
+                                        <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:true:compareGroup:reanalysisId:tableEntity['geneType']"></span>
                                     </ng-template>
-                                    <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:false:compareGroup:reanalysisId"></span>
+                                    <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']"></span>
                                 </td>
                                 <!-- NA -->
                                 <td *ngIf="!d[two['true_key']] && d[two['true_key']]!=0" [ngStyle]="{'min-width':widthConfig[0],'max-width':widthConfig[0]}">
@@ -129,14 +129,14 @@
                                 </td>
                             </ng-container>
                             
-                            <!-- 其他列 [nzContent]="(d[h['true_key']] || d[h['true_key']]==0)?((d[h['true_key']] | accuracyPipe : accuracy : h['searchType']) | tableSpecialTheadFilter:h['true_key']:d[h['true_key']]):'NA'"-->
+                            <!-- 其他列 -->
                             <ng-container *ngFor="let h of tbodyOutFirstCol;index as i;">
                                 <!-- 有值 -->
                                 <td *ngIf="d[h['true_key']] || d[h['true_key']]==0" [ngStyle]="{'min-width':widthConfig[i+1],'max-width':widthConfig[i+1]}"  [nzContent]="tpl2" nzPlacement="right" nz-popover>
                                     <ng-template #tpl2>
-                                        <span [innerHTML]="(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true:compareGroup:reanalysisId):'NA'"></span>
+                                        <span [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true:compareGroup:reanalysisId:tableEntity['geneType']"></span>
                                     </ng-template>
-                                    <span [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter:h['true_key']:h['searchType']:false:compareGroup:reanalysisId"></span>
+                                    <span [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter:h['true_key']:h['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']"></span>
                                 </td>
                                 <!-- NA -->
                                 <td *ngIf="!d[h['true_key']] && d[h['true_key']]!=0" [ngStyle]="{'min-width':widthConfig[i+1],'max-width':widthConfig[i+1]}">

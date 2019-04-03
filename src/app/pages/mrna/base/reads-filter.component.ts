@@ -199,7 +199,7 @@ export class ReadsFilterComponent implements OnInit {
         showLabel:true,
         custom: ["name", "value"],
         el: "#rawDataID",
-        //type: "pie",
+        type: "pie",
         data: tempArray
         },
         legend: {
@@ -216,7 +216,7 @@ export class ReadsFilterComponent implements OnInit {
         }
     }
 
-      this.chart=new d4().init(config);
+      this.chart=new d4().init(config,{pointRadius:0.5});
   }
 
 
@@ -254,7 +254,8 @@ export class ReadsFilterComponent implements OnInit {
           custom: ["name", "value", "category"],
           el: "#rawBaseID",
           type: "categoryLine",
-          data: chartData
+          data: chartData,
+          interpolate: "cardinal", // cardinal basic step  linear
         },
         axis: {
           x: {

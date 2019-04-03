@@ -27,8 +27,15 @@ export class TableSpecialTheadFilter implements PipeTransform {
 		type:any, 	// searchType
 		whitespace: boolean = false,	// 内容是否需要换行   popover里面需要换行（true） 在表格里显示不需要换行（false）
 		compareGroup:any = undefined,  // 比较组，默认为空  在KEGG富集里面会跳转map  需要比较组或者重分析id作为参数
-		id:any = undefined	// 重分析id
+		id:any = undefined,	// 重分析id
+		geneType:any = undefined // 当前表格的基因类型  gene还是rna
 	): object {
+
+		// type = 'string';
+		// thead = 'go_all';
+		// value="[Cellular Component]---GO:0005737///cytoplasm+++GO:0000784///unclear chromosome,telomeric region+++GO:0000346///transcriot export complex+++GO:0000445///THO complex part of transcript export complex+++[Biological Process]---GO:20000002///negative regulation of DNA damage checkpoint+++GO:0046784///viral mRna export form host cell nucleus";
+
+
 		if (!value && value != 0) return this.globalService.trustStringHtml(`<span>NA</span>`);
 		if (type === 'string') {
 			if (thead.endsWith('splice_site')) {
@@ -51,7 +58,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				}
 			}else if (config['geneInfo'].includes(thead)){
 				// 基因详情页
-				let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${value}`;
+				let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${value}/${geneType}`;
 				let htmlStr = `<a href="${url}" target="_blank">${value}</a>`
 				return this.globalService.trustStringHtml(htmlStr);
 			} else {
@@ -62,9 +69,11 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				let mapMatchItems = config['mapMatchItems'];
 				let valSplitFlag = config['valSplitFlag'];
 				let idFlag = config['idComposeDesc'];
+				let unableClickSplitFlag = config['unableClickSplitFlag'];
 				let htmlStr = '',
 					urlArr = [];
 				let whiteWrapReg = /.+(\_desc)|(\_term)$/g;
+				let goAll = config['goAll'];
 
 				// 链接跳转
 				if (matchList.includes(thead)) {
@@ -115,7 +124,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 					a.forEach((v,index) => {
 						let mapid = v.split(idFlag)[0];
 						// 跳map
-						let href = `${window.location.href.split('report')[0]}report/map/${mapid}/${compareGroup}/${id}`;
+						let href = `${window.location.href.split('report')[0]}report/map/${sessionStorage.getItem('LCID')}/${mapid}/${compareGroup}/${id}/${geneType}`;
 						htmlStr+=`<a href="${href}" target="_blank">${v}</a>`;
 						if(whitespace) {
 							htmlStr+=index !==a.length-1?'<br>':'';
@@ -123,6 +132,36 @@ export class TableSpecialTheadFilter implements PipeTransform {
 							htmlStr+='&emsp;';
 						}
 					});
+				}else if(goAll.includes(thead)){
+					// goAll
+					let splitUnlink = value.split(unableClickSplitFlag);
+					// [Cellular Component]---GO:0005737///cytoplasm+++GO:0000784///unclear chromosome,telomeric region+++GO:0000346///transcriot export complex+++GO:0000445///THO complex part of transcript export complex+++[Biological Process]---GO:20000002///negative regulation of DNA damage checkpoint+++GO:0046784///viral mRna export form host cell nucleus
+					/*
+						[Cellular Component]
+						<a href="GO:0005737">GO:0005737///cytoplasm</a>
+					*/
+					let prefixUrl = matchRule[thead]['url'].split(flag)[0];
+					splitUnlink.forEach(v=>{
+						if(v.indexOf(valSplitFlag)==-1 && v.indexOf(idFlag)==-1){
+							htmlStr+=`<span>${v}</span>`
+							htmlStr+=whitespace?'<br>':'';
+						}else{
+							v.split(valSplitFlag).forEach((val,index)=>{
+								if(val.indexOf(idFlag)!=-1){
+									htmlStr+=`<a href="${prefixUrl+val.split(idFlag)[0]}" target="_blank">${val}</a>`
+								}else{
+									htmlStr+=`<span>${val}</span>`
+								}
+								
+								if(whitespace){
+									htmlStr+=index!=val.length-1?'<br>':'';
+								}else{
+									htmlStr+='&emsp;';
+								}
+							})
+						}
+					})
+
 				} else {
 					// 有+++ 按+++ 换行  没有默认
 					if ((''+value).indexOf(valSplitFlag)!=-1) {
@@ -139,7 +178,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				return this.globalService.trustStringHtml(htmlStr);
 			}
 		} else {
-			return this.accuracy(value, null, type);
+			return whitespace?value:this.accuracy(value, null, type)
 		}
 	}
 

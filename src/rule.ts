@@ -123,6 +123,16 @@ export const mapMatchItems = [
 	"kegg_pathway_term_id"
 ]
 
+// goall
+// [Cellular Component]---GO:0005737///cytoplasm+++GO:0000784///unclear chromosome,telomeric region+++GO:0000346///transcriot export complex+++GO:0000445///THO complex part of transcript export complex+++[Biological Process]---GO:20000002///negative regulation of DNA damage checkpoint+++GO:0046784///viral mRna export form host cell nucleus
+/*
+	[Cellular Component]
+	<a href="GO:0005737">GO:0005737///cytoplasm</a>
+*/
+export const goAll = [
+	'go_all'
+]
+
 // 匹配规则
 export const matchRule: object = {
 	gene_tran_list:{url:''},
@@ -181,6 +191,7 @@ export const matchRule: object = {
 	tf_cofactors_term: { url: 'http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/' },
 	tf_cofactors_desc: { url: 'http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/' },
 
+	go_all:{url:'http://amigo.geneontology.org/amigo/term/@'},
 	go_f_term_id: { url: 'http://amigo.geneontology.org/amigo/term/@' },
 	go_f_term: { url: 'http://amigo.geneontology.org/amigo/term/@' },
 	go_f_desc: { url: 'http://amigo.geneontology.org/amigo/term/@' },

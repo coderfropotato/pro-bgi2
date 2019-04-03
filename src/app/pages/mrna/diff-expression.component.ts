@@ -516,7 +516,7 @@ export class DiffExpressionComponent implements OnInit {
 		}
 
 		// this.venn_or_upsetR = true;
-		// this.showUpSetR(data);
+		//this.showUpSetR(data);
 	}
 
 	// 切换左右布局 计算左右表格的滚动高度
@@ -995,9 +995,11 @@ export class DiffExpressionComponent implements OnInit {
 		}
 
 		let left_name_length = getNameLength(total_name);
-		if (left_name_length > 140) {
-			left_name_length = 140;
-		}
+		// if (left_name_length > 140) {
+		// 	left_name_length = 140;
+		// }
+		let height1 = 150; //上面的高
+		let width2 = 150;  //左面的高
 
 		let kong_name_right = 10;
 
@@ -1066,14 +1068,13 @@ export class DiffExpressionComponent implements OnInit {
 		function drawSvg() {
 			let width1 = d3_width + padding1.left + padding1.right;
 			//let height1 = 240;
-			let height1 = 150; //减小宽高
 
 			let svg1 = d3
 				.select('#svg')
 				.append('svg')
 				//.attr('x', '320')
 				//.attr('y', '0')
-				.attr('x', '190')//减小宽高 220 - g_map_left
+				.attr('x', width2+30+left_name_length - padding1.left)//减小宽高 220 - g_map_left
 				.attr('y', g_map_top)
 				.attr('width', width1)
 				.attr('height', height1)
@@ -1212,8 +1213,10 @@ export class DiffExpressionComponent implements OnInit {
 		}
 
 		function drawSvg2() {
+			
 			//let width2 = 320 - left_name_length - kong_name_right;
-			let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高
+			//let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高
+			//let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高
 			let height2 = d3_height + padding2.top + padding2.bottom;
 
 			let svg2 = d3
@@ -1337,8 +1340,9 @@ export class DiffExpressionComponent implements OnInit {
 				.append('svg')
 				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left)
 				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 40)
-				.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 100 - 30)//减小宽高   g_map_left
+				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 100 - 30)//减小宽高   g_map_left
 				//.attr('y', '300')
+				.attr('x',width2+30)
 				.attr('y', g_map_height)//减小宽高
 				.attr('width', widthk)
 				.attr('height', heightk)
@@ -1421,7 +1425,7 @@ export class DiffExpressionComponent implements OnInit {
 				.append('svg')
 				//.attr('x', '320')
 				//.attr('x', '280')
-				.attr('x', '190')//减小宽高 g_map_left
+				.attr('x', width2+30+left_name_length)//减小宽高 g_map_left
 				//.attr('y', '300')
 				.attr('y', g_map_height)//减小宽高
 				.attr('width', width3)
@@ -1440,7 +1444,7 @@ export class DiffExpressionComponent implements OnInit {
 				let temp = {};
 				for (let j = 0; j < col; j++) {
 					temp = {
-						x_axis: d3_xScale(bar_name[i]) + d3_rectWidth / 2 + padding1.left,
+						x_axis: d3_xScale(bar_name[i]) + d3_rectWidth / 2,
 						y_axis: d3_yScale(total_name[j]) + d3_rectWidth / 2,
 						r: 5,
 						flag: threeC(total_name[j], bar_name[i]) ? true : false,
@@ -1459,8 +1463,8 @@ export class DiffExpressionComponent implements OnInit {
 
 			drawLine(sortArr(jsonCircles, 'x_axis'), svg3, '#333'); //把x轴相同的分在一起 画线
 
-			svg3.append('g').attr('class', 'axis_xCircle').attr('transform', 'translate(30,0)').call(xAxis3);
-			svg3.append('g').attr('class', 'axis_yCircle').attr('transform', 'translate(30,0)').call(yAxis3);
+			svg3.append('g').attr('class', 'axis_xCircle').attr('transform', 'translate(0,0)').call(xAxis3);
+			svg3.append('g').attr('class', 'axis_yCircle').attr('transform', 'translate(0,0)').call(yAxis3);
 		}
 
 		//造点 这时候包含点的颜色 添加圆 基本圆
@@ -1473,7 +1477,7 @@ export class DiffExpressionComponent implements OnInit {
 					svg_t
 						.append('rect')
 						.attr('class', 'MyRect4')
-						.attr('x', padding1.left)
+						.attr('x', 0)
 						.attr('y', tempyList[i][0]['y_axis'] - d3_rectWidth / 2 - 1.5)
 						.attr('width', d3_width + padding1.right)
 						.attr('height', d3_rectWidth + 3)
