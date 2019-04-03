@@ -100,7 +100,7 @@ export class ClusterComponent implements OnInit {
         private message: MessageService,
         private globalService: GlobalService,
         private pageModuleService: PageModuleService,
-        private storeService:StoreService
+        public storeService:StoreService
     ) {
         // 订阅windowResize 重新计算表格滚动高度
 		this.message.getResize().subscribe((res) => {
