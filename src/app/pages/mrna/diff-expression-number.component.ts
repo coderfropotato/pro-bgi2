@@ -541,6 +541,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			axis: {
 			  x: {
 				title: "",
+				rotate: 60,
 				dblclick: function(event) {
 				  var name = prompt("请输入需要修改的标题", "");
 				  if (name) {
