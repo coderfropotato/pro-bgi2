@@ -40,6 +40,7 @@ export class AddColumnComponent implements OnInit {
 	public sortThead: any[] = [];
 
 	subscribtion: any = null;
+	isLoading:boolean = false; // tcga选择表头，发请求的时候 需要知道加载状态 做请求限流
 
 	config = config;
 

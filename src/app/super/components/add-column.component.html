@@ -8,7 +8,7 @@
             <ng-container *ngFor="let s of selected;index as i;">
                 <span class="top-selected" *ngFor="let d of s;">
                     <span>{{d['name']}}</span>
-                    <i class="anticon anticon-close-circle" (click)="closeTag(d)"></i>
+                <i class="anticon anticon-close-circle" (click)="closeTag(d)"></i>
                 </span>
                 <!-- <nz-tag class="tag" *ngFor="let d of s;" nzMode="closeable" (nzOnClose)="closeTag(d)">{{d['name']}}</nz-tag> -->
             </ng-container>
@@ -29,12 +29,12 @@
                         <p>
                             {{it['category'] | translate}}
                             <ng-container *ngIf="it['category'].startsWith(config['outerDataBaseIndex'])">
-                                <button nz-button nzType="default" nzSize="small" (click)="addTreeThead(it)" >
+                                <button nz-button nzType="default" nzSize="small" (click)="addTreeThead(it)">
                                     <i class="anticon anticon-plus"></i>
                                 </button>
-                                <nz-modal [(nzVisible)]="it['modalVisible']"  (nzOnCancel)="handleCancel(it)" (nzOnOk)="handleOk(it)">
+                                <nz-modal [(nzVisible)]="it['modalVisible']" (nzOnCancel)="handleCancel(it)" (nzOnOk)="handleOk(it)" [nzOkLoading]="isLoading">
                                     <ng-container *ngIf="it['category']===config['TCGA_KEY']">
-                                        <app-new-tree [defaultExpandAll]="false" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']"></app-new-tree>
+                                        <app-new-tree [defaultExpandAll]="false" [(isLoading)]="isLoading" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']"></app-new-tree>
                                     </ng-container>
                                     <ng-container *ngIf="it['category']!==config['TCGA_KEY']">
                                         <app-tree [defaultExpandAll]="false" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event,i)" [treeData]="it['treeData']" [theadMap]="it['theadMap']"></app-tree>
@@ -43,7 +43,7 @@
                             </ng-container>
                         </p>
                         <ng-container *ngIf="it['children'].length">
-                            <button class="head-item"  [ngClass]="{'custom-active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</button>
+                            <button class="head-item" [ngClass]="{'custom-active':d.checked}" *ngFor="let d of it['children']" (click)="toggleSelect(d,i)">{{d['name']}}</button>
                         </ng-container>
                     </ng-container>
                 </div>
@@ -82,10 +82,10 @@
     </div>
     <!-- nodata -->
     <div class="add-head" *ngIf="!thead.length && doAjax">
-        <button  nz-button nzType="primary">{{'addThead.noData' | translate}}</button>
+        <button nz-button nzType="primary">{{'addThead.noData' | translate}}</button>
     </div>
     <!-- loading -->
     <div class="add-head" *ngIf="!doAjax">
-        <button  nz-button nzType="primary" nzLoading>loading</button>
+        <button nz-button nzType="primary" nzLoading>loading</button>
     </div>
 </div>
