@@ -162,7 +162,7 @@ export class MapComponent implements OnInit{
 			this.lcid = this.params['lcid'];
 			this.mapid = this.params['mapid'];
 			this.defaultGeneType = this.params['geneType'];
-			this.tid = this.params['tid']=='undefined'?null:this.params['tid'];
+			this.tid = this.params['tid']=='undefined'?undefined:this.params['tid'];
 			this.compareGroup = this.params['compareGroup'];
 			
 			if(this.tid){
