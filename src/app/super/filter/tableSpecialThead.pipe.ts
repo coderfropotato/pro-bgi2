@@ -30,6 +30,12 @@ export class TableSpecialTheadFilter implements PipeTransform {
 		id:any = undefined,	// 重分析id
 		geneType:any = undefined // 当前表格的基因类型  gene还是rna
 	): object {
+
+		// type = 'string';
+		// thead = 'go_all';
+		// value="[Cellular Component]---GO:0005737///cytoplasm+++GO:0000784///unclear chromosome,telomeric region+++GO:0000346///transcriot export complex+++GO:0000445///THO complex part of transcript export complex+++[Biological Process]---GO:20000002///negative regulation of DNA damage checkpoint+++GO:0046784///viral mRna export form host cell nucleus";
+
+
 		if (!value && value != 0) return this.globalService.trustStringHtml(`<span>NA</span>`);
 		if (type === 'string') {
 			if (thead.endsWith('splice_site')) {
@@ -63,9 +69,11 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				let mapMatchItems = config['mapMatchItems'];
 				let valSplitFlag = config['valSplitFlag'];
 				let idFlag = config['idComposeDesc'];
+				let unableClickSplitFlag = config['unableClickSplitFlag'];
 				let htmlStr = '',
 					urlArr = [];
 				let whiteWrapReg = /.+(\_desc)|(\_term)$/g;
+				let goAll = config['goAll'];
 
 				// 链接跳转
 				if (matchList.includes(thead)) {
@@ -124,6 +132,36 @@ export class TableSpecialTheadFilter implements PipeTransform {
 							htmlStr+='&emsp;';
 						}
 					});
+				}else if(goAll.includes(thead)){
+					// goAll
+					let splitUnlink = value.split(unableClickSplitFlag);
+					// [Cellular Component]---GO:0005737///cytoplasm+++GO:0000784///unclear chromosome,telomeric region+++GO:0000346///transcriot export complex+++GO:0000445///THO complex part of transcript export complex+++[Biological Process]---GO:20000002///negative regulation of DNA damage checkpoint+++GO:0046784///viral mRna export form host cell nucleus
+					/*
+						[Cellular Component]
+						<a href="GO:0005737">GO:0005737///cytoplasm</a>
+					*/
+					let prefixUrl = matchRule[thead]['url'].split(flag)[0];
+					splitUnlink.forEach(v=>{
+						if(v.indexOf(valSplitFlag)==-1 && v.indexOf(idFlag)==-1){
+							htmlStr+=`<span>${v}</span>`
+							htmlStr+=whitespace?'<br>':'';
+						}else{
+							v.split(valSplitFlag).forEach((val,index)=>{
+								if(val.indexOf(idFlag)!=-1){
+									htmlStr+=`<a href="${prefixUrl+val.split(idFlag)[0]}" target="_blank">${val}</a>`
+								}else{
+									htmlStr+=`<span>${val}</span>`
+								}
+								
+								if(whitespace){
+									htmlStr+=index!=val.length-1?'<br>':'';
+								}else{
+									htmlStr+='&emsp;';
+								}
+							})
+						}
+					})
+
 				} else {
 					// 有+++ 按+++ 换行  没有默认
 					if ((''+value).indexOf(valSplitFlag)!=-1) {
