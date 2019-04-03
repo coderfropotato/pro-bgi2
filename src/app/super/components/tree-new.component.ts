@@ -43,6 +43,9 @@ export class NewTreeComponent implements OnInit, OnChanges {
     @Output() expandAllChange: EventEmitter<any> = new EventEmitter();
     // 是否重置树状态
     @Input() reset:boolean = false;
+    // 是否在加载新树
+    @Input() isLoading:boolean = false;
+    @Output() isLoadingChange:EventEmitter<boolean> = new EventEmitter();
 
     beforeTreeData:any; // 保存初始化的树
 
@@ -98,6 +101,8 @@ export class NewTreeComponent implements OnInit, OnChanges {
 
     getKey(){
         let selectedKeys = this.selectData.map(v=>v['key']);
+        this.isLoading = true;
+        this.isLoadingChange.emit(this.isLoading);
         this.ajaxService.getDeferData({
             data:{
                 selectedKeys,
@@ -149,6 +154,9 @@ export class NewTreeComponent implements OnInit, OnChanges {
             }
         },error=>{
             console.log(error);
+        },()=>{
+            this.isLoading = false;
+            this.isLoadingChange.emit(this.isLoading);
         })
     }
 
