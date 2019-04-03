@@ -24,6 +24,10 @@ export class LittleTableComponent implements OnInit {
     @Input() inRefreshShow: boolean = true;
 
     @Input() targetID: string;
+    @Input() targetID2: string;
+    @Input() targetID2_ID:string;
+    @Input() targetID2Type:string;
+
     @Input() targetURL: string;
     @Input() targetFlag: boolean = false;
     goTarget: string;
@@ -41,6 +45,8 @@ export class LittleTableComponent implements OnInit {
     tableData: any[] = [];
     rows: any[] = [];
     thead: any[] = [];
+
+    targetID2Url:string;
     constructor(
         private ajaxService: AjaxService,
         private loadingService: LoadingService
@@ -51,6 +57,9 @@ export class LittleTableComponent implements OnInit {
             this.goTarget = this.targetURL;
         }else{
             this.goTarget = this.targetURL + this.targetID;
+        }
+        if(this.targetID2){
+            this.targetID2Url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${this.targetID2_ID}/${this.targetID2Type}`;
         }
         this.getData();
     }
