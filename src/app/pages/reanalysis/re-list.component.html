@@ -2,6 +2,7 @@
     <nz-spin [nzSpinning]="loading" nzTip='Loading...'>
         <div class="search-box">
             <p class="re-list-title">我的分析</p>
+            <i class="iconfont icon-shuaxin" style="line-height: 38px;margin-left:10px;" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="getAnalysisList()"></i>
             <div class="search">
                 <ng-template #suffixIconButton>
                     <button nz-button nzType="default" nzSearch (click)="search()"><i class="anticon anticon-search"></i></button>
@@ -48,11 +49,11 @@
             </div>
         </div>
         <div class="re-list-table">
-            <div class="table-thead tableHeader hasbordert">
+            <!-- <div class="table-thead tableHeader hasbordert">
                 <div class="fRight">
                     <i class="iconfont icon-shuaxin" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="getAnalysisList()"></i>
                 </div>
-            </div>
+            </div> -->
             <div class="table-content">
                 <nz-table *ngIf="!error" #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzSize="small" nzScroll="{'y':120%}">
                     <thead>

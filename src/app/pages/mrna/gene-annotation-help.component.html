@@ -1,21 +1,19 @@
 <div class="content base-content help">
-        <h2 class="title">4.帮助</h2>
+        <h2 class="title">3.帮助</h2>
         <hr class="mhr" />
       
         <div class="help_option">
             <div class="help_content">
-                <h3 class="title">分析方法：</h3>
-                <p class="help_text">适用产品：全部</p>
+                <h3 class="title">3.1 分析方法</h3>
                 <div class="help_text">
                     <p>富集分析用于帮助了解某个特定基因集在某个代谢通路、分子功能或参与的生物学过程中是否发生显著的富集。这里说的特定基因集可以是发生差异表达的基因、发生差异表达miRNA的靶基因、circRNA来源基因等需要特别关注的基因集合。以下为表述方便，把这些基因集合统称为候选基因。</p>
                     <p>其中smallRNA分析中，用于富集分析的候选基因指差异表达miRNA的靶基因，circRNA分析中，候选基因指circRNA来源基因。其它RNA分析中，候选基因指差异表达基因。</p>
                 </div>
             </div>
-        </div>
+        
       
-        <div class="help_option">
             <div class="help_content">
-                <h3 class="title">GO 富集分析</h3>
+                <h3 class="title sjx2">GO 富集分析</h3>
                 <div class="help_text">
                     <p> Gene Ontology （简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个ontology（本体），分别描述基因的分子功能（molecular function）、细胞成分（cellular component）、参与的生物过程（biological process）。GO的基本单位是term（词条、节点），每个term都对应一个属性。</p>
                     <p>GO功能显著性富集分析给出与本物种全部基因背景相比，在候选基因中显著富集的GO功能条目，从而给出候选基因与哪些生物学功能显著相关。该分析首先把所有候选基因向 Gene Ontology 数据库（<a href="http://www.geneontology.org/" target="_blank">http://www.geneontology.org/</a>）的各个term映射，计算每个term的基因数目，然后应用超几何检验，找出与本物种所有基因背景相比，在候选基因中显著富集的GO条目。参照软件‘GO::TermFinder’（<a href="http://www.yeastgenome.org/help/analyze/go-term-finder" target="_blank">http://www.yeastgenome.org/help/analyze/go-term-finder</a>）， Pvalue的计算公式如下：</p>
@@ -24,11 +22,9 @@
                 <p class="help_text">详情信息请参考：<a href="https://en.wikipedia.org/wiki/Hypergeometric_distribution" target="_blank">https://en.wikipedia.org/wiki/Hypergeometric_distribution</a> 。</p>
                 <p class="help_text">其中，N为所有基因中具有GO注释的基因数目（只有一部分基因能够注释到GO数据库）；n为N中候选基因的数目；M为所有基因中注释为某特定GO term的基因数目；m为注释为某特定GO term的差异表达基因数目。计算得到的p-value通过Bonferroni [1]校正之后，以corrected p-value≤0.05为阈值，满足此条件的GO term定义为在候选基因中显著富集的GO term。通过GO功能显著性富集分析能确定候选基因行使的主要生物学功能。</p>
             </div>
-        </div>
 
-        <div class="help_option">
             <div class="help_content">
-                <h3 class="title">KEGG Pathway富集分析</h3>
+                <h3 class="title sjx2">KEGG Pathway富集分析</h3>
                 <p class="help_text">基于KEGG Pathway的分析有助于更进一步了解基因的生物学功能。KEGG Pathway[2]是有关Pathway的主要公共数据库，Pathway显著性富集分析以KEGG Pathway为单位，应用超几何检验，找出与整个基因组背景相比，在候选基因中显著性富集的Pathway。该分析的计算公式同GO功能显著性富集分析，在这里N为所有基因中具有Pathway注释的基因数目；n为N中候选基因的数目；M为所有基因中注释为某特定Pathway的基因数目；m为注释为某特定Pathway的候选基因数目。Qvalue≤0.05的Pathway定义为在差异表达基因中显著富集的Pathway。通过Pathway显著性富集能确定候选基因参与的最主要生化代谢途径和信号转导途径。</p>
                 <div class="help_bg">
                     <p>参考文献：</p> 
@@ -36,11 +32,9 @@
                     <p>[2] Kanehisa, M., et al. (2008). KEGG for linking genomes to life and the environment. Nucleic Acids Res, 36 (Database issue): D480-4.</p>
                 </div>
             </div>
-        </div>
 
-        <div class="help_option">
             <div class="help_content">
-                <h3 class="title">常见问题：</h3>
+                <h3 class="title">3.2 常见问题</h3>
                 <h3 class="title">1、差异基因的GO功能注释分类统计图，是不是找出差异基因个数最多的对应的功能就是需要关注的？</h3>
                 <p class="help_text">差异个数最多的功能不代表是您研究的关注点，这些差异个数多的也有可能是一些基础的功能条目，建议从研究目的着手， 先确定一个方向，比如比较关注生长相关的基因，那就先研究这部分GO功能。然后再进一步扩展。</p>
                 <h3 class="title">2、KEGG的pathway图中一个方框里面同时出现红绿色标记？</h3>
@@ -57,11 +51,10 @@
                     <p>2）若是想知道酶最终是上调还是下调，则除了做转录组的分析，还需要做蛋白分析，类似通过iTRAQ做定量，以及做实验的验证。</p>
                     <p>3）如果已有挑选出来的序列，也可根据序列做相似性比对，查看转录组鉴定到的序列和您自己的序列的相似性情况，得到相对来说更相关的信息，只是做毕设的话，得到个假设推论，并将不准确性作为文章的limitation（但能不能通过评审就不一定了）。转录组产品的交付结果都有提供相关序列，可尝试从这个角度展开。</p>
                 </div>
-                <h3 class="title"><strong>为什么KEGG的pathway图中一个方框里面同时出现红绿色标记？</strong></h3>
+                <h3 class="title">5、为什么KEGG的pathway图中一个方框里面同时出现红绿色标记？</h3>
                 <p class="help_text">通路图上的基因是KEGG综合各个物种参与该通路的所有基因，而用于富集分析的候选基因通常只是这些基因中的一部分，我们用红色或绿色标注，其中红色框内的基因表示表达量上调，绿色表示表达量下调。红色+绿色表示这部分基因即有上调，也有上调。那为何一个框内会出现多个基因？因为方框里面基本都是一些酶或者是有催化活性的蛋白，而我们知道有些关键的酶或重要的蛋白会有多个同源基因编码，所谓的同工酶；还有一些由多个亚基聚合而成，每个亚基由不同的基因编码，也就是说这些重要的酶或者蛋白有不同的基因（转录本编码），那么有时候会出现不同基因表达不一致的情况。针对于这部分结果，建议略过不看，如果要利用这部分数据，那么需要去做深入的文献阅读了解哪些基因属于比较重要的基因，或者哪些亚基属于催化或者结合中心。</p>
             </div>
-        </div>
 
-      
+        </div>
       </div>
       
