@@ -138,7 +138,7 @@ export class TreeComponent implements OnInit, OnChanges {
             this.stringing(this.beforeComposeThead)
         ) {
             this.beforeComposeThead = this.selectComposeThead.concat();
-            this.composeTheadChange.emit(this.selectComposeThead);
+            this.composeTheadChange.emit([this.selectComposeThead, this.selectComposeThead]);
         }
         // 遍历树把不匹配的字段 disabled = true
         this.treeSetDisabledStatus(this.treeData, suitableItems, true);
