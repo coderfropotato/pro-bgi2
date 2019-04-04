@@ -11,17 +11,14 @@
         </div>
 
         <div #leftBottom class="left-bottom-layout">
-            <!-- compareGroup下拉选择 -->
-            <ng-template #otherLeftTemplate>
-                <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch nzPlaceHolder="Select compareGroup" [(ngModel)]="compareGroup" (ngModelChange)="handleCompareGroupChange()">
-                    <nz-option *ngFor="let com of compareGroupList;index as i;" [nzLabel]="com" [nzValue]="com"></nz-option>
-                </nz-select>
-            </ng-template>
-
-            <!-- level下拉选择 -->
             <ng-template #selectTemplate>
+                <!-- level下拉选择 -->
                 <nz-select class="ml12" nzSize="small" nzShowSearch nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
                     <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
+                </nz-select>
+                <!-- compareGroup下拉选择 -->
+                <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch nzPlaceHolder="Select compareGroup" [(ngModel)]="compareGroup" (ngModelChange)="handleCompareGroupChange()">
+                    <nz-option *ngFor="let com of compareGroupList;index as i;" [nzLabel]="com" [nzValue]="com"></nz-option>
                 </nz-select>
             </ng-template>
 
@@ -50,15 +47,15 @@
 
             <!-- 图标切换 -->
             <ng-container *ngIf="isExceed!=null && !isExceed">
-                <app-table-switch-chart #switchChart *ngIf="selectedVal" [id]="'re-class'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [otherLeftTemplate]="otherLeftTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)"
-                    [chartId]="'geneClassChartDiv'" [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()"
-                    [flex]="true" [chartDescContent]="'X轴为注释到某一KEGG Pathway类别上的基因数目，Y轴为KEGG Pathway类别。 选择图中的某个柱子或者右上角“多选”模式下选择多个柱子，将在下方表格显示注释到这些KEGG Pathway分类上的差异基因情况。双击图标题或坐标轴标题可以修改文字，点击图例色块可以修改颜色。'"> </app-table-switch-chart>
+                <app-table-switch-chart #switchChart *ngIf="selectedVal" [id]="'re-class'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" [selectTemplate]="selectTemplate" [setTemplate]="setTemplate" (drawChartEmit)="drawChart($event)" [chartId]="'geneClassChartDiv'"
+                    [chartName]="'基因分类'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" [flex]="true" [chartDescContent]="'X轴为注释到某一KEGG Pathway类别上的基因数目，Y轴为KEGG Pathway类别。 选择图中的某个柱子或者右上角“多选”模式下选择多个柱子，将在下方表格显示注释到这些KEGG Pathway分类上的差异基因情况。双击图标题或坐标轴标题可以修改文字，点击图例色块可以修改颜色。'">
+                </app-table-switch-chart>
 
                 <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
             </ng-container>
             <!-- 大表 -->
             <ng-container *ngIf="isExceed!=null && isExceed">
-                <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [otherLeftTemplate]="otherLeftTemplate" [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl"
+                <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [selectTemplate]="selectTemplate"  [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl"
                     tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight" (checkedChange)="handleCheckChange($event)" [showConfirmButton]="true"></app-big-table-check>
             </ng-container>
         </div>
