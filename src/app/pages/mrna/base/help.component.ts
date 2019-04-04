@@ -99,17 +99,45 @@ export class BasicHelpComponent implements OnInit {
             this.seq_platform_series = "BGISEQ";
         }
 
-       if(this.seq_platform_series == "Illumina" && this.library_method == "polyA_selected"){
+       if((this.seq_platform_series == "Illumina" && this.library_method == "polyA_selected")||(this.seq_platform_series == "Illumina" && this.library_method == "other")||(this.seq_platform_series == "Illumina" && this.library_method == "rRNA_removal")){
             this.tflag = 4;
        }
 
-       if(this.seq_platform_series == "BGISEQ" && this.library_method == "polyA_selected"){
+       if((this.seq_platform_series == "BGISEQ" && this.library_method == "polyA_selected")||(this.seq_platform_series == "BGISEQ" && this.library_method == "other")||(this.seq_platform_series == "BGISEQ" && this.library_method == "rRNA_removal")){
             this.tflag = 5;
-       }
+        }
 
-       if(this.library_method == "rRNA_removal"){
+        if(this.seq_platform_series == "Illumina" && this.library_method == "lncRNA"){
             this.tflag = 6;
-       }
+        }
+
+        if(this.seq_platform_series == "BGISEQ" && this.library_method == "lncRNA"){
+            this.tflag = 7;
+        }
+
+        if(this.seq_platform_series == "Illumina" && this.library_method == "circRNA"){
+            this.tflag = 8;
+        }
+
+        if(this.seq_platform_series == "BGISEQ" && this.library_method == "circRNA"){
+            this.tflag = 9;
+        }
+
+        //    if(this.seq_platform_series == "BGISEQ" && this.library_method == "polyA_selected"){
+        //         this.tflag = 5;
+        //    }
+
+        //    if(this.library_method == "rRNA_removal"){
+        //         this.tflag = 6;
+        //    }
+
+        if(this.library_method == "smallRNA_common"){
+            this.tflag = 61;
+        }
+
+        if(this.library_method == "smallRNA_UMI"){
+            this.tflag = 62;
+        }
 
 
 

@@ -53,9 +53,9 @@ export class UploadComponent implements OnInit {
 
     ngOnInit() {
 		this.downUrl = window.location.host;
-		this.downUrlOne = this.downUrl + "/project/upload/upload_gene.txt";
-		this.downUrlTwo = this.downUrl + "/project/upload/upload_rna.txt";
-		this.downUrlThree = this.downUrl + "/project/upload/upload_sample.txt";
+		this.downUrlOne = "/project/upload/upload_gene.txt";
+		this.downUrlTwo = "/project/upload/upload_rna.txt";
+		this.downUrlThree = "/project/upload/upload_sample.txt";
  
         this.PercentNum = 0;
         this.defaultSetEntity = {

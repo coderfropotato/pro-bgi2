@@ -4,8 +4,8 @@
   
     <div class="help_option">
         <div class="help_content">
-          <h3 class="title">分析方法：</h3>
-          <h3 class="title">表达量计算</h3>
+          <h3 class="title">2.1 分析方法</h3>
+          <h3 class="title">1.表达量计算</h3>
           <p class="help_text">适用产品：RNAseq、RNAref</p>
           <p class="help_text">
               我们使用 Bowtie2[1]将Clean reads比对到参考基因序列上，然后使用RSEM[2]计算各个样品的基因表达水平。
@@ -70,13 +70,12 @@
            <p class="help_text">适用产品：circRNA</p>
           <p class="help_text">本研究根据比对至circRNA两端的 junction reads 数来计算circRNA的表达量，由于使用了两个软件CIRI、find_circ来预测，所以最终的 junction reads 数取两者结果的平均值。 本研究采用 RPB （junction reads per billion mapped reads，比对上基因组的所有reads标准化到十亿后跨过back-spliced位点的junction reads数目）对各样品作了均一化处理。</p>
         </div>
-    </div>
+    
   
-    <div class="help_option">
         <div class="help_content">
-            <h3 class="title">差异基因检测</h3>
+            <h3 class="title">2.差异基因检测</h3>
             <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p>
-            <p class="help_text">DEGseq: </p>
+            <h3 class="title sjx2">DEGseq: </h3>
             <p class="help_text">DEGseq方法基于泊松分布，本项目根据Wang L, Feng Z, Wang X, et al.中描述的方法进行差异基因检测。</p>
             <p class="help_text">RNA测序可以被当成随机取样的过程，每一个read从样品中独立且均匀地取样。在这个假设下，来自基因（转录本）的read数目遵循二项分布（并且近似由泊松分布代替）。</p>
             <p class="help_text">使用上述的统计模型，DEGseq 提出一个基于MA-plot的新方法，MA-plot是广泛应用于芯片数据的统计分析工具，让C1和C2表示从两个样品获得的特定基因的read数目，他们符合Ci~binomial(ni,pi)，i=1,2分布，其中ni表示所有比对上的read总数，pi表示来着该基因的概率。 DEGseq定义 M=log2C1-log2C2和A=(log2C1+log2C2）/2并证明在随机抽样假设下 ，给定A=a （a是A的观察值）的条件分布 M 遵循近似正态分布。 对于MA图上的每个基因，进行假设检验H0：p1=p2与H1：p1≠p2。然后根据正态分布计算P值。</p>
@@ -106,7 +105,7 @@
                 <p>[3] Benjamini, Y. & Yekutieli, D. The control of the false discovery rate in multiple testing under dependency. Ann. Stat. 29, 1165-1188 (2001).</p>
             </div>
             
-            <h3 class="title">DESeq2: </h3>
+            <h3 class="title sjx2">DESeq2: </h3>
             <p class="help_text">DEseq2方法基于负二项分布原理，本项目根据Michael I, et al.[1]中描述的方法进行差异基因DEG。DEG是差异表达基因的简称，指不同样品之间表达水平有差异的基因检测。</p>
             <div class="help_bg">
                 <p>DESeq2:</p>
@@ -115,7 +114,7 @@
                 <p>[1] Love, M. I., Huber, W. & Anders, S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. 15, 550 (2014).</p>
             </div>
             
-            <h3 class="title">NoiSeq: </h3>
+            <h3 class="title sjx2">NoiSeq: </h3>
             <p class="help_text">两两之间的差异倍数（M）以及绝对差值（D）两个背景数据集，称之为噪音背景：</p>
             <!-- 图片 -->
             <div class="img img-five-expression"></div>
@@ -124,32 +123,32 @@
             <div class="img img-six-expression"></div>
             <p class="help_text">我们计算出每个基因的差异倍数，以及偏离度概率值，然后按照差异倍数≥2、偏离概率值≥0.8的默认标准，筛选出差异表达基因。</p>
             <div class="help_bg">
-              <p>NOIseq:</p>
-              <p>参数: Fold Change >= 2.00 and Probability >= 0.8</p>
-              <p>参考文献：</p>
-              <p>[1] Tarazona, S. et al. Differential expression in RNA-seq: a matter of depth. Genome Res. 21, 2213-2223 (2011).</p>
+                <p>NOIseq:</p>
+                <p>参数: Fold Change >= 2.00 and Probability >= 0.8</p>
+                <p>参考文献：</p>
+                <p>[1] Tarazona, S. et al. Differential expression in RNA-seq: a matter of depth. Genome Res. 21, 2213-2223 (2011).</p>
             </div>
+        </div>
 
+        <div class="help_content">
             <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p>
-            <h3 class="title">聚类热图</h3>
+            <h3 class="title">3.聚类热图</h3>
             <p class="help_text">根据差异基因检测结果，对并集差异基因，使用R包pheatmap进行层次聚类分析。</p>
             <div class="help_bg">
                 <p>参数：Default</p>
                 <p>参考文献：<a href="https://cran.r-project.org/web/packages/pheatmap/" target="_blank">https://cran.r-project.org/web/packages/pheatmap/</a></p>
-              </div>
+            </div>
         </div>
-    </div>
 
-    <div class="help_option">
         <div class="help_content">
-            <h3 class="title">常见问题：</h3>
-            <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p>
-            <h3 class="title sjx2">1、有生物学重复的样本做样本间的差异基因检测有无意义？</h3>
-            <p class="help_text sjx2"> 生物学实验一般要求进行生物学重复，例如对某个基因进行PCR定量分析，一般会做三组生物学重复。高通量测序实验也同样需要遵循该规则，生物学重复可以减少个体差异造成的干扰。2011年7月Hansen发表的文章表明生物学差异是基因自身表达的特性，与检测技术的选择以及数据处理的方式无关。如果不设生物学重复，高影响因子的杂志可能会因此而拒稿。若在实验设计时，未设置生物学重复，我们将用possionDis进行差异分析作为补救措施，结果可靠性较差，建议在筛选差异基因时，除了对FDR进行筛选，还可以对表达量进行筛选，例如要求差异基因在对照或处理组中的表达量大于某个数值。</p>
-            <h3 class="title sjx2">2、为什么差异分析中给出的Log2FoldChange，与自己用FPKM计算得到的不同？</h3>
-            <p class="help_text sjx2">以DEGseq软件为例，log2Ratio(B/A)的值并不是直接通过表达量（FPKM）的均值再去计算log得来的，而是用该mRNA表达量（counts数）的局部标准差（根据所有基因表达量的线性回归，取对应基因的某个小区间，再计算出对应的标准差值）来标准化之后再比较计算得出的，对每个mRNA表达量校正时，跟每个样品所有mRNA的表达量分布有关；如果样品A在表达量为0的周围有0.01,0.02；而样品B在表达量为0的周围只有0.015，给出的校正值也是不一样的，详细的说明如下：</p>
-            <p class="help_text sjx2">A smoothed estimate of the intensity-dependent noise level is done by loess regression, and converted to local standard deviations (SDs) of M conditioned on A, under the assumption of normal distribution. The local SDs are then used to identify the difference of the gene expression between the two samples.</p>
+            <h3 class="title">2.2 常见问题：</h3>
+            <!-- <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p> -->
+            <h3 class="title">1、有生物学重复的样本做样本间的差异基因检测有无意义？</h3>
+            <p class="help_text"> 生物学实验一般要求进行生物学重复，例如对某个基因进行PCR定量分析，一般会做三组生物学重复。高通量测序实验也同样需要遵循该规则，生物学重复可以减少个体差异造成的干扰。2011年7月Hansen发表的文章表明生物学差异是基因自身表达的特性，与检测技术的选择以及数据处理的方式无关。如果不设生物学重复，高影响因子的杂志可能会因此而拒稿。若在实验设计时，未设置生物学重复，我们将用possionDis进行差异分析作为补救措施，结果可靠性较差，建议在筛选差异基因时，除了对FDR进行筛选，还可以对表达量进行筛选，例如要求差异基因在对照或处理组中的表达量大于某个数值。</p>
+            <h3 class="title">2、为什么差异分析中给出的Log2FoldChange，与自己用FPKM计算得到的不同？</h3>
+            <p class="help_text">以DEGseq软件为例，log2Ratio(B/A)的值并不是直接通过表达量（FPKM）的均值再去计算log得来的，而是用该mRNA表达量（counts数）的局部标准差（根据所有基因表达量的线性回归，取对应基因的某个小区间，再计算出对应的标准差值）来标准化之后再比较计算得出的，对每个mRNA表达量校正时，跟每个样品所有mRNA的表达量分布有关；如果样品A在表达量为0的周围有0.01,0.02；而样品B在表达量为0的周围只有0.015，给出的校正值也是不一样的，详细的说明如下：</p>
+            <p class="help_text">A smoothed estimate of the intensity-dependent noise level is done by loess regression, and converted to local standard deviations (SDs) of M conditioned on A, under the assumption of normal distribution. The local SDs are then used to identify the difference of the gene expression between the two samples.</p>
         </div>
     </div>
-  </div>
+</div>
   

@@ -7,12 +7,18 @@
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
             <h3 class="title" *ngIf="mflag == 0">6.1 实验流程</h3>
             <h3 class="title" *ngIf="mflag == 3">6.1.1 实验流程</h3>
-            <div class="img_one" *ngIf="tflag == 4"></div>
+            <div class="test_one" *ngIf="tflag == 4"></div>
             <p class="help_text" *ngIf="tflag == 4">用mRNA富集法或rRNA去除法对totalRNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA；rRNA去除：用DNA探针杂交rRNA，RNaseH选择性消化DNA/RNA杂交链，再用DNaseI消化掉DNA探针，纯化后即得到所需RNA。得到的mRNA中加入适量打断试剂高温条件下使其片断化，以打断后的mRNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库用Agilent 2100 Bioanalyzer和ABI StepOnePlus Real-Time PCR System质检，合格后进行测序。</p>
-            <div class="img_one_f" *ngIf="tflag == 5"></div>
+            <div class="test_two" *ngIf="tflag == 5"></div>
             <p class="help_text" *ngIf="tflag == 5">用mRNA富集法或rRNA去除法对totalRNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA；rRNA去除：用DNA探针杂交rRNA，RNaseH选择性消化DNA/RNA杂交链，再用DNaseI消化掉DNA探针，纯化后即得到所需RNA。得到的mRNA中加入适量打断试剂高温条件下使其片断化，以打断后的mRNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库用Agilent 2100 Bioanalyzer和ABI StepOnePlus Real-Time PCR System质检，合格后进行测序。</p>
-            <div class="img_one_s" *ngIf="tflag == 5"></div>
-            <p class="help_text" *ngIf="tflag == 5">首先将提取好的total RNA使用生物素标记的特异性探针（Ribo-Zero™ rRNA Removal Kit）去除核糖体rRNA。在纯化之后，将RNA在一定的温度和离子环境下片段化。随后使用TruSeq® Stranded kit中随机引物和反转录酶合成cDNA一链，然后使用DNA聚合酶I和RNaseH来合成双链的cDNA。在cDNA二链合成过程中，RNA模板被去除，dTTP被dUTP所替换。dUTP的参与使cDNA的二链无法在后续流程中被扩增，因为聚合酶在延伸时无法跨过模板上的dUTP位点。双链的cDNA产物随后进行了加“A”碱基和接头连接。连接产物将被扩增，纯化后即得到了最终的cDNA文库。最后将构建好的测序文库进行测序。</p>
+            <div class="test_three" *ngIf="tflag == 6"></div>
+            <p class="help_text" *ngIf="tflag == 6">首先将提取好的total RNA去除核糖体rRNA。在纯化之后，将RNA在一定的温度和离子环境下片段化。随后使用TruSeq® Stranded kit中随机引物和反转录酶合成cDNA一链，然后使用DNA聚合酶I和RNaseH来合成双链的cDNA。在cDNA二链合成过程中，RNA模板被去除，dTTP被dUTP所替换。dUTP的参与使cDNA的二链无法在后续流程中被扩增，因为聚合酶在延伸时无法跨过模板上的dUTP位点。双链的cDNA产物随后进行了加“A”碱基和接头连接。连接产物将被扩增，纯化后即得到了最终的cDNA文库。最后将构建好的测序文库进行测序。</p>
+            <div class="test_four" *ngIf="tflag == 7"></div>
+            <p class="help_text" *ngIf="tflag == 7">首先将提取好的total RNA 使用MGIEasy rRNA去除试剂盒去除核糖体rRNA。在纯化之后，将RNA在一定的温度和离子环境下片段化。随后使用MGIEasy RNA方向性文库制备试剂盒中的随机引物和反转录酶合成cDNA一链，然后使用DNA聚合酶I和RNaseH来合成双链的cDNA。在cDNA二链合成过程中，RNA模板被去除，dTTP被dUTP所替换。dUTP的参与使cDNA的二链无法在后续流程中被扩增，因为聚合酶在延伸时无法跨过模板上的dUTP位点。双链的cDNA产物随后进行了加“A”碱基和接头连接。连接产物将被扩增，PCR产物热变性成单链，再用一段桥式引物将单链DNA环化得到单链环状DNA文库后进行上机测序。</p>
+            <div class="test_five" *ngIf="tflag == 8"></div>
+            <p class="help_text" *ngIf="tflag == 8">去除total RNA中的核糖体RNA，纯化后使用Agilent 2100验证去除效果；配制RNaseR反应体系，消化线性RNA组分，纯化回收反应产物；向得到的环状RNA中加入适量打断试剂高温条件下使其片断化，以打断后的环状RNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库用Agilent 2100 Bioanalyzer和ABI StepOnePlus Real-Time PCR System质检，合格后进行测序。</p>
+            <div class="test_six" *ngIf="tflag == 9"></div>
+            <p class="help_text" *ngIf="tflag == 9">去除total RNA中的核糖体RNA，纯化后使用Agilent 2100验证去除效果；配制RNaseR反应体系，消化线性RNA组分，纯化回收反应产物；向得到的环状RNA中加入适量打断试剂高温条件下使其片断化，以打断后的环状RNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，进行 PCR 扩增；PCR产物热变性成单链，再用一段桥式引物将单链DNA环化得到单链环状DNA文库后进行上机测序。</p>
         </div>
 
         <!-- 实验流程（小RNA） -->
@@ -20,8 +26,8 @@
             <h3 class="title" *ngIf="mflag == 2">6.1 实验流程（小RNA）</h3>
             <h3 class="title" *ngIf="mflag == 3">6.1.2 实验流程（小RNA）</h3>
             <p class="help_text">实验操作中的每一步（如样品检测、文库构建到测序）都会影响数据数量和质量，从而影响后续信息分析结果。为了得到高质量测序数据，我们对每一步都进行严格的质控。实验流程见下图：</p>
-            <div class="img_seven"></div>
-            <div class="help_bg">
+            <div class="img_seven" *ngIf="this.tflag == 61"></div>
+            <div class="help_bg" *ngIf="this.tflag == 61">
                 <p>图说明:</p> 
                 <p>1) RNA片段选择: 将Total RNA使用PAGE电泳切胶分离18-30nt的RNA。</p>
                 <p>2）3’接头连接: 使用5-adenylated，3-blocked的单链DNA接头连接到（1）中RNA的3’端。</p>
@@ -31,6 +37,22 @@
                 <p>6）PCR扩增: 使用高敏聚合酶对cDNA进行扩增，富集同时连接有3’接头和5’接头的cDNA，放大文库产量。</p>
                 <p>7）文库片段选择: 使用PAGE电泳分离100-120bp范围PCR产物，有效去除了引物二聚体等副产物。</p>
                 <p>8）文库定量及pooling环化。</p>
+            </div>
+
+            <div class="img_sevenTwo" *ngIf="this.tflag == 62"></div>
+            <div class="help_bg" *ngIf="this.tflag == 62">
+                <p>图说明:</p> 
+                <p>1) 将Total RNA使用磁珠纯化分离出目的片段范围的RNA；</p>
+                <p>2）使用5-adenylated，3-blocked的单链接头连接到RNA的3’端；</p>
+                <p>3）将RT引物加入体系中，与连接在RNA上的3’接头杂交，并与多余的游离3’接头杂交；</p>
+                <p>4）加入消化酶mix，去除多余的接头；</p>
+                <p>5）5’接头连接至产物中，与RNA的5’端连接。</p>
+                <p>6）以RT引物进行逆转录延伸，合成一链cDNA；</p>
+                <p>7）使用聚合酶对cDNA进行扩增，富集同时连接有3’接头和5’接头的cDNA；</p>
+                <p>8）使用PAGE电泳分离PCR产物中的目的片段；</p>
+                <p>9）文库定量及pooling环化；</p>
+                <p>10）对构建的文库进行质量检测；</p>
+                <p>11）将质量检测合格的文库上机测序。</p>
             </div>
         </div>
         
