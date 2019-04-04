@@ -45,7 +45,6 @@ export class ClusterComponent implements OnInit {
 
     gaugeColors:string[]=[];
     oLegendIndex:number=0;
-    oColor:string;
 
     defaultSetUrl:string;
     defaultSetEntity:object;
@@ -78,7 +77,6 @@ export class ClusterComponent implements OnInit {
 	baseThead: any[] = [];
     applyOnceSearchParams: boolean;
 
-    setAddedThead :any= [];
     defaultEntity: object;
 	defaultUrl: string;
 	defaultTableId: string;
@@ -87,12 +85,12 @@ export class ClusterComponent implements OnInit {
     defaultEmitBaseThead: boolean;
     
     geneType:string = '';
+    version:string = '';
+    genome:string = '';
 
-	compareGroupList: any[] = []; //图的参数
+    //参数
+	compareGroupList: any[] = [];
     compareGroup: any = '';
-    venSelectAllData: string[] = [];
-    selectConfirmData: string[] = [];
-    m_name1:string; //比较组
 
     constructor(
         private ajaxService: AjaxService,
@@ -118,7 +116,10 @@ export class ClusterComponent implements OnInit {
     ngOnInit() {
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
         this.gaugeColors=this.storeService.getColors();
+        this.defaultDefaultChecked = true;
         this.geneType = this.pageModuleService['defaultModule'];
+        this.version =  this.storeService.getStore('version');
+        this.genome =  this.storeService.getStore('genome');
         this.compareGroupList = this.storeService.getStore('diff_plan');
         this.compareGroup = this.compareGroupList[0];
 
@@ -137,24 +138,24 @@ export class ClusterComponent implements OnInit {
         this.setDataEntity={
             "geneType": this.geneType,
             "LCID": this.storeService.getStore('LCID'),
-            "version": this.storeService.getStore('version'),
-            "genome": this.storeService.getStore('genome')
+            "version": this.version,
+            "genome": this.genome
         }
 
         //图
         this.chartUrl=`${config['javaPath']}/cluster/heatmapGraph`;
         this.chartEntity = {
             //分析
-            "tid": "0da9b577c6fd4c09ad7dded3137ef82d",
+            // "tid": "0da9b577c6fd4c09ad7dded3137ef82d",
             //模块
             "LCID": this.storeService.getStore('LCID'),
-            "version": this.storeService.getStore('version'),
-            "genome": this.storeService.getStore('genome'),
+            "version": this.version,
+            "species": this.genome,
             "geneType": this.geneType,
             "isHorizontal": true,
             "verticalClassification": [],
-            "horizontalClassification": []
-           
+            "horizontalClassification": [],
+            "compareGroup": this.compareGroup
         };
 
         //表
@@ -179,21 +180,57 @@ export class ClusterComponent implements OnInit {
             reAnaly: false,
             verticalClassification:this.verticalClass,
             geneType: this.geneType, //基因类型gene和transcript
-            species: this.storeService.getStore('genome'), //物种
-            version: this.storeService.getStore('version'),
+            species: this.genome, //物种
+            version: this.version,
             searchList: [],
             sortThead:this.addColumn['sortThead']
-            
         };
+        this.defaultTableId = 'default_heatmap';
+        this.defaultDefaultChecked = true;
+        this.defaultEmitBaseThead = true;
+        this.defaultCheckStatusInParams = true;
+
+        this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
+        this.extendEntity = {
+            //分析
+            tid: "0da9b577c6fd4c09ad7dded3137ef82d",
+            //模块
+            LCID: sessionStorage.getItem('LCID'),
+            pageIndex: 1, //分页
+            pageSize: 20,
+            mongoId: null,
+            addThead: [], //扩展列
+            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+            // matchAll: false,
+            matrix: false, //是否转化。矩阵为matrix
+            relations: [], //关系组（简写，索引最后一个字段）
+            sortValue: null,
+            sortKey: null, //排序
+            reAnaly: false,
+            verticalClassification:this.verticalClass,
+            geneType: this.geneType, //基因类型gene和transcript
+            species: this.genome, //物种
+            version: this.version,
+            searchList: [],
+            sortThead:this.addColumn['sortThead']
+        };
+        this.extendTableId = 'extend_heatmap';
+        this.extendDefaultChecked = true;
+        this.extendEmitBaseThead = true;
+        this.extendCheckStatusInParams = false;
     }
 
-    //选中参数之后，重分析访问接口
+    //选中参数之后，重新访问接口
     handleCompareGroupChange() {
         console.log("compareGroup:",this.compareGroup)
 
         //重新发起请求
+
+        // this.defaultSetEntity['compareGroup'] = this.compareGroup;
+        this.chartEntity['compareGroup'] = this.compareGroup;
+        
         // this.doWithSelectChange();
-		this.chartBackStatus();
+		// this.chartBackStatus();
 	}
 
     ngAfterViewInit() {
@@ -409,8 +446,8 @@ export class ClusterComponent implements OnInit {
         let leftLineData = data.left.line,
             topLineData = data.top.line,
             heatmapData = data.heatmaps,
-            valuemax = this.domainRange[1],
-            valuemin = this.domainRange[0];
+            valuemax = data.max,
+            valuemin = data.min;
 
         let topSimples=[];
         let topComplexes=[];
