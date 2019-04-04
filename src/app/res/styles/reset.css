@@ -178,19 +178,20 @@ ol {
 }
 
 
-/*
+/* 滚动条 */
+
 ::-webkit-scrollbar-thumb {
-    border: solid 1px #ddd;
     width: 0px;
-    border-radius: 4px;
-    background-color: #D8D8D8;
+    background-color: rgb(238, 238, 238);
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 16px;
+    height: 16px;
 }
-::-webkit-scrollbar-button{
+
+
+/* ::-webkit-scrollbar-button {
     display: none!important;
 } */
 
@@ -245,7 +246,7 @@ ol {
 }
 
 .gene .ant-input-group-addon {
-    border-radius: 0;
+    border-radius: 4px 0 0 4px;
 }
 
 
@@ -254,4 +255,8 @@ ol {
 .relative-params-content .ant-slider,
 .tools-params-kda .ant-slider {
     margin: 6px 6px 18px;
+}
+
+.ant-drawer.ant-drawer-open .ant-drawer-content {
+    border-radius: 4px;
 }

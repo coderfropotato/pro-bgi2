@@ -18,6 +18,7 @@ declare const $:any;
 export class ReanalysisIndexComponent implements OnInit {
     ready:boolean = false;
     getUnReadAnalysisCountTimer:any = null;
+    menuList:any[] = [];
 
 	constructor(
         private router:Router,
@@ -85,6 +86,20 @@ export class ReanalysisIndexComponent implements OnInit {
                                     sessionStorage.setItem(key,JSON.stringify(data["data"][key]));
                                 }
                             }
+
+                            let menuRouteMap = {};
+							this.menuList.forEach((v, index) => {
+								if (v['children'].length) {
+									v['children'].forEach((val, i) => {
+										val['category'] = v['category'];
+										menuRouteMap[val['url']] = val;
+									});
+								}
+							});
+							
+							sessionStorage.setItem('menu_list',JSON.stringify(this.menuList));
+							this.storeService.setStore('menu', this.menuList);
+							this.storeService.setStore('menuRouteMap', menuRouteMap);
                         }
                         resolve("success");
                     },
