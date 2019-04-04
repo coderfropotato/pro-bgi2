@@ -910,9 +910,9 @@ export class DiffExpressionNumberComponent implements OnInit {
 		// this.selectData = ["Up+Down","Total"];
 		// this.selectedVal = this.selectData[1];
 
-		this.tableEntity["compareGroup"] = this.selectConfirmData;
+		//this.tableEntity["compareGroup"] = this.selectConfirmData;
 		//this.defaultShowFilterStatus = false;
-		this.chartBackStatus();
+		//this.chartBackStatus();
 	}
 
 	handleCompareGroupChange() {
