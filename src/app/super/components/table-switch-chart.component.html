@@ -109,7 +109,7 @@
                     <nz-table *ngIf="!isFilter && !isVennTable && isShowTable && !tableError" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
                         <thead>
                             <tr>
-                                <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
+                                <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']" nz-tooltip nzTitle="{{ 'tableHeader.'+thead['hover'] | translate }}">{{thead.name}}</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -303,24 +303,20 @@ export class ToolsComponent implements OnInit {
 					v['disabled'] = true;
 				} else {
 					// 关联聚类 srcTotal*
-					if (v['type'] === 'heatmapRelation') {
-						// 是否disabled
-						let flag1 = false,
-							flag2 = false;
-						if (v['limit'].length === 1) {
-							flag1 = this.srcTotal * this.geneCount >= v['limit'][0] ? false : true;
-						} else {
-							// 关联的基因数是否满足条件
-							flag1 =
-								this.srcTotal * this.geneCount < v['limit'][0] ||
-								this.srcTotal * this.geneCount > v['limit'][1]
-									? true
-									: false;
-						}
-						// 选择的基因数量是否满足条件
-						flag2 = this.geneCount < v['limit'][0] || this.geneCount > v['limit'][1] ? true : false;
-						v['disabled'] = flag1 || flag2;
-					} else {
+					// if (v['type'] === 'heatmapRelation') {
+					// 	// 是否disabled
+					// 	let flag1 = false,
+					// 		flag2 = false;
+					// 	if (v['limit'].length === 1) {
+					// 		flag1 = this.srcTotal * this.geneCount >= v['limit'][0] ? false : true;
+					// 	} else {
+					// 		// 关联的基因数是否满足条件
+					// 		flag1 = this.srcTotal * this.geneCount < v['limit'][0] || this.srcTotal * this.geneCount > v['limit'][1] ? true : false;
+					// 	}
+					// 	// 选择的基因数量是否满足条件
+					// 	flag2 = this.geneCount < v['limit'][0] || this.geneCount > v['limit'][1] ? true : false;
+					// 	v['disabled'] = flag1 || flag2;
+					// } else {
 						// 其他关联 +
 						if (v['limit'].length === 1) {
 							v['disabled'] = this.relativeGeneCount >= v['limit'][0] ? false : true;
@@ -330,7 +326,7 @@ export class ToolsComponent implements OnInit {
 									? true
 									: false;
 						}
-					}
+					// }
 				}
 			}
 		});
