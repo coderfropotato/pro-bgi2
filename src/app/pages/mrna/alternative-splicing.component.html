@@ -1,60 +1,37 @@
 <div class="content row  alternativeSplicing">
-  <!-- <app-menu [menu]="[]" [geneSwitch]="false">
+    <!-- <app-menu [menu]="[]" [geneSwitch]="false">
   </app-menu> -->
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'alternative.title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'alternative.content' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
         <div class="left-bottom-layout">
-            <app-table-switch-chart
-                #alternativeSpliceChart
-                [id]="'alternativeSpliceChart'"
-                [tableUrl]="chartUrl"
-                [apiEntity]="chartEntity"
-                (drawChartEmit)="drawChart($event)"
-                [chartId]="'alternativeSpliceDiv'"
-                [chartName]="'可变剪接事件统计'"
-                [flex]="true"
-                (refresh)="handlerRefresh()"
-                [chartDescContent]="'X轴代表可变剪接类型，Y轴代表可变剪接数目。不同颜色的柱子分别代表了不同的样品。'"
-            >
+            <app-table-switch-chart #alternativeSpliceChart [id]="'alternativeSpliceChart'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'alternativeSpliceDiv'" [chartName]="'可变剪接事件统计'" [flex]="true" (refresh)="handlerRefresh()"
+                [chartDescContent]="'X轴代表可变剪接类型，Y轴代表可变剪接数目。不同颜色的柱子分别代表了不同的样品。'">
             </app-table-switch-chart>
 
-            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-            ></app-color-picker>
+            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
         </div>
+    </div>
+    <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+        <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
         </div>
-        <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
-                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
-            </div>
-            <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix"-->
-            <div class="small_text">
-                当前表格，样本 : <span class="small_span">{{sample}}</span> 剪接类型 ：<span class="small_span">{{asType}}</span>
-            </div>
-            <div class="small_text" style="font-style: italic;color: rgba(102,101,101,.548);">
-                注：请单击图上色块切换样本和剪接类型。
-            </div>
-            <app-geneTable
-                #defaultSpliceTable
-                [url]="defaultTableUrl"
-                [pageEntity]="defaultTableEntity"
-                [tableId]="defaultTableId"
-                [defaultChecked]="defaultSpliceChecked"
-                [tableHeight]="tableHeight"
-
-                [checkStatusInParams]="defaultCheckStatusInParams"
-
-                [(computedScrollHeight)]="computedScrollHeight"
-
-            ></app-geneTable>
-            <!-- <app-big-table
+        <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix"-->
+        <div class="small_text">
+            当前表格，样本 : <span class="small_span">{{sample}}</span> 剪接类型 ：<span class="small_span">{{asType}}</span>
+        </div>
+        <div class="small_text" style="font-style: italic;color: rgba(102,101,101,.548);">
+            注：请单击图上色块切换样本和剪接类型。
+        </div>
+        <app-geneTable #defaultSpliceTable [url]="defaultTableUrl" [pageEntity]="defaultTableEntity" [tableId]="defaultTableId" [defaultChecked]="defaultSpliceChecked" [tableHeight]="tableHeight" [checkStatusInParams]="defaultCheckStatusInParams" [(computedScrollHeight)]="computedScrollHeight"></app-geneTable>
+        <!-- <app-big-table
                 class="no-outside-border"
                 #defaultSpliceTable
                 [tableHeight]="tableHeight"
@@ -63,5 +40,5 @@
                 [tableId]="defaultTableId"
                 [(computedScrollHeight)]="computedScrollHeight"
             ></app-big-table> -->
-        </div>
+    </div>
 </div>

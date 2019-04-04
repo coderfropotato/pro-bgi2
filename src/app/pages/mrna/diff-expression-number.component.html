@@ -3,8 +3,8 @@
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'diff_venn_number.diff_venn_title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'diff_venn_number.diff_venn_content' | translate}}</p>
@@ -137,7 +137,7 @@
         <div class="small_text" style="font-style: italic;color: rgba(102,101,101,.548);">
             注：请单击柱状图切换比较组或上下调类别。
         </div>
-        
+
         <div class="func" #func (click)="resize($event)">
             <!-- 增删列 -->
             <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="defaultGeneType"></app-add-column>
@@ -146,7 +146,7 @@
             <!-- 返回 -->
             <button class="ml12" *ngIf="!addColumnShow && showBackButton" [nzSize]="small" nz-button nzType="Default" (click)="back()">返回</button>
         </div>
-        
+
         <!-- 表格转换  [defaultShowFilterStatus]="defaultShowFilterStatus"-->
         <app-table-transformation #transformTable class="no-outside-border" [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
             [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"

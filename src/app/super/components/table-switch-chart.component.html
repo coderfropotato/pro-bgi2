@@ -9,11 +9,10 @@
                 <i class="anticon anticon-table"></i>
             </button>
             <!-- 表筛选 -->
-            <i style='margin:0;margin-left:10px;' *ngIf="isFilter && isShowTable" class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate"
-            nz-tooltip (click)="beginFilter()"></i>
+            <i style='margin:0;margin-left:10px;' *ngIf="isFilter && isShowTable" class="anticon anticon-filter" [ngClass]="{'active':beginFilterStatus}" [nzTitle]="'tableButton.filter' | translate" nz-tooltip (click)="beginFilter()"></i>
             <!-- 选择面板 显示隐藏icon -->
             <span *ngIf="isHasSelectPanel && selectPanelList.length" style="margin-left:10px" (click)='showSelectPanel()'>
-                <i class="iconfont icon-zhankai"></i>
+                <i class="iconfont icon-zhankai1"></i>
             </span>
             <!-- 下拉框 -->
             <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate :''"></ng-container>
@@ -28,7 +27,8 @@
             <!-- 右-其他模块 -->
             <ng-container *ngTemplateOutlet="(otherRightTemplate && (!chartError || !tableError)) ? otherRightTemplate :''"></ng-container>
             <!-- 单选、多选 -->
-            <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.multiple' | translate}}"></nz-switch>
+            <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="getSelectModule()" nzCheckedChildren="{{'tableButton.multiple' | translate}}"
+                nzUnCheckedChildren="{{'tableButton.multiple' | translate}}"></nz-switch>
             <button *ngIf="!isShowTable && isHasMultiSelect && !chartError" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
             <!-- 精度下拉框 -->
             <!-- <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
@@ -106,7 +106,7 @@
                 <div #tableChartContent class="table-chart-content" [class.center-flex]="!isShowTable && !chartError" style="flex:1;" [ngStyle]="{'overflow':!isShowTable?'auto':'hidden'}">
 
                     <!-- 普通表  -->
-                    <nz-table  *ngIf="!isFilter && !isVennTable && isShowTable && !tableError" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
+                    <nz-table *ngIf="!isFilter && !isVennTable && isShowTable && !tableError" nzShowPagination="false" [nzData]="tableData.rows" [nzScroll]="scroll" [nzSize]="'small'">
                         <thead>
                             <tr>
                                 <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']" nz-tooltip [nzTitle]="thead.hover">{{thead.name}}</th>
@@ -114,62 +114,50 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let row of tableData.rows">
-                                <td class="center textEllipsis" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']"
-                                nz-popover [nzContent]="row[thead.true_key]">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
+                                <td class="center textEllipsis" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']" nz-popover [nzContent]="row[thead.true_key]">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
                             </tr>
                         </tbody>
                     </nz-table>
 
                     <!-- 有筛选的表 -->
-                    <nz-table *ngIf="isFilter && !isVennTable && isShowTable && !tableError" nzSize="small" [nzScroll]="scroll"
-                        [nzData]="tableData.rows" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzBordered>
+                    <nz-table *ngIf="isFilter && !isVennTable && isShowTable && !tableError" nzSize="small" [nzScroll]="scroll" [nzData]="tableData.rows" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzBordered>
                         <thead>
                             <tr>
                                 <!-- 首列 -->
-                                <th [ngStyle]="{'min-width':widthConfig[0]}" style="text-align: center;" [attr.colspan]="tableData.baseThead[0]['colspan']" [attr.rowspan]="tableData.baseThead[0]['rowspan']"
-                                    [(nzSort)]="sortMap[tableData.baseThead[0]['true_key']]" [nzShowSort]="tableData.baseThead[0]['searchType']!='string'" [nzSortKey]="tableData.baseThead[0]['true_key']"
-                                    (nzSortChange)="sort(tableData.baseThead[0]['true_key'],$event)">
+                                <th [ngStyle]="{'min-width':widthConfig[0]}" style="text-align: center;" [attr.colspan]="tableData.baseThead[0]['colspan']" [attr.rowspan]="tableData.baseThead[0]['rowspan']" [(nzSort)]="sortMap[tableData.baseThead[0]['true_key']]" [nzShowSort]="tableData.baseThead[0]['searchType']!='string'"
+                                    [nzSortKey]="tableData.baseThead[0]['true_key']" (nzSortChange)="sort(tableData.baseThead[0]['true_key'],$event)">
                                     <span [nzTitle]="(tableData.baseThead[0]['hover'] || tableData.baseThead[0]['hover']==0)?tableData.baseThead[0]['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{tableData.baseThead[0]['name']}}</span>
                                     <!-- get app-filter child emit function <recive> <delete> -->
-                                    <app-filter #child *ngIf="beginFilterStatus" [pid]="id" [searchType]="tableData.baseThead[0]['searchType']"
-                                        (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="tableData.baseThead[0]['name']"
+                                    <app-filter #child *ngIf="beginFilterStatus" [pid]="id" [searchType]="tableData.baseThead[0]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="tableData.baseThead[0]['name']"
                                         [filterName]="tableData.baseThead[0]['true_key']"></app-filter>
                                 </th>
                                 <!-- 其他列 -->
-                                <th [ngStyle]="{'min-width':widthConfig[i+1]}" style="text-align: center;" [nzSortKey]="tableData.baseThead[i+1]['true_key']" [(nzSort)]="sortMap[tableData.baseThead[i+1]['true_key']]"
-                                    (nzSortChange)="sort(tableData.baseThead[i+1]['true_key'],$event)" [nzShowSort]="!tableData.baseThead[i+1]['children'].length && tableData.baseThead[i+1]['searchType']!='string'"
-                                    [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']" *ngFor="let h of tableData.baseThead.slice(1);index as i;trackBy:identify">
+                                <th [ngStyle]="{'min-width':widthConfig[i+1]}" style="text-align: center;" [nzSortKey]="tableData.baseThead[i+1]['true_key']" [(nzSort)]="sortMap[tableData.baseThead[i+1]['true_key']]" (nzSortChange)="sort(tableData.baseThead[i+1]['true_key'],$event)"
+                                    [nzShowSort]="!tableData.baseThead[i+1]['children'].length && tableData.baseThead[i+1]['searchType']!='string'" [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']" *ngFor="let h of tableData.baseThead.slice(1);index as i;trackBy:identify">
                                     <span [nzTitle]="(tableData.baseThead[i+1]['hover'] || tableData.baseThead[i+1]['hover']==0)?tableData.baseThead[i+1]['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
-                                    <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="id"
-                                        [searchType]="tableData.baseThead[i+1]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)"
-                                        [filterNamezh]="tableData.baseThead[i+1]['name']" [filterName]="tableData.baseThead[i+1]['true_key']"></app-filter>
+                                    <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="id" [searchType]="tableData.baseThead[i+1]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="tableData.baseThead[i+1]['name']"
+                                        [filterName]="tableData.baseThead[i+1]['true_key']"></app-filter>
                                 </th>
                             </tr>
                             <tr ng-if="twoLevelHead.length">
                                 <!-- 二级表头首列 -->
-                                <th class="two-level-thead" style="text-align: center;" *ngFor="let h of twoLevelHead.slice(0,tableData.baseThead[0].children.length);index as i;trackBy:identify"
-                                    [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
+                                <th class="two-level-thead" style="text-align: center;" *ngFor="let h of twoLevelHead.slice(0,tableData.baseThead[0].children.length);index as i;trackBy:identify" [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
                                     (nzSortChange)="sort(h['true_key'],$event)">
                                     <span [nzTitle]="(h['hover'] || h['hover']==0)?h['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
-                                    <app-filter #child *ngIf="beginFilterStatus" [pid]="id" [searchType]="h['searchType']"
-                                        (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="h['name']"
-                                        [filterName]="h['true_key']"></app-filter>
+                                    <app-filter #child *ngIf="beginFilterStatus" [pid]="id" [searchType]="h['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="h['name']" [filterName]="h['true_key']"></app-filter>
                                 </th>
                                 <!-- 二级表头其他列 -->
-                                <th style="text-align: center;" *ngFor="let h of twoLevelHead.slice(tableData.baseThead[0].children.length);index as i;trackBy:identify"
-                                    [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']"
-                                    (nzSortChange)="sort(h['true_key'],$event)">
+                                <th style="text-align: center;" *ngFor="let h of twoLevelHead.slice(tableData.baseThead[0].children.length);index as i;trackBy:identify" [(nzSort)]="sortMap[h['true_key']]" [nzShowSort]="h['searchType']!='string'" [nzSortKey]="h['true_key']" (nzSortChange)="sort(h['true_key'],$event)">
                                     <span [nzTitle]="(h['hover'] || h['hover']==0)?h['hover']:'NA'" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
-                                    <app-filter #child *ngIf="beginFilterStatus" [pid]="id" [searchType]="h['searchType']"
-                                        (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="h['name']"
-                                        [filterName]="h['true_key']"></app-filter>
+                                    <app-filter #child *ngIf="beginFilterStatus" [pid]="id" [searchType]="h['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="h['name']" [filterName]="h['true_key']"></app-filter>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let d of tableData.rows" style="text-align: center;">
                                 <!-- 首列的二级头表格数据  [nzContent]="(d[two['true_key']]+'')?((d[two['true_key']]| accuracyPipe : accuracy : two['searchType']) | tableSpecialTheadFilter:two['true_key']:d[two['true_key']]):'NA'"-->
-                                <td [ngStyle]="{'min-width':widthConfig[0],'max-width':widthConfig[0]}" *ngFor="let two of (tableData.baseThead[0].children.length?tableData.baseThead[0].children:[tableData.baseThead[0]]);index as i;trackBy:identity" [nzContent]="tpl" nzPlacement="right" nz-popover>
+                                <td [ngStyle]="{'min-width':widthConfig[0],'max-width':widthConfig[0]}" *ngFor="let two of (tableData.baseThead[0].children.length?tableData.baseThead[0].children:[tableData.baseThead[0]]);index as i;trackBy:identity" [nzContent]="tpl" nzPlacement="right"
+                                    nz-popover>
                                     <ng-template #tpl>
                                         <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:true"></span>
                                     </ng-template>
@@ -182,16 +170,15 @@
                                         <span [innerHTML]="(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true):'NA'"></span>
                                     </ng-template>
                                     <!--{{(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | accuracyPipe : accuracy : h['searchType']):'NA' }}-->
-                                    <span  [innerHTML]="(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | tableSpecialTheadFilter:h['true_key']:h['searchType']:false):'NA'"></span>
+                                    <span [innerHTML]="(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | tableSpecialTheadFilter:h['true_key']:h['searchType']:false):'NA'"></span>
                                 </td>
                             </tr>
                         </tbody>
                     </nz-table>
 
-                     <!-- 大表分页  -->
-                     <div #tableBottom class="table-bottom" *ngIf="isPaging && !isVennTable && isShowTable && !tableError">
-                        <app-pagination style="float:left;" [(pageIndex)]="apiEntity['pageIndex']" [total]="total"
-                            [(pageSize)]="apiEntity['pageSize']" (pageIndexChange)="pageIndexChange()" (pageSizeChange)="pageSizeChange()">
+                    <!-- 大表分页  -->
+                    <div #tableBottom class="table-bottom" *ngIf="isPaging && !isVennTable && isShowTable && !tableError">
+                        <app-pagination style="float:left;" [(pageIndex)]="apiEntity['pageIndex']" [total]="total" [(pageSize)]="apiEntity['pageSize']" (pageIndexChange)="pageIndexChange()" (pageSizeChange)="pageSizeChange()">
                         </app-pagination>
                     </div>
 

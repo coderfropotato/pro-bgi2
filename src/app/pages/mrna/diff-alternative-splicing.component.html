@@ -1,58 +1,36 @@
 <div class="content row  alternativeSplicing">
-  <!-- <app-menu [menu]="[]" [geneSwitch]="false">
+    <!-- <app-menu [menu]="[]" [geneSwitch]="false">
   </app-menu> -->
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'diff_alternative.title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'diff_alternative.content' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
         <div class="left-bottom-layout">
-            <app-table-switch-chart
-                #diffAlternativeSpliceChart
-                [id]="'diffAlternativeSpliceChart'"
-                [tableUrl]="chartUrl"
-                [apiEntity]="chartEntity"
-                (drawChartEmit)="drawChart($event)"
-                [chartId]="'diffAlternativeSpliceDiv'"
-                [chartName]="'差异可变剪接事件统计'"
-                [flex]="true"
-                (refresh)="handlerRefresh()"
-                [chartDescContent]="'X轴代表差异可变剪接类型，Y轴代表差异可变剪接数目。不同颜色的柱子分别代表了不同的差异方案。'"
-            >
+            <app-table-switch-chart #diffAlternativeSpliceChart [id]="'diffAlternativeSpliceChart'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'diffAlternativeSpliceDiv'" [chartName]="'差异可变剪接事件统计'" [flex]="true"
+                (refresh)="handlerRefresh()" [chartDescContent]="'X轴代表差异可变剪接类型，Y轴代表差异可变剪接数目。不同颜色的柱子分别代表了不同的差异方案。'">
             </app-table-switch-chart>
 
-            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-            ></app-color-picker>
+            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
         </div>
+    </div>
+    <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+        <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
         </div>
-        <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-            <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
-                <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
-            </div>
-            <div class="small_text">
-                当前表格，比较组 : <span class="small_span">{{group}}</span> 剪接类型 ：<span class="small_span">{{asType}}</span>
-            </div>
-            <div class="small_text" style="font-style: italic;color: rgba(102,101,101,.548);">
-                注：请单击图上色块切换比较组和剪接类型。
-            </div>
-            <app-geneTable
-                #diffDefaultTable
-                [url]="diffDefaultTableUrl"
-                [pageEntity]="diffDefaultTableEntity"
-                [tableId]="defaultDiffTableId"
-                [defaultChecked]="defaultDiffChecked"
-                [tableHeight]="tableHeight"
-
-                [checkStatusInParams]="defaultCheckStatusInParams"
-
-                [(computedScrollHeight)]="computedScrollHeight"
-            ></app-geneTable>
-            <!-- <app-big-table
+        <div class="small_text">
+            当前表格，比较组 : <span class="small_span">{{group}}</span> 剪接类型 ：<span class="small_span">{{asType}}</span>
+        </div>
+        <div class="small_text" style="font-style: italic;color: rgba(102,101,101,.548);">
+            注：请单击图上色块切换比较组和剪接类型。
+        </div>
+        <app-geneTable #diffDefaultTable [url]="diffDefaultTableUrl" [pageEntity]="diffDefaultTableEntity" [tableId]="defaultDiffTableId" [defaultChecked]="defaultDiffChecked" [tableHeight]="tableHeight" [checkStatusInParams]="defaultCheckStatusInParams" [(computedScrollHeight)]="computedScrollHeight"></app-geneTable>
+        <!-- <app-big-table
                 class="no-outside-border"
                 #diffDefaultTable
                 [tableHeight]="tableHeight"
@@ -61,5 +39,5 @@
                 [tableId]="defaultDiffTableId"
                 [(computedScrollHeight)]="computedScrollHeight"
             ></app-big-table> -->
-        </div>
+    </div>
 </div>

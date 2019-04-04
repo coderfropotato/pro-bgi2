@@ -2,8 +2,8 @@
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'gene_fusion.title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'gene_fusion.content' | translate}}</p>
@@ -15,7 +15,7 @@
                 <app-fusionSet *ngIf="!isShowTable" [isDisabled]='isDisabled' (confirm)="setConfirm($event)"></app-fusionSet>
             </ng-template>
 
-             <!-- 下拉选择 -->
+            <!-- 下拉选择 -->
             <ng-template #selectTemplate>
                 <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="sample" (ngModelChange)="handleSelectChange()">
                     <nz-option *ngFor="let item of samples;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
@@ -23,43 +23,17 @@
             </ng-template>
 
             <!-- [tableUrl]="tableUrl" -->
-            <app-table-switch-chart
-                #fusionChartTable
-                [id]="'fusionChart'"
-                [apiEntity]="tableChartEntity"
-                [tableUrl]="tableUrl"
-                [chartUrl]="chartUrl"
-                [isPaging]='true'
-                [isFilter]='true'
-                [setTemplate]="setTemplate"
-                [selectTemplate]="selectTemplate"
-                (drawChartEmit)="drawChart($event)"
-                (showChange)="showChange($event)"
-                [flex]="true"
-                [chartId]="'fusionCircos'"
-                [chartName]="'基因融合 Circos 图'"
-                [chartDescContent]="'外圈代表染色体信息，中间连线表示融合基因（ 红线是染色体间的融合基因，绿线是染色体内的融合基因 ），从图中可以清楚地看出融合基因在染色体上的位置。'"
-                (refresh)="handlerRefresh()"
-            >
+            <app-table-switch-chart #fusionChartTable [id]="'fusionChart'" [apiEntity]="tableChartEntity" [tableUrl]="tableUrl" [chartUrl]="chartUrl" [isPaging]='true' [isFilter]='true' [setTemplate]="setTemplate" [selectTemplate]="selectTemplate" (drawChartEmit)="drawChart($event)"
+                (showChange)="showChange($event)" [flex]="true" [chartId]="'fusionCircos'" [chartName]="'基因融合 Circos 图'" [chartDescContent]="'外圈代表染色体信息，中间连线表示融合基因（ 红线是染色体间的融合基因，绿线是染色体内的融合基因 ），从图中可以清楚地看出融合基因在染色体上的位置。'" (refresh)="handlerRefresh()">
             </app-table-switch-chart>
         </div>
     </div>
     <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
         <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
-            <app-layout-switch  [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
         </div>
 
-        <app-table-switch-chart
-                #fusionImg
-                [id]="'fusionImg'"
-                [chartUrl]="rightImgUrl"
-                [apiEntity]="imgEntity"
-                (drawChartEmit)="drawRightImg($event)"
-                [flex]="true"
-                [chartId]="'fusionImg'"
-                [chartName]="'基因融合'"
-                (refresh)="rightHandlerRefresh()"
-            >
-            </app-table-switch-chart>
+        <app-table-switch-chart #fusionImg [id]="'fusionImg'" [chartUrl]="rightImgUrl" [apiEntity]="imgEntity" (drawChartEmit)="drawRightImg($event)" [flex]="true" [chartId]="'fusionImg'" [chartName]="'基因融合'" (refresh)="rightHandlerRefresh()">
+        </app-table-switch-chart>
     </div>
 </div>
