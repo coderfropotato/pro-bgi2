@@ -42,6 +42,38 @@
         "express_venn_title": "express gene clustering",
         "express_venn_content": "Clustering the FPKM values of express genes in each comparison group"
     },
+    "go_class": {
+        "title": "go class",
+        "content": ""
+    },
+    "go_rich": {
+        "title": "go rich",
+        "content": ""
+    },
+    "kegg_class": {
+        "title": "kegg class",
+        "content": ""
+    },
+    "kegg_rich": {
+        "title": "kegg rich",
+        "content": ""
+    },
+    "alternative": {
+        "title": "alternative",
+        "content": ""
+    },
+    "diff_alternative": {
+        "title": "diff alternative",
+        "content": ""
+    },
+    "gene_fusion": {
+        "title": "gene fusion",
+        "content": ""
+    },
+    "snp_overview": {
+        "title": "",
+        "content": ""
+    },
     "top": {
         "pdf": "Export as pdf",
         "upload": "Upload data",
@@ -143,7 +175,7 @@
         "name": "name",
         "name_pattern": "The input is not valid name !",
         "name_invalid": "The input is not valid name !",
-        "label_invalid": "Currently new labels are unavailable ！",
+        "label_invalid": "Label is unavailable ！",
         "tag": "tag",
         "remark": "remark",
         "cancel": "cancel",
@@ -216,9 +248,35 @@
         "12": "Enrichment",
         "13": "KDA"
     },
+    "useage": {
+        "01": "useage：必须先进行“关联转换”，转换成基因关系矩阵后，才可使用该工具。",
+        "02": "",
+        "04": "useage：需事先通过扩展列，添加基因的分类信息。",
+        "05": "",
+        "06": "",
+        "07": "",
+        "08": "useage：必须先进行“关联转换”，转换成基因关系矩阵后，才可使用该工具。",
+        "09": "",
+        "11": "",
+        "12": "",
+        "13": ""
+    },
+    "toolpopover": {
+        "01": "请选择1 ~ 2000个基因/转录本",
+        "02": "请选择1 ~ 2000个基因/转录本",
+        "04": "",
+        "05": "",
+        "06": "请选择1 ~ 100 个基因/转录本",
+        "07": "请选择1 ~ 500 个基因/转录本",
+        "08": "",
+        "09": "",
+        "11": "",
+        "12": "",
+        "13": ""
+    },
     "menu": {
         "category_url_main": "Main",
-        "category_gene_expression": "Gene Expression",
+        "category_gene_expression": "Expression",
         "category_annotation": "Annotation",
         "category_variation": "Variation",
         "category_snp_indel": "SNP/InDel",
@@ -242,11 +300,14 @@
         "url_indel-overview": "InDel Overview",
         "url_indel-distribution": "InDel Distribution",
         "url_snp-indel-help": "SNP Indel Help",
+        "url_miRNA-target": "miRNA Target",
+        "url_miRNA-target-help": "mirNA Target Help",
         "url_overview": "Overview",
         "url_reference": "Reference",
         "url_reads-filter": "Reads Filter",
         "url_reads-alignment": "Reads Alignment",
         "url_smallrna": "Small Rna",
         "url_basic-help": "Basic Help"
-    }
+    },
+    "relativeButton": "Association conversion"
 }

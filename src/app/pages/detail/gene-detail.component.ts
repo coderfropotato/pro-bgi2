@@ -471,8 +471,13 @@ export class GeneDetailComponent implements OnInit {
 		return new Promise((resolve, reject) => {
 			this.ajaxService
 			.getDeferData({
-				url: this.alternative_defaultUrl,
-				data: this.alternative_params	 
+				url: `${config['javaPath']}/geneDetail/getGeneID`,
+				data: {
+					"LCID": this.lcid,
+					"geneType": "rna",
+					"id": this.geneID
+				}
+					  
 			})
 			.subscribe((data: any) => {
 				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
@@ -1192,7 +1197,7 @@ export class GeneDetailComponent implements OnInit {
 
 	downPDF(data){
 		if(data.pdfLink==0){
-			this.nzMessage.create(`warning`, `单个样本不支持不支持下载!`);
+			this.nzMessage.create(`warning`, `不支持不支持下载!`);
 		}else{
 			let tempUrl = `http://biosys.bgi.com/project/test/BGI_${this.lcid}/Structure_and_variation/Alternative_splicing/AS_plot/${data['as_group_name']}/${data['as_id']}_${data['as_group_name']}_${data['as_type']}_${this.geneID}.pdf`;
 			window.open(tempUrl);
