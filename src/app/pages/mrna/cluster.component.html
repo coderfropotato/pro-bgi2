@@ -6,9 +6,9 @@
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
                 <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
                 <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
-                {{'diff_venn.diff_venn_title' | translate}}
+                聚类
             </span>
-            <p [hidden]="!expandModuleDesc">{{'diff_venn.diff_venn_content' | translate}}</p>
+            <p [hidden]="!expandModuleDesc">聚类</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
         <!-- level下拉选择 -->
@@ -20,9 +20,25 @@
         </ng-template>
         <div class="left-bottom-layout">
             <ng-template #setTemplate>
-                <app-clusterSet *ngIf="defaultSetData && setData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData' [setData]="setData"></app-clusterSet>
+                <app-clusterSet (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData' [setData]="setData"></app-clusterSet>
             </ng-template>
-            <app-table-switch-chart 
+            <app-table-switch-chart
+            #clusterChart
+            [id]="'cluster'"
+            [chartUrl]="chartUrl"
+            [apiEntity]="chartEntity"
+            [setTemplate]="setTemplate"
+            [otherLeftTemplate]="otherLeftTemplate"
+            (drawChartEmit)="drawChart($event)"
+            [chartId]="'clusterChartDiv'"
+            [chartName]="'聚类图'"
+            [defaultSetUrl]='defaultSetUrl'
+            [defaultSetEntity]='defaultSetEntity'
+            (setData)="getSetData($event)"
+            (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart>
+            <!-- <app-table-switch-chart
             #clusterChart
             [id]="'cluster'"
             [chartUrl]="chartUrl"
@@ -40,7 +56,7 @@
             (setData)="getSetData($event)"
             (refresh)="handlerRefresh()"
             >
-            </app-table-switch-chart>
+            </app-table-switch-chart> -->
 
             <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
         </div>
@@ -58,7 +74,7 @@
             <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button>
         </div>
         <!-- 表格转换 -->
-        <ng-container *ngIf="defaultSetData && setData">
+        <ng-container>
             <app-table-transformation class="no-outside-border" 
                 #transformTable 
                 [isFirst]="first" 
