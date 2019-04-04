@@ -4,12 +4,14 @@
         <ul class="clearfix">
             <li nz-tooltip [nzTitle]="tool['limit'].length>1?('Limit : '+tool['limit'][0]+'-'+tool['limit'][1])+'':'Limit : At least '+tool['limit'][0]" *ngFor="let tool of toolList; index as i" [class.disabled]="tool['disabled']" (click)="selectParams(tool)" (mouseover)="handlerMouseOver(tool)">
                 <div class="tool-imgs {{tool['type']}}-img"></div>
-                <p style="margin-top:12px;">{{ "tools."+tool['name'] | translate }}</p>
+                <p>{{ "tools."+tool['name'] | translate }}</p>
             </li>
         </ul>
-        <div class="tools-desc" [class.disabled]="disabled" *ngIf="desc && title">
+        <!-- [class.disabled]="disabled" -->
+        <div class="tools-desc" *ngIf="desc && title">
             <h5>{{ "tools."+title | translate }}</h5>
             <p>{{ "desc."+desc | translate }}</p>
+            <nz-alert *ngIf="'useage.'+desc | translate" nzType="info" [nzMessage]="'useage.'+desc | translate" nzShowIcon></nz-alert>
         </div>
 
         <ng-template #titleTpl>

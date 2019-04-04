@@ -14,7 +14,7 @@ import { ControlValueAccessor } from '@angular/forms/src/directives';
 	selector: 'app-layout-switch',
     template: `<div class="layout-switch-wrap">
                     <ul class="layout-src-ele">
-                        <li *ngFor="let pos of ['left','right']" (click)="handleToggleLayout(pos)" nz-tooltip  [nzTitle]="pos" nzPlacement="top"></li>
+                        <li *ngFor="let pos of ['left','right']" (click)="handleToggleLayout(pos)" nz-tooltip  [nzTitle]="'切换布局'" nzPlacement="top"></li>
                     </ul>
                     <div class="layout-switch">
                         <span [class.left]="innerValue==='left'" [class.right]="innerValue==='right'" [class.center]="innerValue==='center'"></span>

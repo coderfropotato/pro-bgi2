@@ -13,7 +13,7 @@
             <!-- analysisFn -->
             <i *ngIf="analysis" nz-tooltip nzPlacement="bottom" nzTitle="{{'myGeneList' | translate}}" class="iconfont icon-baocunjiyin" (click)="handleSaveGeneListClick()"></i>
 
-            <i *ngIf="lang" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.lang' | translate}}" class="iconfont" style="margin-right:16px;" [class.icon-yingwenqiehuan]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
+            <i *ngIf="lang" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.lang' | translate}}" class="iconfont" [class.icon-yingwenqiehuan]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
             <!-- 修改主题色 -->
             <!-- <input type="color" (change)="handleColorChange($event)"> -->
 
