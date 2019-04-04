@@ -1,23 +1,104 @@
-<ng-template #setTemplate>
-    <app-clusterSet *ngIf="defaultSetData" (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData'></app-clusterSet>
-</ng-template>
+<!-- cluster -->
+<div class="content row venn">
+    <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
+        <div class="left-top-layout">
+            <!-- 模块描述 -->
+            <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
+                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                聚类
+            </span>
+            <p [hidden]="!expandModuleDesc">聚类</p>
+            <ng-content select=".gene-switch-module"></ng-content>
+        </div>
+        <!-- level下拉选择 -->
+        <ng-template #otherLeftTemplate>
+            <nz-select *ngIf="compareGroupList.length" style="width: 120px; margin-top:1em;margin-bottom:1em;" class="ml12"
+                [(ngModel)]="compareGroup" nzPlaceHolder="compareGroup" (ngModelChange)="handleCompareGroupChange()">
+                <nz-option *ngFor="let compare of compareGroupList;index as i;" [nzValue]="compare" [nzLabel]="compare"></nz-option>
+            </nz-select>
+        </ng-template>
+        <div class="left-bottom-layout">
+            <ng-template #setTemplate>
+                <app-clusterSet (confirm)="setConfirm($event)" [defaultSetData]='defaultSetData' [setData]="setData"></app-clusterSet>
+            </ng-template>
+            <app-table-switch-chart
+            #clusterChart
+            [id]="'cluster'"
+            [chartUrl]="chartUrl"
+            [apiEntity]="chartEntity"
+            [setTemplate]="setTemplate"
+            [otherLeftTemplate]="otherLeftTemplate"
+            (drawChartEmit)="drawChart($event)"
+            [chartId]="'clusterChartDiv'"
+            [chartName]="'聚类图'"
+            [defaultSetUrl]='defaultSetUrl'
+            [defaultSetEntity]='defaultSetEntity'
+            (setData)="getSetData($event)"
+            (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart>
+            <!-- <app-table-switch-chart
+            #clusterChart
+            [id]="'cluster'"
+            [chartUrl]="chartUrl"
+            [apiEntity]="chartEntity"
+            [setTemplate]="setTemplate"
+            [otherLeftTemplate]="otherLeftTemplate"
+            (drawChartEmit)="drawChart($event)"
+            [chartId]="'clusterChartDiv'"
+            [chartName]="'聚类图'"
+            [defaultSetUrl]='defaultSetUrl'
+            [defaultSetEntity]='defaultSetEntity'
+            (defaultSet)='apiEntityChange($event)'
+            [setDataUrl]="setDataUrl" 
+            [setDataEntity]="setDataEntity" 
+            (setData)="getSetData($event)"
+            (refresh)="handlerRefresh()"
+            >
+            </app-table-switch-chart> -->
 
-<div>
-    <app-table-switch-chart
-        #clusterChart
-        [id]="'cluster'"
-        [chartUrl]="chartUrl"
-        [apiEntity]="chartEntity"
-        [setTemplate]="setTemplate"
-        (drawChartEmit)="drawChart($event)"
-        [chartId]="'clusterChartDiv'"
-        [chartName]="'聚类图'"
-        [defaultSetUrl]='defaultSetUrl'
-        [defaultSetEntity]='defaultSetEntity'
-        (defaultSet)='apiEntityChange($event)'
-    >
-    </app-table-switch-chart>
-
-    <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
-    ></app-color-picker>
+            <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>
+        </div>
+    </div>
+    <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
+        <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+            <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"></app-layout-switch>
+        </div>
+        <div class="func" #func (click)="resize($event)">
+            <!-- 增删列 -->
+            <app-add-column #addColumn (computedTableEvent)="computedTableHeight()" (toggle)="toggle($event)" [baseThead]="baseThead" (addThead)="addThead($event)" [geneType]="geneType"></app-add-column>
+            <!-- 关系 -->
+            <app-gene-relative class="ml-12" [geneCount]="selectGeneCount" *ngIf="!addColumnShow" [disabled]="!selectGeneCount" #relative (confirmEvent)="confirm($event)"></app-gene-relative>
+            <!-- 返回 -->
+            <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button>
+        </div>
+        <!-- 表格转换 -->
+        <ng-container>
+            <app-table-transformation class="no-outside-border" 
+                #transformTable 
+                [isFirst]="first" 
+                [tableHeight]="tableHeight" 
+                [defaultTableEntity]="defaultEntity" 
+                [defaultTableUrl]="defaultUrl" 
+                [defaultTableId]="defaultTableId" 
+                [defaultTableDefaultChecked]="defaultDefaultChecked"
+                [(defaultEmitBaseThead)]="defaultEmitBaseThead" 
+                (defaultBaseTheadChange)="baseTheadChange($event)" 
+                [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" 
+                (defaultShowFilterStatus)="defaultShowFilterStatus" 
+                [extendTableEntity]="extendEntity"
+                [extendTableUrl]="extendUrl" 
+                [extendTableId]="extendTableId" 
+                [extendTableDefaultChecked]="extendDefaultChecked" 
+                [(extendEmitBaseThead)]="extendEmitBaseThead" 
+                (extendBaseTheadChange)="baseTheadChange($event)" 
+                [extendTableCheckStatusInParams]="extendCheckStatusInParams"
+                [(applyOnceSearchParams)]="applyOnceSearchParams" 
+                (selectGeneCountChange)="handleSelectGeneCountChange($event)" 
+                [(computedScrollHeight)]="computedScrollHeight"
+                >
+            </app-table-transformation>
+        </ng-container>
+    </div>
 </div>

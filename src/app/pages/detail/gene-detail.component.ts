@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
 import { GeneService } from './../../super/service/geneService';
+import { NzMessageService } from 'ng-zorro-antd';
 
 declare const d3: any;
 declare const d4: any;
@@ -76,8 +77,8 @@ export class GeneDetailComponent implements OnInit {
 	expressive_baseThead: object[] = [];
 	expressive_geneType: string;
 	expressive_index: number = 0;
-	line_flag:boolean = false;
-	line_flag2:boolean = false;
+	line_flag:boolean = true;
+	line_flag2:boolean = true;
 
 	//折线图
 	// chartUrl: string;
@@ -120,6 +121,8 @@ export class GeneDetailComponent implements OnInit {
 	alternative_defaultUrl: string;
 	alternative_params: object;
 	alternative_flag: boolean = true;
+	alternative_rows: object[] = [];
+	alternative_baseThead: object[] = [];
 
 	//SNP
 	snp_defaultUrl: string;
@@ -274,7 +277,7 @@ export class GeneDetailComponent implements OnInit {
 
 	tcd_defaultUrl: string;
 
-
+	isLoading: Boolean = false;
 
   	constructor(
 		private message: MessageService,
@@ -287,7 +290,8 @@ export class GeneDetailComponent implements OnInit {
 		private addColumnService: AddColumnService,
 		private router: Router,
 		private routes:ActivatedRoute,
-		private geneService: GeneService
+		private geneService: GeneService,
+		private nzMessage: NzMessageService
 	) {
 		let langs = ['zh', 'en'];
 		this.translate.addLangs(langs);
@@ -443,6 +447,8 @@ export class GeneDetailComponent implements OnInit {
 				await this.getPrecursor();//二次结构
 				await this.getDocumentInformation();//文献信息
 
+				await this.getAlternative();
+
 				//转录本序列
 				//CDS序列
 				//蛋白序列
@@ -470,7 +476,8 @@ export class GeneDetailComponent implements OnInit {
 					"LCID": this.lcid,
 					"geneType": "rna",
 					"id": this.geneID
-				  }				 
+				}
+					  
 			})
 			.subscribe((data: any) => {
 				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
@@ -492,6 +499,36 @@ export class GeneDetailComponent implements OnInit {
 		})
 	}
 
+	async getAlternative(){
+		this.isLoading = true;
+		return new Promise((resolve, reject) => {
+			this.ajaxService
+			.getDeferData({
+				url: this.alternative_defaultUrl,
+				data: this.alternative_params
+			})
+			.subscribe((data: any) => {
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					this.alternative_rows = data['data']['rows'];
+					this.alternative_baseThead = data['data']['baseThead'];
+					this.alternative_flag = this.alternative_rows.length>0?true:false;
+					//this.geneInfoList = data['data'];
+				}
+				this.isLoading = false;
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			);
+		})
+	}
 	//基因信息
 	async getGeneInformation(){
 		return new Promise((resolve, reject) => {
@@ -585,17 +622,23 @@ export class GeneDetailComponent implements OnInit {
 		this.expressive_index = num;
 		if(num==0){
 			//this.expressive_g_flag = this.expressive_g_data.length > 0?true:false;
-			this.drawLineChart(this.expressive_g_data);
+			//this.drawLineChart();
+			this.line_flag = false;
+			this.line_flag2 = true;
 		}else{
 			//this.expressive_t_flag = this.expressive_g_data.length > 0?true:false;
-			this.drawLineChart2(this.expressive_t_data);
+			//this.drawLineChart2();
+			this.line_flag2 = false;
+			this.line_flag = true;
 		}
 	}
 
 
 	//折线图
-	drawLineChart(data){
-		document.getElementById("lineChartDiv").innerHTML = "";
+	drawLineChart(){
+		console.log(this.expressive_g_data);
+		let data = this.expressive_g_data;
+		//document.getElementById("lineChartDiv").innerHTML = "";
 		let tempdata = data[0];
 		let tempArray = [];
 		for (const key in tempdata) {
@@ -607,11 +650,8 @@ export class GeneDetailComponent implements OnInit {
 			}
 		}
 		//console.log(tempArray);
-		this.line_flag2 = false;
 		if(tempArray.length == 0){
 			return;
-		}else{
-			this.line_flag = true;
 		}
 
 		let config: object = {
@@ -661,8 +701,10 @@ export class GeneDetailComponent implements OnInit {
 		this.chartLine=new d4().init(config);
 	}
 
-	drawLineChart2(data){
-		document.getElementById("lineChartDiv2").innerHTML = "";
+	drawLineChart2(){
+		console.log(this.expressive_t_data)
+		let data = this.expressive_t_data;
+		//document.getElementById("lineChartDiv2").innerHTML = "";
 		let tempdata = data[0];
 		let tempArray = [];
 		for (const key in tempdata) {
@@ -674,11 +716,8 @@ export class GeneDetailComponent implements OnInit {
 			}
 		}
 		//console.log(tempArray);
-		this.line_flag = false;
 		if(tempArray.length == 0){
 			return;
-		}else{
-			this.line_flag2 = true;
 		}
 
 		let config: object = {
@@ -993,9 +1032,9 @@ export class GeneDetailComponent implements OnInit {
 			case this.tf_parameter:
 				this.tf_flag = tempData.length>0?true:false;
 				break;
-			case "alternative":
-				this.alternative_flag = tempData.length>0?true:false;
-				break;
+			// case "alternative":
+			// 	this.alternative_flag = tempData.length>0?true:false;
+			// 	break;
 			case "SNP":
 				this.snp_flag = tempData.length>0?true:false;
 				break;
@@ -1010,7 +1049,8 @@ export class GeneDetailComponent implements OnInit {
 				// if(this.expressive_index == 0){
 				// 	this.drawLineChart(this.expressive_g_data);
 				// }
-				this.drawLineChart(this.expressive_g_data);
+				this.drawLineChart();
+				this.line_flag = false;
 				break;
 			case "FPKM_trans":
 				this.expressive_t_flag = tempData.length>0?true:false;
@@ -1018,6 +1058,8 @@ export class GeneDetailComponent implements OnInit {
 				// if(this.expressive_index == 1){
 				// 	this.drawLineChart(this.expressive_t_data);
 				// }
+				this.drawLineChart2()
+				this.line_flag2 = true;
 				break;
 			
 			case "diff_group_gene":
@@ -1151,5 +1193,16 @@ export class GeneDetailComponent implements OnInit {
 		} else {
 			pom.click();
 		}
+	}
+
+	downPDF(data){
+		if(data.pdfLink==0){
+			this.nzMessage.create(`warning`, `不支持不支持下载!`);
+		}else{
+			let tempUrl = `http://biosys.bgi.com/project/test/BGI_${this.lcid}/Structure_and_variation/Alternative_splicing/AS_plot/${data['as_group_name']}/${data['as_id']}_${data['as_group_name']}_${data['as_type']}_${this.geneID}.pdf`;
+			window.open(tempUrl);
+		}
+		// let tempUrl = `http://biosys.bgi.com/project/test/BGI_${this.lcid}/Structure_and_variation/Alternative_splicing/AS_plot/${data['as_group_name']}/${data['as_id']}_${data['as_group_name']}_${data['as_type']}_${this.geneID}.pdf`;
+		// window.open(tempUrl);
 	}
 }

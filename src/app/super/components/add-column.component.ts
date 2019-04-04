@@ -132,7 +132,7 @@ export class AddColumnComponent implements OnInit {
 			this.ajaxService
 				.getDeferData({
 					data: {
-						geneType: this.geneType['type']
+						geneType: this.geneType
 					},
 					url: `${config['javaPath']}/addColumn/${LCID}`
 				})

@@ -77,25 +77,21 @@
             <div class="transcripts_table">
                 <h5>{{'gene_detail.sample_expression' | translate}}</h5>
                 <nz-tabset [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)">
-                  <nz-tab nzTitle="基因">
-                      <app-little-table *ngIf="loadTable"  [hidden]="!expressive_g_flag" [type]="'FPKM_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
+                  <nz-tab nzTitle="基因" *ngIf="loadTable">
+                      <app-little-table  [hidden]="expressive_g_flag" [type]="'FPKM_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
                   </nz-tab>
-                  <nz-tab nzTitle="转录本">
-                      <app-little-table *ngIf="loadTable"  [hidden]="!expressive_t_flag" [type]="'FPKM_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
+                  <nz-tab nzTitle="转录本" *ngIf="loadTable">
+                      <app-little-table [hidden]="expressive_t_flag" [type]="'FPKM_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
                   </nz-tab>
                 </nz-tabset>
             </div>
   
             <!-- 折线图 -->
-            <div class="transcripts_table" [hidden]="!line_flag">
+            <div class="transcripts_table" >
                 <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
-                <div id="lineChartDiv" class="mlineChartDiv" >
+                <div id="lineChartDiv" class="mlineChartDiv" [hidden]="line_flag">
                 </div>
-            </div>
-  
-            <div class="transcripts_table" [hidden]="!line_flag2">
-                <h5>{{'gene_detail.expression_polygraph' | translate}}</h5>
-                <div id="lineChartDiv2" class="mlineChartDiv">
+                <div id="lineChartDiv2" class="mlineChartDiv" [hidden]="line_flag2">
                 </div>
             </div>
       </div>
@@ -134,10 +130,16 @@
         <div class="transcripts_table"> 
             <nz-tabset>
                 <nz-tab nzTitle="基因">
-                    <app-little-table *ngIf="loadTable" [hidden]="!miRnaTarget_params_g_flag" [type]="'miRna_target_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="miRnaTarget_defaultUrl" [targetURL]="'http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc='" [pageEntity]="miRnaTarget_params_g"></app-little-table>
+                    <app-little-table *ngIf="loadTable" [hidden]="!miRnaTarget_params_g_flag" [type]="'miRna_target_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="miRnaTarget_defaultUrl" [targetURL]="'http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc='" [pageEntity]="miRnaTarget_params_g" [targetID]="'st_gene_id'" [targetID2]="'st_target_id'"
+                    [targetID2_ID]="geneID"
+                    [targetID2Type]="'gene'"
+                    ></app-little-table>
                 </nz-tab>
                 <nz-tab nzTitle="转录本">
-                    <app-little-table *ngIf="loadTable" [hidden]="!miRnaTarget_params_t_flag" [type]="'miRna_target_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="miRnaTarget_defaultUrl" [targetURL]="' http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc='" [pageEntity]="miRnaTarget_params_t"></app-little-table>
+                    <app-little-table *ngIf="loadTable" [hidden]="!miRnaTarget_params_t_flag" [type]="'miRna_target_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="miRnaTarget_defaultUrl" [pageEntity]="miRnaTarget_params_t" [targetID2]="'st_target_id'"
+                    [targetID2_ID]="geneID"
+                    [targetID2Type]="'rna'"
+                    ></app-little-table>
                 </nz-tab>
             </nz-tabset>
           </div>
@@ -153,10 +155,56 @@
       </div>
 
       <!-- 可变剪接 -->
-      <div class="mgene_content" [hidden]="!alternative_flag">
+      <div class="mgene_content alternative" [hidden]="!alternative_flag">
         <h4>{{'gene_detail.alternative_aplicing' | translate}}</h4>
         <div class="transcripts_table">
-            <app-little-table *ngIf="loadTable" [type]="'alternative'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="alternative_defaultUrl" [pageEntity]="alternative_params"></app-little-table>
+            <!-- <app-little-table *ngIf="loadTable" [type]="'alternative'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="alternative_defaultUrl" [pageEntity]="alternative_params" [targetID]="'as_id'"
+            [targetURL]="'http://biosys.bgi.com/project/test/BGI_{LCID}/Structure_and_variation/Alternative_splicing/AS_plot/{as_group_name}/{as_id}_{as_group_name}_{as_type}_{geneID}.pdf"
+            ></app-little-table> -->
+            <nz-spin [nzSpinning]="isLoading" nzTip='Loading...'>
+                <ng-template #titleTemplate>
+                        <div class="table-thead">
+                            <div class="fRight">
+                                <i class="iconfont icon-xiazai" (click)="down()"></i>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <nz-table [nzData]="alternative_rows" nzShowPagination="false" [nzSize]="'small'" [nzScroll]="{x:'100%'}" [nzTitle]="titleTemplate">
+                        <thead>
+                            <tr>
+                                <th style="min-width:160px;max-width: 160px;" [nzContent]="tp69" nzPlacement="top" nz-popover *ngFor="let thead of alternative_baseThead;index as i">
+                                    <ng-template #tp69>
+                                        <span [innerHTML]="thead.name"></span>
+                                    </ng-template>
+                                    <span [innerHTML]="thead.name"></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of alternative_rows;index as idx">
+                                <!-- <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of alternative_baseThead">
+                                    {{row[thead.true_key]}}
+                                </td> -->
+                                <ng-container *ngFor="let thead of alternative_baseThead">
+                                    <td [nzContent]="tp70" nzPlacement="top" nz-popover style="min-width:160px;max-width: 160px;text-align: center;height: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" *ngIf="row[thead.true_key]">
+                                        <ng-template #tp70>
+                                            <span [innerHTML]="row[thead.true_key]"></span>
+                                        </ng-template>
+                                        <span *ngIf="thead.true_key=='as_id'" style="color:blue;cursor: pointer;" title="点击下载PDF文件" (click)="downPDF(row)">
+                                            {{row[thead.true_key]}}
+                                        </span>
+                                        <span [innerHTML]="row[thead.true_key]" *ngIf="thead.true_key!='as_id'"></span>
+                                    </td>
+                                    <td *ngIf="!row[thead.true_key]" style="min-width:160px;max-width: 160px;text-align: center;">
+                                        <span>NA</span>
+                                    </td>
+                                </ng-container>
+                            </tr>
+                            
+                        </tbody>
+                    </nz-table>  
+            </nz-spin>
+            
         </div>
       </div>
     

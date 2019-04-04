@@ -1,8 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { GlobalService } from 'src/app/super/service/globalService';
 import config from '../../../config';
 import { StoreService } from 'src/app/super/service/storeService';
+import { PageModuleService } from 'src/app/super/service/pageModuleService';
+import { MessageService } from 'src/app/super/service/messageService';
+import { Router, NavigationEnd } from '@angular/router';
+import { geneInfo } from 'src/rule';
 
 declare const d3: any;
 declare const $: any;
@@ -13,8 +17,16 @@ declare const $: any;
 })
 
 export class ClusterComponent implements OnInit {
+    @ViewChild('left') left;
+    @ViewChild('right') right;
+    @ViewChild('func') func;
+    @ViewChild('addColumn') addColumn;
     @ViewChild('clusterChart') clusterChart;
+    @ViewChild('transformTable') transformTable;
+    // 默认收起模块描述
+	expandModuleDesc: boolean = false;
 
+    //图
     chartUrl: string;
     chartEntity: object;
 
@@ -33,37 +45,351 @@ export class ClusterComponent implements OnInit {
 
     gaugeColors:string[]=[];
     oLegendIndex:number=0;
-    oColor:string;
 
     defaultSetUrl:string;
     defaultSetEntity:object;
     defaultSetData:any;
 
+    setDataUrl:string;
+    setDataEntity:object;
+    setData:any;
+
+    //表
+    tableHeight = 0;
+    first = true;
+    switch = 'right';
+    selectGeneCount:number = 0;
+    computedScrollHeight:boolean = false;
+
+    defaultShowFilterStatus:boolean = false;
+
+    addColumnShow:boolean = false;
+    showBackButton:boolean = false;
+    verticalClass:any[] = []; // 图上设置面板选择的纵向分类
+    selectGeneList:string[]=[]; // 图上选择的基因集字符串
+
+    extendEntity: object;
+	extendUrl: string;
+	extendTableId: string;
+	extendDefaultChecked: boolean;
+	extendCheckStatusInParams: boolean;
+	extendEmitBaseThead: boolean;
+	baseThead: any[] = [];
+    applyOnceSearchParams: boolean;
+
+    defaultEntity: object;
+	defaultUrl: string;
+	defaultTableId: string;
+	defaultDefaultChecked: boolean;
+	defaultCheckStatusInParams: boolean;
+    defaultEmitBaseThead: boolean;
+    
+    geneType:string = '';
+    version:string = '';
+    genome:string = '';
+
+    //参数
+	compareGroupList: any[] = [];
+    compareGroup: any = '';
+
     constructor(
         private ajaxService: AjaxService,
+        private router: Router,
+        private message: MessageService,
         private globalService: GlobalService,
-        private storeService:StoreService
-    ) { }
+        private pageModuleService: PageModuleService,
+        public storeService:StoreService
+    ) {
+        // 订阅windowResize 重新计算表格滚动高度
+		this.message.getResize().subscribe((res) => {
+			if (res['message'] === 'resize') this.computedTableHeight();
+		});
+
+		// 每次切换路由计算表格高度
+		this.router.events.subscribe((event) => {
+			if (event instanceof NavigationEnd) {
+                this.computedTableHeight();
+            }
+        });
+     }
 
     ngOnInit() {
         this.colors = ["#ff0000", "#ffffff", "#0070c0"];
         this.gaugeColors=this.storeService.getColors();
+        this.defaultDefaultChecked = true;
+        this.geneType = this.pageModuleService['defaultModule'];
+        this.version =  this.storeService.getStore('version');
+        this.genome =  this.storeService.getStore('genome');
+        this.compareGroupList = this.storeService.getStore('diff_plan');
+        this.compareGroup = this.compareGroupList[0];
 
+        //参数
         this.defaultSetUrl=`${config['javaPath']}/cluster/defaultSet`;
         this.defaultSetEntity={
-            "tid": "20783e1576b84867aee1a63e22716fed"
+            //分析
+            // "tid": "0da9b577c6fd4c09ad7dded3137ef82d",
+            //模块
+            "geneType": this.geneType,
+            "LCID": this.storeService.getStore('LCID'),
+            "compareGroup": this.compareGroup
+        }
+        //设置参数
+        this.setDataUrl=`${config['javaPath']}/cluster/classification`;
+        this.setDataEntity={
+            "geneType": this.geneType,
+            "LCID": this.storeService.getStore('LCID'),
+            "version": this.version,
+            "genome": this.genome
         }
 
+        //图
         this.chartUrl=`${config['javaPath']}/cluster/heatmapGraph`;
         this.chartEntity = {
+            //分析
+            // "tid": "0da9b577c6fd4c09ad7dded3137ef82d",
+            //模块
             "LCID": this.storeService.getStore('LCID'),
-            "tid": "20783e1576b84867aee1a63e22716fed",
+            "version": this.version,
+            "species": this.genome,
+            "geneType": this.geneType,
             "isHorizontal": true,
-            "verticalClassification": {},
-            "horizontalClassification": []
+            "verticalClassification": [],
+            "horizontalClassification": [],
+            "compareGroup": this.compareGroup
         };
+
+        //表
+        this.first = true;
+        this.applyOnceSearchParams = true;
+        this.defaultUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
+        this.defaultEntity = {
+            //分析
+            tid: "0da9b577c6fd4c09ad7dded3137ef82d",
+            //模块
+            LCID: sessionStorage.getItem('LCID'),
+            pageIndex: 1, //分页
+            pageSize: 20,
+            mongoId: null,
+            addThead: [], //扩展列
+            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+            // matchAll: false,
+            matrix: false, //是否转化。矩阵为matrix
+            relations: [], //关系组（简写，索引最后一个字段）
+            sortValue: null,
+            sortKey: null, //排序
+            reAnaly: false,
+            verticalClassification:this.verticalClass,
+            geneType: this.geneType, //基因类型gene和transcript
+            species: this.genome, //物种
+            version: this.version,
+            searchList: [],
+            sortThead:this.addColumn['sortThead']
+        };
+        this.defaultTableId = 'default_heatmap';
+        this.defaultDefaultChecked = true;
+        this.defaultEmitBaseThead = true;
+        this.defaultCheckStatusInParams = true;
+
+        this.extendUrl = `${config['javaPath']}/cluster/heatmapGeneTable`;
+        this.extendEntity = {
+            //分析
+            tid: "0da9b577c6fd4c09ad7dded3137ef82d",
+            //模块
+            LCID: sessionStorage.getItem('LCID'),
+            pageIndex: 1, //分页
+            pageSize: 20,
+            mongoId: null,
+            addThead: [], //扩展列
+            transform: false, //是否转化（矩阵变化完成后，如果只筛选，就为false）
+            // matchAll: false,
+            matrix: false, //是否转化。矩阵为matrix
+            relations: [], //关系组（简写，索引最后一个字段）
+            sortValue: null,
+            sortKey: null, //排序
+            reAnaly: false,
+            verticalClassification:this.verticalClass,
+            geneType: this.geneType, //基因类型gene和transcript
+            species: this.genome, //物种
+            version: this.version,
+            searchList: [],
+            sortThead:this.addColumn['sortThead']
+        };
+        this.extendTableId = 'extend_heatmap';
+        this.extendDefaultChecked = true;
+        this.extendEmitBaseThead = true;
+        this.extendCheckStatusInParams = false;
     }
 
+    //选中参数之后，重新访问接口
+    handleCompareGroupChange() {
+        console.log("compareGroup:",this.compareGroup)
+
+        //重新发起请求
+
+        // this.defaultSetEntity['compareGroup'] = this.compareGroup;
+        this.chartEntity['compareGroup'] = this.compareGroup;
+        
+        // this.doWithSelectChange();
+		// this.chartBackStatus();
+	}
+
+    ngAfterViewInit() {
+		setTimeout(() => {
+			this.computedTableHeight();
+		}, 30);
+    }
+
+    handleSelectGeneCountChange(selectGeneCount){
+        this.selectGeneCount = selectGeneCount;
+    }
+
+    toggle(status){
+        this.addColumnShow = status;
+    }
+
+    // 表
+    addThead(thead) {
+        this.transformTable._initCheckStatus();
+
+		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
+        this.transformTable._setParamsNoRequest('pageIndex', 1);
+
+		this.transformTable._addThead(thead['add']);
+    }
+
+    // 表格转换 确定
+    // 转换之前需要把图的 参数保存下来  返回的时候应用
+	confirm(relations) {
+        this.showBackButton = true;
+        // this.defaultEmitBaseThead = true;
+        this.extendEmitBaseThead = true;
+		let checkParams = this.transformTable._getInnerParams();
+		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
+		this.applyOnceSearchParams = true;
+		if (this.first) {
+            this.extendCheckStatusInParams = false;
+			this.extendEntity['checkStatus'] = checkParams['others']['checkStatus'];
+			this.extendEntity['unChecked'] = checkParams['others']['excludeGeneList']['unChecked'];
+			this.extendEntity['checked'] = checkParams['others']['excludeGeneList']['checked'];
+			this.extendEntity['mongoId'] = checkParams['mongoId'];
+			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
+            this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
+            this.extendEntity['relations'] = relations;
+            this.extendEntity['transform'] = true;
+            this.extendEntity['matrix'] = true;
+            this.addColumn._clearThead();
+			this.extendEntity['addThead'] = [];
+			this.first = false;
+		} else {
+			this.transformTable._initTableStatus();
+			this.extendCheckStatusInParams = false;
+			this.transformTable._setExtendParamsWithoutRequest('checkStatus', checkParams['others']['checkStatus']);
+			this.transformTable._setExtendParamsWithoutRequest( 'checked', checkParams['others']['excludeGeneList']['checked'].concat() );
+			this.transformTable._setExtendParamsWithoutRequest( 'unChecked', checkParams['others']['excludeGeneList']['unChecked'].concat() );
+			this.transformTable._setExtendParamsWithoutRequest('searchList', checkParams['tableEntity']['searchList']);
+			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
+			this.transformTable._setExtendParamsWithoutRequest( 'relations',relations);
+			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
+			this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
+            this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
+            this.addColumn._clearThead();
+			// 每次checkStatusInParams状态变完  再去获取数据
+			setTimeout(() => {
+				this.transformTable._getData();
+			}, 30);
+		}
+		setTimeout(() => {
+			this.extendCheckStatusInParams = true;
+		}, 30);
+	}
+
+	back() {
+        this.showBackButton = false;
+        this.chartBackStatus();
+    }
+
+    handlerRefresh(){
+        this.selectGeneList.length = 0;
+        this.chartBackStatus();
+    }
+
+    chartBackStatus(){
+        this.showBackButton = false;
+        this.defaultEmitBaseThead = true;
+        this.transformTable._initCheckStatus();
+		// 清空表的筛选
+		this.transformTable._clearFilterWithoutRequest();
+        if(!this.first){
+            this.defaultEntity['addThead'] = [];
+            this.defaultEntity['removeColumns'] = [];
+            this.defaultEntity['rootSearchContentList'] = [];
+            this.defaultEntity['pageIndex'] = 1;
+            if(this.selectGeneList.length){
+                this.defaultEntity['searchList'] = [
+                    {"filterName":`${this.geneType}_id`,"filterNamezh":`${this.geneType}_id`,"searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
+                ];
+            }else{
+                this.defaultEntity['searchList']= [] ;
+            }
+            this.first = true;
+        }else{
+            this.transformTable._setParamsNoRequest('pageIndex',1);
+            /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
+            if(this.selectGeneList.length) {
+                this.transformTable._filter(`${this.geneType}_id`,`${this.geneType}_id`,"string","$in",this.selectGeneList.join(','),null);
+            }else{
+                // this.transformTable._setParamsNoRequest('searchList',[]);
+                this.transformTable._deleteFilterWithoutRequest(`${this.geneType}_id`,`${this.geneType}_id`,"$in");
+                this.transformTable._getData();
+            }
+        }
+    }
+
+	// 表格基础头改变  设置emitBaseThead为true的时候 表格下一次请求回来会把表头发出来 作为表格的基础表头传入增删列
+	baseTheadChange(thead) {
+        this.baseThead = thead['baseThead'].map((v) => v['true_key']);
+        console.log(this.baseThead);
+    }
+
+	// 表格上方功能区 resize重新计算表格高度
+	resize(event) {
+        setTimeout(()=>{
+            this.computedTableHeight();
+        },30)
+    }
+
+    // 切换左右布局 计算左右表格的滚动高度
+	switchChange(status) {
+        this.switch = status;
+        setTimeout(()=>{
+            this.clusterChart.scrollHeight();
+            this.computedTableHeight();
+        },320)
+    }
+
+    computedTableHeight() {
+		try {
+            let h = this.tableHeight;
+            this.tableHeight = this.right.nativeElement.offsetHeight - this.func.nativeElement.offsetHeight - config['layoutContentPadding'] * 2;
+            if(this.tableHeight===h) this.computedScrollHeight = true;
+		} catch (error) {}
+    }
+    
+
+    //模块描述信息
+    moduleDescChange() {
+		this.expandModuleDesc = !this.expandModuleDesc;
+		// 重新计算表格切换组件表格的滚动高度
+		setTimeout(() => {
+			this.clusterChart.scrollHeight();
+		}, 30);
+	}
+
+    //图
+    // 设置 所需数据
+    getSetData(data){
+        this.setData=data;
+    }
     //设置 默认
     apiEntityChange(data){
         let xNum=data.xNum;
@@ -86,13 +412,11 @@ export class ClusterComponent implements OnInit {
 
         this.defaultSetData=data;
     }
-
     //设置 确定
     setConfirm(data){
         this.setChartSetEntity(data);
         this.clusterChart.reGetData();
     }
-
     setChartSetEntity(data){
         //图
         this.width=data.width;
@@ -104,14 +428,13 @@ export class ClusterComponent implements OnInit {
         //请求参数
         this.chartEntity['isHorizontal']=data.isCluster;
         this.chartEntity['horizontalClassification']=data.horizontalList;
-        this.chartEntity['verticalClassification']={};
+        this.chartEntity['verticalClassification']=[];
         if(data['verticalList'].length){
             data['verticalList'].forEach(d=>{
                 this.chartEntity['verticalClassification'][d.key]=d['category'];
             })
         }
     }
-
     //画图
     drawChart(data) {
         let that=this;
@@ -123,8 +446,8 @@ export class ClusterComponent implements OnInit {
         let leftLineData = data.left.line,
             topLineData = data.top.line,
             heatmapData = data.heatmaps,
-            valuemax = this.domainRange[1],
-            valuemin = this.domainRange[0];
+            valuemax = data.max,
+            valuemin = data.min;
 
         let topSimples=[];
         let topComplexes=[];
@@ -884,7 +1207,6 @@ export class ClusterComponent implements OnInit {
         d3.selectAll(".heatmap_Axis .tick text")
             .attr("font-size", "12px");
     }
-
     //画聚类折线图
     _drawLine(type, size1, size2, gContainer, translateX, translateY, data) {
         let cluster = d3.cluster()
@@ -912,23 +1234,22 @@ export class ClusterComponent implements OnInit {
             .attr("stroke", "#000000")
             .attr("d", this._elbow);
     }
-
     _elbow(d, i) {
         return "M" + d.source.y + "," + d.source.x +
             "V" + d.target.x + "H" + d.target.y;
     }
-
     //color change 回调函数
     colorChange(curColor) {
         this.color = curColor;
         this.colors.splice(this.legendIndex, 1, curColor);
         this.clusterChart.redraw();
     }
-
+    //图表交互的geneList
     setGeneList(geneList) {
-        // console.log(geneList);
+        console.log("geneList",geneList)
+        this.selectGeneList = geneList;
+        this.chartBackStatus();
     }
-
      // 数组分组
     chunk(array, size) {
         let length = array.length;

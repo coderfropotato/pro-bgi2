@@ -201,8 +201,10 @@
 }
 
 .add-head button {
-    width: 96px;
+    width: 88px;
     margin-right: 26px;
+    padding: 0;
+    border-radius: 100px;
 }
 
 .add-head>div {
@@ -680,9 +682,9 @@ button {
     .layout-src-ele {
         position: absolute;
         left: 0;
-        top: 6px;
+        top: 1px;
         width: 100%;
-        height: 14px;
+        height: 24px;
         z-index: 10;
         display: flex;
         flex-direction: row;
@@ -692,10 +694,10 @@ button {
         }
     }
     .layout-switch {
-        width: 88px;
-        height: 20px;
-        background: $layout_switch_bgcolor;
-        border-radius: 4px;
+        width: 64px;
+        height: 24px;
+        background: $them_color;
+        border-radius: 12px;
         position: relative;
         cursor: pointer;
         display: inline-block;
@@ -703,22 +705,22 @@ button {
         span {
             position: absolute;
             top: 4px;
-            left: 4px;
+            left: 6px;
             transform: translateX(0);
-            width: 40px;
-            height: 12px;
+            width: 24px;
+            height: 16px;
             background: #ffffff;
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
-            border-radius: 2px;
+            border-radius: 8px;
             transition: .2s all ease;
             &.left {
-                transform: translateX(2px);
+                transform: translateX(0px);
             }
             &.right {
-                transform: translateX(38px);
+                transform: translateX(26px);
             }
             &.center {
-                transform: translateX(21px);
+                transform: translateX(14px);
             }
         }
     }
@@ -843,16 +845,8 @@ button {
                 margin: 0 auto;
                 background-repeat: no-repeat;
                 background-position: center;
-                transition: 0.3s all ease;
+                transition: 0.3s all ease-out;
                 border-radius: 50%;
-                // border-width: 2px 2px 4px;
-                // border-style: solid;
-                // border-color: transparent;
-                // &:hover {
-                //     transform: translate(0, -4px);
-                //     border-color: rgb(82, 120, 248) rgb(82, 120, 248) rgba(99, 133, 248, 0.9);
-                //     box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
-                // }
             }
             .main-img {
                 background-image: url('../img/list/基因总表.png');
@@ -1090,14 +1084,14 @@ button {
 .tools-wrap {
     height: calc(100% - 32px) !important;
     transform: translate(-16px, 16px) !important;
+    width: 320px!important;
     .ant-drawer-body {
         padding: 24px !important;
         ul {
             li {
                 float: left;
                 width: 33%;
-                height: 78px;
-                margin-bottom: 16px;
+                margin-bottom: 8px;
                 text-align: center;
                 cursor: pointer;
                 &.disabled {
@@ -1115,15 +1109,14 @@ button {
                     background-position: center;
                     background-size: contain;
                     border-radius: 50%;
-                    transition: 0.3s all ease;
+                    transition: 0.3s all ease-out;
                     // border-width: 2px 2px 4px;
                     // border-style: solid;
                     // border-color: transparent;
                 }
                 &:not(.disabled):hover {
                     .tool-imgs {
-                        transform: translate(0, -4px);
-                        // border-color: $btn_active_color;
+                        transform: perspective(600px) translate3d(0px, -5px, 0px) rotateX(7deg);
                         box-shadow: rgba(65, 96, 198, 0.2) 0px 5px 20px;
                     }
                 }
@@ -1173,7 +1166,7 @@ button {
         }
     }
     .tools-desc {
-        max-height: 180px;
+        max-height: 360px;
         overflow-y: auto;
         &.disabled {
             h5 {
@@ -1274,16 +1267,22 @@ button {
 }
 
 .analysis-list {
-    padding: 20px 200px;
+    padding: 16px;
     .search-box {
+        border: $border;
+        border-bottom: 0;
+        padding: 12px;
+        padding-bottom: 6px;
         &:after {
             display: block;
             content: "";
             clear: both;
         }
         .search {
-            margin-bottom: 6px;
             float: right;
+            input {
+                border-radius: 16px!important;
+            }
         }
         .ant-input-search {
             margin-right: 12px;
@@ -1543,7 +1542,7 @@ button {
                 cursor: pointer;
                 font-size: 20px;
                 color: white;
-                margin-right: 20px;
+                margin-right: 28.5px;
             }
             .div_lang {
                 width: 20px;
@@ -1578,7 +1577,7 @@ button {
         top: 9px;
         right: 0px;
         height: 28px;
-        border-radius: 16px 0 0 16px;
+        border-radius: 100px 0 0 100px;
         background-color: $them_color;
         color: #fff;
         padding: 2px 16px;
@@ -1919,33 +1918,32 @@ button {
                 height: 110px;
                 background-image: url("../img/help/img-one-annation.jpg");
             }
-
-            .img-one-expression{
+            .img-one-expression {
                 width: 204px;
                 height: 67px;
                 background-image: url("../img/help3/1.png");
             }
-            .img-two-expression{
+            .img-two-expression {
                 width: 140px;
                 height: 62px;
                 background-image: url("../img/help3/2.png");
             }
-            .img-three-expression{
+            .img-three-expression {
                 width: 304px;
                 height: 40px;
                 background-image: url("../img/help3/3.png");
             }
-            .img-four-expression{
+            .img-four-expression {
                 width: 280px;
                 height: 165px;
                 background-image: url("../img/help3/4.png");
             }
-            .img-five-expression{
+            .img-five-expression {
                 width: 340px;
                 height: 60px;
                 background-image: url("../img/help3/5.png");
             }
-            .img-six-expression{
+            .img-six-expression {
                 width: 343px;
                 height: 54px;
                 background-image: url("../img/help3/6.png");
@@ -2233,7 +2231,7 @@ button {
         justify-content: flex-end;
         button {
             width: 100%;
-            border-radius: 0;
+            border-radius: 0 4px 4px 0;
         }
     }
     .gene_fast {
@@ -2495,24 +2493,22 @@ button {
                 margin-right: 10px;
                 vertical-align: sub;
             }
-
-            .mc_content{
-                width:100%;
-                height:auto;
+            .mc_content {
+                width: 100%;
+                height: auto;
                 margin-bottom: 10px;
-                .mc_content_top{
-                    width:100%;
-                    height:40px;
-                   
-                    .name{
-                        width:100px;
-                        height:40px;
-                        display:inline-block;
+                .mc_content_top {
+                    width: 100%;
+                    height: 40px;
+                    .name {
+                        width: 100px;
+                        height: 40px;
+                        display: inline-block;
                     }
                 }
-                .mc_content_bottom{
-                    width:100%;
-                    height:240px;
+                .mc_content_bottom {
+                    width: 100%;
+                    height: 240px;
                     overflow-x: hidden;
                     overflow-y: scroll;
                     border: 1px solid #ccc;
@@ -2641,6 +2637,7 @@ button {
     padding-bottom: 7px;
     margin-top: 7px;
     .logout-wrap {
+        padding: 4px;
         position: fixed;
         top: 40px;
         right: 0;
@@ -2655,20 +2652,118 @@ button {
         &>div {
             opacity: .8;
             flex: 1;
-            width: 100%;
-            text-align: center;
-            padding: 8px;
-            cursor: auto;
-            &:first-child {
-                padding-bottom: 8px;
-            }
+            padding: 5px 12px;
         }
-        .btn {
-            padding-top: 8px;
-            cursor: pointer;
-            border-top: $border;
-            &:hover {
-                opacity: 1;
+        .ant-popover-inner-content {
+            word-break: break-all;
+        }
+    }
+}
+
+// 基因详情表
+.mgeneDetail {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background: #ffffff;
+    .mgeneDetail_conetnt {
+        padding: 40px 100px;
+        .mgene_title {
+            width: 100%;
+            height: 64px;
+            line-height: 64px;
+            text-align: center;
+            background: #394266;
+            color: #fff;
+            font-size: 24px;
+        }
+        .mgene_page {
+            width: 100%;
+            height: auto;
+            margin-top: 40px;
+            .mgene_content {
+                width: 100%;
+                height: auto;
+                margin-bottom: 10px;
+                .alternative {
+                    .ant-table-title {
+                        background-color: #f5f5f5 !important;
+                    }
+                }
+            }
+            // .img_one{
+            // width: 70px;
+            // height: 24px;
+            // display: inline-block; // background-image: url("../img/small/ncbi.png"); // background-repeat: no-repeat;
+            // background-position: center;
+            // }
+            // .img_two{
+            // width: 70px;
+            // height: 24px;
+            // display: inline-block; // background-image: url("../img/small/hgnc.png"); // background-repeat: no-repeat;
+            // background-position: center;
+            // }
+            // .img_three{
+            // width: 70px;
+            // height: 24px;
+            // display: inline-block; // background-image: url("../img/small/ense.png"); // background-repeat: no-repeat;
+            // background-position: center;
+            // }
+            // .img_four{
+            // width: 70px;
+            // height: 24px;
+            // display: inline-block; // background-image: url("../img/small/cards.png"); // background-repeat: no-repeat;
+            // background-position: center;
+            // }
+            // .img_five{
+            // width: 70px;
+            // height: 24px;
+            // display: inline-block; // background-image: url("../img/small/kegg.png"); // background-repeat: no-repeat;
+            // background-position: center;
+            // }
+            // .img_six{
+            // width: 70px;
+            // height: 24px;
+            // display: inline-block; // background-image: url("../img/small/mir.png"); // background-repeat: no-repeat;
+            // background-position: center;
+            // }
+            .info_name {
+                display: inline-block;
+                width: 150px;
+                text-indent: 2em;
+            }
+            .transcripts_table {
+                margin: 10px auto;
+                width: 96%;
+                height: auto;
+            }
+            .table_border {
+                border: 1px solid #ccc;
+                text-indent: 2em;
+                border-radius: 4px;
+            }
+            .table_srcoll {
+                height: auto;
+                overflow-x: hidden;
+                overflow-y: scroll;
+            }
+            .table_title {
+                width: 100%;
+                text-align: center;
+                padding: 8px;
+                cursor: auto;
+                &:first-child {
+                    padding-bottom: 8px;
+                }
+            }
+            .btn {
+                padding-top: 8px;
+                cursor: pointer;
+                border-top: $border;
+                &:hover {
+                    opacity: 1;
+                }
             }
         }
     }
@@ -2717,4 +2812,46 @@ button {
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.relative-btn {
+    height: 32px;
+    border-radius: 100px;
+}
+
+.re-list-table {
+    border: $border;
+    border-top: 0;
+    .tableHeader {
+        background: #F7F8FA;
+    }
+}
+
+.re-list-title {
+    float: left;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
+    line-height: 38px;
+    margin: 0;
+}
+
+.re-list-btn {
+    a {
+        display: inline-block;
+        width: 64px;
+        height: 24px;
+        color: #fff;
+        border-radius: 12px;
+        opacity: 0.8;
+        &.primary {
+            background-color: $them_color;
+        }
+        &.danger {
+            background-color: #FF6666;
+        }
+        &:hover {
+            opacity: 1;
+        }
+    }
 }
