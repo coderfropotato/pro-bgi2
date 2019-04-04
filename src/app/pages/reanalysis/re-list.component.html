@@ -54,16 +54,16 @@
                 </div>
             </div>
             <div class="table-content">
-                <nz-table *ngIf="!error" #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzSize="small">
+                <nz-table *ngIf="!error" #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzSize="small" nzScroll="{'y':120%}">
                     <thead>
                         <tr>
-                            <th>名称</th>
-                            <th>Id</th>
-                            <th>状态</th>
-                            <th>创建时间</th>
-                            <th>前置任务</th>
-                            <th>备注</th>
-                            <th>操作</th>
+                            <th nzWidth="120px">名称</th>
+                            <!-- <th>Id</th> -->
+                            <th nzWidth="80px">状态</th>
+                            <th nzWidth="120px">创建时间</th>
+                            <th nzWidth="120px">前置任务</th>
+                            <th nzWidth="120px">备注</th>
+                            <th nzWidth="120px">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,7 +75,7 @@
                                 <input #inputNickname *ngIf="data.isEditNickname" type="text" placeholder="字数限制50" (keyup.enter)="updateNicknameEnter(data,data.nickname)" (blur)="updateNickname(data,data.nickname)" [(ngModel)]="data.nickname">
                                 <i class="iconfont icon-xiugai" (click)=updateNicknameCheck(data)></i>
                             </td>
-                            <td>{{data['_id']}}</td>
+                            <!-- <td>{{data['_id']}}</td> -->
                             <!-- process -1 pending 1 success 0 error -->
                             <td>
                                 <span *ngIf="data['process'] == 1"><i class="anticon anticon-check-circle success"></i>&nbsp;成功</span>

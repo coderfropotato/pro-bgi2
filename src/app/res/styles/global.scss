@@ -1519,13 +1519,11 @@ button {
             opacity: .4;
         }
         .logo2 {
-            width: 93px;
-            height: 28px;
-            margin-top: 6px;
-            display: inline-block;
-            background-image: url("../img/logo2.png");
-            background-repeat: no-repeat;
-            background-position: center;
+            img {
+                width: 100px;
+                margin-top: 12px;
+                display: inline-block;
+            }
         }
     }
     .top_right {

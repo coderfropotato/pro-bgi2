@@ -5,8 +5,8 @@
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'snp_overview.title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'snp_overview.content' | translate}}</p>

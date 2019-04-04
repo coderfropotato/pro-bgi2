@@ -1,6 +1,8 @@
 <div class="top">
     <div class="top_left">
-        <div class="logo2" (click)="handleLogoClick()"></div>
+        <div class="logo2" (click)="handleLogoClick()">
+            <img src="assets/img/logo2.svg" alt="logo">
+        </div>
     </div>
     <div class="top_right">
         <ng-content></ng-content>
@@ -11,9 +13,9 @@
             <!-- <i *ngIf="analysis" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.analysis' | translate}}" class="iconfont icon-fenxi" (click)="analysisFn()"></i> -->
 
             <!-- analysisFn -->
-            <i *ngIf="analysis" nz-tooltip nzPlacement="bottom" nzTitle="{{'myGeneList' | translate}}" class="iconfont icon-baocunjiyin" (click)="handleSaveGeneListClick()"></i>
+            <i *ngIf="analysis" nz-tooltip nzPlacement="bottom" nzTitle="{{'myGeneList' | translate}}" class="iconfont icon-yonghu" (click)="handleSaveGeneListClick()"></i>
 
-            <i *ngIf="lang" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.lang' | translate}}" class="iconfont" [class.icon-yingwenqiehuan]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
+            <i *ngIf="lang" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.lang' | translate}}" class="iconfont" [class.icon-En]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
             <!-- 修改主题色 -->
             <!-- <input type="color" (change)="handleColorChange($event)"> -->
 
@@ -21,7 +23,7 @@
 
             <!-- <i class="iconfont" nz-tooltip nzTitle="{{'top.fullscreen' | translate}}" style="margin-right:0;" [class.icon-chuangkou]="isFull" [class.icon-quanping]="!isFull" (click)="handleFullScreenClick()"></i> -->
 
-            <i class="anticon anticon-poweroff logout" style="margin-right:0;font-size:18px;" (mouseover)="handleShowLogout()" (mouseout)="handleHideLogout()">
+            <i class="iconfont icon-guanbi logout" style="margin-right:0;font-size:18px;" (mouseover)="handleShowLogout()" (mouseout)="handleHideLogout()">
                 <div *ngIf="showLogout" class="logout-wrap" (mouseover)="handleShowLogout()">
                     <div>项目编号：{{LCID}}</div>
                     <div class="btn" (click)="logout()"><span>退出</span></div>

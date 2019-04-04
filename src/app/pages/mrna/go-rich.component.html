@@ -3,8 +3,8 @@
 
         <!-- <div class="left-top-layout">
             <span class="zhankai-shouqi pointer" (click)="moduleTableChange()" [nzTitle]="(expandModuleTable ? '收起表格' : '展开表格') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleTable"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleTable"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleTable"></i>
+                <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleTable"></i>
                 {{'go_rich.title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'go_rich.content' | translate}}</p>
@@ -12,8 +12,8 @@
         </div> -->
         <div class="left-top-layout">
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'go_rich.title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'go_rich.content' | translate}}</p>

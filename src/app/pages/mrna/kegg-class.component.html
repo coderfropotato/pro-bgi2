@@ -2,8 +2,8 @@
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'kegg_class.title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'kegg_class.content' | translate}}</p>
@@ -55,8 +55,8 @@
             </ng-container>
             <!-- 大表 -->
             <ng-container *ngIf="isExceed!=null && isExceed">
-                <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [selectTemplate]="selectTemplate"  [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl"
-                    tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight" (checkedChange)="handleCheckChange($event)" [showConfirmButton]="true"></app-big-table-check>
+                <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [selectTemplate]="selectTemplate" [tableHeight]="leftTableHeight" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="chartUrl" tableId="geneClassCheckBigTable" [(computedScrollHeight)]="leftComputedScrollHeight"
+                    (checkedChange)="handleCheckChange($event)" [showConfirmButton]="true"></app-big-table-check>
             </ng-container>
         </div>
     </div>

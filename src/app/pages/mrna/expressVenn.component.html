@@ -5,8 +5,8 @@
             <!-- <h4>title</h4>
             <p>我是表达量韦恩图</p> -->
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
-                <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
-                <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleDesc"></i>
+                <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'express_venn.express_venn_title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'express_venn.express_venn_content' | translate}}</p>
@@ -45,7 +45,7 @@
             <!-- [selectTemplate]="selectTemplate" -->
             <app-table-switch-chart #tableSwitchChart [id]="'tableSwitchChart'" [isHasMultiSelect]="true" [(isMultiSelect)]="isMultiSelect" (isMultiSelectChange)="multiSelectChange()" (multipleConfirmEmit)="multipleConfirm()" [tableUrl]="tableUrl" [apiEntity]="tableEntity"
                 [isShowAccuracy]="true" [setTemplate]="setTemplate" (drawChartEmit)="drawVenn($event)" [selectPanelData]="selectPanelData" (selectConfirmEmit)="selectConfirm($event)" [defaultSelectNum]="3" (defaultSelectList)="defaultSelectList($event)" [isVennTable]="true"
-                [flex]="true" [chartId]="'chartId22122'" [chartName]="'韦恩图'" [chartDescContent]="chartDescContent" >
+                [flex]="true" [chartId]="'chartId22122'" [chartName]="'韦恩图'" [chartDescContent]="chartDescContent">
             </app-table-switch-chart>
             <app-color-picker [(color)]="color" (colorChange)="handlerColorChange($event)" [(show)]="show"></app-color-picker>
         </div>
