@@ -2637,6 +2637,7 @@ button {
     padding-bottom: 7px;
     margin-top: 7px;
     .logout-wrap {
+        padding: 4px;
         position: fixed;
         top: 40px;
         right: 0;
@@ -2651,6 +2652,7 @@ button {
         &>div {
             opacity: .8;
             flex: 1;
+            padding: 5px 12px;
         }
         .ant-popover-inner-content {
             word-break: break-all;

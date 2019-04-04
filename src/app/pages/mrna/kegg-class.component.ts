@@ -184,6 +184,8 @@ export class KeggClassComponent implements OnInit {
 			this.compareGroupList = this.storeService.getStore('diff_plan');
 			this.compareGroup = this.compareGroupList[0];
 
+			console.log(this.compareGroupList);
+
 			this.first = true;
 			this.resetCheckGraph = true;
 			this.applyOnceSearchParams = true;
