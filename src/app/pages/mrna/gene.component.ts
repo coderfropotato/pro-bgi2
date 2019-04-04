@@ -220,7 +220,7 @@ export class GenePage {
 		});
 
 		this.icon_color = 'blue';
-		this.geneService.set('checkedAddThead', this.selectedList);
+		//this.geneService.set('checkedAddThead', this.selectedList);
 	}
 
 	//搜索按钮
@@ -279,6 +279,7 @@ export class GenePage {
 	btnConfirm() {
 		//this.icon_color = 'gray';
 		this.expandSetPanel = !this.expandSetPanel;
+		this.geneService.set('checkedAddThead', this.selectedList);
 	}
 
 	//点击搜索返回面板其中一项
@@ -370,7 +371,7 @@ export class GenePage {
 			this.icon_color = "gray";
 		}
 
-		this.geneService.set('checkedAddThead', this.selectedList);
+		//this.geneService.set('checkedAddThead', this.selectedList);
 		console.log(this.geneService);
 	}
 

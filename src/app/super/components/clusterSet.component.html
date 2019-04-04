@@ -157,8 +157,8 @@
                                     <i class="anticon anticon-plus"></i>
                                 </button>
                                 <nz-modal [(nzVisible)]="it['modalVisible']"  (nzOnCancel)="handleCancel(it)" (nzOnOk)="handleOk(it)">
-                                    <app-tree [defaultExpandAll]="true" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event)" [treeData]="it['treeData']" [theadMap]="it['theadMap']">
-                                    </app-tree>
+                                    <app-new-tree [defaultExpandAll]="true" [reset]="it['modalVisible']" (composeTheadChange)="handlerSelectDataChange($event)" [treeData]="it['treeData']">
+                                    </app-new-tree>
                                 </nz-modal>
                             </ng-container>
                         </p>
