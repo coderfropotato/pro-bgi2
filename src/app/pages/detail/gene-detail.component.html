@@ -241,7 +241,7 @@
                     <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="download('转录本序列',t_content)">下载</button>
                 </div>
                 <div class="mc_content_bottom" [hidden]="!t_show">
-                    {{t_content}}
+                    <pre>{{t_content}}</pre>
                 </div>
             </div>
             <div class="mc_content" [hidden]="!c_content">
@@ -251,7 +251,7 @@
                     <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="download('CDS序列',c_content)">下载</button>
                 </div>
                 <div class="mc_content_bottom" [hidden]="!c_show">
-                    {{c_content}}
+                    <pre>{{c_content}}</pre>
                 </div>
             </div>
             <div class="mc_content" [hidden]="!d_content">
@@ -261,7 +261,7 @@
                     <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="download('蛋白序列',d_content)">下载</button>
                 </div>
                 <div class="mc_content_bottom" [hidden]="!d_show">
-                    {{d_content}}
+                    <pre>{{d_content}}</pre>
                 </div>
             </div>
 

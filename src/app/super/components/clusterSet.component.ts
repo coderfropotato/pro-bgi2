@@ -91,9 +91,12 @@ export class ClusterSetComponent implements OnInit {
     config=config;
 
     treeTempSelect:any[] = [];
+    treeTempSelectKey:any[] = [];
 
     isVhasTitle:boolean;
     isHhasTitle:boolean;
+
+    isLoading:boolean = false;
 
     constructor(
         private ajaxService: AjaxService,
@@ -447,8 +450,10 @@ export class ClusterSetComponent implements OnInit {
 
             if(item['isRoot']) item['isExpand'] = true;
             item['isExpand'] = true;
+            item['expandDisabled'] = false;
             item['isChecked'] = false;
             item['disabled'] = false;
+            item['hidden'] = false;
 
             if (item.children && item.children.length) {
                 stack = stack.concat(item.children);
@@ -462,7 +467,8 @@ export class ClusterSetComponent implements OnInit {
 
     // 树选择可匹配的头 改变
 	handlerSelectDataChange(thead) {
-		this.treeTempSelect = thead;
+        this.treeTempSelect = thead[0];
+        this.treeTempSelectKey = thead[1];
 	}
     
     handleCancel(it) {
@@ -474,7 +480,7 @@ export class ClusterSetComponent implements OnInit {
 
         // 选择的头是不是重复选择
         let n = it['children'].findIndex((val,index)=>{
-            return val['key'] === this.treeTempSelect[0];
+            return val['key'] === this.treeTempSelectKey[0];
         })
         if(n!=-1) {
             this.notification.create('warning','Reprot notification', `重复选择 ${this.treeTempSelect[0]}`);
@@ -485,7 +491,7 @@ export class ClusterSetComponent implements OnInit {
                 if(this.treeTempSelect.length){
                     let res = await this.saveThead({
                         "category":it['category'],
-                        "key":this.treeTempSelect[0],
+                        "key":this.treeTempSelectKey[0],
 						"name":this.treeTempSelect[0],
 						"geneType":this.geneType['type']
                     });
@@ -514,6 +520,7 @@ export class ClusterSetComponent implements OnInit {
                         this.notification.create('warning','Reprot notification', `${this.treeTempSelect[0]} 添加失败`);
                     }
                     this.treeTempSelect.length = 0;
+                    this.treeTempSelectKey.length = 0;
                 }
             })()
         }
