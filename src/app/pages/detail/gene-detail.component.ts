@@ -1199,7 +1199,7 @@ export class GeneDetailComponent implements OnInit {
 		if(data.pdfLink==0){
 			this.nzMessage.create(`warning`, `不支持不支持下载!`);
 		}else{
-			let tempUrl = `http://biosys.bgi.com/project/test/BGI_${this.lcid}/Structure_and_variation/Alternative_splicing/AS_plot/${data['as_group_name']}/${data['as_id']}_${data['as_group_name']}_${data['as_type']}_${this.geneID}.pdf`;
+			let tempUrl = `http://biosys.bgi.com/project/production/BGI_${this.lcid}/Structure_and_variation/Alternative_splicing/AS_plot/${data['as_group_name']}/${data['as_id']}_${data['as_group_name']}_${data['as_type']}_${this.geneID}.pdf`;
 			window.open(tempUrl);
 		}
 		// let tempUrl = `http://biosys.bgi.com/project/test/BGI_${this.lcid}/Structure_and_variation/Alternative_splicing/AS_plot/${data['as_group_name']}/${data['as_id']}_${data['as_group_name']}_${data['as_type']}_${this.geneID}.pdf`;
