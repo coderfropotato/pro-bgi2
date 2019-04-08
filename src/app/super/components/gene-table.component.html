@@ -51,7 +51,7 @@
                         <nz-option [nzLabel]="'accuracy.toFixedAll' | translate" [nzValue]="-1"></nz-option>
                     </nz-select> -->
                     <!-- 保存基因集 -->
-                    <i *ngIf="!error" class="iconfont icon-baocunjiyin" [nzTitle]="'tableButton.saveGene' | translate" nz-tooltip (click)="saveGeneList()">
+                    <i *ngIf="!error" class="iconfont icon-jiyinji" [nzTitle]="'tableButton.saveGene' | translate" nz-tooltip (click)="saveGeneList()">
                         <nz-modal [(nzVisible)]="isSaveGeneList" [nzTitle]="'saveGene.title' | translate" [nzOkText]="'saveGene.confirm'| translate" [nzCancelText]="'saveGene.cancel' | translate" (nzOnOk)="handleSaveGeneConfirm()" (nzOnCancel)="handleSaveGeneCancel()" >
                             <form nz-form [formGroup]="validateForm">
                                 <nz-form-item>
@@ -184,7 +184,7 @@
                                     <span>NA</span>
                                 </td>
                             </ng-container>
-                            
+
                             <!-- 其他列  (| accuracyPipe : accuracy : h['searchType'])-->
                             <ng-container *ngFor="let h of tbodyOutFirstCol,index as i">
                                 <!-- 正常值显示 -->
@@ -200,7 +200,7 @@
                                     <span>NA</span>
                                 </td>
                             </ng-container>
-                            
+
                         </tr>
                     </tbody>
                 </nz-table>
