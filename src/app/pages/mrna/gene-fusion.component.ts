@@ -190,7 +190,7 @@ export class GeneFusionComponent implements OnInit {
 
 			if(this.linkSerach==='score'){
 				data.lineData.forEach(d => {
-					if(d.fusion_score_order > this.score){
+					if(d.fusion_ericscore > this.score){
 						lineData.push(d);
 					}
 				});
@@ -236,7 +236,7 @@ export class GeneFusionComponent implements OnInit {
 			})
 		}else{
 			outerRing.forEach(d=>{
-				d.points.length=0;
+				d.points=[];
 			})
 		}
 		
