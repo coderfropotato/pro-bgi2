@@ -93,6 +93,7 @@ export class AddColumnComponent implements OnInit {
 	ngOnChanges(changes: SimpleChanges) {
 		// && changes['baseThead'].currentValue.length
 		if ('baseThead' in changes && !changes['baseThead'].firstChange) {
+            console.log(this.thead);
 			if (this.thead.length) {
 				this.baseTheadChange();
 				this.baseTheadChangeWithoutThead = false;
@@ -105,14 +106,13 @@ export class AddColumnComponent implements OnInit {
 	baseTheadChange() {
 		this.theadInBase = [];
 		this.initSelected();
-
 		this.forLeaves(this.thead, (item) => {
 			item['checked'] = false;
 		});
 
 		this.baseThead.forEach((v) => {
 			this.forLeaves(this.thead, (item) => {
-				if (v.includes(item['key'])) {
+				if (v === item['key']) {
 					item['checked'] = true;
 					this.selected[item['index']].push(item);
 					this.theadInBase.push(item);
@@ -311,6 +311,7 @@ export class AddColumnComponent implements OnInit {
 
 	// 获取每个分类选中的个数
 	getCheckCount() {
+        console.log(this.selected);
 		this.selectCount = this.selected.map((v) => v.length);
 	}
 
@@ -405,7 +406,7 @@ export class AddColumnComponent implements OnInit {
 
 		this.baseThead.forEach((v) => {
 			this.forLeaves(this.thead, (item) => {
-				if (v.includes(item['key'])) {
+				if (v === item['key']) {
 					item['checked'] = true;
 					this.selected[item['index']].push(item);
 					this.theadInBase.push(item);
@@ -683,7 +684,7 @@ export class AddColumnComponent implements OnInit {
 
 		this.baseThead.forEach((v) => {
 			this.forLeaves(this.thead, (item) => {
-				if (v.includes(item['key'])) {
+				if (v===item['key']) {
 					item['checked'] = true;
 					this.selected[item['index']].push(item);
 					this.theadInBase.push(item);
