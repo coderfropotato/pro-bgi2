@@ -372,7 +372,6 @@ export class GenePage {
 		}
 
 		//this.geneService.set('checkedAddThead', this.selectedList);
-		console.log(this.geneService);
 	}
 
 	getDefaultData() {
@@ -394,7 +393,6 @@ export class GenePage {
 					} else if (data.status == '-2') {
 						return;
 					} else {
-						console.log(data);
 						this.selectPanelList = data;
 
 						let tempList = [];
@@ -500,8 +498,6 @@ export class GeneComponent implements OnInit {
 	}
 
 	ngOnInit() {
-
-		console.log(this.geneService['geneOptions']);
 
         this.applyOnceSearchParams = true;
         this.defaultApplyOnceSearchParams = true;
@@ -653,7 +649,6 @@ export class GeneComponent implements OnInit {
 	// 在认为是基础头的时候发出基础头 双向绑定到增删列
 	baseTheadChange(thead) {
         this.baseThead = thead['baseThead'].map((v) => v['true_key']);
-        console.log(this.baseThead);
 	}
 
 	resize(event) {

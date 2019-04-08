@@ -93,7 +93,6 @@ export class AddColumnComponent implements OnInit {
 	ngOnChanges(changes: SimpleChanges) {
 		// && changes['baseThead'].currentValue.length
 		if ('baseThead' in changes && !changes['baseThead'].firstChange) {
-            console.log(this.thead);
 			if (this.thead.length) {
 				this.baseTheadChange();
 				this.baseTheadChangeWithoutThead = false;
@@ -311,7 +310,6 @@ export class AddColumnComponent implements OnInit {
 
 	// 获取每个分类选中的个数
 	getCheckCount() {
-        console.log(this.selected);
 		this.selectCount = this.selected.map((v) => v.length);
 	}
 
