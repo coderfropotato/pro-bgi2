@@ -849,13 +849,15 @@ export class ToolsComponent implements OnInit {
      */
 	handleKdaSliderChange(event, type) {
 		if (type === 'key') {
-			this.kdaRelationGeneCountRange[2] = Math.floor(
+			let tempRelationGeneCountRange = Math.floor(
 				this.kdaKeyRelationComposeMax / this.kdaKeyGeneCountRange[2]
-			);
+            );
+            if(this.kdaRelationGeneCountRange[2]>tempRelationGeneCountRange) this.kdaRelationGeneCountRange[2] = tempRelationGeneCountRange;
 		} else {
-			this.kdaKeyGeneCountRange[2] = Math.floor(
+			let tempKdaKeyGeneCountRange = Math.floor(
 				this.kdaKeyRelationComposeMax / (this.kdaRelationGeneCountRange[2] + 1)
-			);
+            );
+            if(this.kdaKeyGeneCountRange[2] > tempKdaKeyGeneCountRange) this.kdaKeyGeneCountRange[2] = tempKdaKeyGeneCountRange;
 		}
 	}
 
