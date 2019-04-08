@@ -81,10 +81,10 @@
                 <h5>{{'gene_detail.sample_expression' | translate}}</h5>
                 <nz-tabset [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)">
                   <nz-tab nzTitle="基因" *ngIf="loadTable">
-                      <app-little-table  [hidden]="expressive_g_flag" [type]="'FPKM_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
+                      <app-little-table  [hidden]="!expressive_g_flag" [type]="'FPKM_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
                   </nz-tab>
                   <nz-tab nzTitle="转录本" *ngIf="loadTable">
-                      <app-little-table [hidden]="expressive_t_flag" [type]="'FPKM_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
+                      <app-little-table [hidden]="!expressive_t_flag" [type]="'FPKM_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
                   </nz-tab>
                 </nz-tabset>
             </div>
@@ -168,7 +168,8 @@
                 <ng-template #titleTemplate>
                         <div class="table-thead">
                             <div class="fRight">
-                                <i class="iconfont icon-xiazai" (click)="down()"></i>
+                                <!-- <i class="iconfont icon-xiazai" (click)="down()"></i> -->
+                                <app-grid-export *ngIf="!error" [url]="url" [tableEntity]="alternative_params" [fileName]="fileName"></app-grid-export>
                             </div>
                         </div>
                     </ng-template>
@@ -193,8 +194,11 @@
                                         <ng-template #tp70>
                                             <span [innerHTML]="row[thead.true_key]"></span>
                                         </ng-template>
-                                        <span *ngIf="thead.true_key=='as_id'" style="color:blue;cursor: pointer;" title="点击下载PDF文件" (click)="downPDF(row)">
-                                            {{row[thead.true_key]}}
+                                        <span *ngIf="thead.true_key=='as_id' && row['pdfLink']==0" (click)="downPDF(row)">
+                                           {{row[thead.true_key]}}
+                                        </span>
+                                        <span *ngIf="thead.true_key=='as_id' && row['pdfLink']==1" style="color:blue;cursor: pointer;" title="点击下载PDF文件" (click)="downPDF(row)">
+                                           {{row[thead.true_key]}}
                                         </span>
                                         <span [innerHTML]="row[thead.true_key]" *ngIf="thead.true_key!='as_id'"></span>
                                     </td>
