@@ -516,6 +516,7 @@ export class GeneDetailComponent implements OnInit {
 					return;
 				} else {
 					this.alternative_rows = data['data']['rows'];
+					console.log(this.alternative_rows);
 					this.alternative_baseThead = data['data']['baseThead'];
 					this.alternative_flag = this.alternative_rows.length>0?true:false;
 					//this.geneInfoList = data['data'];
@@ -584,50 +585,13 @@ export class GeneDetailComponent implements OnInit {
 		})
 	}
 
-	//折线图
-	// async sampleExpression(){
-	// 	return new Promise((resolve, reject) => {
-	// 		this.ajaxService
-	// 		.getDeferData({
-	// 			url: this.expressive_defaultUrl,
-	// 			data: this.expressive_params
-	// 		})
-	// 		.subscribe((data: any) => {
-	// 			if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
-	// 				return;
-	// 			} else if (data.status == '-1') {
-	// 				return;
-	// 			} else if (data.status == '-2') {
-	// 				return;
-	// 			} else {
-	// 				this.expressive_rows = data['data']['rows'];
-	// 				this.expressive_baseThead = data['data']['baseThead'];
-	// 				if(data['data']['rows'].length != 0){
-	// 					this.drawLineChart();
-	// 					this.line_flag = true;
-	// 				}
-					
-	// 			}
-	// 			resolve("success");
-	// 		},
-	// 		error => {
-	// 			reject("error");
-	// 		}
-	// 		);
-	// 	})
-	// }
-
 	SelectedExpressiveChange(num) {
 		console.log(num)
 		this.expressive_index = num;
 		if(num==0){
-			//this.expressive_g_flag = this.expressive_g_data.length > 0?true:false;
-			//this.drawLineChart();
 			this.line_flag = false;
 			this.line_flag2 = true;
 		}else{
-			//this.expressive_t_flag = this.expressive_g_data.length > 0?true:false;
-			//this.drawLineChart2();
 			this.line_flag2 = false;
 			this.line_flag = true;
 		}
@@ -638,18 +602,16 @@ export class GeneDetailComponent implements OnInit {
 	drawLineChart(){
 		console.log(this.expressive_g_data);
 		let data = this.expressive_g_data;
-		//document.getElementById("lineChartDiv").innerHTML = "";
 		let tempdata = data[0];
 		let tempArray = [];
 		for (const key in tempdata) {
 			let tempObj = {};
 			if( key != "gene_id"){
-				tempObj["x"] = key;
+				tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
 				tempObj["y"] = tempdata[key];
 				tempArray.push(tempObj);
 			}
 		}
-		//console.log(tempArray);
 		if(tempArray.length == 0){
 			return;
 		}
@@ -674,7 +636,7 @@ export class GeneDetailComponent implements OnInit {
 			axis: {
 				x: {
 					title: "Sample name",
-					rotate: 60,
+					// rotate: 60,
 					dblclick: function(event) {
 						var name = prompt("请输入需要修改的标题", "");
 						if (name) {
@@ -704,13 +666,12 @@ export class GeneDetailComponent implements OnInit {
 	drawLineChart2(){
 		console.log(this.expressive_t_data)
 		let data = this.expressive_t_data;
-		//document.getElementById("lineChartDiv2").innerHTML = "";
 		let tempdata = data[0];
 		let tempArray = [];
 		for (const key in tempdata) {
 			let tempObj = {};
 			if( key != "gene_id"){
-				tempObj["x"] = key;
+				tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
 				tempObj["y"] = tempdata[key];
 				tempArray.push(tempObj);
 			}
@@ -740,7 +701,7 @@ export class GeneDetailComponent implements OnInit {
 			axis: {
 				x: {
 					title: "Sample name",
-					rotate: 60,
+					// rotate: 60,
 					dblclick: function(event) {
 						var name = prompt("请输入需要修改的标题", "");
 						if (name) {
@@ -1043,6 +1004,7 @@ export class GeneDetailComponent implements OnInit {
 				break;
 			case "fusion":
 				this.fusion_flag = tempData.length>0?true:false;
+				break;
 			case "FPKM_gene":
 				this.expressive_g_flag = tempData.length>0?true:false;
 				this.expressive_g_data = tempData;
@@ -1197,7 +1159,7 @@ export class GeneDetailComponent implements OnInit {
 
 	downPDF(data){
 		if(data.pdfLink==0){
-			this.nzMessage.create(`warning`, `不支持不支持下载!`);
+			//this.nzMessage.create(`warning`, `不支持不支持下载!`);
 		}else{
 			let tempUrl = `http://biosys.bgi.com/project/production/BGI_${this.lcid}/Structure_and_variation/Alternative_splicing/AS_plot/${data['as_group_name']}/${data['as_id']}_${data['as_group_name']}_${data['as_type']}_${this.geneID}.pdf`;
 			window.open(tempUrl);

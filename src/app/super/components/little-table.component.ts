@@ -36,6 +36,8 @@ export class LittleTableComponent implements OnInit {
 
     @Output() drawTableEmit: EventEmitter<any> = new EventEmitter();
 
+    @Input() fileName:any; //下载的表格名称
+
     //this.drawChartEmit.emit(data);
 
     tableError: string;
