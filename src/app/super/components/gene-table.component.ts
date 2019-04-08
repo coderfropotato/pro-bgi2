@@ -55,7 +55,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	// 无效参数
 	// @Input() defaultMartix: boolean = false; // 是否默认是矩阵表  针对关联聚类/关联网络图  默认矩阵表 表格转换的默认表是矩阵 会把默认表加上mongoId
-	
+
 	@Input() applyOnceSearchParams: boolean = false;
 	@Output() applyOnceSearchParamsChange: EventEmitter<any> = new EventEmitter();
 	@Output() selectGeneCountChange: EventEmitter<any> = new EventEmitter();
@@ -70,7 +70,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	@Output() syncRelative: EventEmitter<any> = new EventEmitter(); // 同步表头
 
 	@Output() totalChange:EventEmitter<number> = new EventEmitter(); // total
-	
+
 	// 在kegg富集需要跳转map的时候用到  其他都为默认值空
 	@Input() compareGroup:any =undefined; // 比较组
 	@Input() reanalysisId:any = undefined; // 重分析id
@@ -249,8 +249,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	}
 
 	sort(key, value): void {
-		this.initSortMap();
-		this.sortMap[value] = key;
+        this.initSortMap();
+		this.sortMap[key] = value;
 
 		// 取消排序
 		if (value == null) {
@@ -305,7 +305,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 						this.tableEntity['matrix'] = true;
 						// if(this.isFirst) this.applyOnceBeforeStatusThenReset();
 					}
-					
+
 					// if ('mongoId' in responseData['data']) this.mongoId = responseData['data']['mongoId'];
 					this.mongoId ='mongoId' in responseData['data']? responseData['data']['mongoId']:null;
 
