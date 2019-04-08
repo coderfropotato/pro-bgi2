@@ -11,7 +11,8 @@
           <p *ngIf="geneInfoList['gene_id']">
             <span class="info_name">{{'gene_detail.gene_id' | translate}}</span>
             <span class="info_content">
-              {{geneInfoList.gene_id}}
+                <span *ngIf="!geneInfoList['url_ncbi_gene_id']">{{geneInfoList.gene_id}}</span>
+                <a *ngIf="geneInfoList['url_ncbi_gene_id']" href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">{{geneInfoList.gene_id}}</a>
             </span>
             <span *ngIf="geneInfoList['url_ncbi_gene_id']" class="mlink">link to<a href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">NCBI</a></span>
             <span *ngIf="geneInfoList['url_hgnc_gene_id']" class="mlink">link to<a href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{geneInfoList['url_hgnc_gene_id']}}" target="_blank">HGNC</a></span>
@@ -41,6 +42,8 @@
           <p *ngIf="geneInfoList['tf_family']">
             <span class="info_name">{{'gene_detail.tf_family' | translate}}</span>
             <span class="info_content">
+                <!-- <a href="http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family={{geneInfoList['url_ncbi_gene_id']}}" target="_blank">{{geneInfoList['tf_family']}}</a> -->
+                <!-- <a href="http://planttfdb.cbi.pku.edu.cn/family.php?fam={{geneInfoList['url_ncbi_gene_id']}}" target="_blank">{{geneInfoList['tf_family']}}</a> -->
                 {{geneInfoList['tf_family']}}
             </span>
           </p>
@@ -59,7 +62,7 @@
           <p *ngIf="geneInfoList['genome_version']">
             <span class="info_name">{{'gene_detail.genome_version' | translate}}</span>
             <span class="info_content">
-                {{geneInfoList['genome_version']}}
+                {{geneInfoList['genome_source']}}_{{geneInfoList['genome_version']}}
             </span>
           </p>
           <button *ngIf="btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.showGeneID' | translate}}</button>
@@ -237,7 +240,7 @@
             <div class="mc_content" [hidden]="!t_content">
                 <div class="mc_content_top">
                     <div class="name">转录本序列</div> 
-                    <button nz-button [nzSize]="'small'" nzType="default" (click)="T_click()">显示/隐藏</button>
+                    <button nz-button [nzSize]="'small'" nzType="default" (click)="T_click()">显示</button>
                     <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="download('转录本序列',t_content)">下载</button>
                 </div>
                 <div class="mc_content_bottom" [hidden]="!t_show">
@@ -247,7 +250,7 @@
             <div class="mc_content" [hidden]="!c_content">
                 <div class="mc_content_top">
                     <div class="name">CDS序列</div> 
-                    <button nz-button [nzSize]="'small'" nzType="default" (click)="CDS_click()">显示/隐藏</button>
+                    <button nz-button [nzSize]="'small'" nzType="default" (click)="CDS_click()">显示</button>
                     <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="download('CDS序列',c_content)">下载</button>
                 </div>
                 <div class="mc_content_bottom" [hidden]="!c_show">
@@ -257,7 +260,7 @@
             <div class="mc_content" [hidden]="!d_content">
                 <div class="mc_content_top">
                     <div class="name">蛋白序列</div> 
-                    <button nz-button [nzSize]="'small'" nzType="default" (click)="D_click()">显示/隐藏</button>
+                    <button nz-button [nzSize]="'small'" nzType="default" (click)="D_click()">显示</button>
                     <button style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="download('蛋白序列',d_content)">下载</button>
                 </div>
                 <div class="mc_content_bottom" [hidden]="!d_show">
@@ -472,11 +475,11 @@
                         <span>{{i + 1}}</span>.
                         <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{item.PubMed_ID}}" target="_blank">{{item.ArticleTitle}}</a>
                     </p>
-                    <p>{{item.Author}}&nbsp;{{item.ISOAbbreviation}}&nbsp;{{item.JournalIssuem}}&nbsp;PMID&nbsp;{{item.PubMed_ID}}&nbsp;{{item.PublishTime}}</p>
+                    <p>{{item.Author}}&nbsp;{{item.ISOAbbreviation}}&nbsp;{{item.JournalIssuem}}&nbsp;PMID&nbsp;{{item.PubMed_ID}}</p>
                 </div>
               </nz-spin>
           </div>
-          <button *ngIf="load_more_show" style="margin-left:20px;" nz-button [nzSize]="'small'" nzType="default" (click)="loadMore()">加载更多</button>
+          <button *ngIf="load_more_show" style="margin-left:24px;" nz-button [nzSize]="'small'" nzType="default" (click)="loadMore()">加载更多</button>
       </div>
     
     </div>

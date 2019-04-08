@@ -644,7 +644,7 @@ export class GeneDetailComponent implements OnInit {
 		for (const key in tempdata) {
 			let tempObj = {};
 			if( key != "gene_id"){
-				tempObj["x"] = key;
+				tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
 				tempObj["y"] = tempdata[key];
 				tempArray.push(tempObj);
 			}
@@ -674,7 +674,7 @@ export class GeneDetailComponent implements OnInit {
 			axis: {
 				x: {
 					title: "Sample name",
-					rotate: 60,
+					// rotate: 60,
 					dblclick: function(event) {
 						var name = prompt("请输入需要修改的标题", "");
 						if (name) {
@@ -710,7 +710,7 @@ export class GeneDetailComponent implements OnInit {
 		for (const key in tempdata) {
 			let tempObj = {};
 			if( key != "gene_id"){
-				tempObj["x"] = key;
+				tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
 				tempObj["y"] = tempdata[key];
 				tempArray.push(tempObj);
 			}
@@ -740,7 +740,7 @@ export class GeneDetailComponent implements OnInit {
 			axis: {
 				x: {
 					title: "Sample name",
-					rotate: 60,
+					// rotate: 60,
 					dblclick: function(event) {
 						var name = prompt("请输入需要修改的标题", "");
 						if (name) {
