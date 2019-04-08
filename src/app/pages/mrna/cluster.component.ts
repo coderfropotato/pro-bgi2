@@ -230,12 +230,11 @@ export class ClusterComponent implements OnInit {
 
     //选中参数之后，重新访问接口
     handleCompareGroupChange() {
-        console.log("compareGroup:",this.compareGroup)
-        
-        //重新发起请求
-        this.chartEntity['compareGroup'] = this.compareGroup;
-
-        this.chartBackStatus();
+        (async () => {
+            this.chartEntity['compareGroup'] = this.compareGroup;
+            this.clusterChart.reGetData();
+			this.chartBackStatus();
+		})();
 	}
 
     ngAfterViewInit() {
@@ -329,6 +328,7 @@ export class ClusterComponent implements OnInit {
             this.defaultEntity['removeColumns'] = [];
             this.defaultEntity['rootSearchContentList'] = [];
             this.defaultEntity['pageIndex'] = 1;
+            this.defaultEntity['compareGroup'] = this.compareGroup;
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
                     {"filterName":`${this.geneType}_id`,"filterNamezh":`${this.geneType}_id`,"searchType":"string","filterType":"$in","valueOne":this.selectGeneList.join(','),"valueTwo":null}
@@ -339,6 +339,7 @@ export class ClusterComponent implements OnInit {
             this.first = true;
         }else{
             this.transformTable._setParamsNoRequest('pageIndex',1);
+            this.transformTable._setParamsNoRequest('compareGroup', this.compareGroup);
             /*filterName, filterNamezh, filterType, filterValueOne, filterValueTwo*/
             if(this.selectGeneList.length) {
                 this.transformTable._filter(`${this.geneType}_id`,`${this.geneType}_id`,"string","$in",this.selectGeneList.join(','),null);
