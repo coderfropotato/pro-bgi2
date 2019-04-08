@@ -40,17 +40,17 @@ export class ReListComponent implements OnInit {
 		data: [{ name: '基因', key: 'gene', checked: false }, { name: '转录本', key: 'transcript', checked: false }],
 		dateRange: [],
 		category: [
-			{ key: 'heatmap', name: '聚类重分析', checked: false, value: ['heatmapDiff', 'heatmapExpress', 'heatmapCustom'] },
-			{ key: 'classification', name: '基因分类', checked: false, value: ['classification'] },
-			{ key: 'enrichment', name: '基因富集', checked: false, value: ['enrichment'] },
-			{ key: 'net', name: '蛋白网络互作', checked: false, value: ['net'] },
-			{ key: 'line', name: '折线图', checked: false, value: ['line'] },
-			{ key: 'kda', name: 'KDA', checked: false, value: ['kda'] },
-			{ key: 'multiOmics', name: '多组学关联', checked: false, value: ['multiOmics'] },
-			{ key: 'chiSquare', name: '卡方检测', checked: false, value: ['chiSquare'] },
-			{ key: 'as', name: '可变剪切', checked: false, value: ['as'] },
-			{ key: 'linkedNetwork', name: '关联网络图', checked: false, value: ['linkedNetwork'] },
-			{ key: 'heatmapRelation', name: '关联聚类热图', checked: false, value: ['heatmapRelation'] }
+			{ key: 'heatmap', name: '聚类热图', id:"02", checked: false, value: ['heatmapDiff', 'heatmapExpress', 'heatmapCustom'] },
+			{ key: 'classification', name: '分类', id:"11", checked: false, value: ['classification'] },
+			{ key: 'enrichment', name: '富集', id:"12", checked: false, value: ['enrichment'] },
+			{ key: 'net', name: '网络互作', id:"07", checked: false, value: ['net'] },
+			{ key: 'line', name: '折线图', id:"06", checked: false, value: ['line'] },
+			{ key: 'kda', name: 'KDA', id:"13", checked: false, value: ['kda'] },
+			{ key: 'multiOmics', name: '关联定量作图', id:"04", checked: false, value: ['multiOmics'] },
+			{ key: 'chiSquare', name: '卡方检验', id:"05", checked: false, value: ['chiSquare'] },
+			{ key: 'as', name: '可变剪切', id:"09", checked: false, value: ['as'] },
+			{ key: 'linkedNetwork', name: '关联网络互做', id:"08", checked: false, value: ['linkedNetwork'] },
+			{ key: 'heatmapRelation', name: '关联聚类热图', id:"01", checked: false, value: ['heatmapRelation'] }
 		],
 		status: [
 			{ key: '1', name: '成功', checked: false },
