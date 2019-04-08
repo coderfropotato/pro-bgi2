@@ -31,7 +31,7 @@
                         <div class="category-group">
                             <span>类型</span>
                             <div>
-                                <button (click)="choose(cat)" [class.btnActive]="cat['checked']" nz-button *ngFor="let cat of src['category']" nzType="default" nzSize="small">{{cat['name']}}</button>
+                                <button (click)="choose(cat)" [class.btnActive]="cat['checked']" nz-button *ngFor="let cat of src['category']" nzType="default" nzSize="small">{{'tools.'+cat['id'] | translate}}</button>
                             </div>
                         </div>
                         <div>
