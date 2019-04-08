@@ -600,14 +600,14 @@ export class ReRichComponent implements OnInit {
                 },
                 tooltip: [
                     function(d) {
-                        return `<span>GO Term: ${d.y}</span><br>
-                        <span>GO Term ID: ${ d.geneid }</span><br>
+                        return `<span>Term: ${d.y}</span><br>
+                        <span>Term ID: ${ d.geneid }</span><br>
                         <span>Qvalue: ${d.qvalue}</span><br>
                         <span>-log10(Qvalue): ${ d.x }</span><br>
                         <span>Gene Number: ${d.genenum}</span>`;
                     },
                     function(d) {
-                        return `<span>GO Term: ${d.y}</span><br>
+                        return `<span>Term: ${d.y}</span><br>
                         <span>Gene Number: ${d.x}</span>`;
                     }
                 ]
@@ -712,8 +712,8 @@ export class ReRichComponent implements OnInit {
                     }
                   },
                   tooltip: function(d) {
-                    return `<span>GO Term: ${d.y}</span><br>
-                    <span>GO Term ID: ${ d.geneid }</span><br>
+                    return `<span>Term: ${d.y}</span><br>
+                    <span>Term ID: ${ d.geneid }</span><br>
                     <span>Rich Ratio: ${ d.x }</span><br>
                     <span>Qvalue: ${d.color}</span><br>
                     <span>Gene Number: ${d.r}</span>`;
