@@ -196,7 +196,7 @@ export class ReListComponent implements OnInit {
 
 		if (type === 'classification' || type === 'enrichment') {
 			window.open(
-				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}/${data['isEdited']}`
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}`
 			);
 			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
 		} else {
