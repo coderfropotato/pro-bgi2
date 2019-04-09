@@ -325,7 +325,7 @@ export class GeneDetailComponent implements OnInit {
 		
 				this.transcriptParamsUsed = {
 					LCID: this.lcid,
-					geneType: "transcript",
+					geneType: "rna",
 					geneID: this.geneID
 				}
 				
