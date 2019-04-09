@@ -306,16 +306,16 @@ export class GeneTableComponent implements OnInit, OnChanges {
 						// if(this.isFirst) this.applyOnceBeforeStatusThenReset();
 					}
 
-					// if ('mongoId' in responseData['data']) this.mongoId = responseData['data']['mongoId'];
-					this.mongoId ='mongoId' in responseData['data']? responseData['data']['mongoId']:null;
+                    // if ('mongoId' in responseData['data']) this.mongoId = responseData['data']['mongoId'];
+                    this.mongoId ='mongoId' in responseData['data']? responseData['data']['mongoId']:null;
 
-					if (!responseData.data['rows'].length) {
-						this.total = 0;
-						this.srcTotal = 0;
-                        this.error = 'nodata';
-                        this.totalChange.emit(this.total);
-						return;
-					}
+					// if (!responseData.data['rows'].length) {
+					// 	this.total = 0;
+					// 	this.srcTotal = 0;
+                    //     this.error = 'nodata';
+                    //     this.totalChange.emit(this.total);
+					// 	return;
+					// }
 
 					// 是否需要发射表头
 					if (this.emitBaseThead) {
@@ -435,6 +435,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.error = 'nodata';
                     this.syncRelative.emit([]);
                     this.totalChange.emit(this.total);
+                    this.mongoId ='mongoId' in responseData['data']? responseData['data']['mongoId']:null;
 
                     if (this.emitBaseThead) {
 						this.emitBaseThead = false;
