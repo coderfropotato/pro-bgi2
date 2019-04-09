@@ -85,7 +85,7 @@ export class KaFunComponent implements OnInit {
 	color: string; //当前选中的color
 	isShowColorPanel: boolean = false;
 
-	textContent: string = '气泡统计图';
+	textContent: string = '';
 	ytextContent: string = '';
 	geneNum: number;
 
@@ -1042,7 +1042,7 @@ export class KaFunComponent implements OnInit {
 						tempBucket = d.bucket;
 					}
 					// <br> bucket:  ${tempBucket.toString()}
-					let tipText = `value:  ${d.value}<br> xtype:  ${d.xtype}<br> ytype:  ${d.ytype}`;
+					let tipText = `value:  ${d.value}<br> ${that.textContent}:  ${d.xtype}<br> ${that.ytextContent}:  ${d.ytype}`;
 					that.globalService.showPopOver(d3.event, tipText);
 				})
 				.on('mouseout', function(d) {
