@@ -7,7 +7,7 @@
     <div class="content row map">
         <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
             <div class="left-bottom-layout">
-                <iframe name="mapIdIframe" id="mapIdIframe" width="100%" height="100%" style="border: none" [src]="pathWayIframeUrl"></iframe>
+                <iframe #iframe (load)="initIframe()" name="mapIdIframe" id="mapIdIframe" width="100%" height="100%" style="border: none" [src]="pathWayIframeUrl"></iframe>
             </div>
         </div>
         <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">

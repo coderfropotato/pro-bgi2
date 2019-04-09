@@ -277,7 +277,11 @@ export class GeneDetailComponent implements OnInit {
 
 	tcd_defaultUrl: string;
 
-	isLoading: Boolean = false;
+	isLoading: boolean = false;
+
+	msigdbFlag: boolean = false;
+	loadTable2: boolean = false;
+	msigdbFlagBtn: boolean = false;
 
   	constructor(
 		private message: MessageService,
@@ -607,7 +611,8 @@ export class GeneDetailComponent implements OnInit {
 		for (const key in tempdata) {
 			let tempObj = {};
 			if( key != "gene_id"){
-				tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
+				//tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
+				tempObj["x"] = key;
 				tempObj["y"] = tempdata[key];
 				tempArray.push(tempObj);
 			}
@@ -618,7 +623,7 @@ export class GeneDetailComponent implements OnInit {
 
 		let config: object = {
 			chart: {
-				title: "折线图",
+				// title: "折线图",
 				smooth:true,
 				dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
@@ -636,7 +641,7 @@ export class GeneDetailComponent implements OnInit {
 			axis: {
 				x: {
 					title: "Sample name",
-					// rotate: 60,
+					rotate: 70,
 					dblclick: function(event) {
 						var name = prompt("请输入需要修改的标题", "");
 						if (name) {
@@ -671,7 +676,8 @@ export class GeneDetailComponent implements OnInit {
 		for (const key in tempdata) {
 			let tempObj = {};
 			if( key != "gene_id"){
-				tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
+				//tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
+				tempObj["x"] = key;
 				tempObj["y"] = tempdata[key];
 				tempArray.push(tempObj);
 			}
@@ -701,7 +707,7 @@ export class GeneDetailComponent implements OnInit {
 			axis: {
 				x: {
 					title: "Sample name",
-					// rotate: 60,
+					rotate: 60,
 					dblclick: function(event) {
 						var name = prompt("请输入需要修改的标题", "");
 						if (name) {
@@ -975,7 +981,7 @@ export class GeneDetailComponent implements OnInit {
 			case this.msigdb_C6_parameter:
 				this.msigdb_c6_flag = tempData.length>0?true:false;
 				break;
-				case this.msigdb_C7_parameter:
+			case this.msigdb_C7_parameter:
 				this.msigdb_c7_flag = tempData.length>0?true:false;
 				break;
 			case this.msigdb_ARCHIVED_C5_MF_parameter:
@@ -1166,5 +1172,11 @@ export class GeneDetailComponent implements OnInit {
 		}
 		// let tempUrl = `http://biosys.bgi.com/project/test/BGI_${this.lcid}/Structure_and_variation/Alternative_splicing/AS_plot/${data['as_group_name']}/${data['as_id']}_${data['as_group_name']}_${data['as_type']}_${this.geneID}.pdf`;
 		// window.open(tempUrl);
+	}
+
+	loadMsigdb(){
+		this.msigdbFlag = true;
+		this.loadTable2 = true;
+		this.msigdbFlagBtn = true;
 	}
 }
