@@ -623,7 +623,7 @@ export class GeneDetailComponent implements OnInit {
 
 		let config: object = {
 			chart: {
-				title: "折线图",
+				// title: "折线图",
 				smooth:true,
 				dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
