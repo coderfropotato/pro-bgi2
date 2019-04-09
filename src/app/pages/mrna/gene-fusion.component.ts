@@ -224,6 +224,7 @@ export class GeneFusionComponent implements OnInit {
 					pos:d.fusion_dw_genome_pos
 				})
 			})
+
 			outerRing.forEach(d=>{
 				d.points=[];
 				d.pointData.forEach(m=>{
@@ -233,10 +234,24 @@ export class GeneFusionComponent implements OnInit {
 						}
 					})
 				})
+
+				d.withinGenes="";
+				d.betweenGenes="";
+				lineData.forEach(m=>{
+					if(d.name===m.fusion_up_chr){
+						if(m.fusion_up_chr===m.fusion_dw_chr){
+							d.withinGenes=`${m.fusion_up_chr}: ${m.fusion_up_genome_pos}.0 ${m.fusion_up_geneid};${m.fusion_dw_chr}: ${m.fusion_dw_genome_pos}.0 ${m.fusion_dw_geneid}<br>`;
+						} else{
+							d.betweenGenes=`${m.fusion_up_chr}: ${m.fusion_up_genome_pos}.0 ${m.fusion_up_geneid};${m.fusion_dw_chr}: ${m.fusion_dw_genome_pos}.0 ${m.fusion_dw_geneid}<br>`;
+						}
+					}
+				})
 			})
 		}else{
 			outerRing.forEach(d=>{
 				d.points=[];
+				d.betweenGenes="";
+				d.withinGenes="";
 			})
 		}
 		
@@ -337,8 +352,8 @@ export class GeneFusionComponent implements OnInit {
 				"endAngle": endAngle,
 				"angle": (startAngle + endAngle) / 2,
 				"name": d.name,
-				"betweenGene": d.betweenGene,
-				"withinGene": d.withinGene,
+				"betweenGene": d.betweenGenes,
+				"withinGene": d.withinGenes,
 				"column1": [],
 				"column2": [],
 				"column3": [],
@@ -525,7 +540,7 @@ export class GeneFusionComponent implements OnInit {
 				.on("mouseover", function(d) {
 					var tipText = "";
 					if (d.withinGene && d.betweenGene) {
-						tipText = `染色体编号：${d.name}<br>染色体内融合基因对：<br>${d.withinGene}<br>染色体间融合基因对：<br>${d.betweenGene}`;
+						tipText = `染色体编号：${d.name}<br>染色体内融合基因对：<br>${d.withinGene}染色体间融合基因对：<br>${d.betweenGene}`;
 					}else if(d.withinGene) { 
 					tipText = `染色体编号：${d.name}<br>染色体内融合基因对：<br>${d.withinGene}`;
 					}else if(d.betweenGene){
