@@ -540,7 +540,7 @@ export class GeneFusionComponent implements OnInit {
 				.on("mouseover", function(d) {
 					var tipText = "";
 					if (d.withinGene && d.betweenGene) {
-						tipText = `染色体编号：${d.name}<br>染色体内融合基因对：<br>${d.withinGene}<br>染色体间融合基因对：<br>${d.betweenGene}`;
+						tipText = `染色体编号：${d.name}<br>染色体内融合基因对：<br>${d.withinGene}染色体间融合基因对：<br>${d.betweenGene}`;
 					}else if(d.withinGene) { 
 					tipText = `染色体编号：${d.name}<br>染色体内融合基因对：<br>${d.withinGene}`;
 					}else if(d.betweenGene){
