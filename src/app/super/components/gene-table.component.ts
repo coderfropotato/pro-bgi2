@@ -267,8 +267,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	// 获取表格数据
 	getRemoteData(reset: boolean = false, cb: any = null): void {
-		this.isLoading = true;
-        console.log(this.isLoading);
+        this.isLoading = true;
+
 		if (reset) {
 			this.tableEntity['pageIndex'] = 1;
 		}
@@ -296,7 +296,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			(responseData: any) => {
 				// 如果需要保存基因集合id 并且 返回值有id这个key （针对转换表) 就保存下来
                 this.isLoading = false;
-                console.log(this.isLoading)
 				if (
 					responseData['status'] == '0' &&
 					responseData['data']['baseThead'].length &&
@@ -765,7 +764,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.unChecked = [];
 
         this.classifySearchCondition();
-        console.log(this.filterHtmlString)
 		this.getRemoteData(true);
 	}
 
