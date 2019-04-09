@@ -7,10 +7,10 @@
           <h3 class="title">2.1 分析方法</h3>
           <h3 class="title">1.表达量计算</h3>
           <!-- <p class="help_text">适用产品：RNAseq、RNAref</p> -->
-          <p class="help_text">
+          <p class="help_text" *ngIf="mflag1">
               我们使用 Bowtie2[1]将Clean reads比对到参考基因序列上，然后使用RSEM[2]计算各个样品的基因表达水平。
           </p>
-          <div class="help_bg">
+          <div class="help_bg" *ngIf="mflag1">
               <p>软件信息: </p> 
               <p>Bowtie2: </p> 
               <p>版本：v2.2.5</p> 
@@ -27,16 +27,16 @@
           </div>
 
           <!-- <p class="help_text">适用产品：lncRNA</p> -->
-          <p class="help_text">
+          <p class="help_text" *ngIf="mflag2">
               我们使用Bowtie2[1]将clean reads比对到参考序列，之后再使用RSEM[2]计算基因和转录本的表达量，RSEM是通过建立起reads产生的模型，后运用最大似然方法确定如何分配reads到不同的转录本，我们采用链特异性模式，能区分reads来源于正负链，从而实现更精准地定量。
           </p>
-          <p class="help_text">
+          <p class="help_text" *ngIf="mflag2">
               为了使样本间的表达量能够相互比较，需要对基因的表达量进行标准化处理。RSEM使用的标准化方法是FPKM。FPKM具体计算公式如下:
           </p>
           <!-- 图片 -->
-          <div class="img img-one-expression"></div>
+          <div class="img img-one-expression" *ngIf="mflag2"></div>
           <p class="help_text">设FPKM(A)为基因A的表达量，则C为唯一比对到基因A的fragments数，N为唯一比对到参考基因的总fragments数，L为基因A编码区的碱基数。FPKM法能消除基因长度和测序量差异对计算基因表达的影响，计算得到的基因表达量可直接用于比较不同样品间的基因差异表达。</p>
-          <div class="help_bg">
+          <div class="help_bg" *ngIf="mflag2">
               <p>软件信息：</p>
               <p>Bowtie2:</p>
               <p>版本：v2.2.5</p>
@@ -52,27 +52,27 @@
           </div>
 
           <!-- <p class="help_text">适用产品：smallRNA + library_method: smallRNA_common</p> -->
-          <p class="help_text">我们使用TPM[1]标准化小RNA的表达水平，这样处理可以避免不同测序量对定量准确性的影响。因此，标准化后的数据可以直接用于后续差异比较分析。TPM的计算公式如下：</p>
+          <p class="help_text" *ngIf="mflag3">我们使用TPM[1]标准化小RNA的表达水平，这样处理可以避免不同测序量对定量准确性的影响。因此，标准化后的数据可以直接用于后续差异比较分析。TPM的计算公式如下：</p>
            <!-- 图片 -->
-           <div class="img img-two-expression"></div>
-           <div class="help_bg">
+           <div class="img img-two-expression" *ngIf="mflag3"></div>
+           <div class="help_bg" *ngIf="mflag3">
               <p>参考文献：</p>
               <p>[1] 't Hoen, Ariyurek, et al. Deep sequencing-based expression analysis shows major advances in robustness, resolution and inter-lab portability over five microarray platforms. Nucleic Acids Res. 2008 Dec;36(21)</p>
            </div>
           
           <!-- <p class="help_text">适用产品：smallRNA + library_method: smallRNA_UMI</p> -->
-          <p class="help_text">特异性分子标签（UMI）为8-10nt的短序列，可看做“条形码”，在文库构建的早期阶段连接到cDNA分子中，标记原始样品中的每个分子。用于减少PCR扩增复制引入的定量偏差，有利于获得足够的读数以进行检测[1]。定量统计UMI种类数而非数量，“冻结”文库分子扩增前的状态，还原原始样品真实信息，保证small RNA定量的准确性。</p>
-           <div class="help_bg">
+          <p class="help_text" *ngIf="mflag4">特异性分子标签（UMI）为8-10nt的短序列，可看做“条形码”，在文库构建的早期阶段连接到cDNA分子中，标记原始样品中的每个分子。用于减少PCR扩增复制引入的定量偏差，有利于获得足够的读数以进行检测[1]。定量统计UMI种类数而非数量，“冻结”文库分子扩增前的状态，还原原始样品真实信息，保证small RNA定量的准确性。</p>
+           <div class="help_bg" *ngIf="mflag4">
               <p>参考文献：</p>
               <p>[1] Kivioja T, Vähärautio A, Karlsson K, et al. Counting absolute numbers of molecules using unique molecular identifiers[J]. Nature Methods, 2012, 9(1):72-74.</p>
            </div>
 
            <!-- <p class="help_text">适用产品：circRNA</p> -->
-          <p class="help_text">本研究根据比对至circRNA两端的 junction reads 数来计算circRNA的表达量，由于使用了两个软件CIRI、find_circ来预测，所以最终的 junction reads 数取两者结果的平均值。 本研究采用 RPB （junction reads per billion mapped reads，比对上基因组的所有reads标准化到十亿后跨过back-spliced位点的junction reads数目）对各样品作了均一化处理。</p>
+          <p class="help_text" *ngIf="mflag5">本研究根据比对至circRNA两端的 junction reads 数来计算circRNA的表达量，由于使用了两个软件CIRI、find_circ来预测，所以最终的 junction reads 数取两者结果的平均值。 本研究采用 RPB （junction reads per billion mapped reads，比对上基因组的所有reads标准化到十亿后跨过back-spliced位点的junction reads数目）对各样品作了均一化处理。</p>
         </div>
     
   
-        <div class="help_content">
+        <div class="help_content" *ngIf="mflag6">
             <h3 class="title">2.差异基因检测</h3>
             <!-- <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p> -->
             <h3 class="title sjx2">DEGseq: </h3>
@@ -130,7 +130,7 @@
             </div>
         </div>
 
-        <div class="help_content">
+        <div class="help_content" *ngIf="mflag7">
             <!-- <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p> -->
             <h3 class="title">3.聚类热图</h3>
             <p class="help_text">根据差异基因检测结果，对并集差异基因，使用R包pheatmap进行层次聚类分析。</p>
@@ -140,7 +140,7 @@
             </div>
         </div>
 
-        <div class="help_content">
+        <div class="help_content" *ngIf="mflag8">
             <h3 class="title">2.2 常见问题：</h3>
             <!-- <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p> -->
             <h3 class="title">1、有生物学重复的样本做样本间的差异基因检测有无意义？</h3>
