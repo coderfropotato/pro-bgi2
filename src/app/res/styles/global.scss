@@ -1383,6 +1383,10 @@ button {
     button {
         margin-bottom: 12px;
         margin-right: 12px;
+        max-width:260px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
     &>div {
         padding: 12px;

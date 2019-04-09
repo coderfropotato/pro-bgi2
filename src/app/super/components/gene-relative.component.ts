@@ -66,7 +66,7 @@ export class GeneRelativeComponent implements OnInit {
 		// 	{ key: 'target', name: 'target', limit: true, score: [ 0, 100, 32 ], max: [ 100, 500, 459 ] }
 		// ];
 
-		this.relations = this.storeService.getStore('relations');
+		this.relations = JSON.parse(JSON.stringify(this.storeService.getStore('relations')))
 		// this.beforeRelation = JSON.parse(JSON.stringify(this.relations));
 	}
 
@@ -134,7 +134,8 @@ export class GeneRelativeComponent implements OnInit {
 	}
 
 	initRelations() {
-		this.selectRelations.length = 0;
+        this.selectRelations.length = 0;
+        this.relations = JSON.parse(JSON.stringify(this.storeService.getStore('relations')));
         this.initPosRelation();
 		console.log(this.relations);
 		if (this.selectedType === '功能关系') {
