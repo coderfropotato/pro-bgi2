@@ -366,107 +366,110 @@
               <app-little-table *ngIf="loadTable" [targetID]="'eggnog_term_id'" [targetFlag] = "true" [targetURL]="'http://eggnogdb.embl.de/#/app/home'" [type]="eggnog_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="eggnog_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
-          <div class="transcripts_table" [hidden]="!msigdb_h_flag">
-              <h5>Msigdb_H</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_h_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_H_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_h_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
+          <button style="margin-left:24px;" [hidden]="msigdbFlagBtn" nz-button [nzSize]="'small'" nzType="primary" (click)="loadMsigdb()">加载</button>
 
-          <div class="transcripts_table" [hidden]="!msigdb_c1_flag">
-              <h5>Msigdb C1</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c1_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C1_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c1_url" [pageEntity]="go_molecular_params"></app-little-table>
+          <div [hidden]="!msigdbFlag">
+            <div class="transcripts_table" [hidden]="!msigdb_h_flag">
+                <h5>Msigdb_H</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_h_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_H_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_h_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_c1_flag">
+                <h5>Msigdb C1</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c1_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C1_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c1_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_c2_cgp_flag">
+                <h5>MsigDB C2_CGP</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c2_cgp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CGP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cgp_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+            <div class="transcripts_table" [hidden]="!msigdb_c2_cp_biocarta_flag">
+                <h5>MsigDB C2_CP_BIOCARTA</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c2_cp_biocarta_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CP_BIOCARTA_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_biocarta_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_C2_CP_flag">
+                <h5>MsigDB C2_CP</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c2_cp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigDB_C2_CP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_C2_CP_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+            <div class="transcripts_table" [hidden]="!msigdb_c2_cp_kegg_flag">
+                <h5>MsigDB C2_CP_KEGG</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c2_cp_kegg_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CP_KEGG_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_kegg_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_c2_cp_reactome_flag">
+                <h5>MsigDB C2_CP_REACTOME</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c2_cp_reactome_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CP_REACTOME_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+            
+            <div class="transcripts_table" [hidden]="!msigdb_c3_mir_flag">
+                <h5>MsigDB C3_MIR</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c3_mir_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C3_MIR_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_mir_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+            <div class="transcripts_table" [hidden]="!msigdb_c3_tft_flag">
+                <h5>MsigDB C3_TFT</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c3_tft_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C3_TFT_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_tft_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_c4_cgn_flag">
+                <h5>MsigDB C4_CGN</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c4_cgn_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C4_CGN_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cgn_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+            <div class="transcripts_table" [hidden]="!msigdb_c4_cm_flag">
+                <h5>MsigDB C4_CM</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c4_cm_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C4_CM_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cm_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_c5_bp_flag">
+                <h5>MsigDB C5_BP</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c5_bp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_c5_cc_flag">
+                <h5>MsigDB C5_CC</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c5_cc_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_cc_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_c5_mf_flag">
+                <h5>MsigDB C5_MF</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c5_mf_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_c6_flag">
+                <h5>Msigdb C6</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c6_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C6_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c6_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_c7_flag">
+                <h5>Msigdb C7</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c7_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C7_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c7_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_archived_c5_mf_flag">
+                <h5>MsigDB ARCHIVED_C5_MF</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c5_mf_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_ARCHIVED_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_archived_c5_c_flag">
+                <h5>MsigDB ARCHIVED_C5_CC</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c5_cc_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_ARCHIVED_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_cc_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!msigdb_archived_c5_bp_flag">
+                <h5>MsigDB ARCHIVED_C5_BP</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'msigdb_c5_bp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_ARCHIVED_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!tf_cofactors_flag">
+                <h5>TF Cofactors</h5>
+                <app-little-table *ngIf="loadTable2" [type]="tf_cofactors_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="tf_cofactors_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
+    
+            <div class="transcripts_table" [hidden]="!tf_flag">
+                <h5>Transcription Factor</h5>
+                <app-little-table *ngIf="loadTable2" [targetID]="'tf_term_id'" [targetFlag] = "true" [targetURL]="'http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/'" [type]="tf_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="tf_url" [pageEntity]="go_molecular_params"></app-little-table>
+            </div>
           </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_c2_cgp_flag">
-              <h5>MsigDB C2_CGP</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c2_cgp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CGP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cgp_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-          <div class="transcripts_table" [hidden]="!msigdb_c2_cp_biocarta_flag">
-              <h5>MsigDB C2_CP_BIOCARTA</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c2_cp_biocarta_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CP_BIOCARTA_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_biocarta_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_C2_CP_flag">
-              <h5>MsigDB C2_CP</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c2_cp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigDB_C2_CP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_C2_CP_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-          <div class="transcripts_table" [hidden]="!msigdb_c2_cp_kegg_flag">
-              <h5>MsigDB C2_CP_KEGG</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c2_cp_kegg_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CP_KEGG_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_kegg_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_c2_cp_reactome_flag">
-              <h5>MsigDB C2_CP_REACTOME</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c2_cp_reactome_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C2_CP_REACTOME_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c2_cp_reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-          
-          <div class="transcripts_table" [hidden]="!msigdb_c3_mir_flag">
-              <h5>MsigDB C3_MIR</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c3_mir_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C3_MIR_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_mir_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-          <div class="transcripts_table" [hidden]="!msigdb_c3_tft_flag">
-              <h5>MsigDB C3_TFT</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c3_tft_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C3_TFT_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c3_tft_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_c4_cgn_flag">
-              <h5>MsigDB C4_CGN</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c4_cgn_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C4_CGN_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cgn_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-          <div class="transcripts_table" [hidden]="!msigdb_c4_cm_flag">
-              <h5>MsigDB C4_CM</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c4_cm_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C4_CM_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c4_cm_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_c5_bp_flag">
-              <h5>MsigDB C5_BP</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c5_bp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_c5_cc_flag">
-              <h5>MsigDB C5_CC</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c5_cc_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_cc_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_c5_mf_flag">
-              <h5>MsigDB C5_MF</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c5_mf_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_c6_flag">
-              <h5>Msigdb C6</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c6_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C6_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c6_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_c7_flag">
-              <h5>Msigdb C7</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c7_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_C7_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_c7_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_archived_c5_mf_flag">
-              <h5>MsigDB ARCHIVED_C5_MF</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c5_mf_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_ARCHIVED_C5_MF_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_mf_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_archived_c5_c_flag">
-              <h5>MsigDB ARCHIVED_C5_CC</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c5_cc_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_ARCHIVED_C5_CC_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_cc_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!msigdb_archived_c5_bp_flag">
-              <h5>MsigDB ARCHIVED_C5_BP</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'msigdb_c5_bp_term_id'" [targetURL]="'http://software.broadinstitute.org/gsea/msigdb/cards/'" [type]="msigdb_ARCHIVED_C5_BP_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="msigdb_archived_c5_bp_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!tf_cofactors_flag">
-              <h5>TF Cofactors</h5>
-              <app-little-table *ngIf="loadTable" [type]="tf_cofactors_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="tf_cofactors_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
-          <div class="transcripts_table" [hidden]="!tf_flag">
-              <h5>Transcription Factor</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'tf_term_id'" [targetFlag] = "true" [targetURL]="'http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/'" [type]="tf_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="tf_url" [pageEntity]="go_molecular_params"></app-little-table>
-          </div>
-
       </div>
 
       <!-- 文献信息 -->
