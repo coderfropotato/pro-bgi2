@@ -25,10 +25,10 @@
         </div>
         <!-- [showFilterStatus]="defaultShowFilterStatus" [tableType]="defaultTableType" [defaultMartix]="defaultMartix"-->
         <div class="small_text">
-            当前表格，样本 : <span class="small_span">{{sample}}</span> 剪接类型 ：<span class="small_span">{{asType}}</span>
+            &nbsp;&nbsp;&nbsp;当前表格，样本：<span class="small_span" title="{{sample}}">{{sample}}</span>&nbsp;&nbsp;&nbsp;剪接类型：<span class="small_span" title="{{asType}}">{{asType}}</span>
         </div>
         <div class="small_text" style="font-style: italic;color: rgba(102,101,101,.548);">
-            注：请单击图上色块切换样本和剪接类型。
+            &nbsp;&nbsp;&nbsp;注：请单击图上色块切换样本和剪接类型。
         </div>
         <app-geneTable #defaultSpliceTable [url]="defaultTableUrl" [pageEntity]="defaultTableEntity" [tableId]="defaultTableId" [defaultChecked]="defaultSpliceChecked" [tableHeight]="tableHeight" [checkStatusInParams]="defaultCheckStatusInParams" [(computedScrollHeight)]="computedScrollHeight"></app-geneTable>
         <!-- <app-big-table

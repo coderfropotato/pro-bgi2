@@ -105,14 +105,13 @@ export class AddColumnComponent implements OnInit {
 	baseTheadChange() {
 		this.theadInBase = [];
 		this.initSelected();
-
 		this.forLeaves(this.thead, (item) => {
 			item['checked'] = false;
 		});
 
 		this.baseThead.forEach((v) => {
 			this.forLeaves(this.thead, (item) => {
-				if (v.includes(item['key'])) {
+				if (v === item['key']) {
 					item['checked'] = true;
 					this.selected[item['index']].push(item);
 					this.theadInBase.push(item);
@@ -405,7 +404,7 @@ export class AddColumnComponent implements OnInit {
 
 		this.baseThead.forEach((v) => {
 			this.forLeaves(this.thead, (item) => {
-				if (v.includes(item['key'])) {
+				if (v === item['key']) {
 					item['checked'] = true;
 					this.selected[item['index']].push(item);
 					this.theadInBase.push(item);
@@ -683,7 +682,7 @@ export class AddColumnComponent implements OnInit {
 
 		this.baseThead.forEach((v) => {
 			this.forLeaves(this.thead, (item) => {
-				if (v.includes(item['key'])) {
+				if (v===item['key']) {
 					item['checked'] = true;
 					this.selected[item['index']].push(item);
 					this.theadInBase.push(item);

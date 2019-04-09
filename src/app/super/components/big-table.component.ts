@@ -162,7 +162,7 @@ export class BigTableComponent implements OnInit {
 
     sort(key, value): void {
         this.initSortMap();
-        this.sortMap[value] = key ;
+        this.sortMap[key] = value ;
 
         // 取消排序
         if (value == null) {

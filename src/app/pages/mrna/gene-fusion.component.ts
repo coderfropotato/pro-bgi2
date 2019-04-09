@@ -224,6 +224,7 @@ export class GeneFusionComponent implements OnInit {
 					pos:d.fusion_dw_genome_pos
 				})
 			})
+
 			outerRing.forEach(d=>{
 				d.points=[];
 				d.pointData.forEach(m=>{
@@ -233,10 +234,24 @@ export class GeneFusionComponent implements OnInit {
 						}
 					})
 				})
+
+				d.withinGenes="";
+				d.betweenGenes="";
+				lineData.forEach(m=>{
+					if(d.name===m.fusion_up_chr){
+						if(m.fusion_up_chr===m.fusion_dw_chr){
+							d.withinGenes=`${m.fusion_up_chr}: ${m.fusion_up_genome_pos}.0 ${m.fusion_up_geneid};${m.fusion_dw_chr}: ${m.fusion_dw_genome_pos}.0 ${m.fusion_dw_geneid}<br>`;
+						} else{
+							d.betweenGenes=`${m.fusion_up_chr}: ${m.fusion_up_genome_pos}.0 ${m.fusion_up_geneid};${m.fusion_dw_chr}: ${m.fusion_dw_genome_pos}.0 ${m.fusion_dw_geneid}<br>`;
+						}
+					}
+				})
 			})
 		}else{
 			outerRing.forEach(d=>{
 				d.points=[];
+				d.betweenGenes="";
+				d.withinGenes="";
 			})
 		}
 		
@@ -337,8 +352,8 @@ export class GeneFusionComponent implements OnInit {
 				"endAngle": endAngle,
 				"angle": (startAngle + endAngle) / 2,
 				"name": d.name,
-				"betweenGene": d.betweenGene,
-				"withinGene": d.withinGene,
+				"betweenGene": d.betweenGenes,
+				"withinGene": d.withinGenes,
 				"column1": [],
 				"column2": [],
 				"column3": [],

@@ -85,12 +85,12 @@ declare const $: any;
                             <div class="mselect2_place">
                                 <div>搜索范围:</div>
                                 <!--<button nz-button nzType="default" *ngFor="let item of selectPanelList" [nzSize]="'small'" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.key}}</button>-->
-								
+
 								<div class="tool-params-tab" *ngFor="let item of selectPanelList;index as i;">
 									<p>{{item['key']}}</p>
 									<button (click)="handlerGeneClassSelect(klass)" [class.active]="klass['checked']" *ngFor="let klass of item['value'];" nz-button nzType="default" nzSize="middle">{{klass['name']}}</button>
 								</div>
-							
+
 							</div>
                             </div>
                         </div>
@@ -364,7 +364,7 @@ export class GenePage {
 			item['checked'] = true;
 			this.selectedList.push(item);
 		}
-		
+
 		if(this.selectedList.length != 0){
 			this.icon_color = "blue";
 		}else{
@@ -372,7 +372,6 @@ export class GenePage {
 		}
 
 		//this.geneService.set('checkedAddThead', this.selectedList);
-		console.log(this.geneService);
 	}
 
 	getDefaultData() {
@@ -394,7 +393,6 @@ export class GenePage {
 					} else if (data.status == '-2') {
 						return;
 					} else {
-						console.log(data);
 						this.selectPanelList = data;
 
 						let tempList = [];
@@ -407,7 +405,7 @@ export class GenePage {
 						});
 
 						this.selectedListT = tempList;
-						
+
 						this.geneService.set('checkedAddThead', this.selectedListT);
 						this.geneService.set('num', tempList.length);
 
@@ -500,8 +498,6 @@ export class GeneComponent implements OnInit {
 	}
 
 	ngOnInit() {
-
-		console.log(this.geneService['geneOptions']);
 
         this.applyOnceSearchParams = true;
         this.defaultApplyOnceSearchParams = true;
@@ -652,7 +648,7 @@ export class GeneComponent implements OnInit {
 
 	// 在认为是基础头的时候发出基础头 双向绑定到增删列
 	baseTheadChange(thead) {
-		this.baseThead = thead['baseThead'].map((v) => v['true_key']);
+        this.baseThead = thead['baseThead'].map((v) => v['true_key']);
 	}
 
 	resize(event) {
@@ -685,7 +681,7 @@ export class GeneComponent implements OnInit {
     }
 
     search(){
-		
+
 		if(this.geneService['geneOptions']['num'] != this.geneService['geneOptions']['checkedAddThead'].length){
 			let tempName = [];
 			this.geneService['geneOptions']['checkedAddThead'].forEach((d) => {

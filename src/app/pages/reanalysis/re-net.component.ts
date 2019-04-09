@@ -327,7 +327,7 @@ export class ReNetComponent implements OnInit {
             this.defaultEntity['rootSearchContentList'] = [];
             if(this.selectGeneList.length){
                 this.defaultEntity['searchList'] = [
-                    {"filterName":`${this.geneType}_id`,"filterNamezh":`${this.geneType}_id`,"searchType":"string","filterType":"$in","valueOne":this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],"valueTwo":null}
+                    {"filterName":`${this.geneType}_id`,"filterNamezh":config[this.geneType],"searchType":"string","filterType":"$in","valueOne":this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],"valueTwo":null}
                 ];
             }else{
                 this.defaultEntity['searchList']= [] ;
@@ -335,9 +335,9 @@ export class ReNetComponent implements OnInit {
             this.first = true;
         }else{
             if(this.selectGeneList.length) {
-                this.transformTable._filter(`${this.geneType}_id`,`${this.geneType}_id`,"string","$in",this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],null);
+                this.transformTable._filter(`${this.geneType}_id`,config[this.geneType],"string","$in",this.selectGeneList.length>1?this.selectGeneList.join(','):this.selectGeneList[0],null);
             }else{
-                this.transformTable._deleteFilterWithoutRequest(`${this.geneType}_id`,`${this.geneType}_id`,"$in");
+                this.transformTable._deleteFilterWithoutRequest(`${this.geneType}_id`,config[this.geneType],"$in");
                 this.transformTable._getData();
             }
         }
@@ -524,8 +524,8 @@ export class ReNetComponent implements OnInit {
             .data(arrows).enter()
             .append("marker")
             .attr("id", d => d.id)
-            .attr("viewBox", '0 0 10 10')
-            .attr("refX", 20)
+            .attr("viewBox", '0 0 20 20')
+            .attr("refX", 40)
             .attr("refY", 5)
             .attr("markerWidth", 4)
             .attr("markerHeight", 4)
@@ -580,11 +580,11 @@ export class ReNetComponent implements OnInit {
                         if(referencesStr!=='NA'){
                             references=referencesStr.split(',');
                         }else{
-                            references.length=0; 
+                            references.length=0;
                         }
                     }
                 }
-                
+
                 let text = `source：<a target='_blank' href=''>${m.source.geneID}</a><br>target：<a target='_blank' href=''>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}`;
                 if(references.length){
                     text=text+'<br>文献：';
