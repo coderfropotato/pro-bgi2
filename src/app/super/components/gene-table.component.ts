@@ -26,6 +26,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import config from '../../../config';
+import { Alert } from 'selenium-webdriver';
 
 declare const $: any;
 /**
@@ -267,7 +268,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	// 获取表格数据
 	getRemoteData(reset: boolean = false, cb: any = null): void {
 		this.isLoading = true;
-
+        console.log(this.isLoading);
 		if (reset) {
 			this.tableEntity['pageIndex'] = 1;
 		}
@@ -294,9 +295,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.ajaxService.getDeferData(ajaxConfig).subscribe(
 			(responseData: any) => {
 				// 如果需要保存基因集合id 并且 返回值有id这个key （针对转换表) 就保存下来
-				this.isLoading = false;
+                this.isLoading = false;
+                console.log(this.isLoading)
 				if (
-					responseData.status == '0' &&
+					responseData['status'] == '0' &&
 					responseData['data']['baseThead'].length &&
 					responseData['data']['rows'].length
 				) {
@@ -427,7 +429,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 						}, 30);
 					}
 				} else if (
-					responseData.status == '0' &&
+					responseData['status'] == '0' &&
 					(!responseData['data']['baseThead'].length || !responseData['data']['rows'].length)
 				) {
 					this.total = 0;
@@ -762,8 +764,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.checked = [];
 		this.unChecked = [];
 
+        this.classifySearchCondition();
+        console.log(this.filterHtmlString)
 		this.getRemoteData(true);
-		this.classifySearchCondition();
 	}
 
 	// 把筛选条件 按交并集归类
@@ -774,7 +777,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
 		} else {
 			this.filterHtmlString.length = 0;
-		}
+        }
 
 		// 每次分类筛选条件的时候 重新计算表格滚动区域高度
 		setTimeout(() => {

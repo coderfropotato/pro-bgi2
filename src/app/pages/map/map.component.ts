@@ -5,7 +5,16 @@ import { PageModuleService } from './../../super/service/pageModuleService';
 import { MessageService } from './../../super/service/messageService';
 import { AjaxService } from 'src/app/super/service/ajaxService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Component, OnInit, ViewChild, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	ViewChild,
+	AfterViewInit,
+	Input,
+	Output,
+	EventEmitter,
+	ChangeDetectorRef
+} from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
@@ -36,7 +45,7 @@ export class MapComponent implements OnInit {
 	@ViewChild('func') func;
 	@ViewChild('transformTable') transformTable;
 	@ViewChild('addColumn') addColumn;
-	@ViewChild('iframe') iframe;
+	@ViewChild('iframe') oif;
 
 	defaultGeneType: string;
 	chartUrl: string;
@@ -143,6 +152,7 @@ export class MapComponent implements OnInit {
 		private sanitizer: DomSanitizer,
 		private ngxSpinnerService: NgxSpinnerService,
 		private addColumnService: AddColumnService,
+		private changeDetector: ChangeDetectorRef,
 		private modalService: NzModalService // private outerDataBaseService:OuterDataBaseService
 	) {
 		let langs = [ 'zh', 'en' ];
@@ -171,9 +181,8 @@ export class MapComponent implements OnInit {
 				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this
 					.lcid}/KEGG_PATHWAY/Pathway_enrichment/${this.compareGroup}/${this.compareGroup}_${this
 					.defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`;
+				// this.dirtyPathWayIframeUrl = 'http://localhost:4200/#/report/map/test';
 			}
-
-			this.pathWayIframeUrl = this.cleanUrl(this.dirtyPathWayIframeUrl);
 		});
 
 		// 订阅windowResize 重新计算表格滚动高度
@@ -192,6 +201,8 @@ export class MapComponent implements OnInit {
 	ngOnInit() {
 		this.ngxSpinnerService.show();
 		(async () => {
+			this.pathWayIframeUrl = this.cleanUrl(this.dirtyPathWayIframeUrl);
+
 			try {
 				await this.getLcInfo();
 				this.getUnReadAnalysisCount();
@@ -222,7 +233,7 @@ export class MapComponent implements OnInit {
 					sortThead: this.addColumn['sortThead'],
 					removeColumns: []
 				};
-				this.defaultTableId = 'default_class';
+				this.defaultTableId = 'default_map';
 				this.defaultDefaultChecked = true;
 				this.defaultEmitBaseThead = true;
 				this.defaultCheckStatusInParams = true;
@@ -252,7 +263,7 @@ export class MapComponent implements OnInit {
 					sortThead: this.addColumn['sortThead'],
 					removeColumns: []
 				};
-				this.extendTableId = 'extend_class';
+				this.extendTableId = 'extend_map';
 				this.extendDefaultChecked = true;
 				this.extendEmitBaseThead = true;
 				this.extendCheckStatusInParams = false;
@@ -279,9 +290,13 @@ export class MapComponent implements OnInit {
 		})();
 	}
 
+	iframeLoaded() {
+		this.initIframe();
+	}
+
 	initIframe() {
 		let _self = this;
-		let areas = $(this.iframe.nativeElement).contents().find('map').children('area[target_gene]');
+		let areas = $('iframe').contents().find('map').children('area[target_gene]');
 		areas.on('click', function() {
 			let select = $(this).attr('target_gene');
 			_self.selectList = select || '';
@@ -295,6 +310,8 @@ export class MapComponent implements OnInit {
 	}
 
 	getUnReadAnalysisCount() {
+		if (this.getUnReadAnalysisCountTimer) clearInterval(this.getUnReadAnalysisCountTimer);
+
 		let getCount = () => {
 			this.ajaxService
 				.getDeferData({
@@ -339,47 +356,6 @@ export class MapComponent implements OnInit {
 							}
 
 							//this.menuList = data["data"].menu_list;
-
-							/**
-                             * 基础模块
-                             * 项目概况	overview
-                             * 参考信息	reference
-                             * reads过滤	reads-filter
-                             * reads检测	reads-alignment
-                             * 小RNA检测	smallrna
-                             * 帮助	basic-help
-                             *
-                             * 差异表达
-                             * 差异表达	diff-expression
-                             * 帮助	diff-expression-help
-                             *
-                             * 表达量
-                             * 表达量	expression
-                             * 帮助	expression-help
-                             *
-                             * 差异聚类	cluster
-                             * 帮助	cluster-help
-                             *
-                             * GO
-                             * GO分类 go-class
-                             * GO富集	go-enrichment
-                             * 帮助	go-help
-                             *
-                             * KEGG
-                             * KEGG分类	kegg-class
-                             * KEGG富集	kegg-enrichment
-                             * 帮助	kegg-help
-                             *
-                             * 结构变异
-                             * SNP	snp
-                             * INDEL	indel
-                             * 可变剪切	alternative-splicing
-                             * 基因融合	gene-fusion
-                             * 帮助	structure-variation-help
-                             *
-                             * 基因总表
-                             * 基因总表	gene
-                             */
 							this.menuList = [
 								{
 									category: 'category_url_main', // category_url_main
@@ -752,24 +728,12 @@ export class MapComponent implements OnInit {
 			this.transformTable._setParamsNoRequest('compareGroup', this.compareGroup);
 
 			if (this.selectList) {
-				this.transformTable._filter(
-					`${this.defaultGeneType}_id`,
-					config[this.defaultGeneType],
-					'string',
-					'$in',
-					this.selectList,
-					null
-				);
+				this.transformTable._filter( `${this.defaultGeneType}_id`, config[this.defaultGeneType], 'string', '$in', this.selectList, null );
 			} else {
-				this.transformTable._deleteFilterWithoutRequest(
-					`${this.defaultGeneType}_id`,
-					config[this.defaultGeneType],
-					'$in'
-				);
+				this.transformTable._deleteFilterWithoutRequest( `${this.defaultGeneType}_id`, config[this.defaultGeneType], '$in' );
 				this.transformTable._getData();
 			}
 		}
-
 		this.selectList = '';
 	}
 
