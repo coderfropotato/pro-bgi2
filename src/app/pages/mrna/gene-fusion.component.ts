@@ -235,18 +235,15 @@ export class GeneFusionComponent implements OnInit {
 					})
 				})
 
+				d.withinGenes="";
+				d.betweenGenes="";
 				lineData.forEach(m=>{
 					if(d.name===m.fusion_up_chr){
 						if(m.fusion_up_chr===m.fusion_dw_chr){
 							d.withinGenes=`${m.fusion_up_chr}: ${m.fusion_up_genome_pos}.0 ${m.fusion_up_geneid};${m.fusion_dw_chr}: ${m.fusion_dw_genome_pos}.0 ${m.fusion_dw_geneid}<br>`;
-							d.betweenGenes="";
 						} else{
 							d.betweenGenes=`${m.fusion_up_chr}: ${m.fusion_up_genome_pos}.0 ${m.fusion_up_geneid};${m.fusion_dw_chr}: ${m.fusion_dw_genome_pos}.0 ${m.fusion_dw_geneid}<br>`;
-							d.withinGenes="";
 						}
-					}else{
-						d.withinGenes="";
-						d.betweenGenes="";
 					}
 				})
 			})
