@@ -20,14 +20,14 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 declare const d3: any;
 declare const d4: any;
 declare const Venn: any;
-declare const $:any;
+declare const $: any;
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styles: []
+	selector: 'app-map',
+	templateUrl: './map.component.html',
+	styles: []
 })
-export class MapComponent implements OnInit{
+export class MapComponent implements OnInit {
 	@ViewChild('switchChart') switchChart;
 	@ViewChild('left') left;
 	@ViewChild('leftBottom') leftBottom;
@@ -35,13 +35,14 @@ export class MapComponent implements OnInit{
 	@ViewChild('right') right;
 	@ViewChild('func') func;
 	@ViewChild('transformTable') transformTable;
-	@ViewChild('addColumn') addColumn;
-	
-	defaultGeneType:string;
-	chartUrl: string;
-    chartEntity: object;
+    @ViewChild('addColumn') addColumn;
+    @ViewChild('iframe') iframe;
 
-    expandModuleDesc: boolean = false;
+	defaultGeneType: string;
+	chartUrl: string;
+	chartEntity: object;
+
+	expandModuleDesc: boolean = false;
 
 	chart: any;
 
@@ -92,7 +93,6 @@ export class MapComponent implements OnInit{
 	selectGeneCount: number = 0;
 	computedScrollHeight: boolean = false;
 	leftComputedScrollHeight: boolean = false;
-	resetCheckGraph: boolean;
 
 	isExceed: any = null;
 	selectedVal: string = '';
@@ -108,52 +108,51 @@ export class MapComponent implements OnInit{
 	// level标志key
 	level1Key: string = 'level_1';
 	level2Key: string = 'level_2';
-    termKey: string = 'term';
-    idKey:string = 'id';
-    descKey:string = 'desc';
+	termKey: string = 'term';
+	idKey: string = 'id';
+	descKey: string = 'desc';
 
 	// 设置
 	set: object = { width: 600, len: 40 };
 	beforeSet: object = { width: 600, len: 40 };
 	setVisible: boolean = false;
 
-	
-	mapid:string = '';
-	tid:any = null;
-	lcid:string = '';
-	compareGroup:string = '';
-	dirtyPathWayIframeUrl:string;
-	pathWayIframeUrl:any;
-	params:object = {};
-	menuList:any[] = [];
-	getUnReadAnalysisCountTimer:any = null;
-	ready:boolean = false;
+	mapid: string = '';
+	tid: any = null;
+	lcid: string = '';
+	compareGroup: string = '';
+	dirtyPathWayIframeUrl: string;
+	pathWayIframeUrl: any;
+	params: object = {};
+	menuList: any[] = [];
+	getUnReadAnalysisCountTimer: any = null;
+	ready: boolean = false;
+	selectList: string = '';
 
 	constructor(
-			private message: MessageService,
-			private ajaxService: AjaxService,
-			private globalService: GlobalService,
-			public storeService: StoreService,
-			public pageModuleService: PageModuleService,
-			private translate: TranslateService,
-			private promptService: PromptService,
-			private router: Router,
-			private routes:ActivatedRoute,
-			private geneService: GeneService,
-			private sanitizer: DomSanitizer,
-			private ngxSpinnerService: NgxSpinnerService,
-			private addColumnService: AddColumnService,
-			private modalService: NzModalService // private outerDataBaseService:OuterDataBaseService
-	
+		private message: MessageService,
+		private ajaxService: AjaxService,
+		private globalService: GlobalService,
+		public storeService: StoreService,
+		public pageModuleService: PageModuleService,
+		private translate: TranslateService,
+		private promptService: PromptService,
+		private router: Router,
+		private routes: ActivatedRoute,
+		private geneService: GeneService,
+		private sanitizer: DomSanitizer,
+		private ngxSpinnerService: NgxSpinnerService,
+		private addColumnService: AddColumnService,
+		private modalService: NzModalService // private outerDataBaseService:OuterDataBaseService
 	) {
-		let langs = ['zh', 'en'];
+		let langs = [ 'zh', 'en' ];
 		this.translate.addLangs(langs);
 		this.translate.setDefaultLang('zh');
 		let curLang = localStorage.getItem('lang');
-		if(langs.includes(curLang)){
-			this.translate.use(curLang)
-		}else{
-			this.translate.use('zh')
+		if (langs.includes(curLang)) {
+			this.translate.use(curLang);
+		} else {
+			this.translate.use('zh');
 		}
 
 		this.routes.paramMap.subscribe((params) => {
@@ -162,17 +161,19 @@ export class MapComponent implements OnInit{
 			this.lcid = this.params['lcid'];
 			this.mapid = this.params['mapid'];
 			this.defaultGeneType = this.params['geneType'];
-			this.tid = this.params['tid']=='undefined'?undefined:this.params['tid'];
+			this.tid = this.params['tid'] == 'undefined' ? undefined : this.params['tid'];
 			this.compareGroup = this.params['compareGroup'];
-			
-			if(this.tid){
-				// 重分析内的map跳转
-			}else{
-				// 非重分析的map跳转   production test
-				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this.lcid}/KEGG_PATHWAY/Pathway_enrichment/${this.compareGroup}/${this.compareGroup}_${this.defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`
-			}
 
-			this.initIframe();
+			if (this.tid) {
+				// 重分析内的map跳转
+			} else {
+				// 非重分析的map跳转   production test
+				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this
+					.lcid}/KEGG_PATHWAY/Pathway_enrichment/${this.compareGroup}/${this.compareGroup}_${this
+                    .defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`;
+            }
+
+            this.pathWayIframeUrl = this.cleanUrl(this.dirtyPathWayIframeUrl);
 		});
 
 		// 订阅windowResize 重新计算表格滚动高度
@@ -188,15 +189,14 @@ export class MapComponent implements OnInit{
 		});
 	}
 
-	ngOnInit(){
+	ngOnInit() {
 		this.ngxSpinnerService.show();
 		(async () => {
 			try {
 				await this.getLcInfo();
 				this.getUnReadAnalysisCount();
-				
+
 				this.first = true;
-				this.resetCheckGraph = true;
 				this.applyOnceSearchParams = true;
 				this.defaultUrl = `${config['javaPath']}/enrichment/keggPathTable`;
 				this.defaultEntity = {
@@ -212,9 +212,9 @@ export class MapComponent implements OnInit{
 					sortValue: null,
 					sortKey: null,
 					reAnaly: false,
-					enrichmentType: "kegg_pathway",
-					compareGroup:this.compareGroup,
-					kegg_pathway_term_id:this.mapid,
+					enrichmentType: 'kegg_pathway',
+					compareGroup: this.compareGroup,
+					kegg_pathway_term_id: this.mapid,
 					geneType: this.defaultGeneType,
 					species: this.storeService.getStore('genome'),
 					version: this.storeService.getStore('version'),
@@ -242,9 +242,9 @@ export class MapComponent implements OnInit{
 					sortValue: null,
 					sortKey: null,
 					reAnaly: false,
-					enrichmentType: "kegg_pathway",
-					compareGroup:this.compareGroup,
-					kegg_pathway_term_id:this.mapid,
+					enrichmentType: 'kegg_pathway',
+					compareGroup: this.compareGroup,
+					kegg_pathway_term_id: this.mapid,
 					geneType: this.defaultGeneType,
 					species: this.storeService.getStore('genome'),
 					version: this.storeService.getStore('version'),
@@ -262,7 +262,7 @@ export class MapComponent implements OnInit{
 					this.ngxSpinnerService.hide();
 				}, 300);
 			} catch (error) {
-				console.log(error)
+				console.log(error);
 				this.ngxSpinnerService.hide();
 				let tpl = this.modalService.error({
 					nzTitle: '系统错误',
@@ -279,48 +279,45 @@ export class MapComponent implements OnInit{
 		})();
 	}
 
-	initIframe(){
-		this.pathWayIframeUrl = this.cleanUrl(this.dirtyPathWayIframeUrl);
-		let oIframe = $("#mapIdIframe");
-        oIframe.on("load", function() {
-            let areas = oIframe.contents().find("map").children("area[target_gene]");
-            areas.on("click", function() {
-                let selectList = [];
-                let select = $(this).attr("target_gene");
-                if (select.indexOf(",") != -1) {
-                    selectList = select.split(",");
-                } else if (!select) {
-                    selectList = [];
-                } else {
-                    selectList.push(select);
-                }
-            })
-        })
+	initIframe() {
+        let _self = this;
+        let areas =$(this.iframe.nativeElement).contents().find('map').children('area[target_gene]');
+        areas.on('click', function() {
+            let select = $(this).attr('target_gene');
+            _self.selectList = select || '';
+            console.log(_self.selectList);
+            _self.chartBackStatus();
+        });
 	}
 
-	cleanUrl(url:string):SafeUrl{
+	cleanUrl(url: string): SafeUrl {
 		return this.sanitizer.bypassSecurityTrustResourceUrl(url);
 	}
 
-	getUnReadAnalysisCount(){
-		let getCount = ()=>{
-			this.ajaxService.getDeferData({
-				data: {
-					LCID:sessionStorage.getItem('LCID')
-				},
-				url: `${config['javaPath']}/reAnalysis/count`
-			}).subscribe(data=>{
-				if(data['status']==0) this.storeService.setStore('analysisCount',data['data'][0]);
-			},error=>{
-                clearInterval(this.getUnReadAnalysisCountTimer);
-            })
-		}
+	getUnReadAnalysisCount() {
+		let getCount = () => {
+			this.ajaxService
+				.getDeferData({
+					data: {
+						LCID: sessionStorage.getItem('LCID')
+					},
+					url: `${config['javaPath']}/reAnalysis/count`
+				})
+				.subscribe(
+					(data) => {
+						if (data['status'] == 0) this.storeService.setStore('analysisCount', data['data'][0]);
+					},
+					(error) => {
+						clearInterval(this.getUnReadAnalysisCountTimer);
+					}
+				);
+		};
 
 		getCount();
 
-		this.getUnReadAnalysisCountTimer = setInterval(()=>{
+		this.getUnReadAnalysisCountTimer = setInterval(() => {
 			getCount();
-		},config['getAnalysisCountInterval'])
+		}, config['getAnalysisCountInterval']);
 	}
 
 	async getLcInfo() {
@@ -385,167 +382,167 @@ export class MapComponent implements OnInit{
                              */
 							this.menuList = [
 								{
-									category: 'category_url_main',  // category_url_main
+									category: 'category_url_main', // category_url_main
 									children: [
 										{
 											url: 'main',
 											geneType: 'all',
-											name: 'category_url_main',	// category_url_main
+											name: 'category_url_main', // category_url_main
 											isExport: true,
-											content:"对全基因/转录本表格进行关键词搜索"
+											content: '对全基因/转录本表格进行关键词搜索'
 										}
 									]
 								},
 								{
-									category: 'category_gene_expression',		// category_gene_expression
+									category: 'category_gene_expression', // category_gene_expression
 									children: [
 										{
 											url: 'diff-expression-number',
 											geneType: 'all',
-											name: 'url_diff-expression-number',  // url_diff-expression-number
+											name: 'url_diff-expression-number', // url_diff-expression-number
 											isExport: true,
-											content:"差异表达基因数量统计"
+											content: '差异表达基因数量统计'
 										},
 										{
 											url: 'diff-expression',
 											geneType: 'all',
-											name: 'url_diff-expression',		// url_diff-expression
+											name: 'url_diff-expression', // url_diff-expression
 											isExport: true,
-											content:"差异基因VENN/UpSetR图，查看各个比较组差异基因交/并集"
+											content: '差异基因VENN/UpSetR图，查看各个比较组差异基因交/并集'
 										},
 										{
 											url: 'cluster',
 											geneType: 'all',
-											name: 'url_cluster',		// url_cluster
+											name: 'url_cluster', // url_cluster
 											isExport: true,
-											content:"差异基因聚类热图，用色彩展示差异基因的表达量高低"
+											content: '差异基因聚类热图，用色彩展示差异基因的表达量高低'
 										},
 										{
 											url: 'expression',
 											geneType: 'all',
-											name: 'url_expression',	// url_expression
+											name: 'url_expression', // url_expression
 											isExport: true,
-											content:"表达量 VENN/UpSetR 图，查看各个分组或样本交/并集"
+											content: '表达量 VENN/UpSetR 图，查看各个分组或样本交/并集'
 										},
 										{
 											url: 'gene-expression-help',
 											geneType: null,
-											name: 'url_gene-expression-help',		// url_gene-expression-help
+											name: 'url_gene-expression-help', // url_gene-expression-help
 											isExport: true,
-											content:"帮助信息"
+											content: '帮助信息'
 										}
 									]
 								},
 								{
-									category: 'category_annotation',		// category_annotation
+									category: 'category_annotation', // category_annotation
 									children: [
 										{
-											url: 'go-class',	// url_go-class
+											url: 'go-class', // url_go-class
 											geneType: 'all',
 											name: 'url_go-class',
 											isExport: true,
-											content:"差异基因GO注释分类"
+											content: '差异基因GO注释分类'
 										},
 										{
 											url: 'go-enrichment',
 											geneType: 'all',
-											name: 'url_go-enrichment',		// url_go-enrichment
+											name: 'url_go-enrichment', // url_go-enrichment
 											isExport: true,
-											content:"差异基因GO富集分析，查看差异基因富集在哪些功能类或参与哪些生物学过程"
+											content: '差异基因GO富集分析，查看差异基因富集在哪些功能类或参与哪些生物学过程'
 										},
 										{
 											url: 'kegg-class',
 											geneType: 'all',
-											name: 'url_kegg-class',		// url_kegg-class
+											name: 'url_kegg-class', // url_kegg-class
 											isExport: true,
-											content:"差异基因KEGG Pathway注释分类"
+											content: '差异基因KEGG Pathway注释分类'
 										},
 										{
 											url: 'kegg-enrichment',
 											geneType: 'all',
-											name: 'url_kegg-enrichment',		// url_kegg-enrichment
+											name: 'url_kegg-enrichment', // url_kegg-enrichment
 											isExport: true,
-											content:"差异基因KEGG Pathway富集分析，查看差异基因主要富集在哪些代谢通路上"
+											content: '差异基因KEGG Pathway富集分析，查看差异基因主要富集在哪些代谢通路上'
 										},
 										{
 											url: 'enrichment-help',
 											geneType: null,
-											name: 'url_enrichment-help',		// url_enrichment-help
+											name: 'url_enrichment-help', // url_enrichment-help
 											isExport: true,
-											content:"帮助信息"
+											content: '帮助信息'
 										}
 									]
 								},
 								{
-									category: 'category_variation',	// category_variation
+									category: 'category_variation', // category_variation
 									children: [
 										{
 											url: 'alternative-splicing',
 											geneType: 'all',
-											name: 'url_alternative-splicing',		// url_alternative-splicing
+											name: 'url_alternative-splicing', // url_alternative-splicing
 											isExport: true,
-											content:"各个样本可变剪接事件统计"
+											content: '各个样本可变剪接事件统计'
 										},
 										{
 											url: 'diff-alternative-splicing',
 											geneType: 'all',
-											name: 'url_diff-alternative-splicing',		// url_diff-alternative-splicing
+											name: 'url_diff-alternative-splicing', // url_diff-alternative-splicing
 											isExport: true,
-											content:"各个比较组差异可变剪接事件统计"
+											content: '各个比较组差异可变剪接事件统计'
 										},
 										{
 											url: 'gene-fusion',
 											geneType: 'all',
-											name: 'url_gene-fusion',		// url_gene-fusion
+											name: 'url_gene-fusion', // url_gene-fusion
 											isExport: true,
-											content:"展示融合基因及其在染色体上位置情况"
+											content: '展示融合基因及其在染色体上位置情况'
 										},
 										{
 											url: 'as-fusion-help',
 											geneType: null,
-											name: 'url_fusion-help',		// url_fusion-help
+											name: 'url_fusion-help', // url_fusion-help
 											isExport: true,
-											content:"帮助信息"
+											content: '帮助信息'
 										}
 									]
 								},
 								{
-									category: 'category_snp_indel',		// category_snp_indel
+									category: 'category_snp_indel', // category_snp_indel
 									children: [
 										{
 											url: 'snp-overview',
 											geneType: 'all',
-											name: 'url_snp-overview',	// url_snp-overview
+											name: 'url_snp-overview', // url_snp-overview
 											isExport: true,
-											content:"各个样本SNP类型统计"
+											content: '各个样本SNP类型统计'
 										},
 										{
 											url: 'snp-distribution',
 											geneType: 'all',
-											name: 'url_snp-distribution',	// url_snp-distribution
+											name: 'url_snp-distribution', // url_snp-distribution
 											isExport: true,
-											content:"各个样本中SNP位点区域分布统计"
+											content: '各个样本中SNP位点区域分布统计'
 										},
 										{
 											url: 'indel-overview',
 											geneType: 'all',
-											name: 'url_indel-overview',	// url_indel-overview
+											name: 'url_indel-overview', // url_indel-overview
 											isExport: true,
-											content:"各个样本InDel注释统计"
+											content: '各个样本InDel注释统计'
 										},
 										{
 											url: 'indel-distribution',
 											geneType: 'all',
-											name: 'url_indel-distribution',	// url_indel-distribution
+											name: 'url_indel-distribution', // url_indel-distribution
 											isExport: true,
-											content:"各个样本InDel位点区域分布统计"
+											content: '各个样本InDel位点区域分布统计'
 										},
 										{
 											url: 'snp-indel-help',
 											geneType: 'all',
-											name: 'url_snp-indel-help',	// url_snp-indel-help
+											name: 'url_snp-indel-help', // url_snp-indel-help
 											isExport: true,
-											content:"帮助信息"
+											content: '帮助信息'
 										}
 									]
 								},
@@ -565,43 +562,43 @@ export class MapComponent implements OnInit{
 								// 	]
 								// },
 								{
-									category: 'category_basic_info',	// category_basic_info
+									category: 'category_basic_info', // category_basic_info
 									children: [
 										{
 											url: 'overview',
-											name: 'url_overview',	// url_overview
+											name: 'url_overview', // url_overview
 											isExport: true,
-											content:"分析方案、样品相关性和表达量分布等"
+											content: '分析方案、样品相关性和表达量分布等'
 										},
 										{
 											url: 'reference',
-											name: 'url_reference',	// url_reference
+											name: 'url_reference', // url_reference
 											isExport: true,
-											content:"参考物种的基因长度、外显子个数等统计等"
+											content: '参考物种的基因长度、外显子个数等统计等'
 										},
 										{
 											url: 'reads-filter',
-											name: 'url_reads-filter',	// url_reads-filter
+											name: 'url_reads-filter', // url_reads-filter
 											isExport: true,
-											content:"测序数据的过滤和质控"
+											content: '测序数据的过滤和质控'
 										},
 										{
 											url: 'reads-alignment',
-											name: 'url_reads-alignment',	// url_reads-alignment
+											name: 'url_reads-alignment', // url_reads-alignment
 											isExport: true,
-											content:"Reads与参考序列的比对、测序随机性和覆盖度等"
+											content: 'Reads与参考序列的比对、测序随机性和覆盖度等'
 										},
 										{
 											url: 'smallrna',
-											name: 'url_smallrna',	// url_smallrna
+											name: 'url_smallrna', // url_smallrna
 											isExport: true,
-											content:"各样本小RNA数量、分类和长度等"
+											content: '各样本小RNA数量、分类和长度等'
 										},
 										{
 											url: 'basic-help',
-											name: 'url_basic-help',	// url_basic-help
+											name: 'url_basic-help', // url_basic-help
 											isExport: true,
-											content:"帮助信息"
+											content: '帮助信息'
 										}
 									]
 								}
@@ -615,8 +612,8 @@ export class MapComponent implements OnInit{
 									});
 								}
 							});
-							
-							sessionStorage.setItem('menu_list',JSON.stringify(this.menuList));
+
+							sessionStorage.setItem('menu_list', JSON.stringify(this.menuList));
 							this.storeService.setStore('menu', this.menuList);
 							this.storeService.setStore('menuRouteMap', menuRouteMap);
 							resolve('success');
@@ -729,22 +726,47 @@ export class MapComponent implements OnInit{
 		this.defaultEmitBaseThead = true;
 		this.transformTable._initCheckStatus();
 		this.transformTable._clearFilterWithoutRequest();
-		this.resetCheckGraph = true;
-
 		if (!this.first) {
-			this.defaultEntity['checkGraph'] = true;
 			this.defaultEntity['addThead'] = [];
 			this.defaultEntity['removeColumns'] = [];
 			this.defaultEntity['rootSearchContentList'] = [];
 			this.defaultEntity['pageIndex'] = 1;
 			this.defaultEntity['compareGroup'] = this.compareGroup;
+			if (this.selectList) {
+				this.defaultEntity['searchList'] = [
+					{
+						filterName: `${this.defaultGeneType}_id`,
+						filterNamezh: `${this.defaultGeneType}_id`,
+						searchType: 'string',
+						filterType: '$in',
+						valueOne: this.selectList,
+						valueTwo: null
+					}
+				];
+			} else {
+				this.defaultEntity['searchList'] = [];
+			}
 			this.first = true;
 		} else {
-			this.transformTable._setParamsNoRequest('checkGraph', true);
 			this.transformTable._setParamsNoRequest('pageIndex', 1);
 			this.transformTable._setParamsNoRequest('compareGroup', this.compareGroup);
-			this.transformTable._getData();
+
+			if (this.selectList) {
+				this.transformTable._filter(
+					`${this.defaultGeneType}_id`,
+					`${this.defaultGeneType}_id`,
+					'string',
+					'$in',
+					this.selectList,
+					null
+				);
+			} else {
+				this.transformTable._deleteFilterWithoutRequest(`${this.defaultGeneType}_id`, `${this.defaultGeneType}_id`, '$in');
+				this.transformTable._getData();
+			}
 		}
+
+		this.selectList = '';
 	}
 
 	// 表格基础头改变  设置emitBaseThead为true的时候 表格下一次请求回来会把表头发出来 作为表格的基础表头传入增删列

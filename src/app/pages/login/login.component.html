@@ -173,8 +173,8 @@
             </div>
         </div>
     </div>
-    <div class="login-mask" [class.active]="mask" (click)="close()">
-        <div class="back"></div>
+    <div class="login-mask" [class.active]="mask">
+        <div class="back" (click)="close()"></div>
         <div class="login-box"  [class.active]="login" (click)="boxClick($event)">
             <div class="text"  (click)="close()">
                 <img src="assets/img/cancel.svg" alt="取消">
