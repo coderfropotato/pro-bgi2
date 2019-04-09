@@ -205,7 +205,7 @@ export class AlternativeSplicingComponent implements OnInit {
 							this.updateTitle();
 						}
 					},
-					// rotate: 60
+					rotate: 60
 				},
 				y: {
 					title: 'Percentage (%)',
