@@ -35,8 +35,8 @@ export class MapComponent implements OnInit {
 	@ViewChild('right') right;
 	@ViewChild('func') func;
 	@ViewChild('transformTable') transformTable;
-    @ViewChild('addColumn') addColumn;
-    @ViewChild('iframe') iframe;
+	@ViewChild('addColumn') addColumn;
+	@ViewChild('iframe') iframe;
 
 	defaultGeneType: string;
 	chartUrl: string;
@@ -170,10 +170,10 @@ export class MapComponent implements OnInit {
 				// 非重分析的map跳转   production test
 				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this
 					.lcid}/KEGG_PATHWAY/Pathway_enrichment/${this.compareGroup}/${this.compareGroup}_${this
-                    .defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`;
-            }
+					.defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`;
+			}
 
-            this.pathWayIframeUrl = this.cleanUrl(this.dirtyPathWayIframeUrl);
+			this.pathWayIframeUrl = this.cleanUrl(this.dirtyPathWayIframeUrl);
 		});
 
 		// 订阅windowResize 重新计算表格滚动高度
@@ -280,14 +280,14 @@ export class MapComponent implements OnInit {
 	}
 
 	initIframe() {
-        let _self = this;
-        let areas =$(this.iframe.nativeElement).contents().find('map').children('area[target_gene]');
-        areas.on('click', function() {
-            let select = $(this).attr('target_gene');
-            _self.selectList = select || '';
-            console.log(_self.selectList);
-            _self.chartBackStatus();
-        });
+		let _self = this;
+		let areas = $(this.iframe.nativeElement).contents().find('map').children('area[target_gene]');
+		areas.on('click', function() {
+			let select = $(this).attr('target_gene');
+			_self.selectList = select || '';
+			console.log(_self.selectList);
+			_self.chartBackStatus();
+		});
 	}
 
 	cleanUrl(url: string): SafeUrl {
@@ -736,7 +736,7 @@ export class MapComponent implements OnInit {
 				this.defaultEntity['searchList'] = [
 					{
 						filterName: `${this.defaultGeneType}_id`,
-						filterNamezh: `${this.defaultGeneType}_id`,
+						filterNamezh: config[this.defaultGeneType],
 						searchType: 'string',
 						filterType: '$in',
 						valueOne: this.selectList,
@@ -754,14 +754,18 @@ export class MapComponent implements OnInit {
 			if (this.selectList) {
 				this.transformTable._filter(
 					`${this.defaultGeneType}_id`,
-					`${this.defaultGeneType}_id`,
+					config[this.defaultGeneType],
 					'string',
 					'$in',
 					this.selectList,
 					null
 				);
 			} else {
-				this.transformTable._deleteFilterWithoutRequest(`${this.defaultGeneType}_id`, `${this.defaultGeneType}_id`, '$in');
+				this.transformTable._deleteFilterWithoutRequest(
+					`${this.defaultGeneType}_id`,
+					config[this.defaultGeneType],
+					'$in'
+				);
 				this.transformTable._getData();
 			}
 		}
