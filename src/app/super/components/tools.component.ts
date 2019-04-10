@@ -539,17 +539,17 @@ export class ToolsComponent implements OnInit {
 						this.childVisible = false;
 						this.toolsService.hide();
 						this.notify.blank('tips：', '聚类重分析提交成功', {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					} else {
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -638,20 +638,20 @@ export class ToolsComponent implements OnInit {
 						} else {
 							newWindow.close();
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					newWindow.close();
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -764,7 +764,7 @@ export class ToolsComponent implements OnInit {
 	kaFunConfirm(reanalysisType) {
 		if (this.kaFunGroupSelect.length < 2) {
 			this.notify.blank('tips：', '请至少选择2个', {
-				nzStyle: { width: '200px' }
+				nzStyle: { width: '220px' }
 			});
 			return;
 		}
@@ -804,20 +804,20 @@ export class ToolsComponent implements OnInit {
 						} else {
 							newWindow.close();
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					newWindow.close();
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -886,22 +886,22 @@ export class ToolsComponent implements OnInit {
 							this.childVisible = false;
 							this.toolsService.hide();
 							this.notify.blank('tips：', 'KDA分析提交成功', {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						} else {
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -1068,20 +1068,20 @@ export class ToolsComponent implements OnInit {
 						} else {
 							newWindow.close();
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					newWindow.close();
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -1126,20 +1126,20 @@ export class ToolsComponent implements OnInit {
 						} else {
 							newWindow.close();
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					newWindow.close();
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -1215,20 +1215,20 @@ export class ToolsComponent implements OnInit {
 						} else {
 							newWindow.close();
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					newWindow.close();
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -1342,20 +1342,20 @@ export class ToolsComponent implements OnInit {
 						} else {
 							newWindow.close();
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						newWindow.close();
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					newWindow.close();
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -1477,22 +1477,22 @@ export class ToolsComponent implements OnInit {
 							this.childVisible = false;
 							this.toolsService.hide();
 							this.notify.blank('tips：', '关联聚类重分析提交成功', {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						} else {
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -1595,22 +1595,22 @@ export class ToolsComponent implements OnInit {
 							this.childVisible = false;
 							this.toolsService.hide();
 							this.notify.blank('tips：', '基因分类重分析提交成功', {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						} else {
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {
@@ -1705,22 +1705,22 @@ export class ToolsComponent implements OnInit {
 							this.childVisible = false;
 							this.toolsService.hide();
 							this.notify.blank('tips：', '基因富集重分析提交成功', {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						} else {
 							this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-								nzStyle: { width: '200px' }
+								nzStyle: { width: '220px' }
 							});
 						}
 					} else {
 						this.notify.blank('tips：', `重分析提交失败 : ${data['message']}`, {
-							nzStyle: { width: '200px' }
+							nzStyle: { width: '220px' }
 						});
 					}
 				},
 				(err) => {
 					this.notify.blank('tips：', `重分析提交失败,请重试`, {
-						nzStyle: { width: '200px' }
+						nzStyle: { width: '220px' }
 					});
 				},
 				() => {

@@ -1073,7 +1073,7 @@ export class GeneListVennComponent implements OnInit {
 					tempSelectColor = d3.select(this).select('.MyRect').attr('fill');
 					d3.select(this).select('.MyRect').attr('fill', '#3D4871');
 					let tipText = `Group: ${bar_name[i]}<br> Number:  ${d}`;
-					_self.globalService.showPopOver(d3.event, tipText);
+					_self.globalService.showPopOver(d3.event, tipText,"left");
 				})
 				.on('mouseout', function(d, i) {
 					if (d3.select(this).select('.MyRect').attr('fill') == '#3D4871') {

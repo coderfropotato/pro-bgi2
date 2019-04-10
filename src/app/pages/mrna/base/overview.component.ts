@@ -22,7 +22,8 @@ export class OverviewComponent implements OnInit {
 	@ViewChild('DensityMap') DensityMap;
 	@ViewChild('stackMap') stackMap;
 
-	abstract_general: string;
+	abstract_general_cn: string;
+	abstract_general_en: string;
 
 	// table one
 	defaultUrl: string;
@@ -98,7 +99,8 @@ export class OverviewComponent implements OnInit {
 
 	ngOnInit() {
 
-		this.abstract_general = this.store.getStore('abstract_general');
+		this.abstract_general_cn = this.store.getStore('abstract_general_cn');
+		this.abstract_general_en = this.store.getStore('abstract_general_en');
 
 		//样品分组设置
 		this.defaultUrl = `${config['javaPath']}/basicModule/groupPlan`;

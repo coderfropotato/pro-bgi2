@@ -262,6 +262,7 @@ export class GeneDetailComponent implements OnInit {
 
 	lcid:string = '';
 	geneType:string = '';
+	species:string = '';
 	loadTable: boolean = false;
 
 	t_show: boolean = false;
@@ -311,7 +312,8 @@ export class GeneDetailComponent implements OnInit {
 			this.lcid = params['params']['lcid'];
 			this.geneID = params['params']['id'];
 			this.geneType = params['params']['geneType'];
-		});
+			this.species = params['params']['species'];
+ 		});
 	}
 
 	ngOnInit() {
