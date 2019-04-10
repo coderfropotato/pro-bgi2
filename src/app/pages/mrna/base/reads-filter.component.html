@@ -43,7 +43,7 @@
         <h3 class="title">3.2 原始数据过滤成分统计</h3>
         <div class="f-content">
             <ng-template #searchTemplate>
-                <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
+                <nz-select *ngIf="!isShowTable" style="min-width: 160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
                     <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
                 </nz-select>
             </ng-template>
@@ -70,7 +70,7 @@
         <h3 class="title">3.3 Clean reads 碱基含量分布</h3>
         <div class="f-content">
             <ng-template #searchTemplateTwo>
-                <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="baseSearchType" [nzSize]="'small'" (ngModelChange)="searchBaseTypeChange()" nzShowSearch>
+                <nz-select *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="baseSearchType" [nzSize]="'small'" (ngModelChange)="searchBaseTypeChange()" nzShowSearch>
                     <nz-option *ngFor="let item of baseSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
                 </nz-select>
             </ng-template>
@@ -97,7 +97,7 @@
         <h3 class="title">3.4 Clean reads 碱基质量分布</h3>
         <div class="f-content">
             <ng-template #searchTemplateThree>
-                <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="qualitySearchType" [nzSize]="'small'" (ngModelChange)="searchQualityTypeChange()" nzShowSearch>
+                <nz-select *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="qualitySearchType" [nzSize]="'small'" (ngModelChange)="searchQualityTypeChange()" nzShowSearch>
                     <nz-option *ngFor="let item of qualitySelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
                 </nz-select>
             </ng-template>
