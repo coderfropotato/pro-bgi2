@@ -66,6 +66,10 @@
         "title": "差异可变剪接",
         "content": "将reads比对到参考基因组，然后用 rMATS 检测比较组间的可变剪接情况。我们检测其中5种可变剪接事件包括： Skipped Exon（SE）、 Alternative 5' Splicing Site（A5SS）、 Alternative 3' Splicing Site（A3SS）、 Mutually exclusive exons（MXE） 和 Retained Intron（RI）。"
     },
+    "diff_cluster": {
+        "title": "差异聚类",
+        "content": "对每个比较组差异基因的FPKM值进行聚类。"
+    },
     "gene_fusion": {
         "title": "基因融合",
         "content": "通过比对到基因组和转录本中双末端(paired-end)关系的序列检测基因融合事件。"

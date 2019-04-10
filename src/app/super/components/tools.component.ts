@@ -1521,28 +1521,14 @@ export class ToolsComponent implements OnInit {
 					if (res['status'] == 0 && res['data'].length) {
 						res['data'].forEach((v, i) => {
 							if (v['value'].length) {
-								v['value'] = v['value'].map((val, index) => {
-									let obj = {
-										name: val,
-										checked: index || i ? false : true
-									};
-
-									if (!i && !index) this.geneClassSelect.push(obj);
-									return obj;
+								 v['value'].forEach((val, index) => {
+                                    val['checked'] = index || i ? false : true;
+                                    if (!i && !index) this.geneClassSelect.push(val);
 								});
 							}
 						});
 
 						this.geneClassData = res['data'];
-						// this.geneClassData = res['data'].map((v, index) => {
-						// 	let obj = {
-						// 		name: v,
-						// 		checked: index ? false : true
-						// 	};
-						// 	return obj;
-						// });
-						// this.geneClassSelect.push(this.geneClassData[0]);
-
 						this.geneClassError = false;
 					} else {
 						this.geneClassError = true;
@@ -1563,7 +1549,7 @@ export class ToolsComponent implements OnInit {
 		if (klass['checked']) {
 			klass['checked'] = false;
 			let index = this.geneClassSelect.findIndex((val, index) => {
-				return val['name'] === klass['name'];
+				return val['key'] === klass['key'];
 			});
 
 			if (index != -1) this.geneClassSelect.splice(index, 1);
@@ -1591,7 +1577,7 @@ export class ToolsComponent implements OnInit {
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
 					...entity,
-					annotation: this.geneClassSelect[0]['name']
+					annotation: this.geneClassSelect[0]
 				},
 				url: this.toolsService.get('tableUrl')
 			})
@@ -1603,7 +1589,7 @@ export class ToolsComponent implements OnInit {
 								'report'
 							)[0]}report/reanalysis/re-classification/${this.toolsService.get('geneType')}/${data[
 								'data'
-							][0]}/${this.storeService.getStore('version')}/${this.geneClassSelect[0]['name']}/false`;
+							][0]}/${this.storeService.getStore('version')}/${this.geneClassSelect[0]['key']}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
@@ -1652,25 +1638,12 @@ export class ToolsComponent implements OnInit {
 					if (res['status'] == 0 && res['data'].length) {
 						res['data'].forEach((v, i) => {
 							if (v['value'].length) {
-								v['value'] = v['value'].map((val, index) => {
-									let obj = {
-										name: val,
-										checked: index || i ? false : true
-									};
-									if (!i && !index) this.geneRichSelect.push(obj);
-									return obj;
+								v['value'].forEach((val, index) => {
+                                    val['checked'] = index || i ? false : true;
+									if (!i && !index) this.geneRichSelect.push(val);
 								});
 							}
 						});
-
-						// this.geneRichData = res['data'].map((v, index) => {
-						// 	let obj = {
-						// 		name: v,
-						// 		checked: index ? false : true
-						// 	};
-						// 	return obj;
-						// });
-						// this.geneRichSelect.push(this.geneRichData[0]);
 
 						this.geneRichData = res['data'];
 						this.geneRichError = false;
@@ -1693,7 +1666,7 @@ export class ToolsComponent implements OnInit {
 		if (rich['checked']) {
 			rich['checked'] = false;
 			let index = this.geneRichSelect.findIndex((val, index) => {
-				return val['name'] === rich['name'];
+				return val['key'] === rich['key'];
 			});
 
 			if (index != -1) this.geneRichSelect.splice(index, 1);
@@ -1720,7 +1693,7 @@ export class ToolsComponent implements OnInit {
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
 					...entity,
-					annotation: this.geneRichSelect[0]['name']
+					annotation: this.geneRichSelect[0]
 				},
 				url: this.toolsService.get('tableUrl')
 			})
