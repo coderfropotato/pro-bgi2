@@ -23,8 +23,6 @@ export class GeneFusionComponent implements OnInit {
 	@ViewChild('right') right;
 	@ViewChild('fusionChartTable') fusionChartTable;
 
-	switch: string = 'right';
-	
 	isShowTable:boolean;
 	tableUrl: string;
 	chartUrl:string;
@@ -32,9 +30,6 @@ export class GeneFusionComponent implements OnInit {
 
 	sample:string;
 	samples:any[]=[];
-
-	rightImgUrl: string;
-	imgEntity: string;
 
 	// 默认收起模块描述
 	expandModuleDesc: boolean = false;
@@ -97,10 +92,6 @@ export class GeneFusionComponent implements OnInit {
 		this.fusionChartTable.reGetData();
 	}
 
-	drawRightImg(data){
-
-	}
-
 	rightHandlerRefresh(){
 		
 	}
@@ -125,15 +116,6 @@ export class GeneFusionComponent implements OnInit {
 		}, 30);
   }
   
-  // 切换左右布局 计算左右表格的滚动高度
-  switchChange(status) {
-    this.switch = status;
-    setTimeout(() => {
-      this.fusionChartTable.scrollHeight();
-      this.computedTableHeight();
-    }, 320);
-  }
-
   computedTableHeight() {
 		
   }
@@ -825,11 +807,6 @@ export class GeneFusionComponent implements OnInit {
 				.on("mouseout", function() {
 					that.globalService.hidePopOver();
 				})
-				.on("click", function(d) {
-					var link_id = d.fusion_link_id;
-					this.imgEntity.IsExportReport = false;
-					this.GetImage(link_id, "loading");
-				})
 		}
 
 		//返回一个数组：[{value: 0, angle: 5.633991554422396},{value: 1000, angle: 5.694823407494192}]
@@ -844,10 +821,4 @@ export class GeneFusionComponent implements OnInit {
 		}
 
 	}
-
-	GetImage(){
-
-	}
-
-  
 }
