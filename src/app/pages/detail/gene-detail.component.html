@@ -42,9 +42,9 @@
           <p *ngIf="geneInfoList['tf_family']">
             <span class="info_name">{{'gene_detail.tf_family' | translate}}</span>
             <span class="info_content">
-                <!-- <a href="http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family={{geneInfoList['url_ncbi_gene_id']}}" target="_blank">{{geneInfoList['tf_family']}}</a> -->
-                <!-- <a href="http://planttfdb.cbi.pku.edu.cn/family.php?fam={{geneInfoList['url_ncbi_gene_id']}}" target="_blank">{{geneInfoList['tf_family']}}</a> -->
-                {{geneInfoList['tf_family']}}
+                <a *ngIf="species=='animal'" href="http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family={{geneInfoList['tf_family']}}" target="_blank">{{geneInfoList['tf_family']}}</a>
+                <a *ngIf="species!='animal'" href="http://planttfdb.cbi.pku.edu.cn/family.php?fam={{geneInfoList['tf_family']}}" target="_blank">{{geneInfoList['tf_family']}}</a>
+                <!-- {{geneInfoList['tf_family']}} -->
             </span>
           </p>
           <p *ngIf="geneInfoList['gene_chr']">
