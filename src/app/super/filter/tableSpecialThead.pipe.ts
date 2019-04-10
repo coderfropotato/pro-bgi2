@@ -58,7 +58,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				}
 			}else if (config['geneInfo'].includes(thead)){
 				// 基因详情页
-				let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${value}/${geneType}`;
+				let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${value}/${geneType}/${sessionStorage.getItem('species_kingdom')}`;
 				let htmlStr = `<a href="${url}" target="_blank">${value}</a>`
 				return this.globalService.trustStringHtml(htmlStr);
 			} else {
