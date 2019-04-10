@@ -204,7 +204,7 @@
         "relationCluster": "Relation cluster"
     },
     "gene": "gene",
-    "transcript": "transcript",
+    "rna": "rna",
     "001": "Gene Attr",
     "001001": "",
     "002": "Exp Info",
