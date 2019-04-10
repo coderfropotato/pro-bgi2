@@ -138,15 +138,21 @@
         <div class="transcripts_table"> 
             <nz-tabset>
                 <nz-tab nzTitle="基因">
-                    <app-little-table *ngIf="loadTable" [hidden]="!miRnaTarget_params_g_flag" [type]="'miRna_target_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="miRnaTarget_defaultUrl" [targetURL]="'http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc='" [pageEntity]="miRnaTarget_params_g" [targetID]="'st_gene_id'" [targetID2]="'st_target_id'"
+                    <app-little-table *ngIf="loadTable" [hidden]="!miRnaTarget_params_g_flag" [type]="'miRna_target_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="miRnaTarget_defaultUrl" [targetURL]="'http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc='" [pageEntity]="miRnaTarget_params_g" 
+                    [targetID]="'gene_id'" 
+                    [targetID2]="'target_id'"
                     [targetID2_ID]="geneID"
                     [targetID2Type]="'gene'"
+                    [targetID2Species]="species"
                     ></app-little-table>
                 </nz-tab>
                 <nz-tab nzTitle="转录本">
-                    <app-little-table *ngIf="loadTable" [hidden]="!miRnaTarget_params_t_flag" [type]="'miRna_target_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="miRnaTarget_defaultUrl" [pageEntity]="miRnaTarget_params_t" [targetID2]="'st_target_id'"
-                    [targetID2_ID]="geneID"
-                    [targetID2Type]="'rna'"
+                    <app-little-table *ngIf="loadTable" [hidden]="!miRnaTarget_params_t_flag" [type]="'miRna_target_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="miRnaTarget_defaultUrl" [targetURL]="'https://www.ncbi.nlm.nih.gov/nuccore/'" [pageEntity]="miRnaTarget_params_t"
+                        [targetID]="'transcript_id'" 
+                        [targetID2]="'target_id'"
+                        [targetID2_ID]="geneID"
+                        [targetID2Type]="'rna'"
+                        [targetID2Species]="species"
                     ></app-little-table>
                 </nz-tab>
             </nz-tabset>
