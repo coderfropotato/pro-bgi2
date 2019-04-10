@@ -128,7 +128,7 @@ export class GoClassComponent implements OnInit {
 
 	isExceed: any = null;
 	selectedVal: string = '';
-	annotation: string = 'go_c';
+	annotation: string = 'go_cfp';
 	selectData: any = [];
 
 	isMultipleSelect: boolean = false;
@@ -150,7 +150,9 @@ export class GoClassComponent implements OnInit {
 	setVisible: boolean = false;
 
 	compareGroupList: any[] = [];
-	compareGroup: any = '';
+    compareGroup: any = '';
+    
+    tableParamsDone:boolean = false;
 
 	constructor(
 		private message: MessageService,
@@ -178,7 +180,7 @@ export class GoClassComponent implements OnInit {
 
 	ngOnInit() {
 		(async () => {
-			this.selectData = await this.getSelect();
+            this.selectData = await this.getSelect();
 			this.selectedVal = this.selectData.length ? this.selectData[0] : null;
 
 			this.compareGroupList = this.storeService.getStore('diff_plan');
@@ -266,7 +268,9 @@ export class GoClassComponent implements OnInit {
 				tid: null,
 				compareGroup: this.compareGroup,
 				version: this.storeService.getStore('version')
-			};
+            };
+            
+            this.tableParamsDone = true;
 		})();
     }
 

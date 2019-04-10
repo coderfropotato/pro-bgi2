@@ -16,7 +16,7 @@
             <div #leftBottom class="left-bottom-layout" style=" overflow: auto; ">
                 <!-- 下拉选择 -->
                 <ng-template #selectTemplate>
-                    <nz-select style="width: 160px;" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                    <nz-select style="min-width:160px" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
                         <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
                     </nz-select>
                 </ng-template>
