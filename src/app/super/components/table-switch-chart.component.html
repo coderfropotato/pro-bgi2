@@ -17,7 +17,7 @@
             <!-- 下拉框 -->
             <ng-container *ngTemplateOutlet="selectTemplate ? selectTemplate :''"></ng-container>
             <!-- 图类型下拉 -->
-            <nz-select *ngIf="!isShowTable && chartTypeData && chartTypeData.length" style="width: 120px;" class="ml12" nzSize="small" [(ngModel)]="chartType" (ngModelChange)="chartTypeChange()">
+            <nz-select *ngIf="!isShowTable && chartTypeData && chartTypeData.length" style="min-width:160px" class="ml12" nzSize="small" [(ngModel)]="chartType" (ngModelChange)="chartTypeChange()">
                 <nz-option *ngFor="let item of chartTypeData" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
             </nz-select>
             <!--左-其他模块 -->
@@ -34,7 +34,7 @@
             <!-- <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
                 <nz-option *ngFor="let accu of accuracyList" [nzLabel]="accu.name" [nzValue]="accu.value"></nz-option>
             </nz-select> -->
-            <nz-select style="width: 180px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
+            <nz-select style="min-width:160px;margin-right: 10px" [(ngModel)]="accuracy" [nzSize]="'small'" *ngIf="isShowTable && isShowAccuracy">
                 <nz-option [nzLabel]="'accuracy.toFixedOne' | translate" [nzValue]="1"></nz-option>
                 <nz-option [nzLabel]="'accuracy.toFixedTwo' | translate" [nzValue]="2"></nz-option>
                 <nz-option [nzLabel]="'accuracy.toFixedThree' | translate" [nzValue]="3"></nz-option>
