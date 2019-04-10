@@ -246,7 +246,7 @@ export class GlobalService {
      * @param {*} text 显示的文本信息
      * @memberof GlobalService
      */
-    showPopOver(event, text) {
+    showPopOver(event, text,pos = null) {
         clearTimeout(this.popoverTimer);
         if ($(".popover-service").length) $(".popover-service").remove();
 
@@ -262,16 +262,36 @@ export class GlobalService {
             .css("opacity", 0)
             .css("z-index", 100);
         let dis = 20;
-        let direction = "right";
+        // let direction = "right";
+        // let w = pop.outerWidth();
+        // let h = pop.outerHeight();
+
+        // if (event.pageX + w < document.body.clientWidth - 20) {
+        //     // right
+        //     direction = "right";
+        //     pop.css("left", event.pageX  + dis);
+        // } else {
+        //     // left
+        //     direction = "left";
+        //     pop.css("left", event.pageX - w - dis);
+        // }
+
         let w = pop.outerWidth();
         let h = pop.outerHeight();
+        
+        let direction = null;
 
-        if (event.pageX + w < document.body.clientWidth - 20) {
-            // right
-            direction = "right";
-            pop.css("left", event.pageX  + dis);
-        } else {
-            // left
+        if(pos == null){
+            if (event.pageX + w < document.body.clientWidth - 20) {
+                // right
+                direction = "right";
+                pop.css("left", event.pageX  + dis);
+            } else {
+                // left
+                direction = "left";
+                pop.css("left", event.pageX - w - dis);
+            }
+        }else{
             direction = "left";
             pop.css("left", event.pageX - w - dis);
         }

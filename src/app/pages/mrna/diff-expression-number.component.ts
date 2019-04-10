@@ -251,7 +251,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.selectedVal = this.selectData[1];
 		this.m_name2 = this.selectedVal;
 
-		this.tempThreshold = this.storeService.getStore('diff_threshold');
+		//this.tempThreshold = this.storeService.getStore('diff_threshold');
+		this.tempThreshold =JSON.parse(JSON.stringify(this.storeService.getStore('diff_threshold')));
 		for (const key in this.tempThreshold) {
 			this.thresholdName.push(key)
 		}
@@ -297,7 +298,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			compareGroup: this.compareMapGroupList,
 			geneType: this.defaultGeneType,
 			species: this.storeService.getStore('genome'),
-			diffThreshold: this.storeService.getStore('diff_threshold')
+			diffThreshold: this.tempThreshold
 		};
 
 		this.applyOnceSearchParams = true;
@@ -818,23 +819,28 @@ export class DiffExpressionNumberComponent implements OnInit {
 		for (let index = 0; index < this.thresholdName.length; index++) {
 			const element = this.thresholdName[index];
 			if(element=="PossionDis"){
-				this.tableEntity['diffThreshold']['PossionDis'] = this.PossionDis;
+				//this.tableEntity['diffThreshold']['PossionDis'] = this.PossionDis;
+				this.tempThreshold['PossionDis'] = this.PossionDis;
 				this.p_log2FC = this.PossionDis['log2FC'];
 				this.p_FDR = this.PossionDis['FDR']
 			}else if(element=="NOIseq"){
-				this.tableEntity['diffThreshold']['NOIseq'] = this.NOIseq;
+				//this.tableEntity['diffThreshold']['NOIseq'] = this.NOIseq;
+				this.tempThreshold['NOIseq'] = this.NOIseq;
 				this.n_log2FC = this.NOIseq['log2FC'];
 				this.n_probability = this.NOIseq['probability']
 			}else if(element=="DEGseq"){
-				this.tableEntity['diffThreshold']['DEGseq'] = this.DEGseq;
+				//this.tableEntity['diffThreshold']['DEGseq'] = this.DEGseq;
+				this.tempThreshold['DEGseq'] = this.DEGseq;
 				this.d_log2FC = this.DEGseq['log2FC'];
 				this.d_Qvalue = this.DEGseq['Qvalue']
 			}else if(element=="DESeq2"){
-				this.tableEntity['diffThreshold']['DESeq2'] = this.DESeq2;
+				//this.tableEntity['diffThreshold']['DESeq2'] = this.DESeq2;
+				this.tempThreshold['DESeq2'] = this.DESeq2;
 				this.de_log2FC = this.DESeq2['log2FC'];
 				this.de_Qvalue = this.DESeq2['Qvalue']
 			}else if(element=="EBSeq"){
-				this.tableEntity['diffThreshold']['EBSeq'] = this.EBSeq;
+				//this.tableEntity['diffThreshold']['EBSeq'] = this.EBSeq;
+				this.tempThreshold['diffThreshold'] = this.EBSeq;
 				this.e_log2FC = this.EBSeq['log2FC'];
 				this.e_PPEE = this.EBSeq['probability']
 			}
@@ -859,7 +865,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.defaultShowFilterStatus = false;
 		this.diffVennNumberChart.reGetData();
 
-		//this.chartBackStatus();
+		this.chartBackStatus();
 	}
 	
 	defaultTheSelectList(data,num) {
