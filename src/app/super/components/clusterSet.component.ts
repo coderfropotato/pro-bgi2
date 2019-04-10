@@ -16,6 +16,13 @@ declare const $: any;
             width:70px;
             margin-left: 6px;
         }
+        .domainRange nz-input-number{
+            width:50px;
+            margin-top: 3px;
+        }
+        nz-input-number input{
+            padding:0 4px;
+        }
         .textCol{
             margin-top:8px;
         }
@@ -126,7 +133,6 @@ export class ClusterSetComponent implements OnInit {
         this.isHorizontalCluster=this.confirmData['isCluster'];
         this.horizontalInfos=[...this.confirmData['horizontalList']];
         this.verticalInfos=[...this.confirmData['verticalList']];
-
     }
 
     //获取默认值
@@ -599,7 +605,7 @@ export class ClusterSetComponent implements OnInit {
 
         this.confirmData['width']=this.width;
         this.confirmData['height']=this.height;
-        this.confirmData['domainRange']=[...this.rangeValue];
+        this.confirmData['domainRange']=[Math.min(this.rangeValue[0],this.rangeValue[1]),Math.max(this.rangeValue[0],this.rangeValue[1])];
         this.confirmData['yName']=this.selectedGene;
         this.confirmData['isCluster']=this.isHorizontalCluster;
         this.confirmData['verticalList']=[...this.verticalInfos];

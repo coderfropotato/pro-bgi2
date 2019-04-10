@@ -33,12 +33,17 @@
                     </nz-col>
                 </nz-row>
 
-                <nz-row [hidden]="type && type === 'relation'">
+                <nz-row [hidden]="type && type === 'relation'" class="domainRange">
                         <nz-col nzSpan="4" class="textCol">
                             <span>值域</span>
                         </nz-col>
-                        <nz-col nzSpan="18">
+                        <nz-col nzSpan="10">
                             <nz-slider nzRange [nzStep]="(max<10) ? 0.1 : 1 " [nzMin]="min" [nzMax]="max" [(ngModel)]="rangeValue"></nz-slider>
+                        </nz-col>
+                        <nz-col nzSpan="10">
+                            <nz-input-number [nzMin]="min" [nzMax]="max" [(ngModel)]="(rangeValue[0]<=rangeValue[1]) ? rangeValue[0] : rangeValue[1]"></nz-input-number>
+                            <span>-</span>
+                            <nz-input-number style="margin-left:0" [nzMin]="min" [nzMax]="max" [(ngModel)]="(rangeValue[0]<=rangeValue[1]) ? rangeValue[1] : rangeValue[0]"></nz-input-number>
                         </nz-col>
                     </nz-row>
         </div>
