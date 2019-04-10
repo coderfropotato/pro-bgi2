@@ -1,4 +1,4 @@
-<div class="tool-component">
+<div class="tool-component" *ngIf="toolsService['visible']">
     <nz-drawer [nzClosable]="true" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="{{'analysisPanel.title' | translate}}" (nzOnClose)="close()">
         <!-- gene:{{ toolsService["geneCount"] }} -->
         <ul class="clearfix">
