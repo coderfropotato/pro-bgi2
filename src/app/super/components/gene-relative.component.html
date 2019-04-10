@@ -7,7 +7,7 @@
         </ng-template>
 
         <ng-template #modalContent>
-            <nz-select class="mb12" [(ngModel)]="selectedType" (ngModelChange)="selectChange()">
+            <nz-select class="mb12" style="min-width:160px" [(ngModel)]="selectedType" (ngModelChange)="selectChange()">
                 <nz-option *ngFor="let type of selectType" [nzValue]="type" [nzLabel]="type"></nz-option>
             </nz-select>
             <div class="relative-params-top" *ngIf="selectedType===selectType[0]">
@@ -92,7 +92,7 @@
                         </nz-row>
                         <nz-row>
                             <nz-col nzSpan="2"></nz-col>
-                            <nz-col nzSpan="2">链</nz-col>
+                            <nz-col nzSpan="2">链</nz-col> 
                             <nz-col nzSpan="10">
                                 <label nz-radio [(ngModel)]="posRelative['slink']" (click)="posRelative['slink'] = !posRelative['slink']">正义链</label>
                                 <label nz-radio [(ngModel)]="posRelative['alink']" (click)="posRelative['alink'] = !posRelative['alink']">反义链</label>

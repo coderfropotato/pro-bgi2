@@ -34,6 +34,10 @@
         "diff_venn_title": "Differential gene clustering",
         "diff_venn_content": "Clustering the FPKM values of different genes in each comparison group"
     },
+    "diff_cluster": {
+        "title": "diff cluster",
+        "content": ""
+    },
     "diff_venn_number": {
         "diff_venn_title": "Differential gene number",
         "diff_venn_content": "Differential gene number"
@@ -200,7 +204,7 @@
         "relationCluster": "Relation cluster"
     },
     "gene": "gene",
-    "transcript": "transcript",
+    "rna": "rna",
     "001": "Gene Attr",
     "001001": "",
     "002": "Exp Info",

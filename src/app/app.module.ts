@@ -46,7 +46,7 @@ import { BigTableCheckComponent } from './super/components/big-table-check.compo
 
 // 页面
 /* 主页 */
-import { GeneComponent,GenePage } from './pages/mrna/gene.component';
+import { GeneComponent, GenePage } from './pages/mrna/gene.component';
 /* 基因表达 */
 import { DiffExpressionComponent, DiffVennPage } from './pages/mrna/diff-expression.component';
 import { DiffExpressionNumberComponent, DiffVennNumberPage } from './pages/mrna/diff-expression-number.component';
@@ -54,10 +54,10 @@ import { ClusterComponent } from './pages/mrna/cluster.component';
 import { ExpressVennComponent, ExpressVennPage } from './pages/mrna/expressVenn.component';
 import { GeneExpressionHelpComponent } from './pages/mrna/gene-expression-help.component';
 /* 基因注释 */
-import { GoClassComponent,GoClassPage } from './pages/mrna/go-class.component';
-import { GoRichComponent,GoRichPage } from './pages/mrna/go-rich.component';
-import { KeggClassComponent,KeggClassPage } from './pages/mrna/kegg-class.component';
-import { KeggRichComponent,KeggRichPage } from './pages/mrna/kegg-rich.component';
+import { GoClassComponent, GoClassPage } from './pages/mrna/go-class.component';
+import { GoRichComponent, GoRichPage } from './pages/mrna/go-rich.component';
+import { KeggClassComponent, KeggClassPage } from './pages/mrna/kegg-class.component';
+import { KeggRichComponent, KeggRichPage } from './pages/mrna/kegg-rich.component';
 import { GeneAnnotationHelpComponent } from './pages/mrna/gene-annotation-help.component';
 /* 基因变异 */
 import { AlternativeSplicingComponent } from './pages/mrna/alternative-splicing.component';
@@ -96,6 +96,8 @@ import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.co
 import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
 import { ReRichComponent } from './pages/reanalysis/re-rich.component';
+/* map测试 */
+import { MapTestComponent } from './pages/test/mapTest.component';
 /* 基因集 */
 import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneList/venn.component';
 /* map */
@@ -238,83 +240,83 @@ const ROUTES: Routes = [
 			},
 			// GO
 			{
-				path:'go-class',
-				component:GoClassPage,
-				data:{keep:true,module:'goClass'}
+				path: 'go-class',
+				component: GoClassPage,
+				data: { keep: true, module: 'goClass' }
 			},
 			{
-				path:'go-enrichment',
-				component:GoRichPage,
-				data:{keep:true,module:'goEnrichment'}
+				path: 'go-enrichment',
+				component: GoRichPage,
+				data: { keep: true, module: 'goEnrichment' }
 			},
 			{
-				path:'enrichment-help',
-				component:GeneAnnotationHelpComponent,
-				data:{keep:true,module:'enrichmentHelp'}
+				path: 'enrichment-help',
+				component: GeneAnnotationHelpComponent,
+				data: { keep: true, module: 'enrichmentHelp' }
 			},
 			// KEGG
 			{
-				path:'kegg-class',
-				component:KeggClassPage,
-				data:{keep:true,module:'keggClass'}
+				path: 'kegg-class',
+				component: KeggClassPage,
+				data: { keep: true, module: 'keggClass' }
 			},
 			{
-				path:'kegg-enrichment',
-				component:KeggRichPage,
-				data:{keep:true,module:'keggEnrichment'}
+				path: 'kegg-enrichment',
+				component: KeggRichPage,
+				data: { keep: true, module: 'keggEnrichment' }
 			},
 			// 剪接/变异
 			{
-				path:'alternative-splicing',
-				component:AlternativeSplicingComponent,
-				data:{keep:true,module:'alternativeSplicing'}
+				path: 'alternative-splicing',
+				component: AlternativeSplicingComponent,
+				data: { keep: true, module: 'alternativeSplicing' }
 			},
 			{
-				path:'diff-alternative-splicing',
-				component:DiffAlternativeSplicingComponent,
-				data:{keep:true,module:'diffAlternativeSplicing'}
+				path: 'diff-alternative-splicing',
+				component: DiffAlternativeSplicingComponent,
+				data: { keep: true, module: 'diffAlternativeSplicing' }
 			},
 			{
-				path:'gene-fusion',
-				component:GeneFusionComponent,
-				data:{keep:true,module:'geneFusion'}
+				path: 'gene-fusion',
+				component: GeneFusionComponent,
+				data: { keep: true, module: 'geneFusion' }
 			},
 			{
-				path:'as-fusion-help',
-				component:AsSvHelpComponent,
-				data:{keep:true,module:'asFusion'}
+				path: 'as-fusion-help',
+				component: AsSvHelpComponent,
+				data: { keep: true, module: 'asFusion' }
 			},
 			// SNP/InDel
 			{
-				path:'snp-overview',
-				component:SnpOverviewComponent,
-				data:{keep:true,module:'snpOverview'}
+				path: 'snp-overview',
+				component: SnpOverviewComponent,
+				data: { keep: true, module: 'snpOverview' }
 			},
 			{
-				path:'snp-distribution',
-				component:SnpDistributionComponent,
-				data:{keep:true,module:'snpDistribution'}
+				path: 'snp-distribution',
+				component: SnpDistributionComponent,
+				data: { keep: true, module: 'snpDistribution' }
 			},
 			{
-				path:'indel-overview',
-				component:IndelOverviewComponent,
-				data:{keep:true,module:'indelOverview'}
+				path: 'indel-overview',
+				component: IndelOverviewComponent,
+				data: { keep: true, module: 'indelOverview' }
 			},
 			{
-				path:'indel-distribution',
-				component:IndelDistributionComponent,
-				data:{keep:true,module:'indelDistribution'}
+				path: 'indel-distribution',
+				component: IndelDistributionComponent,
+				data: { keep: true, module: 'indelDistribution' }
 			},
 			{
-				path:'snp-indel-help',
-				component:SnpIndelHelpComponent,
-				data:{keep:true,module:'snpIndelHelp'}
+				path: 'snp-indel-help',
+				component: SnpIndelHelpComponent,
+				data: { keep: true, module: 'snpIndelHelp' }
 			},
 			// 基因总表
 			{
-				path:'main',
-				component:GenePage,
-				data:{keep:true,module:'gene'}
+				path: 'main',
+				component: GenePage,
+				data: { keep: true, module: 'gene' }
 			},
 			// 基因详情
 			{
@@ -329,20 +331,20 @@ const ROUTES: Routes = [
 	},
 	// 基因详情页
 	{
-		path:'report/gene-detail/:lcid/:id/:geneType',
-		component:GeneDetailComponent,
-		data:{
-			keep:false,
-			module:'geneDetail'
+		path: 'report/gene-detail/:lcid/:id/:geneType/:species',
+		component: GeneDetailComponent,
+		data: {
+			keep: false,
+			module: 'geneDetail'
 		}
 	},
 	// Map
 	{
-		path:'report/map/:lcid/:mapid/:compareGroup/:tid/:geneType',
-		component:MapComponent,
-		data:{
-			keep:false,
-			module:'map'
+		path: 'report/map/:lcid/:mapid/:compareGroup/:tid/:geneType',
+		component: MapComponent,
+		data: {
+			keep: false,
+			module: 'map'
 		}
 	},
 	// 基因集
@@ -507,6 +509,16 @@ const ROUTES: Routes = [
 		data: {
 			keep: false,
 			module: 'reLoading'
+		}
+	},
+	// test map
+	{
+		path: 'report/map/test',
+		component: MapTestComponent,
+		canActivate: [ SysDefendService ],
+		data: {
+			keep: false,
+			module: 'mapTest'
 		}
 	},
 	// common
@@ -676,11 +688,12 @@ export function createTranslateLoader(http: HttpClient) {
 		GeneListIndexComponent,
 		ReClassComponent,
 		ReRichComponent,
-		
+
 		GeneListVennComponent,
 		GeneListVennPageComponent,
 
-		MapComponent
+        MapComponent,
+        MapTestComponent
 	],
 	// 路由模块在imports 导入
 	imports: [
@@ -712,8 +725,8 @@ export function createTranslateLoader(http: HttpClient) {
 		SysDefendService,
 		PageModuleService,
 		AddColumnService,
-        PromptService,
-        GeneService,
+		PromptService,
+		GeneService,
 		// , { nzDuration: 1000,nzPauseOnHover:true,nzMaxStack:3 }
 		{
 			provide: NZ_MESSAGE_CONFIG,

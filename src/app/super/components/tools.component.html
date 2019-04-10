@@ -1,4 +1,4 @@
-<div class="tool-component">
+<div class="tool-component" *ngIf="toolsService['visible']">
     <nz-drawer [nzClosable]="true" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="{{'analysisPanel.title' | translate}}" (nzOnClose)="close()">
         <!-- gene:{{ toolsService["geneCount"] }} -->
         <ul class="clearfix">
@@ -42,16 +42,16 @@
                             </p>
                             <span *ngIf="expressData.length && expressUpload.length">原始数据</span>
                             <div *ngIf="expressData.length">
-                                <button (click)="handlerHeatmapSelect(ex,'express')" [class.active]="ex['checked']" *ngFor="let ex of expressData;index as i;" nz-button nzType="default" nzSize="middle">{{ex['name']}}</button>
+                                <button (click)="handlerHeatmapSelect(ex,'express')" nz-tooltip [nzTitle]="ex['name']" [class.active]="ex['checked']" *ngFor="let ex of expressData;index as i;" nz-button nzType="default" nzSize="middle">{{ex['name']}}</button>
                             </div>
                             <span *ngIf="expressUpload.length">上传数据</span>
                             <div *ngIf="expressUpload.length">
-                                <button (click)="handlerHeatmapSelect(exup,'express')" [class.active]="exup['checked']" *ngFor="let exup of expressUpload;index as i;" nz-button nzType="default" nzSize="middle">{{exup['name']}}</button>
+                                <button (click)="handlerHeatmapSelect(exup,'express')" nz-tooltip [nzTitle]="exup['name']" [class.active]="exup['checked']" *ngFor="let exup of expressUpload;index as i;" nz-button nzType="default" nzSize="middle">{{exup['name']}}</button>
                             </div>
                             <nz-alert *ngIf="expressError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
                             <p *ngIf="geneType.length && expressData.length && heatmapSelectList.length">基因分类</p>
                             <div *ngIf="geneType.length && expressData.length && heatmapSelectList.length">
-                                <button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
+                                <button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" nz-tooltip [nzTitle]="type['name']" *ngFor="let type of geneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
                                 <!-- <nz-alert *ngIf="geneTypeError" nzShowIcon nzType="warning" nzMessage="基因分类不能大于2个"></nz-alert> -->
                                 <br>
                                 <label *ngIf="selectGeneType.length" nz-checkbox [(ngModel)]="clusterByGeneType" [nzDisabled]="!selectGeneType[0]['flag']">
@@ -71,16 +71,16 @@
                             <p *ngIf="diffData.length || diffUpload.length">数据选择</p>
                             <span *ngIf="diffData.length && diffUpload.length">原始数据</span>
                             <div *ngIf="diffData.length">
-                                <button (click)="handlerHeatmapSelect(diff,'diff')" [class.active]="diff['checked']" *ngFor="let diff of diffData;index as i;" nz-button nzType="default" nzSize="middle">{{diff['name']}}</button>
+                                <button (click)="handlerHeatmapSelect(diff,'diff')" nz-tooltip [nzTitle]="diff['name']" [class.active]="diff['checked']" *ngFor="let diff of diffData;index as i;" nz-button nzType="default" nzSize="middle">{{diff['name']}}</button>
                             </div>
                             <span *ngIf="diffUpload.length">上传数据</span>
                             <div *ngIf="diffUpload.length">
-                                <button (click)="handlerHeatmapSelect(diffUp,'diff')" [class.active]="diffUp['checked']" *ngFor="let diffUp of diffUpload;index as i;" nz-button nzType="default" nzSize="middle">{{diffUp['name']}}</button>
+                                <button (click)="handlerHeatmapSelect(diffUp,'diff')" nz-tooltip [nzTitle]="diffUp['name']" [class.active]="diffUp['checked']" *ngFor="let diffUp of diffUpload;index as i;" nz-button nzType="default" nzSize="middle">{{diffUp['name']}}</button>
                             </div>
                             <nz-alert *ngIf="diffError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
                             <p *ngIf="diffData.length && geneType.length">基因分类</p>
                             <div *ngIf="diffData.length && geneType.length">
-                                <button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
+                                <button (click)="handlerGeneSelect(type)" nz-tooltip [nzTitle]="type['name']" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
                                 <!-- <nz-alert *ngIf="geneTypeError" nzShowIcon nzType="warning" nzMessage="基因分类不能大于2个"></nz-alert> -->
                                 <br>
                                 <label *ngIf="selectGeneType.length" nz-checkbox [(ngModel)]="clusterByGeneType" [nzDisabled]="!selectGeneType[0]['flag']">
@@ -104,16 +104,16 @@
                             <p *ngIf="customData.length || customUpload.length">数据选择</p>
                             <span *ngIf="customData.length && customUpload.length">原始数据</span>
                             <div *ngIf="customData.length">
-                                <button (click)="handlerHeatmapSelect(custom,'custom')" [class.active]="custom['checked']" *ngFor="let custom of customData;index as i;" nz-button nzType="default" nzSize="middle">{{custom['name']}}</button>
+                                <button (click)="handlerHeatmapSelect(custom,'custom')" nz-tooltip [nzTitle]="custom['name']" [class.active]="custom['checked']" *ngFor="let custom of customData;index as i;" nz-button nzType="default" nzSize="middle">{{custom['name']}}</button>
                             </div>
                             <span *ngIf="customUpload.length">上传数据</span>
                             <div *ngIf="customUpload.length">
-                                <button (click)="handlerHeatmapSelect(customUp,'custom')" [class.active]="customUp['checked']" *ngFor="let customUp of customUpload;index as i;" nz-button nzType="default" nzSize="middle">{{customUp['name']}}</button>
+                                <button (click)="handlerHeatmapSelect(customUp,'custom')" nz-tooltip [nzTitle]="customUp['name']" [class.active]="customUp['checked']" *ngFor="let customUp of customUpload;index as i;" nz-button nzType="default" nzSize="middle">{{customUp['name']}}</button>
                             </div>
                             <nz-alert *ngIf="customError" nzShowIcon nzType="warning" nzMessage="请选择1~20组数据作图"></nz-alert>
                             <p *ngIf="customData.length && geneType.length">基因分类</p>
                             <div *ngIf="customData.length && geneType.length">
-                                <button (click)="handlerGeneSelect(type)" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
+                                <button (click)="handlerGeneSelect(type)" nz-tooltip [nzTitle]="type['name']" [class.active]="type['checked']" *ngFor="let type of geneType;index as i;" nz-button nzType="default" nzSize="middle">{{type['name']}}</button>
                                 <!-- <nz-alert *ngIf="geneTypeError" nzShowIcon nzType="warning" nzMessage="基因分类不能大于2个"></nz-alert> -->
                                 <br>
                                 <label *ngIf="selectGeneType.length" nz-checkbox [(ngModel)]="clusterByGeneType" [nzDisabled]="!selectGeneType[0]['flag']">
@@ -137,8 +137,10 @@
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <ng-container *ngIf="multiOmicsData.length">
-                    <button class="mb12 mr12" *ngFor="let mu of multiOmicsData;index as i;" nz-button nzType="default" nzSize="middle" (click)="multiOmicsClick(mu)" [class.active]="mu['checked']">{{mu['name']}}</button>
-                    <nz-alert *ngIf="multiOmicsError || !multiOmicsSelect.length" nzShowIcon nzType="warning" nzMessage="请选择1-5个数据"></nz-alert>
+                    <div class="tool-params-tab">
+                        <button class="mb12 mr12" *ngFor="let mu of multiOmicsData;index as i;" nz-button nzType="default" nzSize="middle" (click)="multiOmicsClick(mu)" nz-tooltip [nzTitle]="mu['name']" [class.active]="mu['checked']">{{mu['name']}}</button>
+                        <nz-alert *ngIf="multiOmicsError || !multiOmicsSelect.length" nzShowIcon nzType="warning" nzMessage="请选择1-5个数据"></nz-alert>
+                    </div>
                     <nz-divider></nz-divider>
                     <div class="tool-params-button-group">
                         <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
@@ -156,7 +158,7 @@
                 <nz-tabset [nzSize]="'small'">
                     <nz-tab nzTitle="分组平均表达量" *ngIf="lineGroupData.length">
                         <div class="tool-params-tab">
-                            <button (click)="lineClick('group',line)" [class.active]="line['checked']" *ngFor="let line of lineGroupData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
+                            <button (click)="lineClick('group',line)" nz-tooltip [nzTitle]="line['name']" [class.active]="line['checked']" *ngFor="let line of lineGroupData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
                             <p *ngIf="!lineGroupData.length  && doLineAjax " class="center">缺少必要数据</p>
                             <nz-alert *ngIf="lineGroupError || !lineGroupSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择两个样本/比较组"></nz-alert>
                         </div>
@@ -168,7 +170,7 @@
                     </nz-tab>
                     <nz-tab nzTitle="单样本表达量" *ngIf="lineSampleData.length">
                         <div class="tool-params-tab">
-                            <button (click)="lineClick('sample',line)" [class.active]="line['checked']" *ngFor="let line of lineSampleData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
+                            <button (click)="lineClick('sample',line)" nz-tooltip [nzTitle]="line['name']" [class.active]="line['checked']" *ngFor="let line of lineSampleData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
                             <nz-alert *ngIf="lineSampleError || !lineSampleSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择两个样本/比较组"></nz-alert>
                             <p *ngIf="!lineSampleData.length && doLineAjax " class="center">缺少必要数据</p>
                         </div>
@@ -180,7 +182,7 @@
                     </nz-tab>
                     <nz-tab nzTitle="用户上传数据" *ngIf="lineCustomData.length">
                         <div class="tool-params-tab">
-                            <button (click)="lineClick('custom',line)" [class.active]="line['checked']" *ngFor="let line of lineCustomData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
+                            <button (click)="lineClick('custom',line)" nz-tooltip [nzTitle]="line['name']" [class.active]="line['checked']" *ngFor="let line of lineCustomData;index as i;" nz-button nzType="default" nzSize="middle">{{line['name']}}</button>
                             <nz-alert *ngIf="lineCustomError || !lineCustomSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择两个样本/比较组"></nz-alert>
                             <p *ngIf="!lineCustomData.length && doLineAjax " class="center">缺少必要数据</p>
                         </div>
@@ -257,7 +259,7 @@
                         </div>
                         <div nz-row class="my-nz-row" *ngIf="kaFunGroupData.length">Classification</div>
                         <div class="tool-params-tab" *ngIf="kaFunGroupData.length">
-                            <button (click)="kaFunClick(kaFun)" [class.active]="kaFun['checked']" *ngFor="let kaFun of kaFunGroupData;index as i;" nz-button nzType="default" nzSize="middle">{{kaFun['name']}}</button>
+                            <button (click)="kaFunClick(kaFun)" nz-tooltip [nzTitle]="kaFun['name']" [class.active]="kaFun['checked']" *ngFor="let kaFun of kaFunGroupData;index as i;" nz-button nzType="default" nzSize="middle">{{kaFun['name']}}</button>
                             <nz-alert *ngIf="kaFunGroupError || kaFunGroupData.length <= 1" nzShowIcon nzType="warning" nzMessage="请回到表格中添加至少2个可用于定性分析的列。"></nz-alert>
                             <nz-alert *ngIf="kaFunGroupError || kaFunGroupSelect.length != 2" nzShowIcon nzType="warning" nzMessage="请选择2个数据"></nz-alert>
                             <p *ngIf="!kaFunGroupData.length && doKaFunAjax" class="center">缺少必要数据</p>
@@ -309,9 +311,11 @@
             nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-net">
-                    <button class="mr6 mb6" (click)="netClick(net)" [class.active]="net['checked']" *ngFor="let net of netData;index as i;" nz-button nzType="default" nzSize="middle">{{net['name']}}</button>
-                    <p *ngIf="!netData.length && doNetAjax" class="center">缺少必要数据</p>
-                    <nz-alert class="mb6" *ngIf="netError || !netSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                    <div class="tool-params-tab">
+                        <button class="mr6 mb6" (click)="netClick(net)" nz-tooltip [nzTitle]="net['name']" [class.active]="net['checked']" *ngFor="let net of netData;index as i;" nz-button nzType="default" nzSize="middle">{{net['name']}}</button>
+                        <p *ngIf="!netData.length && doNetAjax" class="center">缺少必要数据</p>
+                        <nz-alert class="mb6" *ngIf="netError || !netSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                    </div>
                     <!-- 参数选择 -->
                     <div class="tools-prams-content">
                         <nz-row class="mb12" *ngFor="let par of netSelect;index as i;">
@@ -339,9 +343,11 @@
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-relativeNet">
-                    <button class="mr6 mb6" (click)="relativeNetClick(relativeNet)" [class.active]="relativeNet['checked']" *ngFor="let relativeNet of relativeNetData;index as i;" nz-button nzType="default" nzSize="middle">{{relativeNet['name']}}</button>
-                    <p *ngIf="!relativeNetData.length && doRelativeNetAjax " class="center">缺少必要数据</p>
-                    <nz-alert class="mb6" *ngIf="!relativeNetError && !relativeNetSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                    <div class="tool-params-tab">
+                        <button class="mr6 mb6" (click)="relativeNetClick(relativeNet)" nz-tooltip [nzTitle]="relativeNet['name']" [class.active]="relativeNet['checked']" *ngFor="let relativeNet of relativeNetData;index as i;" nz-button nzType="default" nzSize="middle">{{relativeNet['name']}}</button>
+                        <p *ngIf="!relativeNetData.length && doRelativeNetAjax " class="center">缺少必要数据</p>
+                        <nz-alert class="mb6" *ngIf="!relativeNetError && !relativeNetSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
+                    </div>
                     <!-- 参数选择 -->
                     <!-- <div class="tools-prams-content">
                             <ng-container *ngFor="let par of relativeNetSelect;index as i;">
@@ -400,7 +406,7 @@
 
                     <p *ngIf="heatmapReRelations.length ">关系选择</p>
                     <div>
-                        <button (click)="handlerReRelationSelect(relation)" [class.active]="relation['checked']" *ngFor="let relation of heatmapReRelations;index as i;" nz-button nzType="default" nzSize="middle">{{relation['name']}}</button>
+                        <button (click)="handlerReRelationSelect(relation)" nz-tooltip [nzTitle]="relation['name']" [class.active]="relation['checked']" *ngFor="let relation of heatmapReRelations;index as i;" nz-button nzType="default" nzSize="middle">{{relation['name']}}</button>
                     </div>
                     <nz-alert *ngIf="heatmapReError" nzShowIcon nzType="warning" nzMessage="请选择一个关系"></nz-alert>
                     <!-- <div *ngIf="heatmapReSelectRelation.length">
@@ -463,7 +469,7 @@
                 <div *ngIf="geneClassData.length">
                     <div class="tool-params-tab" *ngFor="let item of geneClassData;index as i;">
                         <p>{{item['key']}}</p>
-                        <button class="mb12 mr12" (click)="handlerGeneClassSelect(klass)" [class.active]="klass['checked']" *ngFor="let klass of item['value'];" nz-button nzType="default" nzSize="middle">{{klass['name']}}</button>
+                        <button class="mb12 mr12" (click)="handlerGeneClassSelect(klass)" nz-tooltip [nzTitle]="klass['name']" [class.active]="klass['checked']" *ngFor="let klass of item['value'];" nz-button nzType="default" nzSize="middle">{{klass['name']}}</button>
                     </div>
                     <nz-alert *ngIf="!geneClassSelect.length" nzShowIcon nzType="warning" nzMessage="请选择一个分类"></nz-alert>
                 </div>
@@ -483,7 +489,7 @@
                 <div *ngIf="geneRichData.length">
                     <div class="tool-params-tab" *ngFor="let item of geneRichData;index as i;">
                         <p>{{item['key']}}</p>
-                        <button class="mb12 mr12" (click)="handlerGeneRichSelect(rich)" [class.active]="rich['checked']" *ngFor="let rich of item['value'];index as i;" nz-button nzType="default" nzSize="middle">{{rich['name']}}</button>
+                        <button class="mb12 mr12" (click)="handlerGeneRichSelect(rich)" nz-tooltip [nzTitle]="rich['name']" [class.active]="rich['checked']" *ngFor="let rich of item['value'];index as i;" nz-button nzType="default" nzSize="middle">{{rich['name']}}</button>
                     </div>
                     <nz-alert *ngIf="!geneRichSelect.length" nzShowIcon nzType="warning" nzMessage="请选择一个分类"></nz-alert>
                 </div>

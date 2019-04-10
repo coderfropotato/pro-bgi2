@@ -408,6 +408,9 @@ export class ReKdaComponent implements OnInit {
         let min=values[0],max=values[1];
 
         nodes.forEach(d => {
+            if(!d.type){
+                d.type='mRNA';
+            }
             d.selected=false;
             that.selectGeneList.forEach(m=>{
                 if(d.geneID===m){

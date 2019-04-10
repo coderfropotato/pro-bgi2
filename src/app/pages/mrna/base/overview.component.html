@@ -3,10 +3,10 @@
     <hr class="mhr" />
 
     <div calss="base_module">
-        <!-- <h3 class="title" *ngIf="abstract_general">1.1 摘要</h3>
-        <p class="help_text" *ngIf="abstract_general">{{abstract_general}}</p> -->
-        <h3 class="title">1.1 摘要</h3>
-        <p class="help_text">本项目使用BGISEQ-500平台一共测了6 个样品，每个样品平均产出14.04 M数据。样品比对基因组的平均比对率为 96.56% ，比对基因集的平均比对率为71.43% ；一共检测到 21,514个基因。</p>
+        <h3 class="title" *ngIf="abstract_general_cn">1.1 摘要</h3>
+        <p class="help_text" *ngIf="abstract_general_cn">{{abstract_general_cn}}</p>
+        <!-- <h3 class="title">1.1 摘要</h3>
+        <p class="help_text">本项目使用BGISEQ-500平台一共测了6 个样品，每个样品平均产出14.04 M数据。样品比对基因组的平均比对率为 96.56% ，比对基因集的平均比对率为71.43% ；一共检测到 21,514个基因。</p> -->
     </div>
 
     <div calss="base_module">
@@ -63,7 +63,7 @@
             <p class="help_text">主成分分析（PCA）是将多个变量通过降维为少数几个相互独立的变量（即主成分），同时尽可能多地保留原始数据信息的一种多元统计分析方法。在转录组的分析中，PCA将样本所包含的大量基因表达量信息降维为少数几个互相无关的主成分，以进行样本间的比较，方便找出离群样品、判别相似性高的样品簇等。本项目的PCA分析结果见下图：</p>
             <div class="t-content">
                 <ng-template #searchTemplate>
-                    <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="PCASearchType" [nzSize]="'small'" (ngModelChange)="searchPCATypeChange()" nzShowSearch>
+                    <nz-select *ngIf="!isShowTable" style="min-width: 160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="PCASearchType" [nzSize]="'small'" (ngModelChange)="searchPCATypeChange()" nzShowSearch>
                         <nz-option *ngFor="let item of PCASelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
                     </nz-select>
                 </ng-template>

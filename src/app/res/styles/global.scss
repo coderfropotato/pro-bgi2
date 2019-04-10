@@ -722,7 +722,7 @@ button {
                 transform: translateX(0px);
             }
             &.right {
-                transform: translateX(26px);
+                transform: translateX(28px);
             }
             &.center {
                 transform: translateX(14px);
@@ -1383,6 +1383,10 @@ button {
     button {
         margin-bottom: 12px;
         margin-right: 12px;
+        max-width:242px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
     &>div {
         padding: 12px;

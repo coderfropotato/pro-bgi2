@@ -6,14 +6,14 @@
                 <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
                     <i class="iconfont expand-icon" [class.icon-zhankai]="!expandModuleDesc"></i>
                     <i class="iconfont expand-icon" [class.icon-shouqi]="expandModuleDesc"></i>
-                    聚类
+                    {{'diff_cluster.title' | translate}}
                 </span>
-                <p [hidden]="!expandModuleDesc">聚类</p>
+                <p [hidden]="!expandModuleDesc">{{'diff_cluster.content' | translate}}</p>
                 <ng-content select=".gene-switch-module"></ng-content>
             </div>
             <!-- level下拉选择 -->
             <ng-template #otherLeftTemplate>
-                <nz-select *ngIf="compareGroupList.length" style="width: 120px; margin-top:1em;margin-bottom:1em;" class="ml12"
+                <nz-select *ngIf="compareGroupList.length" style="min-width:160px; margin-top:1em;margin-bottom:1em;" class="ml12"
                     [(ngModel)]="compareGroup" nzPlaceHolder="compareGroup" (ngModelChange)="handleCompareGroupChange()">
                     <nz-option *ngFor="let compare of compareGroupList;index as i;" [nzValue]="compare" [nzLabel]="compare"></nz-option>
                 </nz-select>

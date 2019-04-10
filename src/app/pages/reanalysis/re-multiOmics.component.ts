@@ -883,7 +883,7 @@ export class ReMultiOmicsComponent implements OnInit {
 				);
 
 				// scatter
-				const radius = 3;
+				const radius = 2;
 				boxplots
 					.append('g')
 					.attr('class', 'boxPoints')
@@ -911,6 +911,7 @@ export class ReMultiOmicsComponent implements OnInit {
 					.append('circle')
 					.attr('r', radius)
 					.attr('fill', '#faca0c')
+					.attr('fill-opacity',0.6)
 					.attr('cx', m=>m.xscale(m.x))
 					.attr('cy', (m) => yScaleBox(m.y))
 					.on('mouseover', (m) => {
