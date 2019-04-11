@@ -134,9 +134,6 @@ export class RelativeSpliceComponent implements OnInit {
                     as_group_name: this.group_select
                 };
 
-
-
-                //this.colors=[ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"];
                 this.colors = this.storeService.colors;
 
                 // table
@@ -419,9 +416,9 @@ export class RelativeSpliceComponent implements OnInit {
 
         let left_title = 20;//左侧标题
         let left_ylength = 30;//左侧y轴
-        // let right_name_length=getNameLength(this.selectConfirmData)+30;
+        let right_name_length=getNameLength(this.selectConfirmData)+30;
         // console.log(right_name_length);
-        let right_name_length = 90;
+        //let right_name_length = 90;
 
         // let xAxis_length = x_value.length*rect_length.x;
         // let yAxis_length = y_value.length*rect_length.y;
@@ -494,7 +491,7 @@ export class RelativeSpliceComponent implements OnInit {
 
         function drawRightFirstLegend(){
 
-            let temp_width = right_name_length;
+            let temp_width = 90;
             let padding_left = temp_x_width + left_title+10;
 
             let r_legend = svg
@@ -542,10 +539,67 @@ export class RelativeSpliceComponent implements OnInit {
         }
 
         function drawRightSecondLegend(){
+            let padding_left = temp_x_width + left_title + 10 +90;
 
-            // let padding_left = temp_x_width + left_title+10;
-            // let padding_top = 140 + top_title +10;
-            let padding_left = temp_x_width + left_title + right_name_length;
+            //let circle = d3.symbol().type(d3.symbolCircle)();
+            // let temp_symbol_select = [];
+            // let temp_symbol_length = that.group_select.length;
+            // let j = 0;
+
+            // that.colors.forEach(element => {
+            //     if(j < temp_symbol_length){
+            //         temp_symbol_select.push(that.colors[j]);
+            //         j++;
+            //     }
+            // });
+
+            // let r_legend_bottom = svg
+            //     .append('g')
+            //     .attr('transform', 'translate(' + padding_left + ',' + top_title + ')')
+            //     .attr('width',right_name_length);
+
+            // r_legend_bottom.append('text').attr("class","titleText").attr('dx', '0').attr('dy', '0').text("Group");
+
+            // console.log(that.group_select);
+
+            // let legend_bottom = r_legend_bottom
+            // .append("g")
+            // .attr("transform", "translate(4,0)");
+
+            // legend_bottom
+            // .selectAll('rect')
+            // .data(that.group_select)
+            // .enter()
+            // .append('rect')
+            // .attr('x', 0)
+            // .attr('y', (d, i) => {
+            //     return i * 24
+            // })
+            // .attr('width', 10)
+            // .attr('height', 10)
+            // ;
+
+
+            // legend_bottom.selectAll('text')
+            //     .data(that.group_select)
+            //     .enter()
+            //     .append('text')
+            //     .attr('x', 0)
+            //     .attr('y', (d, i) => {
+            //         return i * 20
+            //     })
+            //     .style('font-size', this.styleConfig.legendFontSize)
+            //     .attr('text-anchor', 'start')
+            //     .attr('dominant-baseline', 'middle')
+            //     .attr('dx', 0)
+            //     .attr('dy', 20)
+            //     .text(d => {
+            //         //return ('' + d).length > global.legend.textMaxLength ? (('' + d).substring(0, global.legend.textMaxLength - 1) + '...') : d;
+            //         return d;
+            //     })
+            //     .append('title')
+            //     .text(d => d)
+
 
             let circle = d3.symbol().type(d3.symbolCircle)();
 
@@ -563,9 +617,7 @@ export class RelativeSpliceComponent implements OnInit {
             let r_legend_bottom = svg
                 .append('g')
                 .attr('transform', 'translate(' + padding_left + ',' + top_title + ')')
-                .attr('width',right_name_length)
-                // .attr('height',yAxis_length)
-                ;
+                .attr('width',right_name_length);
 
             r_legend_bottom.append('text').attr("class","titleText").attr('dx', '0').attr('dy', '0').text("Group");
 
@@ -582,7 +634,14 @@ export class RelativeSpliceComponent implements OnInit {
             .labelOffset(5)
             .shapePadding(5)
             // .cellFilter(function(d){ return d.label !== "e" })
-            .scale(ordinal);
+            .scale(ordinal)
+            .on("cellover", function(d){
+                let tipText = `${d}`;
+				that.globalService.showPopOver(d3.event, tipText);
+            })
+            .on("cellout", function(d){
+                that.globalService.hidePopOver();
+            });
 
             r_legend_bottom.select(".legendOrdinal")
             .call(legendOrdinal);
@@ -766,9 +825,46 @@ export class RelativeSpliceComponent implements OnInit {
             return temp;
         }
 
+        // function getNameLength(total_name) {
+		// 	//console.log(total_name)
+		// 	let oSvg = d3.select('#relativeSpliceDiv').append('svg');
+		// 	let mText = oSvg
+		// 		.selectAll('MyAlltext')
+		// 		.data(total_name)
+		// 		.enter()
+		// 		.append('text')
+		// 		.text(function(d, i) {
+		// 			return d;
+		// 		})
+		// 		.attr('class', 'aText');
+
+		// 	let max_length = [];
+
+		// 	mText.nodes().forEach((d) => {
+		// 		max_length.push(d.getBBox().width);
+		// 	});
+		// 	//console.log(max_length)
+
+		// 	max_length.sort(function(a, b) {
+		// 		return b - a;
+		// 	});
+
+		// 	oSvg.remove();
+
+		// 	return max_length[0];
+		// }
+
+        function pauseEvent(e){
+            if(e.stopPropagation) e.stopPropagation();
+            if(e.preventDefault) e.preventDefault();
+            e.cancelBubble=true;
+            e.returnValue=false;
+            return false;
+        }
+
         function getNameLength(total_name) {
 			//console.log(total_name)
-			let oSvg = d3.select('#relativeSpliceDiv').append('svg');
+			let oSvg = d3.select('#relativeSplice').append('svg');
 			let mText = oSvg
 				.selectAll('MyAlltext')
 				.data(total_name)
@@ -794,44 +890,5 @@ export class RelativeSpliceComponent implements OnInit {
 
 			return max_length[0];
 		}
-
-        // function getNameLength(k_dataName){
-        //     //计算左侧最大的名字长度
-        //     let k_name_max = [];
-        //     for (let i = 0; i < k_dataName.length; i++) {
-        //         k_name_max.push(getBLen(k_dataName[i]));
-        //     }
-
-        //     let max_name = Math.max.apply(null, k_name_max);
-        //     let target_name = '';
-        //     for (let i = 0; i < k_name_max.length; i++) {
-        //         if (max_name == k_name_max[i]) {
-        //             target_name = k_dataName[i];
-        //             break;
-        //         }
-        //     }
-        //     let oSvg = d3.select('#relativeSpliceDiv').append('svg');
-        //     let mText = oSvg.append('text').text(target_name).attr('class', 'mText');
-        //     let name_length = mText.nodes()[0].getBBox().width;
-        //     oSvg.remove();
-
-        //     return name_length;
-        // }
-
-        // function getBLen(str) {
-        //     if (str == null) return 0;
-        //     if (typeof str != 'string') {
-        //         str += '';
-        //     }
-        //     return str.replace(/[^\x00-\xff]/g, '01').length;
-        // }
-
-        function pauseEvent(e){
-            if(e.stopPropagation) e.stopPropagation();
-            if(e.preventDefault) e.preventDefault();
-            e.cancelBubble=true;
-            e.returnValue=false;
-            return false;
-        }
     }
 }
