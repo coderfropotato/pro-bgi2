@@ -1,16 +1,16 @@
 <div class="content base-content information">
-    <h2 class="title">2 参考信息</h2>
+    <h2 class="title">{{tempIndex}} 参考信息</h2>
     <hr class="mhr" />
 
-    <div calss="base_module">
-        <h3 class="title" *ngIf="species_name || genome_source || genome_url">2.1 参考物种</h3>
+    <div calss="base_module" *ngIf="itemFlag">
+        <h3 class="title" *ngIf="species_name || genome_source || genome_url">{{tempIndex}}.{{itemNum}} 参考物种</h3>
         <p class="help_text" *ngIf="species_name">物种名：<span style="font-style: italic">{{species_name}}</span></p>
         <p class="help_text" *ngIf="genome_source">来源：<span>{{genome_source}}</span></p>
         <p class="help_text" *ngIf="genome_url">参考基因组版本：<span><a href="{{genome_url}}" target="_blank">{{genome_version}}</a></span></p>
     </div>
     
-    <div calss="base_module">
-        <h3 class="title">2.2 RNA分类</h3>
+    <div calss="base_module" *ngIf="itemFlag2">
+        <h3 class="title">{{tempIndex}}.{{itemNum2}} RNA分类</h3>
         <div class="f-content">
             <app-table-switch-chart
                 #RNAClassChart
@@ -29,8 +29,8 @@
         </div>
     </div>
     
-    <div calss="base_module">
-        <h3 class="title">2.3 基因长度</h3>
+    <div calss="base_module" *ngIf="itemFlag3">
+        <h3 class="title">{{tempIndex}}.{{itemNum3}} 基因长度</h3>
         <div class="f-content">
             <app-table-switch-chart
                 #transcriptLength
@@ -53,8 +53,8 @@
         </div>
     </div>
 
-    <div calss="base_module">
-        <h3 class="title">2.4 miRNA长度分布</h3>
+    <div calss="base_module" *ngIf="itemFlag4">
+        <h3 class="title">{{tempIndex}}.{{itemNum4}} miRNA长度分布</h3>
         <div class="f-content">
             <app-table-switch-chart
                 #RNALchart
@@ -73,8 +73,8 @@
         </div>
     </div>
 
-    <div calss="base_module">
-        <h3 class="title">2.5 外显子数量</h3>
+    <div calss="base_module" *ngIf="itemFlag5">
+        <h3 class="title">{{tempIndex}}.{{itemNum5}} 外显子数量</h3>
         <div class="f-content">
             <app-table-switch-chart
                 #exonsNum
@@ -97,15 +97,15 @@
         </div>
     </div>
 
-    <div calss="base_module">
-        <h3 class="title">2.6 注释统计表</h3>
+    <div calss="base_module" *ngIf="itemFlag6">
+        <h3 class="title">{{tempIndex}}.{{itemNum6}} 注释统计表</h3>
         <div style="width:96%;margin: 10px auto;">
             <app-little-table [url]="defaultUrl" [pageEntity]="EntityOne"></app-little-table>
         </div>
     </div>
     
-    <div calss="base_module">
-        <h3 class="title">2.7 miRNA首位碱基分布</h3>
+    <div calss="base_module" *ngIf="itemFlag7">
+        <h3 class="title">{{tempIndex}}.{{itemNum7}} miRNA首位碱基分布</h3>
         <div class="f-content">
             <app-table-switch-chart
                 #miRNAFchart

@@ -46,6 +46,10 @@
         "express_venn_title": "express gene clustering",
         "express_venn_content": "Clustering the FPKM values of express genes in each comparison group"
     },
+    "kaFun": {
+        "title": "kaFun",
+        "content": ""
+    },
     "go_class": {
         "title": "go class",
         "content": ""

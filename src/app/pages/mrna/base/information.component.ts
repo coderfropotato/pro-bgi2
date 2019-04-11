@@ -6,6 +6,7 @@ import config from '../../../../config';
 import { PromptService } from '../../../super/service/promptService';
 import { MessageService } from '../../../super/service/messageService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { GeneListIndexComponent } from '../../geneList/index.component';
 
 declare const d3: any;
 declare const d4: any;
@@ -85,6 +86,26 @@ export class InformationComponent implements OnInit {
 
 	EntityOne: object;
 
+	tempIndex: 0;
+	tempMenu: any[] = [];
+	tempMenu2: any[] = [];
+	tempMenu3: any[] = [];
+
+	itemFlag: boolean = false;
+	itemNum: number = 0;
+	itemFlag2: boolean = false;
+	itemNum2: number = 0;
+	itemFlag3: boolean = false;
+	itemNum3: number = 0;
+	itemFlag4: boolean = false;
+	itemNum4: number = 0;
+	itemFlag5: boolean = false;
+	itemNum5: number = 0;
+	itemFlag6: boolean = false;
+	itemNum6: number = 0;
+	itemFlag7: boolean = false;
+	itemNum7: number = 0;
+
 	constructor(
 		private message: MessageService,
 		private store: StoreService,
@@ -96,6 +117,8 @@ export class InformationComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+
+		this.GeneListIndex();
 
 		this.species_name = this.store.getStore('species_name');
 
@@ -310,7 +333,7 @@ export class InformationComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				console.log(d)
+				//console.log(d)
 				return '<span>Type：' + d.key + '</span><br><span>Number：' + d.data[d.key] + '</span><br><span>Sequence Size(bp)：'+ d.data["rna_len_item"]+'</span>';
 			}
 		};
@@ -320,7 +343,7 @@ export class InformationComponent implements OnInit {
 
 	//2.4 miRNA长度
 	drawRNALengthReads(data) {
-		console.log(data)
+		//console.log(data)
 		var baseThead = data.baseThead;
 		var rows = data.rows;
 		var chartData = [];
@@ -335,7 +358,7 @@ export class InformationComponent implements OnInit {
 				}
 			}
 		}
-		console.log(chartData)
+		//console.log(chartData)
 		let that = this;
 
 		let config: object = {
@@ -626,5 +649,80 @@ export class InformationComponent implements OnInit {
 	colorTChange(curColor) {
 		this.chartT.setColor(curColor, this.legendIndexT);
 		this.chartT.redraw();
+	}
+
+	GeneListIndex(){
+		let mindex = 1;
+		let mindex2 = 1;
+		let mindex3 = 1;
+		this.store.getStore('basicMenu').forEach((d) => {
+			if(d.indexOf("002")==0 && d.length != 3){
+				if(d.length == 6){
+					this.tempMenu2.push({
+						name:d,
+						index:mindex
+					});
+					mindex++;
+				}else{
+					this.tempMenu3.push({
+							name:d,
+							index:d.substr(d.length-1,1)
+					});
+				}
+				
+			}
+			if(d.length == 3){
+				this.tempMenu.push({
+						name:d,
+						index:mindex2
+				});
+				mindex2++;
+			}
+		});
+
+		console.log(this.tempMenu);
+		console.log(this.tempMenu2);
+		console.log(this.tempMenu3);
+		
+		this.tempMenu.forEach((d)=>{
+			if(d["name"]=="002"){
+				this.tempIndex =  d["index"];
+			}
+		})
+
+		this.tempMenu2.forEach((d)=>{
+			switch (d["name"]) {
+				case "002001":
+					this.itemFlag = true;
+					this.itemNum = d["index"];
+					break;
+				case "002002":
+					this.itemFlag2 = true;
+					this.itemNum2 = d["index"];
+					break;
+				case "002003":
+					this.itemFlag3 = true;
+					this.itemNum3 = d["index"];
+					break;
+				case "002004":
+					this.itemFlag4 = true;
+					this.itemNum4 = d["index"];
+					break;
+				case "002005":
+					this.itemFlag5 = true;
+					this.itemNum5 = d["index"];
+					break;
+				case "002006":
+					this.itemFlag6 = true;
+					this.itemNum6 = d["index"];
+					break;
+				case "002007":
+					this.itemFlag7 = true;
+					this.itemNum7 = d["index"];
+					break;
+				default:
+					break;
+			}
+		})
 	}
 }
