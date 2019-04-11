@@ -683,7 +683,7 @@ export class ReadsFilterComponent implements OnInit {
 				}else{
 					this.tempMenu3.push({
 						name:d,
-						index:d.substr(d.length-1,1)
+						father:d.substr(0,6)
 					});
 				}
 			}
@@ -727,7 +727,44 @@ export class ReadsFilterComponent implements OnInit {
 				default:
 					break;
 			}
-		})
+        })
+        
+        var map = {},
+			dest = [];
+		for(var i = 0; i < this.tempMenu3.length; i++){
+			var ai = this.tempMenu3[i];
+			if(!map[ai.father]){
+				dest.push({
+					father: ai.father,
+					data: [ai]
+				});
+				map[ai.father] = ai;
+			}else{
+				for(var j = 0; j < dest.length; j++){
+					var dj = dest[j];
+					if(dj.father == ai.father){
+						dj.data.push(ai);
+						break;
+					}
+				}
+			}
+		}
+
+		let tempArray = [];
+		for (let index = 0; index < dest.length; index++) {
+			let element = dest[index].data;
+			for (let index2 = 0; index2 < element.length; index2++) {
+				let element2 = element[index2];
+				tempArray.push({
+					name: element2["name"],
+					index: index2+1
+				})
+			}
+		}
+
+		this.tempMenu3.length = 0;
+		this.tempMenu3 = tempArray;
+		console.log(this.tempMenu3);
 
 		this.tempMenu3.forEach((d)=>{
 			switch (d["name"]) {
