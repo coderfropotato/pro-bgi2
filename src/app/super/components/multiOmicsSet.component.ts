@@ -13,32 +13,63 @@ declare const $: any;
     styles: [
         `
         .setPanelTitle {
-            border-bottom: 1px solid rgba(234, 234, 235, 0.95);
+            border-bottom: 1px solid #E8E8E8;
+            height:40px;
+            font-size: 16px;
+            color: #333333;
+            letter-spacing: 0;
+            line-height: 30px;
+            text-align: left;
+        }
+
+        .nodataInfo{
+            padding-top: 50px;
+            font-size: 14px;
+            color: #999999;
+            text-align: center;
         }
 
         .addInfo {
-            padding: 10px;
+            height:40px;
         }
 
         .infoTitle{
-            margin-left: 32px;
+            font-size: 14px;
+            color: #8089A9;
+        }
+
+        .relationCol{
+            width:100px;
+        }
+
+        .keyCol{
+            width:150px;
         }
 
         .infoCol.rationColInfo{
-            width: 100px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space:nowrap
         }
         .infoCol{
             float:left;
-            margin-right:10px;
-            margin-bottom: 8px;
+            margin-right:5px;
+            font-size: 14px;
+            color: #333333;
         }
         .infoCol::after{
             content:'';
             display:block;
             clear:both;
+        }
+        .infoContentPanel{
+            height:200px;
+            padding: 10px 0;
+            margin-bottom: 5px;
+        }
+        .infoContent{
+            border-bottom: 1px solid #E8E8E8;
+            margin-bottom: 10px;
         }
         .infoContent::after{
             content:'';
