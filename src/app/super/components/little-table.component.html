@@ -33,7 +33,8 @@
                             <ng-template #tp66>
                                 <span [innerHTML]="row[thead.true_key]"></span>
                             </ng-template>
-                            <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID">{{row[thead.true_key]}}</a>
+                            <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID&&targetFlag">{{row[thead.true_key]}}</a>
+                            <a href="{{goTarget}}{{row[thead.true_key]}}" target="_blank" *ngIf="thead.true_key==targetID&&!targetFlag">{{row[thead.true_key]}}</a>
                             <a href="{{targetID2Url}}" target="_blank" *ngIf="thead.true_key==targetID2">{{row[thead.true_key]}}</a>
                             <span [innerHTML]="row[thead.true_key]" *ngIf="thead.true_key!=targetID && thead.true_key!=targetID2"></span>
                         </td>
