@@ -120,14 +120,14 @@ export class ClusterComponent implements OnInit {
      }
 
     ngOnInit() {
-        this.colors = ["#ff0000", "#ffffff", "#0070c0"];
+        this.colors = ["#0070c0", "#ffffff", "#ff0000"];
         this.gaugeColors=this.storeService.getColors();
         this.defaultDefaultChecked = true;
         this.geneType = this.pageModuleService['defaultModule'];
         this.version =  this.storeService.getStore('version');
         this.genome =  this.storeService.getStore('genome');
         this.compareGroupList = this.storeService.getStore('diff_plan');
-        this.compareGroup = this.compareGroupList[0];
+        this.compareGroup = this.compareGroupList[4];
 
         //参数
         this.defaultSetUrl=`${config['javaPath']}/cluster/defaultSet`;
