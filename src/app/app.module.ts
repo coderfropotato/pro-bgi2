@@ -331,7 +331,7 @@ const ROUTES: Routes = [
 	},
 	// 基因详情页
 	{
-		path: 'report/gene-detail/:lcid/:id/:geneType/:species',
+		path: 'report/gene-detail/:lcid/:species/:geneType/:id',
 		component: GeneDetailComponent,
 		data: {
 			keep: false,

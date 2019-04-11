@@ -110,6 +110,8 @@ export class ReNetComponent implements OnInit {
     isEdit:string = 'false';
     rationAddThead:object[] = [];
 
+    geneDetailUrl:string;
+
     constructor(
         private message: MessageService,
 		private ajaxService: AjaxService,
@@ -230,6 +232,8 @@ export class ReNetComponent implements OnInit {
         this.extendDefaultChecked = true;
         this.extendEmitBaseThead = true;
         this.extendCheckStatusInParams = false;
+
+        this.geneDetailUrl=`${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${this.storeService.getStore('genome')}/${this.geneType}`;
 
     }
 
@@ -456,8 +460,10 @@ export class ReNetComponent implements OnInit {
 
         this.allNodes=[...nodes];
         // add link
-        this.curStartNode=this.allNodes[0]['geneID'];
-        this.curEndNode=this.allNodes[1]['geneID'];
+        if(this.allNodes.length && this.allNodes.length>1){
+            this.curStartNode=this.allNodes[0]['geneID'];
+            this.curEndNode=this.allNodes[1]['geneID'];
+        }
         let scores=this.storeService.getStore('userRelation').score;
         this.scoreMin=scores[0];
         this.scoreMax=scores[1];
@@ -588,7 +594,7 @@ export class ReNetComponent implements OnInit {
                     }
                 }
 
-                let text = `source：<a target='_blank' href=''>${m.source.geneID}</a><br>target：<a target='_blank' href=''>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}`;
+                let text = `source：<a target='_blank' href='${this.geneDetailUrl}/${m.source.geneID}'>${m.source.geneID}</a><br>target：<a target='_blank' href='${this.geneDetailUrl}/${m.target.geneID}'>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}`;
                 if(references.length){
                     text=text+'<br>文献：';
                     references.forEach((r,j)=>{
@@ -653,7 +659,7 @@ export class ReNetComponent implements OnInit {
             .attr("cursor", "pointer")
             .on("mouseover", m => {
                 let value=isLinkNum ? 'node连接数' : that.chartEntity['quantity']['name'];
-                let text = `geneID：<a target='_blank' href=''>${m.geneID}</a><br>type：${m.type}<br>${value}：${m.value}<br>geneSymbol：${m.symbol}`;
+                let text = `geneID：<a target='_blank' href='${this.geneDetailUrl}/${m.geneID}'>${m.geneID}</a><br>type：${m.type}<br>${value}：${m.value}<br>geneSymbol：${m.symbol}`;
                 this.globalService.showPopOver(d3.event, text);
             })
             .on("mouseout", () => {
