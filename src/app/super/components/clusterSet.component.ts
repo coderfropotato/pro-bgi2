@@ -20,7 +20,7 @@ declare const $: any;
             width:50px;
             margin-top: 3px;
         }
-        nz-input-number input{
+        nz-input-number input.ant-input-number-input{
             padding:0 4px;
         }
         .textCol{
@@ -65,6 +65,8 @@ export class ClusterSetComponent implements OnInit {
     min:number=0;
     max:number=0;
     rangeValue:number[]=[];
+    minValue:number;
+    maxValue:number;
 
     //行名称
     selectedGene:string;
@@ -126,13 +128,7 @@ export class ClusterSetComponent implements OnInit {
         this.isShowEditVertical=false;
         this.isShowEditHorizontal=false;
 
-        this.width=this.confirmData['width'];
-        this.height=this.confirmData['height'];
-        this.rangeValue=[...this.confirmData['domainRange']];
-        this.selectedGene=this.confirmData['yName'];
-        this.isHorizontalCluster=this.confirmData['isCluster'];
-        this.horizontalInfos=[...this.confirmData['horizontalList']];
-        this.verticalInfos=[...this.confirmData['verticalList']];
+        this.backConfirm();
     }
 
     //获取默认值
@@ -153,6 +149,8 @@ export class ClusterSetComponent implements OnInit {
         this.min=trueData.min;
         this.max=trueData.max;
         this.rangeValue=[this.min,this.max];
+        this.minValue=this.min;
+        this.maxValue=this.max;
 
         this.geneType=trueData.geneType;
         if(this.geneType=="gene"){
@@ -189,7 +187,7 @@ export class ClusterSetComponent implements OnInit {
         this.confirmData={
             width:this.width,
             height:this.height,
-            domainRange:[...this.rangeValue],
+            domainRange:[this.minValue,this.maxValue],
             yName:this.selectedGene,
             isCluster:this.isHorizontalCluster,
             verticalList:[...this.verticalInfos],
@@ -571,6 +569,10 @@ export class ClusterSetComponent implements OnInit {
 
     //设置 确定
     setConfirm(){
+        if(this.minValue>this.maxValue){
+            this.notification.create('warning','值域', '最小值不能超过最大值');
+            return;
+        }
 
         if(this.horizontalInfos.length){
             let horizontalInfoList=[];
@@ -605,7 +607,7 @@ export class ClusterSetComponent implements OnInit {
 
         this.confirmData['width']=this.width;
         this.confirmData['height']=this.height;
-        this.confirmData['domainRange']=[Math.min(this.rangeValue[0],this.rangeValue[1]),Math.max(this.rangeValue[0],this.rangeValue[1])];
+        this.confirmData['domainRange']=[this.minValue,this.maxValue];
         this.confirmData['yName']=this.selectedGene;
         this.confirmData['isCluster']=this.isHorizontalCluster;
         this.confirmData['verticalList']=[...this.verticalInfos];
@@ -623,9 +625,37 @@ export class ClusterSetComponent implements OnInit {
         this.isShowAddHorizontal=false;
         this.isShowAddVertical=false;
 
+        this.backConfirm();
+    }
+
+    rangeValueChange(){
+        this.minValue=Math.min(this.rangeValue[0],this.rangeValue[1]);
+        this.maxValue=Math.max(this.rangeValue[0],this.rangeValue[1]);
+    }
+    
+    minValueChange(){
+        if(this.rangeValue[0]<this.rangeValue[1]){
+            this.rangeValue[0]=this.minValue;
+        }else{
+            this.rangeValue[1]=this.minValue; 
+        }
+    }
+
+    maxValueChange(){
+        if(this.rangeValue[0]>this.rangeValue[1]){
+            this.rangeValue[0]=this.maxValue;
+        }else{
+            this.rangeValue[1]=this.maxValue; 
+        }
+    }
+
+    //返回到上一次确定后的数据
+    backConfirm(){
         this.width=this.confirmData['width'];
         this.height=this.confirmData['height'];
         this.rangeValue=[...this.confirmData['domainRange']];
+        this.minValue=this.confirmData['domainRange'][0];
+        this.maxValue=this.confirmData['domainRange'][1];
         this.selectedGene=this.confirmData['yName'];
         this.isHorizontalCluster=this.confirmData['isCluster'];
         this.horizontalInfos=[...this.confirmData['horizontalList']];

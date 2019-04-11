@@ -668,7 +668,7 @@ export class GeneDetailComponent implements OnInit {
 					}
 				},
 				y: {
-					title: "log10(FPKM+1)",
+					title: "log10(EXP+1)",
 					dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 					if (name) {
@@ -734,7 +734,7 @@ export class GeneDetailComponent implements OnInit {
 					}
 				},
 				y: {
-					title: "log10(FPKM+1)",
+					title: "log10(EXP+1)",
 					dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 					if (name) {

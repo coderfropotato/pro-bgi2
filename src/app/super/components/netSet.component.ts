@@ -17,7 +17,6 @@ declare const $: any;
         }
 
         .netSet{
-            border-bottom:1px solid #eeeeee;
             padding:10px 0;
         }
 
