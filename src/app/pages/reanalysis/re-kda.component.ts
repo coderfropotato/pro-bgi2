@@ -456,8 +456,10 @@ export class ReKdaComponent implements OnInit {
 
         this.allNodes=[...nodes];
         // add link
-        this.curStartNode=this.allNodes[0]['geneID'];
-        this.curEndNode=this.allNodes[1]['geneID'];
+        if(this.allNodes.length && this.allNodes.length>1){
+            this.curStartNode=this.allNodes[0]['geneID'];
+            this.curEndNode=this.allNodes[1]['geneID'];
+        }
         let scores=this.storeService.getStore('userRelation').score;
         this.scoreMin=scores[0];
         this.scoreMax=scores[1];
