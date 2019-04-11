@@ -287,6 +287,7 @@ export class MultiOmicsSetComponent implements OnInit {
     //关联关系 取消
     relationCancel(){
         this.isShowRelationPanel=false;
+        this.isShowSetPanel=true;
     }
 
 
@@ -369,6 +370,7 @@ export class MultiOmicsSetComponent implements OnInit {
     //添加面板， 取消
     addCancel() {
         this.isShowAddPanel = false;
+        this.isShowSetPanel=true;
     }
 
 
