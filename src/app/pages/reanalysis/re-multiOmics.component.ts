@@ -700,6 +700,7 @@ export class ReMultiOmicsComponent implements OnInit {
 						t.relation = d.relation;
 						t.key = d.key;
 						t.type = m.type;
+						t.typeKey = m.key;
 						t.category = m.category;
 						t.value = t.x;
 						t['checked'] = false;
