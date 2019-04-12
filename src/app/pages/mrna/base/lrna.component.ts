@@ -52,7 +52,7 @@ export class LrnaComponent implements OnInit {
 	legendIndexL: number = 0; //当前点击图例的索引
 	colorL: string; //当前选中的color
 
-	tempIndex: 0;
+	tempIndex: number = 0;
 	tempMenu: any[] = [];
 	tempMenu2: any[] = [];
 	tempMenu3: any[] = [];
