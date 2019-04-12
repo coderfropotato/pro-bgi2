@@ -13,7 +13,8 @@ import {
 	Input,
 	Output,
 	EventEmitter,
-	ChangeDetectorRef
+    ChangeDetectorRef,
+    NgZone
 } from '@angular/core';
 import { GlobalService } from 'src/app/super/service/globalService';
 import { TranslateService } from '@ngx-translate/core';
@@ -149,7 +150,8 @@ export class MapComponent implements OnInit {
 		private router: Router,
 		private routes: ActivatedRoute,
 		private geneService: GeneService,
-		private sanitizer: DomSanitizer,
+        private sanitizer: DomSanitizer,
+        private zone:NgZone,
 		private ngxSpinnerService: NgxSpinnerService,
 		private addColumnService: AddColumnService,
 		private changeDetector: ChangeDetectorRef,
@@ -178,10 +180,10 @@ export class MapComponent implements OnInit {
 				// 重分析内的map跳转
 			} else {
 				// 非重分析的map跳转   production test
-				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this
-					.lcid}/KEGG_PATHWAY/Pathway_enrichment/${this.compareGroup}/${this.compareGroup}_${this
-					.defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`;
-				// this.dirtyPathWayIframeUrl = 'http://localhost:4200/#/report/map/test';
+				// this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this
+				// 	.lcid}/KEGG_PATHWAY/Pathway_enrichment/${this.compareGroup}/${this.compareGroup}_${this
+				// 	.defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`;
+				this.dirtyPathWayIframeUrl = 'http://localhost:4200/#/report/map/test';
 			}
 		});
 
@@ -205,7 +207,7 @@ export class MapComponent implements OnInit {
 
 			try {
 				await this.getLcInfo();
-				this.getUnReadAnalysisCount();
+				// this.getUnReadAnalysisCount();
 
 				this.first = true;
 				this.applyOnceSearchParams = true;
@@ -300,8 +302,9 @@ export class MapComponent implements OnInit {
 		areas.on('click', function() {
 			let select = $(this).attr('target_gene');
 			_self.selectList = select || '';
-			console.log(_self.selectList);
-			_self.chartBackStatus();
+            _self.zone.run(()=>{
+                _self.chartBackStatus();
+            })
 		});
 	}
 
