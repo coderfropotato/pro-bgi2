@@ -84,7 +84,7 @@ export class RelativeSpliceComponent implements OnInit {
     selectUniqueList:string[] = [];
     computedScrollHeight:boolean = false;
 
-    textContent: string = '';
+    textContent: string = 'Standardized gene location';
 	ytextContent: string = 'PSI';
 
     constructor(
@@ -423,14 +423,14 @@ export class RelativeSpliceComponent implements OnInit {
         // console.log(right_name_length);
         //let right_name_length = 90;
 
-        let leftNameWidth = 50; //左侧标题高度
+        let leftNameWidth = 50; //左侧标题宽度
 
         // let xAxis_length = x_value.length*rect_length.x;
         // let yAxis_length = y_value.length*rect_length.y;
         let xAxis_length = 320;
         let yAxis_length = 300;
 
-        let svg_width = left_title + left_ylength + xAxis_length + 90 + right_name_length; //计算最外层svg宽度
+        let svg_width = left_title + left_ylength + xAxis_length + 90 + right_name_length + leftNameWidth; //计算最外层svg宽度
         let svg_height = top_title + yAxis_length + bottom_xlength + bottom_UTR_CDS; //计算最外层svg高度
 
         let svg = d3.select('#svg') //最外层svg
@@ -457,13 +457,15 @@ export class RelativeSpliceComponent implements OnInit {
         let temp_x_width = xAxis_length + left_ylength + temp_add_width;
         let temp_y_width = yAxis_length + bottom_xlength + temp_add_width;
 
-        //drawLeftTitle(); //上侧标题
+        
 
         setTimeout(()=>{
+            drawLeftTitle(); //上侧标题
             draw_x_y_axis();
             drawRightFirstLegend();
             drawRightSecondLegend();
             drawCenter();
+            drawBottomLegend();
         },30)
         //drawBottomLegend();
 
@@ -505,7 +507,7 @@ export class RelativeSpliceComponent implements OnInit {
 
             svg1 = svg
                 .append('g')
-                .attr('transform', 'translate(' + left_title + ',' + top_title + ')')
+                .attr('transform', 'translate(' + (left_title+leftNameWidth) + ',' + top_title + ')')
                 .attr('class', 'svg1');
 
             xScale = d3
@@ -535,7 +537,7 @@ export class RelativeSpliceComponent implements OnInit {
         function drawRightFirstLegend(){
 
             let temp_width = 90;
-            let padding_left = temp_x_width + left_title+10;
+            let padding_left = temp_x_width + left_title+10 + leftNameWidth;
 
             let r_legend = svg
                 .append('g')
@@ -583,7 +585,7 @@ export class RelativeSpliceComponent implements OnInit {
         }
 
         function drawRightSecondLegend(){
-            let padding_left = temp_x_width + left_title + 90;
+            let padding_left = temp_x_width + left_title + 90 +leftNameWidth;
 
             //let circle = d3.symbol().type(d3.symbolCircle)();
             // let temp_symbol_select = [];
@@ -791,64 +793,81 @@ export class RelativeSpliceComponent implements OnInit {
         }
 
         function drawBottomLegend(){
-            // let top_title = 30;//上侧标题
-            // let bottom_xlength = 20; //下侧x轴高度
-            // let bottom_UTR_CDS = 60; //下侧UTR_CDS高度
 
             let u_padding = top_title + bottom_xlength + yAxis_length+20;
             let g_UTR = svg
                 .append('g')
-                .attr('transform', 'translate(' + (left_title+left_ylength) + ',' + u_padding + ')')
+                .attr('transform', 'translate(' + (left_title+left_ylength + leftNameWidth) + ',' + u_padding + ')')
                 .attr('class', 'utr')
                 .attr("height",bottom_UTR_CDS)
                 ;
 
-            let sum = tempSetting.utr_3.end - tempSetting.utr_5.start;
-            let utr_5_scale = (tempSetting.utr_5.end-tempSetting.utr_5.start)/sum;
-            let utr_3_scale = (tempSetting.utr_3.end-tempSetting.utr_3.start)/sum;
-            let cds_scale = (tempSetting.cds.end-tempSetting.cds.start)/sum;
+            // let sum = tempSetting.utr_3.end - tempSetting.utr_5.start;
+            // let utr_5_scale = (tempSetting.utr_5.end-tempSetting.utr_5.start)/sum;
+            // let utr_3_scale = (tempSetting.utr_3.end-tempSetting.utr_3.start)/sum;
+            // let cds_scale = (tempSetting.cds.end-tempSetting.cds.start)/sum;
 
-            g_UTR.append('rect')
-            .attr('class', 'MyRect')
-            .attr('width',xAxis_length*utr_5_scale)
-            .attr('height',16)
-            .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
-            .attr('fill','black')
+            // g_UTR.append('rect')
+            // .attr('class', 'MyRect')
+            // .attr('width',xAxis_length*utr_5_scale)
+            // .attr('height',16)
+            // .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
+            // .attr('fill','black')
 
-            g_UTR.append('rect')
-            .attr('class', 'MyRect')
-            .attr('width',xAxis_length*cds_scale)
-            .attr('height',6)
-            .attr('transform', 'translate(' + xAxis_length/5 + ',' + 5 + ')')
-            .attr('fill','black')
-            .attr('opacity',0.5)
+            // g_UTR.append('rect')
+            // .attr('class', 'MyRect')
+            // .attr('width',xAxis_length*cds_scale)
+            // .attr('height',6)
+            // .attr('transform', 'translate(' + xAxis_length/5 + ',' + 5 + ')')
+            // .attr('fill','black')
+            // .attr('opacity',0.5)
 
-            g_UTR.append('rect')
-            .attr('class', 'MyRect')
-            .attr('width',xAxis_length*utr_3_scale)
-            .attr('height',16)
-            .attr('transform', 'translate(' + xAxis_length*4/5 + ',' + 0 + ')')
-            .attr('fill','black')
+            // g_UTR.append('rect')
+            // .attr('class', 'MyRect')
+            // .attr('width',xAxis_length*utr_3_scale)
+            // .attr('height',16)
+            // .attr('transform', 'translate(' + xAxis_length*4/5 + ',' + 0 + ')')
+            // .attr('fill','black')
+
+            // g_UTR.append('text')
+            // .attr('class', 'MyText')
+            // .attr('dx', function(d, i) {
+            //     return 10;
+            // })
+            // .attr('dy', function(d, i) {
+            //     return 30;
+            // })
+            // .text("5'-UTR");
+
+            // g_UTR.append('text')
+            // .attr('class', 'MyText')
+            // .attr('dx', function(d, i) {
+            //     return 270;
+            // })
+            // .attr('dy', function(d, i) {
+            //     return 30;
+            // })
+            // .text("3'-UTR");
 
             g_UTR.append('text')
             .attr('class', 'MyText')
             .attr('dx', function(d, i) {
-                return 10;
+                return 100;
             })
             .attr('dy', function(d, i) {
                 return 30;
             })
-            .text("5'-UTR")
-
-            g_UTR.append('text')
-            .attr('class', 'MyText')
-            .attr('dx', function(d, i) {
-                return 270;
-            })
-            .attr('dy', function(d, i) {
-                return 30;
-            })
-            .text("3'-UTR")
+            .text(that.textContent)
+            .on('click', function(d, i) {
+                let self = that;
+                that.promptService.open(d, (data) => {
+                    if (data != '') {
+                        self.textContent = data;
+                        g_UTR.remove();
+                        drawBottomLegend();
+                    }
+                });
+            });
 
         }
 

@@ -526,7 +526,7 @@ export class KaFunComponent implements OnInit {
 		let r_width = 80; //右侧图例宽度
 		let t_height = 20; //上图例宽度
 
-		let leftNameWidth = 50; //左侧标题高度
+		let leftNameWidth = 50; //左侧标题宽度
 
 		//let s_width = k_dataRow.length>3?50:120;  //正方体宽高
 
@@ -559,73 +559,6 @@ export class KaFunComponent implements OnInit {
 				},
 				false
 			);
-
-		// for (let index = 0; index < k_dataRow.length; index++) {
-		// 	const element = k_dataRow[index];
-		// 	if (that.geneNum == 1) {
-		// 		k_dataCircle.push(
-		// 			{
-		// 				x: s_width / 2,
-		// 				y: s_width * (2 * index + 1) / 2,
-		// 				value: element.high,
-		// 				name: element.name,
-		// 				type: 'high',
-		// 				bucket: element.high_bucket
-		// 			},
-		// 			{
-		// 				x: s_width * 3 / 2,
-		// 				y: s_width * (2 * index + 1) / 2,
-		// 				value: element.middle,
-		// 				name: element.name,
-		// 				type: 'middle',
-		// 				bucket: element.middle_bucket
-		// 			},
-		// 			{
-		// 				x: s_width * 5 / 2,
-		// 				y: s_width * (2 * index + 1) / 2,
-		// 				value: element.low,
-		// 				name: element.name,
-		// 				type: 'low',
-		// 				bucket: element.low_bucket
-		// 			},
-		// 			{
-		// 				x: s_width * 7 / 2,
-		// 				y: s_width * (2 * index + 1) / 2,
-		// 				value: element.sum,
-		// 				name: element.name,
-		// 				type: 'sum',
-		// 				bucket: element.sum_bucket
-		// 			}
-		// 		);
-		// 	} else {
-		// 		k_dataCircle.push(
-		// 			{
-		// 				x: s_width / 2,
-		// 				y: s_width * (2 * index + 1) / 2,
-		// 				value: element.high,
-		// 				name: element.name,
-		// 				type: 'high',
-		// 				bucket: element.high_bucket
-		// 			},
-		// 			{
-		// 				x: s_width * 3 / 2,
-		// 				y: s_width * (2 * index + 1) / 2,
-		// 				value: element.middle,
-		// 				name: element.name,
-		// 				type: 'middle',
-		// 				bucket: element.middle_bucket
-		// 			},
-		// 			{
-		// 				x: s_width * 5 / 2,
-		// 				y: s_width * (2 * index + 1) / 2,
-		// 				value: element.low,
-		// 				name: element.name,
-		// 				type: 'low',
-		// 				bucket: element.low_bucket
-		// 			}
-		// 		);
-		// 	}
-		// }
 
 		for (let index = 0; index < k_dataGraph.length; index++) {
 			const element = k_dataGraph[index]["items"];

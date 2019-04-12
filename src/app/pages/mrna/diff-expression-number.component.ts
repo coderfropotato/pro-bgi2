@@ -481,6 +481,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
+		this.selectConfirmData = this.compareTableGroupList;
 		this.chartBackStatus();
 	}
 
