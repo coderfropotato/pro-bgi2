@@ -1,5 +1,5 @@
-<div class="tool-component" *ngIf="toolsService['visible']">
-    <nz-drawer [nzClosable]="true" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="{{'analysisPanel.title' | translate}}" (nzOnClose)="close()">
+<div class="tool-component">
+    <nz-drawer [nzClosable]="true" [class.zindex-10]="!toolsService['visible']" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="{{'analysisPanel.title' | translate}}" (nzOnClose)="close()">
         <!-- gene:{{ toolsService["geneCount"] }} -->
         <ul class="clearfix">
             <!-- [nzTitle]="tool['limit'].length>1?('Limit : '+tool['limit'][0]+'-'+tool['limit'][1])+'':'Limit : At least '+tool['limit'][0]" -->

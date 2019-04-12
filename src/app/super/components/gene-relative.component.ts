@@ -34,8 +34,8 @@ export class GeneRelativeComponent implements OnInit {
 	currentTableRelative: string[] = [];
 	targetGeneLimit:number = config['targetRelativeGeneLimit'];
 
-	selectType: string[] = [ '功能关系', '位置关系' ];
-	selectedType: string = '功能关系';
+	selectType: string[] = [ '互作关系', '位置关系' ];
+	selectedType: string = '互作关系';
 	PosRange: number[] = [ 1, 100000 ];
 
 	posRelative: object = {
@@ -87,7 +87,7 @@ export class GeneRelativeComponent implements OnInit {
 	}
 
 	initPosRelation() {
-		this.selectType = [ '功能关系', '位置关系' ];
+		this.selectType = [ '互作关系', '位置关系' ];
 		this.PosRange = [ 1, 100000 ];
 
 		this.posRelative = {
@@ -114,7 +114,7 @@ export class GeneRelativeComponent implements OnInit {
 
 	showRelationModal() {
 		this.isVisible = true;
-		this.selectedType = '功能关系';
+		this.selectedType = '互作关系';
 		this.initRelations();
 	}
 
@@ -138,7 +138,7 @@ export class GeneRelativeComponent implements OnInit {
         this.relations = JSON.parse(JSON.stringify(this.storeService.getStore('relations')));
         this.initPosRelation();
 		console.log(this.relations);
-		if (this.selectedType === '功能关系') {
+		if (this.selectedType === '互作关系') {
 			this.relations.forEach((v) => {
 				v['checked'] = false;
 				let include = this.disabledRelative.includes(v['name']);

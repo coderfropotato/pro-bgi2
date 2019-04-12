@@ -1002,7 +1002,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		// name /^[a-zA-Z_][a-zA-Z0-9_]{0,29}$/
 		// label /^[a-zA-Z_][a-zA-Z0-9_]{0,19}$/
 		this.validateForm = this.fb.group({
-			name: [ '', [ Validators.required, Validators.pattern('^[a-zA-Z_][a-zA-Z0-9_]{0,29}$') ] ],
+			name: [ '', [ Validators.required, Validators.pattern('^[a-zA-Z_][a-zA-Z0-9_\.-]{0,29}$') ] ],
 			label: [ null ],
 			mark: [ '' ]
 		});

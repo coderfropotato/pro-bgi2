@@ -1,7 +1,7 @@
 import { StoreService } from './../service/storeService';
 import { AjaxService } from './../service/ajaxService';
 import { ToolsService } from './../service/toolsService';
-import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges,AfterViewInit, SimpleChanges, EventEmitter } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import config from '../../../config';
@@ -180,7 +180,7 @@ export class ToolsComponent implements OnInit {
 			this.srcTotal = res[3];
 			this.formatTools();
 		});
-	}
+    }
 
 	init() {
 		this.desc = '';
@@ -333,7 +333,7 @@ export class ToolsComponent implements OnInit {
 	}
 
 	close() {
-		this.toolsService['visible'] = false;
+        this.toolsService['visible'] = false;
 		this.init();
 	}
 
