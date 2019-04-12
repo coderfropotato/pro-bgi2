@@ -458,10 +458,13 @@ export class RelativeSpliceComponent implements OnInit {
         let temp_y_width = yAxis_length + bottom_xlength + temp_add_width;
 
         //drawLeftTitle(); //上侧标题
-        draw_x_y_axis();
-        drawRightFirstLegend();
-        drawRightSecondLegend();
-        drawCenter();
+
+        setTimeout(()=>{
+            draw_x_y_axis();
+            drawRightFirstLegend();
+            drawRightSecondLegend();
+            drawCenter();
+        },30)
         //drawBottomLegend();
 
         function drawLeftTitle(){
@@ -560,6 +563,7 @@ export class RelativeSpliceComponent implements OnInit {
 
             symbolScale =  d3.scaleOrdinal().domain(that.AS_type_select).range(temp_symbol_select);
 
+            console.log(symbolScale)
             r_legend.append("g")
             .attr("class", "legendSymbol")
             .attr("transform", "translate(0, 0)");
