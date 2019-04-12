@@ -332,7 +332,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.defaultEmitBaseThead = true;
 		this.defaultCheckStatusInParams = true;
 
-		this.extendUrl = `${config['javaPath']}/Venn/diffGeneTable`;
+		this.extendUrl = `${config['javaPath']}/SampleDiff/table`;
 		this.extendEntity = {
 			pageIndex: 1, //分页
 			pageSize: 20,
@@ -481,6 +481,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
+		this.selectConfirmData = this.compareTableGroupList;
 		this.chartBackStatus();
 	}
 

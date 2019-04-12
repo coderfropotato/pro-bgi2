@@ -326,6 +326,7 @@ export class GenePage {
 		this.expandHistoryPanel = false;
 		setTimeout(() => {
 			this.showModule = true;
+			this.getDefaultData();
 		}, 30);
 	}
 

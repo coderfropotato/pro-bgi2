@@ -291,7 +291,7 @@
         "category_basic_info": "基础信息",
         "url_diff-expression-number": "差异基因数量",
         "url_diff-expression": "差异venn",
-        "url_cluster": "聚类",
+        "url_cluster": "差异聚类",
         "url_expression": "表达量",
         "url_gene-expression-help": "帮助",
         "url_go-class": "GO分类",
