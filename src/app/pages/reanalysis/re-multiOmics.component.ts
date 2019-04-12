@@ -781,6 +781,47 @@ export class ReMultiOmicsComponent implements OnInit {
 					.selectAll('.boxs')
 					.data((m) => m.boxList)
 					.enter();
+					
+				// scatter
+				const radius = 2;
+				boxplots
+					.append('g')
+					.attr('class', 'boxPoints')
+					.attr('transform', (k, i) => `translate(${(i + 1) * k.space + i * k.w},0)`)
+					.selectAll('.allPoints')
+					.data((k) =>{
+						var scatters=[];
+						k.scatters.forEach(d=>{
+							scatters.push({
+								x:Math.random(),
+								y:d.value,
+								w:k.w,
+								gene:d.gene,
+								realValue:d.realValue
+							})
+						})
+
+						// var domains=d3.extent(scatters,d=>d.x);
+						scatters.forEach(d=>{
+							d.xscale=d3.scaleLinear().domain([0,1]).range([0,d.w]).clamp(true).nice();
+						})
+
+						return scatters;
+					})
+					.enter()
+					.append('circle')
+					.attr('r', radius)
+					.attr('fill', '#faca0c')
+					// .attr('fill-opacity',0.6)
+					.attr('cx', m=>m.xscale(m.x))
+					.attr('cy', (m) => yScaleBox(m.y))
+					.on('mouseover', (m) => {
+						let text=`基因ID：<a>${m.gene}</a><br>值：${m.realValue}`;
+						this.globalService.showPopOver(d3.event, text);
+					})
+					.on('mouseout', () => {
+						this.globalService.hidePopOver();
+					});
 
 				// vertical line
 				this._drawLline(
@@ -817,6 +858,7 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('width', (k) => k.w)
 					.attr('height', (k) => Math.abs(yScaleBox(k.box.y2) - yScaleBox(k.box.y1)))
 					.attr('fill', (k) => colorScale(k.type))
+					.attr('fill-opacity',0.6)
 					.style('cursor', 'pointer')
 					.on('mouseover', (m) => {
 						let text = `上限：${m.box.high}<br>上四分位数：${m.box.y2}<br>中位数：${m.box.median}<br>下四分位数：${m.box
@@ -888,46 +930,6 @@ export class ReMultiOmicsComponent implements OnInit {
 					(k) => yScaleBox(k.box.median)
 				);
 
-				// scatter
-				const radius = 2;
-				boxplots
-					.append('g')
-					.attr('class', 'boxPoints')
-					.attr('transform', (k, i) => `translate(${(i + 1) * k.space + i * k.w},0)`)
-					.selectAll('.allPoints')
-					.data((k) =>{
-						var scatters=[];
-						k.scatters.forEach(d=>{
-							scatters.push({
-								x:Math.random(),
-								y:d.value,
-								w:k.w,
-								gene:d.gene,
-								realValue:d.realValue
-							})
-						})
-
-						// var domains=d3.extent(scatters,d=>d.x);
-						scatters.forEach(d=>{
-							d.xscale=d3.scaleLinear().domain([0,1]).range([0,d.w]).clamp(true).nice();
-						})
-
-						return scatters;
-					})
-					.enter()
-					.append('circle')
-					.attr('r', radius)
-					.attr('fill', '#faca0c')
-					.attr('fill-opacity',0.6)
-					.attr('cx', m=>m.xscale(m.x))
-					.attr('cy', (m) => yScaleBox(m.y))
-					.on('mouseover', (m) => {
-						let text=`基因ID：<a>${m.gene}</a><br>值：${m.realValue}`;
-						this.globalService.showPopOver(d3.event, text);
-					})
-					.on('mouseout', () => {
-						this.globalService.hidePopOver();
-					});
 			});
 		}
 
