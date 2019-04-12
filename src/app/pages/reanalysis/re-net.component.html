@@ -57,7 +57,7 @@
                 </ng-template>
 
                 <ng-template #funcBtnsTemplate>
-                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" (click)='isShowAddModal=true'>add link</button>
+                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!allNodes.length || allNodes.length==1" (click)='isShowAddModal=true'>add link</button>
                     <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length" (click)="isShowDeleteModal=true">delete link</button>
                     <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" (click)="expandNode()">expand</button>
                 </ng-template>

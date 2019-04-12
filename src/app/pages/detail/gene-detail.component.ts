@@ -67,6 +67,7 @@ export class GeneDetailComponent implements OnInit {
 	expressive_params_g: object;
 	expressive_g_flag: boolean = true;
 	expressive_g_data: object[] = [];
+	expressive_g_header: object[] = [];
 
 	expressive_params_t: object;
 	expressive_t_flag: boolean = true;
@@ -610,15 +611,29 @@ export class GeneDetailComponent implements OnInit {
 		let data = this.expressive_g_data;
 		let tempdata = data[0];
 		let tempArray = [];
-		for (const key in tempdata) {
-			let tempObj = {};
-			if( key != "gene_id"){
-				//tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
-				tempObj["x"] = key;
-				tempObj["y"] = tempdata[key];
-				tempArray.push(tempObj);
-			}
-		}
+		// for (const key in tempdata) {
+		// 	let tempObj = {};
+		// 	if( key != "gene_id"){
+		// 		//tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
+		// 		tempObj["x"] = key;
+		// 		tempObj["y"] = tempdata[key];
+		// 		tempArray.push(tempObj);
+		// 	}
+		// }
+        for (let i = 0; i < this.expressive_g_header.length; i++) {
+            let header = this.expressive_g_header[i];
+            if (header["true_key"] === "gene_id" || header["true_key"] == "rna_id") {
+                continue;
+            }
+            let tempObj = {};
+            tempObj["x"] = header["name"];
+            if (!tempdata.hasOwnProperty(header["true_key"])) {
+                tempObj["y"] = 0;
+            } else {
+                tempObj["y"] = Math.log10(tempdata[header["true_key"]] + 1);
+            }
+            tempArray.push(tempObj);
+        }
 		if(tempArray.length == 0){
 			return;
 		}
@@ -653,7 +668,7 @@ export class GeneDetailComponent implements OnInit {
 					}
 				},
 				y: {
-					title: "log10(FPKM+1)",
+					title: "log10(EXP+1)",
 					dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 					if (name) {
@@ -671,7 +686,7 @@ export class GeneDetailComponent implements OnInit {
 	}
 
 	drawLineChart2(){
-		console.log(this.expressive_t_data)
+		console.log(this.expressive_t_data);
 		let data = this.expressive_t_data;
 		let tempdata = data[0];
 		let tempArray = [];
@@ -684,7 +699,7 @@ export class GeneDetailComponent implements OnInit {
 				tempArray.push(tempObj);
 			}
 		}
-		//console.log(tempArray);
+		// console.log(tempArray);
 		if(tempArray.length == 0){
 			return;
 		}
@@ -719,7 +734,7 @@ export class GeneDetailComponent implements OnInit {
 					}
 				},
 				y: {
-					title: "log10(FPKM+1)",
+					title: "log10(EXP+1)",
 					dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 					if (name) {
@@ -1016,6 +1031,7 @@ export class GeneDetailComponent implements OnInit {
 			case "FPKM_gene":
 				this.expressive_g_flag = tempData.length>0?true:false;
 				this.expressive_g_data = tempData;
+				this.expressive_g_header = data["data"]["baseThead"];
 				// if(this.expressive_index == 0){
 				// 	this.drawLineChart(this.expressive_g_data);
 				// }

@@ -700,6 +700,7 @@ export class ReMultiOmicsComponent implements OnInit {
 						t.relation = d.relation;
 						t.key = d.key;
 						t.type = m.type;
+						t.typeKey = m.key;
 						t.category = m.category;
 						t.value = t.x;
 						t['checked'] = false;
@@ -745,8 +746,13 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('dominant-baseline', 'middle')
 					.attr('transform', `rotate(-90)`);
 
-				boxYtitle.append('tspan').text(d.relation);
-				boxYtitle.append('tspan').attr("x",0).attr('dy',15).text(d.name);
+				boxYtitle.append('tspan').text(
+					d.relation.length>20 ? d.relation.slice(0,20)+"..." : d.relation
+				).append('title').text(d.relation);
+
+				boxYtitle.append('tspan').attr("x",0).attr('dy',15).text(
+					d.name.length>20 ? d.name.slice(0,20)+"..." : d.name
+				).append('title').text(d.name);
 
 				// boxplot x
 				let xAxisBox = boxplot_g

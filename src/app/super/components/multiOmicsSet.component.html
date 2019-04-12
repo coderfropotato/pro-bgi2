@@ -5,28 +5,35 @@
     <div class="setPanel" nz-menu>
         <div class="center setPanelTitle">定量信息</div>
 
-        <div class="infoContent" *ngIf="infoList.length">
-            <span class="infoTitle center">关联基因</span>
-            <span class="infoTitle center">定量列</span>
+        <div class="infoContentPanel" *ngIf="infoList.length">
+            <div style="margin-bottom: 8px;">
+                <span class="infoTitle">关联关系</span>
+                <span class="infoTitle" style="margin-left:50px">定量列</span>
+            </div>
             <div class="infoContent" *ngFor="let info of infoList;let i=index">
-                <div class="infoCol rationColInfo center" nz-tooltip [nzTitle]="info.relation">
+                <div class="infoCol rationColInfo relationCol" nz-tooltip [nzTitle]="info.relation">
                     <span>{{info.relation}}</span>
                 </div>
-                <div class="infoCol rationColInfo" nz-tooltip [nzTitle]="info.key">
+                <div class="infoCol rationColInfo keyCol" nz-tooltip [nzTitle]="info.key">
                     <span>{{info.key}}</span>
                 </div>
-                <div class="infoCol">
-                    <i nz-icon class="anticon anticon-form" theme="outline" nz-tooltip nzTitle="修改" (click)="updateInfo(info)"></i>
+                <div class="infoCol" style="margin-top:-2px">
+                    <i class="iconfont icon-xiugai" nz-tooltip nzTitle="修改" (click)="updateInfo(info)"></i>
                 </div>
                 <div class="infoCol">
-                    <i nz-icon class="anticon anticon-close" theme="outline" nz-tooltip nzTitle="删除" (click)="deleteInfo(i)"></i>
+                    <i nz-icon class="anticon anticon-close-circle" theme="outline" nz-tooltip nzTitle="删除" (click)="deleteInfo(i)"></i>
                 </div>
             </div>
         </div>
 
-        <div class="center addInfo">
-            <button nz-button nzType="default" (click)="addInfo()"><i nz-icon class="anticon anticon-plus" theme="outline"></i>添加定量信息</button>
+        <div class="center nodataInfo" *ngIf="!infoList.length">
+            <p style="margin-bottom:5px ">暂无数据</p>
+            <p>请添加定量信息</p>
         </div>
+        <div class="center addInfo">
+            <button nz-button nzType="default" (click)="addInfo()"><i nz-icon class="anticon anticon-plus" theme="outline"></i></button>
+        </div>
+        <div *ngIf="!infoList.length" style="height: 105px"></div>
 
         <div class="setBtns right">
             <button nz-button nzType="default" (click)="setCance()">取消</button>&nbsp;

@@ -1,9 +1,9 @@
 <div class="content base-content lrna">
-    <h2 class="title">5 小RNA检测</h2>
+    <h2 class="title">{{tempIndex}} 小RNA检测</h2>
     <hr class="mhr" />
 
-    <div calss="base_module">
-        <h3 class="title">5.1 小RNA数量</h3>
+    <div calss="base_module" *ngIf="itemFlag">
+        <h3 class="title">{{tempIndex}}.{{itemNum}} 小RNA数量</h3>
         <div class="f-content">
             <app-big-table
                 *ngIf="defaultEntity"
@@ -16,8 +16,8 @@
         </div>
     </div>
     
-    <div calss="base_module">
-        <h3 class="title">5.2 小RNA分类</h3>
+    <div calss="base_module" *ngIf="itemFlag2">
+        <h3 class="title">{{tempIndex}}.{{itemNum2}} 小RNA分类</h3>
         <div class="f-content">
             <ng-template #searchTemplate>
                 <nz-select *ngIf="!isShowTable" style="min-width: 160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
@@ -42,8 +42,8 @@
         </div>
     </div>
     
-    <div calss="base_module">
-        <h3 class="title">5.3 小RNA长度分布</h3>
+    <div calss="base_module" *ngIf="itemFlag3">
+        <h3 class="title">{{tempIndex}}.{{itemNum3}} 小RNA长度分布</h3>
         <div class="f-content">
             <app-table-switch-chart
                 #RNALchart

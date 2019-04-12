@@ -1,9 +1,9 @@
 <div class="content base-content comparison">
-    <h2 class="title">4.Reads比对</h2>
+    <h2 class="title">{{tempIndex}} Reads比对</h2>
     <hr class="mhr" />
 
-    <div calss="base_module">
-        <h3 class="title">4.1 参考基因组比对</h3>
+    <div calss="base_module" *ngIf="itemFlag">
+        <h3 class="title">{{tempIndex}}.{{itemNum}} 参考基因组比对</h3>
         <p class="help_text">得到clean reads之后，我们使用 HISAT 将 clean reads 比对到参考基因组序列。 比对结果统计如下。另外，我们提供了 Reads 在基因组上比对结果的bam格式文件，<span><a href="http://cdts-wh.genomics.cn/" target="_blank">点击进入 FTP 下载</a>，</span>使用 IGV(Integrative Genomics Viewer) 工具可以对其进行不同尺度下的可视化查看。IGV 的帮助信息请参考 FAQ。</p>
         <div class="f-content">
             <app-big-table
@@ -17,8 +17,8 @@
         </div>
     </div>
     
-    <div calss="base_module">
-        <h3 class="title">4.2 参考基因比对</h3>
+    <div calss="base_module" *ngIf="itemFlag2">
+        <h3 class="title">{{tempIndex}}.{{itemNum2}} 参考基因比对</h3>
         <p class="help_text">使用 Bowtie2 将 clean reads 比对到参考基因序列得到比对结果。</p>
         <div class="f-content">
             <app-big-table
@@ -32,8 +32,8 @@
         </div>
     </div>
     
-    <div calss="base_module">
-        <h3 class="title">4.3 随机性</h3>
+    <div calss="base_module" *ngIf="itemFlag3">
+        <h3 class="title">{{tempIndex}}.{{itemNum3}} 随机性</h3>
         <p class="help_text">对于样品质量好同时测序数据足够的样品，大部分的转录本将会被完整地覆盖，同时 reads 将均匀分布在转录本的各个区域。</p>
         <div class="f-content">
             <ng-template #searchTemplate>
@@ -58,8 +58,8 @@
         </div>
     </div>
     
-    <div calss="base_module">
-        <h3 class="title">4.4 覆盖度</h3>
+    <div calss="base_module" *ngIf="itemFlag4">
+        <h3 class="title">{{tempIndex}}.{{itemNum4}} 覆盖度</h3>
         <p class="help_text">根据比对结果，本项目统计了每个样品转录本的覆盖度如下所示。对于样品质量好同时测序数据足够的样品，大部分的转录本将会被完整地覆盖，同时 reads 将均匀分布在转录本的各个区域。</p>
         <div class="f-content">
             <ng-template #searchCoverTemplate>
@@ -86,7 +86,7 @@
         </div>
     </div>
     
-    <div calss="base_module">
+    <div calss="base_module" *ngIf="itemFlag5">
         <h3 class="title">4.5 测序饱和度</h3>
         <p class="help_text">测序饱和度分析可以在一定程度上判断测序数据量是否满足要求。随着测序量(Reads数量)的增加，检测到的基因数也随之上升，当测序量达到一定区间后其检测到的基因数增长速度趋于平缓，说明检测到的基因数趋于饱和，此时测序量达到要求。</p>
         <div class="f-content">

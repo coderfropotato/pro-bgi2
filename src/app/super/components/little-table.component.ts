@@ -27,6 +27,7 @@ export class LittleTableComponent implements OnInit {
     @Input() targetID2: string;
     @Input() targetID2_ID:string;
     @Input() targetID2Type:string;
+    @Input() targetID2Species:string;
 
     @Input() targetURL: string;
     @Input() targetFlag: boolean = false;
@@ -55,13 +56,15 @@ export class LittleTableComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        if(this.targetFlag){
-            this.goTarget = this.targetURL;
-        }else{
-            this.goTarget = this.targetURL + this.targetID;
-        }
+        this.goTarget = this.targetURL;
+        // if(this.targetFlag){
+        //     this.goTarget = this.targetURL;
+        // }else{
+        //     //this.goTarget = this.targetURL + this.targetID;
+        //     this.goTarget = this.targetURL;
+        // }
         if(this.targetID2){
-            this.targetID2Url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${this.targetID2_ID}/${this.targetID2Type}`;
+            this.targetID2Url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${this.targetID2Species}/${this.targetID2Type}/${this.targetID2_ID}`;
         }
         this.getData();
     }

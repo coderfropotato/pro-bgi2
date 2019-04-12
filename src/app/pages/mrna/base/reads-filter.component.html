@@ -1,8 +1,8 @@
 <div class="content base-content filter">
-    <h2 class="title">3.Reads过滤</h2>
+    <h2 class="title">{{tempIndex}} Reads过滤</h2>
     <hr class="mhr" />
 
-    <div calss="base_module">
+    <div calss="base_module" *ngIf="itemFlag">
         <div class="f-content" style="border:0;">
             <h4 class="title" *ngIf="seq_platform">测序平台：<span>{{seq_platform}}</span></h4>
             <h4 class="title" *ngIf="seq_length">测序长度：<span>{{seq_length}}</span></h4>
@@ -11,10 +11,10 @@
         </div>
     </div>
 
-    <div calss="base_module">
-        <h3 class="title">3.1 过滤后的 Reads 质量统计</h3>
+    <div calss="base_module" *ngIf="itemFlag">
+        <h3 class="title">{{tempIndex}}.{{itemNum}} 过滤后的 Reads 质量统计</h3>
         <div class="f-content">
-            <h4 class="title">3.1.1 Reads过滤</h4>
+            <h4 class="title">{{tempIndex}}.{{itemNum}}.{{itemNum1_1}} Reads过滤</h4>
             <app-big-table
                 *ngIf="defaultEntity"
                 class="no-outside-border"
@@ -27,7 +27,7 @@
         </div>
 
         <div class="f-content">
-            <h4 class="title">3.1.2 Reads过滤（小RNA）</h4>
+            <h4 class="title">{{tempIndex}}.{{itemNum}}.{{itemNum1_2}} Reads过滤（小RNA）</h4>
             <app-big-table
                 *ngIf="defaultRNAEntity"
                 class="no-outside-border"
@@ -39,8 +39,8 @@
         </div>
     </div>
 
-    <div calss="base_module">
-        <h3 class="title">3.2 原始数据过滤成分统计</h3>
+    <div calss="base_module" *ngIf="itemFlag2">
+        <h3 class="title">{{tempIndex}}.{{itemNum2}} 原始数据过滤成分统计</h3>
         <div class="f-content">
             <ng-template #searchTemplate>
                 <nz-select *ngIf="!isShowTable" style="min-width: 160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
@@ -66,8 +66,8 @@
         </div>
     </div>
 
-    <div calss="base_module">
-        <h3 class="title">3.3 Clean reads 碱基含量分布</h3>
+    <div calss="base_module" *ngIf="itemFlag3">
+        <h3 class="title">{{tempIndex}}.{{itemNum3}} Clean reads 碱基含量分布</h3>
         <div class="f-content">
             <ng-template #searchTemplateTwo>
                 <nz-select *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="baseSearchType" [nzSize]="'small'" (ngModelChange)="searchBaseTypeChange()" nzShowSearch>
@@ -93,8 +93,8 @@
         </div>
     </div>
 
-    <div calss="base_module">
-        <h3 class="title">3.4 Clean reads 碱基质量分布</h3>
+    <div calss="base_module" *ngIf="itemFlag4">
+        <h3 class="title">{{tempIndex}}.{{itemNum4}} Clean reads 碱基质量分布</h3>
         <div class="f-content">
             <ng-template #searchTemplateThree>
                 <nz-select *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="qualitySearchType" [nzSize]="'small'" (ngModelChange)="searchQualityTypeChange()" nzShowSearch>

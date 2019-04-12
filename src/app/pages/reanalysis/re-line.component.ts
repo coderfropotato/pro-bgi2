@@ -317,7 +317,7 @@ export class ReLineComponent implements OnInit {
         let chartData = [];
         data['rows'].forEach(val=>{
             xKey.forEach((v,index)=>{
-                chartData.push({x:v,y:val[v],category:val[categoryKey]})
+                chartData.push({x:v,y:val[v+"+1"],category:val[categoryKey],log10:val[v]})
             })
         })
 
@@ -383,12 +383,10 @@ export class ReLineComponent implements OnInit {
 				}
             },
             tooltip: function(d) {
-                console.log(d);
-                // Gene ID:d.category
-                // Sample x
-                // Log10(FPKM+1)   <span>Log10(FPKM+1)：${d.y}</span><br>
-                // Expression y 
-				return `<span>Gene ID：${d.category}</span><br><span>Sample：${d.x}</span><br><span>Expression：${d.y}</span>`;
+                return `<span>Gene ID: ${d.category}</span><br>
+                        <span>Sample: ${d.x}</span><br>
+                        <span>Log10(FPKM+1): ${d.y}</span><br>
+                        <span>Expression: ${d.log10}</span>`;
             }
 		  }
 

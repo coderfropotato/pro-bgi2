@@ -120,7 +120,7 @@ export class ClusterComponent implements OnInit {
      }
 
     ngOnInit() {
-        this.colors = ["#ff0000", "#ffffff", "#0070c0"];
+        this.colors = ["#0070c0", "#ffffff", "#ff0000"];
         this.gaugeColors=this.storeService.getColors();
         this.defaultDefaultChecked = true;
         this.geneType = this.pageModuleService['defaultModule'];

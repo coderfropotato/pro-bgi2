@@ -79,6 +79,24 @@ export class ReadsFilterComponent implements OnInit {
   legendIndexThree: number = 0; //当前点击图例的索引
   colorQuality: string; //当前选中的color
 
+    tempIndex: 0;
+    tempMenu: any[] = [];
+    tempMenu2: any[] = [];
+    tempMenu3: any[] = [];
+
+    itemFlag: boolean = false;
+    itemNum: number = 0;
+    itemFlag2: boolean = false;
+    itemNum2: number = 0;
+    itemFlag3: boolean = false;
+    itemNum3: number = 0;
+    itemFlag4: boolean = false;
+    itemNum4: number = 0;
+
+    itemFlag1_1: boolean = false;
+    itemNum1_1: number = 0;
+    itemFlag1_2: boolean = false;
+    itemNum1_2: number = 0;
 
   constructor(
     private message: MessageService,
@@ -93,6 +111,8 @@ export class ReadsFilterComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.GeneListIndex();
 
     this.seq_platform=this.store.getStore('seq_platform');
     this.seq_length=this.store.getStore('seq_length');
@@ -633,18 +653,133 @@ export class ReadsFilterComponent implements OnInit {
   }
 
   //阻止冒泡
-  clearEventBubble(evt) {
-    if (evt.stopPropagation) {
-        evt.stopPropagation();
-    } else {
-        evt.cancelBubble = true;
+    clearEventBubble(evt) {
+        if (evt.stopPropagation) {
+            evt.stopPropagation();
+        } else {
+            evt.cancelBubble = true;
+        }
+
+        if (evt.preventDefault) {
+            evt.preventDefault();
+        } else {
+            evt.returnValue = false;
+        }
+
     }
 
-    if (evt.preventDefault) {
-        evt.preventDefault();
-    } else {
-        evt.returnValue = false;
-    }
+    GeneListIndex(){
+        let mindex = 1;
+		let mindex2 = 1;
+		let mindex3 = 1;
+		this.store.getStore('basicMenu').forEach((d) => {
+			if(d.indexOf("003")==0 && d.length != 3){
+				if(d.length == 6){
+					this.tempMenu2.push({
+						name:d,
+						index:mindex
+                    });
+                    mindex++;
+				}else{
+					this.tempMenu3.push({
+						name:d,
+						father:d.substr(0,6)
+					});
+				}
+			}
+			if(d.length == 3){
+				this.tempMenu.push({
+                    name:d,
+                    index:mindex2
+                });
+                mindex2++;
+			}
+		});
 
-}
+		console.log(this.tempMenu);
+		console.log(this.tempMenu2);
+		console.log(this.tempMenu3);
+
+		this.tempMenu.forEach((d)=>{
+			if(d["name"]=="003"){
+				this.tempIndex =  d["index"];
+			}
+		})
+
+		this.tempMenu2.forEach((d)=>{
+			switch (d["name"]) {
+				case "003001":
+					this.itemFlag = true;
+					this.itemNum = d["index"];
+					break;
+				case "003002":
+					this.itemFlag2 = true;
+					this.itemNum2 = d["index"];
+					break;
+				case "003003":
+					this.itemFlag3 = true;
+					this.itemNum3 = d["index"];
+					break;
+				case "003004":
+					this.itemFlag4 = true;
+					this.itemNum4 = d["index"];
+					break;
+				default:
+					break;
+			}
+        })
+        
+        var map = {},
+			dest = [];
+		for(var i = 0; i < this.tempMenu3.length; i++){
+			var ai = this.tempMenu3[i];
+			if(!map[ai.father]){
+				dest.push({
+					father: ai.father,
+					data: [ai]
+				});
+				map[ai.father] = ai;
+			}else{
+				for(var j = 0; j < dest.length; j++){
+					var dj = dest[j];
+					if(dj.father == ai.father){
+						dj.data.push(ai);
+						break;
+					}
+				}
+			}
+		}
+
+		let tempArray = [];
+		for (let index = 0; index < dest.length; index++) {
+			let element = dest[index].data;
+			for (let index2 = 0; index2 < element.length; index2++) {
+				let element2 = element[index2];
+				tempArray.push({
+					name: element2["name"],
+					index: index2+1
+				})
+			}
+		}
+
+		this.tempMenu3.length = 0;
+		this.tempMenu3 = tempArray;
+		console.log(this.tempMenu3);
+
+		this.tempMenu3.forEach((d)=>{
+			switch (d["name"]) {
+				case "003001001":
+					this.itemFlag1_1 = true;
+					this.itemNum1_1 = d["index"];
+					break;
+				case "003001002":
+					this.itemFlag1_2 = true;
+					this.itemNum1_2 = d["index"];
+					break;
+				default:
+					break;
+			}
+		})
+
+	}
 }

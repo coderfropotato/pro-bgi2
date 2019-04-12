@@ -1,26 +1,24 @@
 <div class="content base-content overview">
-    <h2 class="title">1 项目概况</h2>
+    <h2 class="title">{{tempIndex}} 项目概况</h2>
     <hr class="mhr" />
 
-    <div calss="base_module">
-        <h3 class="title" *ngIf="abstract_general_cn">1.1 摘要</h3>
+    <div calss="base_module" *ngIf="itemFlag">
+        <h3 class="title" *ngIf="abstract_general_cn">{{tempIndex}}.{{itemNum}} 摘要</h3>
         <p class="help_text" *ngIf="abstract_general_cn">{{abstract_general_cn}}</p>
-        <!-- <h3 class="title">1.1 摘要</h3>
-        <p class="help_text">本项目使用BGISEQ-500平台一共测了6 个样品，每个样品平均产出14.04 M数据。样品比对基因组的平均比对率为 96.56% ，比对基因集的平均比对率为71.43% ；一共检测到 21,514个基因。</p> -->
     </div>
 
-    <div calss="base_module">
-        <h3 class="title">1.2 分析方案</h3>
-        <div class="f-content">
-            <h4 class="title">1.2.1 样品分组设置</h4>
+    <div calss="base_module" *ngIf="itemFlag2">
+        <h3 class="title">{{tempIndex}}.{{itemNum2}} 分析方案</h3>
+        <div class="f-content" *ngIf="itemFlag2_1">
+            <h4 class="title">{{tempIndex}}.{{itemNum2}}.{{itemNum2_1}} 样品分组设置</h4>
             <p class="help_text">生物学实验一般要有生物学重复，把生物学重复的多个样品归为一组，下表是分析时使用的样品分组情况：</p>
             <div style="width:96%;margin: 10px auto;">
                 <app-little-table [url]="defaultUrl" [pageEntity]="EntityOne"></app-little-table>
             </div>
             
         </div>
-        <div class="f-content">
-            <h4 class="title">1.2.2 差异分组设置</h4>
+        <div class="f-content" *ngIf="itemFlag2_2">
+            <h4 class="title">{{tempIndex}}.{{itemNum2}}.{{itemNum2_2}} 差异分组设置</h4>
             <p class="help_text">转录组测序的重要分析点之一是表达量的差异比较，在两两比较中设定对照和处理的情况如下表：</p>
             <div style="width:96%;margin: 10px auto;">
                 <app-little-table [url]="defaultUrlTwo" [pageEntity]="EntityTwo"></app-little-table>
@@ -29,11 +27,11 @@
     </div>
 
 
-    <div calss="base_module">
-        <h3 class="title">1.3 样品相关性</h3>
+    <div calss="base_module" *ngIf="itemFlag3">
+        <h3 class="title">{{tempIndex}}.{{itemNum3}} 样品相关性</h3>
         <p class="help_text">为了反映样本间基因表达的相关性，计算了每两个样品之间所有基因表达量的Pearson相关系数，并将这些系数以热图的形式反映出来，相关系数可以反应各个样品间总体基因表达情况的相似情况，相关系数越高，基因表达水平越相似。</p>
-        <div class="f-content">
-            <h4 class="title">1.3.1 样品相关性热图</h4>
+        <div class="f-content" *ngIf="itemFlag3_1">
+            <h4 class="title">{{tempIndex}}.{{itemNum3}}.{{itemNum3_1}} 样品相关性热图</h4>
             <div class="t-content">
                 <app-table-switch-chart
                     #relevanceChart
@@ -58,8 +56,8 @@
             </div>
         </div>
 
-        <div class="f-content">
-            <h4 class="title">1.3.2 PCA</h4>
+        <div class="f-content" *ngIf="itemFlag3_2">
+            <h4 class="title">{{tempIndex}}.{{itemNum3}}.{{itemNum3_2}} PCA</h4>
             <p class="help_text">主成分分析（PCA）是将多个变量通过降维为少数几个相互独立的变量（即主成分），同时尽可能多地保留原始数据信息的一种多元统计分析方法。在转录组的分析中，PCA将样本所包含的大量基因表达量信息降维为少数几个互相无关的主成分，以进行样本间的比较，方便找出离群样品、判别相似性高的样品簇等。本项目的PCA分析结果见下图：</p>
             <div class="t-content">
                 <ng-template #searchTemplate>
@@ -84,14 +82,13 @@
                 <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"
                         ></app-color-picker>
             </div>
-
         </div>
     </div>
 
-    <div calss="base_module">
-        <h3 class="title">1.4 表达量分布</h3>
-        <div class="f-content">
-            <h4 class="title">1.4.1 箱线图</h4>
+    <div calss="base_module" *ngIf="itemFlag4">
+        <h3 class="title">{{tempIndex}}.{{itemNum4}} 表达量分布</h3>
+        <div class="f-content" *ngIf="itemFlag4_1">
+            <h4 class="title">{{tempIndex}}.{{itemNum4}}.{{itemNum4_1}} 箱线图</h4>
             <p class="help_text">箱线图展示各样品基因表达水平的分布情况，可以观察到数据分布的分散程度。</p>
             <div class="t-content">
                 <app-table-switch-chart
@@ -113,8 +110,8 @@
             </div>
         </div>
 
-        <div class="f-content">
-            <h4 class="title">1.4.2 密度图</h4>
+        <div class="f-content" *ngIf="itemFlag4_2">
+            <h4 class="title">{{tempIndex}}.{{itemNum4}}.{{itemNum4_2}} 密度图</h4>
             <p class="help_text">密度图能够展示样品中基因丰度随着表达量变化的趋势，可以清晰地反映样本中基因表达量集中的区间。</p>
             <div class="t-content">
                 <app-table-switch-chart
@@ -135,8 +132,8 @@
             </div>
         </div>
 
-        <div class="f-content">
-            <h4 class="title">1.4.3 堆积柱状图</h4>
+        <div class="f-content" *ngIf="itemFlag4_3">
+            <h4 class="title">{{tempIndex}}.{{itemNum4}}.{{itemNum4_3}} 堆积柱状图</h4>
             <p class="help_text">为了更直观地展示每个样品在不同 FPKM 区间的基因数目，我们对FPKM（FPKM<=1、FPKM 1~10、FPKM>=10）的三种情况进行了基因数目的统计。</p>
             <div class="t-content">
                 <app-table-switch-chart
