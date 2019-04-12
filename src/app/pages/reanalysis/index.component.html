@@ -1,5 +1,5 @@
 <div class="report-analysis">
-    <app-top [pdf]="false" [analysis]="false" [upload]="false" [lang]="false" (logoClick)="handlerLogoClick()"></app-top>
+    <app-top [pdf]="false"  [upload]="false"  (logoClick)="handlerLogoClick()"></app-top>
     <router-outlet *ngIf="ready"></router-outlet>
     <app-tools></app-tools>
 </div>
