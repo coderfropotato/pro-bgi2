@@ -35,6 +35,11 @@
                 <nz-tabset [nzSize]="'small'">
                     <nz-tab nzTitle="表达量聚类">
                         <div class="tool-params-tab">
+                            <p *ngIf="standList.length">标准化&emsp;&nbsp;
+                                <nz-select *ngIf="standList.length" style="width: 120px; margin-top:1em;margin-bottom:1em;" [(ngModel)]="stand" nzPlaceHolder="stand">
+                                    <nz-option *ngFor="let s of standList;index as i;" [nzValue]="s" [nzLabel]="s"></nz-option>
+                                </nz-select>
+                            </p>
                             <p *ngIf="expressData.length || expressUpload.length">数据选择&emsp;&nbsp;
                                 <nz-select style="width: 120px;" [nzSize]="small" [(ngModel)]="heatmapSelect" (ngModelChange)="heatmapSelectChange()">
                                     <nz-option *ngFor="let select of heatmapSelectList" [nzValue]="select" [nzLabel]="select"></nz-option>
