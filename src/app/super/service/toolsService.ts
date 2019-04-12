@@ -82,6 +82,7 @@ export class ToolsService {
 
         this.visible = true;
         this.sendOpen();
+
     }
 
     hide():void{

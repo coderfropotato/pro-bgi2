@@ -87,7 +87,7 @@ export class GeneRelativeComponent implements OnInit {
 	}
 
 	initPosRelation() {
-		this.selectType = [ '功能关系', '位置关系' ];
+		this.selectType = [ '互作关系', '位置关系' ];
 		this.PosRange = [ 1, 100000 ];
 
 		this.posRelative = {
