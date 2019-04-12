@@ -107,6 +107,7 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 			searchList: [],
 			geneType: 'gene', //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
+			version: this.storeService.getStore("version"),
 			checkStatus: true,
 			checked: [],
 			unChecked: [],

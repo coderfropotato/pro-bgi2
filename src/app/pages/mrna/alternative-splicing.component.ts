@@ -10,6 +10,7 @@ import config from "../../../config";
 import { PromptService } from "./../../super/service/promptService";
 import { ToolsService } from "./../../super/service/toolsService";
 import { TranslateService } from '@ngx-translate/core';
+import { version } from "punycode";
 
 declare const d3: any;
 declare const d4: any;
@@ -110,6 +111,7 @@ export class AlternativeSplicingComponent implements OnInit {
           searchList: [],
           geneType: "gene", //基因类型gene和transcript
           species: this.storeService.getStore("genome"), //物种
+          version: this.storeService.getStore("version"),
           checkStatus: true,
           checked: [],
           unChecked: [],
