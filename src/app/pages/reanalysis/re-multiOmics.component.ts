@@ -902,7 +902,8 @@ export class ReMultiOmicsComponent implements OnInit {
 								x:Math.random(),
 								y:d.value,
 								w:k.w,
-								gene:d.gene
+								gene:d.gene,
+								realValue:d.realValue
 							})
 						})
 
@@ -921,7 +922,7 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('cx', m=>m.xscale(m.x))
 					.attr('cy', (m) => yScaleBox(m.y))
 					.on('mouseover', (m) => {
-						let text=`基因ID：<a>${m.gene}</a><br>值：${m.y}`;
+						let text=`基因ID：<a>${m.gene}</a><br>值：${m.realValue}`;
 						this.globalService.showPopOver(d3.event, text);
 					})
 					.on('mouseout', () => {
