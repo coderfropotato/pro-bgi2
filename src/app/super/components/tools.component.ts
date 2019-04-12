@@ -1,7 +1,7 @@
 import { StoreService } from './../service/storeService';
 import { AjaxService } from './../service/ajaxService';
 import { ToolsService } from './../service/toolsService';
-import { Component, OnInit, Input, Output, OnChanges,AfterViewInit, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, AfterViewInit, SimpleChanges, EventEmitter } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import config from '../../../config';
@@ -180,7 +180,7 @@ export class ToolsComponent implements OnInit {
 			this.srcTotal = res[3];
 			this.formatTools();
 		});
-    }
+	}
 
 	init() {
 		this.desc = '';
@@ -303,20 +303,16 @@ export class ToolsComponent implements OnInit {
 					v['disabled'] = true;
 				} else {
 					// 关联聚类 srcTotal*
-					// if (v['type'] === 'heatmapRelation') {
-					// 	// 是否disabled
-					// 	let flag1 = false,
-					// 		flag2 = false;
-					// 	if (v['limit'].length === 1) {
-					// 		flag1 = this.srcTotal * this.geneCount >= v['limit'][0] ? false : true;
-					// 	} else {
-					// 		// 关联的基因数是否满足条件
-					// 		flag1 = this.srcTotal * this.geneCount < v['limit'][0] || this.srcTotal * this.geneCount > v['limit'][1] ? true : false;
-					// 	}
-					// 	// 选择的基因数量是否满足条件
-					// 	flag2 = this.geneCount < v['limit'][0] || this.geneCount > v['limit'][1] ? true : false;
-					// 	v['disabled'] = flag1 || flag2;
-					// } else {
+					if (v['type'] === 'heatmapRelation') {
+						// 是否disabled
+						let flag1 = false, // 关联的基因乘积是否满足条件
+							flag2 = false;
+
+						flag1 = this.srcTotal * this.geneCount > config['relationHeatmapLimit'] ? true : false;
+						// 选择的基因数量是否满足条件
+						flag2 = this.geneCount < v['limit'][0] || this.geneCount > v['limit'][1] ? true : false;
+						v['disabled'] = flag1 || flag2;
+					} else {
 						// 其他关联 +
 						if (v['limit'].length === 1) {
 							v['disabled'] = this.relativeGeneCount >= v['limit'][0] ? false : true;
@@ -326,14 +322,14 @@ export class ToolsComponent implements OnInit {
 									? true
 									: false;
 						}
-					// }
+					}
 				}
 			}
 		});
 	}
 
 	close() {
-        this.toolsService['visible'] = false;
+		this.toolsService['visible'] = false;
 		this.init();
 	}
 
@@ -849,15 +845,15 @@ export class ToolsComponent implements OnInit {
      */
 	handleKdaSliderChange(event, type) {
 		if (type === 'key') {
-			let tempRelationGeneCountRange = Math.floor(
-				this.kdaKeyRelationComposeMax / this.kdaKeyGeneCountRange[2]
-            );
-            if(this.kdaRelationGeneCountRange[2]>tempRelationGeneCountRange) this.kdaRelationGeneCountRange[2] = tempRelationGeneCountRange;
+			let tempRelationGeneCountRange = Math.floor(this.kdaKeyRelationComposeMax / this.kdaKeyGeneCountRange[2]);
+			if (this.kdaRelationGeneCountRange[2] > tempRelationGeneCountRange)
+				this.kdaRelationGeneCountRange[2] = tempRelationGeneCountRange;
 		} else {
 			let tempKdaKeyGeneCountRange = Math.floor(
 				this.kdaKeyRelationComposeMax / (this.kdaRelationGeneCountRange[2] + 1)
-            );
-            if(this.kdaKeyGeneCountRange[2] > tempKdaKeyGeneCountRange) this.kdaKeyGeneCountRange[2] = tempKdaKeyGeneCountRange;
+			);
+			if (this.kdaKeyGeneCountRange[2] > tempKdaKeyGeneCountRange)
+				this.kdaKeyGeneCountRange[2] = tempKdaKeyGeneCountRange;
 		}
 	}
 
@@ -1464,7 +1460,7 @@ export class ToolsComponent implements OnInit {
 					geneType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
 					...entity,
-					standardization: this.heatmapReSelectStand,
+					// standardization: this.heatmapReSelectStand,  // 去掉标准化
 					verticalDefault: this.heatmapReSelectGeneType
 				},
 				url: this.toolsService.get('tableUrl')
@@ -1521,9 +1517,9 @@ export class ToolsComponent implements OnInit {
 					if (res['status'] == 0 && res['data'].length) {
 						res['data'].forEach((v, i) => {
 							if (v['value'].length) {
-								 v['value'].forEach((val, index) => {
-                                    val['checked'] = index || i ? false : true;
-                                    if (!i && !index) this.geneClassSelect.push(val);
+								v['value'].forEach((val, index) => {
+									val['checked'] = index || i ? false : true;
+									if (!i && !index) this.geneClassSelect.push(val);
 								});
 							}
 						});
@@ -1639,7 +1635,7 @@ export class ToolsComponent implements OnInit {
 						res['data'].forEach((v, i) => {
 							if (v['value'].length) {
 								v['value'].forEach((val, index) => {
-                                    val['checked'] = index || i ? false : true;
+									val['checked'] = index || i ? false : true;
 									if (!i && !index) this.geneRichSelect.push(val);
 								});
 							}
