@@ -309,6 +309,7 @@ export class ReLineComponent implements OnInit {
 
     //画图
     drawChart(data) {
+        console.log
 		let that = this;
         let xKey = data['baseThead'].slice(1).map(v=>v['true_key']);
         let categoryKey = data['baseThead'][0]['true_key'];
@@ -382,7 +383,6 @@ export class ReLineComponent implements OnInit {
 				}
             },
             tooltip: function(d) {
-                console.log(d)
                 return `<span>Gene ID: ${d.category}</span><br>
                         <span>Sample: ${d.x}</span><br>
                         <span>Log10(FPKM+1): ${d.y}</span><br>

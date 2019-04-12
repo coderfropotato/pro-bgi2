@@ -55,9 +55,6 @@ export class IndexComponent implements OnInit {
 		(async () => {
 			try {
 				await this.getLcInfo();
-				// await this.getAddThead();
-                // await this.getMenuList();
-
 				this.getUnReadAnalysisCount();
 				this.ready = true;
 				setTimeout(() => {
@@ -100,46 +97,6 @@ export class IndexComponent implements OnInit {
 
 							this.menuList = data["data"].menu_list;
 
-							/**
-                             * 基础模块
-                             * 项目概况	overview
-                             * 参考信息	reference
-                             * reads过滤	reads-filter
-                             * reads检测	reads-alignment
-                             * 小RNA检测	smallrna
-                             * 帮助	basic-help
-                             *
-                             * 差异表达
-                             * 差异表达	diff-expression
-                             * 帮助	diff-expression-help
-                             *
-                             * 表达量
-                             * 表达量	expression
-                             * 帮助	expression-help
-                             *
-                             * 差异聚类	cluster
-                             * 帮助	cluster-help
-                             *
-                             * GO
-                             * GO分类 go-class
-                             * GO富集	go-enrichment
-                             * 帮助	go-help
-                             *
-                             * KEGG
-                             * KEGG分类	kegg-class
-                             * KEGG富集	kegg-enrichment
-                             * 帮助	kegg-help
-                             *
-                             * 结构变异
-                             * SNP	snp
-                             * INDEL	indel
-                             * 可变剪切	alternative-splicing
-                             * 基因融合	gene-fusion
-                             * 帮助	structure-variation-help
-                             *
-                             * 基因总表
-                             * 基因总表	gene
-                             */
 							// this.menuList = [
 							// 	{
 							// 		category: 'category_url_main',  // category_url_main
@@ -306,21 +263,6 @@ export class IndexComponent implements OnInit {
 							// 			}
 							// 		]
 							// 	},
-							// 	// {
-							// 	// 	category:'url_miRNA_target',
-							// 	// 	children:[
-							// 	// 		{
-							// 	// 			url:'miRNA-target',
-							// 	// 			name:'url_miRNA-target',
-							// 	// 			isExport:true
-							// 	// 		},
-							// 	// 		{
-							// 	// 			url:'miRNA-target-help',
-							// 	// 			name:'url_miRNA-target-help',
-							// 	// 			isExport:true
-							// 	// 		}
-							// 	// 	]
-							// 	// },
 							// 	{
 							// 		category: 'category_basic_info',	// category_basic_info
 							// 		children: [

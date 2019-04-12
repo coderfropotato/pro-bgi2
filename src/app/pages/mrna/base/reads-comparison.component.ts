@@ -58,6 +58,23 @@ export class ReadsComparisonComponent implements OnInit {
   legendIndex: number = 0; //当前点击图例的索引
   color: string; //当前选中的color
 
+
+  tempIndex: number = 0;
+	tempMenu: any[] = [];
+	tempMenu2: any[] = [];
+	tempMenu3: any[] = [];
+
+	itemFlag: boolean = false;
+	itemNum: number = 0;
+	itemFlag2: boolean = false;
+	itemNum2: number = 0;
+	itemFlag3: boolean = false;
+	itemNum3: number = 0;
+	itemFlag4: boolean = false;
+  itemNum4: number = 0;
+  itemFlag5: boolean = false;
+	itemNum5: number = 0;
+
   constructor(
     private message: MessageService,
     private store: StoreService,
@@ -69,6 +86,8 @@ export class ReadsComparisonComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.GeneListIndex();
     //4.1 参考基因组比对
     this.defaultUrl = `${config["javaPath"]}/basicModule/genomeMappingSummary`;
     this.defaultEntity = {
@@ -386,5 +405,72 @@ export class ReadsComparisonComponent implements OnInit {
     this.saturationTableEntity["sample"] = this.saturationSearchType;
     this.saturationDataChart.reGetData();
   }
+
+  GeneListIndex(){
+    let mindex = 1;
+		let mindex2 = 1;
+		let mindex3 = 1;
+		this.store.getStore('basicMenu').forEach((d) => {
+			if(d.indexOf("004")==0 && d.length != 3){
+				if(d.length == 6){
+					this.tempMenu2.push({
+						name:d,
+						index:mindex
+          });
+          mindex++;
+				}else{
+					this.tempMenu3.push({
+							name:d,
+							index:d.substr(d.length-1,1)
+					});
+				}
+				
+			}
+			if(d.length == 3){
+				this.tempMenu.push({
+						name:d,
+            index:mindex2
+        });
+        mindex2++;
+			}
+		});
+
+		console.log(this.tempMenu);
+		console.log(this.tempMenu2);
+		console.log(this.tempMenu3);
+		
+		this.tempMenu.forEach((d)=>{
+			if(d["name"]=="004"){
+				this.tempIndex =  d["index"];
+			}
+		})
+
+		this.tempMenu2.forEach((d)=>{
+			switch (d["name"]) {
+				case "004001":
+					this.itemFlag = true;
+					this.itemNum = d["index"];
+					break;
+				case "004002":
+					this.itemFlag2 = true;
+					this.itemNum2 = d["index"];
+					break;
+				case "004003":
+					this.itemFlag3 = true;
+					this.itemNum3 = d["index"];
+					break;
+				case "004004":
+					this.itemFlag4 = true;
+					this.itemNum4 = d["index"];
+          break;
+        case "004005":
+					this.itemFlag5 = true;
+					this.itemNum5 = d["index"];
+					break;
+				default:
+					break;
+			}
+		})
+	}
 
 }

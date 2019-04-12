@@ -6,7 +6,7 @@
      * 链接默认用 @ 占位
      */
 
-// 基因表和富集有选择基因功能的大表 需要特殊过滤的表头
+// 基因表和富集有选择基因功能的大表 需要替换url的头仅做基础格式化
 export const matchList: string[] = [
 	'gene_tran_list',
 	'cellmarker_desc',
@@ -44,6 +44,7 @@ export const matchList: string[] = [
 	'go_c_term_id',
 	'go_c_term',
 	'go_c_desc',
+	'go_cfp_term_id',
 	'interpro_term_id',
 	'interpro_term',
 	'interpro_desc',
@@ -119,24 +120,32 @@ export const matchList: string[] = [
 
 // 跳富集的头
 export const mapMatchItems = [
-	"kegg_pathway_term_enrichment", 
+	"kegg_pathway_term_enrichment",
 	"kegg_pathway_term_id"
 ]
 
-// goall
+// 有--- 格式的头
 // [Cellular Component]---GO:0005737///cytoplasm+++GO:0000784///unclear chromosome,telomeric region+++GO:0000346///transcriot export complex+++GO:0000445///THO complex part of transcript export complex+++[Biological Process]---GO:20000002///negative regulation of DNA damage checkpoint+++GO:0046784///viral mRna export form host cell nucleus
 /*
 	[Cellular Component]
 	<a href="GO:0005737">GO:0005737///cytoplasm</a>
 */
 export const goAll = [
-	'go_all'
+    'go_all',
+    'go_cfp_term',
+	'go_cfp_desc'
+]
+
+// 跳转基因详情页的头
+export const geneInfo:string [] = [
+	'gene_id',
+	'rna_id'
 ]
 
 // 匹配规则
 export const matchRule: object = {
 	gene_tran_list:{url:''},
-	
+
 	cellmarker_desc: { url: '' },
 	cr2cancer_desc: { url: '' },
 	phi_desc: { url: '' },
@@ -200,7 +209,11 @@ export const matchRule: object = {
 	go_p_desc: { url: 'http://amigo.geneontology.org/amigo/term/@' },
 	go_c_term_id: { url: 'http://amigo.geneontology.org/amigo/term/@' },
 	go_c_term: { url: 'http://amigo.geneontology.org/amigo/term/@' },
-	go_c_desc: { url: 'http://amigo.geneontology.org/amigo/term/@' },
+    go_c_desc: { url: 'http://amigo.geneontology.org/amigo/term/@' },
+    go_cfp_term:{url:'http://amigo.geneontology.org/amigo/term/@'},
+	go_cfp_desc:{url:'http://amigo.geneontology.org/amigo/term/@'},
+    go_cfp_term_id:{url:'http://amigo.geneontology.org/amigo/term/@'},
+
 
 	interpro_term_id: { url: 'https://www.ebi.ac.uk/interpro/entry/@' },
 	interpro_term: { url: 'https://www.ebi.ac.uk/interpro/entry/@' },
@@ -215,9 +228,9 @@ export const matchRule: object = {
 	kegg_module_desc: { url: 'https://www.kegg.jp/kegg-bin/show_module?@' },
 
 	// 跳map
-	kegg_pathway_term_enrichment: { url: 'map/:mapid/:compareGroup/:tid' }, 
-	kegg_pathway_term_id: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@'}, 
-	
+	kegg_pathway_term_enrichment: { url: 'map/:mapid/:compareGroup/:tid' },
+	kegg_pathway_term_id: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@'},
+
 	kegg_pathway_term: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' },
 	kegg_pathway_desc: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' },
 
@@ -284,8 +297,3 @@ export const matchRule: object = {
 	msigdb_h_desc: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' }
 };
 
-// 跳转基因详情页的头
-export const geneInfo:string [] = [
-	'gene_id',
-	'rna_id'
-]

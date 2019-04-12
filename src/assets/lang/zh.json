@@ -42,6 +42,10 @@
         "express_venn_title": "表达量",
         "express_venn_content": "选择分组或样本，绘制VENN/UpSetR图，查看各个分组或样本交/并集。"
     },
+    "kaFun": {
+        "title": "卡方检验结果",
+        "content": ""
+    },
     "go_class": {
         "title": "GO分类",
         "content": "Gene Ontology 分为分子功能（molecular function）、细胞组分（cellular component）和生物过程（biological process）三大功能类。根据差异基因检测结果进行功能分类。每个大类下有各个层级的子类别。对差异基因的GO注释分类结果进行绘图。"
@@ -259,7 +263,7 @@
         "05": "",
         "06": "",
         "07": "",
-        "08": "使用提示：必须先进行“关联转换”，转换成基因关系矩阵后，才可使用该工具。",
+        "08": "必须先进行“关联转换”，转换成基因关系矩阵后，且行和列的基因个数分别小于500时，才可使用该工具。",
         "09": "",
         "11": "",
         "12": "",
@@ -287,7 +291,7 @@
         "category_basic_info": "基础信息",
         "url_diff-expression-number": "差异基因数量",
         "url_diff-expression": "差异venn",
-        "url_cluster": "聚类",
+        "url_cluster": "差异聚类",
         "url_expression": "表达量",
         "url_gene-expression-help": "帮助",
         "url_go-class": "GO分类",

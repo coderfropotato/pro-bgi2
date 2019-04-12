@@ -87,6 +87,37 @@ export class OverviewComponent implements OnInit {
 	legendIndexT: number = 0; //当前点击图例的索引
 	colorT: string; //当前选中的color
 
+	tempIndex: number = 0;
+	tempMenu: any[] = [];
+	tempMenu2: any[] = [];
+	tempMenu3: any[] = [];
+
+	itemFlag: boolean = false;
+	itemNum: number = 0;
+	itemFlag2: boolean = false;
+	itemNum2: number = 0;
+	itemFlag3: boolean = false;
+	itemNum3: number = 0;
+	itemFlag4: boolean = false;
+	itemNum4: number = 0;
+
+	itemFlag2_1: boolean = false;
+	itemNum2_1: number = 0;
+	itemFlag2_2: boolean = false;
+	itemNum2_2: number = 0;
+
+	itemFlag3_1: boolean = false;
+	itemNum3_1: number = 0;
+	itemFlag3_2: boolean = false;
+	itemNum3_2: number = 0;
+
+	itemFlag4_1: boolean = false;
+	itemNum4_1: number = 0;
+	itemFlag4_2: boolean = false;
+	itemNum4_2: number = 0;
+	itemFlag4_3: boolean = false;
+	itemNum4_3: number = 0;
+
 	constructor(
 		private message: MessageService,
 		private store: StoreService,
@@ -99,6 +130,8 @@ export class OverviewComponent implements OnInit {
 
 	ngOnInit() {
 
+		this.GeneListIndex();
+		 
 		this.abstract_general_cn = this.store.getStore('abstract_general_cn');
 		this.abstract_general_en = this.store.getStore('abstract_general_en');
 
@@ -911,6 +944,141 @@ export class OverviewComponent implements OnInit {
 		} else {
 			evt.returnValue = false;
 		}
+
+	}
+
+	GeneListIndex(){
+		let mindex = 1;
+		let mindex2 = 1;
+		let mindex3 = 1;
+		this.store.getStore('basicMenu').forEach((d) => {
+			if(d.indexOf("001")==0 && d.length != 3){
+				if(d.length == 6){
+					this.tempMenu2.push({
+						name:d,
+						index:mindex
+                    });
+                    mindex++;
+				}else{
+					this.tempMenu3.push({
+						name:d,
+						father:d.substr(0,6)
+					});
+				}
+			}
+			if(d.length == 3){
+				this.tempMenu.push({
+                    name:d,
+                    index:mindex2
+                });
+                mindex2++;
+			}
+		});
+
+		console.log(this.tempMenu);
+		console.log(this.tempMenu2);
+		console.log(this.tempMenu3);
+
+		this.tempMenu.forEach((d)=>{
+			if(d["name"]=="001"){
+				this.tempIndex =  d["index"];
+			}
+		})
+
+		this.tempMenu2.forEach((d)=>{
+			switch (d["name"]) {
+				case "001001":
+					this.itemFlag = true;
+					this.itemNum = d["index"];
+					break;
+				case "001002":
+					this.itemFlag2 = true;
+					this.itemNum2 = d["index"];
+					break;
+				case "001003":
+					this.itemFlag3 = true;
+					this.itemNum3 = d["index"];
+					break;
+				case "001004":
+					this.itemFlag4 = true;
+					this.itemNum4 = d["index"];
+					break;
+				default:
+					break;
+			}
+		})
+
+		var map = {},
+			dest = [];
+		for(var i = 0; i < this.tempMenu3.length; i++){
+			var ai = this.tempMenu3[i];
+			if(!map[ai.father]){
+				dest.push({
+					father: ai.father,
+					data: [ai]
+				});
+				map[ai.father] = ai;
+			}else{
+				for(var j = 0; j < dest.length; j++){
+					var dj = dest[j];
+					if(dj.father == ai.father){
+						dj.data.push(ai);
+						break;
+					}
+				}
+			}
+		}
+
+		let tempArray = [];
+		for (let index = 0; index < dest.length; index++) {
+			let element = dest[index].data;
+			for (let index2 = 0; index2 < element.length; index2++) {
+				let element2 = element[index2];
+				tempArray.push({
+					name: element2["name"],
+					index: index2+1
+				})
+			}
+		}
+
+		this.tempMenu3.length = 0;
+		this.tempMenu3 = tempArray;
+		console.log(this.tempMenu3);
+
+		this.tempMenu3.forEach((d)=>{
+			switch (d["name"]) {
+				case "001002001":
+					this.itemFlag2_1 = true;
+					this.itemNum2_1 = d["index"];
+					break;
+				case "001002002":
+					this.itemFlag2_2 = true;
+					this.itemNum2_2 = d["index"];
+					break;
+				case "001003001":
+					this.itemFlag3_1 = true;
+					this.itemNum3_1 = d["index"];
+					break;
+				case "001003002":
+					this.itemFlag3_2 = true;
+					this.itemNum3_2 = d["index"];
+					break;
+				case "001004001":
+					this.itemFlag4_1 = true;
+					this.itemNum4_1 = d["index"];
+					break;
+				case "001004002":
+					this.itemFlag4_2 = true;
+					this.itemNum4_2 = d["index"];
+					break;
+				case "001004003":
+					this.itemFlag4_3 = true;
+					this.itemNum4_3 = d["index"];
+					break;
+				default:
+					break;
+			}
+		})
 
 	}
 }

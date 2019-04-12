@@ -34,6 +34,7 @@ export class PromptService {
           'key':value
         }
       },
+      nzWrapClassName:"prompt-service",
       nzClosable: true,
       nzOnCancel:()=>{
         this.modal.destroy();

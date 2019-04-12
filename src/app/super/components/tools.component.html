@@ -35,6 +35,11 @@
                 <nz-tabset [nzSize]="'small'">
                     <nz-tab nzTitle="表达量聚类">
                         <div class="tool-params-tab">
+                            <p *ngIf="standList.length">标准化&emsp;&nbsp;
+                                <nz-select *ngIf="standList.length" style="width: 120px; margin-top:1em;margin-bottom:1em;" [(ngModel)]="stand" nzPlaceHolder="stand">
+                                    <nz-option *ngFor="let s of standList;index as i;" [nzValue]="s" [nzLabel]="s"></nz-option>
+                                </nz-select>
+                            </p>
                             <p *ngIf="expressData.length || expressUpload.length">数据选择&emsp;&nbsp;
                                 <nz-select style="width: 120px;" [nzSize]="small" [(ngModel)]="heatmapSelect" (ngModelChange)="heatmapSelectChange()">
                                     <nz-option *ngFor="let select of heatmapSelectList" [nzValue]="select" [nzLabel]="select"></nz-option>
@@ -135,20 +140,19 @@
         <!-- 多组学 -->
         <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='multiOmics'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'"
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
-            <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
-                <ng-container *ngIf="multiOmicsData.length">
-                    <div class="tool-params-tab">
-                        <button class="mb12 mr12" *ngFor="let mu of multiOmicsData;index as i;" nz-button nzType="default" nzSize="middle" (click)="multiOmicsClick(mu)" nz-tooltip [nzTitle]="mu['name']" [class.active]="mu['checked']">{{mu['name']}}</button>
-                        <nz-alert *ngIf="multiOmicsError || !multiOmicsSelect.length" nzShowIcon nzType="warning" nzMessage="请选择1-5个数据"></nz-alert>
-                    </div>
-                    <nz-divider></nz-divider>
-                    <div class="tool-params-button-group">
-                        <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
-                        <button nz-button nzType="primary" [disabled]="multiOmicsError || !multiOmicsData.length" (click)="multiOmicsConfirm('multiOmics')" nzSize="middle">确定</button>
-                    </div>
-                </ng-container>
-                <p *ngIf="!multiOmicsData.length && doMultiOmicsAjax" class="center">缺少必要数据</p>
-            </nz-spin>
+            <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis"></nz-spin>
+            <ng-container *ngIf="multiOmicsData.length">
+                <div class="tool-params-tab">
+                    <button class="mb12 mr12" *ngFor="let mu of multiOmicsData;index as i;" nz-button nzType="default" nzSize="middle" (click)="multiOmicsClick(mu)" nz-tooltip [nzTitle]="mu['name']" [class.active]="mu['checked']">{{mu['name']}}</button>
+                    <nz-alert *ngIf="multiOmicsError || !multiOmicsSelect.length" nzShowIcon nzType="warning" nzMessage="请选择1-5个数据"></nz-alert>
+                </div>
+                <nz-divider></nz-divider>
+                <div class="tool-params-button-group">
+                    <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                    <button nz-button nzType="primary" [disabled]="multiOmicsError || !multiOmicsData.length" (click)="multiOmicsConfirm('multiOmics')" nzSize="middle">确定</button>
+                </div>
+            </ng-container>
+            <p *ngIf="!multiOmicsData.length && doMultiOmicsAjax" class="center">缺少必要数据</p>
         </nz-drawer>
 
         <!-- 折线图 -->

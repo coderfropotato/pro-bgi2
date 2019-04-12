@@ -16,7 +16,8 @@ import {
 	ElementRef,
 	ViewChild,
 	Output,
-	EventEmitter
+	EventEmitter,
+	ChangeDetectorRef
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { GlobalService } from '../service/globalService';
@@ -26,7 +27,6 @@ import { NzNotificationService } from 'ng-zorro-antd';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import config from '../../../config';
-import { Alert } from 'selenium-webdriver';
 
 declare const $: any;
 /**
@@ -70,11 +70,11 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	@Output() saveGeneListSuccess: EventEmitter<any> = new EventEmitter(); // 成功保存基因集的时候 发出的事件
 	@Output() syncRelative: EventEmitter<any> = new EventEmitter(); // 同步表头
 
-	@Output() totalChange:EventEmitter<number> = new EventEmitter(); // total
+	@Output() totalChange: EventEmitter<number> = new EventEmitter(); // total
 
 	// 在kegg富集需要跳转map的时候用到  其他都为默认值空
-	@Input() compareGroup:any =undefined; // 比较组
-	@Input() reanalysisId:any = undefined; // 重分析id
+	@Input() compareGroup: any = undefined; // 比较组
+	@Input() reanalysisId: any = undefined; // 重分析id
 
 	@ViewChildren('child') children;
 	count: number = 0; // 选中的基因个数
@@ -92,6 +92,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	unionSearchConditionList: object[] = [];
 	interSearchConditionList: object[] = [];
 	sortMap: object = {};
+
+	timer: any = null;
 
 	tableEntity: object = {
 		addThead: [],
@@ -174,7 +176,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		private notify: NzNotificationService,
 		private toolsService: ToolsService,
 		private modalService: NzModalService,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private ref: ChangeDetectorRef
 	) {
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
@@ -250,7 +253,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	}
 
 	sort(key, value): void {
-        this.initSortMap();
+		this.initSortMap();
 		this.sortMap[key] = value;
 
 		// 取消排序
@@ -267,7 +270,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	// 获取表格数据
 	getRemoteData(reset: boolean = false, cb: any = null): void {
-        this.isLoading = true;
+		this.isLoading = true;
 
 		if (reset) {
 			this.tableEntity['pageIndex'] = 1;
@@ -295,7 +298,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.ajaxService.getDeferData(ajaxConfig).subscribe(
 			(responseData: any) => {
 				// 如果需要保存基因集合id 并且 返回值有id这个key （针对转换表) 就保存下来
-                this.isLoading = false;
+				this.isLoading = false;
 				if (
 					responseData['status'] == '0' &&
 					responseData['data']['baseThead'].length &&
@@ -307,14 +310,14 @@ export class GeneTableComponent implements OnInit, OnChanges {
 						// if(this.isFirst) this.applyOnceBeforeStatusThenReset();
 					}
 
-                    // if ('mongoId' in responseData['data']) this.mongoId = responseData['data']['mongoId'];
-                    this.mongoId ='mongoId' in responseData['data']? responseData['data']['mongoId']:null;
+					// if ('mongoId' in responseData['data']) this.mongoId = responseData['data']['mongoId'];
+					this.mongoId = 'mongoId' in responseData['data'] ? responseData['data']['mongoId'] : null;
 
 					// if (!responseData.data['rows'].length) {
 					// 	this.total = 0;
 					// 	this.srcTotal = 0;
-                    //     this.error = 'nodata';
-                    //     this.totalChange.emit(this.total);
+					//     this.error = 'nodata';
+					//     this.totalChange.emit(this.total);
 					// 	return;
 					// }
 
@@ -347,8 +350,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					// 根据表头生成sortmap
 					this.generatorSortMap();
 					if (responseData.data.total != this.total) this.tableEntity['pageIndex'] = 1;
-                    this.total = responseData.data.total;
-                    this.totalChange.emit(this.total);
+					this.total = responseData.data.total;
+					this.totalChange.emit(this.total);
 
 					this.srcTotal = responseData.data.srcTotal;
 					this.dataSet = responseData.data.rows;
@@ -402,7 +405,6 @@ export class GeneTableComponent implements OnInit, OnChanges {
 									}
 								}
 							}
-
 						}
 					});
 
@@ -434,11 +436,11 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.total = 0;
 					this.srcTotal = 0;
 					this.error = 'nodata';
-                    this.syncRelative.emit([]);
-                    this.totalChange.emit(this.total);
-                    this.mongoId ='mongoId' in responseData['data']? responseData['data']['mongoId']:null;
+					this.syncRelative.emit([]);
+					this.totalChange.emit(this.total);
+					this.mongoId = 'mongoId' in responseData['data'] ? responseData['data']['mongoId'] : null;
 
-                    if (this.emitBaseThead) {
+					if (this.emitBaseThead) {
 						this.emitBaseThead = false;
 						this.emitBaseTheadChange.emit(this.emitBaseThead);
 						this.baseTheadChange.emit({ baseThead: [] });
@@ -447,17 +449,20 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.total = 0;
 					this.srcTotal = 0;
 					this.error = 'error';
-                    this.syncRelative.emit([]);
-                    this.totalChange.emit(this.total);
+					this.syncRelative.emit([]);
+					this.totalChange.emit(this.total);
 
-                    if (this.emitBaseThead) {
+					if (this.emitBaseThead) {
 						this.emitBaseThead = false;
 						this.emitBaseTheadChange.emit(this.emitBaseThead);
 						this.baseTheadChange.emit({ baseThead: [] });
 					}
-				}
+                }
 
-				setTimeout(() => {
+                this.tableEntity['mongoId'] = this.mongoId;
+
+				if (this.timer) clearTimeout(this.timer);
+				this.timer = setTimeout(() => {
 					this.computedTbody(this.tableHeight);
 				}, 30);
 			},
@@ -465,12 +470,12 @@ export class GeneTableComponent implements OnInit, OnChanges {
 				this.isLoading = false;
 				this.total = 0;
 				this.srcTotal = 0;
-                this.syncRelative.emit([]);
-                this.totalChange.emit(this.total);
+				this.syncRelative.emit([]);
+				this.totalChange.emit(this.total);
 			},
 			() => {
 				cb && cb();
-                // if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
+				// if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
 				if (this.applyOnceSearchParams) {
 					// 每次应用一次设置的查询参数 然后清空恢复默认，用自己的查询参数；
 					this.tableEntity['searchList'] = [];
@@ -478,9 +483,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					if ('leftChooseList' in this.tableEntity) this.tableEntity['leftChooseList'] = [];
 					if ('upChooseLIst' in this.tableEntity) this.tableEntity['upChooseList'] = [];
 					if ('compareGroup' in this.tableEntity) {
-						if(typeof this.tableEntity['compareGroup'] === 'string'){
+						if (typeof this.tableEntity['compareGroup'] === 'string') {
 							this.tableEntity['compareGroup'] = '';
-						}else if(typeof this.tableEntity['compareGroup'] === 'object'){
+						} else if (typeof this.tableEntity['compareGroup'] === 'object') {
 							this.tableEntity['compareGroup'] = [];
 						}
 					}
@@ -513,7 +518,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 						);
 					});
 					this.classifySearchCondition();
-				}
+                }
 			}
 		);
 	}
@@ -543,8 +548,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			this.tableEntity['transform'] = true;
 			this.tableEntity['matrix'] = true;
 			this.tableEntity['mongoId'] = this.mongoId;
-        }
-        this._clearFilterWithoutRequest();
+		}
+		this._clearFilterWithoutRequest();
 		// if('matchAll' in this.tableEntity) this.tableEntity['matchAll'] = false;
 	}
 
@@ -763,24 +768,27 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		this.checked = [];
 		this.unChecked = [];
 
-        this.classifySearchCondition();
+		this.classifySearchCondition();
 		this.getRemoteData(true);
+		this.ref.markForCheck();
 	}
 
 	// 把筛选条件 按交并集归类
 	classifySearchCondition() {
 		this.unionSearchConditionList = [];
-		this.interSearchConditionList = [];
+        this.interSearchConditionList = [];
 		if (this.tableEntity['searchList'].length) {
 			this.filterHtmlString = this.globalService.transformFilter(this.tableEntity['searchList']);
 		} else {
 			this.filterHtmlString.length = 0;
-        }
+		}
 
 		// 每次分类筛选条件的时候 重新计算表格滚动区域高度
 		setTimeout(() => {
 			this.computedTbody(this.tableHeight);
 		}, 0);
+
+		this.ref.markForCheck();
 	}
 
 	// 清空搜索
@@ -855,6 +863,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	// track by function
 	identify(index, item) {
 		return item['true_key'];
+	}
+
+	filterTrackByFn(index, item) {
+		return item['beforeHtml'];
 	}
 
 	refresh() {
@@ -1389,19 +1401,21 @@ export class GeneTableComponent implements OnInit, OnChanges {
      * @memberof GeneTableComponent
      */
 	_getInnerStatusParams() {
-		return JSON.parse(JSON.stringify({
-			tableEntity: this.tableEntity,
-			url: this.url,
-			baseThead: this.head,
-			others: {
-				checkStatus: this.checkStatus,
-				excludeGeneList: {
-					checked: this.checked,
-					unChecked: this.unChecked
-				}
-			},
-			mongoId: this.mongoId || null
-		}));
+		return JSON.parse(
+			JSON.stringify({
+				tableEntity: this.tableEntity,
+				url: this.url,
+				baseThead: this.head,
+				others: {
+					checkStatus: this.checkStatus,
+					excludeGeneList: {
+						checked: this.checked,
+						unChecked: this.unChecked
+					}
+				},
+				mongoId: this.mongoId || null
+			})
+		);
 	}
 
 	_getData() {

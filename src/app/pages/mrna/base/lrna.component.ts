@@ -52,6 +52,18 @@ export class LrnaComponent implements OnInit {
 	legendIndexL: number = 0; //当前点击图例的索引
 	colorL: string; //当前选中的color
 
+	tempIndex: number = 0;
+	tempMenu: any[] = [];
+	tempMenu2: any[] = [];
+	tempMenu3: any[] = [];
+
+	itemFlag: boolean = false;
+	itemNum: number = 0;
+	itemFlag2: boolean = false;
+	itemNum2: number = 0;
+	itemFlag3: boolean = false;
+	itemNum3: number = 0;
+
 	constructor(
 		private message: MessageService,
 		private store: StoreService,
@@ -63,6 +75,9 @@ export class LrnaComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+
+		this.GeneListIndex();
+
 		//5.1 小RNA数量
 		this.defaultUrl = `${config['javaPath']}/basicModule/smallRNAStat`;
 		this.defaultEntity = {
@@ -271,4 +286,63 @@ export class LrnaComponent implements OnInit {
 	}
 
 	handlerRefresh() {}
+
+	GeneListIndex(){
+		let mindex = 1;
+		let mindex2 = 1;
+		let mindex3 = 1;
+		this.store.getStore('basicMenu').forEach((d) => {
+			if(d.indexOf("005")==0 && d.length != 3){
+				if(d.length == 6){
+					this.tempMenu2.push({
+						name:d,
+						index:mindex
+					});
+					mindex++;
+				}else{
+					this.tempMenu3.push({
+							name:d,
+							index:d.substr(d.length-1,1)
+					});
+				}
+				
+			}
+			if(d.length == 3){
+				this.tempMenu.push({
+						name:d,
+						index:mindex2
+				});
+				mindex2++;
+			}
+		});
+
+		console.log(this.tempMenu);
+		console.log(this.tempMenu2);
+		console.log(this.tempMenu3);
+		
+		this.tempMenu.forEach((d)=>{
+			if(d["name"]=="005"){
+				this.tempIndex =  d["index"];
+			}
+		})
+
+		this.tempMenu2.forEach((d)=>{
+			switch (d["name"]) {
+				case "005001":
+					this.itemFlag = true;
+					this.itemNum = d["index"];
+					break;
+				case "005002":
+					this.itemFlag2 = true;
+					this.itemNum2 = d["index"];
+					break;
+				case "005003":
+					this.itemFlag3 = true;
+					this.itemNum3 = d["index"];
+					break;
+				default:
+					break;
+			}
+		})
+	}
 }

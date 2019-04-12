@@ -1,12 +1,12 @@
 <div class="content base-content help">
-    <h2 class="title">6.帮助</h2>
+    <h2 class="title">{{tempIndex}} 帮助</h2>
     <hr class="mhr" />
 
     <div class="help_option">
         <!-- 实验流程 -->
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 0">6.1 实验流程</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.1.1 实验流程</h3>
+            <h3 class="title" *ngIf="mflag == 0">{{tempIndex}}.1 实验流程</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.1.1 实验流程</h3>
             <div class="test_one" *ngIf="tflag == 4"></div>
             <p class="help_text" *ngIf="tflag == 4">用mRNA富集法或rRNA去除法对totalRNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA；rRNA去除：用DNA探针杂交rRNA，RNaseH选择性消化DNA/RNA杂交链，再用DNaseI消化掉DNA探针，纯化后即得到所需RNA。得到的mRNA中加入适量打断试剂高温条件下使其片断化，以打断后的mRNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库用Agilent 2100 Bioanalyzer和ABI StepOnePlus Real-Time PCR System质检，合格后进行测序。</p>
             <div class="test_two" *ngIf="tflag == 5"></div>
@@ -23,8 +23,8 @@
 
         <!-- 实验流程（小RNA） -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 2">6.1 实验流程（小RNA）</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.1.2 实验流程（小RNA）</h3>
+            <h3 class="title" *ngIf="mflag == 2">{{tempIndex}}.1 实验流程（小RNA）</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.1.2 实验流程（小RNA）</h3>
             <p class="help_text">实验操作中的每一步（如样品检测、文库构建到测序）都会影响数据数量和质量，从而影响后续信息分析结果。为了得到高质量测序数据，我们对每一步都进行严格的质控。实验流程见下图：</p>
             <div class="img_seven" *ngIf="this.tflag == 61"></div>
             <div class="help_bg" *ngIf="this.tflag == 61">
@@ -58,8 +58,8 @@
         
         <!-- 分析流程 -->
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 0">6.2 分析流程</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.2.1 分析流程</h3>
+            <h3 class="title" *ngIf="mflag == 0">{{tempIndex}}.2 分析流程</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.2.1 分析流程</h3>
             <p class="help_text" *ngIf="nflag == 7">测序所得的数据称为raw reads或raw data，随后要对raw reads进行质控(QC)，以确定测序数据是否适用于后续分析。质控后，经过滤得到的clean reads比对到参考序列。比对完，通过统计比对率、reads在参考序列上的分布情况等，判断比对结果是否通过第二次质控(QC of alignment)。若通过，则进行基因定量分析、基于基因表达水平的各项分析（主成分、相关性、差异基因筛选等等），并对筛选出的样品间差异表达基因，进行GO功能显著性富集分析、pathway显著性富集分析、聚类、蛋白互作网络和转录因子等更深入的挖掘分析。完整的分析流程图如下：</p>
             <div class="img_two" *ngIf="nflag == 7"></div> 
             
@@ -73,8 +73,8 @@
 
         <!-- 分析流程（小RNA） -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 2">6.2 分析流程（小RNA）</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.2.2 分析流程（小RNA）</h3>
+            <h3 class="title" *ngIf="mflag == 2">{{tempIndex}}.2 分析流程（小RNA）</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.2.2 分析流程（小RNA）</h3>
             <p class="help_text">得到原始测序数据后，我们将根据合同上的条款，进行后续的信息分析。图2是Small-RNA产品的完整分析内容。</p>
             <div class="img_eight"></div>
             <div class="help_bg">
@@ -85,8 +85,8 @@
 
         <!-- 测序数据过滤 -->
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 0">6.3 测序数据过滤</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.3.1 测序数据过滤</h3>
+            <h3 class="title" *ngIf="mflag == 0">{{tempIndex}}.3 测序数据过滤</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.3.1 测序数据过滤</h3>
             <div class="help_text">
                 <p>本项目使用华大自主研发的过滤软件SOAPnuke进行过滤，具体步骤如下:</p> 
                 <p>1) 去除包含接头的reads(接头污染);</p> 
@@ -107,8 +107,8 @@
 
         <!-- 测序数据过滤（小RNA） -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 2">6.3 测序数据过滤（小RNA）</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.3.2 测序数据过滤（小RNA）</h3>
+            <h3 class="title" *ngIf="mflag == 2">{{tempIndex}}.3 测序数据过滤（小RNA）</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.3.2 测序数据过滤（小RNA）</h3>
             <p class="help_text">小RNA测得rawdata数据中首先会对其进行数据评估，主要有两个方面：1）对于杂质的过滤; 2）对数据的初步判断。</p>
             <p class="help_text">Rawdata中杂质一般是指无插入片段序列、插入片段过长的序列、低质量序列、polyA序列和小片段序列，其中无插入片段和测得5’接头的序列定义为接头污染，插入片段过长的序列表现为没有测得3’接头的序列。一般接头污染情况的发生与样品本身以及其建库过程中接头浓度和样品浓度比例控制相关，接头比例过高时一般接头污染情况比较严重。低质量序列主要是对测序可靠性的筛选，其条件是序列中碱基质量小于10的碱基数不超过4个同时碱基质量小于13的碱基数不超过6个。</p>
             <p class="help_text">对于这些定义为过滤掉的序列会通过一系列的处理得到干净的序列(clean tags)。然后统计小RNA(sRNA)的序列种类(用unique表示)及序列数量(用total表示)，并对小RNA序列做长度分布统计，一般来说，小RNA的长度区间为18～30nt，长度分布的峰能帮助我们判断小RNA的种类，如miRNA集中在21或22nt，siRNA集中在24nt，piRNA集中在28~30nt。 另外多数情况下植物样品和动物样品序列长度分布上有着明显的差异，其表现是植物样品长度分布的峰值一般出现在21nt或者24nt，而动物样品峰值则出现在22nt。根据这些条件对于样品情况和测序情况可以做出一些初步的判断。</p>
@@ -127,8 +127,8 @@
 
         <!-- 参考基因组对比 -->
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 0">6.4 参考基因组比对</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.4.1 参考基因组比对</h3>
+            <h3 class="title" *ngIf="mflag == 0">{{tempIndex}}.4 参考基因组比对</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.4.1 参考基因组比对</h3>
             <p class="help_text">HISAT（Hierarchical Indexing for Spliced Alignment of Transcripts）是一款用于RNA-seq reads比对参考基因组的软件。相比其他软件，HISAT具有速度快、灵敏度和准确度高、内存消耗低等优势。HISAT基于Burrows-Wheeler transform和Ferragina-Manzini（FM）的索引采用全基因组和局部基因组两种索引形式，具体比对示意图详见HISAT比对示意图。基因组比对结果统计。</p> 
             <div class="img_three"></div>
             <p class="help_text">首先，HISAT会用全局FM索引在基因组上锚定每个read中部分序列的位置；然后，用这些比对位置的局部索引去比对每个read的剩余序列以延长比对区域。软件信息：</p> 
@@ -145,8 +145,8 @@
 
         <!-- 参考基因组比对（小RNA） -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 2">6.4 参考基因组比对（小RNA）</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.4.2 参考基因组比对（小RNA）</h3>
+            <h3 class="title" *ngIf="mflag == 2">{{tempIndex}}.4 参考基因组比对（小RNA）</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.4.2 参考基因组比对（小RNA）</h3>
             <!-- <p class="help_text">一般来说,比对率越高,说明样本和参考序列之间的关系越近；较低的比对率可能是由于低相似性或还有其他污染导致。我们使用比对软件AASRA[8]将clean reads比对到参考基组和其他小RNA数据库，除了Rfam是用cmsearch[7]进行比对。关于 Bowtie2 的参数说明，请阅读官方网址 <a href="http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#" target="_blank">http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#</a> 中的"Options"章节。</p> -->
             <p class="help_text">测序得到的Reads与参考基因组比对，基于测序数据在基因组上的位置来预测miRNA和其他的非编码RNA。另外，Reads还与非编码RNA、Rfam数据库进行比对，对测序数据进行非编码RNA注释。</p>
             <div class="help_bg">
@@ -159,19 +159,19 @@
 
         <!-- 随机性 -->
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
-            <h3 class="title">6.5 随机性</h3>
+            <h3 class="title">{{tempIndex}}.5 随机性</h3>
             <p class="help_text">使用序列比对软件将质控后的clean reads分别比对到参考基因组上，从而可以对样本中的基因/转录本表达进行定量。同时对本次转录组测序进行整体分析，包括转录本的随机性。</p> 
         </div>
 
         <!-- 覆盖度 -->
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
-            <h3 class="title">6.6 覆盖度</h3>
+            <h3 class="title">{{tempIndex}}.6 覆盖度</h3>
             <p class="help_text">使用序列比对软件将质控后的clean reads分别比对到参考基因集上，从而可以对样本中的基因/转录本表达进行定量。同时对本次转录组测序进行整体分析，包括转录本的覆盖度及分布。</p> 
         </div>
 
         <!-- 测序饱和度 -->
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
-            <h3 class="title">6.7 测序饱和度</h3>
+            <h3 class="title">{{tempIndex}}.7 测序饱和度</h3>
             <div class="help_text">
                 <p>使用perl脚本进行测序饱和度分析，测序饱和度分析可以在一定程度上判断测序数据量是否满足要求。随着测序量(Reads数量)的增加，检测到的基因数也随之上升，当测序量达到一定区间后其检测到的基因数增长速度趋于平缓，说明检测到的基因数趋于饱和，此时测序量达到要求。</p> 
             </div>
@@ -179,21 +179,21 @@
 
         <!-- 小RNA预测 -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 2">6.5 小RNA预测</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.8 小RNA预测</h3>
+            <h3 class="title" *ngIf="mflag == 2">{{tempIndex}}.5 小RNA预测</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.8 小RNA预测</h3>
             <p class="help_text">基于miRNA的前体能够形成发夹二级结构，我们使用miRDeep2（适用于动物）和miRA（适用于植物）进行新的miRNA预测。我们使用Piano进行piRNA预测，该方法主要基于SVM算法和转座子信息，进行预测，适合于人、小鼠、大鼠等。siRNA是一种22-24nt的双链RNA分子，每条链的末端会多出2个碱基；结合已报道的siRNA碱基特性，进行预测潜在的siRNA。</p>
         </div>
         <!-- 小RNA分类 -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 2">6.6 小RNA分类</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.9 小RNA分类</h3>
+            <h3 class="title" *ngIf="mflag == 2">{{tempIndex}}.6 小RNA分类</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.9 小RNA分类</h3>
             <p class="help_text">所有sRNA与各类RNA的比对、注释情况进行总结。在以上各注释信息中，有可能存在一个sRNA同时比对上两种不同的注释信息的情况。为了使每个unique sRNA有唯一的注释，按照: MiRbase > pirnabank > snoRNA(human/plant) > Rfam > other sRNA 的优先级顺序将sRNA遍历注释。</p>
         </div>
 
         <!-- 常见问题 -->     
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
-            <h3 class="title" *ngIf="mflag == 0">6.8 常见问题</h3>
-            <h3 class="title" *ngIf="mflag == 3">6.10 常见问题</h3>
+            <h3 class="title" *ngIf="mflag == 0">{{tempIndex}}.8 常见问题</h3>
+            <h3 class="title" *ngIf="mflag == 3">{{tempIndex}}.10 常见问题</h3>
 
             <h4 class="title sjx2">什么是FASTQ格式？</h4>
             <p class="help_text">测序得到的原始图像数据经 base calling转化为原始序列数据（raw data或raw reads），以fastq（简称fq）文件格式存储，包含了reads的序列以及测序质量信息。在fastq格式文件中，每个read有四行描述：</p> 
