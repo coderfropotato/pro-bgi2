@@ -136,7 +136,6 @@
         <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='multiOmics'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'"
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
-                {{multiOmicsData |json}}
                 <ng-container *ngIf="multiOmicsData.length">
                     <div class="tool-params-tab">
                         <button class="mb12 mr12" *ngFor="let mu of multiOmicsData;index as i;" nz-button nzType="default" nzSize="middle" (click)="multiOmicsClick(mu)" nz-tooltip [nzTitle]="mu['name']" [class.active]="mu['checked']">{{mu['name']}}</button>
