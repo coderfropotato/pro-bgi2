@@ -850,6 +850,15 @@ export class ReMultiOmicsComponent implements OnInit {
 					(k) => yScaleBox(k.box.low)
 				);
 
+				//median line
+				this._drawLline(
+					boxplots,
+					(k, i) => (i + 1) * k.space + i * k.w,
+					(k) => yScaleBox(k.box.median),
+					(k, i) => (i + 1) * k.space + i * k.w + k.w,
+					(k) => yScaleBox(k.box.median)
+				);
+
 				// rect
 				boxplots
 					.append('rect')
@@ -858,7 +867,7 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('width', (k) => k.w)
 					.attr('height', (k) => Math.abs(yScaleBox(k.box.y2) - yScaleBox(k.box.y1)))
 					.attr('fill', (k) => colorScale(k.type))
-					.attr('fill-opacity',0.6)
+					.attr('fill-opacity',0.8)
 					.style('cursor', 'pointer')
 					.on('mouseover', (m) => {
 						let text = `上限：${m.box.high}<br>上四分位数：${m.box.y2}<br>中位数：${m.box.median}<br>下四分位数：${m.box
@@ -920,15 +929,6 @@ export class ReMultiOmicsComponent implements OnInit {
 							that.showBackButton = false;
 						}
 					});
-
-				//median line
-				this._drawLline(
-					boxplots,
-					(k, i) => (i + 1) * k.space + i * k.w,
-					(k) => yScaleBox(k.box.median),
-					(k, i) => (i + 1) * k.space + i * k.w + k.w,
-					(k) => yScaleBox(k.box.median)
-				);
 
 			});
 		}

@@ -64,7 +64,7 @@ declare const $: any;
                                 <!-- </div> -->
                                 </div>
                             </div>
-                            <app-gene-component #geneTable *ngIf="showModule && initializationFlag" [defaultGeneType]="defaultGeneType"></app-gene-component>
+                            <app-gene-component #geneTable *ngIf="showModule && initializationFlag && optionsRequestDone" [defaultGeneType]="defaultGeneType"></app-gene-component>
                         </div>
                         <div class="gene_pop" [hidden]="!expandSetPanel">
                         <div class="gene_pop_top gene_center">
@@ -125,7 +125,7 @@ export class GenePage {
 
 	selectPanelList: object[]; //搜索范围数据
 	selectedList: any[] = []; //选中的数据
-	selectedListT: object[]; //选中的数据2
+	selectedListT: any[] = []; //选中的数据2
 
 	selectTarget: object[]; //基因或者转录本
 	selectTargetName: string; //初始化为基因
@@ -139,6 +139,7 @@ export class GenePage {
 	expandHistoryPanel: boolean = false; // 默认收起搜索结果面板
 
 	initializationFlag: boolean = false;
+	optionsRequestDone:boolean = false;
 	//searchButtonFlag: boolean = true;
 
 	constructor(
@@ -324,6 +325,7 @@ export class GenePage {
 		this.showModule = false;
 		this.expandSetPanel = false;
 		this.expandHistoryPanel = false;
+		this.optionsRequestDone = false;
 		setTimeout(() => {
 			this.showModule = true;
 			this.getDefaultData();
@@ -405,12 +407,13 @@ export class GenePage {
 							tempList.push(...d["value"]);
 						});
 
+						this.selectedListT.length = 0;
 						this.selectedListT = tempList;
 
 						this.geneService.set('checkedAddThead', this.selectedListT);
 						this.geneService.set('num', tempList.length);
 
-
+						console.log(this.geneService);
 						// this.selectedList = data;
 
 						// for (var i = 0; i < data['data'].length; i++) {
@@ -425,6 +428,7 @@ export class GenePage {
 				(error) => console.log(error),
 				() => {
 					this.initializationFlag = true;
+					this.optionsRequestDone = true;
 				}
 			);
 	}
@@ -499,6 +503,7 @@ export class GeneComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		console.log(this.geneService['geneOptions'])
 
         this.applyOnceSearchParams = true;
         this.defaultApplyOnceSearchParams = true;
