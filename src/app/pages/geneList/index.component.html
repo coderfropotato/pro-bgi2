@@ -1,6 +1,6 @@
 <div class="report-genelist report-wrap">
     <app-top [pdf]="false" [analysis]="false" [upload]="false" [lang]="false"></app-top>
-    <app-menu [menu]="[]" [showGeneList]="false"></app-menu>
+    <app-menu [menu]="[]" [showGeneList]="true"></app-menu>
     <div *ngIf="ready" class="report-content">
         <router-outlet></router-outlet>
     </div>

@@ -125,7 +125,7 @@
         </div>
     </div>
     <div #right class="right-layout" [class.expand]="switch==='center'" [class.unexpand]="switch==='right'" [class.table-only]="switch==='left'">
-        <div class="switch" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
+        <div class="switch" style="margin-right:100px;" [class.hasAnalysisCount]="storeService['store']['analysisCount']">
             <app-layout-switch [ngModel]="switch" (ngModelChange)="switchChange($event)"> </app-layout-switch>
         </div>
         <div class="func" #func (click)="resize($event)">
