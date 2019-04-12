@@ -207,7 +207,7 @@ export class MapComponent implements OnInit {
 
 			try {
 				await this.getLcInfo();
-				// this.getUnReadAnalysisCount();
+				this.getUnReadAnalysisCount();
 
 				this.first = true;
 				this.applyOnceSearchParams = true;
