@@ -583,7 +583,7 @@ export class InformationComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				return '<span>Type：' + d.data.sample_name + '</span><br><span>Percent(%)：' + (d[1] - d[0]) + '%</span>';
+				return '<span>Type：' + d.data.sample_name + '</span><br><span>Percent(%)：' + (d[1] - d[0]).toFixed(2) + '%</span>';
 			}
 			// tooltip: function(d) {
 			// 	var p =+(d[1] - d[0]).toFixed(2);

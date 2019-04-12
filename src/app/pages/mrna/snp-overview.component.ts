@@ -225,9 +225,10 @@ export class SnpOverviewComponent implements OnInit {
       //   return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]).toFixed(2) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
       // }
       tooltip: function(d) {
+        console.log(d)
 				var p =+(d[1] - d[0]).toFixed(2);
 				var n =Math.round(p/100*d.data.total);
-				return '<span>Type：' + d.key + '</span><br><span>Percentage：' + p  + '%</span><br><span>Number：'+n+'</span><br><span>Group：'+d.data['compare_group']+'</span>';
+				return '<span>Type：' + d.key + '</span><br><span>Percentage：' + p  + '%</span><br><span>Number：'+n+'</span><br><span>Group：'+d.data['sample_name']+'</span>';
 			}
 		};
 

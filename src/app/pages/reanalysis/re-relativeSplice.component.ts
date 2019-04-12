@@ -64,7 +64,7 @@ export class RelativeSpliceComponent implements OnInit {
     legendIndex: number = 0; //当前点击图例的索引
     color: string; //当前选中的color
     isShowColorPanel: boolean = false;
-    textContent: string = "可变剪切图";
+    //textContent: string = "可变剪切图";
     geneNum: number;
 
     selectPanelData: object[] = [];
@@ -83,6 +83,9 @@ export class RelativeSpliceComponent implements OnInit {
 
     selectUniqueList:string[] = [];
     computedScrollHeight:boolean = false;
+
+    textContent: string = '';
+	ytextContent: string = 'PSI';
 
     constructor(
         private message: MessageService,
@@ -420,12 +423,14 @@ export class RelativeSpliceComponent implements OnInit {
         // console.log(right_name_length);
         //let right_name_length = 90;
 
+        let leftNameWidth = 50; //左侧标题高度
+
         // let xAxis_length = x_value.length*rect_length.x;
         // let yAxis_length = y_value.length*rect_length.y;
         let xAxis_length = 320;
         let yAxis_length = 300;
 
-        let svg_width = left_title + left_ylength + xAxis_length + right_name_length*2; //计算最外层svg宽度
+        let svg_width = left_title + left_ylength + xAxis_length + 90 + right_name_length; //计算最外层svg宽度
         let svg_height = top_title + yAxis_length + bottom_xlength + bottom_UTR_CDS; //计算最外层svg高度
 
         let svg = d3.select('#svg') //最外层svg
@@ -452,11 +457,46 @@ export class RelativeSpliceComponent implements OnInit {
         let temp_x_width = xAxis_length + left_ylength + temp_add_width;
         let temp_y_width = yAxis_length + bottom_xlength + temp_add_width;
 
+        //drawLeftTitle(); //上侧标题
         draw_x_y_axis();
         drawRightFirstLegend();
         drawRightSecondLegend();
         drawCenter();
-        drawBottomLegend();
+        //drawBottomLegend();
+
+        function drawLeftTitle(){
+			let tempName = [];
+			tempName.push(that.ytextContent);
+			let nameW=getNameLength(tempName);
+			let padding_w = (svg_height-nameW)/2;
+
+			let height = yAxis_length;
+			let padding_left2 = 0;
+
+			let svgTitle = svg.append('g').attr('transform', 'translate(' + 22 + ',' + (nameW+padding_w) + ')');
+			svgTitle
+				.append('text')
+				.attr("transform", "rotate(-90)")
+				.attr('class', 'titleText')
+				.attr('width', leftNameWidth)
+				.attr('height', nameW)
+				.attr('dx', '0')
+				.attr('dy', '0')
+				.text(function(d, i) {
+					return that.ytextContent;
+				})
+				.on('click', function(d, i) {
+					let self = that;
+					that.promptService.open(d, (data) => {
+						if (data != '') {
+							self.ytextContent = data;
+							svgTitle.remove();
+							//self.updateKaFun();
+							drawLeftTitle();
+						}
+					});
+				});
+		}
 
         function draw_x_y_axis(){
 
@@ -539,7 +579,7 @@ export class RelativeSpliceComponent implements OnInit {
         }
 
         function drawRightSecondLegend(){
-            let padding_left = temp_x_width + left_title + 10 +90;
+            let padding_left = temp_x_width + left_title + 90;
 
             //let circle = d3.symbol().type(d3.symbolCircle)();
             // let temp_symbol_select = [];
@@ -889,6 +929,8 @@ export class RelativeSpliceComponent implements OnInit {
 			oSvg.remove();
 
 			return max_length[0];
-		}
+        }
+        
+        
     }
 }
