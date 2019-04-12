@@ -59,7 +59,7 @@ export class ReadsComparisonComponent implements OnInit {
   color: string; //当前选中的color
 
 
-  tempIndex: 0;
+  tempIndex: number = 0;
 	tempMenu: any[] = [];
 	tempMenu2: any[] = [];
 	tempMenu3: any[] = [];

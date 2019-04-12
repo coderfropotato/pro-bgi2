@@ -86,7 +86,7 @@ export class InformationComponent implements OnInit {
 
 	EntityOne: object;
 
-	tempIndex: 0;
+	tempIndex: number = 0;
 	tempMenu: any[] = [];
 	tempMenu2: any[] = [];
 	tempMenu3: any[] = [];
