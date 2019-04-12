@@ -2840,27 +2840,34 @@ button {
 
 // 弹出框
 .ant-modal {
-    top: 0;
+    top: 100px;
 }
 
-.ant-modal-header {
-    border-bottom: 0;
-    padding: 16px 24px 8px 24px;
-}
+.prompt-service {
 
-.ant-modal-close {
-    display: none;
-}
-
-.ant-modal-body {
-    padding: 0px 24px 10px 24px;
-    input {
-        border: 1px solid rgb(83, 120, 248);
+    .ant-modal{
+        top:0!important;
     }
-}
 
-.ant-modal-footer {
-    border-top: 0;
+    .ant-modal-header {
+        border-bottom: 0;
+        padding: 16px 24px 8px 24px;
+    }
+
+    .ant-modal-close {
+        display: none;
+    }
+
+    .ant-modal-body {
+        padding: 0px 24px 10px 24px;
+        input {
+            border: 1px solid rgb(83, 120, 248);
+        }
+    }
+
+    .ant-modal-footer {
+        border-top: 0;
+    }
 }
 
 .as-fusion-help_one {
