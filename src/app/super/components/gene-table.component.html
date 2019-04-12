@@ -101,14 +101,14 @@
             <div #tableFilter class="table-filter">
                 <div class="table-top" *ngIf="rootHtmlString.length">
                     <span class="filter-head">{{'rootFilterTitle'| translate}}：</span>
-                    <span class="filter-item" *ngFor="let item of rootHtmlString">
+                    <span class="filter-item" *ngFor="let item of rootHtmlString;index as i;trackBy:filterTrackByFn;">
                         <em [innerHTML]="item['html']"></em>
                         <i class="anticon anticon-close-circle" (click)="deleteRootFilterItem(item)"></i>
                     </span>
                 </div>
                 <div class="table-top" *ngIf="filterHtmlString.length">
                     <span class="filter-head">{{'filterTitle' | translate}}：</span>
-                    <span class="filter-item" *ngFor="let item of filterHtmlString">
+                    <span class="filter-item" *ngFor="let item of filterHtmlString;index as i;trackBy:filterTrackByFn;">
                         <em [innerHTML]="item['html']"></em>
                         <i class="anticon anticon-close-circle" (click)="deleteFilterItem(item)"></i>
                     </span>
