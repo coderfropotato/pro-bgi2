@@ -117,7 +117,6 @@ export class ClusterSetComponent implements OnInit {
     ngOnInit() {
         this.getDefaultSet();
         this.getClassification();
-        // console.log(this.pageModuleService['defaultModule']);
     }
 
     //设置、空白区点击
@@ -131,6 +130,10 @@ export class ClusterSetComponent implements OnInit {
         this.backConfirm();
     }
 
+    setDefaultSet(defaultSetData){
+        this.defaultSetData = defaultSetData;
+        this.getDefaultSet();
+    }
     //获取默认值
     getDefaultSet(){
         let trueData=this.defaultSetData;
