@@ -385,7 +385,7 @@ export class ReLineComponent implements OnInit {
             tooltip: function(d) {
                 return `<span>Gene ID: ${d.category}</span><br>
                         <span>Sample: ${d.x}</span><br>
-                        <span>Log10(FPKM+1): ${d.y}</span><br>
+                        <span>Log2(FPKM+1): ${d.y}</span><br>
                         <span>Expression: ${d.log10}</span>`;
             }
 		  }
