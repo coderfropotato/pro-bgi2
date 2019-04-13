@@ -362,7 +362,7 @@ export class ReLineComponent implements OnInit {
 					}
 				},
 				y: {
-					title: "FPKM",
+					title: "Log2(Value+1)",
 					position: "left",
 					dblclick: function(event) {
 						var name = prompt("请输入需要修改的标题", "");
@@ -385,7 +385,7 @@ export class ReLineComponent implements OnInit {
             tooltip: function(d) {
                 return `<span>Gene ID: ${d.category}</span><br>
                         <span>Sample: ${d.x}</span><br>
-                        <span>Log2(FPKM+1): ${d.y}</span><br>
+                        <span>Log2(Value+1): ${d.y}</span><br>
                         <span>Expression: ${d.log10}</span>`;
             }
 		  }
