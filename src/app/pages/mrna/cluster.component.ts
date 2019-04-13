@@ -92,6 +92,7 @@ export class ClusterComponent implements OnInit {
     geneType:string = '';
     version:string = '';
     genome:string = '';
+    tableReady:boolean = false;
 
     //参数
 	compareGroupList: any[] = [];
@@ -226,6 +227,9 @@ export class ClusterComponent implements OnInit {
         this.extendDefaultChecked = true;
         this.extendEmitBaseThead = true;
         this.extendCheckStatusInParams = false;
+
+        this.tableReady = true;
+
     }
 
     //选中参数之后，重新访问接口

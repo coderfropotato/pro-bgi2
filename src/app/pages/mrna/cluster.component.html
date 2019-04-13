@@ -34,8 +34,8 @@
             [defaultSetUrl]='defaultSetUrl'
             [defaultSetEntity]='defaultSetEntity'
             (defaultSet)='apiEntityChange($event)'
-            [setDataUrl]="setDataUrl" 
-            [setDataEntity]="setDataEntity" 
+            [setDataUrl]="setDataUrl"
+            [setDataEntity]="setDataEntity"
             (setData)="getSetData($event)"
             (refresh)="handlerRefresh()"
             >
@@ -58,28 +58,28 @@
             <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button>
         </div>
         <!-- 表格转换 -->
-        <ng-container *ngIf="defaultSetData && setData">
-            <app-table-transformation class="no-outside-border" 
-                #transformTable 
-                [isFirst]="first" 
-                [tableHeight]="tableHeight" 
-                [defaultTableEntity]="defaultEntity" 
-                [defaultTableUrl]="defaultUrl" 
-                [defaultTableId]="defaultTableId" 
+        <ng-container *ngIf="tableReady">
+            <app-table-transformation class="no-outside-border"
+                #transformTable
+                [isFirst]="first"
+                [tableHeight]="tableHeight"
+                [defaultTableEntity]="defaultEntity"
+                [defaultTableUrl]="defaultUrl"
+                [defaultTableId]="defaultTableId"
                 [defaultTableDefaultChecked]="defaultDefaultChecked"
-                [(defaultEmitBaseThead)]="defaultEmitBaseThead" 
-                (defaultBaseTheadChange)="baseTheadChange($event)" 
-                [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" 
-                (defaultShowFilterStatus)="defaultShowFilterStatus" 
+                [(defaultEmitBaseThead)]="defaultEmitBaseThead"
+                (defaultBaseTheadChange)="baseTheadChange($event)"
+                [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
+                (defaultShowFilterStatus)="defaultShowFilterStatus"
                 [extendTableEntity]="extendEntity"
-                [extendTableUrl]="extendUrl" 
-                [extendTableId]="extendTableId" 
-                [extendTableDefaultChecked]="extendDefaultChecked" 
-                [(extendEmitBaseThead)]="extendEmitBaseThead" 
-                (extendBaseTheadChange)="baseTheadChange($event)" 
+                [extendTableUrl]="extendUrl"
+                [extendTableId]="extendTableId"
+                [extendTableDefaultChecked]="extendDefaultChecked"
+                [(extendEmitBaseThead)]="extendEmitBaseThead"
+                (extendBaseTheadChange)="baseTheadChange($event)"
                 [extendTableCheckStatusInParams]="extendCheckStatusInParams"
-                [(applyOnceSearchParams)]="applyOnceSearchParams" 
-                (selectGeneCountChange)="handleSelectGeneCountChange($event)" 
+                [(applyOnceSearchParams)]="applyOnceSearchParams"
+                (selectGeneCountChange)="handleSelectGeneCountChange($event)"
                 [(computedScrollHeight)]="computedScrollHeight"
                 [compareGroup]="compareGroup"
                 >
@@ -87,4 +87,3 @@
         </ng-container>
     </div>
     </div>
-    
