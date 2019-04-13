@@ -180,10 +180,10 @@ export class MapComponent implements OnInit {
 				// 重分析内的map跳转
 			} else {
 				// 非重分析的map跳转   production test
-				// this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this
-				// 	.lcid}/KEGG_PATHWAY/Pathway_enrichment/${this.compareGroup}/${this.compareGroup}_${this
-				// 	.defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`;
-				this.dirtyPathWayIframeUrl = 'http://localhost:4200/#/report/map/test';
+				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this
+					.lcid}/KEGG_PATHWAY/Pathway_enrichment/${this.compareGroup}/${this.compareGroup}_${this
+					.defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`;
+				// this.dirtyPathWayIframeUrl = 'http://localhost:4200/#/report/map/test';
 			}
 		});
 
