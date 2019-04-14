@@ -114,6 +114,9 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() tableDescTitle:string;
     @Input() tableDescContent:any;
 
+
+    @Input() reanalysisDate:any =undefined; // 重分析时间
+
     scroll: object = { x: "120%", y: "400px" };
     isShowTable: boolean = false;
     total: number = 1;
