@@ -62,7 +62,7 @@
           <p *ngIf="geneInfoList['genome_version']">
             <span class="info_name">{{'gene_detail.genome_version' | translate}}</span>
             <span class="info_content">
-                {{geneInfoList['genome_source']}}_{{geneInfoList['genome_version']}}
+                <a href="https://www.ncbi.nlm.nih.gov/assembly/GCF_000001635.26" target="_blank">{{geneInfoList['genome_source']}}_{{geneInfoList['genome_version']}}</a>
             </span>
           </p>
           <button *ngIf="btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.showGeneID' | translate}}</button>

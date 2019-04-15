@@ -357,7 +357,7 @@ export class ReMultiOmicsComponent implements OnInit {
 	classifyChartSelect() {
 		this.chartSelect.length = 0;
 		if (this.selectedColumn.length) this.chartSelect.push(...this.selectedColumn);
-		if (this.selectedBox.length) this.chartSelect.push(...this.selectedBox);
+        if (this.selectedBox.length) this.chartSelect.push(...this.selectedBox);
 	}
 
 	// 图
@@ -634,7 +634,8 @@ export class ReMultiOmicsComponent implements OnInit {
 					});
 				} else {
 					//单选
-					that.selectedColumn.length = 0;
+                    that.selectedColumn.length = 0;
+                    that.selectedBox.length = 0;
 
 					d3.select('#multiOmicsChartDiv svg').selectAll('.columnRect').nodes().forEach((v) => {
 						$(v).css('fill', $(v).attr('fill'));
@@ -666,7 +667,8 @@ export class ReMultiOmicsComponent implements OnInit {
 					that.classifyChartSelect();
 					that.chartBackStatus();
 					that.showBackButton = false;
-				}
+                }
+
 			});
 
 		// column x text
@@ -781,7 +783,7 @@ export class ReMultiOmicsComponent implements OnInit {
 					.selectAll('.boxs')
 					.data((m) => m.boxList)
 					.enter();
-					
+
 				// scatter
 				const radius = 2;
 				boxplots
@@ -896,7 +898,8 @@ export class ReMultiOmicsComponent implements OnInit {
 							});
 						} else {
 							//单选
-							that.selectedBox.length = 0;
+                            that.selectedBox.length = 0;
+                            that.selectedColumn.length = 0;
 
 							d3.select('#multiOmicsChartDiv svg').selectAll('.columnRect').nodes().forEach((v) => {
 								$(v).css('fill', $(v).attr('fill'));

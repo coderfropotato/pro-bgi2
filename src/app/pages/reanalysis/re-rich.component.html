@@ -59,7 +59,7 @@
                 <div [hidden]='!expandModuleTable'>
                     <ng-container>
                         <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [tableHeight]="leftTableHeight / 2" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="bigtableUrl" tableId="geneRichCheckBigTable" (checkedChange)="checkedChange($event)"
-                            [(computedScrollHeight)]="leftComputedScrollHeight" [reanalysisId]="tid">
+                            [(computedScrollHeight)]="leftComputedScrollHeight" [reanalysisId]="tid" [reanalysisDate]='date'>
                         </app-big-table-check>
                     </ng-container>
 
@@ -73,7 +73,7 @@
                 <div>
                     <app-table-switch-chart *ngIf="selectedVal" #switchChart [id]="'re-rich'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'geneRichChartDiv'" [chartName]="'基因富集'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true"
                         [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" (showChange)="showChange($event)" [chartTypeData]="chartTypeData" [otherLeftTemplate]="checkedTemplate"
-                        [flex]="true" [reanalysisDate]='date'>
+                        [flex]="true" >
                     </app-table-switch-chart>
 
                     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
