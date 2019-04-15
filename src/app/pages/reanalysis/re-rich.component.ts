@@ -88,6 +88,7 @@ export class ReRichComponent implements OnInit {
     tid:string = null;
     geneType:string = '';
     version:string = null;
+    date: string = null;
 
     selectGeneCount:number = 0;
     computedScrollHeight:boolean = false;
@@ -132,6 +133,7 @@ export class ReRichComponent implements OnInit {
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
             this.annotation = params['params']['annotation'];
+            this.date = params['params']['date'];
             this.storeService.setTid(this.tid);
         })
     }

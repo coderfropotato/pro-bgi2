@@ -175,10 +175,10 @@
                             <ng-container *ngFor="let two of (head[0].children.length?head[0].children:[head[0]]);index as i;trackBy:identity">
                                 <td *ngIf="d[two['true_key']] || d[two['true_key']]==0" [ngStyle]="{'min-width':widthConfig[1],'max-width':widthConfig[1]}"  [nzLeft]="colLeftConfig[i]" [nzContent]="tpl" nzPlacement="right" nz-popover>
                                     <ng-template #tpl>
-                                        <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:true:compareGroup:reanalysisId:tableEntity['geneType']"></span>
+                                        <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:true:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate"></span>
                                     </ng-template>
                                     <!-- 如果是string类型 可能会有特殊头 需要过滤  不是string 默认接number过滤  {{d[two['true_key']] | accuracyPipe : accuracy : two['searchType']}}-->
-                                    <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']"></span>
+                                    <span [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate"></span>
                                 </td>
                                 <td *ngIf="!d[two['true_key']] && d[two['true_key']]!=0" [ngStyle]="{'min-width':widthConfig[1],'max-width':widthConfig[1]}">
                                     <span>NA</span>
@@ -190,10 +190,10 @@
                                 <!-- 正常值显示 -->
                                 <td *ngIf="d[h['true_key']] || d[h['true_key']]==0" [ngStyle]="{'min-width':widthConfig[i+2],'max-width':widthConfig[i+2]}"   [nzContent]="tpl2" nzPlacement="right" nz-popover>
                                     <ng-template #tpl2>
-                                        <span [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true:compareGroup:reanalysisId:tableEntity['geneType']"></span>
+                                        <span [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate"></span>
                                     </ng-template>
                                     <!-- 如果是string类型 可能会有特殊头 需要过滤  不是string 默认接number过滤  {{(d[h['true_key']] || d[h['true_key']]==0)?(d[h['true_key']] | accuracyPipe : accuracy : h['searchType']):'NA' }}-->
-                                    <span [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']"></span>
+                                    <span [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate"></span>
                                 </td>
                                 <!-- NA 不显示popover 不用过滤 -->
                                 <td *ngIf="!d[h['true_key']] && d[h['true_key']]!=0" [ngStyle]="{'min-width':widthConfig[i+2],'max-width':widthConfig[i+2]}">

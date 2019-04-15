@@ -25,6 +25,8 @@ export class ClusterComponent implements OnInit {
     @ViewChild('addColumn') addColumn;
     @ViewChild('clusterChart') clusterChart;
     @ViewChild('transformTable') transformTable;
+    @ViewChild('setTemplate') setTemplate;
+    @ViewChild('clusterSet') clusterSet;
     // 默认收起模块描述
 	expandModuleDesc: boolean = false;
 
@@ -235,9 +237,13 @@ export class ClusterComponent implements OnInit {
     //选中参数之后，重新访问接口
     handleCompareGroupChange() {
         (async () => {
+            this.defaultSetEntity['compareGroup'] = this.compareGroup;
+            this.clusterChart.getDefaultSet();
+
             this.chartEntity['compareGroup'] = this.compareGroup;
             this.clusterChart.reGetData();
-			this.chartBackStatus();
+
+            this.chartBackStatus();
 		})();
 	}
 
@@ -358,7 +364,6 @@ export class ClusterComponent implements OnInit {
 	// 表格基础头改变  设置emitBaseThead为true的时候 表格下一次请求回来会把表头发出来 作为表格的基础表头传入增删列
 	baseTheadChange(thead) {
         this.baseThead = thead['baseThead'].map((v) => v['true_key']);
-        console.log(this.baseThead);
     }
 
 	// 表格上方功能区 resize重新计算表格高度
@@ -421,6 +426,10 @@ export class ClusterComponent implements OnInit {
         })
 
         this.defaultSetData=data;
+
+        if (this.clusterSet) {
+            this.clusterSet.setDefaultSet(data);
+        }
     }
 
     //设置 确定

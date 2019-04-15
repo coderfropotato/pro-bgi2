@@ -129,6 +129,7 @@ export class MapComponent implements OnInit {
 
 	mapid: string = '';
 	tid: any = null;
+	date: any = null;
 	lcid: string = '';
 	compareGroup: string = '';
 	dirtyPathWayIframeUrl: string;
@@ -170,14 +171,20 @@ export class MapComponent implements OnInit {
 		this.routes.paramMap.subscribe((params) => {
 			// {"lcid":"develop" ,"mapid": "04020", "compareGroup": "undefined", "tid": "c52f2af6134e431e88d75b72053554de", "geneType": "gene" }
 			this.params = params['params'];
+			console.log("params:",params)
 			this.lcid = this.params['lcid'];
 			this.mapid = this.params['mapid'];
 			this.defaultGeneType = this.params['geneType'];
-			this.tid = this.params['tid'] == 'undefined' ? undefined : this.params['tid'];
-			this.compareGroup = this.params['compareGroup'];
+			this.tid = this.params['tid'] == 'undefined' ? undefined : this.params['tid'];//重分析
+			this.date = this.params['date'] == 'undefined' ? undefined : this.params['date'];//重分析
+			this.compareGroup = this.params['compareGroup'];//模块
 
 			if (this.tid) {
 				// 重分析内的map跳转
+				let pathwayURL = `${config['pathwayURL']}`;
+				//http://biosys.bgi.com/re_analyze_result/test/{date}/{LCID}_{tid}/pathway_map/map03010.html
+				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/re_analyze_result/${pathwayURL}/${this.date}/${this
+					.lcid}_${this.tid}/pathway_map/map${this.mapid}.html`;
 			} else {
 				// 非重分析的map跳转   production test
 				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this

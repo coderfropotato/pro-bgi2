@@ -179,7 +179,7 @@ export class SnpDistributionComponent implements OnInit {
             }
         },
         tooltip: function(d) {
-            return "<span>name："+d.data.key+"</span><br><span>value："+d.data.value+"</span>";
+            return "<span>name："+d.data.name+"</span><br><span>value："+d.data.value+"</span>";
         }
     }
 

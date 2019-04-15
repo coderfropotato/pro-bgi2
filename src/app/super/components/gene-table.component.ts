@@ -75,6 +75,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	// 在kegg富集需要跳转map的时候用到  其他都为默认值空
 	@Input() compareGroup: any = undefined; // 比较组
 	@Input() reanalysisId: any = undefined; // 重分析id
+	@Input() reanalysisDate: any = undefined; // 重分析时间
 
 	@ViewChildren('child') children;
 	count: number = 0; // 选中的基因个数

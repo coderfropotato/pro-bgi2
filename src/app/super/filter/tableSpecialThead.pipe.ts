@@ -28,7 +28,8 @@ export class TableSpecialTheadFilter implements PipeTransform {
 		whitespace: boolean = false,	// 内容是否需要换行   popover里面需要换行（true） 在表格里显示不需要换行（false）
 		compareGroup:any = undefined,  // 比较组，默认为空  在KEGG富集里面会跳转map  需要比较组或者重分析id作为参数
 		id:any = undefined,	// 重分析id
-		geneType:any = undefined // 当前表格的基因类型  gene还是rna
+		geneType:any = undefined, // 当前表格的基因类型  gene还是rna
+		date: any = undefined//时间
 	): object {
 
 		// type = 'string';
@@ -124,7 +125,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 					a.forEach((v,index) => {
 						let mapid = v.split(idFlag)[0];
 						// 跳map
-						let href = `${window.location.href.split('report')[0]}report/map/${sessionStorage.getItem('LCID')}/${mapid}/${compareGroup}/${id}/${geneType}`;
+						let href = `${window.location.href.split('report')[0]}report/map/${sessionStorage.getItem('LCID')}/${mapid}/${compareGroup}/${id}/${geneType}/${date}`;
 						htmlStr+=`<a href="${href}" target="_blank">${v}</a>`;
 						if(whitespace) {
 							htmlStr+=index !==a.length-1?'<br>':'';

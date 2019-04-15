@@ -340,7 +340,7 @@ const ROUTES: Routes = [
 	},
 	// Map
 	{
-		path: 'report/map/:lcid/:mapid/:compareGroup/:tid/:geneType',
+		path: 'report/map/:lcid/:mapid/:compareGroup/:tid/:geneType/:date',
 		component: MapComponent,
 		data: {
 			keep: false,
@@ -488,7 +488,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-enrichment/:geneType/:tid/:version/:annotation/:isEdit',
+				path: 're-enrichment/:geneType/:tid/:version/:annotation/:isEdit/:date',
 				component: ReRichComponent,
 				canActivate: [ SysDefendService ],
 				data: {

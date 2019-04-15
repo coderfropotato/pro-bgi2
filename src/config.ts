@@ -25,7 +25,8 @@ const config: object = {
 	unableClickSplitFlag:'---', // 不可点击的换行分割符
 	urlSplitFlag: '@', // 切割url的标志字符
 	valSplitFlag: '+++', // 内容换行的标志字符
-	idComposeDesc: '///' // id和描述的组合标志字符
+	idComposeDesc: '///', // id和描述的组合标志字符
+	pathwayURL:'production'//'test'
 };
 
 export default config;
