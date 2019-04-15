@@ -255,7 +255,7 @@ export class OverviewComponent implements OnInit {
 		var margin = {
 			top: 40,
 			left: max_sampleLength * 8 + 20,
-			bottom: max_sampleLength * 4 + 20,
+			bottom: max_sampleLength * 8 + 20,
 			right: 90
 		};
 		if (sampleLen <= 2) {
@@ -341,14 +341,20 @@ export class OverviewComponent implements OnInit {
 				if (sampleLen <= 2) {
 					return "middle";
 				} else {
-					return "start";
+					return "end";
 				}
 			})
+			// .attr("dx", function() {
+            //     return "-0.8em"
+            // })
+            // .attr("dy", function() {
+            //         return "0.5em"
+            // })
 			.attr("transform", function() {
 				if (sampleLen <= 2) {
 					return "";
 				} else {
-					return "rotate(25)";
+					return "rotate(-60)";
 				}
 			});
 
