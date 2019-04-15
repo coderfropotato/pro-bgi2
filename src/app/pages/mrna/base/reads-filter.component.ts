@@ -696,9 +696,9 @@ export class ReadsFilterComponent implements OnInit {
 			}
 		});
 
-		console.log(this.tempMenu);
-		console.log(this.tempMenu2);
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu);
+		// console.log(this.tempMenu2);
+		// console.log(this.tempMenu3);
 
 		this.tempMenu.forEach((d)=>{
 			if(d["name"]=="003"){
@@ -728,7 +728,7 @@ export class ReadsFilterComponent implements OnInit {
 					break;
 			}
         })
-        
+
         var map = {},
 			dest = [];
 		for(var i = 0; i < this.tempMenu3.length; i++){
@@ -764,7 +764,7 @@ export class ReadsFilterComponent implements OnInit {
 
 		this.tempMenu3.length = 0;
 		this.tempMenu3 = tempArray;
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu3);
 
 		this.tempMenu3.forEach((d)=>{
 			switch (d["name"]) {

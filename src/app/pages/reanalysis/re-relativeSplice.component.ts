@@ -442,7 +442,7 @@ export class RelativeSpliceComponent implements OnInit {
                         that.singleMultiSelect = {};
                         that.doSingleData();
                         that.updateRelativeSplice();
-                    }  
+                    }
                     // console.log(d)
                     // if(d == undefined){
                     //     that.singleMultiSelect = {};
@@ -457,7 +457,7 @@ export class RelativeSpliceComponent implements OnInit {
         let temp_x_width = xAxis_length + left_ylength + temp_add_width;
         let temp_y_width = yAxis_length + bottom_xlength + temp_add_width;
 
-        
+
 
         setTimeout(()=>{
             drawLeftTitle(); //上侧标题
@@ -565,7 +565,7 @@ export class RelativeSpliceComponent implements OnInit {
 
             symbolScale =  d3.scaleOrdinal().domain(that.AS_type_select).range(temp_symbol_select);
 
-            console.log(symbolScale)
+            // console.log(symbolScale)
             r_legend.append("g")
             .attr("class", "legendSymbol")
             .attr("transform", "translate(0, 0)");
@@ -953,7 +953,7 @@ export class RelativeSpliceComponent implements OnInit {
 
 			return max_length[0];
         }
-        
-        
+
+
     }
 }

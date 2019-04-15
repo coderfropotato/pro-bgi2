@@ -56,7 +56,7 @@ export class UploadComponent implements OnInit {
 		this.downUrlOne = "/project/upload/upload_gene.txt";
 		this.downUrlTwo = "/project/upload/upload_rna.txt";
 		this.downUrlThree = "/project/upload/upload_sample.txt";
- 
+
         this.PercentNum = 0;
         this.defaultSetEntity = {
             LCID: this.storeService.getStore("LCID"),
@@ -186,7 +186,7 @@ export class UploadComponent implements OnInit {
 	}
 
 	goResult() {//根据id查看结果
-		console.log(this.m_index);
+		// console.log(this.m_index);
 		let tempNum = this.m_index;
 		let self = this;
 		self.ajaxService

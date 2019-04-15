@@ -173,8 +173,8 @@ export class AlternativeSplicingComponent implements OnInit {
 			});
 		}
 
-    console.log(data);
-    console.log(chartData);
+    // console.log(data);
+    // console.log(chartData);
 
 		let that = this;
 		let config: object = {

@@ -171,7 +171,7 @@ export class MapComponent implements OnInit {
 		this.routes.paramMap.subscribe((params) => {
 			// {"lcid":"develop" ,"mapid": "04020", "compareGroup": "undefined", "tid": "c52f2af6134e431e88d75b72053554de", "geneType": "gene" }
 			this.params = params['params'];
-			console.log("params:",params)
+			// console.log("params:",params)
 			this.lcid = this.params['lcid'];
 			this.mapid = this.params['mapid'];
 			this.defaultGeneType = this.params['geneType'];
