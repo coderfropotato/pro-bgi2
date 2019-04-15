@@ -38,6 +38,7 @@
             [setDataEntity]="setDataEntity"
             (setData)="getSetData($event)"
             [flex]="true"
+            [chartDescContent]="'横轴为样本的log2(表达量值+1)，纵轴为基因。默认配色下，色块的颜色越红表达量越高，颜色越蓝，表达量越低。'" 
             (refresh)="handlerRefresh()"
             >
             </app-table-switch-chart>
