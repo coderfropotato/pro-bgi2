@@ -137,7 +137,7 @@ export class GeneRelativeComponent implements OnInit {
         this.selectRelations.length = 0;
         this.relations = JSON.parse(JSON.stringify(this.storeService.getStore('relations')));
         this.initPosRelation();
-		console.log(this.relations);
+		// console.log(this.relations);
 		if (this.selectedType === '互作关系') {
 			this.relations.forEach((v) => {
 				v['checked'] = false;

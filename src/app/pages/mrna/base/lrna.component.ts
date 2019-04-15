@@ -305,7 +305,7 @@ export class LrnaComponent implements OnInit {
 							index:d.substr(d.length-1,1)
 					});
 				}
-				
+
 			}
 			if(d.length == 3){
 				this.tempMenu.push({
@@ -316,10 +316,10 @@ export class LrnaComponent implements OnInit {
 			}
 		});
 
-		console.log(this.tempMenu);
-		console.log(this.tempMenu2);
-		console.log(this.tempMenu3);
-		
+		// console.log(this.tempMenu);
+		// console.log(this.tempMenu2);
+		// console.log(this.tempMenu3);
+
 		this.tempMenu.forEach((d)=>{
 			if(d["name"]=="005"){
 				this.tempIndex =  d["index"];

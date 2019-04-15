@@ -413,7 +413,7 @@ export class GenePage {
 						this.geneService.set('checkedAddThead', this.selectedListT);
 						this.geneService.set('num', tempList.length);
 
-						console.log(this.geneService);
+						// console.log(this.geneService);
 						// this.selectedList = data;
 
 						// for (var i = 0; i < data['data'].length; i++) {
@@ -503,7 +503,7 @@ export class GeneComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(this.geneService['geneOptions'])
+		// console.log(this.geneService['geneOptions'])
 
         this.applyOnceSearchParams = true;
         this.defaultApplyOnceSearchParams = true;

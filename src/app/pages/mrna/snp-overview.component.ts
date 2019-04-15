@@ -73,7 +73,7 @@ export class SnpOverviewComponent implements OnInit {
     public toolsService: ToolsService,
     private addColumnService: AddColumnService,
     private translate: TranslateService,
-  ) { 
+  ) {
      // 订阅windowResize 重新计算表格滚动高度
      this.message.getResize().subscribe((res) => {
       if (res['message'] === 'resize') this.computedTableHeight();
@@ -133,7 +133,7 @@ export class SnpOverviewComponent implements OnInit {
 			this.computedTableHeight();
 		}, 30);
   }
-  
+
   // 切换左右布局 计算左右表格的滚动高度
 	switchChange(status) {
 		this.switch = status;
@@ -144,7 +144,7 @@ export class SnpOverviewComponent implements OnInit {
 			this.computedTableHeight();
 		}, 320);
 	}
-  
+
   drawChart(data) {
 
     var baseThead = data.baseThead;
@@ -225,7 +225,7 @@ export class SnpOverviewComponent implements OnInit {
       //   return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]).toFixed(2) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
       // }
       tooltip: function(d) {
-        console.log(d)
+        // console.log(d)
 				var p =+(d[1] - d[0]).toFixed(2);
 				var n =Math.round(p/100*d.data.total);
 				return '<span>Type：' + d.key + '</span><br><span>Percentage：' + p  + '%</span><br><span>Number：'+n+'</span><br><span>Group：'+d.data['sample_name']+'</span>';
@@ -236,7 +236,7 @@ export class SnpOverviewComponent implements OnInit {
   }
 
   handlerRefresh() {
-  
+
   }
 
   moduleDescChange(){

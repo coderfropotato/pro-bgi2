@@ -214,16 +214,16 @@ export class BasicHelpComponent implements OnInit {
 			}
 		});
 
-		console.log(this.tempMenu);
-		console.log(this.tempMenu2);
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu);
+		// console.log(this.tempMenu2);
+		// console.log(this.tempMenu3);
 
 		// this.tempMenu.forEach((d)=>{
 		// 	if(d["name"]=="001"){
 		// 		this.tempIndex =  d["index"];
 		// 	}
         // })
-        
+
         this.tempIndex = this.tempMenu.length +1;
 
 		this.tempMenu2.forEach((d)=>{
@@ -284,7 +284,7 @@ export class BasicHelpComponent implements OnInit {
 
 		this.tempMenu3.length = 0;
 		this.tempMenu3 = tempArray;
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu3);
 
 		this.tempMenu3.forEach((d)=>{
 			switch (d["name"]) {

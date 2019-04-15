@@ -199,7 +199,7 @@ export class GeneDetailComponent implements OnInit {
 	//GO Biological Process
 	go_b_list: object[] = [];
 	go_b_flag: boolean = true;
-	
+
 	kegg_way_url: string;//KEGG Pathway
 	kegg_way_flag: boolean = true;
 	kegg_reaction_url: string;//kegg_reaction
@@ -323,44 +323,44 @@ export class GeneDetailComponent implements OnInit {
 				if(this.geneType == "rna"){
 					await this.getGeneID();
 				}
-				
+
 				this.geneParamsUsed = {
 					LCID: this.lcid,
 					geneType: "gene",
 					geneID: this.geneID
 				}
-		
+
 				this.transcriptParamsUsed = {
 					LCID: this.lcid,
 					geneType: "rna",
 					geneID: this.geneID
 				}
-				
+
 				//基因信息
 				this.gene_url = `${config['javaPath']}/geneDetail/info`;
 				this.gene_params = this.geneParamsUsed;
-		
+
 				//转录本信息
 				this.defaultUrl = `${config['javaPath']}/geneDetail/rnaID`;
 				this.rna_params = this.geneParamsUsed;
-		
+
 				//样本表达量
 				this.expressive_geneType = "gene";
 				this.expressive_defaultUrl = `${config['javaPath']}/geneDetail/exp`;
 				this.expressive_params_g = this.geneParamsUsed;
 				this.expressive_params_t = this.transcriptParamsUsed;
 				//this.expressive_params = this.geneParamsUsed;//折线图
-		
+
 				//组间差异
 				this.groupDiff_defaultUrl = `${config['javaPath']}/geneDetail/groupDiff`;
 				this.groupDiff_params_g = this.geneParamsUsed;
 				this.groupDiff_params_t = this.transcriptParamsUsed
-		
+
 				//样本间差异
 				this.sampleDiff_defaultUrl = `${config['javaPath']}/geneDetail/sampleDiff`;
 				this.sampleDiff_params_g = this.geneParamsUsed;
 				this.sampleDiff_params_t = this.transcriptParamsUsed;
-		
+
 				//miRna靶向信息
 				this.miRnaTarget_defaultUrl = `${config['javaPath']}/geneDetail/miRNATarget`;
 				this.miRnaTarget_params_g = this.geneParamsUsed;
@@ -370,7 +370,7 @@ export class GeneDetailComponent implements OnInit {
 				this.precursor_geneType = "gene";
 				this.precursor_defaultUrl = `${config['javaPath']}/geneDetail/precursor`;
 				this.precursor_params = this.geneParamsUsed;
-		
+
 				//可变剪切
 				this.alternative_defaultUrl = `${config['javaPath']}/geneDetail/getAS`;
 				this.alternative_params = this.geneParamsUsed;
@@ -378,7 +378,7 @@ export class GeneDetailComponent implements OnInit {
 				//SNP
 				this.snp_defaultUrl = `${config['javaPath']}/geneDetail/snp`;
 				this.snp_params = this.geneParamsUsed;
-		
+
 				//INDEL
 				this.indel_defaultUrl = `${config['javaPath']}/geneDetail/indel`;
 				this.indel_params = this.geneParamsUsed;
@@ -386,7 +386,7 @@ export class GeneDetailComponent implements OnInit {
 				//融合基因
 				this.fusion_defaultUrl = `${config['javaPath']}/geneDetail/getFusion`;
 				this.fusion_params = this.geneParamsUsed;
-		
+
 				//文献信息
 				this.document_defaultUrl = `${config['javaPath']}/geneDetail/article`;
 				this.document_params = {
@@ -412,7 +412,7 @@ export class GeneDetailComponent implements OnInit {
 					type: "protein.fa",
 					geneID: this.geneID
 				};
-		
+
 				// 功能注释信息
 				this.functional_url = `${config['javaPath']}/geneDetail/annotation/`;
 				this.go_molecular_params = this.geneParamsUsed;
@@ -484,7 +484,7 @@ export class GeneDetailComponent implements OnInit {
 					"geneType": "rna",
 					"id": this.geneID
 				}
-					  
+
 			})
 			.subscribe((data: any) => {
 				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
@@ -494,7 +494,7 @@ export class GeneDetailComponent implements OnInit {
 				} else if (data.status == '-2') {
 					return;
 				} else {
-					console.log(data);
+					// console.log(data);
 					this.geneID = data["data"].geneID;
 				}
 				resolve("success");
@@ -523,7 +523,7 @@ export class GeneDetailComponent implements OnInit {
 					return;
 				} else {
 					this.alternative_rows = data['data']['rows'];
-					console.log(this.alternative_rows);
+					// console.log(this.alternative_rows);
 					this.alternative_baseThead = data['data']['baseThead'];
 					this.alternative_flag = this.alternative_rows.length>0?true:false;
 					//this.geneInfoList = data['data'];
@@ -593,7 +593,7 @@ export class GeneDetailComponent implements OnInit {
 	}
 
 	SelectedExpressiveChange(num) {
-		console.log(num)
+		// console.log(num)
 		this.expressive_index = num;
 		if(num==0){
 			this.line_flag = false;
@@ -607,7 +607,7 @@ export class GeneDetailComponent implements OnInit {
 
 	//折线图
 	drawLineChart(){
-		console.log(this.expressive_g_data);
+		// console.log(this.expressive_g_data);
 		let data = this.expressive_g_data;
 		let tempdata = data[0];
 		let tempArray = [];
@@ -686,7 +686,7 @@ export class GeneDetailComponent implements OnInit {
 	}
 
 	drawLineChart2(){
-		console.log(this.expressive_t_data);
+		// console.log(this.expressive_t_data);
 		let data = this.expressive_t_data;
 		let tempdata = data[0];
 		let tempArray = [];
@@ -1047,7 +1047,7 @@ export class GeneDetailComponent implements OnInit {
 				this.drawLineChart2()
 				this.line_flag2 = true;
 				break;
-			
+
 			case "diff_group_gene":
 				this.groupDiff_params_g_flag = tempData.length>0?true:false;
 				break;
