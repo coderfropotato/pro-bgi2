@@ -247,19 +247,18 @@
     white-space: nowrap;
     &::-webkit-scrollbar {
         width: 8px;
-        height: 8px;
-        background-color: #ccc;
+        height: 6px;
     }
     &::-webkit-scrollbar-track {
         background: #fff;
         border-radius: 2px;
     }
     &::-webkit-scrollbar-thumb {
-        background: #ccc;
+        background: rgb(238, 238, 238);
         border-radius: 2px;
     }
     &::-webkit-scrollbar-thumb:hover {
-        background: #ccc;
+        background: rgb(238, 238, 238)
     }
     &::-webkit-scrollbar-corner {
         background: #ccc;
