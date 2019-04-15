@@ -177,7 +177,7 @@ export class ClusterSetComponent implements OnInit {
                 name:'转录本ID'
             }];
         }
-        this.selectedGene=this.type && this.type==='relation' ? this.geneList[2]['key'] : this.geneList[0]['key'];
+        this.selectedGene= this.geneList[0]['key'];
 
         if(trueData.verticalDefault){
             this.verticalInfos=trueData.verticalDefault;
