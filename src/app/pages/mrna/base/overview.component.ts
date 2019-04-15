@@ -634,7 +634,7 @@ export class OverviewComponent implements OnInit {
 				},
 				el: "#BoxDataID",
 				type: "boxplot",
-				width: 660,
+				width: 800,
 				onselect: data => {
 					console.log(data);
 				},
@@ -669,7 +669,7 @@ export class OverviewComponent implements OnInit {
 			  axis: {
 				x: {
 				  title: "",
-				  rotate: 30,
+				  rotate: 60,
 				  data:xData,
 				  dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
@@ -849,7 +849,7 @@ export class OverviewComponent implements OnInit {
 							this.updateTitle();
 						}
 					},
-					// rotate: 60
+					rotate: 60
 				},
 				y: {
 					title: 'GeneNumber',
