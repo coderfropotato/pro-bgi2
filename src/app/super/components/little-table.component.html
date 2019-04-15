@@ -15,7 +15,7 @@
                 <tr>
                     <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" [nzContent]="tp67" nzPlacement="top" nz-popover *ngFor="let thead of tableData['baseThead'];index as i">
                         <ng-template #tp67>
-                            <span [innerHTML]="thead.name"></span>
+                            <span [innerHTML]="'tableHeader.'+thead.hover | translate "></span>
                         </ng-template>
                         <span [innerHTML]="thead.name"></span>
                     </th>
