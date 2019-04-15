@@ -380,11 +380,11 @@ export class KaFunComponent implements OnInit {
 
 	//单选
 	doSingleData() {
-		console.log(this.singleMultiSelect);
+		// console.log(this.singleMultiSelect);
 		this.selectConfirmData.length = 0;
 		let tempArray = [];
 		tempArray.push(this.singleMultiSelect['bucket']);
-		console.log(tempArray);
+		// console.log(tempArray);
 		this.selectConfirmData = tempArray;
 		//this.singleMultiSelect['bucket']
 		// if (this.singleMultiSelect['bucket'].length) {
@@ -402,7 +402,7 @@ export class KaFunComponent implements OnInit {
 
 	//多选确定时候,提交的数据
 	multipleConfirm() {
-		console.log(this.doubleMultiSelect);
+		// console.log(this.doubleMultiSelect);
 		this.selectConfirmData.length = 0;
 		let tempArray = [];
 		for (let index = 0; index < this.doubleMultiSelect.length; index++) {
@@ -410,7 +410,7 @@ export class KaFunComponent implements OnInit {
 			tempArray.push(element["bucket"])
 		}
 
-		console.log(tempArray);
+		// console.log(tempArray);
 		this.selectConfirmData = tempArray;
 		// let tempArray = [];
 		// for (let index = 0; index < this.doubleMultiSelect.length; index++) {
@@ -555,7 +555,7 @@ export class KaFunComponent implements OnInit {
 					// _self.leftSelect.length = 0;
 					// _self.upSelect.length = 0;
 					// _self.first ? _self.transformTable._getData() : (_self.first = true);
-					
+
 				},
 				false
 			);
