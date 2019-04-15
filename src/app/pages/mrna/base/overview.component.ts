@@ -356,7 +356,9 @@ export class OverviewComponent implements OnInit {
 				} else {
 					return "rotate(-60)";
 				}
-			});
+			})
+			.attr("dx","-6")
+			.attr("dy","0");
 
 		svg.append("g")
 			.attr("class", "yAxis_sampleCorrelate")

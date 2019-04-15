@@ -749,11 +749,11 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('transform', `rotate(-90)`);
 
 				boxYtitle.append('tspan').text(
-					d.relation.length>20 ? d.relation.slice(0,20)+"..." : d.relation
+					d.relation.length*7>eachChartHeight ? d.relation.slice(0,Math.floor(eachChartHeight/7))+"..." : d.relation
 				).append('title').text(d.relation);
 
 				boxYtitle.append('tspan').attr("x",0).attr('dy',15).text(
-					d.name.length>20 ? d.name.slice(0,20)+"..." : d.name
+					d.name.length*7>eachChartHeight ? d.name.slice(0,Math.floor(eachChartHeight/7))+"..." : d.name
 				).append('title').text(d.name);
 
 				// boxplot x
