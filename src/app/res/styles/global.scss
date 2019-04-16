@@ -2200,10 +2200,14 @@ button {
     flex-direction: column;
 }
 
-//基因总表
+//基因总表---开始
 .gene {
     position: relative;
     width: 100%;
+}
+
+.ant-input-group-addon:first-child{
+    border-radius: 100px 0 0 100px !important;
 }
 
 .gene_margin_right {
@@ -2315,7 +2319,7 @@ button {
         justify-content: flex-end;
         button {
             width: 100%;
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 100px 100px 0;
         }
     }
     .gene_fast {
@@ -2391,7 +2395,7 @@ button {
         }
     }
 }
-
+//基因总表---结束
 @keyframes rotate {
     from {
         transform: rotate(0);
