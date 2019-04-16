@@ -22,14 +22,15 @@ export class TableSpecialTheadFilter implements PipeTransform {
 
 	// kegg富集表头 符合 mapMatchItems的项  需要多传compareGroup 或者 重分析id
 	transform(
-		value: any,    // 输入的值 
+		value: any,    // 输入的值
 		thead: any,  // 表头
 		type:any, 	// searchType
 		whitespace: boolean = false,	// 内容是否需要换行   popover里面需要换行（true） 在表格里显示不需要换行（false）
 		compareGroup:any = undefined,  // 比较组，默认为空  在KEGG富集里面会跳转map  需要比较组或者重分析id作为参数
-		id:any = undefined,	// 重分析id
+        id:any = undefined,	// 重分析id
 		geneType:any = undefined, // 当前表格的基因类型  gene还是rna
-		date: any = undefined//时间
+		date: any = undefined,//时间
+        keggrich:boolean = false,// 如果是富集  默认跳map 不是富集跳官网   只针对一个字段 kegg_pathway_term_id
 	): object {
 
 		// type = 'string';
@@ -120,19 +121,30 @@ export class TableSpecialTheadFilter implements PipeTransform {
 					// 04540///Gap junction
 					// 05130///Pathogenic Escherichia coli infection
 
-					// /// 切[0]
-					let a = value.split(valSplitFlag);
-					a.forEach((v,index) => {
-						let mapid = v.split(idFlag)[0];
-						// 跳map
-						let href = `${window.location.href.split('report')[0]}report/map/${sessionStorage.getItem('LCID')}/${mapid}/${compareGroup}/${id}/${geneType}/${date}`;
-						htmlStr+=`<a href="${href}" target="_blank">${v}</a>`;
-						if(whitespace) {
-							htmlStr+=index !==a.length-1?'<br>':'';
-						}else{
-							htmlStr+='&emsp;';
-						}
-					});
+                    // /// 切[0]
+
+                        let a = value.split(valSplitFlag);
+                        a.forEach((v,index) => {
+                            let mapid = v.split(idFlag)[0];
+                            let href:string;
+
+                            if(keggrich){
+                                // 跳map
+                                href=`${window.location.href.split('report')[0]}report/map/${sessionStorage.getItem('LCID')}/${mapid}/${compareGroup}/${id}/${geneType}/${date}`;
+                            }else{
+                                // 跳官网
+                                let url = matchRule[thead]['url'].split(flag)[0];
+                                href=url+mapid;
+                            }
+
+                            htmlStr+=`<a href="${href}" target="_blank">${v}</a>`;
+                            if(whitespace) {
+                                htmlStr+=index !==a.length-1?'<br>':'';
+                            }else{
+                                htmlStr+='&emsp;';
+                            }
+                        });
+
 				}else if(goAll.includes(thead)){
 					// goAll
 					let splitUnlink = value.split(unableClickSplitFlag);
@@ -153,7 +165,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 								}else{
 									htmlStr+=`<span>${val}</span>`
 								}
-								
+
 								if(whitespace){
 									htmlStr+=index!=val.length-1?'<br>':'';
 								}else{

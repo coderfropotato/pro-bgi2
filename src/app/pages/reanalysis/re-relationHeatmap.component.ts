@@ -380,7 +380,7 @@ export class reRelationHeatmapComponent implements OnInit {
         }
         this.height=400;
         this.domainRange=[data.min,data.max];
-        this.yName='symbol';
+        this.yName='hidden';
         this.isCluster=true;
 
         this.chartEntity['isHorizontal']=this.isCluster;
