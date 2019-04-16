@@ -49,7 +49,8 @@ export class GeneDetailComponent implements OnInit {
 		gene_map_loc:"",//染色体位置
 		genome_source:"",//
 		genome_version:"",//
-		genome_url:""//
+		genome_url:"",//
+		genome_version_official:""
 	};
 
 	btn_show: boolean = true;
@@ -626,7 +627,7 @@ export class GeneDetailComponent implements OnInit {
                 continue;
             }
             let tempObj = {};
-            tempObj["x"] = header["name"];
+            tempObj["x"] = header["name"].split(" ")[0];
             if (!tempdata.hasOwnProperty(header["true_key"])) {
                 tempObj["y"] = 0;
             } else {
@@ -657,7 +658,7 @@ export class GeneDetailComponent implements OnInit {
 			},
 			axis: {
 				x: {
-					title: "Sample name",
+					title: "Sample Name",
 					rotate: 70,
 					dblclick: function(event) {
 						var name = prompt("请输入需要修改的标题", "");
@@ -668,7 +669,7 @@ export class GeneDetailComponent implements OnInit {
 					}
 				},
 				y: {
-					title: "log10(EXP+1)",
+					title: "log2(Value+1)",
 					dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 					if (name) {
@@ -690,19 +691,35 @@ export class GeneDetailComponent implements OnInit {
 		let data = this.expressive_t_data;
 		let tempdata = data[0];
 		let tempArray = [];
-		for (const key in tempdata) {
-			let tempObj = {};
-			if( key != "gene_id"){
-				//tempObj["x"] = key.indexOf("_") != -1 ? key.split("_")[1]:key;
-				tempObj["x"] = key;
-				tempObj["y"] = tempdata[key];
-				tempArray.push(tempObj);
-			}
-		}
-		// console.log(tempArray);
+
+		for (let i = 0; i < this.expressive_g_header.length; i++) {
+            let header = this.expressive_g_header[i];
+            if (header["true_key"] === "gene_id" || header["true_key"] == "rna_id") {
+                continue;
+            }
+            let tempObj = {};
+            tempObj["x"] = header["name"].split(" ")[0];
+            if (!tempdata.hasOwnProperty(header["true_key"])) {
+                tempObj["y"] = 0;
+            } else {
+                tempObj["y"] = Math.log10(tempdata[header["true_key"]] + 1);
+            }
+            tempArray.push(tempObj);
+        }
 		if(tempArray.length == 0){
 			return;
 		}
+		// for (const key in tempdata) {
+		// 	let tempObj = {};
+		// 	if( key != "gene_id"){
+		// 		tempObj["x"] = key;
+		// 		tempObj["y"] = tempdata[key];
+		// 		tempArray.push(tempObj);
+		// 	}
+		// }
+		// if(tempArray.length == 0){
+		// 	return;
+		// }
 
 		let config: object = {
 			chart: {
@@ -734,7 +751,7 @@ export class GeneDetailComponent implements OnInit {
 					}
 				},
 				y: {
-					title: "log10(EXP+1)",
+					title: "log2(Value+1)",
 					dblclick: function(event) {
 					var name = prompt("请输入需要修改的标题", "");
 					if (name) {
@@ -1044,8 +1061,10 @@ export class GeneDetailComponent implements OnInit {
 				// if(this.expressive_index == 1){
 				// 	this.drawLineChart(this.expressive_t_data);
 				// }
-				this.drawLineChart2()
-				this.line_flag2 = true;
+
+
+				// this.drawLineChart2()
+				// this.line_flag2 = true;
 				break;
 
 			case "diff_group_gene":
