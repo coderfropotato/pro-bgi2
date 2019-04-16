@@ -62,7 +62,7 @@
           <p *ngIf="geneInfoList['genome_version']">
             <span class="info_name">{{'gene_detail.genome_version' | translate}}</span>
             <span class="info_content">
-                <a href="https://www.ncbi.nlm.nih.gov/assembly/GCF_000001635.26" target="_blank">{{geneInfoList['genome_source']}}_{{geneInfoList['genome_version']}}</a>
+                <a href="{{geneInfoList['genome_url']}}" target="_blank">{{geneInfoList['genome_source']}}_{{geneInfoList['genome_version_official']}}</a>
             </span>
           </p>
           <button *ngIf="btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.showGeneID' | translate}}</button>
@@ -346,7 +346,7 @@
           <div class="transcripts_table" [hidden]="!go_f_flag">
               <h5>GO Molecular Function</h5>
                 <div *ngFor="let item of go_f_list" >
-                    <p class="table_title">{{item.level_1}}</p>
+                    <!-- <p class="table_title">{{item.level_1}}</p> -->
                     <div class="table_border table_srcoll">
                         <div *ngFor="let item_f of item['list']" class="goinfo">
                             <a href="http://amigo.geneontology.org/amigo/term/{{item_f.id}}" target="_blank">{{item_f.id}}</a>
@@ -360,7 +360,7 @@
           <div class="transcripts_table" [hidden]="!go_c_flag">
               <h5>GO Cellular Component</h5>
               <div *ngFor="let item of go_c_list" >
-                  <p class="table_title">{{item.level_1}}</p>
+                  <!-- <p class="table_title">{{item.level_1}}</p> -->
                   <div class="table_border table_srcoll">
                       <div *ngFor="let item_f of item['list']" class="goinfo">
                           <a href="http://amigo.geneontology.org/amigo/term/{{item_f.id}}" target="_blank">{{item_f.id}}</a>
@@ -374,7 +374,7 @@
           <div class="transcripts_table" [hidden]="!go_b_flag">
               <h5>GO Biological Process</h5>
               <div *ngFor="let item of go_b_list" >
-                  <p class="table_title">{{item.level_1}}</p>
+                  <!-- <p class="table_title">{{item.level_1}}</p> -->
                   <div class="table_border table_srcoll">
                       <div *ngFor="let item_f of item['list']" class="goinfo">
                           <a href="http://amigo.geneontology.org/amigo/term/{{item_f.id}}" target="_blank">{{item_f.id}}</a>

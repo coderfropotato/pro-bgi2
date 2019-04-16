@@ -49,6 +49,8 @@ export class LittleTableComponent implements OnInit {
     rows: any[] = [];
     thead: any[] = [];
 
+    scroll: any = { x: "100%"};
+
     targetID2Url:string;
     constructor(
         private ajaxService: AjaxService,
