@@ -7,7 +7,7 @@
         </ng-template>
 
         <ng-template #modalContent>
-            <nz-select class="mb12" style="min-width:160px" [(ngModel)]="selectedType" (ngModelChange)="selectChange()">
+            <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='selectedType' class="mb12" style="min-width:160px" [(ngModel)]="selectedType" (ngModelChange)="selectChange()">
                 <nz-option *ngFor="let type of selectType" [nzValue]="type" [nzLabel]="type"></nz-option>
             </nz-select>
             <div class="relative-params-top" *ngIf="selectedType===selectType[0]">

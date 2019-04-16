@@ -35,7 +35,7 @@ declare const $: any;
                                         <input placeholder="请输入基因ID或关键词" type="text" nz-input [(ngModel)]="inputValue" (ngModelChange)="inputChange()">
                                         </nz-input-group>
                                         <ng-template #addOnBeforeTemplate>
-                                        <nz-select [(ngModel)]="selectTargetName" (ngModelChange)="selectTypeChange()">
+                                        <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='selectTargetName' [(ngModel)]="selectTargetName" (ngModelChange)="selectTypeChange()">
                                             <nz-option  *ngFor="let item of selectTarget" [nzLabel]="item.label" [nzValue]="item.value" [nzDisabled]="item.isChecked"></nz-option>
                                         </nz-select>
                                         </ng-template>

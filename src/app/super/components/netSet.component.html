@@ -57,7 +57,7 @@
 </nz-dropdown>
 
 <!-- 选择定量信息 弹窗 -->
-<nz-modal [(nzVisible)]="isShowAddPanel && rationClassifyList.length" nzWidth="440" nzTitle="选择定量信息" (nzOnCancel)="addCancel()" (nzOnOk)="addConfirm()">
+<nz-modal [(nzVisible)]="isShowAddPanel && rationClassifyList.length" style="min-width:400px;max-width:600px" nzTitle="选择定量信息" (nzOnCancel)="addCancel()" (nzOnOk)="addConfirm()">
     <div class="rationClassifyRow">
         <span>定量类型：</span>
         <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curRationClassify" (ngModelChange)="rationClassifyChange()" nzShowSearch>

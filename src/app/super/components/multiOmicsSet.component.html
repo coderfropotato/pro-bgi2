@@ -100,7 +100,7 @@
 </nz-modal>
 
 <!-- 选择定量信息 弹窗 -->
-<nz-modal [(nzVisible)]="isShowAddPanel && rationClassifyList.length" nzWidth="440" nzTitle="选择定量信息" (nzOnCancel)="addCancel()" (nzOnOk)="addConfirm()">
+<nz-modal [(nzVisible)]="isShowAddPanel && rationClassifyList.length" style="min-width:400px;max-width:600px" nzTitle="选择定量信息" (nzOnCancel)="addCancel()" (nzOnOk)="addConfirm()">
         <div class="rationClassifyRow">
             <span>定量类型：</span>
             <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curRationClassify" (ngModelChange)="rationClassifyChange()" nzShowSearch>
@@ -115,7 +115,7 @@
 </nz-modal>
 
 <!-- 修改定量列 弹窗 -->
-<nz-modal [(nzVisible)]="isShowUpdatePanel && rationClassifyList.length" nzWidth="440" nzTitle="修改定量列" [nzFooter]='null' (nzOnCancel)='updateCancel()'>
+<nz-modal [(nzVisible)]="isShowUpdatePanel && rationClassifyList.length" style="min-width:400px;max-width:600px" nzTitle="修改定量列" [nzFooter]='null' (nzOnCancel)='updateCancel()'>
     <div class="rationClassifyRow">
         <span>定量类型：</span>
         <nz-select style="width: 180px;margin-left: 10px" [(ngModel)]="curUpdateClassify" [nzSize]="'small'" (ngModelChange)="updateClassifyChange()" nzShowSearch>

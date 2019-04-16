@@ -55,7 +55,7 @@
                                 <nz-switch style="vertical-align: middle;margin-top: -5px;" *ngIf="!isShowTable && !chartError" class="switchBtn" [(ngModel)]="isMultiSelect" (ngModelChange)="multiSelectChange()" nzCheckedChildren="{{'tableButton.multiple' | translate}}" nzUnCheckedChildren="{{'tableButton.single' | translate}}"></nz-switch>
                                 <button *ngIf="!isShowTable && !chartError" class="multiConfirmBtn" nz-button nzType="primary" [nzSize]="'small'" [disabled]="!isMultiSelect" (click)="multipleConfirm()">{{'tableButton.confirm' | translate}}</button>
                                 <!-- 下拉选择 [nzMaxMultipleCount]="3"-->
-                                <nz-select style="max-width: 360px;min-width:140px;margin-right:6px;" nzMode="multiple" nzPlaceHolder="please select tag" [(ngModel)]="selectPanelEntity['tag']" (ngModelChange)="handleTagSelectChange()">
+                                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]="selectPanelEntity['tag']" style="max-width: 360px;min-width:140px;margin-right:6px;" nzMode="multiple" nzPlaceHolder="please select tag" [(ngModel)]="selectPanelEntity['tag']" (ngModelChange)="handleTagSelectChange()">
                                     <nz-option *ngFor="let tag of tagList" [nzLabel]="tag" [nzValue]="tag"></nz-option>
                                 </nz-select>
                                 <!-- 刷新-->
