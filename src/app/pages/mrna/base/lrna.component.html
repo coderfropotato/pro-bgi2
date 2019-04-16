@@ -20,7 +20,7 @@
         <h3 class="title">{{tempIndex}}.{{itemNum2}} 小RNA分类</h3>
         <div class="f-content">
             <ng-template #searchTemplate>
-                <nz-select *ngIf="!isShowTable" style="min-width: 160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curSearchType' *ngIf="!isShowTable" style="min-width: 160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
                     <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
                 </nz-select>
             </ng-template>

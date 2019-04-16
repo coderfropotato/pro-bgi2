@@ -2,7 +2,7 @@
   <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
       <div class="left-bottom-layout">
           <ng-template #searchTemplate>
-              <nz-select *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
+              <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curSearchType' *ngIf="!isShowTable" style="width: 180px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
                   <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
               </nz-select>
           </ng-template>
@@ -77,7 +77,7 @@
 
 <div style="height:100%">
     <ng-template #searchTemplate>
-        <nz-select *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
+        <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curSearchType' *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
             <nz-option *ngFor="let item of chartSelectType" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
         </nz-select>
     </ng-template>

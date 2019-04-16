@@ -108,14 +108,14 @@
             
             -->
             <ng-template #otherLeftTemplate>
-                <nz-select style="min-width:160px" class="ml12" nzSize="small" nzShowSearch nzPlaceHolder="Select compareGroup" [(ngModel)]="compareGroup" (ngModelChange)="handleCompareGroupChange()">
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='compareGroup' style="min-width:160px" class="ml12" nzSize="small" nzShowSearch nzPlaceHolder="Select compareGroup" [(ngModel)]="compareGroup" (ngModelChange)="handleCompareGroupChange()">
                     <nz-option *ngFor="let com of compareNewGroupList;index as i;" [nzLabel]="com" [nzValue]="com"></nz-option>
                 </nz-select>
             </ng-template>
 
             <!-- level下拉选择 -->
             <ng-template #selectTemplate>
-                <nz-select style="min-width:160px" class="ml12" nzSize="small" nzShowSearch nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='selectedVal' style="min-width:160px" class="ml12" nzSize="small" nzShowSearch nzPlaceHolder="Select classification" [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
                     <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
                 </nz-select>
             </ng-template>

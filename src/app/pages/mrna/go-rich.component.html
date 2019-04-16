@@ -23,11 +23,11 @@
         <div #leftBottom class="left-bottom-layout" style=" overflow: auto; ">
             <!-- 下拉选择 -->
             <ng-template #selectTemplate>
-                <nz-select style="min-width:160px" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="annotation" (ngModelChange)="goSelectChange()">
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='annotation' style="min-width:160px" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="annotation" (ngModelChange)="goSelectChange()">
                     <nz-option *ngFor="let item of ['go_c','go_f','go_p'];index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
                 </nz-select>
 
-                <nz-select style="min-width:160px" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='selectedVal' style="min-width:160px" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
                     <nz-option *ngFor="let item of selectData;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
                 </nz-select>
             </ng-template>
