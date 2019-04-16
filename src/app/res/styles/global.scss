@@ -1799,7 +1799,7 @@ button {
 // 基础模块-帮助页面
 .title {
     width: 98%;
-    margin: 20px auto 0 auto;
+    margin: 6px auto 0 auto;
 }
 
 .mhr {
@@ -1816,7 +1816,7 @@ button {
         .help_content {
             width: 100%;
             height: auto;
-            padding-bottom: 20px;
+            padding-bottom: 10px;
             .test_one {
                 width: 348px;
                 height: 890px;
@@ -2031,8 +2031,11 @@ button {
             }
             .help_text {
                 width: 98%;
-                margin: 10px auto 0 auto;
+                margin: 4px auto 0 auto;
                 text-indent: 2em;
+                P{
+                    margin-bottom:4px;
+                }
             }
             .help_bg {
                 background-color: #eee;
@@ -2097,7 +2100,7 @@ button {
     }
     .help_text {
         width: 96%;
-        margin: 10px auto 0 auto;
+        margin: 4px auto 0 auto;
     }
 }
 
