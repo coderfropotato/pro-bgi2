@@ -50,7 +50,8 @@ export class GeneDetailComponent implements OnInit {
 		genome_source:"",//
 		genome_version:"",//
 		genome_url:"",//
-		genome_version_official:""
+		genome_version_official:"",
+		genebank_desc:""
 	};
 
 	btn_show: boolean = true;
@@ -73,6 +74,7 @@ export class GeneDetailComponent implements OnInit {
 	expressive_params_t: object;
 	expressive_t_flag: boolean = true;
 	expressive_t_data: object[] = [];
+	expressive_t_header: object[] = [];
 
 	//expressive_params: object;
 	expressive_rows: object[] = [];
@@ -692,8 +694,8 @@ export class GeneDetailComponent implements OnInit {
 		let tempdata = data[0];
 		let tempArray = [];
 
-		for (let i = 0; i < this.expressive_g_header.length; i++) {
-            let header = this.expressive_g_header[i];
+		for (let i = 0; i < this.expressive_t_header.length; i++) {
+            let header = this.expressive_t_header[i];
             if (header["true_key"] === "gene_id" || header["true_key"] == "rna_id") {
                 continue;
             }
@@ -1052,21 +1054,23 @@ export class GeneDetailComponent implements OnInit {
 				// if(this.expressive_index == 0){
 				// 	this.drawLineChart(this.expressive_g_data);
 				// }
-				this.drawLineChart();
-				this.line_flag = false;
+				if(this.expressive_g_flag){
+					this.drawLineChart();
+					this.line_flag = false;
+				}
 				break;
 			case "FPKM_trans":
 				this.expressive_t_flag = tempData.length>0?true:false;
 				this.expressive_t_data = tempData;
+				this.expressive_t_header = data["data"]["baseThead"];
 				// if(this.expressive_index == 1){
 				// 	this.drawLineChart(this.expressive_t_data);
 				// }
-
-
-				// this.drawLineChart2()
-				// this.line_flag2 = true;
+				if(this.expressive_t_flag){
+					this.drawLineChart2()
+					this.line_flag2 = true;
+				}
 				break;
-
 			case "diff_group_gene":
 				this.groupDiff_params_g_flag = tempData.length>0?true:false;
 				break;

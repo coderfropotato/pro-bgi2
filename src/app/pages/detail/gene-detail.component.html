@@ -27,6 +27,12 @@
                 {{geneInfoList['gene_symbol']}}
             </span>
           </p>
+          <p *ngIf="geneInfoList['genebank_desc']">
+            <span class="info_name">{{'gene_detail.genebank_desc' | translate}}</span>
+            <span class="info_content">
+                {{geneInfoList['genebank_desc']}}
+            </span>
+          </p>
           <p *ngIf="geneInfoList['gene_full_name']">
             <span class="info_name">{{'gene_detail.gene_full_name' | translate}}</span>
             <span class="info_content">
