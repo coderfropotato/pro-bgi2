@@ -19,7 +19,7 @@
             <span *ngIf="geneInfoList['url_ensembl_gene_id']" class="mlink">link to<a href="https://ensembl.org/Homo_sapiens/Gene/Summary?g={{geneInfoList['url_ensembl_gene_id']}}" target="_blank">Ensembl</a></span>
             <span *ngIf="geneInfoList['url_genecard_gene_id']" class="mlink">link to<a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={{geneInfoList['url_genecard_gene_id']}}" target="_blank">GeneCards</a></span>
             <span *ngIf="geneInfoList['url_kegg_gene_id']" class="mlink">link to<a href="https://www.kegg.jp/dbget-bin/www_bget?ko:{{geneInfoList['url_kegg_gene_id']}}" target="_blank">KEGG</a></span>
-            <span *ngIf="geneInfoList['url_mirbase_gene_id']" class="mlink">link to<a href=" http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{geneInfoList['url_mirbase_gene_id']}}" target="_blank">miRBase</a></span>
+            <span *ngIf="geneInfoList['url_mirbase_gene_id']" class="mlink">link to<a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{geneInfoList['url_mirbase_gene_id']}}" target="_blank">miRBase</a></span>
           </p>
           <p *ngIf="geneInfoList['gene_symbol']">
             <span class="info_name">{{'gene_detail.gene_symbol' | translate}}</span>
