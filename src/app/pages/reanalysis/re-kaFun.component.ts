@@ -549,13 +549,32 @@ export class KaFunComponent implements OnInit {
 					//console.log(d);
 					//that.clearEventBubble();
 
-					// that.updateKaFun();
+
+					//that.updateKaFun();
+
 					// that.chartBackStatus();
 
 					// _self.leftSelect.length = 0;
 					// _self.upSelect.length = 0;
 					// _self.first ? _self.transformTable._getData() : (_self.first = true);
-
+					//console.log(this.selectConfirmData)
+					if (that.isMultiSelect) {
+						if(that.doubleMultiSelect.length != 0){
+							that.updateKaFun();
+							that.chartBackStatus();
+						}
+					}else{
+						var b = function() {
+							for(var key in that.singleMultiSelect) {
+								return false;
+							}
+							return true;
+						}
+						if(!b()){
+							that.updateKaFun();
+							that.chartBackStatus();
+						}
+					}
 				},
 				false
 			);
@@ -665,10 +684,10 @@ export class KaFunComponent implements OnInit {
 			let svg1 = svg
 				.append('g')
 				.attr('transform', 'translate(' + (left_name_length+leftNameWidth) + ',' + top_length + ')')
+				.attr('class', 'svg1')
 				.append('svg')
 				.attr('width', width)
-				.attr('height', height)
-				.attr('class', 'svg1');
+				.attr('height', height);
 
 			let xScale = d3.scaleBand().domain(xValue).range([ 0, width ]);
 			let yScale = d3.scaleBand().domain(yValue).range([ 0, height ]);
@@ -694,12 +713,13 @@ export class KaFunComponent implements OnInit {
 			let svg2 = svg
 				.append('g')
 				.attr('transform', 'translate(' + leftNameWidth + ',' + top_length + ')')
+				.attr('class', 'svg2')
 				.append('svg')
 				.attr('x', '0')
 				.attr('y', '0')
 				.attr('width', width)
 				.attr('height', height)
-				.attr('class', 'svg2');
+				;
 
 			let ynScale = d3.scaleBand().domain(yValue).range([ 0, height ]);
 			let ynAxis = d3.axisLeft(ynScale);
@@ -719,10 +739,11 @@ export class KaFunComponent implements OnInit {
 			let svg3 = svg
 				.append('g')
 				.attr('transform', 'translate(' + (left_name_length + leftNameWidth) + ',' + top_name + ')')
+				.attr('class', 'svg3')
 				.append('svg')
 				.attr('width', width)
 				.attr('height', height + 0.5)
-				.attr('class', 'svg3');
+				;
 
 			let xtScale = d3.scaleBand().domain(xValue).range([ 0, width ]);
 			let xtAxis = d3.axisTop(xtScale);
@@ -814,7 +835,7 @@ export class KaFunComponent implements OnInit {
 				colorDomainArr.push(obj);
 			}
 
-			let legend_g = svg.append('g').attr('transform', 'translate(' + (leftLength + leftNameWidth) + ',' + top_name + ')');
+			let legend_g = svg.append('g').attr('transform', 'translate(' + (leftLength + leftNameWidth) + ',' + top_name + ')').attr("class","svgName");
 			legend_g.append('text').attr('class', 'titleText').attr('dx', '15').attr('dy', '10').text('num');
 
 			//气泡颜色比例尺
@@ -897,7 +918,7 @@ export class KaFunComponent implements OnInit {
 			let legendHeight = 120; //上侧图例高度
 			let topLength = top_name + t_height + legendHeight + 20; //20为上侧图例的title高度
 
-			let r_legend = svg.append('g').attr('transform', 'translate(' + (leftLength + leftNameWidth) + ',' + topLength + ')');
+			let r_legend = svg.append('g').attr('transform', 'translate(' + (leftLength + leftNameWidth) + ',' + topLength + ')').attr("class","svgName2");
 
 			r_legend.append('text').attr('class', 'titleText').attr('dx', '15').attr('dy', '10').text('radius');
 

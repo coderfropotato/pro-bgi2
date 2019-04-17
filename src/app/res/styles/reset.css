@@ -260,3 +260,18 @@ ol {
 .ant-drawer.ant-drawer-open .ant-drawer-content {
     border-radius: 4px;
 }
+
+
+/* 小工具参数选择面板 取消按钮的focus状态 */
+
+.tools-wrap .ant-btn:focus {
+    border-color: #d9d9d9!important;
+    color: unset!important;
+}
+
+.tools-wrap .ant-btn:active,
+.tools-wrap .ant-btn.active {
+    color: #3b59d1!important;
+    background-color: #fff!important;
+    border-color: #3b59d1!important;
+}

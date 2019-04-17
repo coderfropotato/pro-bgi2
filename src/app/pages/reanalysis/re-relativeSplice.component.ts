@@ -198,9 +198,9 @@ export class RelativeSpliceComponent implements OnInit {
         this.bigTable._clearFilterWithoutRequest();
         this.bigTable._setParamsOfEntityWithoutRequest('pageIndex',1);
         if(this.selectUniqueList.length) {
-            this.bigTable._filter('as_id', "as_id", "string","$in",this.selectUniqueList.join(','),null);
+            this.bigTable._filter('as_id', config["as_id"], "string","$in",this.selectUniqueList.join(','),null);
         }else{
-            this.bigTable._deleteFilterWithoutRequest("as_id","as_id","$in");
+            this.bigTable._deleteFilterWithoutRequest("as_id",config["as_id"],"$in");
             this.bigTable._getData();
         }
     }
@@ -295,11 +295,11 @@ export class RelativeSpliceComponent implements OnInit {
     //单选
     doSingleData() {
         if($.isEmptyObject(this.singleMultiSelect)){
-            this.bigTable._deleteFilter("as_id","as_id","$in");
+            this.bigTable._deleteFilter("as_id",config["as_id"],"$in");
         }else{
             this.selectUniqueList.length = 0;
             this.selectUniqueList.push(this.singleMultiSelect['as_id']);
-            this.bigTable._filter('as_id', "as_id", "string","$in", this.selectUniqueList.join(','),null)
+            this.bigTable._filter('as_id', config["as_id"], "string","$in", this.selectUniqueList.join(','),null)
         }
     }
 
@@ -315,9 +315,9 @@ export class RelativeSpliceComponent implements OnInit {
         this.selectUniqueList.length = 0;
         this.selectUniqueList.push(...gene);
         if(this.selectUniqueList.length){
-            this.bigTable._filter('as_id', "as_id", "string","$in", this.selectUniqueList.join(','),null)
+            this.bigTable._filter('as_id', config["as_id"], "string","$in", this.selectUniqueList.join(','),null)
         }else{
-            this.bigTable._deleteFilter("as_id","as_id","$in");
+            this.bigTable._deleteFilter("as_id",config["as_id"],"$in");
         }
     }
 

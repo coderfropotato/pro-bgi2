@@ -49,7 +49,7 @@ export class LittleTableComponent implements OnInit {
     rows: any[] = [];
     thead: any[] = [];
 
-    scroll: any = { x: "100%"};
+    scroll: any;
 
     targetID2Url:string;
     constructor(
@@ -96,6 +96,12 @@ export class LittleTableComponent implements OnInit {
                             type:this.type,
                             data:data.data
                        });
+
+                       if(this.tableData["rows"].length>5){
+                        this.scroll = { x: "100%",y:"200px"}
+                       }else{
+                        this.scroll = { x: "100%"}
+                       }
                     }
                     this.isLoading = false;
                     //console.log(data)
