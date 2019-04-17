@@ -558,7 +558,23 @@ export class KaFunComponent implements OnInit {
 					// _self.upSelect.length = 0;
 					// _self.first ? _self.transformTable._getData() : (_self.first = true);
 					//console.log(this.selectConfirmData)
-					that.updateKaFun();
+					if (that.isMultiSelect) {
+						if(that.doubleMultiSelect.length != 0){
+							that.updateKaFun();
+							that.chartBackStatus();
+						}
+					}else{
+						var b = function() {
+							for(var key in that.singleMultiSelect) {
+								return false;
+							}
+							return true;
+						}
+						if(!b()){
+							that.updateKaFun();
+							that.chartBackStatus();
+						}
+					}
 				},
 				false
 			);
