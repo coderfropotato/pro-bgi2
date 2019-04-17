@@ -213,8 +213,9 @@
     "001": "基因属性",
     "001001": "",
     "002": "表达量",
-    "002001": "FPKM",
-    "002002": "Read Count",
+    "002001": "Expression",
+    "002002": "Read Counts",
+    "002003": "Time Course Mfuzz",
     "003": "样本间差异",
     "003001": "Log2FC",
     "003002": "Pvalue",
@@ -319,7 +320,7 @@
         "url_basic-help": "帮助"
     },
     "relativeButton": "关联转换",
-    "tableHeader":{
+    "tableHeader": {
         "header-1": "代谢通路在KEGG数据库中的编号",
         "header-2": "第1组样本的包含水平",
         "header-3": "基因名",
@@ -905,6 +906,6 @@
         "header-583": "TF Cofactors",
         "header-584": "Transcription Factor",
         "header-585": "GO_CFP",
-        "NA":"NA"
+        "NA": "NA"
     }
 }

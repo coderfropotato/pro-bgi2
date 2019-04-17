@@ -213,8 +213,9 @@
     "001": "Gene Attr",
     "001001": "",
     "002": "Exp Info",
-    "002001": "FPKM",
-    "002002": "Read Count",
+    "002001": "Expression",
+    "002002": "Read Counts",
+    "002003": "Time Course Mfuzz",
     "003": "Sample Diff",
     "003001": "Log2FC",
     "003002": "Pvalue",
@@ -319,7 +320,7 @@
         "url_basic-help": "Basic Help"
     },
     "relativeButton": "Association conversion",
-    "tableHeader":{
+    "tableHeader": {
         "header-1": "代谢通路在KEGG数据库中的编号",
         "header-2": "第1组样本的包含水平",
         "header-3": "基因名",
@@ -853,6 +854,6 @@
         "header-531": "GO_CFP Term Level2",
         "header-532": "GO_CFP Term",
         "header-533": "GO_CFP Desc",
-        "NA":"NA"
+        "NA": "NA"
     }
 }
