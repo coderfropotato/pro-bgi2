@@ -429,7 +429,7 @@ export class MultiOmicsSetComponent implements OnInit {
         })
 
         if(isUpdateRepetitive){
-            this.notification.warning('定量信息','定量信息重复');
+            this.notification.warning('修改定量信息','定量信息重复，请重新选择');
             return;
         }
 
