@@ -190,7 +190,7 @@
                             </div>
                         </div>
                     </ng-template>
-                    <nz-table [nzData]="alternative_rows" nzShowPagination="false" [nzSize]="'small'" [nzScroll]="{x:'100%'}" [nzTitle]="titleTemplate">
+                    <nz-table [nzData]="alternative_rows" nzShowPagination="false" [nzSize]="'small'" [nzScroll]="scroll" [nzTitle]="titleTemplate">
                         <thead>
                             <tr>
                                 <th style="min-width:160px;max-width: 160px;" [nzContent]="tp69" nzPlacement="top" nz-popover *ngFor="let thead of alternative_baseThead;index as i">
