@@ -1036,8 +1036,9 @@ export class ReMultiOmicsComponent implements OnInit {
 	multipleConfirm() {
 		this.classifyChartSelect();
 		this.first
-			? (this.defaultEntity['checkGraph'] = true)
-			: this.transformTable._setParamsNoRequest('checkGraph', true);
+			? this.transformTable._setParamsNoRequest('checkGraph', true)
+			: (this.defaultEntity['checkGraph'] = true);
+			
 		this.chartBackStatus();
 		this.showBackButton = false;
 	}
