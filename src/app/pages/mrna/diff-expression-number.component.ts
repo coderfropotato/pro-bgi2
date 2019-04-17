@@ -638,8 +638,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 							this.setXTitle(name);
 							this.updateTitle();
 						}
-					}
-					//rotate: 60
+					},
+					rotate: 60
 				},
 				y: {
 					title: 'Number of Genes',

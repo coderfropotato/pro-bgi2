@@ -734,10 +734,7 @@ export class OverviewComponent implements OnInit {
 					that.legendIndexBox = index;
 					that.isBoxShowColorPanel = true;
 				},
-			  },
-			//   tooltip: function(d) {
-			// 	return "<span>样本："+d.x+"</span><br><span>y："+d.y+"</span>";
-			//   }
+			  }
 		}
 
 		this.chartBox = new d4().init(config);
@@ -758,7 +755,7 @@ export class OverviewComponent implements OnInit {
 				targetData.push(tempObj)
 			}
         }
-        
+
 		let that = this;
 		let config: object = {
 			chart: {
@@ -774,7 +771,8 @@ export class OverviewComponent implements OnInit {
 				el: "#MapDataID", // area chart type
 				type: "area",
 				width:660,
-				data: targetData
+				data: targetData,
+				radius:0
 			},
 			axis: {
 				x: {
