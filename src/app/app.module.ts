@@ -102,6 +102,8 @@ import { MapTestComponent } from './pages/test/mapTest.component';
 import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneList/venn.component';
 /* map */
 import { MapComponent } from './pages/map/map.component';
+/* miRNA靶标 */
+import { TargetComponent } from './pages/mrna/target.component';
 
 // 服务
 import { GlobalService } from './super/service/globalService';
@@ -311,6 +313,12 @@ const ROUTES: Routes = [
 				path: 'snp-indel-help',
 				component: SnpIndelHelpComponent,
 				data: { keep: true, module: 'snpIndelHelp' }
+			},
+			// miRNA靶标
+			{
+				path:"miRNA-target",
+				component:TargetComponent,
+				data:{keep:true,module:'mirnaTarget'}
 			},
 			// 基因总表
 			{
@@ -684,6 +692,7 @@ export function createTranslateLoader(http: HttpClient) {
 		ReKdaComponent,
 		ReLineComponent,
 		KaFunComponent,
+        TargetComponent,
 		RelativeSpliceComponent,
 		GeneListIndexComponent,
 		ReClassComponent,
