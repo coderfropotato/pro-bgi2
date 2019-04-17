@@ -147,7 +147,8 @@ export class OverviewComponent implements OnInit {
 			LCID: this.store.getStore('LCID')
 		}
 
-		this.colorArr = this.store.colors;
+		//this.colorArr = this.store.colors;//
+		this.colorArr = ["#1f77b4", "#ff7f0e", "#aec7e8"];
 
 		//相关性热图
 		this.selectPanelData = [
@@ -212,6 +213,8 @@ export class OverviewComponent implements OnInit {
 		document.getElementById('relevanceData').innerHTML = '';
 
 		var that = this;
+
+		let colorArray = ["#1f77b4", "#ff7f0e", "#aec7e8"];
 
 		//数据
 		var chartData = data.chartData,
@@ -503,11 +506,11 @@ export class OverviewComponent implements OnInit {
 			});
 
 		//色盘指令回调函数
-		this.colorQualityChange = function(curColor) {
-			this.colorArr.splice(this.colorArr_i, 1, curColor);
-			drawLegend(this.colorArr);
-			drawRect(this.colorArr);
-		}
+		// this.colorQualityChange = function(curColor) {
+		// 	this.colorArr.splice(this.colorArr_i, 1, curColor);
+		// 	drawLegend(this.colorArr);
+		// 	drawRect(this.colorArr);
+		// }
 
 		//画图例轴
 		legend_g.append("g")
@@ -940,8 +943,11 @@ export class OverviewComponent implements OnInit {
 
 	//legend color change
 	colorQualityChange(curColor){
+		console.log(this.legendIndexThree);
 		this.colorQuality = curColor;
 		this.colorArr.splice(this.legendIndexThree, 1, curColor);
+		console.log(curColor);
+		console.log(this.colorArr);
 		this.relevanceChart.redraw();
 	}
 

@@ -40,7 +40,7 @@ declare const $: any;
                                         </nz-select>
                                         </ng-template>
                                         <ng-template #addOnAfterTemplate><!-- 设置按钮 -->
-                                        <i class="iconfont icon-shezhi icon_pointer myicon_pointer" [style.color]="icon_color" (click)="moduleSetChange()"></i>
+                                        	<i class="iconfont icon-shezhi icon_pointer myicon_pointer" [style.color]="icon_color" (click)="moduleSetChange()"></i>
                                         </ng-template>
                                         <div class="gene_col_div" [hidden]="!expandHistoryPanel"><!-- 输入框返回结果面板 -->
                                         <div class="gene_col_content" *ngFor="let item of searchBackList" (click)="searchBackSelect(item)" >
