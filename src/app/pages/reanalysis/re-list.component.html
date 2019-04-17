@@ -89,8 +89,8 @@
                                     <span>{{data['parent'].length}}
                                         <ul *ngIf="data['parent'].length" class="link-lists">
                                             <li *ngFor="let item of data['parent']" (click)="toDetail(item)">
-                                                <p>类型：{{item['reanalysisType']}}</p>
-                                                <p>任务名称：{{item['projectName']}}</p>
+                                                <p>任务名称：{{item['nickname']}}</p>
+                                                <p>创建时间：{{item['date']}}</p>
                                             </li>
                                         </ul>
                                     </span>

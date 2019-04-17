@@ -288,6 +288,8 @@ export class GeneDetailComponent implements OnInit {
 	loadTable2: boolean = false;
 	msigdbFlagBtn: boolean = false;
 
+	scroll: any;
+
   	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -530,6 +532,12 @@ export class GeneDetailComponent implements OnInit {
 					this.alternative_baseThead = data['data']['baseThead'];
 					this.alternative_flag = this.alternative_rows.length>0?true:false;
 					//this.geneInfoList = data['data'];
+
+					if(this.alternative_rows.length>5){
+						this.scroll = { x: "100%",y:"200px"}
+					}else{
+						this.scroll = { x: "100%"}
+					}
 				}
 				this.isLoading = false;
 				resolve("success");
