@@ -221,7 +221,7 @@ export class MultiOmicsSetComponent implements OnInit {
         this.isShowUpdatePanel = false;
         this.isShowSetPanel=false;
 
-        // 关联关系若存在，下拉框不可选择此关联关系
+        // 关联关系若存在，不可再选择此关联关系
         this.relationList.forEach(d => {
             if(this.num>200){
                 if(d['key'] === 'false'){
