@@ -10,7 +10,7 @@
                 </div>
             </div>
         </ng-template>
-        <nz-table *ngIf="!tableError" [nzData]="tableData['rows']" [nzScroll]="{x:'100%'}" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate">
+        <nz-table *ngIf="!tableError" [nzData]="tableData['rows']" [nzScroll]="scroll" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate">
             <thead>
                 <tr>
                     <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" [nzContent]="tp67" nzPlacement="top" nz-popover *ngFor="let thead of tableData['baseThead'];index as i">

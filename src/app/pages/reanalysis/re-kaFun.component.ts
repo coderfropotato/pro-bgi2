@@ -872,7 +872,7 @@ export class KaFunComponent implements OnInit {
 					return i * legendClickRect_h;
 				})
 				.attr('fill', 'transparent')
-				.on('dblclick', function(d, i) {
+				.on('click', function(d, i) {
 					that.clearEventBubble(d3.event);
 					that.color = colorScale(d);
 					that.isShowColorPanel = true;

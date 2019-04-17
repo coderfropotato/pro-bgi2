@@ -147,7 +147,8 @@ export class OverviewComponent implements OnInit {
 			LCID: this.store.getStore('LCID')
 		}
 
-		this.colorArr = this.store.colors;
+		//this.colorArr = this.store.colors;//
+		this.colorArr = ["#1f77b4", "#ff7f0e", "#aec7e8"];
 
 		//相关性热图
 		this.selectPanelData = [
@@ -212,6 +213,8 @@ export class OverviewComponent implements OnInit {
 		document.getElementById('relevanceData').innerHTML = '';
 
 		var that = this;
+
+		let colorArray = ["#1f77b4", "#ff7f0e", "#aec7e8"];
 
 		//数据
 		var chartData = data.chartData,
@@ -503,11 +506,11 @@ export class OverviewComponent implements OnInit {
 			});
 
 		//色盘指令回调函数
-		this.colorQualityChange = function(curColor) {
-			this.colorArr.splice(this.colorArr_i, 1, curColor);
-			drawLegend(this.colorArr);
-			drawRect(this.colorArr);
-		}
+		// this.colorQualityChange = function(curColor) {
+		// 	this.colorArr.splice(this.colorArr_i, 1, curColor);
+		// 	drawLegend(this.colorArr);
+		// 	drawRect(this.colorArr);
+		// }
 
 		//画图例轴
 		legend_g.append("g")
@@ -619,6 +622,28 @@ export class OverviewComponent implements OnInit {
 			});
 		}
 
+		// console.log(xData);
+		// let tempX = xData;
+		// let tempX2 = xData;
+		// xData.push(...tempX);
+		// xData.push(...tempX2);
+		// console.log(xData)
+
+		let tempWidth = 0;
+		if(xData.length<=12){
+			tempWidth = 660;
+		}else if(xData.length>12 && xData.length <= 19){
+			tempWidth = 800;
+		}else if(xData.length>19 && xData.length <= 38){
+			tempWidth = 960;
+		}else if(xData.length>38 && xData.length <= 57){
+			tempWidth = 1100;
+		}else if(xData.length>57 && xData.length <= 65){
+			tempWidth = 1240;
+		}else{
+			tempWidth = 1380;
+		}
+
 		let that = this;
 		let config: object = {
 			chart: {
@@ -642,7 +667,7 @@ export class OverviewComponent implements OnInit {
 				},
 				el: "#BoxDataID",
 				type: "boxplot",
-				width: 800,
+				width: tempWidth,
 				onselect: data => {
 					console.log(data);
 				},
@@ -918,8 +943,11 @@ export class OverviewComponent implements OnInit {
 
 	//legend color change
 	colorQualityChange(curColor){
+		console.log(this.legendIndexThree);
 		this.colorQuality = curColor;
 		this.colorArr.splice(this.legendIndexThree, 1, curColor);
+		console.log(curColor);
+		console.log(this.colorArr);
 		this.relevanceChart.redraw();
 	}
 

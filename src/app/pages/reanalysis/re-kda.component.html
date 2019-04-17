@@ -15,7 +15,7 @@
                 <span>Start</span>
             </nz-col>
             <nz-col nzSpan="13">
-                <nz-select style="width: 200px;margin-left: 10px" [(ngModel)]="curStartNode" nzShowSearch>
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curStartNode' style="width: 200px;margin-left: 10px" [(ngModel)]="curStartNode" nzShowSearch>
                     <nz-option *ngFor="let node of allNodes" [nzDisabled]="node.geneID===curEndNode" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                 </nz-select>
             </nz-col>
@@ -26,7 +26,7 @@
                 <span>End</span>
             </nz-col>
             <nz-col nzSpan="13">
-                <nz-select style="width: 200px;margin-left: 10px" [(ngModel)]="curEndNode" nzShowSearch>
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curEndNode' style="width: 200px;margin-left: 10px" [(ngModel)]="curEndNode" nzShowSearch>
                     <nz-option *ngFor="let node of allNodes" [nzDisabled]="node.geneID===curStartNode" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                 </nz-select>
             </nz-col>
@@ -63,7 +63,7 @@
                 </ng-template>
 
                 <ng-template #searchTemplate>
-                    <nz-select *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
+                    <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curSearchNode' *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
                         <nz-option *ngFor="let node of allNodes" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                     </nz-select>
                 </ng-template>

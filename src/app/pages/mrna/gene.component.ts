@@ -35,12 +35,12 @@ declare const $: any;
                                         <input placeholder="请输入基因ID或关键词" type="text" nz-input [(ngModel)]="inputValue" (ngModelChange)="inputChange()">
                                         </nz-input-group>
                                         <ng-template #addOnBeforeTemplate>
-                                        <nz-select [(ngModel)]="selectTargetName" (ngModelChange)="selectTypeChange()">
+                                        <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='selectTargetName' [(ngModel)]="selectTargetName" (ngModelChange)="selectTypeChange()">
                                             <nz-option  *ngFor="let item of selectTarget" [nzLabel]="item.label" [nzValue]="item.value" [nzDisabled]="item.isChecked"></nz-option>
                                         </nz-select>
                                         </ng-template>
                                         <ng-template #addOnAfterTemplate><!-- 设置按钮 -->
-                                        <i class="iconfont icon-shezhi icon_pointer myicon_pointer" [style.color]="icon_color" (click)="moduleSetChange()"></i>
+                                        	<i class="iconfont icon-shezhi icon_pointer myicon_pointer" [style.color]="icon_color" (click)="moduleSetChange()"></i>
                                         </ng-template>
                                         <div class="gene_col_div" [hidden]="!expandHistoryPanel"><!-- 输入框返回结果面板 -->
                                         <div class="gene_col_content" *ngFor="let item of searchBackList" (click)="searchBackSelect(item)" >

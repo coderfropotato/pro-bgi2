@@ -389,11 +389,23 @@ tbody>tr:nth-child(even) {
         button:not(last-child) {
             margin-bottom: 12px;
         }
+    };
+    .tableHeader{
+        .fLeft{
+            nz-select{
+                max-width: 360px;
+                min-width: 160px;
+            }
+        }
     }
 }
 
 .tableSwitchChart .ant-table-small {
     border: 0 !important;
+}
+
+.ant-select-dropdown-menu{
+    max-height: 400px;
 }
 
 .center-flex {
@@ -1787,7 +1799,7 @@ button {
 // 基础模块-帮助页面
 .title {
     width: 98%;
-    margin: 20px auto 0 auto;
+    margin: 6px auto 0 auto;
 }
 
 .mhr {
@@ -1804,7 +1816,7 @@ button {
         .help_content {
             width: 100%;
             height: auto;
-            padding-bottom: 20px;
+            padding-bottom: 10px;
             .test_one {
                 width: 348px;
                 height: 890px;
@@ -2019,8 +2031,11 @@ button {
             }
             .help_text {
                 width: 98%;
-                margin: 10px auto 0 auto;
+                margin: 4px auto 0 auto;
                 text-indent: 2em;
+                P{
+                    margin-bottom:4px;
+                }
             }
             .help_bg {
                 background-color: #eee;
@@ -2085,7 +2100,7 @@ button {
     }
     .help_text {
         width: 96%;
-        margin: 10px auto 0 auto;
+        margin: 4px auto 0 auto;
     }
 }
 
@@ -2185,10 +2200,15 @@ button {
     flex-direction: column;
 }
 
-//基因总表
+//基因总表---开始
 .gene {
     position: relative;
     width: 100%;
+}
+
+.ant-input-group-addon:first-child{
+    width: 80px;
+    border-radius: 100px 0 0 100px !important;
 }
 
 .gene_margin_right {
@@ -2300,7 +2320,7 @@ button {
         justify-content: flex-end;
         button {
             width: 100%;
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 100px 100px 0;
         }
     }
     .gene_fast {
@@ -2376,7 +2396,7 @@ button {
         }
     }
 }
-
+//基因总表---结束
 @keyframes rotate {
     from {
         transform: rotate(0);

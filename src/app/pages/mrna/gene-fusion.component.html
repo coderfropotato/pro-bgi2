@@ -17,7 +17,7 @@
 
             <!-- 下拉选择 -->
             <ng-template #selectTemplate>
-                <nz-select style="min-width:160px" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="sample" (ngModelChange)="handleSelectChange()">
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='sample' style="min-width:160px" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="sample" (ngModelChange)="handleSelectChange()">
                     <nz-option *ngFor="let item of samples;index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
                 </nz-select>
             </ng-template>

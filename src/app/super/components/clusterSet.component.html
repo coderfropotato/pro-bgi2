@@ -34,18 +34,23 @@
                 </nz-row>
 
                 <nz-row [hidden]="type && type === 'relation'" class="domainRange">
-                        <nz-col nzSpan="4" class="textCol">
-                            <span>值域</span>
-                        </nz-col>
-                        <nz-col nzSpan="10">
-                            <nz-slider nzRange [nzStep]="(max<10) ? 0.1 : 1 " [nzMin]="min" [nzMax]="max" [(ngModel)]="rangeValue" (ngModelChange)="rangeValueChange()"></nz-slider>
-                        </nz-col>
-                        <nz-col nzSpan="10">
-                            <nz-input-number [nzMin]="min" [nzMax]="max" [(ngModel)]="minValue" (ngModelChange)='minValueChange()'></nz-input-number>
-                            <span>-</span>
-                            <nz-input-number style="margin-left:0" [nzMin]="min" [nzMax]="max" [(ngModel)]="maxValue" (ngModelChange)='maxValueChange()'></nz-input-number>
-                        </nz-col>
-                    </nz-row>
+                    <nz-col nzSpan="6" class="textCol">
+                        <span>图例值域</span>
+                    </nz-col>
+                    <nz-col nzSpan="17">
+                        <nz-slider nzRange [nzStep]="(max<10) ? 0.1 : 1 " [nzMin]="min" [nzMax]="max" [(ngModel)]="rangeValue" (ngModelChange)="rangeValueChange()"></nz-slider>
+                    </nz-col>
+                </nz-row>
+
+                <nz-row [hidden]="type && type === 'relation'">
+                    <nz-col nzSpan="7" style="margin-left: 22.833333%;">
+                        <nz-input-number [nzMin]="min" [nzMax]="max" [(ngModel)]="minValue" (ngModelChange)='minValueChange()'></nz-input-number>
+                    </nz-col>
+                    <nz-col nzSpan="7" style="margin-left: 18.666667%;">
+                        <nz-input-number [nzMin]="min" [nzMax]="max" [(ngModel)]="maxValue" (ngModelChange)='maxValueChange()'></nz-input-number>
+                    </nz-col>
+                </nz-row>
+                    
         </div>
 
         <div class="dataSet">
