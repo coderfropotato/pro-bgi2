@@ -870,6 +870,8 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('height', (k) => Math.abs(yScaleBox(k.box.y2) - yScaleBox(k.box.y1)))
 					.attr('fill', (k) => colorScale(k.type))
 					.attr('fill-opacity',0.8)
+					.attr('stroke','#000000')
+					.attr('stroke-opacity',0.8)
 					.style('cursor', 'pointer')
 					.on('mouseover', (m) => {
 						let text = `上限：${m.box.high}<br>上四分位数：${m.box.y2}<br>中位数：${m.box.median}<br>下四分位数：${m.box

@@ -97,7 +97,7 @@ export class MultiOmicsSetComponent implements OnInit {
     curRationClassify: string;  //当前定量类型
     curAddRation:string; //当前添加的定量列
 
-    //关联基因
+    //关联关系
     relationList: object[] = [];
     curRelation: object = {};
 
@@ -139,7 +139,7 @@ export class MultiOmicsSetComponent implements OnInit {
         this.infoList = [...this.confirmInfoList];
     }
 
-    //获取关联基因
+    //获取关联关系
     getRelations() {
         let data = this.storeService.getStore('relations');
         this.relationList=[...data];
@@ -150,6 +150,7 @@ export class MultiOmicsSetComponent implements OnInit {
         this.relationList.forEach(d => {
             d['isDisabled']= false;
             d['isSelected']=false;
+            d['isHasInfoSelect']=true;
             // if(d['key']!=="false"){
             //     d['limit']=true;
             // }
@@ -221,8 +222,8 @@ export class MultiOmicsSetComponent implements OnInit {
         this.isShowUpdatePanel = false;
         this.isShowSetPanel=false;
 
-        // 关联关系若存在，不可再选择此关联关系
         this.relationList.forEach(d => {
+            // 柱子数大于200，除"false"外其他不可选
             if(this.num>200){
                 if(d['key'] === 'false'){
                     d['isDisabled'] = false;
@@ -231,13 +232,26 @@ export class MultiOmicsSetComponent implements OnInit {
                 }
             }else{
                 d['isDisabled'] = false;
+                // 关联关系若存在，不可再选择此关联关系
+                // this.infoList.forEach(m => {
+                //     if (d['key'] !== 'false') {
+                //         if (d['key'] === m['relation']) {
+                //             d['isDisabled'] = true;
+                //         }
+                //     }
+                // });
+            }
+
+            // 关联关系若存在，不可再选择此关联关系的score、max num信息
+            if (d['key'] !== 'false') {
+                d['isHasInfoSelect']=true;
                 this.infoList.forEach(m => {
-                    if (d['key'] !== 'false') {
-                        if (d['key'] === m['relation']) {
-                            d['isDisabled'] = true;
-                        }
+                    if (d['key'] === m['relation']) {
+                        d['isHasInfoSelect'] = false;
                     }
                 });
+            }else{
+                d['isHasInfoSelect']=false; 
             }
 
         })
@@ -258,7 +272,7 @@ export class MultiOmicsSetComponent implements OnInit {
 
     // 添加关联关系
 
-     //关联基因change
+     //关联关系change
      relationChange(item) {
          this.isShowAddPanel = false;
          this.isShowUpdatePanel = false;
@@ -318,14 +332,26 @@ export class MultiOmicsSetComponent implements OnInit {
 
     //添加面板， 确定
     addConfirm() {
-        let fasleArr=[];
+        // let fasleArr=[];
+        // this.infoList.forEach(d=>{
+        //     if(d['relation']==='false'){
+        //         fasleArr.push(d['key']);
+        //     }
+        // })
+
+        // if(this.isInArray(this.curAddRation,fasleArr,'') && this.curRelation['key']==='false'){
+        //     this.notification.warning('添加定量信息','请不要重复添加');
+        //     return;
+        // }
+
+        let isRepetitive=false;
         this.infoList.forEach(d=>{
-            if(d['relation']==='false'){
-                fasleArr.push(d['key']);
+            if(this.curAddRation===d['key'] && this.curRelation['key']===d['relation']){
+                isRepetitive=true;  
             }
         })
 
-        if(this.isInArray(this.curAddRation,fasleArr,'') && this.curRelation['key']==='false'){
+        if(isRepetitive){
             this.notification.warning('添加定量信息','请不要重复添加');
             return;
         }
@@ -393,6 +419,20 @@ export class MultiOmicsSetComponent implements OnInit {
 
     //修改面板，定量列选择
     updateRationColSelect(item) {
+        let isUpdateRepetitive=false;
+        this.infoList.forEach(d=>{
+            if(d['key']===item['key']){
+                if(d["relation"]===this.curUpdateInfo['relation']){
+                    isUpdateRepetitive=true;
+                }
+            }
+        })
+
+        if(isUpdateRepetitive){
+            this.notification.warning('修改定量信息','定量信息重复，请重新选择');
+            return;
+        }
+
         this.curUpdateInfo['key'] = item['key'];
         this.curUpdateInfo['category'] = item['category'];
         this.curUpdateInfo['name'] = item['name'];
@@ -416,17 +456,17 @@ export class MultiOmicsSetComponent implements OnInit {
 
     // 设置 确定
     setConfirm() {
-        let rationinfos=[];
-        this.infoList.forEach(d=>{
-            if(d['relation']==='false'){
-                rationinfos.push(d['key']);
-            }
-        })
+        // let rationinfos=[];
+        // this.infoList.forEach(d=>{
+        //     if(d['relation']==='false'){
+        //         rationinfos.push(d['key']);
+        //     }
+        // })
 
-        if((new Set(rationinfos)).size !== rationinfos.length){
-            this.notification.warning('定量信息','定量信息重复');
-            return;
-        }
+        // if((new Set(rationinfos)).size !== rationinfos.length){
+        //     this.notification.warning('定量信息','定量信息重复');
+        //     return;
+        // }
 
         this.isShowAddPanel = false;
         this.isShowUpdatePanel = false;
