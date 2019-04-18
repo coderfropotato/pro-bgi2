@@ -487,7 +487,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-classification/:geneType/:tid/:version/:annotation/:isEdit/:date',
+				path: 're-classification/:geneType/:tid/:version/:annotation/:isEdit',
 				component: ReClassComponent,
 				canActivate: [ SysDefendService ],
 				data: {
