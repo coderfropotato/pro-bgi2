@@ -79,8 +79,12 @@ export class GeneExpressionHelpComponent implements OnInit {
             this.mflag1 = true;
           }
 
+          if(d == "lncRNA"){
+            this.mflag2 = true;
+          }
+
           //RNAseq、RNAref、lncRNA、lncRNA、lncRNA
-          if(d == "RNAseq" || d == "RNAref" || this.library_method=="lncRNA" || this.library_method=="lncRNA" || this.library_method=="lncRNA"){
+          if(d == "RNAseq" || d == "RNAref" || d=="lncRNA" || d=="miRNA" || this.library_method=="circRNA"){
             this.mflag6 = true;
             this.mflag7 = true;
             this.mflag8 = true;
@@ -98,9 +102,6 @@ export class GeneExpressionHelpComponent implements OnInit {
           
       }
 
-      if(this.library_method == "lncRNA"){
-        this.mflag2 = true;
-      }
       if(this.library_method == "circRNA"){
         this.mflag5 = true;
       }

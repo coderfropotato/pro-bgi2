@@ -75,7 +75,7 @@
           <button *ngIf="!btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.noShowGeneID' | translate}}</button>
           <!-- 转录本信息 -->
           <div class="transcripts_table" *ngIf="!btn_show">
-              <app-little-table *ngIf="loadTable" [hidden]="!rna_flag" [targetID]="'rna_id'" [targetURL]="'https://www.ncbi.nlm.nih.gov/nuccore/'" [type]="'rna_type'" (drawTableEmit)="drawKEGGPathway($event)" [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table>
+              <app-little-table *ngIf="loadTable" [hidden]="!rna_flag" [targetID]="'rna_id'" [targetURL]="'https://www.ncbi.nlm.nih.gov/nuccore/'" [type]="'rna_type'" [inRefreshShow]="false" (drawTableEmit)="drawKEGGPathway($event)" [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table>
           </div>
       </div>
       
@@ -178,14 +178,10 @@
       <div class="mgene_content alternative" [hidden]="!alternative_flag">
         <h4>{{'gene_detail.alternative_aplicing' | translate}}</h4>
         <div class="transcripts_table">
-            <!-- <app-little-table *ngIf="loadTable" [type]="'alternative'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="alternative_defaultUrl" [pageEntity]="alternative_params" [targetID]="'as_id'"
-            [targetURL]="'http://biosys.bgi.com/project/test/BGI_{LCID}/Structure_and_variation/Alternative_splicing/AS_plot/{as_group_name}/{as_id}_{as_group_name}_{as_type}_{geneID}.pdf"
-            ></app-little-table> -->
             <nz-spin [nzSpinning]="isLoading" nzTip='Loading...'>
                 <ng-template #titleTemplate>
                         <div class="table-thead">
                             <div class="fRight">
-                                <!-- <i class="iconfont icon-xiazai" (click)="down()"></i> -->
                                 <app-grid-export *ngIf="!error" [url]="url" [tableEntity]="alternative_params" [fileName]="fileName"></app-grid-export>
                             </div>
                         </div>
@@ -203,9 +199,6 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let row of alternative_rows;index as idx">
-                                <!-- <td style="min-width:160px;max-width: 160px; text-align: center;" *ngFor="let thead of alternative_baseThead">
-                                    {{row[thead.true_key]}}
-                                </td> -->
                                 <ng-container *ngFor="let thead of alternative_baseThead">
                                     <td [nzContent]="tp70" nzPlacement="top" nz-popover style="min-width:160px;max-width: 160px;text-align: center;height: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" *ngIf="row[thead.true_key]">
                                         <ng-template #tp70>
