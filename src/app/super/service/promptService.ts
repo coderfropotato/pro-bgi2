@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-<<<<<<< HEAD
 import config from "../../../config";
-=======
-import config from 'src/config';
->>>>>>> 935608bbcedd3d9b6c0401451c63c08907e6d495
 
 @Injectable({
   providedIn: 'root',
