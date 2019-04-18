@@ -138,11 +138,10 @@ export class LrnaComponent implements OnInit {
 			chart: {
 				title: 'Count number distribution of total Small RNAs in YK',
 				dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-					  this.setChartTitle(name);
-					  this.updateTitle();
-					}
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
+						this.updateTitle();
+					})
 				},
 				width: 700,
 				height: 400,
@@ -196,11 +195,10 @@ export class LrnaComponent implements OnInit {
 			chart: {
 				// title: "小RNA长度分布",
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				el: '#RNALData',
 				type: 'groupBar',
@@ -212,22 +210,20 @@ export class LrnaComponent implements OnInit {
 				x: {
 					title: 'Length (nt)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					},
 					rotate: 60
 				},
 				y: {
 					title: 'Length distribution of small RNA in 8 libraries',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 					// formatter:val=>val+"%"
 				}

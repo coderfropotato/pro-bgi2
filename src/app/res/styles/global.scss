@@ -389,10 +389,11 @@ tbody>tr:nth-child(even) {
         button:not(last-child) {
             margin-bottom: 12px;
         }
-    };
-    .tableHeader{
-        .fLeft{
-            nz-select{
+    }
+    ;
+    .tableHeader {
+        .fLeft {
+            nz-select {
                 max-width: 360px;
                 min-width: 160px;
             }
@@ -404,7 +405,7 @@ tbody>tr:nth-child(even) {
     border: 0 !important;
 }
 
-.ant-select-dropdown-menu{
+.ant-select-dropdown-menu {
     max-height: 400px;
 }
 
@@ -665,9 +666,9 @@ button {
     font-size: 13px;
     display: inline-block;
     max-width: 80px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 // @media screen and (max-width: 1350px) {
@@ -1394,7 +1395,7 @@ button {
     button {
         margin-bottom: 12px;
         margin-right: 12px;
-        max-width:242px;
+        max-width: 242px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
@@ -2033,8 +2034,8 @@ button {
                 width: 98%;
                 margin: 4px auto 0 auto;
                 text-indent: 2em;
-                P{
-                    margin-bottom:4px;
+                P {
+                    margin-bottom: 4px;
                 }
             }
             .help_bg {
@@ -2206,7 +2207,7 @@ button {
     width: 100%;
 }
 
-.ant-input-group-addon:first-child{
+.ant-input-group-addon:first-child {
     width: 80px;
     border-radius: 100px 0 0 100px !important;
 }
@@ -2396,6 +2397,7 @@ button {
         }
     }
 }
+
 //基因总表---结束
 @keyframes rotate {
     from {
@@ -2864,27 +2866,22 @@ button {
 }
 
 .prompt-service {
-
-    .ant-modal{
-        top:0!important;
-    }
-
+    // .ant-modal{
+    //     top:0!important;
+    // }
     .ant-modal-header {
         border-bottom: 0;
         padding: 16px 24px 8px 24px;
     }
-
     .ant-modal-close {
         display: none;
     }
-
     .ant-modal-body {
         padding: 0px 24px 10px 24px;
         input {
             border: 1px solid rgb(83, 120, 248);
         }
     }
-
     .ant-modal-footer {
         border-top: 0;
     }
@@ -2952,7 +2949,7 @@ button {
     }
 }
 
-.zindex-10{
+.zindex-10 {
     z-index: -10;
     position: relative;
 }

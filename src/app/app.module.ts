@@ -131,6 +131,7 @@ import { AccuracyPipe } from './super/filter/accuracy.pipe';
 import { TableSpecialTheadFilter } from './super/filter/tableSpecialThead.pipe';
 import config from '../config';
 import { from } from 'rxjs';
+import { ReTopComponent } from './pages/reanalysis/re-top.component';
 
 const ROUTES: Routes = [
 	// mrna
@@ -693,6 +694,7 @@ export function createTranslateLoader(http: HttpClient) {
 		ReLineComponent,
 		KaFunComponent,
         TargetComponent,
+        ReTopComponent ,
 		RelativeSpliceComponent,
 		GeneListIndexComponent,
 		ReClassComponent,

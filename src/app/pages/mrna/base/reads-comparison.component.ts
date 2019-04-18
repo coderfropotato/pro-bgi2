@@ -170,49 +170,46 @@ export class ReadsComparisonComponent implements OnInit {
 
     let that = this;
     let config: object={
-      chart: {
-        title: "reads 在转录本上的分布",
-        dblclick: function(event) {
-				  var name = prompt("请输入需要修改的标题", "");
-				  if (name) {
-					this.setChartTitle(name);
+     	chart: {
+			title: "reads 在转录本上的分布",
+			dblclick: function(event) {
+				that.promptService.open(event.target.textContent,val=>{
+					this.setChartTitle(val);
 					this.updateTitle();
-				  }
-				},
-        width:660,
-        el: "#rondData",
-        custom: ["window_pos", "window_read_num"],
-        type: "line",
-        interpolate:'cardinal',
-        data: temps
-      },
-      axis: {
-        x: {
-          title: "Relative Position in Genes(5‘->3’)(200 windows)",
-          // rotate: 60,
-          ticks:5,
-          dblclick: function(event) {
-            var name = prompt("请输入需要修改的标题", "");
-            if (name) {
-              this.setXTitle(name);
-							this.updateTitle();
-            }
-          }
-        },
-        y: {
-          title: "Reads Number of Each Window",
-          dblclick: function(event) {
-            var name = prompt("请输入需要修改的标题", "");
-            if (name) {
-              this.setYTitle(name);
-              this.updateTitle();
-            }
-          }
-        }
-      },
-      tooltip: function(d,index) {
-        return "<span>Relative Position in Genes(5‘->3’)(200 windows)："+d.window_pos+"</span><br><span>Reads Number of Each Window："+d.window_read_num+"</span>";
-      }
+				})
+			},
+				width:660,
+				el: "#rondData",
+				custom: ["window_pos", "window_read_num"],
+				type: "line",
+				interpolate:'cardinal',
+				data: temps
+      	},
+		axis: {
+			x: {
+				title: "Relative Position in Genes(5‘->3’)(200 windows)",
+				// rotate: 60,
+				ticks:5,
+				dblclick: function(event) {
+					that.promptService.open(event.target.textContent,val=>{
+						this.setXTitle(val);
+						this.updateTitle();
+					})
+				}
+			},
+			y: {
+				title: "Reads Number of Each Window",
+				dblclick: function(event) {
+					that.promptService.open(event.target.textContent,val=>{
+						this.setYTitle(val);
+						this.updateTitle();
+					})
+				}
+			}
+		},
+		tooltip: function(d,index) {
+			return "<span>Relative Position in Genes(5‘->3’)(200 windows)："+d.window_pos+"</span><br><span>Reads Number of Each Window："+d.window_read_num+"</span>";
+		}
     }
 
     new d4().init(config);
@@ -253,55 +250,52 @@ export class ReadsComparisonComponent implements OnInit {
     let that = this;
     let config: object={
         chart: {
-          title: "转录本的 reads 覆盖度",
-          dblclick: function(event) {
-            var name = prompt("请输入需要修改的标题", "");
-            if (name) {
-            this.setChartTitle(name);
-            this.updateTitle();
-            }
-          },
-          width:600,
-          custom: ["percent_covered", "percent_transcript"],
-          el: "#coverageData",
-          type: "bar",
-          data: data.rows
-          },
-          axis: {
-          x: {
-            title: "Percent covered(%)",
-            dblclick: function(event) {
-              var name = prompt("请输入需要修改的标题", "");
-              if (name) {
-                this.setXTitle(name);
-                this.updateTitle();
-              }
-            }
-          },
-          y: {
-            title: "Percentage of Transcripts(%)",
-            dblclick: function(event) {
-              var name = prompt("请输入需要修改的标题", "");
-              if (name) {
-                this.setYTitle(name);
-                this.updateTitle();
-              }
-            }
-          },
-          },
-          legend: {
-            show: true,
-            position: "right",
-            click:function(d,index){
-              that.color = d3.select(d).attr('fill');
-              that.legendIndex = index;
-              that.isShowColorPanel = true;
-            }
-          },
-          "tooltip": function(d) {
-            return "<span>Percent covered(%):"+d.percent_covered+"</span><br><span>Percentage of Transcripts(%):"+d.percent_transcript+"</span>"
-          }
-      }
+			title: "转录本的 reads 覆盖度",
+			dblclick: function(event) {
+				that.promptService.open(event.target.textContent,val=>{
+					this.setChartTitle(val);
+					this.updateTitle();
+				})
+			},
+			width:600,
+			custom: ["percent_covered", "percent_transcript"],
+			el: "#coverageData",
+			type: "bar",
+			data: data.rows
+		},
+		axis: {
+			x: {
+				title: "Percent covered(%)",
+				dblclick: function(event) {
+					that.promptService.open(event.target.textContent,val=>{
+						this.setXTitle(val);
+						this.updateTitle();
+					})
+				}
+			},
+			y: {
+				title: "Percentage of Transcripts(%)",
+				dblclick: function(event) {
+					that.promptService.open(event.target.textContent,val=>{
+						this.setYTitle(val);
+						this.updateTitle();
+					})
+				}
+			},
+		},
+		legend: {
+			show: true,
+			position: "right",
+			click:function(d,index){
+				that.color = d3.select(d).attr('fill');
+				that.legendIndex = index;
+				that.isShowColorPanel = true;
+			}
+		},
+		"tooltip": function(d) {
+			return "<span>Percent covered(%):"+d.percent_covered+"</span><br><span>Percentage of Transcripts(%):"+d.percent_transcript+"</span>"
+		}
+	}
     new d4().init(config);
   }
 
@@ -334,48 +328,45 @@ export class ReadsComparisonComponent implements OnInit {
 
     let that = this;
     let config: object={
-      chart: {
-        title: "测序饱和度曲线",
-        dblclick: function(event) {
-				  var name = prompt("请输入需要修改的标题", "");
-				  if (name) {
-					this.setChartTitle(name);
+     	chart: {
+			title: "测序饱和度曲线",
+			dblclick: function(event) {
+				that.promptService.open(event.target.textContent,val=>{
+					this.setChartTitle(val);
 					this.updateTitle();
-				  }
-				},
-        width:660,
-        interpolate:'cardinal',
-        el: "#saturationData",
-        custom: ["readnum_100k", "gene_idt_ratio"],
-        type: "line",
-        data: temps
-      },
-      axis: {
-        x: {
-          title: "Amount of reads (x100K)",
-          // rotate: 60,
-          dblclick: function(event) {
-            var name = prompt("请输入需要修改的标题", "");
-            if (name) {
-              this.setXTitle(name);
-							this.updateTitle();
-            }
-          }
-        },
-        y: {
-          title: "Gene Identification ratio(%)",
-          dblclick: function(event) {
-            var name = prompt("请输入需要修改的标题", "");
-            if (name) {
-              this.setYTitle(name);
-              this.updateTitle();
-            }
-          }
-        }
-      },
-      tooltip: function(d,index) {
-        return "<span>Reads Number(x100K)："+d.readnum_100k+"</span><br><span>Gene Identification Ratio(%)："+d.gene_idt_ratio+"</span>";
-      }
+				})
+			},
+			width:660,
+			interpolate:'cardinal',
+			el: "#saturationData",
+			custom: ["readnum_100k", "gene_idt_ratio"],
+			type: "line",
+			data: temps
+      	},
+		axis: {
+			x: {
+				title: "Amount of reads (x100K)",
+				// rotate: 60,
+				dblclick: function(event) {
+					that.promptService.open(event.target.textContent,val=>{
+						this.setXTitle(val);
+						this.updateTitle();
+					})
+				}
+			},
+			y: {
+				title: "Gene Identification ratio(%)",
+				dblclick: function(event) {
+					that.promptService.open(event.target.textContent,val=>{
+						this.setYTitle(val);
+						this.updateTitle();
+					})
+				}
+			}
+      	},
+		tooltip: function(d,index) {
+			return "<span>Reads Number(x100K)："+d.readnum_100k+"</span><br><span>Gene Identification Ratio(%)："+d.gene_idt_ratio+"</span>";
+		}
     }
 
     new d4().init(config);

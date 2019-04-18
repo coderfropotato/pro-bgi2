@@ -309,7 +309,6 @@ export class ReLineComponent implements OnInit {
 
     //画图
     drawChart(data) {
-        console.log
 		let that = this;
         let xKey = data['baseThead'].slice(1).map(v=>v['true_key']);
         let categoryKey = data['baseThead'][0]['true_key'];
@@ -327,11 +326,10 @@ export class ReLineComponent implements OnInit {
 				height:($('.left-bottom-layout').height())*0.75,
 				title: "折线图",
 				dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-					this.setChartTitle(name);
-					this.updateTitle();
-					}
+                    that.promptService.open(event.target.textContent,val=>{
+                        this.setChartTitle(val);
+                        this.updateTitle();
+                    })
 				},
 				mouseover: function(event, titleObj) {
 					titleObj
@@ -354,22 +352,20 @@ export class ReLineComponent implements OnInit {
 					rotate: 60,
 					position: "bottom",
 					dblclick: function(event) {
-						var name = prompt("请输入需要修改的标题", "");
-						if (name) {
-							this.setXTitle(name);
+                        that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+                        })
 					}
 				},
 				y: {
 					title: "Log2(Value+1)",
 					position: "left",
 					dblclick: function(event) {
-						var name = prompt("请输入需要修改的标题", "");
-						if (name) {
-							this.setYTitle(name);
+                        that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+                        })
 					}
 				}
 			},
