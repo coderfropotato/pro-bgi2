@@ -61,42 +61,44 @@
         </nz-row>
       </div>  
 
-      <div class="relationRow" *ngIf="curRelation['score'] && curRelation['score'].length">
-          <nz-row>
-              <nz-col nzSpan="5" style="margin-top:8px">
-                  <span>Score</span>
-              </nz-col>
-              <nz-col nzSpan="13">
-                  <nz-slider [nzStep]="(curRelation.score[1]<10) ? 0.1 : 1 " [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [(ngModel)]="curRelation.score[2]"></nz-slider>
-              </nz-col>
-              <nz-col nzSpan="4" nzOffset="1">
-                  <nz-input-number [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [(ngModel)]="curRelation.score[2]"></nz-input-number>
-              </nz-col>
-          </nz-row>
-      </div>
-
-      <div class="relationRow" *ngIf="curRelation['max'] && curRelation['max'].length">
+      <div *ngIf="curRelation['isHasInfoSelect']">
+        <div class="relationRow" *ngIf="curRelation['score'] && curRelation['score'].length">
             <nz-row>
-                <nz-col nzSpan="5">
-                    <span>Max Num</span>
+                <nz-col nzSpan="5" style="margin-top:8px">
+                    <span>Score</span>
                 </nz-col>
-                <nz-col nzSpan="16">
-                    <nz-radio-group [(ngModel)]="curRelation.limit">
-                        <label nz-radio [nzValue]="true">limit</label>
-                        <label nz-radio [nzValue]="false">no limit</label>
-                    </nz-radio-group>
-                </nz-col>
-            </nz-row>
-
-            <nz-row>
-                <nz-col nzSpan="13" nzOffset="5">
-                    <nz-slider [nzDisabled]='!curRelation.limit' [nzStep]="(curRelation.max[1]<10) ? 0.1 : 1 " [nzMin]="curRelation.max[0]" [nzMax]="curRelation.max[1]" [(ngModel)]="curRelation.max[2]"></nz-slider>
+                <nz-col nzSpan="13">
+                    <nz-slider [nzStep]="(curRelation.score[1]<10) ? 0.1 : 1 " [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [(ngModel)]="curRelation.score[2]"></nz-slider>
                 </nz-col>
                 <nz-col nzSpan="4" nzOffset="1">
-                    <nz-input-number [nzDisabled]='!curRelation.limit'  [nzMin]="curRelation.max[0]" [nzMax]="curRelation.max[1]" [(ngModel)]="curRelation.max[2]"></nz-input-number>
+                    <nz-input-number [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [(ngModel)]="curRelation.score[2]"></nz-input-number>
                 </nz-col>
             </nz-row>
         </div>
+
+        <div class="relationRow" *ngIf="curRelation['max'] && curRelation['max'].length">
+                <nz-row>
+                    <nz-col nzSpan="5">
+                        <span>Max Num</span>
+                    </nz-col>
+                    <nz-col nzSpan="16">
+                        <nz-radio-group [(ngModel)]="curRelation.limit">
+                            <label nz-radio [nzValue]="true">limit</label>
+                            <label nz-radio [nzValue]="false">no limit</label>
+                        </nz-radio-group>
+                    </nz-col>
+                </nz-row>
+
+                <nz-row>
+                    <nz-col nzSpan="13" nzOffset="5">
+                        <nz-slider [nzDisabled]='!curRelation.limit' [nzStep]="(curRelation.max[1]<10) ? 0.1 : 1 " [nzMin]="curRelation.max[0]" [nzMax]="curRelation.max[1]" [(ngModel)]="curRelation.max[2]"></nz-slider>
+                    </nz-col>
+                    <nz-col nzSpan="4" nzOffset="1">
+                        <nz-input-number [nzDisabled]='!curRelation.limit'  [nzMin]="curRelation.max[0]" [nzMax]="curRelation.max[1]" [(ngModel)]="curRelation.max[2]"></nz-input-number>
+                    </nz-col>
+                </nz-row>
+        </div>
+    </div>
 </nz-modal>
 
 <!-- 选择定量信息 弹窗 -->
