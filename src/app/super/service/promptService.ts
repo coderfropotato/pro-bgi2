@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { config } from 'src/config';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +57,7 @@ export class PromptService {
 @Component({
     selector: "app-propmt",
     template: `<div style="margin-bottom: 10px;">请输入需要修改的标题</div><input nz-input [attr.value]="" (keyup)="handlerChange($event)" />
-    <div style="text-align:center;margin-top:10px;color:red;" [hidden]="isshowFlag != true">最多输入25位字符</div>`,
+    <div style="text-align:center;margin-top:10px;color:red;" [hidden]="isshowFlag != true">最多输入${config['maxTextLength']}位字符</div>`,
     styles: []
 })
 export class PromtComponent{
@@ -71,7 +72,7 @@ export class PromtComponent{
 
     handlerChange(ev){
     //   console.log(ev.target.value.length);
-      if(ev.target.value.length>25){
+      if(ev.target.value.length>config['maxTextLength']){
         this.isshowFlag = true;
       }else{
         this.isshowFlag = false;
