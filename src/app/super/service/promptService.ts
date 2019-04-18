@@ -1,8 +1,8 @@
+import  config  from 'src/config';
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Component, Input,Injectable,NgZone,OnInit,OnDestroy} from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-import config from 'src/config';
 
 @Injectable({
 	providedIn: 'root'
