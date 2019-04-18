@@ -1011,6 +1011,7 @@ export class ReNetComponent implements OnInit {
 
         d3.select("path#node"+this.curSearchNode.replace(this.idReq,"")).attr('fill',"#000000");
         this.allNodes.forEach(d=>{
+            d.selected=false;
             if(d.geneID === this.curSearchNode){
                 d.selected=true;
                 this.selectedNodes.push(d);
