@@ -194,7 +194,7 @@ export class ReListComponent implements OnInit {
 			this.checkAnalysis(data['_id']);
 		}
 
-		if (type === 'classification' || type === 'enrichment') {
+		if (type === 'enrichment') {
 			window.open(
 				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}/${data['date'].substring(0,10)}`
 			);
