@@ -8,7 +8,7 @@
                        <span title="热图区宽度">宽度</span>
                    </nz-col>
                     <nz-col nzSpan="10">
-                        <nz-slider [nzMin]="200" [nzMax]="2000" [(ngModel)]="width"></nz-slider>
+                        <nz-slider [nzStep]='50' [nzMin]="200" [nzMax]="2000" [(ngModel)]="width"></nz-slider>
                     </nz-col>
                     <nz-col nzSpan="7">
                         <nz-input-number [nzMin]="200" [nzMax]="2000" [(ngModel)]="width"></nz-input-number>
@@ -23,7 +23,7 @@
                         <span title="热图区高度">高度</span>
                     </nz-col>
                     <nz-col nzSpan="10">
-                        <nz-slider [nzMin]="200" [nzMax]="5000" [(ngModel)]="height"></nz-slider>
+                        <nz-slider [nzStep]='50' [nzMin]="200" [nzMax]="5000" [(ngModel)]="height"></nz-slider>
                     </nz-col>
                     <nz-col nzSpan="7">
                         <nz-input-number [nzMin]="200" [nzMax]="5000" [(ngModel)]="height"></nz-input-number>
