@@ -5,7 +5,7 @@
         <div class="fusionRow">是否显示内圈<nz-switch [(ngModel)]="isShowColumn" [nzDisabled]="isDisabled"></nz-switch></div>
         <div class="fusionRow">
             <nz-row>
-                <nz-col nzSpan="7">筛选link</nz-col>
+                <nz-col nzSpan="7" title="指定融合事件筛选方式，重新绘图">融合事件筛选方式</nz-col>
                 <nz-col nzSpan="17">
                     <nz-select style="width: 180px;" [(ngModel)]="linkSerach">
                         <nz-option *ngFor="let link of linkSerachList" [nzLabel]="link.name" [nzValue]="link.key"></nz-option>
