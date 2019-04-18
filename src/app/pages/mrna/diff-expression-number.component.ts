@@ -498,7 +498,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 	drawVenn(data) {
 		this.allChartData = data;
-		this.drawTotal(data["rows"]);
+		//this.drawTotal(data["rows"]);
+		this.doWithSelectChange();
 	}
 
 	drawTotal(data){
@@ -831,33 +832,11 @@ export class DiffExpressionNumberComponent implements OnInit {
 			}
 		}
 
-		// this.singleMultiSelect = {
-		// 	bar_name: '',
-		// 	total_name: '',
-		// 	venn_name: ''
-		// };
-
-		// this.doubleMultiSelect = {
-		// 	bar_name: [],
-		// 	total_name: []
-		// };
-
-		//this.tableEntity["compareGroup"] = this.selectConfirmData;
-
-		
-
 		this.panelShow = false;
-		// this.upSelect.length = 0;
-		// this.leftSelect.length = 0;
 		this.defaultShowFilterStatus = false;
 		this.diffVennNumberChart.reGetData();
 
 		this.selectConfirmData = this.compareTableGroupList;
-		//console.log(this.compareTableGroupList);
-
-		// setTimeout(() => {
-		// 	console.log(this.allChartData)
-		// }, 300);
 		this.chartBackStatus();
 	}
 	
@@ -914,6 +893,14 @@ export class DiffExpressionNumberComponent implements OnInit {
 		//this.tableEntity["compareGroup"] = this.selectConfirmData;
 		//this.defaultShowFilterStatus = false;
 		//this.chartBackStatus();
+
+		// this.extendEntity['compareGroup'] = this.selectConfirmData;
+		// this.extendEntity['type'] = this.m_type;
+
+		// console.log(this.selectConfirmData);
+		// console.log(this.m_type);
+
+		//this.doWithSelectChange();
 	}
 
 	handleCompareGroupChange() {

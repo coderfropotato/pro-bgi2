@@ -1071,13 +1071,11 @@ export class GeneDetailComponent implements OnInit {
 				this.expressive_t_flag = tempData.length>0?true:false;
 				this.expressive_t_data = tempData;
 				this.expressive_t_header = data["data"]["baseThead"];
-				// if(this.expressive_index == 1){
-				// 	this.drawLineChart(this.expressive_t_data);
+
+				// if(this.expressive_t_flag){
+				// 	this.drawLineChart2()
+				// 	this.line_flag2 = true;
 				// }
-				if(this.expressive_t_flag){
-					this.drawLineChart2()
-					this.line_flag2 = true;
-				}
 				break;
 			case "diff_group_gene":
 				this.groupDiff_params_g_flag = tempData.length>0?true:false;
