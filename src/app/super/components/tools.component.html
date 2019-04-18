@@ -29,7 +29,7 @@
             <span *ngIf="childVisible && selectType==='enrichment'">基因富集</span>
         </ng-template>
         <!-- 聚类 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='heatmap'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='heatmap'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <nz-tabset [nzSize]="'small'">
@@ -138,7 +138,7 @@
         </nz-drawer>
 
         <!-- 多组学 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='multiOmics'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='multiOmics'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis"></nz-spin>
             <ng-container *ngIf="multiOmicsData.length">
@@ -156,7 +156,7 @@
         </nz-drawer>
 
         <!-- 折线图 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='line'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='line'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'" [nzWidth]="376"
             nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <nz-tabset [nzSize]="'small'">
@@ -202,7 +202,7 @@
         </nz-drawer>
 
         <!-- KDA -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='kda'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='kda'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'" [nzWidth]="376"
             nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tools-params-kda">
@@ -244,7 +244,7 @@
         </nz-drawer>
 
         <!-- 卡方检验 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='chiSquare'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='chiSquare'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-kafun">
@@ -279,7 +279,7 @@
         </nz-drawer>
 
         <!-- 可变剪切 -->
-        <!-- <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='relativeSplice'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
+        <!-- <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='relativeSplice'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()" >
             <nz-spin nzTip='正在提交重分析，请稍后...'  [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-kafun">
                     <div class="tool-params-kafun-top">
@@ -311,7 +311,7 @@
         </nz-drawer> -->
 
         <!-- 网络图 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='net'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='net'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'" [nzWidth]="376"
             nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-net">
@@ -343,7 +343,7 @@
         </nz-drawer>
 
         <!-- 关联网络图 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='linkedNetwork'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='linkedNetwork'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-relativeNet">
@@ -399,7 +399,7 @@
         </nz-drawer>
 
         <!-- 关联聚类 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='heatmapRelation'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='heatmapRelation'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-tab">
@@ -467,7 +467,7 @@
         </nz-drawer>
 
         <!-- 基因分类 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='classification'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='classification'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div *ngIf="geneClassData.length">
@@ -487,7 +487,7 @@
         </nz-drawer>
 
         <!-- 基因富集 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='enrichment'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'"
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="childVisible && selectType=='enrichment'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div *ngIf="geneRichData.length">
