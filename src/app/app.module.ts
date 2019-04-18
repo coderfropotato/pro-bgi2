@@ -28,6 +28,7 @@ import { BigTableComponent } from './super/components/big-table.component';
 import { TableSwitchChartComponent } from './super/components/table-switch-chart.component';
 import { MultiOmicsSetComponent } from './super/components/multiOmicsSet.component';
 import { ClusterSetComponent } from './super/components/clusterSet.component';
+import { ReTopComponent } from './super/components/re-top.component';
 import { NetSetComponent } from './super/components/netSet.component';
 import { FusionSetComponent } from './super/components/fusionSet.component';
 import { TransformationTableComponent } from './super/components/transformation-table.component';
@@ -131,7 +132,7 @@ import { AccuracyPipe } from './super/filter/accuracy.pipe';
 import { TableSpecialTheadFilter } from './super/filter/tableSpecialThead.pipe';
 import config from '../config';
 import { from } from 'rxjs';
-import { ReTopComponent } from './pages/reanalysis/re-top.component';
+//import { ReTopComponent } from './pages/reanalysis/re-top.component';
 
 const ROUTES: Routes = [
 	// mrna
@@ -617,6 +618,7 @@ export function createTranslateLoader(http: HttpClient) {
 		TableSwitchChartComponent,
 		MultiOmicsSetComponent,
 		ClusterSetComponent,
+		ReTopComponent,
 		NetSetComponent,
 		FusionSetComponent,
 		AccuracyPipe,
@@ -694,7 +696,6 @@ export function createTranslateLoader(http: HttpClient) {
 		ReLineComponent,
 		KaFunComponent,
         TargetComponent,
-        ReTopComponent ,
 		RelativeSpliceComponent,
 		GeneListIndexComponent,
 		ReClassComponent,
