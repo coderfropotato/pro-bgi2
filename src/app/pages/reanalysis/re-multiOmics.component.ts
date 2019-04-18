@@ -376,6 +376,16 @@ export class ReMultiOmicsComponent implements OnInit {
 		}
 		let boxplotLength = boxplot.length;
 
+		// x title
+		let columnXtitle='Origin';
+		let columnXtitleLen=columnXtitle.length*7;
+		let boxXtitleLen_max=0;
+		if(boxplotLength){
+			boxXtitleLen_max=d3.max(boxplot,d=>d.relation.length*7);
+		}
+		
+		let xTitleLen=boxXtitleLen_max && boxXtitleLen_max>columnXtitleLen ? boxXtitleLen_max : columnXtitleLen;
+
 		// set width height space
 		let eachChartHeight = 0; //每种图主体的height
 		const chartSpace = 10; // 每种图之间的间距
@@ -519,7 +529,7 @@ export class ReMultiOmicsComponent implements OnInit {
 		let legendWidth = legendRectW + legend_text_space + typeTextMax * 7;
 
 		// svg width height
-		let totalWidth = margin.left + width + legend_chart_Space + legendWidth + margin.right,
+		let totalWidth = margin.left + width + xTitleLen + chartSpace + legend_chart_Space + legendWidth + margin.right,
 			totalHeight = height + margin.top + margin.bottom;
 
 		// 比例尺
@@ -572,6 +582,12 @@ export class ReMultiOmicsComponent implements OnInit {
 		// .attr("x2", width - 1)
 		// .attr("y2", 6)
 		// .style("stroke", "#000000");
+
+		//column x title
+		xAxisColumn.append('text')
+					.attr('dominant-baseline','middle')
+					.attr('x',width+chartSpace)
+					.text(columnXtitle)
 
 		// column y
 		column_g.append('g').attr('class', 'yAxis-column').call(yColumnAxis);
@@ -746,15 +762,17 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('font-family','Arial')
 					.attr('text-anchor', 'middle')
 					.attr('dominant-baseline', 'middle')
-					.attr('transform', `rotate(-90)`);
+					.attr('transform', `rotate(-90)`)
+					.text(d.name.length*7>eachChartHeight ? d.name.slice(0,Math.floor(eachChartHeight/7))+"..." : d.name)
+					.append('title').text(d.name);
 
-				boxYtitle.append('tspan').text(
-					d.relation.length*7>eachChartHeight ? d.relation.slice(0,Math.floor(eachChartHeight/7))+"..." : d.relation
-				).append('title').text(d.relation);
+				// boxYtitle.append('tspan').text(
+				// 	d.relation.length*7>eachChartHeight ? d.relation.slice(0,Math.floor(eachChartHeight/7))+"..." : d.relation
+				// ).append('title').text(d.relation);
 
-				boxYtitle.append('tspan').attr("x",0).attr('dy',15).text(
-					d.name.length*7>eachChartHeight ? d.name.slice(0,Math.floor(eachChartHeight/7))+"..." : d.name
-				).append('title').text(d.name);
+				// boxYtitle.append('tspan').attr("x",0).attr('dy',15).text(
+				// 	d.name.length*7>eachChartHeight ? d.name.slice(0,Math.floor(eachChartHeight/7))+"..." : d.name
+				// ).append('title').text(d.name);
 
 				// boxplot x
 				let xAxisBox = boxplot_g
@@ -769,6 +787,12 @@ export class ReMultiOmicsComponent implements OnInit {
 					.attr('x2', width)
 					.attr('y2', 0.5)
 					.style('stroke', '#000000');
+
+				// boxplot x title
+				xAxisBox.append('text')
+					.attr('dominant-baseline','middle')
+					.attr('x',width+chartSpace)
+					.text(d.relation)
 
 				//boxplots g
 				let boxplots = boxplot_g
@@ -942,7 +966,7 @@ export class ReMultiOmicsComponent implements OnInit {
 		let legend_g = svg
 			.append('g')
 			.attr('class', 'legend')
-			.attr('transform', `translate(${margin.left + width + legend_chart_Space},${margin.top + height / 2})`);
+			.attr('transform', `translate(${margin.left + width + xTitleLen + chartSpace + legend_chart_Space},${margin.top + height / 2})`);
 
 		// legend rect
 		legend_g
