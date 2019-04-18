@@ -14,21 +14,31 @@ declare const $: any;
       `
       .re_div{
         height: 40px;
+        width: 600px;
       }
       .re_div_one{
         float: left;
-        max-width: 300px;
+        max-width: 251px;
         height: 40px;
         line-height:40px;
         overflow:hidden;
         text-overflow:ellipsis;
         white-space:nowrap;
+        font-weight: bold;
       }
       .re_div_two{
         float: left;
         margin-left: 10px;
         height: 40px;
         line-height:40px;
+        font-weight: bold;
+      }
+      .link{
+        border: 1px solid #ececec;
+        margin: 6px auto;
+        border-radius: 2px;
+        cursor:pointer;
+        // text-indent:0.5rem;
       }
       `
   ]
@@ -67,6 +77,7 @@ export class ReTopComponent implements OnInit {
             this.date = data['data']['date'];
             this.nickname = data['data']['nickname'];
             this.parent = data['data']['parent'];
+            console.log(this.parent)
           } else {
             this.date = '';
             this.nickname = '';
@@ -75,4 +86,32 @@ export class ReTopComponent implements OnInit {
         }
       );
   }
+
+  toDetail(data){
+    let type = '';
+		if (data['reanalysisType'].indexOf('heatmap') != -1) {
+			if (data['reanalysisType'] != 'heatmapRelation') {
+				type = 'heatmap';
+			} else {
+				type = 'heatmapRelation';
+			}
+		} else {
+			type = data['reanalysisType'];
+		}
+
+		let href = location.href.split('/report');
+
+		if (type === 'enrichment') {
+			window.open(
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}/${data['date'].substring(0,10)}`
+			);
+			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
+		} else {
+			window.open(
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['isEdited']}`
+			);
+			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
+		}
+  }
+  
 }
