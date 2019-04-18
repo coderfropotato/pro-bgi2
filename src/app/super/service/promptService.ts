@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { config } from 'src/config';
+import config from "../../../config";
 
 @Injectable({
   providedIn: 'root',
