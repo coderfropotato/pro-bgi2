@@ -5,7 +5,7 @@
         <div class='rangeSet'>
                <nz-row>
                    <nz-col nzSpan='4' class="textCol">
-                       <span>宽度</span>
+                       <span title="热图区宽度">宽度</span>
                    </nz-col>
                     <nz-col nzSpan="10">
                         <nz-slider [nzStep]='50' [nzMin]="200" [nzMax]="2000" [(ngModel)]="width"></nz-slider>
@@ -20,7 +20,7 @@
       
                 <nz-row>
                     <nz-col nzSpan="4" class="textCol">
-                        <span>高度</span>
+                        <span title="热图区高度">高度</span>
                     </nz-col>
                     <nz-col nzSpan="10">
                         <nz-slider [nzStep]='50' [nzMin]="200" [nzMax]="5000" [(ngModel)]="height"></nz-slider>
@@ -35,7 +35,7 @@
 
                 <nz-row [hidden]="type && type === 'relation'" class="domainRange">
                     <nz-col nzSpan="6" class="textCol">
-                        <span>图例值域</span>
+                        <span title="图例的值域，超出值域范围的值将以值域最大值（或最小值）对应的颜色显示修改热图高宽大小数值">图例值域</span>
                     </nz-col>
                     <nz-col nzSpan="17">
                         <nz-slider nzRange [nzStep]="(max<10) ? 0.1 : 1 " [nzMin]="min" [nzMax]="max" [(ngModel)]="rangeValue" (ngModelChange)="rangeValueChange()"></nz-slider>
@@ -55,7 +55,7 @@
 
         <div class="dataSet">
             <nz-row>
-                <nz-col nzSpan="5" style="margin-top:5px">行名称</nz-col>
+                <nz-col nzSpan="5" style="margin-top:5px" title="显示基因ID或基因名">行名称</nz-col>
                 <nz-col nzSpan="16">
                     <nz-select style="width: 216px;" [(ngModel)]="selectedGene">
                         <nz-option *ngFor="let gene of geneList" [nzLabel]="gene.name" [nzValue]="gene.key"></nz-option>
@@ -64,7 +64,7 @@
             </nz-row>
 
             <nz-row [hidden]="type && type === 'relation'">
-                <nz-col nzSpan="5" style="margin-top:3px">列聚类</nz-col>
+                <nz-col nzSpan="5" style="margin-top:3px" title="是否对列进行聚类">列聚类</nz-col>
                 <nz-col nzSpan="10">
                     <nz-switch [(ngModel)]="isHorizontalCluster"></nz-switch>
                 </nz-col>
@@ -75,7 +75,7 @@
             </nz-row>
 
             <nz-row>
-                <nz-col nzSpan="6" nzOffset="2">纵向分类：</nz-col>
+                <nz-col nzSpan="6" nzOffset="2" title="在热图区左侧添加基因分类信息">纵向分类：</nz-col>
                 <nz-col class="center" nzSpan="2" nzOffset="2" nz-tooltip nzTitle="添加" (click)="addVclass()">
                         <i nz-icon class="anticon anticon-plus-circle" theme="outline"></i>
                 </nz-col>
@@ -96,7 +96,7 @@
             </div>
 
             <nz-row>
-                <nz-col nzSpan="6" nzOffset="2">横向分类：</nz-col>
+                <nz-col nzSpan="6" nzOffset="2" title="在热图区上方添加样本的分类信息">横向分类：</nz-col>
                 <nz-col class="center" nzSpan="2" nzOffset="2" nz-tooltip nzTitle="添加" (click)="addHclass()">
                         <i nz-icon class="anticon anticon-plus-circle" theme="outline"></i>
                 </nz-col>
