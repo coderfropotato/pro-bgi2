@@ -385,7 +385,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 		}, 30);
 	}
 
-	
+
 
 	// 重置图 应用图转换前的设置
 	chartBackStatus() {
@@ -508,11 +508,10 @@ export class DiffExpressionNumberComponent implements OnInit {
 			chart: {
 			  title: "差异基因数量统计",
 			  dblclick: function(event) {
-				var name = prompt("请输入需要修改的标题", "");
-				if (name) {
-				this.setChartTitle(name);
-				this.updateTitle();
-				}
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
+						this.updateTitle();
+					})
 			  },
 			  width:600,
 			  custom: ["compareGroup", "diffexp_updown_total"],
@@ -531,21 +530,19 @@ export class DiffExpressionNumberComponent implements OnInit {
 				title: "",
 				rotate: 60,
 				dblclick: function(event) {
-				  var name = prompt("请输入需要修改的标题", "");
-				  if (name) {
-					this.setXTitle(name);
-					this.updateTitle();
-				  }
+					that.promptService.open(event.target.textContent,val=>{
+						this.setXTitle(val);
+						this.updateTitle();
+					})
 				}
 			  },
 			  y: {
 				title: "Number of Genes",
 				dblclick: function(event) {
-				  var name = prompt("请输入需要修改的标题", "");
-				  if (name) {
-					this.setYTitle(name);
-					this.updateTitle();
-				  }
+					that.promptService.open(event.target.textContent,val=>{
+						this.setYTitle(val);
+						this.updateTitle();
+					})
 				}
 			  },
 			},
@@ -571,7 +568,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 		var baseThead = this.allChartData["baseThead"];
 		var rows = this.allChartData["rows"];
 		var chartData = [];
-		
+
 		for (var i = 0; i < baseThead.length; i++) {
 			for (var j = 0; j < rows.length; j++) {
 
@@ -613,11 +610,10 @@ export class DiffExpressionNumberComponent implements OnInit {
 			chart: {
 				title: '差异基因数量统计',
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				el: '#diffVennNumberId',
 				type: 'groupBar',
@@ -634,22 +630,20 @@ export class DiffExpressionNumberComponent implements OnInit {
 				x: {
 					title: '',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					},
 					rotate: 60
 				},
 				y: {
 					title: 'Number of Genes',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 					//formatter: (val) => val + '%'
 				}
@@ -710,7 +704,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			}else if(type=="EBSeq"){
 				this.isShowSpan_EBSeq = true;
 			}
-			
+
 			return;
 		}else{
 			this.isShowSpan_PossionDis = false;
@@ -839,13 +833,13 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.selectConfirmData = this.compareTableGroupList;
 		this.chartBackStatus();
 	}
-	
+
 	defaultTheSelectList(data,num) {
 		if(num == 1){
 			let tempJ = [];
 			tempJ.push(data[0]["compareGroup"]);
 			this.selectConfirmData = tempJ;
-			
+
 			this.m_name1 = data[0]["compareGroup"];
 
 			this.m_name2 = "Total";

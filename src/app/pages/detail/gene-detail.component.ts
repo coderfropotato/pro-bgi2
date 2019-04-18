@@ -649,43 +649,42 @@ export class GeneDetailComponent implements OnInit {
 			return;
 		}
 
+		let that = this;
+
 		let config: object = {
 			chart: {
 				// title: "折线图",
 				smooth:true,
 				dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-					this.setChartTitle(name);
-					this.updateTitle();
-				}
-			},
-			width:600,
-			height:450,
-			el: "#lineChartDiv",
-			type: "line",
-			data: tempArray
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
+						this.updateTitle();
+					})
+				},
+				width:600,
+				height:450,
+				el: "#lineChartDiv",
+				type: "line",
+				data: tempArray
 			},
 			axis: {
 				x: {
 					title: "Sample Name",
 					rotate: 70,
 					dblclick: function(event) {
-						var name = prompt("请输入需要修改的标题", "");
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				},
 				y: {
 					title: "log2(Value+1)",
 					dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-						this.setYTitle(name);
-						this.updateTitle();
-					}
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
+							this.updateTitle();
+						})
 					}
 				}
 			},
@@ -731,43 +730,41 @@ export class GeneDetailComponent implements OnInit {
 		// 	return;
 		// }
 
+		let that = this;
 		let config: object = {
 			chart: {
 				title: "折线图",
 				smooth:true,
 				dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-					this.setChartTitle(name);
-					this.updateTitle();
-				}
-			},
-			width:600,
-			height:450,
-			el: "#lineChartDiv2",
-			type: "line",
-			data: tempArray
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
+						this.updateTitle();
+					})
+				},
+				width:600,
+				height:450,
+				el: "#lineChartDiv2",
+				type: "line",
+				data: tempArray
 			},
 			axis: {
 				x: {
 					title: "Sample name",
 					rotate: 60,
 					dblclick: function(event) {
-						var name = prompt("请输入需要修改的标题", "");
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				},
 				y: {
 					title: "log2(Value+1)",
 					dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-						this.setYTitle(name);
-						this.updateTitle();
-					}
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
+							this.updateTitle();
+						})
 					}
 				}
 			},

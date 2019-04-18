@@ -215,11 +215,10 @@ export class InformationComponent implements OnInit {
 			chart: {
 				title: '各类型RNA数量统计',
 				dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				width: 600,
 				height: 400,
@@ -288,11 +287,10 @@ export class InformationComponent implements OnInit {
 			chart: {
 				title: '转录本长度分布图',
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				el: '#TranscriptData',
 				type: 'stackBar',
@@ -304,22 +302,20 @@ export class InformationComponent implements OnInit {
 				x: {
 					title: 'Sequence Size(bp)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					},
 					rotate: 60
 				},
 				y: {
 					title: 'Number of Transcripts',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				}
 			},
@@ -365,11 +361,10 @@ export class InformationComponent implements OnInit {
 			chart: {
 				title: 'miRNA长度分布',
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				el: '#RNALData',
 				type: 'groupBar',
@@ -382,22 +377,20 @@ export class InformationComponent implements OnInit {
 				x: {
 					title: 'miRNALength (bp)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 					//rotate: 60
 				},
 				y: {
 					title: 'Number of miRNA',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 					//formatter: (val) => val + '%'
 				}
@@ -456,11 +449,10 @@ export class InformationComponent implements OnInit {
       chart: {
 				title: "外显子数量分布图",
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				el: '#exonsNumData',
 				type: 'stackBar',
@@ -472,22 +464,20 @@ export class InformationComponent implements OnInit {
 				x: {
 					title: 'Exon Number',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 					// rotate:60
 				},
 				y: {
 					title: 'Number of Transcripts',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				}
 			},
@@ -538,11 +528,10 @@ export class InformationComponent implements OnInit {
 			chart: {
 				title: 'The first nucleotide bias',
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				el: '#RNAFData',
 				type: 'stackBarPercent',
@@ -554,22 +543,20 @@ export class InformationComponent implements OnInit {
 				x: {
 					title: 'Length(nt)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					},
 					rotate: 60
 				},
 				y: {
 					title: 'Percent(%)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				}
 			},

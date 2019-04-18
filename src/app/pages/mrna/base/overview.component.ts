@@ -534,11 +534,10 @@ export class OverviewComponent implements OnInit {
 			chart: {
 				title: '主成分分析',
 				dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-					  this.setChartTitle(name);
-					  this.updateTitle();
-					}
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
+						this.updateTitle();
+					})
 				},
                 width: 660,
 				el: '#PCADataID',
@@ -552,21 +551,19 @@ export class OverviewComponent implements OnInit {
 				x: {
 					title: 'PC1',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				},
 				y: {
 					title: 'PC2',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				}
 			},
@@ -649,11 +646,10 @@ export class OverviewComponent implements OnInit {
 			chart: {
 				title: "表达量箱线图",
 				dblclick: function(event) {
-				  var name = prompt("请输入需要修改的标题", "");
-				  if (name) {
-					this.setChartTitle(name);
-					this.updateTitle();
-				  }
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
+						this.updateTitle();
+					})
 				},
 				mouseover: function(event, titleObj) {
 				  titleObj
@@ -705,11 +701,10 @@ export class OverviewComponent implements OnInit {
 				  rotate: 60,
 				  data:xData,
 				  dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-					  this.setXTitle(name);
-					  this.updateTitle();
-					}
+					that.promptService.open(event.target.textContent,val=>{
+						this.setXTitle(val);
+						this.updateTitle();
+					})
 				  }
 				},
 				y: {
@@ -717,11 +712,10 @@ export class OverviewComponent implements OnInit {
 				  min: 0,
 				  data:yData,
 				  dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-					  this.setYTitle(name);
-					  this.updateTitle();
-					}
+					that.promptService.open(event.target.textContent,val=>{
+						this.setYTitle(val);
+						this.updateTitle();
+					})
 				  }
 				}
 			  },
@@ -761,11 +755,10 @@ export class OverviewComponent implements OnInit {
 			chart: {
 				title: "表达量密度图",
 				dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				custom: ["x", "y","name"],
 				el: "#MapDataID", // area chart type
@@ -778,21 +771,19 @@ export class OverviewComponent implements OnInit {
 				x: {
 					title: "log10(FPKM+1)",
 					dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				},
 				y: {
 					title: "density",
 					dblclick: function(event) {
-					var name = prompt("请输入需要修改的标题", "");
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				}
 			},
@@ -858,11 +849,10 @@ export class OverviewComponent implements OnInit {
 			chart: {
 				title: '表达量堆积图',
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				el: '#stackMapData',
 				type: 'stackBar',
@@ -874,22 +864,20 @@ export class OverviewComponent implements OnInit {
 				x: {
 					title: 'Sample',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					},
 					rotate: 60
 				},
 				y: {
 					title: 'GeneNumber',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				}
 			},

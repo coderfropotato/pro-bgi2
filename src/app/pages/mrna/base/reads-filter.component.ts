@@ -201,26 +201,25 @@ export class ReadsFilterComponent implements OnInit {
     let that = this;
 
     let config:object={
-      chart: {
-				title: "原始数据过滤成分统计",
-                dblclick: function(event) {
-                    var name = prompt("请输入需要修改的标题", "");
-                    if (name) {
-                      this.setChartTitle(name);
-                      this.updateTitle();
-                    }
-                  },
-        width:600,
-        height:400,
-        padding:0,
-        outerRadius:120,
-        startAngle:0,
-        endAngle:360,
-        showLabel:true,
-        custom: ["name", "value"],
-        el: "#rawDataID",
-        type: "pie",
-        data: tempArray
+        chart: {
+            title: "原始数据过滤成分统计",
+            dblclick: function(event) {
+                that.promptService.open(event.target.textContent,val=>{
+                    this.setChartTitle(val);
+                    this.updateTitle();
+                })
+            },
+            width:600,
+            height:400,
+            padding:0,
+            outerRadius:120,
+            startAngle:0,
+            endAngle:360,
+            showLabel:true,
+            custom: ["name", "value"],
+            el: "#rawDataID",
+            type: "pie",
+            data: tempArray
         },
         legend: {
             show: true,
@@ -262,43 +261,40 @@ export class ReadsFilterComponent implements OnInit {
 
     let config:object={
         chart: {
-          title: "Clean reads 碱基含量分布",
-          dblclick: function(event) {
-            var name = prompt("请输入需要修改的标题", "");
-            if (name) {
-              this.setChartTitle(name);
-              this.updateTitle();
-            }
-          },
-          width:600,
-          custom: ["name", "value", "category"],
-          el: "#rawBaseID",
-          type: "categoryLine",
-          data: chartData,
-          interpolate: "cardinal", // cardinal basic step  linear
+            title: "Clean reads 碱基含量分布",
+            dblclick: function(event) {
+                that.promptService.open(event.target.textContent,val=>{
+                    this.setChartTitle(val);
+                    this.updateTitle();
+                })
+            },
+            width:600,
+            custom: ["name", "value", "category"],
+            el: "#rawBaseID",
+            type: "categoryLine",
+            data: chartData,
+            interpolate: "cardinal", // cardinal basic step  linear
         },
         axis: {
-          x: {
-            title: "Position along reads",
-            rotate: 60,
-            dblclick: function(event) {
-              var name = prompt("请输入需要修改的标题", "");
-              if (name) {
-                this.setXTitle(name);
-				this.updateTitle();
-              }
+            x: {
+                title: "Position along reads",
+                rotate: 60,
+                dblclick: function(event) {
+                    that.promptService.open(event.target.textContent,val=>{
+                        this.setXTitle(val);
+                        this.updateTitle();
+                    })
+                }
+            },
+            y: {
+                title: "Percentage (%)",
+                dblclick: function(event) {
+                    that.promptService.open(event.target.textContent,val=>{
+                        this.setYTitle(val);
+                        this.updateTitle();
+                    })
+                }
             }
-          },
-          y: {
-            title: "Percentage (%)",
-            dblclick: function(event) {
-              var name = prompt("请输入需要修改的标题", "");
-              if (name) {
-                this.setYTitle(name);
-                this.updateTitle();
-              }
-            }
-          }
         },
         legend: {
             show: true,

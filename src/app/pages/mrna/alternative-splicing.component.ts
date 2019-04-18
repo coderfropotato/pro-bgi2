@@ -181,11 +181,10 @@ export class AlternativeSplicingComponent implements OnInit {
 			chart: {
 				title: '可变剪接事件统计',
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				el: '#alternativeSpliceDiv',
 				type: 'stackBarPercent',
@@ -201,22 +200,20 @@ export class AlternativeSplicingComponent implements OnInit {
 				x: {
 					// title: 'Length(nt)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					},
 					rotate: 60
 				},
 				y: {
 					title: 'Percentage (%)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				}
 			},
@@ -225,8 +222,8 @@ export class AlternativeSplicingComponent implements OnInit {
 				position: 'right',
 				click: function(d, index) {
 					that.color = d3.select(d).attr('fill');
-						that.legendIndex = index;
-						that.isShowColorPanel = true;
+					that.legendIndex = index;
+					that.isShowColorPanel = true;
 				}
 			},
 			tooltip: function(d) {
