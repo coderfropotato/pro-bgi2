@@ -192,11 +192,10 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 			chart: {
 				title: '差异可变剪接事件统计',
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
-						this.updateTitle();
-					}
+					that.promptService.open(event.target.textContent,val=>{
+                        this.setChartTitle(val);
+                        this.updateTitle();
+					})
 				},
 				el: '#diffAlternativeSpliceDiv',
 				type: 'stackBarPercent',
@@ -214,22 +213,20 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 				x: {
 					// title: 'Length(nt)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					},
 					rotate: 60
 				},
 				y: {
 					title: 'Percentage (%)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				}
 			},

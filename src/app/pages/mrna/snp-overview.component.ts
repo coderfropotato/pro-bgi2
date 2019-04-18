@@ -177,38 +177,35 @@ export class SnpOverviewComponent implements OnInit {
 			chart: {
 				title: 'SNP类型统计',
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				el: '#snpOverviewDiv',
 				type: 'stackBarPercent',
 				width: 660,
 				custom: [ 'sample_name','total', 'A_G','C_T','A_C','A_T','C_G','G_T'],
-        data: chartData
+        		data: chartData
 			},
 			axis: {
 				x: {
 					// title: 'Length(nt)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setXTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setXTitle(val);
 							this.updateTitle();
-						}
+						})
 					},
 					rotate: 60
 				},
 				y: {
 					title: 'Percentage (%)',
 					dblclick: function(event) {
-						var name = prompt('请输入需要修改的标题', '');
-						if (name) {
-							this.setYTitle(name);
+						that.promptService.open(event.target.textContent,val=>{
+							this.setYTitle(val);
 							this.updateTitle();
-						}
+						})
 					}
 				}
 			},
@@ -216,7 +213,7 @@ export class SnpOverviewComponent implements OnInit {
 				show: true,
 				position: 'right',
 				click: function(d, index) {
-          that.color = d3.select(d).attr('fill');
+          			that.color = d3.select(d).attr('fill');
 					that.legendIndex = index;
 					that.isShowColorPanel = true;
 				}
@@ -224,8 +221,8 @@ export class SnpOverviewComponent implements OnInit {
 			// tooltip: function(d) {
       //   return '<span>Type：' + d.key + '</span><br><span>Percentage：' + (d[1] - d[0]).toFixed(2) + '%</span><br><span>Sample：'+d.data['sample_name']+'</span>';
       // }
-      tooltip: function(d) {
-        // console.log(d)
+			tooltip: function(d) {
+				// console.log(d)
 				var p =+(d[1] - d[0]).toFixed(2);
 				var n =Math.round(p/100*d.data.total);
 				return '<span>Type：' + d.key + '</span><br><span>Percentage：' + p  + '%</span><br><span>Number：'+n+'</span><br><span>Group：'+d.data['sample_name']+'</span>';

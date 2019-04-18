@@ -761,11 +761,10 @@ export class GeneListVennComponent implements OnInit {
 			chart: {
 				title: '',
 				dblclick: function(event) {
-					var name = prompt('请输入需要修改的标题', '');
-					if (name) {
-						this.setChartTitle(name);
+					_self.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
 						this.updateTitle();
-					}
+					})
 				},
 				width: 700,
 				height: 300,
