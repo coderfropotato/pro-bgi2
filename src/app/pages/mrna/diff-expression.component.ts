@@ -798,7 +798,7 @@ export class DiffExpressionComponent implements OnInit {
 						this.updateTitle();
 					})
 				},
-				width: 480,
+				width: 600,
 				height: 300,
 				onselect: (d) => {
 					this.singleMultiSelect = { bar_name: '', total_name: '', venn_name: '' };
@@ -1219,7 +1219,7 @@ export class DiffExpressionComponent implements OnInit {
 		}
 
 		function drawSvg2() {
-			
+
 			//let width2 = 320 - left_name_length - kong_name_right;
 			//let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高
 			//let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高
