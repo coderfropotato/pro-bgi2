@@ -11,7 +11,7 @@ declare const $: any;
   selector: 'app-re-top',
   templateUrl: './re-top.component.html',
   styles: [
-      `
+    `
       .re_div{
         height: 40px;
         width: 600px;
@@ -55,7 +55,7 @@ export class ReTopComponent implements OnInit {
     private ajaxService: AjaxService,
     private storeService: StoreService,
     private notification: NzNotificationService,
-    private pageModuleService:PageModuleService
+    private pageModuleService: PageModuleService
   ) { }
 
   ngOnInit() {
@@ -87,31 +87,35 @@ export class ReTopComponent implements OnInit {
       );
   }
 
-  toDetail(data){
+  toDetail(data) {
     let type = '';
-		if (data['reanalysisType'].indexOf('heatmap') != -1) {
-			if (data['reanalysisType'] != 'heatmapRelation') {
-				type = 'heatmap';
-			} else {
-				type = 'heatmapRelation';
-			}
-		} else {
-			type = data['reanalysisType'];
-		}
+    if (data['reanalysisType'].indexOf('heatmap') != -1) {
+      if (data['reanalysisType'] != 'heatmapRelation') {
+        type = 'heatmap';
+      } else {
+        type = 'heatmapRelation';
+      }
+    } else {
+      type = data['reanalysisType'];
+    }
 
-		let href = location.href.split('/report');
+    let href = location.href.split('/report');
 
-		if (type === 'enrichment') {
-			window.open(
-				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}/${data['date'].substring(0,10)}`
-			);
-			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
-		} else {
-			window.open(
-				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['isEdited']}`
-			);
-			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
-		}
+    if (type === 'enrichment') {
+      window.open(
+        `${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}/${data['date'].substring(0, 10)}`
+      );
+      // this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
+    } else if (type === 'classification') {
+      window.open(
+        `${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}`
+      );
+    } else {
+      window.open(
+        `${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['isEdited']}`
+      );
+      // this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
+    }
   }
-  
+
 }
