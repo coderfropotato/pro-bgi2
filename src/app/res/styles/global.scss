@@ -105,7 +105,7 @@
 }
 
 .table-bottom {
-    padding: 10px 16px;
+    padding: 10px;
     background-color: #f5f5f5;
 }
 
@@ -454,6 +454,7 @@ button {
 
 .table-bottom {
     height: 52px;
+    position:relative;
 }
 
 .center {
@@ -528,6 +529,8 @@ button {
     background-color: #fff;
     padding: 8px;
     position: relative;
+    white-space:nowrap;
+    overflow:auto;
     .only-table {
         position: absolute;
         right: 16px;
@@ -557,7 +560,7 @@ button {
     // flex 5
     width: 100%;
     height: 100%;
-    min-width: 1350px;
+    min-width: $min-width;
     page-break-before: always;
     display: flex;
     flex-direction: row;
@@ -671,13 +674,19 @@ button {
     white-space: nowrap;
 }
 
-// @media screen and (max-width: 1350px) {
-// 	.content{
-// 		.switch{
-// 			display: none;
-// 		}
-// 	}
-// }
+ @media screen and (max-width: $media-width) {
+    .table-analysis-button{
+        position:absolute;
+        right:10px;
+        top:13px;
+        b{
+            display:none;
+        }
+        span{
+            margin-left:9px;
+        }
+    }   
+ }
 .menufunc {
     opacity: 0.8;
     cursor: pointer;
@@ -1098,12 +1107,17 @@ button {
     padding: 16px;
 }
 
-.tools-wrap {
+.tools-wrap,.params-wrap {
     height: calc(100% - 32px) !important;
     transform: translate(-16px, 16px) !important;
     width: 320px!important;
+    .ant-drawer-wrapper-body {
+        overflow: hidden!important;
+    }
     .ant-drawer-body {
         padding: 24px !important;
+        height: calc(100% - 55px);
+        overflow:auto;
         ul {
             li {
                 float: left;

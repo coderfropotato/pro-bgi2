@@ -29,11 +29,11 @@
                     <div nz-menu class="set-panel clearfix">
                         <ul>
                             <li nz-row>
-                                <span>图宽度</span>
+                                <span title="图宽度">图宽度</span>
                                 <input nz-input placeholder="600 ~ 2000" [(ngModel)]="set['width']" (blur)="handleBlur(0)" nzSize="default" />
                             </li>
                             <li nz-row>
-                                <span>显示字符个数</span>
+                                <span title="Y轴GO条目名称的长度，超出长度的字符用“…”表示。">显示字符个数</span>
                                 <input nz-input placeholder="20 ~ 100" [(ngModel)]="set['len']" (blur)="handleBlur(1)" nzSize="default" />
                             </li>
                         </ul>
