@@ -624,18 +624,30 @@ button {
         @include module-style;
         &.expand {
             flex: 7;
-            .pagination-pagesize {
-                display: block;
-            }
         }
         &.unexpand {
             flex: 2.5;
             .pagination-pagesize {
                 display: none;
             }
+            .small_span_sample{
+                color: red;
+                font-size: 13px;
+                display: inline-block;
+                max-width: 80px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
         }
         &.table-only {
             flex: 1;
+            .small_span_sample{
+                color: red;
+                font-size: 13px;
+                display: inline-block;
+                white-space: nowrap;
+            }
         }
     }
     & .switch {
@@ -664,7 +676,7 @@ button {
     font-size: 13px;
 }
 
-.small_span {
+.small_span{
     color: red;
     font-size: 13px;
     display: inline-block;
@@ -685,7 +697,7 @@ button {
         span{
             margin-left:9px;
         }
-    }   
+    }
  }
 .menufunc {
     opacity: 0.8;
