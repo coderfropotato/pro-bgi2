@@ -1362,18 +1362,45 @@ export class ToolsComponent implements OnInit {
 
 	// 关联聚类
 	getheatmapRelationParams() {
+		// 图上的关系和表上的关系 组合起来 统一key 去重
 		let entity = this.toolsService.get('tableEntity');
+		let tempGraphRelations = 'graphRelations' in entity && entity['graphRelations'].length?entity['graphRelations']:[];
+		let tableRelations = entity['relations'].length?entity['relations']:[];
+		let graphRelations = tempGraphRelations.map(v=>{
+			let obj= {
+				key:v['relation'],
+				name:v['relationName'],
+				limit:v['limit'],
+				max:v['max'],
+				score:v['score']
+			}
+
+			return obj;
+		})
+
+		let allRelations = graphRelations.concat(tableRelations);
+		let tempArr = [];
+
+		for(let i=0;i<allRelations.length;i++){
+			if(tempArr.includes(allRelations[i]['key'])){
+				allRelations.splice(i,1);
+				i--;
+			}else{
+				tempArr.push(allRelations[i]['key']);
+			}
+		}
+
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/relationCluster/heatmapConfig`,
 				data: {
 					LCID: sessionStorage.getItem('LCID'),
 					tid: 'tid' in entity ? entity['tid'] : null,
-					geneType: this.toolsService.get('tableEntity')['geneType'],
-					species: this.toolsService.get('tableEntity')['species'],
+					geneType: entity['geneType'],
+					species: entity['species'],
 					version: this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead'),
-					relations: this.toolsService.get('tableEntity')['relations']
+					relations: allRelations
 				}
 			})
 			.subscribe(

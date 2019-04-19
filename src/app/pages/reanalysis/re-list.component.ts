@@ -199,6 +199,11 @@ export class ReListComponent implements OnInit {
 				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}/${data['date'].substring(0,10)}`
 			);
 			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
+		}
+		else if (type === 'classification'){
+			window.open(
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}`
+			);
 		} else {
 			window.open(
 				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['isEdited']}`

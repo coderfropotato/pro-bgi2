@@ -54,13 +54,13 @@ export class FusionSetComponent implements OnInit {
     ngOnInit() {
        this.linkSerachList=[
            {
-               key:"score",
-               name:"Score"
-           },
-           {
                key:"linkId",
-               name:"linkID"
-           }
+               name:"Fusion Link ID"
+            },
+            {
+                key:"score",
+                name:"Eric Score"
+            }
        ];
        this.linkSerach=this.linkSerachList[0].key;
        this.score=this.storeService.getStore('circos_score');

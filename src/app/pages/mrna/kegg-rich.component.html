@@ -23,7 +23,7 @@
             <ng-template #checkedTemplate>
                 <nz-dropdown *ngIf="!isShowTable" [nzClickHide]="false" [(nzVisible)]="visible" [nzTrigger]="'click'">
                     <div nz-dropdown class="dropdownTitle">
-                        &nbsp;<span>选中的{{annotation}}</span>&nbsp;
+                        &nbsp;<span nz-tooltip nzTitle="上表已选中的Pathway">选中的{{annotation}}</span>&nbsp;
                         <span style="color: red">({{checkedDrawGeneList.length > 60 ? 60 : checkedDrawGeneList.length}})</span>&nbsp;
                     </div>
                     <div *ngIf="checkedDrawGeneList.length" style="box-shadow: 0 2px 8px rgba(0,0,0,.15);">

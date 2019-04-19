@@ -404,7 +404,7 @@ export class GeneDetailComponent implements OnInit {
 				this.tcd_defaultUrl = `${config['javaPath']}/geneDetail/getSequence`;
 				this.t_params={
 					LCID: this.lcid,
-					type: "transcripts.fa",
+					type: "rna.fa",
 					geneID: this.geneID
 				};
 				this.c_params={
