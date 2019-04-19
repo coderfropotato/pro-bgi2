@@ -558,7 +558,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			tooltip: function(d) {
 				//return "<span>Compare Group:"+d.compareGroup+"</span><br><span>Number of Genes:"+d.diffexp_updown_total+"</span><br><span>category：total</span>"
 				//"+d.diffexp_updown_total+"
-				return "<span>Category：total</span><br><span>Compare Group:"+d.compareGroup+"</span><br><span>Number of Genes:"+d.diffexp_updown_total+"</span>"
+				return "<span>Category：total</span><br><span>Compare Group："+d.compareGroup+"</span><br><span>Number of Genes："+d.diffexp_updown_total+"</span>"
 			}
 		}
 		this.chart = new d4().init(config);
