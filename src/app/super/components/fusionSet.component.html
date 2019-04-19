@@ -2,12 +2,12 @@
     <i class="iconfont icon-shezhi" nz-tooltip nzTitle="设置" nz-dropdown></i>
     <div class="setPanel" nz-menu>
         <div class="fusionRow">是否显示基因名<nz-switch [(ngModel)]="isShowGene"></nz-switch></div>
-        <div class="fusionRow">是否显示内圈<nz-switch [(ngModel)]="isShowColumn" [nzDisabled]="isDisabled"></nz-switch></div>
+        <div class="fusionRow">是否显示内圈<nz-switch style="margin-left: 31px;" [(ngModel)]="isShowColumn" [nzDisabled]="isDisabled"></nz-switch></div>
         <div class="fusionRow">
             <nz-row>
-                <nz-col nzSpan="7">筛选link</nz-col>
-                <nz-col nzSpan="17">
-                    <nz-select style="width: 180px;" [(ngModel)]="linkSerach">
+                <nz-col nzSpan="11" nz-tooltip nzTitle="指定融合事件筛选方式，重新绘图">融合事件筛选方式</nz-col>
+                <nz-col nzSpan="13">
+                    <nz-select nz-tooltip [nzTitle]="linkSerach==='score' ? '融合事件得分，值越大，融合事件越可靠' : '融合事件ID，可在表格视图中找到该ID'" style="width: 150px;" [(ngModel)]="linkSerach">
                         <nz-option *ngFor="let link of linkSerachList" [nzLabel]="link.name" [nzValue]="link.key"></nz-option>
                     </nz-select>
                 </nz-col>
@@ -15,14 +15,14 @@
         </div>
         <div class="fusionRow" *ngIf="linkSerach==='score'">
             <nz-row>
-                <nz-col nzSpan='5'>
-                    <span>Score</span>
+                <nz-col nzSpan='8' class="center" [nzOffset]='4'>
+                    <span>{{linkSerachList[1].name}}</span>
                 </nz-col>
-                 <nz-col nzSpan="5" style="text-align: center;">
+                 <nz-col nzSpan="3" class="center">
                      <!-- <nz-slider [nzMin]="0" [nzMax]="1000" [(ngModel)]="score"></nz-slider> -->
                      &gt;
                  </nz-col>
-                 <nz-col nzSpan="12">
+                 <nz-col nzSpan="9">
                      <nz-input-number [nzMin]="0" [(ngModel)]="score"></nz-input-number>
                  </nz-col>
              </nz-row>
