@@ -125,7 +125,7 @@ export class InformationComponent implements OnInit {
 		if(this.store.store.hasOwnProperty("ref_info")){
 			this.genome_source = this.store.getStore('ref_info')["genome_source"];
 			this.genome_url = this.store.getStore('ref_info')["genome_url"];
-			this.genome_version = this.store.getStore('ref_info')["genome_version"];
+			this.genome_version = this.store.getStore('ref_info')["genome_version_official"];
 		}
 
 		//2.2 RNA分类
