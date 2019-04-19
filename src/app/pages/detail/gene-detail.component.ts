@@ -404,7 +404,7 @@ export class GeneDetailComponent implements OnInit {
 				this.tcd_defaultUrl = `${config['javaPath']}/geneDetail/getSequence`;
 				this.t_params={
 					LCID: this.lcid,
-					type: "transcripts.fa",
+					type: "rna.fa",
 					geneID: this.geneID
 				};
 				this.c_params={
@@ -521,10 +521,19 @@ export class GeneDetailComponent implements OnInit {
 			})
 			.subscribe((data: any) => {
 				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					this.isLoading = false;
+					this.alternative_flag = false;
+					resolve("success");
 					return;
 				} else if (data.status == '-1') {
+					this.isLoading = false;
+					this.alternative_flag = false;
+					resolve("success");
 					return;
 				} else if (data.status == '-2') {
+					this.isLoading = false;
+					this.alternative_flag = false;
+					resolve("success");
 					return;
 				} else {
 					this.alternative_rows = data['data']['rows'];
@@ -1044,6 +1053,7 @@ export class GeneDetailComponent implements OnInit {
 			// 	this.alternative_flag = tempData.length>0?true:false;
 			// 	break;
 			case "SNP":
+				console.log(data);
 				this.snp_flag = tempData.length>0?true:false;
 				break;
 			case "INDEL":

@@ -1,10 +1,14 @@
 <!-- reanalysis  class="menu-slot-text" title="ID:{{tid}}"-->
-<div class="re_div">
-  <ng-template #re01>
-      <span>任务名称：{{nickname}}</span>
-      <br>
-      <span>创建时间：{{date}}</span>
-  </ng-template>
-  <div [nzContent]="re01" nzPlacement="right" nz-popover class="re_div_one">任务名称：{{nickname}}</div>
-  <div [nzContent]="re01" nzPlacement="right" nz-popover class="re_div_two">创建时间：{{date}}</div>
+<div class="re_div"  [nzContent]="re01" nzPlacement="bottom" nz-popover>
+  
+  <div class="re_div_one">任务名称：{{nickname}}</div>
+  <div class="re_div_two">创建时间：{{date}}</div>
 </div>
+<ng-template #re01>
+    <div>ID:{{tid}}</div>
+    <div class='link' *ngFor="let data of parent" (click)="toDetail(data)">
+      <span>任务名称：{{data['nickname']}}</span>
+      <br>
+      <span>创建时间：{{data['date']}}</span>
+    </div>
+  </ng-template>
