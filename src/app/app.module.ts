@@ -104,7 +104,8 @@ import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneLi
 /* map */
 import { MapComponent } from './pages/map/map.component';
 /* miRNA靶标 */
-import { TargetComponent } from './pages/mrna/target.component';
+import { TargetComponent,TargetPage } from './pages/mrna/target.component';
+import { TargetHelpComponent } from './pages/mrna/target-help.component';
 
 // 服务
 import { GlobalService } from './super/service/globalService';
@@ -696,6 +697,9 @@ export function createTranslateLoader(http: HttpClient) {
 		ReLineComponent,
 		KaFunComponent,
         TargetComponent,
+
+        TargetHelpComponent,
+        TargetPage,
 		RelativeSpliceComponent,
 		GeneListIndexComponent,
 		ReClassComponent,
