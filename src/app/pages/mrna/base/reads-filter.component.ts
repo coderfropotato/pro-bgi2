@@ -257,6 +257,8 @@ export class ReadsFilterComponent implements OnInit {
         }
     }
 
+    console.log(chartData)
+
     let that = this;
 
     let config:object={
