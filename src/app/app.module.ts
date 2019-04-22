@@ -323,6 +323,11 @@ const ROUTES: Routes = [
 				component:TargetComponent,
 				data:{keep:true,module:'mirnaTarget'}
 			},
+			{
+				path:"miRNA-target-help",
+				component:TargetHelpComponent,
+				data:{keep:true,module:'mirnaTargetHelp'}
+			},
 			// 基因总表
 			{
 				path: 'main',
