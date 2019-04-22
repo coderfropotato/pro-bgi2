@@ -16,27 +16,40 @@ declare const d4: any;
 @Component({
 	selector: 'app-venn-page',
     template: `<app-express-venn *ngIf="showModule" [defaultGeneType]="defaultGeneType">
-                    <div class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
+					<div *ngIf="rootGeneType===config['geneTypeAll']" class="gene-switch gene-switch-module" (click)="handlerSwitchChange()">
                         <span>{{defaultGeneType | translate}}</span><i class="iconfont icon-qiehuan"></i>
+                    </div>
+                    <div *ngIf="rootGeneType!==config['geneTypeAll']" class="gene-switch gene-switch-module nocursor">
+                        <span>{{defaultGeneType | translate}}</span>
                     </div>
                 </app-express-venn>`,
 	styles: []
 })
 
 export class ExpressVennPage {
-	showModule:boolean = true;
-    defaultGeneType:string = "gene";
+	private moduleRouteName: string = 'expression'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
+	config: object = config;
+	rootGeneType: string = this.storeService.getStore('menuRouteMap')[this.moduleRouteName]['geneType']; // 来自菜单 可配置  all gene transcript
+	defaultGeneType: string = this.rootGeneType === this.config['geneTypeAll']
+		? this.config['geneTypeOfGene']
+		: this.rootGeneType;
+	showModule: boolean = true;
 
     constructor(private storeService:StoreService,private translate:TranslateService) {
         let browserLang = this.storeService.getLang();
         this.translate.use(browserLang);
     }
 
-    handlerSwitchChange(){
-        this.defaultGeneType = this.defaultGeneType==='gene'?'transform':'gene';
-        this.showModule = false;
-        setTimeout(()=>{this.showModule = true},30);
-    }
+	handlerSwitchChange() {
+		this.defaultGeneType =
+			this.defaultGeneType === config['geneTypeOfGene']
+				? config['geneTypeOfTranscript']
+				: config['geneTypeOfGene'];
+		this.showModule = false;
+		setTimeout(() => {
+			this.showModule = true;
+		}, 30);
+	}
 }
 
 @Component({

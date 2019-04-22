@@ -73,7 +73,7 @@ export class UploadComponent implements OnInit {
 			time:''
 		};
 		this.getHistoryList();
-		this.updateLoad();
+		//this.updateLoad();
     }
 
     beforeUpload = (file: UploadFile): boolean => {
@@ -241,7 +241,7 @@ export class UploadComponent implements OnInit {
 				if(data.data.result>0){
 					self.modalService.success({
 						nzTitle: "提示",
-						nzContent: self.getProgress(data.data.result)+"...(需要等上个文件上传完毕!!!)"
+						nzContent: self.getProgress(data.data.result)+"...(上个文件正在录入中，请等稍后再试！)"
 					});
 				}else{
 					//成功了进行上传
@@ -324,14 +324,15 @@ export class UploadComponent implements OnInit {
 	}
 
 	goDetail(detail,flag){
+		console.log(detail)
 		if(flag=="成功"){
-			let temp = `totalRows:${detail.success.totalRows}<br>totalSkipRows:${detail.success.totalSkipRows}`
+			let temp = `columns:${detail.success.columns.toLocaleString()}<br>totalRows:${detail.success.totalRows}<br>totalSkipRows:${detail.success.totalSkipRows}`
 			this.modalService.success({
 				nzTitle: "结果",
 				nzContent: temp
 			});
 		}else if(flag=="失败"){
-			this.modalService.success({
+			this.modalService.error({
 				nzTitle: "结果",
 				nzContent: detail.error
 			});
