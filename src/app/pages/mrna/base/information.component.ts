@@ -106,6 +106,8 @@ export class InformationComponent implements OnInit {
 	itemFlag7: boolean = false;
 	itemNum7: number = 0;
 
+    m_geneTypeList_map: any;
+
 	constructor(
 		private message: MessageService,
 		private store: StoreService,
@@ -136,7 +138,13 @@ export class InformationComponent implements OnInit {
 		};
 
 		//2.3 基因长度
-		let m_geneTypeList = [ 'mrna_known', 'mrna_novel', 'lncrna_known', 'lncrna_novel' ];
+		let m_geneTypeList = ['Known mRNA Count', 'Novel mRNA Count', 'Known lncRNA Count', 'Novel lncRNA Count'];
+		this.m_geneTypeList_map = {
+		    'Known mRNA Count': 'mrna_known',
+            'Novel mRNA Count': 'mrna_novel',
+            'Known lncRNA Count': 'lncrna_known',
+            'Novel lncRNA Count': 'lncrna_novel'
+        };
 
 		this.selectPanelData = [
 			{
@@ -148,7 +156,7 @@ export class InformationComponent implements OnInit {
 		this.transcriptLengthUrl = `${config['javaPath']}/basicModule/transcriptLength`;
 		this.transcriptLengthEntity = {
 			LCID: this.store.getStore('LCID'),
-			geneTypeList: m_geneTypeList
+			geneTypeList: m_geneTypeList.map(c => this.m_geneTypeList_map[c])
 		};
 
 		//2.4 miRNA长度分布
@@ -169,7 +177,7 @@ export class InformationComponent implements OnInit {
 		this.exonsNumUrl = `${config['javaPath']}/basicModule/exonsNum`;
 		this.exonsNumEntity = {
 			LCID: this.store.getStore('LCID'),
-			refGeneTypeList: m_geneTypeList
+			refGeneTypeList: m_geneTypeList.map(c => this.m_geneTypeList_map[c])
 		};
 
 		this.EntityOne = {
@@ -585,7 +593,7 @@ export class InformationComponent implements OnInit {
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
 		this.selectConfirmData = data;
-		this.transcriptLengthEntity['geneTypeList'] = this.selectConfirmData;
+		this.transcriptLengthEntity['geneTypeList'] = this.selectConfirmData.map(c => this.m_geneTypeList_map[c]);
 		this.transcriptLength.reGetData();
 	}
 
@@ -597,7 +605,7 @@ export class InformationComponent implements OnInit {
 	//选择面板 确定筛选的数据
 	selectConfirmE(data) {
 		this.selectConfirmDataE = data;
-		this.exonsNumEntity['refGeneTypeList'] = this.selectConfirmDataE;
+		this.exonsNumEntity['refGeneTypeList'] = this.selectConfirmDataE.map(c => this.m_geneTypeList_map[c]);
 		this.exonsNum.reGetData();
 	}
 
