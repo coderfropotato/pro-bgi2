@@ -8,12 +8,12 @@
             (emitBaseTheadChange)="handlerDefaultEmitChange($event)" (baseTheadChange)="handlerDefaultBaseTheadChange($event)" [checkStatusInParams]="defaultTableCheckStatusInParams" [(resetCheckGraph)]="resetCheckGraph" (resetCheckGraphChange)="handleResetCheckGraphChange($event)"
             [(applyOnceSearchParams)]="defaultApplyOnceSearchParams" (applyOnceSearchParamsChange)="handlerDefaultAppluOnceSearchParamsChange($event)" (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight"
             (computedScrollHeightChange)="handlerComputedScrollHeightChange($event)" [showFilterStatus]="defaultShowFilterStatus" (saveGeneListSuccess)="handleDefaultSaveGeneListSuccess($event)" (syncRelative)="handleDefaultSyncRelative($event)" (totalChange)="handleTotalChange($event)"
-            [compareGroup]="compareGroup" [reanalysisId]="reanalysisId" [reanalysisDate]="reanalysisDate" [isKeggRich]="isKeggRich" [filename]="defaultFileName"></app-geneTable>
+            [compareGroup]="compareGroup" [reanalysisId]="reanalysisId" [reanalysisDate]="reanalysisDate" [isKeggRich]="isKeggRich" [fileName]="defaultFileName"></app-geneTable>
     </div>
     <div *ngIf="!isFirst" id="extend-gene-table">
         <app-geneTable #extendTable [url]="extendTableUrl" [pageEntity]="extendTableEntity" [tableId]="extendTableId" [defaultChecked]="extendTableDefaultChecked" [tableHeight]="tableHeight" [tableType]="'transform'" [(emitBaseThead)]="extendEmitBaseThead" (emitBaseTheadChange)="handlerExtendEmitChange($event)"
             (baseTheadChange)="handlerExtendBaseTheadChange($event)" [checkStatusInParams]="extendTableCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams" (applyOnceSearchParamsChange)="handlerApplyOnceSearchParamsChange($event)" (selectGeneCountChange)="handleSelectGeneCountChange($event)"
             [(computedScrollHeight)]="computedScrollHeight" (computedScrollHeightChange)="handlerComputedScrollHeightChange($event)" [showFilterStatus]="extendShowFilterStatus" (saveGeneListSuccess)="handleExtendSaveGeneListSuccess($event)" (syncRelative)="handleExtendSyncRelative($event)"
-            (totalChange)="handleTotalChange($event)" [compareGroup]="compareGroup" [reanalysisId]="reanalysisId" [reanalysisDate]="reanalysisDate" [isKeggRich]="isKeggRich" [filename]="extendFileName"></app-geneTable>
+            (totalChange)="handleTotalChange($event)" [compareGroup]="compareGroup" [reanalysisId]="reanalysisId" [reanalysisDate]="reanalysisDate" [isKeggRich]="isKeggRich" [fileName]="extendFileName"></app-geneTable>
     </div>
 </div>
