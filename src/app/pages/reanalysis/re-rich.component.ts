@@ -105,6 +105,8 @@ export class ReRichComponent implements OnInit {
     // 图上选择的数据
     selectGeneList:string[] = [];
 
+    isKeggRich:boolean = false;
+
     constructor(
         private message: MessageService,
 		private ajaxService: AjaxService,
@@ -134,6 +136,13 @@ export class ReRichComponent implements OnInit {
             this.geneType = params['params']['geneType'];
             this.annotation = params['params']['annotation'];
             this.date = params['params']['date'];
+
+            if(this.annotation === 'kegg_pathway'){
+                this.isKeggRich = true;
+            }else{
+                this.isKeggRich = false;
+            }
+
             this.storeService.setTid(this.tid);
         })
     }
