@@ -15,7 +15,7 @@ const config: object = {
     rna:'RNA ID',   // 外部触发表格筛选的时候 筛选条件按照filterNamezh编译 需要和rna_id列的 name 保持一致
     gene:'Gene ID',  // 外部触发表格筛选的时候 筛选条件按照filterNamezh编译 需要和gene_id列的 name 保持一致
     as_id: 'ID',
-    maxTextLength:50, // 图标题的字符长度限制
+    maxTextLength:60, // 图标题的字符长度限制
 	matchList,
 	matchRule,
 	geneInfo,
