@@ -71,7 +71,7 @@
                 <div>
                     <app-table-switch-chart *ngIf="selectedVal" #switchChart [id]="'re-rich'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'geneRichChartDiv'" [chartName]="'基因富集'" (refresh)="handlerRefresh()" [isHasMultiSelect]="true"
                         [(isMultiSelect)]="isMultipleSelect" (isMultiSelectChange)="chartSelectModelChange($event)" (multipleConfirmEmit)="multipleSelectConfirm()" (showChange)="showChange($event)" [chartTypeData]="chartTypeData" [otherLeftTemplate]="checkedTemplate"
-                        [flex]="true" >
+                        [flex]="true" [reanalysisId]="tid" [reanalysisDate]='date' [isKeggRich]="isKeggRich">
                     </app-table-switch-chart>
 
                     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>
