@@ -383,7 +383,6 @@ export class IndexComponent implements OnInit {
     }
 
     handleLogoClick(){
-        alert('menu click')
         this.menu._initRouteActiveStatus();
     }
 }
