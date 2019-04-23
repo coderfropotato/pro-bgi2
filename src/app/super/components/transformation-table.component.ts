@@ -34,6 +34,11 @@ export class TransformationTableComponent implements OnInit {
     @Input() extendTableDefaultChecked;
     // 转换表的 gene选中状态是否放在参数里面
     @Input() extendTableCheckStatusInParams;
+
+    // 表格下载名称
+    @Input() defaultFileName;
+    @Input() extendFileName;
+
     @Input() tableHeight;
     @Input() isFirst;
     @Input() applyOnceSearchParams:boolean = false;

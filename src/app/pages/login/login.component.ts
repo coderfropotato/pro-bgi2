@@ -2,7 +2,7 @@ import { StoreService } from './../../super/service/storeService';
 import { AjaxService } from './../../super/service/ajaxService';
 import { GlobalService } from '../../super/service/globalService';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import config from '../../../config';
@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
 	imgUrl: string;
 	menuShow: boolean = false;
 	login: boolean = false;
-    mask: boolean = false;
-    bannerIndex:number = 0;
+	mask: boolean = false;
+	bannerIndex: number = 0;
 	constructor(
 		private fb: FormBuilder,
 		private router: Router,
@@ -32,17 +32,29 @@ export class LoginComponent implements OnInit {
 		private ajaxService: AjaxService,
 		private nzMessageService: NzMessageService,
 		private storeService: StoreService,
-		private translate:TranslateService
+		private translate: TranslateService,
+		private routes: ActivatedRoute
 	) {
-		let langs = ['zh', 'en'];
+		let langs = [ 'zh', 'en' ];
 		this.translate.addLangs(langs);
 		this.translate.setDefaultLang('zh');
 		let curLang = localStorage.getItem('lang');
-		if(langs.includes(curLang)){
-			this.translate.use(curLang)
-		}else{
-			this.translate.use('zh')
+		if (langs.includes(curLang)) {
+			this.translate.use(curLang);
+		} else {
+			this.translate.use('zh');
 		}
+
+		this.routes.queryParams.subscribe((params) => {
+			let { LCID, LCTYPE, TOKEN } = params;
+			if (LCID && LCTYPE && TOKEN) {
+				sessionStorage.setItem('LCID', LCID);
+				localStorage.setItem('token', TOKEN);
+				sessionStorage.setItem('LCTYPE', LCTYPE);
+				this.LCType = LCTYPE;
+				this.router.navigateByUrl(`/report/${LCTYPE}`);
+			}
+		});
 	}
 
 	ngOnInit(): void {

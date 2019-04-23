@@ -743,7 +743,7 @@ export class RelativeSpliceComponent implements OnInit {
                 //console.log(d);
                 let tipText = `AS_type:  ${d.as_type}
                             <br> Group:  ${d.as_group_name}
-                            <br> st_${that.geneType}_id: ${d[`st_${that.geneType}_id`]}
+                            <br> st_${that.geneType}_id: ${d[`${that.geneType}_id`]}
                             <br> as_id:  ${d.as_id}`;
                 that.globalService.showPopOver(d3.event, tipText);
             })

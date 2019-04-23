@@ -104,7 +104,8 @@ import { GeneListVennComponent, GeneListVennPageComponent } from './pages/geneLi
 /* map */
 import { MapComponent } from './pages/map/map.component';
 /* miRNA靶标 */
-import { TargetComponent } from './pages/mrna/target.component';
+import { TargetComponent,TargetPage } from './pages/mrna/target.component';
+import { TargetHelpComponent } from './pages/mrna/target-help.component';
 
 // 服务
 import { GlobalService } from './super/service/globalService';
@@ -321,6 +322,11 @@ const ROUTES: Routes = [
 				path:"miRNA-target",
 				component:TargetComponent,
 				data:{keep:true,module:'mirnaTarget'}
+			},
+			{
+				path:"miRNA-target-help",
+				component:TargetHelpComponent,
+				data:{keep:true,module:'mirnaTargetHelp'}
 			},
 			// 基因总表
 			{
@@ -696,6 +702,9 @@ export function createTranslateLoader(http: HttpClient) {
 		ReLineComponent,
 		KaFunComponent,
         TargetComponent,
+
+        TargetHelpComponent,
+        TargetPage,
 		RelativeSpliceComponent,
 		GeneListIndexComponent,
 		ReClassComponent,

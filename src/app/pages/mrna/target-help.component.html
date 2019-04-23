@@ -1,0 +1,26 @@
+<div class="content base-content help">
+    <h2 class="title">帮助</h2>
+    <hr class="mhr" />
+
+    <div class="help_option">
+        <div class="help_content">
+            <h3 class="title">分析方法：</h3>
+            <p class="help_text">找到miRNA潜在的靶点基因是后续分析的必要过程，为了找到更准确的结果，我们采用多个软件进行预测。结合相应的过滤条件如自由能、得分值等进行过滤。一般来说，我们用RNAhybrid[1], miRanda[2] 和 TargetScan[3]来预测动物的靶基因，用Tapir[4] 和 TargetFinder[5]预测植物的靶基因。靶基因预测软件的默认参数如下：</p>
+            <div class="help_bg">
+                <p>miRanda: -en -20 -strict</p>
+                <p>RNAhybrid: -b 100 -c -f 2,8 -m 100000 -v 3 -u 3 -e -20 -p 1 -s 3utr_human</p>
+                <p>TargetScan: Default</p>
+                <p>Tapir: --score 5 --mfe_ratio 0.6</p>
+                <p>TargetFinder: -c 4</p>
+            </div>
+            <div class="help_bg">
+              <p>参考文献：</p>
+              <p>[1] Rehmsmeier, Marc and Krueger, Jan RNAhybrid: microRNA target prediction easy, fast and flexible, Nucleic Acids Res., 2006</p>
+              <p>[2] John B, Enright AJ, Aravin A, Tuschl T, Sander C, Marks DS., PLoS Biol. 2005 Jul;3(7):e264.</p>
+              <p>[3] Agarwal V, Bell GW, Nam J, Bartel DP. Predicting effective microRNA target sites in mammalian mRNAs. eLife, 4:e05005, (2015)</p>
+              <p>[4] Bonnet, E., He, Y., Billiau, K., & Van de Peer, Y. (2010). TAPIR, a web server for the prediction of plant microRNA targets, including target mimics. Bioinformatics, 26(12), 1566-1568.</p>
+              <p>[5] Fahlgren N, Carrington JC (2010) miRNA Target Prediction in Plants. Methods in molecular biology (Clifton, NJ) 592</p>
+            </div>
+        </div>
+    </div>
+  </div>

@@ -164,8 +164,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	srcTotal: number = 0;
 	pageSizeChangeFlag: boolean = false; // pagesize 改变的标志  pagesize改变的时候 需要保留之前选中的基因 在剩下的基因里做默认的选中
+    theadInitTimer: any = null;
+    setNameList:string[] = [];
 
-	theadInitTimer: any = null;
 
 	constructor(
 		private translate: TranslateService,
@@ -1043,7 +1044,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 			this.isSaveGeneList = true;
 			this.delSelect.length = 0;
 			this.openSelect = false;
-			this.getAllLabels();
+            this.getAllLabels();
+            // this.getAllTags();
 		} else {
 			this.notify.blank('tips：', '请选择需要保存的基因', {
 				nzStyle: { width: '200px' },
@@ -1068,7 +1070,23 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					this.labels = [];
 				}
 			});
-	}
+    }
+
+    getAllTags(){
+        this.ajaxService.getDeferData({
+            url:`${config['javaPath']}/geneSet/display`,
+            data:{
+                LCID: sessionStorage.getItem('LCID'),
+                geneType: this._getInnerStatusParams()['tableEntity']['geneType']
+            }
+        }).subscribe(res=>{
+            if(res['status']==0 && res['data'].length){
+                this.setNameList = res['data'].map(v=>v['setName']);
+            }else{
+                this.setNameList.length = 0;
+            }
+        });
+    }
 
 	handleSaveGeneConfirm() {
 		for (const i in this.validateForm.controls) {
