@@ -3,7 +3,7 @@ import { Observable, fromEvent } from 'rxjs';
 import { StoreService } from './../../super/service/storeService';
 import { GlobalService } from './../../super/service/globalService';
 import { AjaxService } from './../../super/service/ajaxService';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { MessageService } from '../../super/service/messageService';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -21,6 +21,7 @@ declare const $: any;
 	animations: [ routeAnimation ]
 })
 export class IndexComponent implements OnInit {
+    @ViewChild('menu') menu;
 	menuList: any = [];
 	allThead: any = [];
 	ready: boolean = false;
@@ -379,5 +380,10 @@ export class IndexComponent implements OnInit {
 					});
 				}
 			});
-	}
+    }
+
+    handleLogoClick(){
+        alert('menu click')
+        this.menu._initRouteActiveStatus();
+    }
 }

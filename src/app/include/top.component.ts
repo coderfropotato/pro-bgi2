@@ -134,13 +134,10 @@ export class TopComponent implements OnInit{
 		this.router.navigateByUrl(`/report/${sessionStorage.getItem('LCTYPE')}/upload`);
 	}
 
-	// handlerLogoClick() {
-	// 	this.logoClick.emit();
-	// }
-
 	handleLogoClick(){
         if(!this.disabledLogoClick){
             this.router.navigateByUrl(`/report/${sessionStorage.getItem('LCTYPE')}/${JSON.parse(sessionStorage.getItem('menu_list'))[0]['children'][0]['url']}`);
+            this.logoClick.emit();
         }
 	}
 
