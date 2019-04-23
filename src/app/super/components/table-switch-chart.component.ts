@@ -114,8 +114,11 @@ export class TableSwitchChartComponent implements OnInit {
     @Input() tableDescTitle:string;
     @Input() tableDescContent:any;
 
-
+     // 在kegg富集需要跳转map的时候用到  其他都为默认值空
+	@Input() compareGroup:any =undefined; // 比较组
+	@Input() reanalysisId:any =undefined; // 重分析id
     @Input() reanalysisDate:any =undefined; // 重分析时间
+    @Input() isKeggRich:boolean = false;
 
     scroll: object = { x: "120%", y: "400px" };
     isShowTable: boolean = false;
