@@ -106,6 +106,9 @@ import { MapComponent } from './pages/map/map.component';
 /* miRNA靶标 */
 import { TargetComponent,TargetPage } from './pages/mrna/target.component';
 import { TargetHelpComponent } from './pages/mrna/target-help.component';
+/* 项目列表 */
+import { ProjectComponent } from './pages/tasklist/project.component';
+
 
 // 服务
 import { GlobalService } from './super/service/globalService';
@@ -546,7 +549,16 @@ const ROUTES: Routes = [
 			keep: false,
 			module: 'login'
 		}
-	},
+    },
+    {
+        path:'report/project',
+        component:ProjectComponent,
+        canActivate:[SysDefendService],
+        data:{
+            keep:false,
+            module:'project'
+        }
+    },
 	{
 		path: 'reprot/sysError',
 		component: SyserrorComponent,
@@ -705,6 +717,9 @@ export function createTranslateLoader(http: HttpClient) {
 
         TargetHelpComponent,
         TargetPage,
+
+        ProjectComponent,
+
 		RelativeSpliceComponent,
 		GeneListIndexComponent,
 		ReClassComponent,
