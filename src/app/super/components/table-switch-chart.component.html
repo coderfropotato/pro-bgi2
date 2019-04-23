@@ -114,7 +114,20 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let row of tableData.rows">
-                                <td class="center textEllipsis" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']" nz-popover [nzContent]="row[thead.true_key]">{{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}}</td>
+                                <ng-container *ngFor="let thead of tableData['baseThead']">
+                                    <!-- 正常值 -->
+                                    <td *ngIf="row[thead.true_key] || row[thead.true_key]==0" class="center textEllipsis" style="min-width:160px;max-width: 160px;" nz-popover [nzContent]="tpl0" nzPlacement="right">
+                                        <!-- {{row[thead.true_key] | accuracyPipe : accuracy : thead['searchType']}} -->
+                                        <ng-template #tpl0>
+                                            <span [innerHTML]="row[thead.true_key] | tableSpecialTheadFilter : thead['true_key']:thead['searchType']:true:compareGroup:reanalysisId:apiEntity['geneType']:reanalysisDate:isKeggRich"></span>
+                                        </ng-template>
+                                        <span [innerHTML]="row[thead.true_key] | tableSpecialTheadFilter : thead['true_key']:thead['searchType']:false:compareGroup:reanalysisId:apiEntity['geneType']:reanalysisDate:isKeggRich"></span>
+                                    </td>
+                                    <!-- NA -->
+                                    <td *ngIf="!row[thead.true_key] && row[thead.true_key]!=0" class="center textEllipsis" style="min-width:160px;max-width: 160px;">
+                                        <span>NA</span>
+                                    </td>
+                                </ng-container>
                             </tr>
                         </tbody>
                     </nz-table>
