@@ -1111,6 +1111,13 @@
         "header-784":"TAPIR 得分",
         "header-785":"TAPIR 计算得到的最小自由能",
         "header-786":"Targetfinder 得分",
+        "header-787":"统计检验值（未校正）",
+        "header-788":"校正后的统计检验值",
+        "header-789":"在本物种中，与该基因有连接的基因个数",
+        "header-790":"在选定的基因集中，与该基因有连接的基因个数",
+        "header-791":"是否在选定的基因集中",
+        "header-792":"Observed Node / Neighbor Node 的百分比",
+        "header-793":"排序",
         "NA": "NA"
     }
 }
