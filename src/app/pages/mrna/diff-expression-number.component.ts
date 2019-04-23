@@ -481,7 +481,11 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 	// 表格转换返回
 	back() {
-		this.selectConfirmData = this.compareTableGroupList;
+		// console.log(this.m_name1)
+		// console.log(this.m_name2)
+		let temp = [];
+		temp.push(this.m_name1);
+		this.selectConfirmData = temp;
 		this.chartBackStatus();
 	}
 
@@ -558,7 +562,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			tooltip: function(d) {
 				//return "<span>Compare Group:"+d.compareGroup+"</span><br><span>Number of Genes:"+d.diffexp_updown_total+"</span><br><span>category：total</span>"
 				//"+d.diffexp_updown_total+"
-				return "<span>Category：total</span><br><span>Compare Group:"+d.compareGroup+"</span><br><span>Number of Genes:"+d.diffexp_updown_total+"</span>"
+				return "<span>Category：total</span><br><span>Compare Group："+d.compareGroup+"</span><br><span>Number of Genes："+d.diffexp_updown_total+"</span>"
 			}
 		}
 		this.chart = new d4().init(config);

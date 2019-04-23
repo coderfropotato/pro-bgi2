@@ -3,18 +3,16 @@
     <hr class="mhr" />
 
     <div calss="base_module" *ngIf="itemFlag">
-        <div class="f-content" style="border:0;">
-            <h4 class="title" *ngIf="seq_platform">测序平台：<span>{{seq_platform}}</span></h4>
-            <h4 class="title" *ngIf="seq_length">测序长度：<span>{{seq_length}}</span></h4>
-            <h4 class="title" *ngIf="fragment_peak">文库峰值长度：<span>{{fragment_peak}}</span></h4>
-            <p class="help_text">测序的原始数据包含低质量、接头污染以及未知碱基N含量过高的reads，数据分析之前需要去除这些reads以保证结果的可靠性。过滤后reads的质量指标见过滤后reads质量统计表，原始数据过滤成分统计图，碱基含量分布以及质量分布见Clean reads碱基含量分布图 和Clean reads的碱基质量分布图。</p>
-        </div>
+        <p class="help_text" style="text-indent:0;" *ngIf="seq_platform">测序平台：<span class="help_text_p">{{seq_platform}}</span></p>
+        <p class="help_text" style="text-indent:0;" *ngIf="seq_length">测序长度：<span class="help_text_p">{{seq_length}}</span></p>
+        <p class="help_text" style="text-indent:0;" *ngIf="fragment_peak">文库峰值长度：<span class="help_text_p">{{fragment_peak}}</span></p>
+        <p class="help_text" style="text-indent:0;">测序的原始数据包含低质量、接头污染以及未知碱基N含量过高的reads，数据分析之前需要去除这些reads以保证结果的可靠性。过滤后reads的质量指标见过滤后reads质量统计表，原始数据过滤成分统计图，碱基含量分布以及质量分布见Clean reads碱基含量分布图 和Clean reads的碱基质量分布图。</p>
     </div>
 
     <div calss="base_module" *ngIf="itemFlag">
-        <h3 class="title">{{tempIndex}}.{{itemNum}} 过滤后的 Reads 质量统计</h3>
+        <h3 class="title2">{{tempIndex}}.{{itemNum}} 过滤后的 Reads 质量统计</h3>
         <div class="f-content" *ngIf="itemFlag1_1">
-            <h4 class="title">{{tempIndex}}.{{itemNum}}.{{itemNum1_1}} Reads过滤</h4>
+            <h4 class="title3">{{tempIndex}}.{{itemNum}}.{{itemNum1_1}} Reads过滤</h4>
             <app-big-table
                 *ngIf="defaultEntity"
                 class="no-outside-border"
@@ -27,7 +25,7 @@
         </div>
 
         <div class="f-content" *ngIf="itemFlag1_2">
-            <h4 class="title">{{tempIndex}}.{{itemNum}}.{{itemNum1_2}} Reads过滤（小RNA）</h4>
+            <h4 class="title3">{{tempIndex}}.{{itemNum}}.{{itemNum1_2}} Reads过滤（小RNA）</h4>
             <app-big-table
                 *ngIf="defaultRNAEntity"
                 class="no-outside-border"
@@ -40,7 +38,7 @@
     </div>
 
     <div calss="base_module" *ngIf="itemFlag2">
-        <h3 class="title">{{tempIndex}}.{{itemNum2}} 原始数据过滤成分统计</h3>
+        <h3 class="title2">{{tempIndex}}.{{itemNum2}} 原始数据过滤成分统计</h3>
         <div class="f-content">
             <ng-template #searchTemplate>
                 <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curSearchType' *ngIf="!isShowTable" style="min-width: 160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchType" [nzSize]="'small'" (ngModelChange)="searchTypeChange()" nzShowSearch>
@@ -67,7 +65,7 @@
     </div>
 
     <div calss="base_module" *ngIf="itemFlag3">
-        <h3 class="title">{{tempIndex}}.{{itemNum3}} Clean reads 碱基含量分布</h3>
+        <h3 class="title2">{{tempIndex}}.{{itemNum3}} Clean reads 碱基含量分布</h3>
         <div class="f-content">
             <ng-template #searchTemplateTwo>
                 <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='baseSearchType' *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="baseSearchType" [nzSize]="'small'" (ngModelChange)="searchBaseTypeChange()" nzShowSearch>
@@ -94,7 +92,7 @@
     </div>
 
     <div calss="base_module" *ngIf="itemFlag4">
-        <h3 class="title">{{tempIndex}}.{{itemNum4}} Clean reads 碱基质量分布</h3>
+        <h3 class="title2">{{tempIndex}}.{{itemNum4}} Clean reads 碱基质量分布</h3>
         <div class="f-content">
             <ng-template #searchTemplateThree>
                 <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='qualitySearchType' *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="qualitySearchType" [nzSize]="'small'" (ngModelChange)="searchQualityTypeChange()" nzShowSearch>

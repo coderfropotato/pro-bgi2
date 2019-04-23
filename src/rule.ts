@@ -118,7 +118,7 @@ export const matchList: string[] = [
 	'msigdb_h_desc'
 ];
 
-// 跳富集的头
+// 跳map的头
 export const mapMatchItems = [
 	"kegg_pathway_term_enrichment",
 	"kegg_pathway_term_id"
@@ -228,7 +228,7 @@ export const matchRule: object = {
 	kegg_module_desc: { url: 'https://www.kegg.jp/kegg-bin/show_module?@' },
 
 	// 跳map
-	kegg_pathway_term_enrichment: { url: 'map/:mapid/:compareGroup/:tid' },
+	kegg_pathway_term_enrichment: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' },
 	kegg_pathway_term_id: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@'},
 
 	kegg_pathway_term: { url: 'https://www.kegg.jp/dbget-bin/www_bget?map@' },

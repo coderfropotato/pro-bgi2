@@ -82,7 +82,7 @@
             <div class="m_result_title">
                 <div style="width: 140px">上传时间</div>
                 <div style="width: 80px">数据类型</div>
-                <div style="width: 60px;">录入结果</div>
+                <div style="width: 80px;">录入结果</div>
                 <div style="width: 60px;">查看详情</div>
                 <div style="width: 50px;">状态</div>
             </div>
@@ -91,7 +91,7 @@
                     <div style="width: 140px">{{item.time}}</div>
                     <div style="width: 80px">{{item.info}}</div>
                     <!-- display:inline-block;width:16px;height:12px; -->
-                    <div style="width: 60px;"><div style="display:inline-block;width:16px;height:12px;" [style.background]="item.color"></div><div style="display:inline-block;margin-left:5px;">{{item.status}}</div></div>
+                    <div style="width: 80px;"><div style="display:inline-block;width:16px;height:12px;" [style.background]="item.color"></div><div style="display:inline-block;margin-left:5px;">{{item.status}}</div></div>
 
                     <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'" (click)="goDetail(item.detail,item.status)">
                         <button nz-button nzType="primary" [nzSize]="small">查看</button>
@@ -185,7 +185,7 @@
     }
 
     .tab_content a {
-        display: block;
+        /* display: block; */
         text-decoration: underline;
         margin-top: 5px;
         margin-left: 10px;

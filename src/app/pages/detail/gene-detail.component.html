@@ -14,12 +14,36 @@
                 <span *ngIf="!geneInfoList['url_ncbi_gene_id']">{{geneInfoList.gene_id}}</span>
                 <a *ngIf="geneInfoList['url_ncbi_gene_id']" href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">{{geneInfoList.gene_id}}</a>
             </span>
-            <span *ngIf="geneInfoList['url_ncbi_gene_id']" class="mlink">link to<a href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">NCBI</a></span>
-            <span *ngIf="geneInfoList['url_hgnc_gene_id']" class="mlink">link to<a href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{geneInfoList['url_hgnc_gene_id']}}" target="_blank">HGNC</a></span>
-            <span *ngIf="geneInfoList['url_ensembl_gene_id']" class="mlink">link to<a href="https://ensembl.org/Homo_sapiens/Gene/Summary?g={{geneInfoList['url_ensembl_gene_id']}}" target="_blank">Ensembl</a></span>
-            <span *ngIf="geneInfoList['url_genecard_gene_id']" class="mlink">link to<a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={{geneInfoList['url_genecard_gene_id']}}" target="_blank">GeneCards</a></span>
-            <span *ngIf="geneInfoList['url_kegg_gene_id']" class="mlink">link to<a href="https://www.kegg.jp/dbget-bin/www_bget?ko:{{geneInfoList['url_kegg_gene_id']}}" target="_blank">KEGG</a></span>
-            <span *ngIf="geneInfoList['url_mirbase_gene_id']" class="mlink">link to<a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{geneInfoList['url_mirbase_gene_id']}}" target="_blank">miRBase</a></span>
+            <span *ngIf="geneInfoList['url_ncbi_gene_id']" class="mlink">link to
+                <a href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">
+                    <div class="img_one"></div>
+                </a>
+            </span>
+            <span *ngIf="geneInfoList['url_hgnc_gene_id']" class="mlink">link to
+                <a href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{geneInfoList['url_hgnc_gene_id']}}" target="_blank">
+                    <div class="img_two"></div>
+                </a>
+            </span>
+            <span *ngIf="geneInfoList['url_ensembl_gene_id']" class="mlink">link to
+                <a href="https://ensembl.org/Homo_sapiens/Gene/Summary?g={{geneInfoList['url_ensembl_gene_id']}}" target="_blank">
+                    <div class="img_three"></div>
+                </a>
+            </span>
+            <span *ngIf="geneInfoList['url_genecard_gene_id']" class="mlink">link to
+                <a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={{geneInfoList['url_genecard_gene_id']}}" target="_blank">
+                    <div class="img_four"></div>
+                </a>
+            </span>
+            <span *ngIf="geneInfoList['url_kegg_gene_id']" class="mlink">link to
+                <a href="https://www.kegg.jp/dbget-bin/www_bget?ko:{{geneInfoList['url_kegg_gene_id']}}" target="_blank">
+                    <div class="img_five"></div>
+                </a>
+            </span>
+            <span *ngIf="geneInfoList['url_mirbase_gene_id']" class="mlink">link to
+                <a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{geneInfoList['url_mirbase_gene_id']}}" target="_blank">
+                    <div class="img_six"></div>
+                </a>
+            </span>
           </p>
           <p *ngIf="geneInfoList['gene_symbol']">
             <span class="info_name">{{'gene_detail.gene_symbol' | translate}}</span>
@@ -73,9 +97,47 @@
           </p>
           <button *ngIf="btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.showGeneID' | translate}}</button>
           <button *ngIf="!btn_show" style="margin-left: 20px;" nz-button [nzSize]="'small'" nzType="primary" (click)="btnShow()">{{'gene_detail.noShowGeneID' | translate}}</button>
-          <!-- 转录本信息 -->
+          <!-- 转录本信息 [nzSpinning]="isLoading2" nzTip='Loading...'-->
           <div class="transcripts_table" *ngIf="!btn_show">
-              <app-little-table *ngIf="loadTable" [hidden]="!rna_flag" [targetID]="'rna_id'" [targetURL]="'https://www.ncbi.nlm.nih.gov/nuccore/'" [type]="'rna_type'" [inRefreshShow]="false" (drawTableEmit)="drawKEGGPathway($event)" [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table>
+              <!-- <app-little-table *ngIf="loadTable" [hidden]="!rna_flag" [targetID]="'rna_id'" [targetURL]="'https://www.ncbi.nlm.nih.gov/nuccore/'" [type]="'rna_type'" [inRefreshShow]="false" (drawTableEmit)="drawKEGGPathway($event)" [url]="defaultUrl" [pageEntity]="rna_params"></app-little-table> -->
+              <nz-spin [nzSpinning]="isLoading2" nzTip='Loading...'>
+                    <ng-template #titleTemplate>
+                            <div class="table-thead">
+                                <div class="fRight">
+                                    <app-grid-export *ngIf="!error" [url]="defaultUrl" [tableEntity]="rna_params" [fileName]="fileName"></app-grid-export>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <nz-table [nzData]="rna_rows" nzShowPagination="false" [nzSize]="'small'" [nzScroll]="scroll" [nzTitle]="titleTemplate">
+                            <thead>
+                                <tr>
+                                    <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" [nzContent]="tp09" nzPlacement="top" nz-popover *ngFor="let thead of rna_baseThead;index as i">
+                                        <ng-template #tp09>
+                                            <span [innerHTML]="thead.name"></span>
+                                        </ng-template>
+                                        <span [innerHTML]="thead.name"></span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of rna_rows;index as idx">
+                                    <ng-container *ngFor="let thead of rna_baseThead">
+                                        <td [nzContent]="tp010" nzPlacement="top" nz-popover style="min-width:160px;max-width: 160px;text-align: center;height: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" *ngIf="row[thead.true_key]">
+                                            <ng-template #tp010>
+                                                <span [innerHTML]="row[thead.true_key]"></span>
+                                            </ng-template>
+                                            <a href="https://www.ncbi.nlm.nih.gov/nuccore/{{row[thead.true_key]}}" target="_blank" *ngIf="row.hasOwnProperty('url_ncbi_rna_id') && thead.true_key=='rna_id'">{{row[thead.true_key]}}</a>
+                                            <span *ngIf="row.hasOwnProperty('url_ncbi_rna_id') && thead.true_key!='rna_id'">{{row[thead.true_key]}}</span>
+                                            <span [innerHTML]="row[thead.true_key]" *ngIf="!row.hasOwnProperty('url_ncbi_rna_id')"></span>
+                                        </td>
+                                        <td *ngIf="!row[thead.true_key]" style="min-width:160px;max-width: 160px;text-align: center;">
+                                            <span>NA</span>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </nz-table>  
+                </nz-spin>
           </div>
       </div>
       
@@ -182,7 +244,7 @@
                 <ng-template #titleTemplate>
                         <div class="table-thead">
                             <div class="fRight">
-                                <app-grid-export *ngIf="!error" [url]="url" [tableEntity]="alternative_params" [fileName]="fileName"></app-grid-export>
+                                <app-grid-export *ngIf="!error" [url]="alternative_defaultUrl" [tableEntity]="alternative_params" [fileName]="fileName"></app-grid-export>
                             </div>
                         </div>
                     </ng-template>
@@ -343,7 +405,7 @@
           </div>
 
           <div class="transcripts_table" [hidden]="!go_f_flag">
-              <h5>GO Molecular Function</h5>
+                <h5>GO Molecular Function</h5>
                 <div *ngFor="let item of go_f_list" >
                     <!-- <p class="table_title">{{item.level_1}}</p> -->
                     <div class="table_border table_srcoll">

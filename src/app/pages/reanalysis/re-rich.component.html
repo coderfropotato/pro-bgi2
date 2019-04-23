@@ -55,11 +55,10 @@
                 </ng-template>
 
                 <!-- 可选择数据的大表 -->
-                <!-- [selectTemplate]="selectTemplate" -->
                 <div [hidden]='!expandModuleTable'>
                     <ng-container>
                         <app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [tableHeight]="leftTableHeight / 2" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="bigtableUrl" tableId="geneRichCheckBigTable" (checkedChange)="checkedChange($event)"
-                            [(computedScrollHeight)]="leftComputedScrollHeight" [reanalysisId]="tid" [reanalysisDate]='date'>
+                            [(computedScrollHeight)]="leftComputedScrollHeight" [reanalysisId]="tid" [reanalysisDate]='date' [isKeggRich]="isKeggRich">
                         </app-big-table-check>
                     </ng-container>
 
@@ -67,7 +66,6 @@
                         <span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>
                     </div>
                 </div>
-
 
                 <!-- 图表切换 -->
                 <div>
@@ -97,7 +95,7 @@
             <app-table-transformation *ngIf="selectedVal" class="no-outside-border" #transformTable [isFirst]="first" [tableHeight]="tableHeight" [defaultTableEntity]="defaultEntity" [defaultTableUrl]="defaultUrl" [defaultTableId]="defaultTableId" [defaultTableDefaultChecked]="defaultDefaultChecked"
                 [(defaultEmitBaseThead)]="defaultEmitBaseThead" (defaultBaseTheadChange)="baseTheadChange($event)" [defaultTableCheckStatusInParams]="defaultCheckStatusInParams" [extendTableEntity]="extendEntity" [extendTableUrl]="extendUrl" [extendTableId]="extendTableId"
                 [extendTableDefaultChecked]="extendDefaultChecked" [(extendEmitBaseThead)]="extendEmitBaseThead" (extendBaseTheadChange)="baseTheadChange($event)" [extendTableCheckStatusInParams]="extendCheckStatusInParams" [(applyOnceSearchParams)]="applyOnceSearchParams"
-                (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph" [reanalysisId]="tid" [reanalysisDate]='date'></app-table-transformation>
+                (selectGeneCountChange)="handleSelectGeneCountChange($event)" [(computedScrollHeight)]="computedScrollHeight" [(resetCheckGraph)]="resetCheckGraph" [reanalysisId]="tid" [reanalysisDate]='date' [isKeggRich]="isKeggRich"></app-table-transformation>
         </div>
     </div>
 </div>

@@ -60,6 +60,8 @@ export class GeneDetailComponent implements OnInit {
 	defaultUrl: string;
 	rna_params: object;
 	rna_flag: boolean = true;
+	rna_rows: object[] = [];
+	rna_baseThead: object[] = [];
 
 	rows: object[] = [];
 	baseThead: object[] = [];
@@ -283,6 +285,7 @@ export class GeneDetailComponent implements OnInit {
 	tcd_defaultUrl: string;
 
 	isLoading: boolean = false;
+	isLoading2: boolean = false;
 
 	msigdbFlag: boolean = false;
 	loadTable2: boolean = false;
@@ -404,7 +407,7 @@ export class GeneDetailComponent implements OnInit {
 				this.tcd_defaultUrl = `${config['javaPath']}/geneDetail/getSequence`;
 				this.t_params={
 					LCID: this.lcid,
-					type: "transcripts.fa",
+					type: "rna.fa",
 					geneID: this.geneID
 				};
 				this.c_params={
@@ -473,6 +476,8 @@ export class GeneDetailComponent implements OnInit {
 				await this.getGOCellular();// GO Cellular Component
 				await this.getGOBiological();// GO Cellular Component
 
+				await this.getRna();
+
 			}catch (error){
 
 			}
@@ -521,17 +526,24 @@ export class GeneDetailComponent implements OnInit {
 			})
 			.subscribe((data: any) => {
 				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					this.isLoading = false;
+					this.alternative_flag = false;
+					resolve("success");
 					return;
 				} else if (data.status == '-1') {
+					this.isLoading = false;
+					this.alternative_flag = false;
+					resolve("success");
 					return;
 				} else if (data.status == '-2') {
+					this.isLoading = false;
+					this.alternative_flag = false;
+					resolve("success");
 					return;
 				} else {
 					this.alternative_rows = data['data']['rows'];
-					// console.log(this.alternative_rows);
 					this.alternative_baseThead = data['data']['baseThead'];
 					this.alternative_flag = this.alternative_rows.length>0?true:false;
-					//this.geneInfoList = data['data'];
 
 					if(this.alternative_rows.length>5){
 						this.scroll = { x: "100%",y:"200px"}
@@ -1044,6 +1056,7 @@ export class GeneDetailComponent implements OnInit {
 			// 	this.alternative_flag = tempData.length>0?true:false;
 			// 	break;
 			case "SNP":
+				console.log(data);
 				this.snp_flag = tempData.length>0?true:false;
 				break;
 			case "INDEL":
@@ -1222,5 +1235,42 @@ export class GeneDetailComponent implements OnInit {
 		this.msigdbFlag = true;
 		this.loadTable2 = true;
 		this.msigdbFlagBtn = true;
+	}
+
+	async getRna(){
+		this.isLoading2 = true;
+		return new Promise((resolve,reject)=>{
+			this.ajaxService
+			.getDeferData({
+				url:this.defaultUrl,
+				data:this.rna_params
+			})
+			.subscribe((data:any)=>{
+				if (data.status == '0' && (data.data.length == 0 || $.isEmptyObject(data.data))) {
+					return;
+				} else if (data.status == '-1') {
+					return;
+				} else if (data.status == '-2') {
+					return;
+				} else {
+					console.log(data['data']['seq']);
+					this.rna_rows = data['data']['rows'];
+					this.rna_baseThead = data['data']['baseThead'];
+					this.rna_flag = this.rna_rows.length>0?true:false;
+
+					if(this.rna_rows.length>5){
+						this.scroll = { x: "100%",y:"200px"}
+					}else{
+						this.scroll = { x: "100%"}
+					}
+				}
+				this.isLoading2 = false;
+				resolve("success");
+			},
+			error => {
+				reject("error");
+			}
+			)
+		})
 	}
 }
