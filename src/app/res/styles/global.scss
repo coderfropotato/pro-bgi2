@@ -1324,12 +1324,25 @@ button {
         .search {
             float: right;
             input {
-                border-radius: 16px!important;
+                // border-radius: 16px!important;
+                border-top-left-radius: 16px !important;
+                border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+                border-bottom-left-radius: 16px !important;
+                border-right: 0;
             }
         }
         .ant-input-search {
             margin-right: 12px;
-            width: 180px;
+            width: 200px;
+        }
+        .ant-input-group-addon{
+            padding: 0;
+            border: 0;
+        }
+        .ant-btn{
+            border-top-left-radius:0;
+            border-bottom-left-radius:0;
         }
     }
 }
@@ -1918,7 +1931,7 @@ button {
     }
     .title2 {
         width: 98%;
-        margin: 0px auto;
+        margin: 10px auto 0 auto;
         font-family: MicrosoftYaHei;
         font-size: 16px;
         color: #333333;
@@ -1926,7 +1939,7 @@ button {
     }
     .title3 {
         width: 98%;
-        margin: 0px auto;
+        margin: 4px auto 0 auto;
         font-family: MicrosoftYaHei;
         font-size: 14px;
         color: #333333;
@@ -2008,16 +2021,16 @@ button {
                 background-position: center;
             }
             .img_one_s {
-                width: 809px;
-                height: 677px;
+                width: 609px;
+                height: 477px;
                 margin: 10px auto;
                 background-image: url("../img/help2/rRNA_Removal_Experiment_FlowChartl.png");
                 background-repeat: no-repeat;
                 background-position: center;
             }
             .img_two {
-                width: 928px;
-                height: 880px;
+                width: 500px;
+                height: 500px;
                 margin: 10px auto;
                 background-image: url("../img/help2/RNAseq_Analysis_FlowChart.png");
                 background-size: 100% 100%;
@@ -2025,8 +2038,8 @@ button {
                 background-position: center;
             }
             .img_two_f {
-                width: 928px;
-                height: 880px;
+                width: 500px;
+                height: 500px;
                 margin: 10px auto;
                 background-image: url("../img/help2/RNAref_Analysis_FlowChart.png");
                 background-size: 100% 100%;
@@ -2034,16 +2047,16 @@ button {
                 background-position: center;
             }
             .img_two_s {
-                width: 838px;
-                height: 768px;
+                width: 500px;
+                height: 500px;
                 margin: 10px auto;
                 background-image: url("../img/help2/lncRNA_Analysis_FlowChart.png");
                 background-repeat: no-repeat;
                 background-position: center;
             }
             .img_three {
-                width: 585px;
-                height: 692px;
+                width: 500px;
+                height: 686px;
                 margin: 10px auto;
                 background-image: url("../img/help/ckjyzdb.png");
                 background-repeat: no-repeat;
@@ -2058,8 +2071,8 @@ button {
                 background-position: center;
             }
             .img_five {
-                width: 1000px;
-                height: 800px;
+                width: 600px;
+                height: 500px;
                 margin: 10px auto;
                 background-image: url("../img/help/IGV.png");
                 background-repeat: no-repeat;
@@ -2067,8 +2080,8 @@ button {
                 background-size: 100% 100%;
             }
             .img_six {
-                width: 1000px;
-                height: 800px;
+                width: 600px;
+                height: 500px;
                 margin: 10px auto;
                 background-image: url("../img/help/IGV2.png");
                 background-repeat: no-repeat;

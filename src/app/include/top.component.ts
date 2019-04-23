@@ -30,7 +30,8 @@ export class TopComponent implements OnInit{
 	@Input() pdf: boolean = true;
 	@Input() analysis: boolean = true;
 	@Input() upload: boolean = true;
-	@Input() lang: boolean = true;
+    @Input() lang: boolean = true;
+    @Input() disabledLogoClick:boolean = false;
 	@Output() logoClick: EventEmitter<any> = new EventEmitter();
 
 	constructor(
@@ -133,12 +134,11 @@ export class TopComponent implements OnInit{
 		this.router.navigateByUrl(`/report/${sessionStorage.getItem('LCTYPE')}/upload`);
 	}
 
-	// handlerLogoClick() {
-	// 	this.logoClick.emit();
-	// }
-
 	handleLogoClick(){
-		this.router.navigateByUrl(`/report/${sessionStorage.getItem('LCTYPE')}/${JSON.parse(sessionStorage.getItem('menu_list'))[0]['children'][0]['url']}`);
+        if(!this.disabledLogoClick){
+            this.router.navigateByUrl(`/report/${sessionStorage.getItem('LCTYPE')}/${JSON.parse(sessionStorage.getItem('menu_list'))[0]['children'][0]['url']}`);
+            this.logoClick.emit();
+        }
 	}
 
 	handleFullScreenClick() {

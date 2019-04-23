@@ -233,16 +233,16 @@ export class ReListComponent implements OnInit {
 			.subscribe(
 				(res) => {
 					if (res['status'] == 0) {
-						this.notify.success('Delete', `重分析任务 - ${data['nickname']} 删除成功`);
+						this.notify.success('Delete', `分析任务 - ${data['nickname']} 删除成功`);
 						this.tableEntity['pageIndex'] = 1;
 						this.getList();
 					} else {
-						this.notify.warning('Delete', `重分析任务 - ${data['nickname']} 删除失败`);
+						this.notify.warning('Delete', `分析任务 - ${data['nickname']} 删除失败`);
 					}
 				},
 				(error) => {
 					console.log(error);
-					this.notify.warning('Delete', `重分析任务 - ${data['nickname']} 删除失败`);
+					this.notify.warning('Delete', `分析任务 - ${data['nickname']} 删除失败`);
 				}
 			);
 	}

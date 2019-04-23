@@ -4,12 +4,15 @@
             <p class="re-list-title">我的分析</p>
             <i class="iconfont icon-shuaxin" style="line-height: 38px;margin-left:10px;" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="getAnalysisList()"></i>
             <div class="search">
-                <ng-template #suffixIconButton>
+                <ng-template #addOnAfterTemplate>
                     <button nz-button nzType="default" nzSearch (click)="search()"><i class="anticon anticon-search"></i></button>
                 </ng-template>
-                <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+                <nz-input-group nzSearch [nzSuffix]="suffixTemplate" [nzAddOnAfter]="addOnAfterTemplate">
                     <input type="text" [(ngModel)]="label" (keyup.enter)="search()" nz-input placeholder="input search text">
                 </nz-input-group>
+                <ng-template #suffixTemplate>
+                    <i nz-icon class="anticon anticon-close-circle" (click)="label = ''" *ngIf="label"></i>
+                </ng-template>
                 <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'" [(nzVisible)]="panelVisible">
                     <button nz-button nz-dropdown nzType="primary"><i class="anticon anticon-filter"></i>条件筛选</button>
                     <div class="analysis-list-panel">
@@ -58,7 +61,7 @@
                 <nz-table *ngIf="!error" #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzSize="small" nzScroll="{'y':120%}">
                     <thead>
                         <tr>
-                            <th nzWidth="120px">分析工具名</th>
+                            <th nzWidth="120px">任务名称</th>
                             <!-- <th>Id</th> -->
                             <th nzWidth="80px">状态</th>
                             <th nzWidth="120px">创建时间</th>

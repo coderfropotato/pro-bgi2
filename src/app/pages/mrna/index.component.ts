@@ -3,13 +3,13 @@ import { Observable, fromEvent } from 'rxjs';
 import { StoreService } from './../../super/service/storeService';
 import { GlobalService } from './../../super/service/globalService';
 import { AjaxService } from './../../super/service/ajaxService';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { MessageService } from '../../super/service/messageService';
 import { NgxSpinnerService } from 'ngx-spinner';
 import config from '../../../config';
 import { routeAnimation } from '../../super/animation/animation';
-import { NzModalRef, NzModalService,NzNotificationService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService, NzNotificationService } from 'ng-zorro-antd';
 
 // import {OuterDataBaseService} from './../../super/service/outerDataBaseService';
 
@@ -21,6 +21,7 @@ declare const $: any;
 	animations: [ routeAnimation ]
 })
 export class IndexComponent implements OnInit {
+    @ViewChild('menu') menu;
 	menuList: any = [];
 	allThead: any = [];
 	ready: boolean = false;
@@ -37,15 +38,14 @@ export class IndexComponent implements OnInit {
 		private storeService: StoreService,
 		private ngxSpinnerService: NgxSpinnerService,
 		private addColumnService: AddColumnService,
-        private message: MessageService,
-        private notify:NzNotificationService,
+		private message: MessageService,
+		private notify: NzNotificationService,
 		private modalService: NzModalService // private outerDataBaseService:OuterDataBaseService
 	) {
 		// this.router.events.subscribe((event) => {
 		// 	if (event ins，tanceof NavigationEnd) {
 		// 		this.routerState = !this.routerState;
 		// 		this.routerStateCode = this.routerState ? 'active' : 'inactive';
-
 		// 		this.storeService.setNavigatedRoutes(this.router.url);
 		// 	}
 		// });
@@ -56,8 +56,8 @@ export class IndexComponent implements OnInit {
 		(async () => {
 			try {
 				await this.getLcInfo();
-                this.getUnReadAnalysisCount();
-                this.getNotification();
+				this.getUnReadAnalysisCount();
+				this.getNotification();
 				this.ready = true;
 				setTimeout(() => {
 					this.ngxSpinnerService.hide();
@@ -97,7 +97,7 @@ export class IndexComponent implements OnInit {
 								}
 							}
 
-							this.menuList = data["data"].menu_list;
+							this.menuList = data['data'].menu_list;
 
 							// this.menuList = [
 							// 	{
@@ -312,7 +312,7 @@ export class IndexComponent implements OnInit {
 							let url =
 								window.location.href.split('/report')[0] +
 								`/report/mrna/${this.menuList[0]['children'][0]['url']}`;
-							// let url = window.location.href.split('/report')[0]+`/report/mrna/diff-expression`;
+							// let url = window.location.href.split('/report')[0] + `/report/project`;
 							window.location.replace(url);
 
 							let menuRouteMap = {};
@@ -325,7 +325,7 @@ export class IndexComponent implements OnInit {
 								}
 							});
 
-							sessionStorage.setItem('menu_list',JSON.stringify(this.menuList));
+							sessionStorage.setItem('menu_list', JSON.stringify(this.menuList));
 							this.storeService.setStore('menu', this.menuList);
 							this.storeService.setStore('menuRouteMap', menuRouteMap);
 							resolve('success');
@@ -362,21 +362,27 @@ export class IndexComponent implements OnInit {
 		this.getUnReadAnalysisCountTimer = setInterval(() => {
 			getCount();
 		}, config['getAnalysisCountInterval']);
+	}
+
+	getNotification() {
+		this.ajaxService
+			.getDeferData({
+				data: {},
+				url: `${config['javaPath']}/getInform`
+			})
+			.subscribe((res) => {
+				if (res['status'] == 0 && res['data'][0].length) {
+					this.notify.blank('System notification', res['data'][0], {
+						nzDuration: 5000,
+						nzStyle: {
+							width: '320px'
+						}
+					});
+				}
+			});
     }
 
-    getNotification(){
-        this.ajaxService.getDeferData({
-            data:{},
-            url:`${config['javaPath']}/getInform`
-        }).subscribe(res=>{
-            if(res['status'] == 0 && res['data'][0].length){
-                this.notify.blank('System notification',res['data'][0],{
-                    nzDuration:0,
-                    nzStyle:{
-                        width: '320px'
-                    }
-                });
-            }
-        })
+    handleLogoClick(){
+        this.menu._initRouteActiveStatus();
     }
 }
