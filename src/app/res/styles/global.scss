@@ -1824,26 +1824,118 @@ button {
 }
 
 // 基础模块-帮助页面
-.title {
-    width: 98%;
-    margin: 6px auto 0 auto;
+
+// 基础模块-数据过滤/对比
+.base_module {
+    width: 100%;
+    height: auto;
+}
+
+.filter,
+.comparison,
+.lrna,
+.information,
+.overview {
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(57,65,79,0.08);
+    border-radius: 4px;
+    .f-content {
+        width: 96%;
+        height: auto;
+        margin: 10px auto;
+        border: 1px solid #eeeeee;
+        border-radius: 4px;
+    }
+    .t-content {
+        width: 96%;
+        height: auto;
+        margin: 10px auto;
+        border: 1px solid #eeeeee;
+        border-radius: 4px;
+    }
+    .title {
+        width: 98%;
+        margin: 10px auto;
+        font-family: MicrosoftYaHei;
+        font-size: 18px;
+        color: #333333;
+        letter-spacing: 0;
+        line-height: 18px;
+    }
+    .title2 {
+        width: 98%;
+        margin: 10px auto;
+        font-family: MicrosoftYaHei;
+        font-size: 16px;
+        color: #333333;
+        letter-spacing: 0;
+        line-height: 16px;
+    }
+    .title3 {
+        width: 98%;
+        margin: 10px auto;
+        font-family: MicrosoftYaHei;
+        font-size: 14px;
+        color: #333333;
+        letter-spacing: 0;
+    }
+    .help_text {
+        width: 96%;
+        margin: 4px auto 4px auto;
+        font-family: MicrosoftYaHei;
+        font-size: 14px;
+        color: #666;
+        letter-spacing: 0;
+        text-indent: 2em;
+    }
+    .help_text_p{
+        width: 96%;
+        margin: 4px auto 0px auto;
+        font-family: MicrosoftYaHei;
+        font-size: 14px;
+        color: #151515;
+        letter-spacing: 0;
+    }
 }
 
 .mhr {
     // 分割线
     border: 0;
     height: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    margin-top: 20px;
+    border-top: 1px solid#EEEEEE;
+    border-bottom: 1px solid #EEEEEE;
+    margin-top: 1px;
 }
 
 .help {
+    .title {
+        width: 98%;
+        margin: 6px auto 0 auto;
+        font-family: MicrosoftYaHei;
+        font-size: 18px;
+        color: #333333;
+        letter-spacing: 0;
+    }
+    .title2 {
+        width: 98%;
+        margin: 10px auto 0 auto;
+        font-family: MicrosoftYaHei;
+        font-size: 16px;
+        color: #333333;
+        letter-spacing: 0;
+    }
+    .title3 {
+        width: 98%;
+        margin: 4px auto 0 auto;
+        font-family: MicrosoftYaHei;
+        font-size: 14px;
+        color: #333333;
+        letter-spacing: 0;
+    }
     .help_option {
         .help_content {
             width: 100%;
             height: auto;
-            padding-bottom: 10px;
             .test_one {
                 width: 348px;
                 height: 890px;
@@ -2057,20 +2149,31 @@ button {
                 background-image: url("../img/help3/6.png");
             }
             .help_text {
+                // width: 98%;
+                // margin: 4px auto 0 auto;
+                // text-indent: 2em;
                 width: 98%;
-                margin: 4px auto 0 auto;
-                text-indent: 2em;
+                margin: 4px auto 4px auto;
+                font-family: MicrosoftYaHei;
+                font-size: 14px;
+                color: #666;
+                letter-spacing: 0;
+                line-height: 16px;
                 P {
                     margin-bottom: 4px;
                 }
             }
+            .text_indent{
+                text-indent: 2rem;
+            }
             .help_bg {
-                background-color: #eee;
-                width: 95%;
+                background: #F7F8FA;
+                width: 97%;
                 margin: 10px auto 0 auto;
                 padding: 10px;
                 border: 1px solid #dfe2e5;
                 border-radius: 4px;
+                font-size: 14px;
             }
             .sjx2 {
                 text-indent: 2em;
@@ -2082,7 +2185,7 @@ button {
                 color: #000;
             }
             .table {
-                width: 95%;
+                width: 97%;
                 margin: 10px auto 0 auto;
                 word-break: break-all;
                 word-wrap: break-word;
@@ -2093,41 +2196,6 @@ button {
                 }
             }
         }
-    }
-}
-
-// 基础模块-数据过滤/对比
-.base_module {
-    width: 100%;
-    height: auto;
-}
-
-.filter,
-.comparison,
-.lrna,
-.information,
-.overview {
-    .f-content {
-        width: 96%;
-        height: auto;
-        margin: 10px auto;
-        border: 1px solid #eeeeee;
-        border-radius: 4px;
-    }
-    .t-content {
-        width: 96%;
-        height: auto;
-        margin: 10px auto;
-        border: 1px solid #eeeeee;
-        border-radius: 4px;
-    }
-    .title {
-        width: 98%;
-        margin: 10px auto;
-    }
-    .help_text {
-        width: 96%;
-        margin: 4px auto 0 auto;
     }
 }
 
