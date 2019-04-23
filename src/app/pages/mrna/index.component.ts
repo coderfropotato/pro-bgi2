@@ -372,7 +372,7 @@ export class IndexComponent implements OnInit {
 			.subscribe((res) => {
 				if (res['status'] == 0 && res['data'][0].length) {
 					this.notify.blank('System notification', res['data'][0], {
-						nzDuration: 0,
+						nzDuration: 5000,
 						nzStyle: {
 							width: '320px'
 						}
