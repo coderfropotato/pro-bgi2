@@ -4,14 +4,14 @@
 
   <div class="help_option">
       <div class="help_content">
-          <h3 class="title">5.1 分析方法：</h3>
-          <h3 class="title">1.SNP分析方法</h3>
-          <p class="help_text">根据参考基因组比对结果，我们使用GATK检测每个样品的SNP和InDel信息。过滤掉低质量的位点信息之后，结果存储为VCF格式。GATK是由Broad Institute研发的一款用于二代测序数据分析的软件包。该工具包提供了多种分析方法，主要关注变异检测和基因分型。稳健的架构、强大的处理引擎、高性能计算等特点使其在各类项目中得以广泛应用。在SNP和InDel分析中，GATK官网推荐的流程如下图所示，更多GATK信息请参考GATK官网。</p>
+          <h3 class="title2">5.1 分析方法：</h3>
+          <h3 class="title3">1.SNP分析方法</h3>
+          <p class="help_text text_indent">根据参考基因组比对结果，我们使用GATK检测每个样品的SNP和InDel信息。过滤掉低质量的位点信息之后，结果存储为VCF格式。GATK是由Broad Institute研发的一款用于二代测序数据分析的软件包。该工具包提供了多种分析方法，主要关注变异检测和基因分型。稳健的架构、强大的处理引擎、高性能计算等特点使其在各类项目中得以广泛应用。在SNP和InDel分析中，GATK官网推荐的流程如下图所示，更多GATK信息请参考GATK官网。</p>
           <div class="img img_one_snpIndel"></div>
             <div class="help_text">
-              <p>主要分为两个步骤：</p> 
-              <p>1. 数据预处理（比对至基因组-标记重复序列-分割序列-碱基重校准，注：图中显示的是用STAR软件将Reads比对至基因组，而本项目使用的是HISAT2软件）；</p> 
-              <p>2. 变异检测（以HaplotypeCaller来检测SNP和InDel-变异位点过滤）。</p> 
+              <p class="help_text">主要分为两个步骤：</p> 
+              <p class="text_indent">1. 数据预处理（比对至基因组-标记重复序列-分割序列-碱基重校准，注：图中显示的是用STAR软件将Reads比对至基因组，而本项目使用的是HISAT2软件）；</p> 
+              <p class="text_indent">2. 变异检测（以HaplotypeCaller来检测SNP和InDel-变异位点过滤）。</p> 
             </div>
           <div class="help_bg">
             <p>参考文献：</p> 
@@ -20,11 +20,11 @@
       </div>
 
       <div class="help_content">
-          <h3 class="title">5.2 常见问题</h3>
-          <h3 class="title">1、SNP与SNV的区别？</h3>
+          <h3 class="title2">5.2 常见问题</h3>
+          <h3 class="title3 text_indent">1、SNP与SNV的区别？</h3>
           <div class="help_text">
-            <p>SNP（Single Nucleotide Polymorphism）单核苷酸多态性，指的是由单个核苷酸—A,T,C或G的改变而引起的DNA序列的改变，造成包括人类在内的物种之间染色体基因组的多样性。</p> 
-            <p>SNV(single nucleotide variant)单核苷酸变体。这意味着一个碱基被一个其他碱基取代。这也通常被称为SNP。 SNV优于SNP，因为SNV包含关于群体中变体的额外解释层。这意味着一个SNV可能是一个单核苷酸多态性（SNP），但是在一个样品中检测到该SNV的时候，没办法确定它是否是SNP。</p> 
+            <p class="text_indent">SNP（Single Nucleotide Polymorphism）单核苷酸多态性，指的是由单个核苷酸—A,T,C或G的改变而引起的DNA序列的改变，造成包括人类在内的物种之间染色体基因组的多样性。</p> 
+            <p class="text_indent">SNV(single nucleotide variant)单核苷酸变体。这意味着一个碱基被一个其他碱基取代。这也通常被称为SNP。 SNV优于SNP，因为SNV包含关于群体中变体的额外解释层。这意味着一个SNV可能是一个单核苷酸多态性（SNP），但是在一个样品中检测到该SNV的时候，没办法确定它是否是SNP。</p> 
           </div>
       </div>
   </div>
