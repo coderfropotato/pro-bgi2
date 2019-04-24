@@ -208,7 +208,7 @@ export class TopComponent implements OnInit{
 
 	logout(){
 		sessionStorage.clear();
-		localStorage.removeItem('token');
+		localStorage.removeItem('token_'+this.LCID);
 		this.router.navigateByUrl(`/report/login`);
 	}
 }
