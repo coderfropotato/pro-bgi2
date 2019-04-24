@@ -327,7 +327,8 @@ export class IndexComponent implements OnInit {
 
 							sessionStorage.setItem('menu_list', JSON.stringify(this.menuList));
 							this.storeService.setStore('menu', this.menuList);
-							this.storeService.setStore('menuRouteMap', menuRouteMap);
+                            this.storeService.setStore('menuRouteMap', menuRouteMap);
+                            console.log(this.storeService);
 							resolve('success');
 						} else {
 							reject('error');

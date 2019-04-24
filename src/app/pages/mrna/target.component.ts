@@ -27,16 +27,18 @@ declare const Venn: any;
 	styles: []
 })
 export class TargetPage {
-	private moduleRouteName: string = 'miRNA-target'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
-	config: object = config;
-	rootGeneType: string = this.storeService.getStore('menuRouteMap')[this.moduleRouteName]['geneType']; // 来自菜单 可配置  all gene transcript
+	private moduleRouteName: string = 'mirna-target'; // 模块默认路由 通过路由名称查找菜单配置项（geneType）；
+    config: object = config;
+    routerGeneType:string = this.storeService.getStore('menuRouteMap')[this.moduleRouteName]['geneType'];
+    rootGeneType: string = (!this.routerGeneType || this.routerGeneType === 'null')?this.config['geneTypeOfGene']:this.routerGeneType;
+     // 来自菜单 可配置  all gene transcript
 	defaultGeneType: string = this.rootGeneType === this.config['geneTypeAll']
 		? this.config['geneTypeOfGene']
 		: this.rootGeneType;
-	showModule: boolean = true;
+	showModule: boolean = !!this.rootGeneType;
 
 	constructor(private storeService: StoreService, private translate: TranslateService) {
-		let browserLang = this.storeService.getLang();
+        let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
 	}
 
@@ -45,7 +47,8 @@ export class TargetPage {
 			this.defaultGeneType === config['geneTypeOfGene']
 				? config['geneTypeOfTranscript']
 				: config['geneTypeOfGene'];
-		this.showModule = false;
+        this.showModule = false;
+
 		setTimeout(() => {
 			this.showModule = true;
 		}, 30);
@@ -176,7 +179,6 @@ export class TargetComponent implements OnInit {
 		this.first = true;
 		this.selectedData = [];
 		this.tableUrl = `${config['javaPath']}/miRNATarget/graph`;
-
 		this.softwaresTarget = this.storeService.getStore('softwares')[this.defaultGeneType];
 		this.selectPanelData = [
 			//差异面板的数据

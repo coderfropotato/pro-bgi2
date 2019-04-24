@@ -322,12 +322,12 @@ const ROUTES: Routes = [
 			},
 			// miRNA靶标
 			{
-				path:"miRNA-target",
-				component:TargetComponent,
+				path:"mirna-target",
+				component:TargetPage,
 				data:{keep:true,module:'mirnaTarget'}
 			},
 			{
-				path:"miRNA-target-help",
+				path:"mirna-target-help",
 				component:TargetHelpComponent,
 				data:{keep:true,module:'mirnaTargetHelp'}
 			},
