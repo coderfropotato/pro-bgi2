@@ -31,7 +31,7 @@ declare const $: any;
                                 <div [hidden]="!expandModuleTop" class="gene_top_content" (click)="expandModuleDescClick()">
                                 <div class="gene_search gene_center"><!-- 上部搜索 -->
                                     <div class="gene_col">
-                                        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate"><!-- 搜索框 -->
+                                        <nz-input-group [nzSuffix]="suffixTemplate" [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate"><!-- 搜索框 -->
                                         <input placeholder="请输入基因ID或关键词" type="text" nz-input [(ngModel)]="inputValue" (ngModelChange)="inputChange()">
                                         </nz-input-group>
                                         <ng-template #addOnBeforeTemplate>
@@ -41,7 +41,10 @@ declare const $: any;
                                         </ng-template>
                                         <ng-template #addOnAfterTemplate><!-- 设置按钮 -->
                                         	<i class="iconfont icon-shezhi icon_pointer myicon_pointer" [style.color]="icon_color" (click)="moduleSetChange()"></i>
-                                        </ng-template>
+										</ng-template>
+										<ng-template #suffixTemplate>
+											<i nz-icon class="anticon anticon-close-circle" (click)="inputValue = ''" *ngIf="inputValue"></i>
+										</ng-template>
                                         <div class="gene_col_div" [hidden]="!expandHistoryPanel"><!-- 输入框返回结果面板 -->
                                         <div class="gene_col_content" *ngFor="let item of searchBackList" (click)="searchBackSelect(item)" >
                                             <!-- <div class="content_top">
