@@ -30,7 +30,7 @@ const config: object = {
 	urlSplitFlag: '@', // 切割url的标志字符
 	valSplitFlag: '+++', // 内容换行的标志字符
 	idComposeDesc: '///', // id和描述的组合标志字符
-	pathwayURL:'production'//'test'
+	pathwayURL:'test'//'test'
 };
 
 export default config;
