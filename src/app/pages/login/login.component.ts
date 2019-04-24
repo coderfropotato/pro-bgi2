@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
 			let { LCID, LCTYPE, TOKEN } = params;
 			if (LCID && LCTYPE && TOKEN) {
 				sessionStorage.setItem('LCID', LCID);
-				localStorage.setItem('token', TOKEN);
+				localStorage.setItem('token_'+LCID, TOKEN);
 				sessionStorage.setItem('LCTYPE', LCTYPE);
 				this.LCType = LCTYPE;
 				this.router.navigateByUrl(`/report/${LCTYPE}`);
