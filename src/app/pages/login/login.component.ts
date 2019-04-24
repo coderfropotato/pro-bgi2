@@ -172,7 +172,7 @@ export class LoginComponent implements OnInit {
 					(data) => {
 						if (data['status'] == '0') {
 							sessionStorage.setItem('LCID', this.validateEmailForm.value.email);
-							localStorage.setItem('token', data['data'].token);
+							localStorage.setItem('token_'+this.validateEmailForm.value.email, data['data'].token);
 							sessionStorage.setItem('LCTYPE', data['data'].LCType);
 							this.LCType = data['data'].LCType;
 							this.router.navigateByUrl(`/report/${data['data'].LCType}`);
