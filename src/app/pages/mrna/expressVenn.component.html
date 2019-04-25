@@ -17,7 +17,6 @@
                 <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow" (nzVisibleChange)="panelChange()">
                     <i class="iconfont icon-shezhi" nz-tooltip [nzTitle]="'tableButton.setting' | translate" nz-dropdown></i>
                     <div class="ex_container">
-                        <div class="ex_PessionDis_in">
                             <!-- <div class="ex_PessionDis_row">
                                 <div class="ex_PessionDis_left">
                                     FPKM
@@ -32,9 +31,34 @@
                                     ></nz-slider>
                                 </div>
                             </div> -->
-                            <span title="表达量">EXP ></span>
-                            <nz-input-number class="ex_input" (ngModelChange)="inputChange($event)" [(ngModel)]="targetValue" [nzMin]="expression_Min_value" [nzMax]="expression_Max_value" [nzStep]="0.1"></nz-input-number>
-                        </div>
+                            <!-- <span title="表达量">EXP ></span>
+                            <nz-input-number class="ex_input" (ngModelChange)="inputChange($event)" [(ngModel)]="targetValue" [nzMin]="expression_Min_value" [nzMax]="expression_Max_value" [nzStep]="0.1"></nz-input-number> -->
+                            <!-- <div class="con_PessionDis_row">
+                                <div class="con_PessionDis_left">
+                                    EXP >
+                                </div>
+                                <div class="con_PessionDis_right">
+                                        <nz-input-number class="ex_input" (ngModelChange)="inputChange($event)" [(ngModel)]="targetValue" [nzMin]="expression_Min_value" [nzMax]="expression_Max_value" [nzStep]="0.1"></nz-input-number>
+                                </div>
+                            </div> -->
+                            <div class="ex_top">
+                                <div class="ex_container_top">
+                                    <div class="con_PessionDis_title">
+                                        设置
+                                    </div>
+                                    <div class="con_PessionDis_content">
+                                        通过表达量对基因进行筛选，只有大于该值的基因参与VENN图或UpSetR图的绘制。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ex_sp_content">
+                                <div class="con_PessionDis_left">
+                                    EXP >
+                                </div>
+                                <div class="con_PessionDis_right">
+                                        <nz-input-number class="ex_input" (ngModelChange)="inputChange($event)" [(ngModel)]="targetValue" [nzMin]="expression_Min_value" [nzMax]="expression_Max_value" [nzStep]="0.1"></nz-input-number>
+                                </div>
+                            </div>
                         <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
                             {{'tableButton.cancel' | translate}}  </button>
                         <button class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">

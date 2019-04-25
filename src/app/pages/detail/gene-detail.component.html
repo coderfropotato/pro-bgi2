@@ -24,8 +24,8 @@
                     <div class="img_two"></div>
                 </a>
             </span>
-            <span *ngIf="geneInfoList['url_ensembl_gene_id']" class="mlink">link to
-                <a href="https://ensembl.org/Homo_sapiens/Gene/Summary?g={{geneInfoList['url_ensembl_gene_id']}}" target="_blank">
+            <span *ngIf="geneInfoList['url_ensembl_gene_id']&&geneInfoList['species_name']" class="mlink">link to
+                <a href="https://ensembl.org/{{geneInfoList['species_name']}}/Gene/Summary?g={{geneInfoList['url_ensembl_gene_id']}}" target="_blank">
                     <div class="img_three"></div>
                 </a>
             </span>
