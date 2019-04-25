@@ -179,7 +179,7 @@ export class LrnaComponent implements OnInit {
 		var chartData = [];
 		for (var i = 0; i < baseThead.length; i++) {
 			for (var j = 0; j < rows.length; j++) {
-				if (baseThead[i].name != 'length') {
+				if (baseThead[i].true_key != 'length') {
 					chartData.push({
 						key: rows[j].length,
 						value: rows[j][baseThead[i].true_key],
@@ -188,7 +188,6 @@ export class LrnaComponent implements OnInit {
 				}
 			}
 		}
-
 		let that = this;
 
 		let config: object = {
