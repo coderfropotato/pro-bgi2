@@ -212,11 +212,11 @@ export class ReanalysisIndexComponent implements OnInit {
         }
     }
 
-    toAnalysisList(){
-        this.router.navigateByUrl('/report/reanalysis/index');
-    }
+    // toAnalysisList(){
+    //     this.router.navigateByUrl('/report/reanalysis/index');
+    // }
 
-    handlerLogoClick(){
-        this.toAnalysisList();
-    }
+    // handlerLogoClick(){
+    //     this.toAnalysisList();
+    // }
 }

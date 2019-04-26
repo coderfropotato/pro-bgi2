@@ -1,10 +1,10 @@
 <div class="report-analysis">
-    <app-top [pdf]="false"  [upload]="false"  (logoClick)="handlerLogoClick()"></app-top>
+    <app-top [pdf]="false" [upload]="false"></app-top>
     <router-outlet *ngIf="ready"></router-outlet>
     <app-tools></app-tools>
 </div>
 <div class="loading">
-        <ngx-spinner bdColor="rgba(51, 51, 51, 0.6)" size="default" color="#fff" type="square-loader">
-            <p>页面加载中,请稍后...</p>
-        </ngx-spinner>
+    <ngx-spinner bdColor="rgba(51, 51, 51, 0.6)" size="default" color="#fff" type="square-loader">
+        <p>页面加载中,请稍后...</p>
+    </ngx-spinner>
 </div>
