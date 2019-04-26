@@ -36,7 +36,7 @@
         "diff_venn_content": "利用VENN/UpSetR图，展示基因在不同比较组间的差异表达情况"
     },
     "miRnaTarget": {
-        "title": "miRNA靶标，由多种算法对miRNA靶基因进行预测",
+        "title": "miRNA靶标",
         "content": "本物种miRNA的靶基因分析。"
     },
     "diff_venn_number": {
