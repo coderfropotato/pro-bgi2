@@ -35,9 +35,9 @@
         "diff_venn_title": "Differential gene clustering",
         "diff_venn_content": "Clustering the FPKM values of different genes in each comparison group"
     },
-    "miRnaTarget":{
-        "title":"miRNA-target",
-        "content":"Target gene analysis of miRNAs of this species"
+    "miRnaTarget": {
+        "title": "miRNA-target",
+        "content": "Target gene analysis of miRNAs of this species"
     },
     "diff_cluster": {
         "title": "diff cluster",
@@ -295,7 +295,7 @@
         "category_variation": "Variation",
         "category_snp_indel": "SNP/InDel",
         "category_basic_info": "Basic Info",
-        "category_miRNA_target":"miRNA Target",
+        "category_miRNA_target": "miRNA Target",
         "url_diff-expression-number": "Diff Expression Number",
         "url_diff-expression": "Diff Expression",
         "url_cluster": "Cluster",
@@ -326,6 +326,7 @@
     },
     "relativeButton": "Association conversion",
     "tableHeader": {
+        "total": "Count by row, the total number of related genes in the interaction relationship (up to 20 columns in the current interaction relationship, the excess is hidden)",
         "header-1": "代谢通路在KEGG数据库中的编号",
         "header-2": "第1组样本的包含水平",
         "header-3": "基因名",
