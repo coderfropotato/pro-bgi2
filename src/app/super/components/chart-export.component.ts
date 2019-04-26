@@ -7,8 +7,8 @@ declare const $: any;
 @Component({
 	selector: 'app-chart-export',
 	template: `
-        <nz-dropdown [nzPlacement]="'bottomRight'">
-            <i nz-dropdown class="anticon anticon-picture" nz-tooltip nzTitle="{{'tableButton.export' | translate}}"></i>
+        <nz-dropdown [nzPlacement]="'bottomRight'">  <!-- anticon-picture -->
+            <i nz-dropdown class="iconfont  icon-xiazai" nz-tooltip nzTitle="{{'tableButton.export' | translate}}"></i>
             <ul nz-menu>
                 <li nz-menu-item (click)="downLoadImage('image/png')">{{'tableButton.export_png' | translate}}</li>
                 <li nz-menu-item (click)="downLoadImage('image/jpeg')">{{'tableButton.export_jpg' | translate}}</li>
