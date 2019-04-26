@@ -57,13 +57,14 @@
                 </ng-template>
 
                 <ng-template #funcBtnsTemplate>
-                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!allNodes.length || allNodes.length==1" (click)='isShowAddModal=true'>add link</button>
-                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length" (click)="isShowDeleteModal=true">delete link</button>
-                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" (click)="expandNode()">expand</button>
+                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!allNodes.length || allNodes.length==1" (click)='isShowAddModal=true'>Add link</button>
+                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length" (click)="isShowDeleteModal=true">Delete link</button>
+                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" (click)="expandNode()">Expand</button>
                 </ng-template>
 
                 <ng-template #searchTemplate>
-                    <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curSearchNode' *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Input gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()" nzShowSearch>
+                    <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curSearchNode' *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Search gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()"
+                        nzShowSearch>
                         <nz-option *ngFor="let node of allNodes" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                     </nz-select>
                 </ng-template>
