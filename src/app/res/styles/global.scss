@@ -1723,13 +1723,39 @@ button {
 // venn图设置参数
 .ex_container {
     height: auto;
-    width: 320px;
-    padding-bottom: 60px;
+    width: 360px;
+    padding-bottom: 70px;
     background: #ffffff;
     position: relative;
     background: #ffffff;
     box-shadow: 0 4px 8px 0 rgba(57, 65, 79, 0.16);
     border-radius: 4px;
+    .ant-input-number{
+        width: 100%;
+        height: 30px;
+    }
+    .ant-input-number-sm input{
+        height: 30px;
+    }
+}
+
+.ex_top{
+    width: 100%;
+    height: auto;
+    border-bottom:1px solid rgba(234, 234, 235, 0.95);
+    padding-bottom: 6px;
+}
+
+.ex_container_top{
+    width: 92%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.con_PessionDis_content{
+    height: auto;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.65);
 }
 
 .con_PessionDis {
@@ -1741,10 +1767,12 @@ button {
 }
 
 .con_PessionDis_title {
-    height: 36px;
+    height: 30px;
     width: 100%;
-    line-height: 36px;
     margin: 0 auto;
+    line-height: 30px;
+    margin: 0 auto;
+    color: black;
 }
 
 .con_PessionDis_in {
@@ -1767,7 +1795,7 @@ button {
 
 .con_PessionDis_right {
     height: 40px;
-    width: 80px;
+    width: 120px;
     float: left;
     margin-left: 15px;
 }
@@ -1777,6 +1805,19 @@ button {
     width: 100%;
     padding: 10px 0;
     margin-left: 10px;
+}
+
+.ex_sp_content{
+    width: 92%;
+    height: 40px;
+    margin-top: 15px;
+}
+
+.con_bottom{
+    width: 92%;
+    height: 1px;
+    margin: 10px auto 0 auto;
+    border-bottom: 1px solid rgba(234, 234, 235, 0.95);
 }
 
 .ex_input {
@@ -1899,7 +1940,7 @@ button {
         font-size: 14px;
         color: #666;
         letter-spacing: 0;
-        text-indent: 2em;
+        // text-indent: 2em;
     }
     .help_text_p{
         width: 96%;

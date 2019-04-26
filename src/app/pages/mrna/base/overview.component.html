@@ -24,6 +24,14 @@
                 <app-little-table [url]="defaultUrlTwo" [pageEntity]="EntityTwo"></app-little-table>
             </div>
         </div>
+
+        <div class="f-content" *ngIf="itemFlag2_3">
+            <h4 class="title3">{{tempIndex}}.{{itemNum2}}.{{itemNum2_3}} 时间序列分析方案</h4>
+            <p class="help_text">时间序列分析方案名与样本对应关系如下：</p>
+            <div style="width:96%;margin: 10px auto;">
+                <app-little-table [url]="defaultUrlTwo" [pageEntity]="EntityThree"></app-little-table>
+            </div>
+        </div>
     </div>
 
 
