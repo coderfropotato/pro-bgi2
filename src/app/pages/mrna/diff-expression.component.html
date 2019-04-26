@@ -15,6 +15,17 @@
                 <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow" (nzVisibleChange)="panelChange()">
                     <i class="iconfont icon-shezhi" nz-tooltip [nzTitle]="'tableButton.setting' | translate" nz-dropdown></i>
                     <div class="ex_container">
+                        <div class="ex_top">
+                            <div class="ex_container_top">
+                                <div class="con_PessionDis_title">
+                                    设置
+                                </div>
+                                <div class="con_PessionDis_content">
+                                    调整差异基因阈值，修改后将重新绘制差异VENN图。
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="con_PessionDis" *ngFor="let item of thresholdName">
                                 <div class="con_PessionDis_title" *ngIf="item=='PossionDis'" title="{{item=='PossionDis'?'无生物学重复的比较组使用该软件。':''}}">
                                     {{item}}
@@ -79,6 +90,10 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="con_bottom">
+
                         </div>
 
                         <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">

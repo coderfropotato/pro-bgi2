@@ -179,7 +179,7 @@ export class LrnaComponent implements OnInit {
 		var chartData = [];
 		for (var i = 0; i < baseThead.length; i++) {
 			for (var j = 0; j < rows.length; j++) {
-				if (baseThead[i].name != 'length') {
+				if (baseThead[i].true_key != 'length') {
 					chartData.push({
 						key: rows[j].length,
 						value: rows[j][baseThead[i].true_key],
@@ -188,8 +188,15 @@ export class LrnaComponent implements OnInit {
 				}
 			}
 		}
-
 		let that = this;
+
+		// console.log(that.selectConfirmData)
+		let xData = that.selectConfirmData;
+
+		// console.log(chartData)
+		let tempWidth = 0;
+
+		tempWidth = chartData.length *18;
 
 		let config: object = {
 			chart: {
@@ -202,7 +209,7 @@ export class LrnaComponent implements OnInit {
 				},
 				el: '#RNALData',
 				type: 'groupBar',
-				width: 900,
+				width: tempWidth,
 				custom: [ 'key', 'value', 'category' ],
 				data: chartData
 			},

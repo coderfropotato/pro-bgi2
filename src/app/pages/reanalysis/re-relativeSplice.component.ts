@@ -430,7 +430,10 @@ export class RelativeSpliceComponent implements OnInit {
         let xAxis_length = 320;
         let yAxis_length = 300;
 
-        let svg_width = left_title + left_ylength + xAxis_length + 90 + right_name_length + leftNameWidth; //计算最外层svg宽度
+        let temp_num = 15;
+        let temp_length = (parseInt((that.group_select.length/temp_num).toString().split(".")[0])+1)*200;
+
+        let svg_width = left_title + left_ylength + xAxis_length + 90 + temp_length + leftNameWidth; //计算最外层svg宽度
         let svg_height = top_title + yAxis_length + bottom_xlength + bottom_UTR_CDS; //计算最外层svg高度
 
         let svg = d3.select('#svg') //最外层svg
@@ -478,7 +481,7 @@ export class RelativeSpliceComponent implements OnInit {
 			let height = yAxis_length;
 			let padding_left2 = 0;
 
-			let svgTitle = svg.append('g').attr('transform', 'translate(' + 22 + ',' + (nameW+padding_w) + ')');
+			let svgTitle = svg.append('g').attr('transform', 'translate(' + 45 + ',' + (nameW+padding_w) + ')');
 			svgTitle
 				.append('text')
 				.attr("transform", "rotate(-90)")
@@ -587,7 +590,82 @@ export class RelativeSpliceComponent implements OnInit {
         function drawRightSecondLegend(){
             let padding_left = temp_x_width + left_title + 90 +leftNameWidth;
 
-            //let circle = d3.symbol().type(d3.symbolCircle)();
+            let circle = d3.symbol().type(d3.symbolCircle)();
+            let temp_symbol_select = [];
+            let temp_symbol_length = that.group_select.length;
+
+            let j = 0;
+            that.colors.forEach(element => {
+                if(j < temp_symbol_length){
+                    temp_symbol_select.push(that.colors[j]);
+                    j++;
+                }
+            });
+            // let categoryList = that.group_select;
+
+            // let z = d3.scaleOrdinal().domain(categoryList).range(that.colors.slice(0, categoryList.length));
+
+            let r_legend_bottom = svg
+                .append('g')
+                .attr('transform', 'translate(' + padding_left + ',' + top_title + ')')
+                .attr('width',temp_length);
+
+            r_legend_bottom.append('text').attr("class","titleText").attr('dx', '0').attr('dy', '0').text("Group");
+
+            let legend_bottom = r_legend_bottom
+            .append("g")
+            .attr("transform", "translate(0,16)");
+
+            legend_bottom
+            .selectAll('circle')
+            .data(that.group_select)
+            .enter()
+            .append('circle')
+            .attr('cx', (d, i) => {
+                // console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
+                return parseInt((i/temp_num).toString().split(".")[0])*200+8
+            })
+            .attr('cy', (d, i) => {
+                return parseInt((i%temp_num).toString().split(".")[0]) * 24
+            })
+            .attr('r', function(d, i) {
+                return 5;
+            })
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr("fill", function(d, i) {
+                return that.colors[i];
+            })
+            ;
+
+
+            legend_bottom.selectAll('text')
+                .data(that.group_select)
+                .enter()
+                .append('text')
+                .attr('dx', (d, i) => {
+                    // console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
+                    return parseInt((i/temp_num).toString().split(".")[0])*200+20
+                })
+                .attr('dy', (d, i) => {
+                    return parseInt((i%temp_num).toString().split(".")[0]) * 24
+                })
+                .attr('text-anchor', 'start')
+                .attr('dominant-baseline', 'middle')
+                .text(d => {
+                    return ('' + d).length > 24 ? (('' + d).substring(0, 24 - 1) + '...') : d;
+                })
+                .on('mouseover', function(d, i) {
+					let tipText = `${d}`;
+					that.globalService.showPopOver(d3.event, tipText);
+				})
+				.on('mouseout', function(d, i) {
+					that.globalService.hidePopOver();
+				})
+
+
+            // let circle = d3.symbol().type(d3.symbolCircle)();
+
             // let temp_symbol_select = [];
             // let temp_symbol_length = that.group_select.length;
             // let j = 0;
@@ -606,91 +684,30 @@ export class RelativeSpliceComponent implements OnInit {
 
             // r_legend_bottom.append('text').attr("class","titleText").attr('dx', '0').attr('dy', '0').text("Group");
 
-            // console.log(that.group_select);
+            // let ordinal = d3.scaleOrdinal()
+            // .domain(that.group_select)
+            // .range(temp_symbol_select);
 
-            // let legend_bottom = r_legend_bottom
-            // .append("g")
-            // .attr("transform", "translate(4,0)");
+            // r_legend_bottom.append("g")
+            // .attr("class", "legendOrdinal")
+            // .attr("transform", "translate(4,20)");
 
-            // legend_bottom
-            // .selectAll('rect')
-            // .data(that.group_select)
-            // .enter()
-            // .append('rect')
-            // .attr('x', 0)
-            // .attr('y', (d, i) => {
-            //     return i * 24
+            // let legendOrdinal = d3.legendColor()
+            // .shape("path", circle)
+            // .labelOffset(5)
+            // .shapePadding(5)
+            // // .cellFilter(function(d){ return d.label !== "e" })
+            // .scale(ordinal)
+            // .on("cellover", function(d){
+            //     let tipText = `${d}`;
+			// 	that.globalService.showPopOver(d3.event, tipText);
             // })
-            // .attr('width', 10)
-            // .attr('height', 10)
-            // ;
+            // .on("cellout", function(d){
+            //     that.globalService.hidePopOver();
+            // });
 
-
-            // legend_bottom.selectAll('text')
-            //     .data(that.group_select)
-            //     .enter()
-            //     .append('text')
-            //     .attr('x', 0)
-            //     .attr('y', (d, i) => {
-            //         return i * 20
-            //     })
-            //     .style('font-size', this.styleConfig.legendFontSize)
-            //     .attr('text-anchor', 'start')
-            //     .attr('dominant-baseline', 'middle')
-            //     .attr('dx', 0)
-            //     .attr('dy', 20)
-            //     .text(d => {
-            //         //return ('' + d).length > global.legend.textMaxLength ? (('' + d).substring(0, global.legend.textMaxLength - 1) + '...') : d;
-            //         return d;
-            //     })
-            //     .append('title')
-            //     .text(d => d)
-
-
-            let circle = d3.symbol().type(d3.symbolCircle)();
-
-            let temp_symbol_select = [];
-            let temp_symbol_length = that.group_select.length;
-            let j = 0;
-
-            that.colors.forEach(element => {
-                if(j < temp_symbol_length){
-                    temp_symbol_select.push(that.colors[j]);
-                    j++;
-                }
-            });
-
-            let r_legend_bottom = svg
-                .append('g')
-                .attr('transform', 'translate(' + padding_left + ',' + top_title + ')')
-                .attr('width',right_name_length);
-
-            r_legend_bottom.append('text').attr("class","titleText").attr('dx', '0').attr('dy', '0').text("Group");
-
-            let ordinal = d3.scaleOrdinal()
-            .domain(that.group_select)
-            .range(temp_symbol_select);
-
-            r_legend_bottom.append("g")
-            .attr("class", "legendOrdinal")
-            .attr("transform", "translate(4,20)");
-
-            let legendOrdinal = d3.legendColor()
-            .shape("path", circle)
-            .labelOffset(5)
-            .shapePadding(5)
-            // .cellFilter(function(d){ return d.label !== "e" })
-            .scale(ordinal)
-            .on("cellover", function(d){
-                let tipText = `${d}`;
-				that.globalService.showPopOver(d3.event, tipText);
-            })
-            .on("cellout", function(d){
-                that.globalService.hidePopOver();
-            });
-
-            r_legend_bottom.select(".legendOrdinal")
-            .call(legendOrdinal);
+            // r_legend_bottom.select(".legendOrdinal")
+            // .call(legendOrdinal);
         }
 
         function drawCenter(){

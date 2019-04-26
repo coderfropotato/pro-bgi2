@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
 			let { LCID, LCTYPE, TOKEN } = params;
 			if (LCID && LCTYPE && TOKEN) {
 				sessionStorage.setItem('LCID', LCID);
-				localStorage.setItem('token', TOKEN);
+				localStorage.setItem('token_'+LCID, TOKEN);
 				sessionStorage.setItem('LCTYPE', LCTYPE);
 				this.LCType = LCTYPE;
 				this.router.navigateByUrl(`/report/${LCTYPE}`);
@@ -123,7 +123,7 @@ export class LoginComponent implements OnInit {
 					(data) => {
 						if (data['status'] == '0') {
 							sessionStorage.setItem('LCID', this.validateForm.value.userName);
-							localStorage.setItem('token', data['data'].token);
+							localStorage.setItem('token_'+this.validateForm.value.userName, data['data'].token);
 							sessionStorage.setItem('LCTYPE', data['data'].LCType);
 							this.LCType = data['data'].LCType;
 							this.router.navigateByUrl(`/report/${data['data'].LCType}`);
@@ -172,7 +172,7 @@ export class LoginComponent implements OnInit {
 					(data) => {
 						if (data['status'] == '0') {
 							sessionStorage.setItem('LCID', this.validateEmailForm.value.email);
-							localStorage.setItem('token', data['data'].token);
+							localStorage.setItem('token_'+this.validateEmailForm.value.email, data['data'].token);
 							sessionStorage.setItem('LCTYPE', data['data'].LCType);
 							this.LCType = data['data'].LCType;
 							this.router.navigateByUrl(`/report/${data['data'].LCType}`);

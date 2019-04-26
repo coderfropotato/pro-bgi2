@@ -28,6 +28,7 @@ export class OverviewComponent implements OnInit {
 	// table one
 	defaultUrl: string;
 	defaultUrlTwo: string;
+	defaultUrlThree: string;
 
 	//相关性热图
 	tableUrl: string;
@@ -39,6 +40,7 @@ export class OverviewComponent implements OnInit {
 
 	EntityOne: object;
 	EntityTwo: object;
+	EntityThree: object;
 
 	//主成分分析
 	PCASelectType: any = [];
@@ -105,6 +107,8 @@ export class OverviewComponent implements OnInit {
 	itemNum2_1: number = 0;
 	itemFlag2_2: boolean = false;
 	itemNum2_2: number = 0;
+	itemFlag2_3: boolean = false;
+	itemNum2_3: number = 0;
 
 	itemFlag3_1: boolean = false;
 	itemNum3_1: number = 0;
@@ -144,6 +148,12 @@ export class OverviewComponent implements OnInit {
 		//差异分组设置
 		this.defaultUrlTwo = `${config['javaPath']}/basicModule/diffExpPlan`;
 		this.EntityTwo = {
+			LCID: this.store.getStore('LCID')
+		}
+
+		//
+		this.defaultUrlThree = `${config['javaPath']}/basicModule/timeCoursePlan`;
+		this.EntityThree = {
 			LCID: this.store.getStore('LCID')
 		}
 
@@ -618,14 +628,6 @@ export class OverviewComponent implements OnInit {
 				y: tempBoxData[i].spotData[spotLength - 1].y
 			});
 		}
-
-		// console.log(xData);
-		// let tempX = xData;
-		// let tempX2 = xData;
-		// xData.push(...tempX);
-		// xData.push(...tempX2);
-		// console.log(xData)
-
 		let tempWidth = 0;
 		if(xData.length<=12){
 			tempWidth = 660;
@@ -665,7 +667,7 @@ export class OverviewComponent implements OnInit {
 				type: "boxplot",
 				width: tempWidth,
 				onselect: data => {
-					console.log(data);
+					// console.log(data);
 				},
 				// style: {
 				//   fill: "#ffffff",
@@ -929,11 +931,11 @@ export class OverviewComponent implements OnInit {
 
 	//legend color change
 	colorQualityChange(curColor){
-		console.log(this.legendIndexThree);
+		// console.log(this.legendIndexThree);
 		this.colorQuality = curColor;
 		this.colorArr.splice(this.legendIndexThree, 1, curColor);
-		console.log(curColor);
-		console.log(this.colorArr);
+		// console.log(curColor);
+		// console.log(this.colorArr);
 		this.relevanceChart.redraw();
 	}
 
@@ -997,9 +999,9 @@ export class OverviewComponent implements OnInit {
 			}
 		});
 
-		console.log(this.tempMenu);
-		console.log(this.tempMenu2);
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu);
+		// console.log(this.tempMenu2);
+		// console.log(this.tempMenu3);
 
 		this.tempMenu.forEach((d)=>{
 			if(d["name"]=="001"){
@@ -1065,7 +1067,7 @@ export class OverviewComponent implements OnInit {
 
 		this.tempMenu3.length = 0;
 		this.tempMenu3 = tempArray;
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu3);
 
 		this.tempMenu3.forEach((d)=>{
 			switch (d["name"]) {
@@ -1076,6 +1078,10 @@ export class OverviewComponent implements OnInit {
 				case "001002002":
 					this.itemFlag2_2 = true;
 					this.itemNum2_2 = d["index"];
+					break;
+				case "001002003":
+					this.itemFlag2_3 = true;
+					this.itemNum2_3 = d["index"];
 					break;
 				case "001003001":
 					this.itemFlag3_1 = true;

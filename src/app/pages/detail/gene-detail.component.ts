@@ -1056,7 +1056,7 @@ export class GeneDetailComponent implements OnInit {
 			// 	this.alternative_flag = tempData.length>0?true:false;
 			// 	break;
 			case "SNP":
-				console.log(data);
+				// console.log(data);
 				this.snp_flag = tempData.length>0?true:false;
 				break;
 			case "INDEL":

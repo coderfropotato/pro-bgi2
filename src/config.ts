@@ -1,8 +1,10 @@
 import { matchList, matchRule,geneInfo,mapMatchItems,goAll } from './rule';
 
 const config: object = {
-	url: 'http://localhost:8086', // 本地服务测试
-	javaPath: 'http://192.168.167.24:7777/api', // api基础路径 218.106.117.7
+    url: 'http://localhost:8086', // 本地服务测试
+    // 线上 218.106.117.7
+    // 测试 192.168.167.24:7777
+	javaPath: 'http://192.168.167.24:7777/api', // api基础路径
 	outerDataBaseIndex: '006', // 增删列外部数据库的索引
 	lang: 'zh', // 默认语言
 	geneTypeAll: 'all', // 基因和转录本切换 基因类型为all表示有基因切换 默认为gene
@@ -15,7 +17,7 @@ const config: object = {
     rna:'RNA ID',   // 外部触发表格筛选的时候 筛选条件按照filterNamezh编译 需要和rna_id列的 name 保持一致
     gene:'Gene ID',  // 外部触发表格筛选的时候 筛选条件按照filterNamezh编译 需要和gene_id列的 name 保持一致
     as_id: 'ID',
-    maxTextLength:50, // 图标题的字符长度限制
+    maxTextLength:60, // 图标题的字符长度限制
 	matchList,
 	matchRule,
 	geneInfo,
@@ -28,7 +30,7 @@ const config: object = {
 	urlSplitFlag: '@', // 切割url的标志字符
 	valSplitFlag: '+++', // 内容换行的标志字符
 	idComposeDesc: '///', // id和描述的组合标志字符
-	pathwayURL:'production'//'test'
+	pathwayURL:'production'//'test' production
 };
 
 export default config;

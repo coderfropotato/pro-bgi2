@@ -136,7 +136,19 @@ export class MenuComponent implements OnChanges {
      * @date 2018-11-27
      * @memberof MenuComponent
      */
+    public _resetRouteActiveStatus(){
+        this.initMenuStatus();
+    }
+
+     /**
+     * @description 外部重置路由到初始状态
+     * @author Yangwd<277637411@qq.com>
+     * @date 2018-11-27
+     * @memberof MenuComponent
+     */
     public _initRouteActiveStatus(){
         this.initMenuStatus();
+        this.menu[0]['active'] = true;
+        this.menu[0]['children'][0]['active'] = true;
     }
 }

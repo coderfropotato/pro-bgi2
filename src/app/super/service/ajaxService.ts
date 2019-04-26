@@ -25,7 +25,7 @@ export class AjaxService {
         // 验证本地有没有token
         return new Observable(observer => {
             if (this.validTokenInLocal()) {
-                let token = localStorage.getItem("token");
+                let token = localStorage.getItem("token_"+sessionStorage.getItem("LCID"));
                 let LCID = sessionStorage.getItem("LCID");
                 let head = {
                     headers: new HttpHeaders({
@@ -100,7 +100,7 @@ export class AjaxService {
      */
     validTokenInLocal() {
         return (
-            !!localStorage.getItem("token") && !!sessionStorage.getItem("LCID")
+            !!sessionStorage.getItem("LCID") && !!localStorage.getItem("token_" + sessionStorage.getItem("LCID"))
         );
     }
 
@@ -124,8 +124,8 @@ export class AjaxService {
     validToken() {
         return new Observable(observer => {
             if (this.validTokenInLocal()) {
-                let token = localStorage.getItem("token");
                 let LCID = sessionStorage.getItem("LCID");
+                let token = localStorage.getItem("token_" + LCID);
                 let head = {
                     headers: new HttpHeaders({
                         "Content-Type": "application/json",

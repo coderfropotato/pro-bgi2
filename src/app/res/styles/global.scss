@@ -454,7 +454,7 @@ button {
 
 .table-bottom {
     height: 52px;
-    position:relative;
+    position: relative;
 }
 
 .center {
@@ -529,8 +529,8 @@ button {
     background-color: #fff;
     padding: 8px;
     position: relative;
-    white-space:nowrap;
-    overflow:auto;
+    white-space: nowrap;
+    overflow: auto;
     .only-table {
         position: absolute;
         right: 16px;
@@ -630,7 +630,7 @@ button {
             .pagination-pagesize {
                 display: none;
             }
-            .small_span_sample{
+            .small_span_sample {
                 color: red;
                 font-size: 13px;
                 display: inline-block;
@@ -642,7 +642,7 @@ button {
         }
         &.table-only {
             flex: 1;
-            .small_span_sample{
+            .small_span_sample {
                 color: red;
                 font-size: 13px;
                 display: inline-block;
@@ -676,7 +676,7 @@ button {
     font-size: 13px;
 }
 
-.small_span{
+.small_span {
     color: red;
     font-size: 13px;
     display: inline-block;
@@ -686,19 +686,20 @@ button {
     white-space: nowrap;
 }
 
- @media screen and (max-width: $media-width) {
-    .table-analysis-button{
-        position:absolute;
-        right:10px;
-        top:13px;
-        b{
-            display:none;
+@media screen and (max-width: $media-width) {
+    .table-analysis-button {
+        position: absolute;
+        right: 10px;
+        top: 13px;
+        b {
+            display: none;
         }
-        span{
-            margin-left:9px;
+        span {
+            margin-left: 9px;
         }
     }
- }
+}
+
 .menufunc {
     opacity: 0.8;
     cursor: pointer;
@@ -973,6 +974,12 @@ button {
             .basic-help-img {
                 background-image: url('../img/list/帮助.png');
             }
+            .mirna-target-img {
+                background-image: url('../img/list/target.png');
+            }
+            .mirna-target-help-img {
+                background-image: url('../img/list/帮助.png');
+            }
         }
     }
     .savegenelist {
@@ -1119,7 +1126,8 @@ button {
     padding: 16px;
 }
 
-.tools-wrap,.params-wrap {
+.tools-wrap,
+.params-wrap {
     height: calc(100% - 32px) !important;
     transform: translate(-16px, 16px) !important;
     width: 320px!important;
@@ -1129,7 +1137,7 @@ button {
     .ant-drawer-body {
         padding: 24px !important;
         height: calc(100% - 55px);
-        overflow:auto;
+        overflow: auto;
         ul {
             li {
                 float: left;
@@ -1324,12 +1332,25 @@ button {
         .search {
             float: right;
             input {
-                border-radius: 16px!important;
+                // border-radius: 16px!important;
+                border-top-left-radius: 16px !important;
+                border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+                border-bottom-left-radius: 16px !important;
+                border-right: 0;
             }
         }
         .ant-input-search {
             margin-right: 12px;
-            width: 180px;
+            width: 200px;
+        }
+        .ant-input-group-addon {
+            padding: 0;
+            border: 0;
+        }
+        .ant-btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
         }
     }
 }
@@ -1710,13 +1731,39 @@ button {
 // venn图设置参数
 .ex_container {
     height: auto;
-    width: 320px;
-    padding-bottom: 60px;
+    width: 360px;
+    padding-bottom: 70px;
     background: #ffffff;
     position: relative;
     background: #ffffff;
     box-shadow: 0 4px 8px 0 rgba(57, 65, 79, 0.16);
     border-radius: 4px;
+    .ant-input-number {
+        width: 100%;
+        height: 30px;
+    }
+    .ant-input-number-sm input {
+        height: 30px;
+    }
+}
+
+.ex_top {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid rgba(234, 234, 235, 0.95);
+    padding-bottom: 6px;
+}
+
+.ex_container_top {
+    width: 92%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.con_PessionDis_content {
+    height: auto;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.65);
 }
 
 .con_PessionDis {
@@ -1728,10 +1775,12 @@ button {
 }
 
 .con_PessionDis_title {
-    height: 36px;
+    height: 30px;
     width: 100%;
-    line-height: 36px;
     margin: 0 auto;
+    line-height: 30px;
+    margin: 0 auto;
+    color: black;
 }
 
 .con_PessionDis_in {
@@ -1754,7 +1803,7 @@ button {
 
 .con_PessionDis_right {
     height: 40px;
-    width: 80px;
+    width: 120px;
     float: left;
     margin-left: 15px;
 }
@@ -1764,6 +1813,19 @@ button {
     width: 100%;
     padding: 10px 0;
     margin-left: 10px;
+}
+
+.ex_sp_content {
+    width: 92%;
+    height: 40px;
+    margin-top: 15px;
+}
+
+.con_bottom {
+    width: 92%;
+    height: 1px;
+    margin: 10px auto 0 auto;
+    border-bottom: 1px solid rgba(234, 234, 235, 0.95);
 }
 
 .ex_input {
@@ -1824,7 +1886,6 @@ button {
 }
 
 // 基础模块-帮助页面
-
 // 基础模块-数据过滤/对比
 .base_module {
     width: 100%;
@@ -1837,7 +1898,7 @@ button {
 .information,
 .overview {
     background: #FFFFFF;
-    box-shadow: 0 2px 4px 0 rgba(57,65,79,0.08);
+    box-shadow: 0 2px 4px 0 rgba(57, 65, 79, 0.08);
     border-radius: 4px;
     .f-content {
         width: 96%;
@@ -1886,9 +1947,9 @@ button {
         font-size: 14px;
         color: #666;
         letter-spacing: 0;
-        text-indent: 2em;
+        // text-indent: 2em;
     }
-    .help_text_p{
+    .help_text_p {
         width: 96%;
         margin: 4px auto 0px auto;
         font-family: MicrosoftYaHei;
@@ -2163,7 +2224,7 @@ button {
                     margin-bottom: 4px;
                 }
             }
-            .text_indent{
+            .text_indent {
                 text-indent: 2rem;
             }
             .help_bg {
@@ -2878,50 +2939,50 @@ button {
                     }
                 }
             }
-            .img_one{
+            .img_one {
                 width: 64px;
                 height: 24px;
-                display: inline-block; 
+                display: inline-block;
                 background-image: url("../img/gene_detail/qqqqq.png");
                 background-repeat: no-repeat;
                 background-position: center;
             }
-            .img_two{
+            .img_two {
                 width: 64px;
                 height: 24px;
-                display: inline-block; 
+                display: inline-block;
                 background-image: url("../img/gene_detail/wwwww.png");
                 background-repeat: no-repeat;
                 background-position: center;
             }
-            .img_three{
+            .img_three {
                 width: 76px;
                 height: 24px;
-                display: inline-block; 
+                display: inline-block;
                 background-image: url("../img/gene_detail/eeeee.png");
                 background-repeat: no-repeat;
                 background-position: center;
             }
-            .img_four{
+            .img_four {
                 width: 76px;
                 height: 24px;
-                display: inline-block; 
+                display: inline-block;
                 background-image: url("../img/gene_detail/ttttt.png");
                 background-repeat: no-repeat;
                 background-position: center;
             }
-            .img_five{
+            .img_five {
                 width: 48px;
                 height: 24px;
-                display: inline-block; 
+                display: inline-block;
                 background-image: url("../img/gene_detail/YYYYY.png");
                 background-repeat: no-repeat;
                 background-position: center;
             }
-            .img_six{
+            .img_six {
                 width: 64px;
                 height: 24px;
-                display: inline-block; 
+                display: inline-block;
                 background-image: url("../img/gene_detail/rrrrr.png");
                 background-repeat: no-repeat;
                 background-position: center;
