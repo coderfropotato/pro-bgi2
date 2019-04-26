@@ -190,6 +190,27 @@ export class LrnaComponent implements OnInit {
 		}
 		let that = this;
 
+		console.log(that.selectConfirmData)
+		let xData = that.selectConfirmData;
+
+		console.log(chartData)
+		let tempWidth = 0;
+
+		tempWidth = chartData.length *18;
+		// if(xData.length<=4){
+		// 	tempWidth = 900;
+		// }else if(xData.length>4 && xData.length <= 8){
+		// 	tempWidth = 1200;
+		// }else if(xData.length>8 && xData.length <= 12){
+		// 	tempWidth = 1400;
+		// }else if(xData.length>12 && xData.length <= 16){
+		// 	tempWidth = 1600;
+		// }else if(xData.length>16 && xData.length <= 20){
+		// 	tempWidth = 1800;
+		// }else{
+		// 	tempWidth = 2000;
+		// }
+
 		let config: object = {
 			chart: {
 				// title: "小RNA长度分布",
@@ -201,7 +222,7 @@ export class LrnaComponent implements OnInit {
 				},
 				el: '#RNALData',
 				type: 'groupBar',
-				width: 900,
+				width: tempWidth,
 				custom: [ 'key', 'value', 'category' ],
 				data: chartData
 			},
