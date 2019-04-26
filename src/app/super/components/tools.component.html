@@ -17,16 +17,16 @@
 
         <ng-template #titleTpl>
             <i class="anticon anticon-arrow-left mr12 cursor" (click)="handlerChildClose()"></i>
-            <span *ngIf="childVisible && selectType==='heatmap'">聚类热图</span>
-            <span *ngIf="childVisible && selectType==='multiOmics'">多组学</span>
-            <span *ngIf="childVisible && selectType==='line'">折线图</span>
-            <span *ngIf="childVisible && selectType==='kda'">KDA</span>
-            <span *ngIf="childVisible && selectType==='chiSquare'">卡方检验</span>
-            <span *ngIf="childVisible && selectType==='net'">蛋白网络互作</span>
-            <span *ngIf="childVisible && selectType==='linkedNetwork'">关联网络图</span>
-            <span *ngIf="childVisible && selectType==='heatmapRelation'">关联聚类</span>
-            <span *ngIf="childVisible && selectType==='classification'">基因分类</span>
-            <span *ngIf="childVisible && selectType==='enrichment'">基因富集</span>
+            <span *ngIf="childVisible && selectType==='heatmap'">聚类热图参数</span>
+            <span *ngIf="childVisible && selectType==='multiOmics'">多组学关联参数</span>
+            <span *ngIf="childVisible && selectType==='line'">折线图参数</span>
+            <span *ngIf="childVisible && selectType==='kda'">KDA参数</span>
+            <span *ngIf="childVisible && selectType==='chiSquare'">卡方检验参数</span>
+            <span *ngIf="childVisible && selectType==='net'">网络互作参数</span>
+            <span *ngIf="childVisible && selectType==='linkedNetwork'">关联网络参数</span>
+            <span *ngIf="childVisible && selectType==='heatmapRelation'">关联聚类参数</span>
+            <span *ngIf="childVisible && selectType==='classification'">分类参数</span>
+            <span *ngIf="childVisible && selectType==='enrichment'">富集参数</span>
         </ng-template>
         <!-- 聚类 -->
         <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='heatmap'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
