@@ -667,7 +667,7 @@ export class OverviewComponent implements OnInit {
 				type: "boxplot",
 				width: tempWidth,
 				onselect: data => {
-					console.log(data);
+					// console.log(data);
 				},
 				// style: {
 				//   fill: "#ffffff",
@@ -931,11 +931,11 @@ export class OverviewComponent implements OnInit {
 
 	//legend color change
 	colorQualityChange(curColor){
-		console.log(this.legendIndexThree);
+		// console.log(this.legendIndexThree);
 		this.colorQuality = curColor;
 		this.colorArr.splice(this.legendIndexThree, 1, curColor);
-		console.log(curColor);
-		console.log(this.colorArr);
+		// console.log(curColor);
+		// console.log(this.colorArr);
 		this.relevanceChart.redraw();
 	}
 
@@ -999,9 +999,9 @@ export class OverviewComponent implements OnInit {
 			}
 		});
 
-		console.log(this.tempMenu);
-		console.log(this.tempMenu2);
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu);
+		// console.log(this.tempMenu2);
+		// console.log(this.tempMenu3);
 
 		this.tempMenu.forEach((d)=>{
 			if(d["name"]=="001"){
@@ -1067,7 +1067,7 @@ export class OverviewComponent implements OnInit {
 
 		this.tempMenu3.length = 0;
 		this.tempMenu3 = tempArray;
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu3);
 
 		this.tempMenu3.forEach((d)=>{
 			switch (d["name"]) {

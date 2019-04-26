@@ -190,10 +190,10 @@ export class LrnaComponent implements OnInit {
 		}
 		let that = this;
 
-		console.log(that.selectConfirmData)
+		// console.log(that.selectConfirmData)
 		let xData = that.selectConfirmData;
 
-		console.log(chartData)
+		// console.log(chartData)
 		let tempWidth = 0;
 
 		tempWidth = chartData.length *18;

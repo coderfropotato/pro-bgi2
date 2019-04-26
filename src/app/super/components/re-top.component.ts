@@ -77,7 +77,7 @@ export class ReTopComponent implements OnInit {
             this.date = data['data']['date'];
             this.nickname = data['data']['nickname'];
             this.parent = data['data']['parent'];
-            console.log(this.parent)
+            // console.log(this.parent)
           } else {
             this.date = '';
             this.nickname = '';

@@ -526,7 +526,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			  enableChartSelect: true,
 			  onselect: data => {
 				that.defaultTheSelectList(data,1);
-					console.log(data);
+					// console.log(data);
 				}
 			},
 			axis: {

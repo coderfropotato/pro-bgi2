@@ -622,7 +622,7 @@ export class RelativeSpliceComponent implements OnInit {
             .enter()
             .append('circle')
             .attr('cx', (d, i) => {
-                console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
+                // console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
                 return parseInt((i/temp_num).toString().split(".")[0])*200+8
             })
             .attr('cy', (d, i) => {
@@ -644,7 +644,7 @@ export class RelativeSpliceComponent implements OnInit {
                 .enter()
                 .append('text')
                 .attr('dx', (d, i) => {
-                    console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
+                    // console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
                     return parseInt((i/temp_num).toString().split(".")[0])*200+20
                 })
                 .attr('dy', (d, i) => {
