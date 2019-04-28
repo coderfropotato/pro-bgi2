@@ -199,7 +199,8 @@
         "unexpand": "Retract module describe"
     },
     "analysisPanel": {
-        "title": "Please choose an analysis scheme",
+        "title": "Please choose an analysis tool",
+        "desc": "Analysis based on selected genes/transcripts in the current table",
         "cluster": "Cluster",
         "geneRich": "Gene Rich",
         "geneClass": "Gene Class",

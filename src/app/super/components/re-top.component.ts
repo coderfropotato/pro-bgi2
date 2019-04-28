@@ -28,7 +28,7 @@ declare const $: any;
       }
       .re_div_two{
         float: left;
-        margin-left: 10px;
+        margin-left: 20px;
         height: 40px;
         line-height:40px;
         font-weight: bold;
@@ -77,7 +77,7 @@ export class ReTopComponent implements OnInit {
             this.date = data['data']['date'];
             this.nickname = data['data']['nickname'];
             this.parent = data['data']['parent'];
-            // console.log(this.parent)
+            console.log(this.parent)
           } else {
             this.date = '';
             this.nickname = '';
