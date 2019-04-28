@@ -1,5 +1,10 @@
 <div class="tool-component">
-    <nz-drawer [nzClosable]="true" [class.zindex-10]="!toolsService['visible']" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" nzTitle="{{'analysisPanel.title' | translate}}" (nzOnClose)="close()">
+    <nz-drawer [nzClosable]="true" [class.zindex-10]="!toolsService['visible']" [nzVisible]="toolsService['visible']" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'tools-wrap'" [nzWidth]="376" nzPlacement="right" [nzTitle]="drawerTitleTpl"
+        (nzOnClose)="close()">
+        <ng-template #drawerTitleTpl>
+            <span>{{'analysisPanel.title' | translate}}</span><br>
+            <span style="font-size:14px;word-break: break-all;">{{'analysisPanel.desc' | translate}}</span>
+        </ng-template>
         <!-- gene:{{ toolsService["geneCount"] }} -->
         <ul class="clearfix">
             <!-- [nzTitle]="tool['limit'].length>1?('Limit : '+tool['limit'][0]+'-'+tool['limit'][1])+'':'Limit : At least '+tool['limit'][0]" -->
@@ -33,7 +38,7 @@
             [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <nz-tabset [nzSize]="'small'">
-                    <nz-tab nzTitle="表达量聚类">
+                    <nz-tab nzTitle="表达量">
                         <div class="tool-params-tab">
                             <p *ngIf="standList.length">标准化&emsp;&nbsp;
                                 <nz-select *ngIf="standList.length" style="width: 120px; margin-top:1em;margin-bottom:1em;" [(ngModel)]="stand" nzPlaceHolder="stand">
@@ -71,7 +76,7 @@
                             <button nz-button nzType="primary" [disabled]="expressError" (click)="heatmapConfirm('Express')" nzSize="middle">确定</button>
                         </div>
                     </nz-tab>
-                    <nz-tab nzTitle="差异聚类">
+                    <nz-tab nzTitle="差异倍数">
                         <div class="tool-params-tab">
                             <p *ngIf="diffData.length || diffUpload.length">数据选择</p>
                             <span *ngIf="diffData.length && diffUpload.length">原始数据</span>
@@ -100,9 +105,9 @@
                             <button nz-button nzType="primary" [disabled]="diffError" (click)="heatmapConfirm('Diff')" nzSize="middle">确定</button>
                         </div>
                     </nz-tab>
-                    <nz-tab nzTitle="自定义数据聚类">
+                    <nz-tab nzTitle="自定义数据">
                         <div class="tool-params-tab">
-                            <p *ngIf="standList.length">标准化</p>
+                            <p *ngIf="standList.length">标准化方法</p>
                             <nz-select *ngIf="standList.length" style="width: 120px; margin-top:1em;margin-bottom:1em;" [(ngModel)]="stand" nzPlaceHolder="stand">
                                 <nz-option *ngFor="let s of standList;index as i;" [nzValue]="s" [nzLabel]="s"></nz-option>
                             </nz-select>
@@ -156,8 +161,8 @@
         </nz-drawer>
 
         <!-- 折线图 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='line'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'" [nzWidth]="376"
-            nzPlacement="right" (nzOnClose)="handlerChildClose()">
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='line'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
+            [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <nz-tabset [nzSize]="'small'">
                     <nz-tab nzTitle="分组平均表达量" *ngIf="lineGroupData.length">
@@ -202,8 +207,8 @@
         </nz-drawer>
 
         <!-- KDA -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='kda'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'" [nzWidth]="376"
-            nzPlacement="right" (nzOnClose)="handlerChildClose()">
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='kda'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
+            [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tools-params-kda">
                     <nz-row class="mb12">
@@ -311,8 +316,8 @@
         </nz-drawer> -->
 
         <!-- 网络图 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='net'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'" [nzWidth]="376"
-            nzPlacement="right" (nzOnClose)="handlerChildClose()">
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='net'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
+            [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-net">
                     <div class="tool-params-tab">
@@ -343,8 +348,8 @@
         </nz-drawer>
 
         <!-- 关联网络图 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='linkedNetwork'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
-            [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='linkedNetwork'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }"
+            [nzWrapClassName]="'params-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-relativeNet">
                     <div class="tool-params-tab">
@@ -399,8 +404,8 @@
         </nz-drawer>
 
         <!-- 关联聚类 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='heatmapRelation'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
-            [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='heatmapRelation'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }"
+            [nzWrapClassName]="'params-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-tab">
                     <!-- 去掉标准化 <p *ngIf="heatmapReStand.length">标准化</p>
@@ -467,8 +472,8 @@
         </nz-drawer>
 
         <!-- 基因分类 -->
-        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='classification'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
-            [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='classification'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }"
+            [nzWrapClassName]="'params-wrap'" [nzWidth]="376" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div *ngIf="geneClassData.length">
                     <div class="tool-params-tab" *ngFor="let item of geneClassData;index as i;">
