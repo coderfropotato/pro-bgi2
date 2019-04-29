@@ -178,16 +178,16 @@ export class MapComponent implements OnInit {
 			this.tid = this.params['tid'] == 'undefined' ? undefined : this.params['tid'];//重分析
 			this.date = this.params['date'] == 'undefined' ? undefined : this.params['date'];//重分析
 			this.compareGroup = this.params['compareGroup'];//模块
+            let pathwayURL = `${config['pathwayURL']}`;
 
 			if (this.tid) {
 				// 重分析内的map跳转
-				let pathwayURL = `${config['pathwayURL']}`;
 				//http://biosys.bgi.com/re_analyze_result/test/{date}/{LCID}_{tid}/pathway_map/map03010.html
 				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/re_analyze_result/${pathwayURL}/${this.date}/${this
 					.lcid}_${this.tid}/pathway_map/map${this.mapid}.html`;
 			} else {
 				// 非重分析的map跳转   production test
-				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/test/BGI_${this
+				this.dirtyPathWayIframeUrl = `http://biosys.bgi.com/project/${pathwayURL}/BGI_${this
 					.lcid}/KEGG_PATHWAY/Pathway_enrichment/${this.compareGroup}/${this.compareGroup}_${this
 					.defaultGeneType}_kegg_pathway_map/map${this.mapid}.html`;
 				// this.dirtyPathWayIframeUrl = 'http://localhost:4200/#/report/map/test';
