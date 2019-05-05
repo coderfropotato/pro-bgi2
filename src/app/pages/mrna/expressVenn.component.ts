@@ -11,7 +11,7 @@ import {PromptService} from './../../super/service/promptService'
 import config from '../../../config';
 declare const d3: any;
 declare const Venn: any;
-declare const d4: any;
+declare const gooalD3: any;
 
 @Component({
 	selector: 'app-venn-page',
@@ -299,7 +299,7 @@ export class ExpressVennComponent implements OnInit {
 	dowithSampleGroup(){
 		let templength = this.sampleGroupTarget.length;
 		let i = 0;
-		if(templength <= 3){	
+		if(templength <= 3){
 			this.sampleGroupTop3 = this.sampleGroupTarget;
 		}else{
 			this.sampleGroupTarget.forEach(d => {
@@ -503,10 +503,10 @@ export class ExpressVennComponent implements OnInit {
 		// 	this.expression_threshold['min'] = this.expression_temp_min;
 		// }
 		// //点击取消时需要还原滑动条
-		
+
 		this.targetValue = 0;
 		this.panelShow = false;
-		
+
 	}
 	setConfirm() {
 
@@ -711,7 +711,7 @@ export class ExpressVennComponent implements OnInit {
 			tooltip: (d) => '<span>name：' + d.data.name + '</span><br><span>value：' + d.data.value + '</span>'
 		};
 
-		this.chart = new d4().init(params);
+		this.chart = new gooalD3().init(params);
 	}
 
 	//显示venn图
@@ -1092,7 +1092,7 @@ export class ExpressVennComponent implements OnInit {
 		}
 
 		function drawSvg2() {
-			
+
 			//let width2 = 320 - left_name_length - kong_name_right;
 			//let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高
 			//let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高

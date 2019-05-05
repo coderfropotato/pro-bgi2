@@ -12,7 +12,7 @@ import { ToolsService } from "./../../super/service/toolsService";
 import { TranslateService } from '@ngx-translate/core';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const $: any;
 
 @Component({
@@ -183,7 +183,7 @@ export class SnpDistributionComponent implements OnInit {
         }
     }
 
-      this.chart=new d4().init(config);
+      this.chart=new gooalD3().init(config);
   }
 
   searchTypeChange(){

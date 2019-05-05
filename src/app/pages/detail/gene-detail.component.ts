@@ -13,7 +13,7 @@ import { GeneService } from './../../super/service/geneService';
 import { NzMessageService } from 'ng-zorro-antd';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const Venn: any;
 declare const $:any;
 
@@ -704,7 +704,7 @@ export class GeneDetailComponent implements OnInit {
 				return "<span>Sample name："+d.x+"</span><br><span>log10(FPKM+1)："+d.y+"</span>"
 			}
 		}
-		this.chartLine=new d4().init(config);
+		this.chartLine=new gooalD3().init(config);
 	}
 
 	drawLineChart2(){
@@ -784,7 +784,7 @@ export class GeneDetailComponent implements OnInit {
 				return "<span>x:"+d.key+"</span><br><span>y:"+d.value+"</span>"
 			}
 		}
-		this.chartLine2=new d4().init(config);
+		this.chartLine2=new gooalD3().init(config);
 	}
 
 	//mRna二次结构

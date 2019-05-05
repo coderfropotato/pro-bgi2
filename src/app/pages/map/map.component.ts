@@ -28,7 +28,7 @@ import { routeAnimation } from '../../super/animation/animation';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const Venn: any;
 declare const $: any;
 

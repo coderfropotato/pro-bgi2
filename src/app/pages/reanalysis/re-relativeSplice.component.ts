@@ -11,7 +11,7 @@ import { PromptService } from "./../../super/service/promptService";
 import { ToolsService } from "./../../super/service/toolsService";
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const $: any;
 
 @Component({

@@ -9,7 +9,7 @@ import { MessageService } from '../../../super/service/messageService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const $: any;
 
 @Component({
@@ -235,7 +235,7 @@ export class ReadsFilterComponent implements OnInit {
         }
     }
 
-      this.chart=new d4().init(config,{pointRadius:0.5});
+      this.chart=new gooalD3().init(config,{pointRadius:0.5});
   }
 
 
@@ -311,7 +311,7 @@ export class ReadsFilterComponent implements OnInit {
             return "<span>Position Along Reads："+d.name+"</span><br><span>Type："+d.category+"</span><br><span>Percent(%)："+d.value+"</span>";
         }
     }
-    this.chartTwo=new d4().init(config);
+    this.chartTwo=new gooalD3().init(config);
 
   }
 

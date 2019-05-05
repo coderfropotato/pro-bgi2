@@ -31,8 +31,8 @@
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js",
-                            "src/app/libs/d4/d4.js",
-                            "src/app/libs/venn/venn.js",
+                            "src/app/libs/gooalD3/gooalD3.js",
+                            "src/app/libs/venn/docs/venn.js",
                             "node_modules/spark-md5/spark-md5.min.js",
                             "src/app/libs/d3/d3-legend.min.js"
                         ]

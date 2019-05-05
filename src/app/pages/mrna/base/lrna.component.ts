@@ -8,7 +8,7 @@ import { MessageService } from '../../../super/service/messageService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const $: any;
 
 @Component({
@@ -169,7 +169,7 @@ export class LrnaComponent implements OnInit {
 			}
 		};
 
-		this.chart = new d4().init(config);
+		this.chart = new gooalD3().init(config);
 	}
 
 	//5.3 小RNA长度
@@ -257,7 +257,7 @@ export class LrnaComponent implements OnInit {
 			}
 		};
 
-		this.chartRNA = new d4().init(config);
+		this.chartRNA = new gooalD3().init(config);
 	}
 
 	searchTypeChange() {

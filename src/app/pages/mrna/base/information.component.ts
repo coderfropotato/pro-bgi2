@@ -9,7 +9,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { GeneListIndexComponent } from '../../geneList/index.component';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const $: any;
 
 @Component({
@@ -254,7 +254,7 @@ export class InformationComponent implements OnInit {
 			}
 		};
 
-		this.chart = new d4().init(config);
+		this.chart = new gooalD3().init(config);
 	}
 
 	//2.3基因长度
@@ -342,7 +342,7 @@ export class InformationComponent implements OnInit {
 			}
 		};
 
-		this.chartT = new d4().init(config);
+		this.chartT = new gooalD3().init(config);
 	}
 
 	//2.4 miRNA长度
@@ -425,7 +425,7 @@ export class InformationComponent implements OnInit {
 			}
     }
 
-    this.chartRNA = new d4().init(config);
+    this.chartRNA = new gooalD3().init(config);
 
   }
 
@@ -503,7 +503,7 @@ export class InformationComponent implements OnInit {
 			}
 		};
 
-		this.chartE = new d4().init(config);
+		this.chartE = new gooalD3().init(config);
 	}
 
 	//2.7 miRNA首位碱基分布
@@ -587,7 +587,7 @@ export class InformationComponent implements OnInit {
 			// }
 		};
 
-		this.chartFRNA = new d4().init(config);
+		this.chartFRNA = new gooalD3().init(config);
 	}
 
 	//选择面板 确定筛选的数据
