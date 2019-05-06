@@ -798,7 +798,7 @@ export class DiffExpressionComponent implements OnInit {
 						this.updateTitle();
 					})
 				},
-				width: 600,
+				// width: 600,
 				height: 300,
 				onselect: (d) => {
 					this.singleMultiSelect = { bar_name: '', total_name: '', venn_name: '' };
