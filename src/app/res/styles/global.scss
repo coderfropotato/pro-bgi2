@@ -630,7 +630,7 @@ button {
             .pagination-pagesize {
                 display: none;
             }
-            .small_span_sample {
+            .small_span {
                 color: red;
                 font-size: 13px;
                 display: inline-block;
@@ -642,7 +642,7 @@ button {
         }
         &.table-only {
             flex: 1;
-            .small_span_sample {
+            .small_span {
                 color: red;
                 font-size: 13px;
                 display: inline-block;
@@ -676,15 +676,15 @@ button {
     font-size: 13px;
 }
 
-.small_span {
-    color: red;
-    font-size: 13px;
-    display: inline-block;
-    max-width: 80px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+// .small_span {
+//     color: red;
+//     font-size: 13px;
+//     display: inline-block;
+//     max-width: 80px;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     white-space: nowrap;
+// }
 
 @media screen and (max-width: $media-width) {
     .table-analysis-button {

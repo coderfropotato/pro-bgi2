@@ -134,8 +134,11 @@ export class GoRichComponent implements OnInit {
     computedScrollHeight:boolean = false;
     leftComputedScrollHeight:boolean = false;
 
+    annotation:string = '';
+    annotationName:string='';
+    annotationList:any[]=[];
+
     selectedVal:string = '';
-    annotation:string = 'go_c';
     selectData:any = [];
 
     resetCheckGraph: boolean;
@@ -174,6 +177,21 @@ export class GoRichComponent implements OnInit {
 
     ngOnInit() {
         this.version = this.storeService.getStore('version');
+        this.annotationList=[{
+            key:'go_c',
+            name:'GO Cellular component'
+        },
+        {
+            key:'go_f',
+            name:'GO Molecular function'
+        },
+        {
+            key:'go_p',
+            name:'GO Biological process'
+        }];
+        this.annotation=this.annotationList[0]['key'];
+        this.annotationName=this.annotationList[0]['name'];
+
         (async ()=>{
             this.chartTypeData=[
                 {
@@ -415,6 +433,11 @@ export class GoRichComponent implements OnInit {
     }
 
     goSelectChange(){
+        this.annotationList.forEach(d=>{
+            if(d.key===this.annotation){
+                this.annotationName=d.name;
+            }
+        })
         this.chartEntity['enrichmentType'] = this.annotation;
         this.bigTable._setParamsOfEntity('enrichmentType',this.annotation);
         this.checkedData.length=0;
@@ -531,7 +554,7 @@ export class GoRichComponent implements OnInit {
 
             let config = {
                 chart: {
-                    title: `${this.annotation} 富集柱状图`,
+                    title: `${this.annotationName} 富集柱状图`,
                     dblclick: function(event) {
                         _self.promptService.open(event.target.innerHTML,newval=>{
                             this.setChartTitle(newval);
@@ -664,7 +687,7 @@ export class GoRichComponent implements OnInit {
 
             let config1={
                 chart: {
-                    title: `${this.annotation} 富集气泡图`,
+                    title: `${this.annotationName} 富集气泡图`,
                     dblclick: function(event) {
                         _self.promptService.open(event.target.innerHTML,newval=>{
                             this.setChartTitle(newval);
