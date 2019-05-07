@@ -21,6 +21,9 @@ export class PromptService {
    * @param {*} [cancel]
    * @memberof PromptService
    */
+
+	//config['maxTextLength'] 60
+	
 	open(value:string='', confirm, cancel?) {
 		// let murl = window.location.host+"显示";
 		let oldVal: any;
@@ -32,7 +35,7 @@ export class PromptService {
 					key: value
 				},
 				isshowFlag: {
-					key: value.length > config['maxTextLength'] ? true : false
+					key: value.length > 60 ? true : false
 				}
 			},
 			nzWrapClassName: 'prompt-service',
@@ -56,10 +59,11 @@ export class PromptService {
 	}
 }
 
+//${config['maxTextLength']}
 @Component({
 	selector: 'app-propmt',
-	template: `<div style="margin-bottom: 10px;">请输入需要修改的内容:</div><input nz-input [(ngModel)]="value['key']" (ngModelChange)="handlerChange($event)" />
-    <div style="text-align:left;margin-top:10px;color:red;" [hidden]="!isshowFlag['key']">最多输入${config['maxTextLength']}位字符且不能为空</div>`,
+	template: `<div style="margin-bottom: 10px;">请输入需要修改的内容：</div><input nz-input [(ngModel)]="value['key']" (ngModelChange)="handlerChange($event)" />
+    <div style="text-align:left;margin-top:10px;color:red;" [hidden]="!isshowFlag['key']">最多输入60位字符且不能为空</div>`,
 	styles: []
 })
 export class PromtComponent implements OnInit,OnDestroy {
@@ -82,7 +86,7 @@ export class PromtComponent implements OnInit,OnDestroy {
 
 		this.changeObserver = this.changeSubject.pipe(debounceTime(300)).subscribe(()=>{
 			this.value['key'] = this.value['key'].trim();
-			if (this.value['key'].length > config['maxTextLength'] || !this.value['key']) {
+			if (this.value['key'].length > 60 || !this.value['key']) {
 				this.isshowFlag['key'] = true;
 			} else {
 				this.isshowFlag['key'] = false;

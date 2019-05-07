@@ -44,17 +44,27 @@
 </nz-dropdown>
 
 <!-- 选择关联关系 弹窗 -->
-<nz-modal [(nzVisible)]="isShowRelationPanel && relationList.length" nzWidth="440" nzTitle="选择关联关系" (nzOnCancel)="relationCancel()" nzOkText="下一步" (nzOnOk)="relationOk()">
+<nz-modal [(nzVisible)]="isShowRelationPanel && relationList.length" nzWidth="440" nzTitle="选择作图基因集" (nzOnCancel)="relationCancel()" nzOkText="下一步" (nzOnOk)="relationOk()">
       <div class="relationRow">
           <nz-row>
-            <nz-col nzSpan="5">
-                <span>Relation</span>
+            <nz-col nzSpan="8">
+                <span nz-tooltip nzTitle="底部主图对应的基因">Origin Gene</span>
             </nz-col>
-            <nz-col nzSpan="19">
+            <nz-col nzSpan="16">
                 <!-- <nz-select style="width:100%" [(ngModel)]="curRelation['key']" (ngModelChange)="relationChange()" nzShowSearch>
                         <nz-option [nzDisabled]='relation.isDisabled' *ngFor="let relation of relationList" [nzLabel]="relation.name" [nzValue]="relation.key"></nz-option>
                 </nz-select> -->
-                <button nz-button nzSize="small" nzType="default" *ngFor="let relation of relationList" style="margin-right:10px;margin-bottom: 10px" (click)="relationChange(relation)" [class.btnActive]='relation.isSelected' [disabled]="relation.isDisabled ? true : false">
+                <button nz-button nzSize="small" nzType="default" *ngFor="let relation of relationList.slice(0,1)" style="margin-right:10px;margin-bottom: 10px" (click)="relationChange(relation)" [class.btnActive]='relation.isSelected' [disabled]="relation.isDisabled ? true : false">
+                    {{relation.name}}
+                </button>
+            </nz-col>
+        </nz-row>
+        <nz-row>
+            <nz-col nzSpan="8">
+                <span nz-tooltip nzTitle="与底部主图基因有互作关系的基因">Interaction Gene</span>
+            </nz-col>
+            <nz-col nzSpan="16">
+                <button nz-tooltip nzTitle="{{'relation.'+relation['key'] | translate}}" nz-button nzSize="small" nzType="default" *ngFor="let relation of relationList.slice(1)" style="margin-right:10px;margin-bottom: 10px" (click)="relationChange(relation)" [class.btnActive]='relation.isSelected' [disabled]="relation.isDisabled ? true : false">
                     {{relation.name}}
                 </button>
             </nz-col>
