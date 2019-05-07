@@ -64,6 +64,8 @@ export class LrnaComponent implements OnInit {
 	itemFlag3: boolean = false;
 	itemNum3: number = 0;
 
+	ReadsTitle: string = '';
+
 	constructor(
 		private message: MessageService,
 		private store: StoreService,
@@ -98,6 +100,8 @@ export class LrnaComponent implements OnInit {
 		this.chartSelectType = sample;
 		this.curSearchType = sample[0].value;
 
+		this.ReadsTitle = "Count number distribution of total Small RNAs in" + this.curSearchType;
+
 		this.tableUrl = `${config['javaPath']}/basicModule/smallRNAClass`;
 		this.tableEntity = {
 			LCID: this.store.getStore('LCID'),
@@ -117,6 +121,7 @@ export class LrnaComponent implements OnInit {
 			LCID: this.store.getStore('LCID'),
 			smallRNASampleList: this.store.getStore('sample')
 		};
+
 	}
 
 	//小RNA分类
@@ -136,14 +141,14 @@ export class LrnaComponent implements OnInit {
         let that = this;
 		let config: object = {
 			chart: {
-				title: 'Count number distribution of total Small RNAs in YK',
+				title: that.ReadsTitle,
 				dblclick: function(event) {
 					that.promptService.open(event.target.textContent,val=>{
 						this.setChartTitle(val);
 						this.updateTitle();
 					})
 				},
-				width: 700,
+				width: 750,
 				height: 400,
 				padding: 0,
 				outerRadius: 120,
@@ -196,7 +201,7 @@ export class LrnaComponent implements OnInit {
 		// console.log(chartData)
 		let tempWidth = 0;
 
-		tempWidth = chartData.length *18;
+		tempWidth = chartData.length *8;
 
 		let config: object = {
 			chart: {
@@ -262,6 +267,7 @@ export class LrnaComponent implements OnInit {
 
 	searchTypeChange() {
 		this.tableEntity['sample'] = this.curSearchType;
+		this.ReadsTitle = "Count number distribution of total Small RNAs in" + this.curSearchType;
 		this.smallRNAChart.reGetData();
 	}
 
