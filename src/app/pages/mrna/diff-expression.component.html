@@ -25,76 +25,75 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="con_PessionDis" *ngFor="let item of thresholdName">
-                                <div class="con_PessionDis_title" *ngIf="item=='PossionDis'" title="{{item=='PossionDis'?'无生物学重复的比较组使用该软件。':''}}">
-                                    {{item}}
-                                </div>
-                                <div class="con_PessionDis_title" *ngIf="item=='NOIseq'">
-                                    {{item}}
-                                </div>
-                                <div class="con_PessionDis_title" *ngIf="item=='DEGseq'" title="{{item=='DEGseq'?'有生物学重复的比较组使用该软件':''}}">
-                                    {{item}}
-                                </div>
-                                <div class="con_PessionDis_title" *ngIf="item=='DESeq2'" title="{{item=='DESeq2'?'有生物学重复的比较组使用该软件。':''}}">
-                                    {{item}}
-                                </div>
-                                <div class="con_PessionDis_title" *ngIf="item=='EBSeq'">
-                                    {{item}}
-                                </div>
-                            <div class="con_PessionDis_in">
-                                <div class="con_PessionDis_row">
-                                    <div class="con_PessionDis_left" title="对照处理组的表达量倍比，计算方式为log2（对照组表达量/处理组表达量），再取绝对值。例如 |log2FC| >= N 表示对照组表达量是处理组的2N倍以上。">
-                                        |log2FC|
+                        <div class="ex_content">
+                            <div class="con_PessionDis" *ngFor="let item of thresholdName">
+                                    <div class="con_PessionDis_title" *ngIf="item=='PossionDis'" title="{{item=='PossionDis'?'无生物学重复的比较组使用该软件。':''}}">
+                                        {{item}}
                                     </div>
-                                    <div class="con_PessionDis_right">
-                                        <!-- <input style="margin-top: 8px;" (ngModelChange)="OnChange($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].log2FC" /> -->
-                                        <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].log2FC" [nzMin]="0"></nz-input-number>
+                                    <div class="con_PessionDis_title" *ngIf="item=='Noiseq'">
+                                        {{item}}
                                     </div>
-                                    <span *ngIf="isShowSpan_PossionDis && item=='PossionDis'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
-                                    <span *ngIf="isShowSpan_NOIseq && item=='NOIseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
-                                    <span *ngIf="isShowSpan_DEGseq && item=='DEGseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
-                                    <span *ngIf="isShowSpan_DESeq2 && item=='DESeq2'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
-                                    <span *ngIf="isShowSpan_EBSeq && item=='EBSeq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
-                                </div>
-                                <div class="con_PessionDis_row">
-                                    <div class="con_PessionDis_left" *ngIf="item=='PossionDis'" title="对于无生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
-                                        FDR
+                                    <div class="con_PessionDis_title" *ngIf="item=='DEGseq'" title="{{item=='DEGseq'?'有生物学重复的比较组使用该软件':''}}">
+                                        {{item}}
                                     </div>
-                                    <div class="con_PessionDis_left" *ngIf="item=='NOIseq'" title="显著性阈值，一般 >= 0.8 表示某个基因在对照组与处理组间显著差异表达。">
-                                        probability
+                                    <div class="con_PessionDis_title" *ngIf="item=='DESeq2'" title="{{item=='DESeq2'?'有生物学重复的比较组使用该软件。':''}}">
+                                        {{item}}
                                     </div>
-                                    <div class="con_PessionDis_left" *ngIf="item=='DEGseq'" title="对于有生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
-                                        Qvalue
+                                    <div class="con_PessionDis_title" *ngIf="item=='EBSeq'">
+                                        {{item}}
                                     </div>
-                                    <div class="con_PessionDis_left" *ngIf="item=='DESeq2'" title="对于有生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
-                                        Qvalue
+                                <div class="con_PessionDis_in">
+                                    <div class="con_PessionDis_row">
+                                        <div class="con_PessionDis_left" title="对照处理组的表达量倍比，计算方式为log2（对照组表达量/处理组表达量），再取绝对值。例如 |log2FC| >= N 表示对照组表达量是处理组的2N倍以上。">
+                                            |log2FC|
+                                        </div>
+                                        <div class="con_PessionDis_right">
+                                            <!-- <input style="margin-top: 8px;" (ngModelChange)="OnChange($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].log2FC" /> -->
+                                            <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].log2FC" [nzMin]="0"></nz-input-number>
+                                        </div>
+                                        <span *ngIf="isShowSpan_PossionDis && item=='PossionDis'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                        <span *ngIf="isShowSpan_NOIseq && item=='Noiseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                        <span *ngIf="isShowSpan_DEGseq && item=='DEGseq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                        <span *ngIf="isShowSpan_DESeq2 && item=='DESeq2'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
+                                        <span *ngIf="isShowSpan_EBSeq && item=='EBSeq'" style="color: red;margin-left: 8px;vertical-align: middle;line-height: 40px;">非空大于0的整数</span>
                                     </div>
-                                    <div class="con_PessionDis_left" *ngIf="item=='EBSeq'" title="显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达。">
-                                        PPEE
-                                    </div>
-                                    <div class="con_PessionDis_right" *ngIf="item=='PossionDis'">
-                                        <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].FDR" [nzMin]="0"></nz-input-number>
-                                    </div>
-                                    <div class="con_PessionDis_right" *ngIf="item=='NOIseq'">
-                                        <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].probability" [nzMin]="0"></nz-input-number>
-                                    </div>
-                                    <div class="con_PessionDis_right" *ngIf="item=='DEGseq'">
-                                        <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].Qvalue" [nzMin]="0"></nz-input-number>
-                                    </div>
-                                    <div class="con_PessionDis_right" *ngIf="item=='DESeq2'">
-                                        <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].Qvalue" [nzMin]="0"></nz-input-number>
-                                    </div>
-                                    <div class="con_PessionDis_right" *ngIf="item=='EBSeq'">
-                                        <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].PPEE" [nzMin]="0"></nz-input-number>
+                                    <div class="con_PessionDis_row">
+                                        <div class="con_PessionDis_left" *ngIf="item=='PossionDis'" title="对于无生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
+                                            FDR
+                                        </div>
+                                        <div class="con_PessionDis_left" *ngIf="item=='Noiseq'" title="显著性阈值，一般 >= 0.8 表示某个基因在对照组与处理组间显著差异表达。">
+                                            Probability
+                                        </div>
+                                        <div class="con_PessionDis_left" *ngIf="item=='DEGseq'" title="对于有生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
+                                            Qvalue
+                                        </div>
+                                        <div class="con_PessionDis_left" *ngIf="item=='DESeq2'" title="对于有生物学重复的比较组，校正后的显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达量。">
+                                            Qvalue
+                                        </div>
+                                        <div class="con_PessionDis_left" *ngIf="item=='EBSeq'" title="显著性阈值，一般 <= 0.05 表示某个基因在对照组与处理组间显著差异表达。">
+                                            PPEE
+                                        </div>
+                                        <div class="con_PessionDis_right" *ngIf="item=='PossionDis'">
+                                            <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].FDR" [nzMin]="0"></nz-input-number>
+                                        </div>
+                                        <div class="con_PessionDis_right" *ngIf="item=='Noiseq'">
+                                            <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].Probability" [nzMin]="0"></nz-input-number>
+                                        </div>
+                                        <div class="con_PessionDis_right" *ngIf="item=='DEGseq'">
+                                            <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].Qvalue" [nzMin]="0"></nz-input-number>
+                                        </div>
+                                        <div class="con_PessionDis_right" *ngIf="item=='DESeq2'">
+                                            <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].Qvalue" [nzMin]="0"></nz-input-number>
+                                        </div>
+                                        <div class="con_PessionDis_right" *ngIf="item=='EBSeq'">
+                                            <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange2($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="tempThreshold[item].PPEE" [nzMin]="0"></nz-input-number>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="con_bottom">
-
-                        </div>
+                        
+                        <div class="con_bottom"></div>
 
                         <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
                             {{'tableButton.cancel' | translate}} </button>

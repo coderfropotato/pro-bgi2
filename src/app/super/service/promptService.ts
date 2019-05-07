@@ -58,7 +58,7 @@ export class PromptService {
 
 @Component({
 	selector: 'app-propmt',
-	template: `<div style="margin-bottom: 10px;">请输入需要修改的内容:</div><input nz-input [(ngModel)]="value['key']" (ngModelChange)="handlerChange($event)" />
+	template: `<div style="margin-bottom: 10px;">请输入需要修改的内容：</div><input nz-input [(ngModel)]="value['key']" (ngModelChange)="handlerChange($event)" />
     <div style="text-align:left;margin-top:10px;color:red;" [hidden]="!isshowFlag['key']">最多输入${config['maxTextLength']}位字符且不能为空</div>`,
 	styles: []
 })
