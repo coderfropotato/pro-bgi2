@@ -48,7 +48,7 @@
       <div class="relationRow">
           <nz-row>
             <nz-col nzSpan="8">
-                <span>Origin Gene</span>
+                <span nz-tooltip nzTitle="底部主图对应的基因">Origin Gene</span>
             </nz-col>
             <nz-col nzSpan="16">
                 <!-- <nz-select style="width:100%" [(ngModel)]="curRelation['key']" (ngModelChange)="relationChange()" nzShowSearch>
@@ -61,10 +61,10 @@
         </nz-row>
         <nz-row>
             <nz-col nzSpan="8">
-                <span>Interaction Gene</span>
+                <span nz-tooltip nzTitle="与底部主图基因有互作关系的基因">Interaction Gene</span>
             </nz-col>
             <nz-col nzSpan="16">
-                <button nz-button nzSize="small" nzType="default" *ngFor="let relation of relationList.slice(1)" style="margin-right:10px;margin-bottom: 10px" (click)="relationChange(relation)" [class.btnActive]='relation.isSelected' [disabled]="relation.isDisabled ? true : false">
+                <button nz-tooltip nzTitle="{{'relation.'+relation['key'] | translate}}" nz-button nzSize="small" nzType="default" *ngFor="let relation of relationList.slice(1)" style="margin-right:10px;margin-bottom: 10px" (click)="relationChange(relation)" [class.btnActive]='relation.isSelected' [disabled]="relation.isDisabled ? true : false">
                     {{relation.name}}
                 </button>
             </nz-col>
