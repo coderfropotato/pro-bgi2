@@ -292,6 +292,7 @@ export class GeneDetailComponent implements OnInit {
 	msigdbFlagBtn: boolean = false;
 
 	scroll: any;
+	scroll2: any;
 
   	constructor(
 		private message: MessageService,
@@ -1259,9 +1260,9 @@ export class GeneDetailComponent implements OnInit {
 					this.rna_flag = this.rna_rows.length>0?true:false;
 
 					if(this.rna_rows.length>5){
-						this.scroll = { x: "100%",y:"200px"}
+						this.scroll2 = { x: "100%",y:"200px"}
 					}else{
-						this.scroll = { x: "100%"}
+						this.scroll2 = { x: "100%"}
 					}
 				}
 				this.isLoading2 = false;
