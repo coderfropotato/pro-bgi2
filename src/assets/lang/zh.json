@@ -1122,5 +1122,11 @@
         "header-792": "Observed Node / Neighbor Node 的百分比",
         "header-793": "排序",
         "NA": "NA"
+    },
+    "relation":{
+        "ppi":"蛋白-蛋白互作关系",
+        "target":"miRNA靶向关系，即miRNA靶基因或靶基因对应的miRNA",
+        "coexpression":"共表达关系",
+        "cerna":""
     }
 }
