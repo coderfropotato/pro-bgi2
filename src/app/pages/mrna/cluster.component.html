@@ -1,5 +1,5 @@
 <!-- cluster -->
-<div class="content row venn">
+<div class="content row cluster">
     <div #left class="left-layout column" [class.expand]="switch==='right'" [class.unexpand]="switch==='center'" [class.table-only]="switch==='left'">
         <div class="left-top-layout">
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
@@ -11,9 +11,9 @@
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
         <!-- level下拉选择 -->
-        <ng-template #otherLeftTemplate>
-            <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='compareGroup' *ngIf="compareGroupList.length" style="min-width:160px" class="ml12"
-                [(ngModel)]="compareGroup" nzPlaceHolder="compareGroup" (ngModelChange)="handleCompareGroupChange()">
+        <ng-template #selectTemplate>
+            <nz-select *ngIf="compareGroupList.length" [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='compareGroup' style="min-width:160px" class="ml12" nzSize="small" nzShowSearch
+                [(ngModel)]="compareGroup" (ngModelChange)="handleCompareGroupChange()">
                 <nz-option *ngFor="let compare of compareGroupList;index as i;" [nzValue]="compare" [nzLabel]="compare"></nz-option>
             </nz-select>
         </ng-template>
@@ -27,7 +27,7 @@
             [chartUrl]="chartUrl"
             [apiEntity]="chartEntity"
             [setTemplate]="setTemplate"
-            [otherLeftTemplate]="otherLeftTemplate"
+            [selectTemplate]="selectTemplate"
             (drawChartEmit)="drawChart($event)"
             [chartId]="'clusterChartDiv'"
             [chartName]="'聚类图'"

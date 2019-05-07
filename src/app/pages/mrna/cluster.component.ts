@@ -408,13 +408,13 @@ export class ClusterComponent implements OnInit {
     //设置 默认
     apiEntityChange(data){
         let xNum=data.xNum;
-        if (xNum <= 8) {
-            this.width = 480;
+        if (xNum <= 20) {
+            this.width = 400;
         } else {
-            let single_width = 60;
+            let single_width = 20;
             this.width = single_width * xNum;
         }
-        this.height=480;
+        this.height=400;
         this.domainRange=[data.min,data.max];
         this.yName='hidden';
         this.isCluster=true;
