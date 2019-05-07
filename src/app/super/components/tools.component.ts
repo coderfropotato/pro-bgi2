@@ -534,13 +534,19 @@ export class ToolsComponent implements OnInit {
 						this.selectType = '';
 						this.childVisible = false;
 						this.toolsService.hide();
-						this.notify.success('tips：', '聚类重分析提交成功');
+						this.notify.success('tips：', '任务提交成功。',{
+							nzStyle: { width: '300px' }
+							});
 					} else {
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -627,16 +633,22 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -751,7 +763,7 @@ export class ToolsComponent implements OnInit {
 	kaFunConfirm(reanalysisType) {
 		if (this.kaFunGroupSelect.length < 2) {
 			this.notify.blank('tips：', '请至少选择2个', {
-				nzStyle: { width: '220px' }
+				nzStyle: { width: '300px' }
 			});
 			return;
 		}
@@ -790,16 +802,22 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -866,18 +884,24 @@ export class ToolsComponent implements OnInit {
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-							this.notify.success('tips：', 'KDA分析提交成功',{
+							this.notify.success('tips：', '任务提交成功。',{
 							nzStyle: { width: '300px' }
 							});
 						} else {
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1042,16 +1066,22 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1094,16 +1124,22 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1177,16 +1213,22 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1298,16 +1340,22 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1454,16 +1502,24 @@ export class ToolsComponent implements OnInit {
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-							this.notify.success('tips：', '关联聚类重分析提交成功');
+							this.notify.success('tips：', '任务提交成功。',{
+								nzStyle: { width: '300px' }
+								});
 						} else {
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1564,16 +1620,24 @@ export class ToolsComponent implements OnInit {
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-							this.notify.success('tips：', '基因分类重分析提交成功');
+							this.notify.success('tips：', '任务提交成功。',{
+								nzStyle: { width: '300px' }
+								});
 						} else {
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1666,16 +1730,24 @@ export class ToolsComponent implements OnInit {
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-							this.notify.success('tips：', '基因富集重分析提交成功');
+							this.notify.success('tips：', '任务提交成功。',{
+								nzStyle: { width: '300px' }
+								});
 						} else {
-							this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+								nzStyle: { width: '300px' }
+								});
 						}
 					} else {
-						this.notify.warning('tips：', `重分析提交失败 : ${data['message']}`);
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							nzStyle: { width: '300px' }
+							});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `重分析提交失败,请重试`);
+					this.notify.warning('tips：', `任务提交失败,请重试`,{
+						nzStyle: { width: '300px' }
+						});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
