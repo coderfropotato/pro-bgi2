@@ -28,7 +28,7 @@ declare const $: any;
       }
       .re_div_two{
         float: left;
-        margin-left: 10px;
+        margin-left: 20px;
         height: 40px;
         line-height:40px;
         font-weight: bold;

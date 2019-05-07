@@ -11,7 +11,7 @@ import {PromptService} from './../../super/service/promptService';
 import { TranslateService } from '@ngx-translate/core';
 
 declare const d3: any;
-declare const d4:any;
+declare const gooalD3:any;
 declare const $: any;
 
 @Component({
@@ -629,7 +629,7 @@ export class KeggRichComponent implements OnInit {
                 ]
             }
 
-            this.chart=new d4().init(config,{areaMinWidth:240});
+            this.chart=new gooalD3().init(config,{areaMinWidth:240});
         }else if(type==='bubble'){
             this.chartDesc="X轴为富集比例【选定的基因集中注释到某一条目的基因数与本物种注释到该条目总基因数的比值，计算公式为Rich Ratio = Term Candidate Gene Num / Term Gene Num】，Y轴为KEGG Pathway，气泡的大小表示注释到某个KEGG Pathway上的基因数目，颜色代表富集Qvalue值，颜色越深代表Qvalue值越小。 选择图中的某个气泡或者右上角“多选”模式下选择多个气泡，将在下方表格显示注释到这些KEGG Pathway上的差异基因情况。双击图标题或坐标轴标题可以修改文字，点击图例色条可以修改颜色。";
             var realData = [];
@@ -737,7 +737,7 @@ export class KeggRichComponent implements OnInit {
                   }
             }
 
-            this.chart=new d4().init(config1,{areaMinWidth:240});
+            this.chart=new gooalD3().init(config1,{areaMinWidth:240});
         }
     }
 

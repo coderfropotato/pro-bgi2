@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from '../../super/service/promptService';
 import config from '../../../config';
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const Venn: any;
 
 @Component({
@@ -526,7 +526,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			  enableChartSelect: true,
 			  onselect: data => {
 				that.defaultTheSelectList(data,1);
-					console.log(data);
+					// console.log(data);
 				}
 			},
 			axis: {
@@ -565,7 +565,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 				return "<span>Category：total</span><br><span>Compare Group："+d.compareGroup+"</span><br><span>Number of Genes："+d.diffexp_updown_total+"</span>"
 			}
 		}
-		this.chart = new d4().init(config);
+		this.chart = new gooalD3().init(config);
 	}
 
 	drawSingal(name) {
@@ -674,7 +674,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 			}
 		}
 
-		this.chartS = new d4().init(config);
+		this.chartS = new gooalD3().init(config);
 
 	}
 

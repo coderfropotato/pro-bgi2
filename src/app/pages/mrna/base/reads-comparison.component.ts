@@ -8,7 +8,7 @@ import { MessageService } from '../../../super/service/messageService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const $: any;
 
 @Component({
@@ -212,7 +212,7 @@ export class ReadsComparisonComponent implements OnInit {
 		}
     }
 
-    new d4().init(config);
+    new gooalD3().init(config);
 
   }
 
@@ -296,7 +296,7 @@ export class ReadsComparisonComponent implements OnInit {
 			return "<span>Percent covered(%):"+d.percent_covered+"</span><br><span>Percentage of Transcripts(%):"+d.percent_transcript+"</span>"
 		}
 	}
-    new d4().init(config);
+    new gooalD3().init(config);
   }
 
   //4.5 测序饱和度 测序饱和度曲线
@@ -369,7 +369,7 @@ export class ReadsComparisonComponent implements OnInit {
 		}
     }
 
-    new d4().init(config);
+    new gooalD3().init(config);
   }
 
   handlerRefresh(){

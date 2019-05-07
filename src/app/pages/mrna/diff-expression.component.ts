@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const Venn: any;
 
 @Component({
@@ -798,7 +798,7 @@ export class DiffExpressionComponent implements OnInit {
 						this.updateTitle();
 					})
 				},
-				width: 600,
+				// width: 600,
 				height: 300,
 				onselect: (d) => {
 					this.singleMultiSelect = { bar_name: '', total_name: '', venn_name: '' };
@@ -838,7 +838,7 @@ export class DiffExpressionComponent implements OnInit {
 			tooltip: (d) => '<span>name：' + d.data.name + '</span><br><span>value：' + d.data.value + '</span>'
 		};
 
-		this.chart = new d4().init(params);
+		this.chart = new gooalD3().init(params);
 	}
 
 	//显示venn图

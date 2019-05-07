@@ -456,7 +456,7 @@ export class ReNetComponent implements OnInit {
             })
         })
 
-        let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
+        // let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
 
         this.allNodes=[...nodes];
         // add link
@@ -529,19 +529,20 @@ export class ReNetComponent implements OnInit {
             .on("dblclick.zoom", null);
 
         //箭头
-        svg.append("defs").selectAll("marker")
-            .data(arrows).enter()
+        svg.append("defs")
+            // .selectAll("marker")
+            // .data(arrows).enter()
             .append("marker")
-            .attr("id", d => d.id)
+            .attr("id", "end-arrow")
             .attr("viewBox", '0 0 20 20')
-            .attr("refX", 40)
+            .attr("refX", 0)
             .attr("refY", 5)
             .attr("markerWidth", 4)
             .attr("markerHeight", 4)
             .attr("orient", "auto")
             .append("path")
             .attr("d", 'M0,0 L0,10 L10,5 z')
-            .attr("opacity", d => d.opacity);
+            // .attr("opacity", d => d.opacity);
 
         let g = svg.append("g");
 

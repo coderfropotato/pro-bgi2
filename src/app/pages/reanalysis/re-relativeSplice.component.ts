@@ -11,7 +11,7 @@ import { PromptService } from "./../../super/service/promptService";
 import { ToolsService } from "./../../super/service/toolsService";
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const $: any;
 
 @Component({
@@ -622,7 +622,7 @@ export class RelativeSpliceComponent implements OnInit {
             .enter()
             .append('circle')
             .attr('cx', (d, i) => {
-                console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
+                // console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
                 return parseInt((i/temp_num).toString().split(".")[0])*200+8
             })
             .attr('cy', (d, i) => {
@@ -644,7 +644,7 @@ export class RelativeSpliceComponent implements OnInit {
                 .enter()
                 .append('text')
                 .attr('dx', (d, i) => {
-                    console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
+                    // console.log(parseInt((i/temp_num).toString().split(".")[0])*10+8)
                     return parseInt((i/temp_num).toString().split(".")[0])*200+20
                 })
                 .attr('dy', (d, i) => {
@@ -760,7 +760,7 @@ export class RelativeSpliceComponent implements OnInit {
                 //console.log(d);
                 let tipText = `AS_type:  ${d.as_type}
                             <br> Group:  ${d.as_group_name}
-                            <br> st_${that.geneType}_id: ${d[`${that.geneType}_id`]}
+                            <br> ${that.geneType}_id: ${d[`${that.geneType}_id`]}
                             <br> as_id:  ${d.as_id}`;
                 that.globalService.showPopOver(d3.event, tipText);
             })

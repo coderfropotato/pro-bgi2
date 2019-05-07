@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-declare const d4: any;
+declare const gooalD3: any;
 declare const d3: any;
 declare const Venn: any;
 declare const $: any;
@@ -806,7 +806,7 @@ export class GeneListVennComponent implements OnInit {
 			tooltip: (d) => '<span>name：' + d.data.name + '</span><br><span>value：' + d.data.value + '</span>'
 		};
 
-		this.chart = new d4().init(params);
+		this.chart = new gooalD3().init(params);
 	}
 
 	//显示venn图
@@ -1185,7 +1185,7 @@ export class GeneListVennComponent implements OnInit {
 		}
 
 		function drawSvg2() {
-			
+
 			//let width2 = 320 - left_name_length - kong_name_right;
 			//let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高
 			//let width2 = 320 - left_name_length - kong_name_right - 100;//减小宽高

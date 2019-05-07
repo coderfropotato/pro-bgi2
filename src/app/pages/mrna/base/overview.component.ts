@@ -8,7 +8,7 @@ import { MessageService } from '../../../super/service/messageService';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 
 @Component({
 	selector: 'app-overview',
@@ -135,7 +135,7 @@ export class OverviewComponent implements OnInit {
 	ngOnInit() {
 
 		this.GeneListIndex();
-		 
+
 		this.abstract_general_cn = this.store.getStore('abstract_general_cn');
 		this.abstract_general_en = this.store.getStore('abstract_general_en');
 
@@ -600,7 +600,7 @@ export class OverviewComponent implements OnInit {
 			}
 		};
 
-		this.chartPCA = new d4().init(config);
+		this.chartPCA = new gooalD3().init(config);
 	}
 
 	//箱线图
@@ -667,7 +667,7 @@ export class OverviewComponent implements OnInit {
 				type: "boxplot",
 				width: tempWidth,
 				onselect: data => {
-					console.log(data);
+					// console.log(data);
 				},
 				// style: {
 				//   fill: "#ffffff",
@@ -733,7 +733,7 @@ export class OverviewComponent implements OnInit {
 			  }
 		}
 
-		this.chartBox = new d4().init(config);
+		this.chartBox = new gooalD3().init(config);
 	}
 
 	//密度图
@@ -806,7 +806,7 @@ export class OverviewComponent implements OnInit {
 			}
 		}
 
-		this.chartMap = new d4().init(config)
+		this.chartMap = new gooalD3().init(config)
 	}
 
 	//堆积图
@@ -898,7 +898,7 @@ export class OverviewComponent implements OnInit {
 			}
 		};
 
-		this.chartStack = new d4().init(config);
+		this.chartStack = new gooalD3().init(config);
 	}
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
@@ -931,11 +931,11 @@ export class OverviewComponent implements OnInit {
 
 	//legend color change
 	colorQualityChange(curColor){
-		console.log(this.legendIndexThree);
+		// console.log(this.legendIndexThree);
 		this.colorQuality = curColor;
 		this.colorArr.splice(this.legendIndexThree, 1, curColor);
-		console.log(curColor);
-		console.log(this.colorArr);
+		// console.log(curColor);
+		// console.log(this.colorArr);
 		this.relevanceChart.redraw();
 	}
 
@@ -999,9 +999,9 @@ export class OverviewComponent implements OnInit {
 			}
 		});
 
-		console.log(this.tempMenu);
-		console.log(this.tempMenu2);
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu);
+		// console.log(this.tempMenu2);
+		// console.log(this.tempMenu3);
 
 		this.tempMenu.forEach((d)=>{
 			if(d["name"]=="001"){
@@ -1067,7 +1067,7 @@ export class OverviewComponent implements OnInit {
 
 		this.tempMenu3.length = 0;
 		this.tempMenu3 = tempArray;
-		console.log(this.tempMenu3);
+		// console.log(this.tempMenu3);
 
 		this.tempMenu3.forEach((d)=>{
 			switch (d["name"]) {

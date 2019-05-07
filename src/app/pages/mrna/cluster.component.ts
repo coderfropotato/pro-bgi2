@@ -10,7 +10,7 @@ import { geneInfo } from 'src/rule';
 import { PromptService } from 'src/app/super/service/promptService';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const $: any;
 
 @Component({
@@ -597,7 +597,7 @@ export class ClusterComponent implements OnInit {
             }
         }
 
-        this.chart=new d4().init(config);
+        this.chart=new gooalD3().init(config);
     }
 
     //color change 回调函数

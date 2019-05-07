@@ -10,7 +10,7 @@ import config from '../../../config';
 import { PromptService } from './../../super/service/promptService';
 
 declare const d3: any;
-declare const d4: any;
+declare const gooalD3: any;
 declare const $: any;
 
 @Component({
@@ -598,7 +598,7 @@ export class ReClassComponent implements OnInit {
 			}
 		};
 
-        this.chart = new d4().init(config, {
+        this.chart = new gooalD3().init(config, {
 			yTitleWidth: 80,
 			textMaxLength: Number(this.set['len']),
 			legend: { textMaxLength: Number(this.set['len']) }
