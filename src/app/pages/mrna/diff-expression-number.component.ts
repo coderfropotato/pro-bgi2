@@ -426,6 +426,10 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 	// 表格转换 确定
 	confirm(relations) {
+		let temp = [];
+		temp.push(this.m_name1);
+		this.selectConfirmData = temp;
+		
 		this.showBackButton = true;
 		let checkParams = this.transformTable._getInnerParams();
 		// 每次确定把之前的筛选参数放在下一次查询的请求参数里 请求完成自动清空上一次的请求参数，恢复默认；
