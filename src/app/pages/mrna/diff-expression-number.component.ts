@@ -126,9 +126,9 @@ export class DiffExpressionNumberComponent implements OnInit {
 	p_FDR: string;
 
 	n_show: boolean; //设置里面的NOIseq
-	NOIseq: object = {
+	Noiseq: object = {
 		log2FC: '',
-		probability: ''
+		Probability: ''
 	};
 	n_log2FC: string;
 	n_probability: string;
@@ -263,10 +263,10 @@ export class DiffExpressionNumberComponent implements OnInit {
 				this.PossionDis = this.tempThreshold["PossionDis"];
 				this.p_log2FC = this.tempThreshold["PossionDis"].log2FC;
 				this.p_FDR = this.tempThreshold["PossionDis"].FDR;
-			}else if(tempN=="NOIseq"){
-				this.NOIseq = this.tempThreshold["NOIseq"];
-				this.n_log2FC = this.tempThreshold["NOIseq"].log2FC;
-				this.n_probability = this.tempThreshold["NOIseq"].probability;
+			}else if(tempN=="Noiseq"){
+				this.Noiseq = this.tempThreshold["Noiseq"];
+				this.n_log2FC = this.tempThreshold["Noiseq"].log2FC;
+				this.n_probability = this.tempThreshold["Noiseq"].Probability;
 			}else if(tempN=="DEGseq"){
 				this.DEGseq = this.tempThreshold["DEGseq"];
 				this.d_log2FC = this.tempThreshold["DEGseq"].log2FC;
@@ -699,7 +699,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 		if(parseInt(value)<0){
 			if(type=="PossionDis"){
 				this.isShowSpan_PossionDis = true;
-			}else if(type=="NOIseq"){
+			}else if(type=="Noiseq"){
 				this.isShowSpan_NOIseq = true;
 			}else if(type=="DEGseq"){
 				this.isShowSpan_DEGseq = true;
@@ -718,8 +718,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 			this.isShowSpan_EBSeq = false;
 			if(type=="PossionDis"){
 				this.PossionDis['log2FC'] = value;
-			}else if(type=="NOIseq"){
-				this.NOIseq['log2FC'] = value;
+			}else if(type=="Noiseq"){
+				this.Noiseq['log2FC'] = value;
 			}else if(type=="DEGseq"){
 				this.DEGseq['log2FC'] = value;
 			}else if(type=="DESeq2"){
@@ -735,8 +735,8 @@ export class DiffExpressionNumberComponent implements OnInit {
 		//this.PossionDis['FDR'] = value;
 		if(type=="PossionDis"){
 			this.PossionDis['FDR'] = value;
-		}else if(type=="NOIseq"){
-			this.NOIseq['probability'] = value;
+		}else if(type=="Noiseq"){
+			this.Noiseq['Probability'] = value;
 		}else if(type=="DEGseq"){
 			this.DEGseq['Qvalue'] = value;
 		}else if(type=="DESeq2"){
@@ -761,13 +761,13 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 					this.tempThreshold["PossionDis"] = this.PossionDis;
 				}
-			}else if(tempN=="NOIseq"){
-				if (this.n_log2FC != this.NOIseq['log2FC'] || this.n_probability != this.NOIseq['probability']) {
-					this.NOIseq = {
+			}else if(tempN=="Noiseq"){
+				if (this.n_log2FC != this.Noiseq['log2FC'] || this.n_probability != this.Noiseq['Probability']) {
+					this.Noiseq = {
 						log2FC: this.n_log2FC,
-						probability: this.n_probability
+						Probability: this.n_probability
 					};
-					this.tempThreshold["NOIseq"] = this.NOIseq;
+					this.tempThreshold["Noiseq"] = this.Noiseq;
 				}
 			}else if(tempN=="DEGseq"){
 				if (this.d_log2FC != this.DEGseq['log2FC'] || this.d_Qvalue != this.DEGseq['Qvalue']) {
@@ -786,7 +786,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 					this.tempThreshold["DESeq2"] = this.DESeq2;
 				}
 			}else if(tempN=="EBSeq"){
-				if (this.e_log2FC != this.EBSeq['log2FC'] || this.e_PPEE != this.EBSeq['probability']) {
+				if (this.e_log2FC != this.EBSeq['log2FC'] || this.e_PPEE != this.EBSeq['Probability']) {
 					this.EBSeq = {
 						log2FC: this.e_log2FC,
 						PPEE: this.e_PPEE
@@ -807,11 +807,11 @@ export class DiffExpressionNumberComponent implements OnInit {
 				this.tempThreshold['PossionDis'] = this.PossionDis;
 				this.p_log2FC = this.PossionDis['log2FC'];
 				this.p_FDR = this.PossionDis['FDR']
-			}else if(element=="NOIseq"){
-				//this.tableEntity['diffThreshold']['NOIseq'] = this.NOIseq;
-				this.tempThreshold['NOIseq'] = this.NOIseq;
-				this.n_log2FC = this.NOIseq['log2FC'];
-				this.n_probability = this.NOIseq['probability']
+			}else if(element=="Noiseq"){
+				//this.tableEntity['diffThreshold']['Noiseq'] = this.Noiseq;
+				this.tempThreshold['Noiseq'] = this.Noiseq;
+				this.n_log2FC = this.Noiseq['log2FC'];
+				this.n_probability = this.Noiseq['Probability']
 			}else if(element=="DEGseq"){
 				//this.tableEntity['diffThreshold']['DEGseq'] = this.DEGseq;
 				this.tempThreshold['DEGseq'] = this.DEGseq;
@@ -826,7 +826,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 				//this.tableEntity['diffThreshold']['EBSeq'] = this.EBSeq;
 				this.tempThreshold['diffThreshold'] = this.EBSeq;
 				this.e_log2FC = this.EBSeq['log2FC'];
-				this.e_PPEE = this.EBSeq['probability']
+				this.e_PPEE = this.EBSeq['Probability']
 			}
 		}
 
