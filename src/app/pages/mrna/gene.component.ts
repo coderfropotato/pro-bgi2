@@ -43,7 +43,7 @@ declare const $: any;
                                         	<i class="iconfont icon-shezhi icon_pointer myicon_pointer" [style.color]="icon_color" (click)="moduleSetChange()"></i>
 										</ng-template>
 										<ng-template #suffixTemplate>
-											<i nz-icon class="anticon anticon-close-circle" (click)="inputValue = ''" *ngIf="inputValue"></i>
+											<i nz-icon class="anticon anticon-close-circle" (click)="clearInputValue()" *ngIf="inputValue"></i>
 										</ng-template>
                                         <div class="gene_col_div" [hidden]="!expandHistoryPanel"><!-- 输入框返回结果面板 -->
                                         <div class="gene_col_content" *ngFor="let item of searchBackList" (click)="searchBackSelect(item)" >
@@ -225,6 +225,11 @@ export class GenePage {
 
 		this.icon_color = 'blue';
 		//this.geneService.set('checkedAddThead', this.selectedList);
+	}
+
+	clearInputValue(){
+		this.inputValue = '';
+		this.geneService.set('content', this.inputValue);
 	}
 
 	//搜索按钮
