@@ -251,7 +251,7 @@ export class GlobalService {
         if ($(".popover-service").length) $(".popover-service").remove();
 
         let pop = $(
-            `<div class='ng-popover popover-service' style='max-height: 400px;overflow: auto;'>${text}<i class="arrow-outer"></i><i class="arrow-inner"></i></div>`
+            `<div class='ng-popover popover-service' style='max-width:400px;max-height: 400px;overflow: auto;word-break: normal;'>${text}<i class="arrow-outer"></i><i class="arrow-inner"></i></div>`
         );
 
         $("body")
