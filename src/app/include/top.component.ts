@@ -109,6 +109,7 @@ export class TopComponent implements OnInit{
 		document.body.style.width = window.screen.width + 'px';
         this.loading.close();
 
+		document.title=`BGI_${this.LCID}_report.pdf`;
 		window.print();
 		window.location.reload();
 	}
