@@ -10,15 +10,17 @@ import { ControlValueAccessor } from '@angular/forms/src/directives';
  * @class LayoutSwitchComponent
  * @implements {OnInit}
  */
+
+// <ul class="layout-src-ele">
+// <li *ngFor="let pos of ['left','right']" (click)="handleToggleLayout(pos)" nz-tooltip  [nzTitle]="'切换布局'" nzPlacement="top"></li>
+// </ul>
+// <div class="layout-switch">
+// <span [class.left]="innerValue==='left'" [class.right]="innerValue==='right'" [class.center]="innerValue==='center'"></span>
+// </div>
 @Component({
 	selector: 'app-layout-switch',
     template: `<div class="layout-switch-wrap">
-                    <ul class="layout-src-ele">
-                        <li *ngFor="let pos of ['left','right']" (click)="handleToggleLayout(pos)" nz-tooltip  [nzTitle]="'切换布局'" nzPlacement="top"></li>
-                    </ul>
-                    <div class="layout-switch">
-                        <span [class.left]="innerValue==='left'" [class.right]="innerValue==='right'" [class.center]="innerValue==='center'"></span>
-                    </div>
+                    <nz-switch [(ngModel)]="switchValue" [nzControl]="true" (click)="clickSwitch()" nz-tooltip  [nzTitle]="'切换布局'" nzPlacement="top"></nz-switch>
                     <ng-content></ng-content>
                 </div>
                 `,
@@ -38,8 +40,21 @@ export class LayoutSwitchComponent implements ControlValueAccessor {
     @Output() onlyTableChange:EventEmitter<any> = new EventEmitter();
 
     innerValue:any = null;
+    switchValue = true;
 
     constructor() {}
+
+    clickSwitch(): void {
+        setTimeout(() => {
+            this.switchValue = !this.switchValue;
+            if(this.switchValue){
+                this.writeValue('right');
+            }else{
+                this.writeValue('left');
+            }
+            console.log(this.switchValue)
+        }, 0);
+    }
 
     handleToggleLayout(pos){
         this.writeValue(pos)
