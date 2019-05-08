@@ -310,7 +310,7 @@
         "url_alternative-splicing":"可变剪接",
         "url_diff-alternative-splicing":"差异可变剪接",
         "url_gene-fusion":"基因融合",
-        "url_as-fusion-help":"帮助",
+        "url_fusion-help":"帮助",
         "url_snp-overview":"SNP 详情",
         "url_snp-distribution":"SNP 位置分布",
         "url_indel-overview":"InDel 详情",
