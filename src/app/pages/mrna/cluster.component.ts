@@ -238,10 +238,8 @@ export class ClusterComponent implements OnInit {
     handleCompareGroupChange() {
         (async () => {
             this.defaultSetEntity['compareGroup'] = this.compareGroup;
-            this.clusterChart.getDefaultSet();
-
             this.chartEntity['compareGroup'] = this.compareGroup;
-            this.clusterChart.reGetData();
+            this.clusterChart.getDefaultSet();
 
             this.chartBackStatus();
 		})();
