@@ -37,7 +37,7 @@ export class ReListComponent implements OnInit {
 
 	label: string = '';
 	src: any = {
-		data: [{ name: '基因', key: 'gene', checked: false }, { name: '转录本', key: 'transcript', checked: false }],
+		data: [{ name: '基因', key: config['geneTypeOfGene'], checked: false }, { name: '转录本', key: config['geneTypeOfTranscript'], checked: false }],
 		dateRange: [],
 		category: [
 			{ key: 'heatmap', name: '聚类热图', id:"02", checked: false, value: ['heatmapDiff', 'heatmapExpress', 'heatmapCustom'] },
