@@ -10,7 +10,7 @@
                 </div>
             </div>
         </ng-template>
-        <nz-table *ngIf="!tableError" [nzData]="tableData['rows']" [nzScroll]="scroll" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate">
+        <nz-table *ngIf="!tableError" [nzData]="tableData['rows']" [nzScroll]="scroll" nzShowPagination="false" [nzSize]="'small'" [nzTitle]="titleTemplate" nzBordered>
             <thead>
                 <tr>
                     <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" [nzContent]="tp67" nzPlacement="top" nz-popover *ngFor="let thead of tableData['baseThead'];index as i">
@@ -24,10 +24,6 @@
             <!-- min-width:160px;max-width: 160px; -->
             <tbody>
                 <tr *ngFor="let row of tableData['rows'];index as idx">
-                    <!-- <td class="center textEllipsis" nz-tooltip [nzTitle]="row[thead.true_key]" style="min-width:160px;max-width: 160px;" *ngFor="let thead of tableData['baseThead']">
-                        <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID">{{row[thead.true_key]}}</a>
-                        <span *ngIf="thead.true_key!=targetID">{{row[thead.true_key]?row[thead.true_key]:"NA"}}</span>
-                    </td> -->
                     <ng-container *ngFor="let thead of tableData['baseThead']">
                         <td [nzContent]="tp66" nzPlacement="top" nz-popover style="min-width:160px;max-width: 160px;text-align: center;height: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" *ngIf="row[thead.true_key]">
                             <ng-template #tp66>

@@ -108,7 +108,7 @@
                                 </div>
                             </div>
                         </ng-template>
-                        <nz-table [nzData]="rna_rows" nzShowPagination="false" [nzSize]="'small'" [nzScroll]="scroll2" [nzTitle]="titleTemplate">
+                        <nz-table [nzData]="rna_rows" nzShowPagination="false" [nzSize]="'small'" [nzScroll]="scroll2" [nzTitle]="titleTemplate" nzBordered>
                             <thead>
                                 <tr>
                                     <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" [nzContent]="tp09" nzPlacement="top" nz-popover *ngFor="let thead of rna_baseThead;index as i">
@@ -248,7 +248,7 @@
                             </div>
                         </div>
                     </ng-template>
-                    <nz-table [nzData]="alternative_rows" nzShowPagination="false" [nzSize]="'small'" [nzScroll]="scroll" [nzTitle]="titleTemplate">
+                    <nz-table [nzData]="alternative_rows" nzShowPagination="false" [nzSize]="'small'" [nzScroll]="scroll" [nzTitle]="titleTemplate" nzBordered>
                         <thead>
                             <tr>
                                 <th class="center textEllipsis" style="min-width:160px;max-width: 160px;" [nzContent]="tp69" nzPlacement="top" nz-popover *ngFor="let thead of alternative_baseThead;index as i">

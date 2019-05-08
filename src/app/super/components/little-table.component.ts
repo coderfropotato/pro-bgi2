@@ -49,7 +49,8 @@ export class LittleTableComponent implements OnInit {
     rows: any[] = [];
     thead: any[] = [];
 
-    scroll: any;
+    //scroll: any;
+    scroll: any = { x: "0", y: "0" };
 
     targetID2Url:string;
     constructor(
@@ -97,11 +98,12 @@ export class LittleTableComponent implements OnInit {
                             data:data.data
                        });
 
-                       if(this.tableData["rows"].length>5){
-                        this.scroll = { x: "100%",y:"200px"}
-                       }else{
-                        this.scroll = { x: "100%"}
-                       }
+                        if(this.tableData["rows"].length>5){
+                            $(`#${this.targetID} .ant-table-body`).css("height", `200px`);
+                            this.scroll["y"] = `200px`;
+                        }else{
+                            this.scroll = { x:"100%"}
+                        }
                     }
                     this.isLoading = false;
                     //console.log(data)

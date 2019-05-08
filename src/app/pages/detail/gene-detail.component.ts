@@ -291,8 +291,9 @@ export class GeneDetailComponent implements OnInit {
 	loadTable2: boolean = false;
 	msigdbFlagBtn: boolean = false;
 
-	scroll: any;
-	scroll2: any;
+	// scroll: any;
+	scroll: any = { x: "0", y: "0" };
+	scroll2: any = { x: "0", y: "0" };
 
   	constructor(
 		private message: MessageService,
@@ -547,7 +548,8 @@ export class GeneDetailComponent implements OnInit {
 					this.alternative_flag = this.alternative_rows.length>0?true:false;
 
 					if(this.alternative_rows.length>5){
-						this.scroll = { x: "100%",y:"200px"}
+						$(`#as_id .ant-table-body`).css("height", `200px`);
+                        this.scroll["y"] = `200px`;
 					}else{
 						this.scroll = { x: "100%"}
 					}
@@ -1260,7 +1262,9 @@ export class GeneDetailComponent implements OnInit {
 					this.rna_flag = this.rna_rows.length>0?true:false;
 
 					if(this.rna_rows.length>5){
-						this.scroll2 = { x: "100%",y:"200px"}
+						//this.scroll2 = { x: "100%",y:"200px"}
+						$(`#rna_id .ant-table-body`).css("height", `200px`);
+                        this.scroll2["y"] = `200px`;
 					}else{
 						this.scroll2 = { x: "100%"}
 					}
