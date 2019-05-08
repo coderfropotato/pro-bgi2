@@ -24,7 +24,7 @@
             <!-- 下拉选择 -->
             <ng-template #selectTemplate>
                 <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='annotation' style="min-width:160px" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="annotation" (ngModelChange)="goSelectChange()">
-                    <nz-option *ngFor="let item of ['go_c','go_f','go_p'];index as i;" [nzLabel]="item" [nzValue]="item"></nz-option>
+                    <nz-option *ngFor="let item of annotationList;index as i;" [nzLabel]="item.name" [nzValue]="item.key"></nz-option>
                 </nz-select>
 
                 <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='selectedVal' style="min-width:160px" class="ml12" nzSize="small" nzShowSearch [(ngModel)]="selectedVal" (ngModelChange)="handleSelectChange()">
