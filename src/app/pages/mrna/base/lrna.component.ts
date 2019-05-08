@@ -100,7 +100,7 @@ export class LrnaComponent implements OnInit {
 		this.chartSelectType = sample;
 		this.curSearchType = sample[0].value;
 
-		this.ReadsTitle = "Count number distribution of total Small RNAs in" + this.curSearchType;
+		this.ReadsTitle = "Count number distribution of total Small RNAs in " + this.curSearchType;
 
 		this.tableUrl = `${config['javaPath']}/basicModule/smallRNAClass`;
 		this.tableEntity = {

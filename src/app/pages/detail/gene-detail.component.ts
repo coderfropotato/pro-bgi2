@@ -548,8 +548,8 @@ export class GeneDetailComponent implements OnInit {
 					this.alternative_flag = this.alternative_rows.length>0?true:false;
 
 					if(this.alternative_rows.length>5){
-						$(`#as_id .ant-table-body`).css("height", `200px`);
-                        this.scroll["y"] = `200px`;
+						$(`#as_id .ant-table-body`).css("height", `210px`);
+                        this.scroll["y"] = `210px`;
 					}else{
 						this.scroll = { x: "100%"}
 					}
