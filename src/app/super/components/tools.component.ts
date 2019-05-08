@@ -9,7 +9,18 @@ declare const $: any;
 @Component({
 	selector: 'app-tools',
 	templateUrl: './tools.component.html',
-	styles: []
+	styles: [
+		`
+		.ant-btn:focus,.ant-btn:active{
+			color:rgba(0, 0, 0, 0.65);
+			border:1px solid #d9d9d9;
+		}
+		.ant-btn:hover{
+			color:#7da0ff;
+			border:1px solid #7da0ff;
+		}
+		`
+	]
 })
 export class ToolsComponent implements OnInit {
 	// heatmap goRich keggRich goClass keggClass line net
