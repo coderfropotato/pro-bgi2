@@ -470,7 +470,7 @@ export class ToolsComponent implements OnInit {
 						}
 
 						this.standList = res['standardization'] || [];
-						this.stand = this.standList[0];
+						this.stand = this.standList[0]['key'];
 					}
 				},
 				(err) => console.log(err),

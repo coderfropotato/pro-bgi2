@@ -310,7 +310,7 @@
         "url_alternative-splicing":"可变剪接",
         "url_diff-alternative-splicing":"差异可变剪接",
         "url_gene-fusion":"基因融合",
-        "url_as-fusion-help":"帮助",
+        "url_fusion-help":"帮助",
         "url_snp-overview":"SNP 详情",
         "url_snp-distribution":"SNP 位置分布",
         "url_indel-overview":"InDel 详情",
@@ -1128,5 +1128,11 @@
         "target":"miRNA靶向关系，即miRNA靶基因或靶基因对应的miRNA",
         "coexpression":"共表达关系",
         "cerna":""
+    },
+    "standardization":{
+        "log":"所有数据统一进行标准化，不同行和列的数值可进行比较（前提是原始数值可进行比较）。",
+        "zscore_row":"每一行数据独立进行标准化，同一行的数值可比较，不同行的数值不可进行比较。",
+        "zscore_col":"每一列数据独立进行标准化，同一列的数值可比较，不同列的数值不可进行比较。",
+        "none":"使用原始数值，不进行标准化。"
     }
 }
