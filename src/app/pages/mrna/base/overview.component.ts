@@ -623,10 +623,12 @@ export class OverviewComponent implements OnInit {
 				yData.push(tempBoxData[i].spotData[j].y);
 			}
 
-			lineData.push({
-				x: tempBoxData[i].name,
-				y: tempBoxData[i].spotData[spotLength - 1].y
-			});
+			if (spotLength !== 0) {
+                lineData.push({
+                    x: tempBoxData[i].name,
+                    y: tempBoxData[i].spotData[spotLength - 1].y
+                });
+            }
 		}
 		let tempWidth = 0;
 		if(xData.length<=12){
