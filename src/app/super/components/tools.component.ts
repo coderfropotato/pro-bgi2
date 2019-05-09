@@ -16,12 +16,13 @@ declare const $: any;
 			border:1px solid #d9d9d9;
 		}
 		.ant-btn:hover{
-			color:#7da0ff;
+			color:#fff;
 			border:1px solid #7da0ff;
 		}
 		`
 	]
 })
+//color:#7da0ff;
 export class ToolsComponent implements OnInit {
 	// heatmap goRich keggRich goClass keggClass line net
 
