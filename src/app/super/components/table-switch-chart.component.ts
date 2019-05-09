@@ -223,14 +223,12 @@ export class TableSwitchChartComponent implements OnInit {
                     this.getSelectPanelList();
                 } else {
                     this.isHasSelectPanel = false;
-                    this.reGetData();
                 }
 
                 if (this.defaultSetUrl) {
                     this.getDefaultSet();
-                }else{
-                    this.reGetData();
                 }
+
             }else{
                 this.reGetData();
             }
