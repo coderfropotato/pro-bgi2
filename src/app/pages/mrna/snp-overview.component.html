@@ -13,7 +13,7 @@
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
         <div class="left-bottom-layout">
-            <app-table-switch-chart #snpOverview [id]="'snpOverview'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'snpOverviewDiv'" [chartName]="'SNP类型统计'" [flex]="true" (refresh)="handlerRefresh()" [chartDescContent]="'X轴代表变异类型，Y轴代表相应的SNP数目。'">
+            <app-table-switch-chart #snpOverview [id]="'snpOverview'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'snpOverviewDiv'" [chartName]="'SNP类型统计'" [flex]="true" (refresh)="handlerRefresh()" [chartDescContent]="'X轴为样本，Y轴为不同变异类型在相应样本中的占比。每种颜色代表一种变异类型。'">
             </app-table-switch-chart>
 
             <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>

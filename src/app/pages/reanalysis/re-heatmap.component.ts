@@ -417,7 +417,7 @@ export class ReHeatmapComponent implements OnInit {
     //画图
     drawChart(data) {
         let that =this;
-        this.standard=data.standard ? data.standard : "";
+        this.standard=data.standard ? data.standard.name : "";
         let title=data.titleType ? data.titleType : "";
         let chartTitle='';
         switch (title) {
