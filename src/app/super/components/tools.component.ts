@@ -1421,7 +1421,7 @@ export class ToolsComponent implements OnInit {
 				(data) => {
 					if (data['status'] == '0') {
 						this.heatmapReError = false;
-						this.heatmapReStand = data['data']['standardization'];
+						//this.heatmapReStand = data['data']['standardization'];
 						this.heatmapReGeneType = data['data']['verticalDefault'];
 						this.heatmapReRelations = data['data']['relations'];
 						if (this.heatmapReStand.length) {

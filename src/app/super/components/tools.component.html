@@ -461,12 +461,12 @@
                             按照分类结果进行聚类
                         </label>
                     </div>
-                    <p *ngIf="!heatmapReStand.length && !heatmapReGeneType.length && !heatmapReRelations.length && doHeatmapRelationAjax" class="center">缺少必要数据</p>
+                    <p *ngIf="!heatmapReGeneType.length && !heatmapReRelations.length && doHeatmapRelationAjax" class="center">缺少必要数据</p>
                 </div>
                 <nz-divider></nz-divider>
-                <div *ngIf="heatmapReStand.length && heatmapReRelations.length" class="tool-params-button-group">
+                <div *ngIf="heatmapReRelations.length" class="tool-params-button-group">
                     <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
-                    <button nz-button nzType="primary" [disabled]="!heatmapReSelectStand || !heatmapReSelectRelation || heatmapReError" (click)="heatmapRelationConfirm()" nzSize="middle">确定</button>
+                    <button nz-button nzType="primary" [disabled]="!heatmapReSelectRelation || heatmapReError" (click)="heatmapRelationConfirm()" nzSize="middle">确定</button>
                 </div>
             </nz-spin>
         </nz-drawer>
