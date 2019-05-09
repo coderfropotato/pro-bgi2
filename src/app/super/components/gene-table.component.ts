@@ -296,6 +296,7 @@ export class GeneTableComponent implements OnInit, OnChanges {
 		// if (this.defaultMartix && this.mongoId) this.tableEntity['mongoId'] = this.mongoId;
 
 		// date 2019.04.01 只要上一次返回了mongoId 就放在请求参数里 不然为null
+		if(this.mongoId != null)
 		this.tableEntity['mongoId'] = this.mongoId;
 
 		this.ajaxService.getDeferData(ajaxConfig).subscribe(
