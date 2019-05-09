@@ -424,6 +424,7 @@ export class reRelationNetComponent implements OnInit {
         let nodes=data.nodes,links=data.links;
         let values=data.value;
         let min=values[0],max=values[1];
+        let targetLinks=[];
 
         nodes.forEach(d => {
             if(!d.type){
@@ -465,9 +466,12 @@ export class reRelationNetComponent implements OnInit {
                     d.scale=m.scale;
                 }
             })
+            
+            if(d.type==='target'){
+                targetLinks.push(d);
+            }
         })
 
-        let arrows = [{ id: 'end-arrow', opacity: 1 }, { id: 'end-arrow-fade', opacity: 0.1 }]; //箭头
 
         this.allNodes=[...nodes];
         // add link
@@ -523,6 +527,23 @@ export class reRelationNetComponent implements OnInit {
         let shapeLegendScale =  d3.scaleOrdinal()
             .domain(typeArr)
             .range(shapeArr);
+            
+        //力图
+        let simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(d=> d.geneID).iterations(4))
+            .force('charge', d3.forceManyBody().strength(-this.chartEntity['force']))
+            // .force("collide", d3.forceCollide().radius(d => sizeScale(d.value)))  // 添加碰撞检测，使节点不重叠
+            .force('center', d3.forceCenter(width/2, height/2))
+            .force("x", d3.forceX())
+            .force("y", d3.forceY())
+            
+        simulation
+            .nodes(nodes)
+            .on('tick', ticked);
+
+        simulation
+            .force('link')
+            .links(links);
 
         //图例svg
         let legendSvg=d3.select("#relationNetChartDiv").append('svg').attr('id',"legendSvg");
@@ -541,29 +562,20 @@ export class reRelationNetComponent implements OnInit {
 
         //箭头
         svg.append("defs").selectAll("marker")
-            .data(arrows).enter()
+            .data(targetLinks).enter()
             .append("marker")
-            .attr("id", d => d.id)
+            .attr("id", d => 'arrow'+d.id)
             .attr("viewBox", '0 0 20 20')
-            .attr("refX", 40)
+            .attr("refX", d=>Math.sqrt(sizeScale(d.target.value))+14)
             .attr("refY", 5)
             .attr("markerWidth", 4)
             .attr("markerHeight", 4)
             .attr("orient", "auto")
             .append("path")
             .attr("d", 'M0,0 L0,10 L10,5 z')
-            .attr("opacity", d => d.opacity);
 
         let g = svg.append("g");
 
-        //力图
-        let simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(d=> d.geneID).iterations(4))
-            .force('charge', d3.forceManyBody().strength(-this.chartEntity['force']))
-            // .force("collide", d3.forceCollide().radius(d => sizeScale(d.value)))  // 添加碰撞检测，使节点不重叠
-            .force('center', d3.forceCenter(width/2, height/2))
-            .force("x", d3.forceX())
-            .force("y", d3.forceY())
 
         //link
         let link = g.append('g')
@@ -577,7 +589,7 @@ export class reRelationNetComponent implements OnInit {
             .attr('stroke-width', 2)
             .attr("fill", "none")
             .style('cursor','pointer')
-            .attr("marker-end",d=> d.type==='target' ? 'url(#end-arrow)' :'')
+            .attr("marker-end",d=> d.type==='target' ? `url(#arrow${d.id})` :'')
             .on("mouseover", m => {
                 let referencesStr= m.references;
                 let references=[];
@@ -711,13 +723,6 @@ export class reRelationNetComponent implements OnInit {
             .on('drag', dragged)
             .on('end', dragended))
 
-        simulation
-            .nodes(nodes)
-            .on('tick', ticked);
-
-        simulation
-            .force('link')
-            .links(links);
 
         //node text
         if(that.chartEntity['symbolType'] !=='hidden'){
