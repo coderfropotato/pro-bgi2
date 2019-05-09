@@ -436,7 +436,7 @@ export class reRelationHeatmapComponent implements OnInit {
     //画图
     drawChart(data) {
         let that =this;
-        this.standard=data.standard ? data.standard : "";
+        // this.standard=data.standard ? data.standard : "";
 
         let legendData = [data.min,data.max];
 
