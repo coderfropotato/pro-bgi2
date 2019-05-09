@@ -19,7 +19,7 @@ export class ReListComponent implements OnInit {
 	tableEntity: object = {
 		LCID: sessionStorage.getItem('LCID'),
 		pageIndex: 1,
-		pageSize: 9,
+		pageSize: 8,
 		searchContent: {
 			label: null,
 			timeStart: '',
