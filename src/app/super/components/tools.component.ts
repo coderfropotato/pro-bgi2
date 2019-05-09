@@ -15,7 +15,11 @@ declare const $: any;
 			color:rgba(0, 0, 0, 0.65);
 			border:1px solid #d9d9d9;
 		}
-		.ant-btn:hover{
+		.ant-btn:nth-child(0) hover{
+			color:#7da0ff;
+			border:1px solid #7da0ff;
+		}
+		.ant-btn:nth-child(1) hover{
 			color:#fff;
 			border:1px solid #7da0ff;
 		}
