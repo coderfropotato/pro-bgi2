@@ -145,7 +145,7 @@ export class MultiOmicsSetComponent implements OnInit {
         this.relationList=[...data];
         this.relationList.unshift({
             key: "false",
-            name: "false"
+            name: "Origin"
         })
         this.relationList.forEach(d => {
             d['isDisabled']= false;
@@ -296,6 +296,7 @@ export class MultiOmicsSetComponent implements OnInit {
     relationOk(){
         this.isShowAddPanel=true;
         this.isShowRelationPanel=false;
+        this.rations[0]['isChecked']=true;
     }
 
     //关联关系 取消
@@ -318,6 +319,7 @@ export class MultiOmicsSetComponent implements OnInit {
         this.rations.forEach(d=>{
             d['isChecked']=false;
         })
+        this.rations[0]['isChecked']=true;
     }
 
     // 添加面板，选择定量列

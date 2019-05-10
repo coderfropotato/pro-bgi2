@@ -1124,6 +1124,7 @@
         "NA": "NA"
     },
     "relation":{
+        "false":"原始基因，不进行互作关系扩展",
         "ppi":"蛋白-蛋白互作关系",
         "target":"miRNA靶向关系，即miRNA靶基因或靶基因对应的miRNA",
         "coexpression":"共表达关系",
