@@ -910,7 +910,7 @@ export class ExpressVennComponent implements OnInit {
 		let tempThatTwo;
 
 		let padding1 = { left: 60, right: 30, top: 20, bottom: 10 };
-		let padding2 = { left: 0, right: 10, top: 0, bottom: 30 };
+		let padding2 = { left: 15, right: 15, top: 0, bottom: 30 };
 
 		let svg_height = 300 + d3_height + padding1.top + padding1.bottom + padding2.top + padding2.bottom; //计算最外层svg高度
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
@@ -1108,13 +1108,13 @@ export class ExpressVennComponent implements OnInit {
 				.attr('height', height2)
 				.attr('class', 'svg2');
 
-			let xScale2 = d3.scaleLinear().domain([ 0, d3.max(total_value) ]).range([ width2 - padding2.right, 0 ]);
+			let xScale2 = d3.scaleLinear().domain([ 0, d3.max(total_value) ]).range([ width2 - padding2.right - padding2.left, 0 ]);
 
 			let yScale2 = d3.scaleBand().domain(total_name).range([ d3_height, 0 ]);
 
 			d3_yScale = yScale2;
 
-			let xAxis2 = d3.axisBottom(xScale2).ticks(3);
+			let xAxis2 = d3.axisBottom(xScale2).ticks(5);
 			let yAxis2 = d3.axisRight(yScale2);
 
 			let tempSelectColor = '';
@@ -1221,7 +1221,7 @@ export class ExpressVennComponent implements OnInit {
 				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 40)
 				//.attr('x', 320 - left_name_length - kong_name_right + padding1.left - 100 - 30)//减小宽高   g_map_left
 				//.attr('y', '300')
-				.attr('x',width2+30)
+				.attr('x',width2+25)
 				.attr('y', g_map_height)//减小宽高
 				.attr('width', widthk)
 				.attr('height', heightk)
