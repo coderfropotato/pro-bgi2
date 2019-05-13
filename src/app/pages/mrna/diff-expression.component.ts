@@ -591,6 +591,52 @@ export class DiffExpressionComponent implements OnInit {
 
 	panelChange() {
 		this.panelShow = !this.panelShow;
+		for(let i = 0;i<this.thresholdName.length;i++){
+			const tempN = this.thresholdName[i];
+			if(tempN=="PossionDis"){
+				if (this.p_log2FC != this.PossionDis['log2FC'] || this.p_FDR != this.PossionDis['FDR']) {
+					this.PossionDis = {
+						log2FC: this.p_log2FC,
+						FDR: this.p_FDR
+					};
+
+					this.tempThreshold["PossionDis"] = this.PossionDis;
+				}
+			}else if(tempN=="Noiseq"){
+				if (this.n_log2FC != this.Noiseq['log2FC'] || this.n_probability != this.Noiseq['Probability']) {
+					this.Noiseq = {
+						log2FC: this.n_log2FC,
+						Probability: this.n_probability
+					};
+					this.tempThreshold["Noiseq"] = this.Noiseq;
+				}
+			}else if(tempN=="DEGseq"){
+				if (this.d_log2FC != this.DEGseq['log2FC'] || this.d_Qvalue != this.DEGseq['Qvalue']) {
+					this.DEGseq = {
+						log2FC: this.d_log2FC,
+						Qvalue: this.d_Qvalue
+					};
+					this.tempThreshold["DEGseq"] = this.DEGseq;
+				}
+			}else if(tempN=="DESeq2"){
+				if (this.de_log2FC != this.DESeq2['log2FC'] || this.de_Qvalue != this.DESeq2['Qvalue']) {
+					this.DESeq2 = {
+						log2FC: this.de_log2FC,
+						Qvalue: this.de_Qvalue
+					};
+					this.tempThreshold["DESeq2"] = this.DESeq2;
+				}
+			}else if(tempN=="EBSeq"){
+				if (this.e_log2FC != this.EBSeq['log2FC'] || this.e_PPEE != this.EBSeq['Probability']) {
+					this.EBSeq = {
+						log2FC: this.e_log2FC,
+						PPEE: this.e_PPEE
+					};
+					this.tempThreshold["EBSeq"] = this.EBSeq;
+				}
+			}
+
+		}
 	}
 	setCancle() {
 		for(let i = 0;i<this.thresholdName.length;i++){
