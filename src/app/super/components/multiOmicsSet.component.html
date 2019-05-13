@@ -11,8 +11,8 @@
                 <span class="infoTitle" style="margin-left:50px">定量列</span>
             </div>
             <div class="infoContent" *ngFor="let info of infoList;let i=index">
-                <div class="infoCol rationColInfo relationCol" nz-tooltip [nzTitle]="info.relation">
-                    <span>{{info.relation}}</span>
+                <div class="infoCol rationColInfo relationCol" nz-tooltip [nzTitle]="info.relationName">
+                    <span>{{info.relationName}}</span>
                 </div>
                 <div class="infoCol rationColInfo keyCol" nz-tooltip [nzTitle]="info.key">
                     <span>{{info.key}}</span>
@@ -54,7 +54,7 @@
                 <!-- <nz-select style="width:100%" [(ngModel)]="curRelation['key']" (ngModelChange)="relationChange()" nzShowSearch>
                         <nz-option [nzDisabled]='relation.isDisabled' *ngFor="let relation of relationList" [nzLabel]="relation.name" [nzValue]="relation.key"></nz-option>
                 </nz-select> -->
-                <button nz-button nzSize="small" nzType="default" *ngFor="let relation of relationList.slice(0,1)" style="margin-right:10px;margin-bottom: 10px" (click)="relationChange(relation)" [class.btnActive]='relation.isSelected' [disabled]="relation.isDisabled ? true : false">
+                <button nz-tooltip nzTitle="{{'relation.'+relation['key'] | translate}}" nz-button nzSize="small" nzType="default" *ngFor="let relation of relationList.slice(0,1)" style="margin-right:10px;margin-bottom: 10px" (click)="relationChange(relation)" [class.btnActive]='relation.isSelected' [disabled]="relation.isDisabled ? true : false">
                     {{relation.name}}
                 </button>
             </nz-col>
