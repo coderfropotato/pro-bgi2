@@ -70,6 +70,7 @@ export class reRelationNetComponent implements OnInit {
     isShowAddModal:boolean=false;
     curStartNode:string;
     curEndNode:string;
+    scores:any[]=[];
     curScore:number;
     scoreMin:number;
     scoreMax:number;
@@ -165,6 +166,12 @@ export class reRelationNetComponent implements OnInit {
             "symbolType":"hidden",
             "value":{}
         }
+
+         // add link
+         this.scores=this.storeService.getStore('userRelation').score;
+         this.scoreMin=this.scores[0];
+         this.scoreMax=this.scores[1];
+         this.curScore=this.scores[2];
 
         this.tableUrl=`${config['javaPath']}/linkedNetwork/switchTable`;
         this.chartUrl=`${config['javaPath']}/linkedNetwork/graph`;
@@ -474,16 +481,6 @@ export class reRelationNetComponent implements OnInit {
 
 
         this.allNodes=[...nodes];
-        // add link
-        if(this.allNodes.length && this.allNodes.length>1){
-            this.curStartNode=this.allNodes[0]['geneID'];
-            this.curEndNode=this.allNodes[1]['geneID'];
-        }
-        let scores=this.storeService.getStore('userRelation').score;
-        this.scoreMin=scores[0];
-        this.scoreMax=scores[1];
-        this.curScore=scores[2];
-
         this.allLinks=[...links];
 
         //容器宽高
@@ -1076,6 +1073,13 @@ export class reRelationNetComponent implements OnInit {
     }
 
     //add link
+    addLink(){
+        this.isShowAddModal=true;
+        this.curStartNode=null;
+        this.curEndNode=null;
+        this.curScore=this.scores[2];
+    }
+
     addOk(){
         this.isShowAddModal=false;
         this.ajaxService

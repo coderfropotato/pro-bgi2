@@ -16,7 +16,7 @@
                 <span>Start</span>
             </nz-col>
             <nz-col nzSpan="13">
-                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curStartNode' style="width: 200px;margin-left: 10px" [(ngModel)]="curStartNode" nzShowSearch>
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curStartNode ? curStartNode : ""' style="width: 200px;margin-left: 10px" [(ngModel)]="curStartNode" nzPlaceHolder="Select Start" nzShowSearch>
                     <nz-option *ngFor="let node of allNodes" [nzDisabled]="node.geneID===curEndNode" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                 </nz-select>
             </nz-col>
@@ -27,7 +27,7 @@
                 <span>End</span>
             </nz-col>
             <nz-col nzSpan="13">
-                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curEndNode' style="width: 200px;margin-left: 10px" [(ngModel)]="curEndNode" nzShowSearch>
+                <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curEndNode ? curEndNode : ""' style="width: 200px;margin-left: 10px" [(ngModel)]="curEndNode" nzPlaceHolder="Select End" nzShowSearch>
                     <nz-option *ngFor="let node of allNodes" [nzDisabled]="node.geneID===curStartNode" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                 </nz-select>
             </nz-col>
@@ -58,13 +58,13 @@
                 </ng-template>
 
                 <ng-template #funcBtnsTemplate>
-                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!allNodes.length || allNodes.length==1" (click)='isShowAddModal=true'>Add link</button>
+                    <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!allNodes.length || allNodes.length==1" (click)='addLink()'>Add link</button>
                     <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectLinkList.length" (click)="isShowDeleteModal=true">Delete link</button>
                     <button *ngIf="!isShowTable" nz-button nzType="primary" nzSize='small' style="margin-right: 10px" [disabled]="!selectGeneList.length" (click)="expandNode()">Expand</button>
                 </ng-template>
 
                 <ng-template #searchTemplate>
-                    <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curSearchNode' *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Search gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()"
+                    <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='curSearchNode ? curSearchNode : ""' *ngIf="!isShowTable" style="min-width:160px;margin-left: 10px" nzPlaceHolder="Search gene ID" [(ngModel)]="curSearchNode" [nzSize]="'small'" (ngModelChange)="searchNodeChange()"
                         nzShowSearch>
                         <nz-option *ngFor="let node of allNodes" [nzLabel]="node.geneID" [nzValue]="node.geneID"></nz-option>
                     </nz-select>
