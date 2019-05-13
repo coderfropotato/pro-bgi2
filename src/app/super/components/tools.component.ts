@@ -1252,7 +1252,7 @@ export class ToolsComponent implements OnInit {
 			);
 	}
 
-	// 关联网路图
+	// 关联网络图
 	getlinkedNetworkParams() {
 		this.relativeNetData = this.toolsService.get('tableEntity')['relations'];
 		this.doRelativeNetAjax = true;
@@ -1263,6 +1263,33 @@ export class ToolsComponent implements OnInit {
 		this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
 
 		let entity = this.toolsService.get('tableEntity');
+		let tempGraphRelations = 'graphRelations' in entity && entity['graphRelations'].length?entity['graphRelations']:[];
+		let tableRelations = entity['relations'].length?entity['relations']:[];
+		let graphRelations = tempGraphRelations.map(v=>{
+			let obj= {
+				key:v['relation'],
+				name:v['relationName'],
+				limit:v['limit'],
+				max:v['max'],
+				score:v['score']
+			}
+
+			return obj;
+		})
+
+		let allRelations = graphRelations.concat(tableRelations);
+		let tempArr = [];
+
+		for(let i=0;i<allRelations.length;i++){
+			if(tempArr.includes(allRelations[i]['key'])){
+				allRelations.splice(i,1);
+				i--;
+			}else{
+				tempArr.push(allRelations[i]['key']);
+			}
+		}
+
+
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/linkedNetwork/config`,
@@ -1273,7 +1300,7 @@ export class ToolsComponent implements OnInit {
 					species: entity['species'],
 					version: this.storeService.getStore('version'),
 					baseThead: this.toolsService.get('baseThead'),
-					relations: entity['relations']
+					relations: allRelations
 				}
 			})
 			.subscribe(
