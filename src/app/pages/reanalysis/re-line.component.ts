@@ -349,7 +349,7 @@ export class ReLineComponent implements OnInit {
             axis: {
 				x: {
 					title: "",
-					rotate: 60,
+					rotate: 70,
 					position: "bottom",
 					dblclick: function(event) {
                         that.promptService.open(event.target.textContent,val=>{
