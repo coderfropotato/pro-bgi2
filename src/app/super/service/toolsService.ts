@@ -91,7 +91,13 @@ export class ToolsService {
     }
 
     get(key){
-        return this[key];
+        if(this[key] instanceof Array){
+            return this[key].concat();
+        }else if(this[key] instanceof Object){
+            return Object.assign({},this[key]);
+        }else{
+            return this[key];
+        }
     }
 
     sendOpen(){
