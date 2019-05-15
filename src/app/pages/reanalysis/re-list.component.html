@@ -123,7 +123,7 @@
                 </nz-table>
                 <app-error *ngIf="error" [error]="error"></app-error>
                 <div class="table-bottom">
-                    <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [showPageSize]="false" [total]="total" [pageSize]="10" (pageIndexChange)="getAnalysisList()" [maxLimit]="1000"></app-pagination>
+                    <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [showPageSize]="false" [total]="total" [pageSize]="8" (pageIndexChange)="getAnalysisList()" [maxLimit]="1000"></app-pagination>
                 </div>
             </div>
         </div>
