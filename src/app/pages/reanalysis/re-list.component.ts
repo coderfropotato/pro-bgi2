@@ -19,7 +19,7 @@ export class ReListComponent implements OnInit {
 	tableEntity: object = {
 		LCID: sessionStorage.getItem('LCID'),
 		pageIndex: 1,
-		pageSize: 8,
+		pageSize: 20,
 		searchContent: {
 			label: null,
 			timeStart: '',
@@ -66,6 +66,8 @@ export class ReListComponent implements OnInit {
 	@ViewChild('inputRemark') inputRemark: ElementRef;
 	@ViewChild('inputNickname') inputNickname: ElementRef;
 
+	scroll: any = { x: "0", y: "0" };
+
 	constructor(
 		private routes: ActivatedRoute,
 		private router: Router,
@@ -104,6 +106,13 @@ export class ReListComponent implements OnInit {
 							this.analysisList = data['data']['list'];
 							this.total = data['data']['sumCount'];
 							this.error = '';
+
+							if(this.analysisList.length>10){
+								$(`.re-list-table .ant-table-body`).css("height", `400px`);
+								this.scroll["y"] = `400px`;
+							}else{
+								this.scroll = { x:"100%"}
+							}
 						} else {
 							this.analysisList = [];
 							this.total = 0;
@@ -145,6 +154,14 @@ export class ReListComponent implements OnInit {
 						this.analysisList = data['data']['list'];
 						this.total = data['data']['sumCount'];
 						this.error = '';
+
+						if(this.analysisList.length>10){
+							$(`.re-list-table .ant-table-body`).css("height", `400px`);
+							this.scroll["y"] = `400px`;
+						}else{
+							this.scroll = { x:"100%"}
+						}
+						
 					} else {
 						this.analysisList = [];
 						this.total = 0;
@@ -222,35 +239,49 @@ export class ReListComponent implements OnInit {
 	}
 
 	handleDelete(data) {
-		this.ajaxService
-			.getDeferData({
-				url: `${config['javaPath']}/reAnalysis/deleteByTid`,
-				data: {
-					LCID: 'demo',
-					tid: data['_id']
-				}
-			})
-			.subscribe(
-				(res) => {
-					if (res['status'] == 0) {
-						this.notify.success('Delete', `分析任务 - ${data['nickname']} 删除成功`,{
-							nzStyle: { width: '300px' }
-						});
-						this.tableEntity['pageIndex'] = 1;
-						this.getList();
-					} else {
-						this.notify.warning('Delete', `分析任务 - ${data['nickname']} 删除失败`,{
+		console.log(data);
+		let that = this;
+		that.modalService.confirm({
+			nzTitle: '请确认是否删除记录：'+data.nickname+"?",
+			nzOkText: 'Yes',
+			nzOkType: 'danger',
+			nzOnOk: () => {
+				that.ajaxService
+				.getDeferData({
+					url: `${config['javaPath']}/reAnalysis/deleteByTid`,
+					data: {
+						LCID: 'demo',
+						tid: data['_id']
+					}
+				})
+				.subscribe(
+					(res) => {
+						if (res['status'] == 0) {
+							that.notify.success('Delete', `分析任务 - ${data['nickname']} 删除成功`,{
+								nzStyle: { width: '300px' }
+							});
+							//this.tableEntity['pageIndex'] = 1;
+							that.getList();
+						} else {
+							that.notify.warning('Delete', `分析任务 - ${data['nickname']} 删除失败`,{
+								nzStyle: { width: '300px' }
+							});
+						}
+					},
+					(error) => {
+						console.log(error);
+						that.notify.warning('Delete', `分析任务 - ${data['nickname']} 删除失败`,{
 							nzStyle: { width: '300px' }
 						});
 					}
-				},
-				(error) => {
-					console.log(error);
-					this.notify.warning('Delete', `分析任务 - ${data['nickname']} 删除失败`,{
-						nzStyle: { width: '300px' }
-					});
-				}
-			);
+				);
+			},
+			nzCancelText: 'No',
+			nzOnCancel: () => {
+
+			}
+		});
+		
 	}
 
 	// 数据 类型 状态选择
@@ -395,4 +426,9 @@ export class ReListComponent implements OnInit {
 				}
 			);
 	}
+
+	pageSizeChange() {
+        this.tableEntity["pageIndex"] = 1;
+        this.getAnalysisList(true);
+    }
 }

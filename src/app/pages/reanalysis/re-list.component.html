@@ -58,7 +58,7 @@
                 </div>
             </div> -->
             <div class="table-content">
-                <nz-table *ngIf="!error" #basicTable [nzData]="analysisList" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzSize="small" nzScroll="{'y':120%}">
+                <nz-table *ngIf="!error" #basicTable [nzData]="analysisList" [nzScroll]="scroll" [nzFrontPagination]='false' [nzShowPagination]="false" [nzTotal]="total" nzSize="small" nzScroll="{'y':120%}">
                     <thead>
                         <tr>
                             <th nzWidth="120px">任务名称</th>
@@ -123,7 +123,7 @@
                 </nz-table>
                 <app-error *ngIf="error" [error]="error"></app-error>
                 <div class="table-bottom">
-                    <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [showPageSize]="false" [total]="total" [pageSize]="8" (pageIndexChange)="getAnalysisList()" [maxLimit]="1000"></app-pagination>
+                    <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total" [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getAnalysisList()" (pageSizeChange)="pageSizeChange()" [maxLimit]="1000"></app-pagination>
                 </div>
             </div>
         </div>
