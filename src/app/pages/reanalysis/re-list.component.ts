@@ -8,6 +8,8 @@ import { NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import config from '../../../config';
 import { Subject } from 'rxjs';
 
+declare const $: any;
+
 @Component({
 	selector: 'app-re-list',
 	templateUrl: './re-list.component.html',
