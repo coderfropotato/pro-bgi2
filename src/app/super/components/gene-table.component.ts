@@ -88,6 +88,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 
 	head: string[] = [];
 
+	isAdd:boolean=false;
+
 	total = 1;
 	dataSet = [];
 	accuracy = -1;
@@ -308,6 +310,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					responseData['data']['baseThead'].length &&
 					responseData['data']['rows'].length
 				) {
+					if(responseData['data']['isAdd']){
+						this.isAdd=true;
+					}
+
 					if (this.tableType === 'transform') {
 						this.tableEntity['transform'] = false;
 						this.tableEntity['matrix'] = true;
