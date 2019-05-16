@@ -1083,7 +1083,7 @@ export class DiffExpressionComponent implements OnInit {
 		let tempThatTwo;
 
 		let padding1 = { left: 60, right: 30, top: 20, bottom: 10 };
-		let padding2 = { left: 15, right: 15, top: 0, bottom: 30 };
+		let padding2 = { left: 15, right: 15, top: 0, bottom: 60 };
 
 		let svg_height = 300 + d3_height + padding1.top + padding1.bottom + padding2.top + padding2.bottom; //计算最外层svg高度
 		let svg_width = 320 + d3_width + padding1.left + padding1.right + padding2.left + padding2.right; //计算最外层svg宽度
@@ -1375,7 +1375,11 @@ export class DiffExpressionComponent implements OnInit {
 				.attr('transform', 'translate(' + padding2.left + ',' + (height2 - padding2.bottom) + ')')
 				.call(xAxis2)
 				.selectAll('text')
-				.attr('fontsize', '12');
+				.attr('fontsize', '12')
+				.style("text-anchor", "end")
+				.attr("transform", "rotate(-60)")
+				.attr("dx","-6")
+				.attr("dy","0");
 			svg2
 				.append('g')
 				.attr('class', 'axis_y2')

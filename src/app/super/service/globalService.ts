@@ -243,7 +243,7 @@ export class GlobalService {
      * @author Yangwd<277637411@qq.com>
      * @date 2018-11-02
      * @param {*} event 事件对象
-     * @param {*} text 显示的文本信息
+     * @param {*} text 显示的文本信息 <i class="arrow-outer"></i><i class="arrow-inner"></i>
      * @memberof GlobalService
      */
     showPopOver(event, text,pos = null) {
@@ -251,7 +251,7 @@ export class GlobalService {
         if ($(".popover-service").length) $(".popover-service").remove();
 
         let pop = $(
-            `<div class='ng-popover popover-service' style='max-width:400px;max-height: 400px;overflow: auto;word-break: normal;'>${text}<i class="arrow-outer"></i><i class="arrow-inner"></i></div>`
+            `<div class='ng-popover popover-service' style='max-width:400px;max-height: 400px;overflow:auto;word-break: normal;'>${text}</div>`
         );
 
         $("body")
