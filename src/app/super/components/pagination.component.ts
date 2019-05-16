@@ -46,6 +46,8 @@ export class PaginationComponent implements OnInit, OnChanges {
     pageIndexInput;
     @Input() showPageSize:boolean = true;
 
+    @Input() isHasPlus:boolean=false;
+
     pageCount: number = 0;
     defaultPageIndexSize: number = 1;
     pageIndexList: number[] = [];

@@ -694,7 +694,7 @@ button {
         b {
             display: none;
         }
-        span {
+        span.totalNum {
             margin-left: 9px;
         }
     }
@@ -1272,7 +1272,7 @@ button {
     b {
         margin: 0 10px;
     }
-    span {
+    span.totalNum {
         transition: 0.3s all ease;
         background: rgba(0, 0, 0, 0.15);
         padding: 2px 8px;

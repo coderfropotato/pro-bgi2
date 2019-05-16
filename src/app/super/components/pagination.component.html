@@ -1,5 +1,5 @@
 <div *ngIf="total" class="pagination-content clearfix">
-        <p style="line-height:32px;margin:0;" class="fLeft">Total {{total | accuracyPipe : -1:'int'}}</p>
+        <p style="line-height:32px;margin:0;" class="fLeft">Total {{total | accuracyPipe : -1:'int'}}<span *ngIf="isHasPlus">+</span></p>
         <button [disabled]="isLeft" (click)="handlerBackward()" nz-button nzType="default" [title]="'pagination.backward' | translate">
             <i class="anticon anticon-left"></i>
         </button>

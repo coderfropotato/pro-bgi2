@@ -209,12 +209,12 @@
                     <app-error [error]="error"></app-error>
                 </div>
                 <div #tableBottom class="table-bottom" *ngIf="!error">
-                    <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total" [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()" [maxLimit]="1000">
+                    <app-pagination style="float:left;" [(pageIndex)]="tableEntity['pageIndex']" [total]="total" [(pageSize)]="tableEntity['pageSize']" (pageIndexChange)="getRemoteData()" (pageSizeChange)="pageSizeChange()" [maxLimit]="1000" [isHasPlus]="isAdd">
                     </app-pagination>
                     <!-- 分析按钮 -->
                     <div class="table-analysis-button green" (click)="analysis()" [class.invaild]="!(total - unChecked.length) &&!checked.length" [class.active]="checked.length || (total - unChecked.length)" style="float:right;">
                         <b>{{'tableButton.analysis' | translate}}</b>
-                        <span>{{checkStatus?(total - unChecked.length):checked.length}}</span>
+                        <span class="totalNum">{{checkStatus?(total - unChecked.length):checked.length}}<span *ngIf="isAdd">+</span></span>
                     </div>
                 </div>
             </div>
