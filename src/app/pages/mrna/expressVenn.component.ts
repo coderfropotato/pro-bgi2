@@ -258,7 +258,8 @@ export class ExpressVennComponent implements OnInit {
             low:this.targetValue,
             high:this.expression_Max_value,
 			version: this.storeService.getStore('version'),
-			searchList: []
+			searchList: [],
+			sortThead: this.addColumn['sortThead']
         };
         //console.log(this.defaultEntity)
 		this.defaultTableId = 'express_venn_default_gene';
@@ -288,7 +289,8 @@ export class ExpressVennComponent implements OnInit {
 			low:this.targetValue,
             high:this.expression_Max_value,
 			version: this.storeService.getStore('version'),
-			searchList: []
+			searchList: [],
+			sortThead: this.addColumn['sortThead']
 		};
 		this.extendTableId = 'express_venn_extend_gene';
 		this.extendDefaultChecked = true;

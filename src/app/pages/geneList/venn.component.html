@@ -5,7 +5,7 @@
             <span (click)="moduleDescChange()" class="zhankai-shouqi pointer" [nzTitle]="(expandModuleDesc ? 'moduleDesc.unexpand' : 'moduleDesc.expand') | translate" nz-tooltip>
                 <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleDesc"></i>
                 <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
-                {{'geneList.title' | translate}}1
+                {{'geneList.title' | translate}}
             </span>
             <p [hidden]="!expandModuleDesc">{{'geneList.desc' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>

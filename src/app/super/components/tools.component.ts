@@ -1254,7 +1254,8 @@ export class ToolsComponent implements OnInit {
 
 	// 关联网络图
 	getlinkedNetworkParams() {
-		this.relativeNetData = this.toolsService.get('tableEntity')['relations'];
+		// 断开引用
+		this.relativeNetData = JSON.parse(JSON.stringify(this.toolsService.get('tableEntity')['relations']));
 		this.doRelativeNetAjax = true;
 
 		this.relativeNetData.forEach((v, index) => {
@@ -1289,7 +1290,7 @@ export class ToolsComponent implements OnInit {
 			}
 		}
 
-
+		
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/linkedNetwork/config`,

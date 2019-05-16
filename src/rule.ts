@@ -59,6 +59,7 @@ export const matchList: string[] = [
 	'kegg_reaction_term_id',
 	'kegg_reaction_term',
 	'kegg_reaction_desc',
+	'gene_kegg_k_id',
 	'msigdb_archived_c5_bp_term_id',
 	'msigdb_archived_c5_bp_term',
 	'msigdb_archived_c5_bp_desc',
@@ -237,6 +238,8 @@ export const matchRule: object = {
 	kegg_reaction_term_id: { url: 'https://www.kegg.jp/dbget-bin/www_bget?rn:@' },
 	kegg_reaction_term: { url: 'https://www.kegg.jp/dbget-bin/www_bget?rn:@' },
 	kegg_reaction_desc: { url: 'https://www.kegg.jp/dbget-bin/www_bget?rn:@' },
+
+	gene_kegg_k_id:{url:'https://www.kegg.jp/dbget-bin/www_bget?ko:@'},
 
 	msigdb_archived_c5_bp_term_id: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' },
 	msigdb_archived_c5_bp_term: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' },
