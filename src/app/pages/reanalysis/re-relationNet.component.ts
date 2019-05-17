@@ -420,8 +420,9 @@ export class reRelationNetComponent implements OnInit {
         relations.push({...userRelation});
         let colorArr = [["#FFF1F0", "#CF1322"], ["#FFF7E6", "#FA8C15"], ["#FEFFE6", "#FADB14"], ["#F6FFED", "#52C41A"], ["#E7F7FF", "#1890FF"], ["#F9F0FF", "#712ED1"],["#FFF0F6","#F759AC"]];
         let relationColors=[...relations];
+        let ggiColor=['#90A4AE','#546E7A'];
         relationColors.forEach((d,i)=>{
-            d.colors=[...colorArr[i]];
+            d.colors = d.key==='ggi' ? ggiColor : [...colorArr[i]];
         })
 
         let netRelations=[];
