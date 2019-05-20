@@ -25,6 +25,7 @@ export class GeneRelativeComponent implements OnInit {
 	@Output() confirmEvent: EventEmitter<any> = new EventEmitter();
 	@Input() relative: any[] = [];
 	@Input() geneCount : number = 0;
+	@Input() geneType:string;
 
 	isVisible: boolean = false;
 	selectRelations: object[] = [];
