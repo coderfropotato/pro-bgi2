@@ -321,7 +321,7 @@
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
                 <div class="tool-params-net">
                     <div class="tool-params-tab">
-                        <button class="mr6 mb6" (click)="netClick(net)" nz-tooltip [nzTitle]="net['name']" [class.btnActive]="net['checked']" *ngFor="let net of netData;index as i;" nz-button nzType="default" nzSize="middle">{{net['name']}}</button>
+                        <button class="mr6 mb6" (click)="netClick(net)" nz-tooltip [nzTitle]="net['name']" [class.btnActive]="net['checked']" [hidden]="netGeneType!=='gene' && net['key']=='ggi'" *ngFor="let net of netData;index as i;" nz-button nzType="default" nzSize="middle">{{net['name']}}</button>
                         <p *ngIf="!netData.length && doNetAjax" class="center">缺少必要数据</p>
                         <nz-alert class="mb6" *ngIf="netError || !netSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
                     </div>

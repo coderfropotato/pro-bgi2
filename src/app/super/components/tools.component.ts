@@ -127,6 +127,7 @@ export class ToolsComponent implements OnInit {
 
 	// 网络图参数
 	netData: object[] = [];
+	netGeneType:string;
 	netError: boolean = false;
 	netSelect: object[] = [];
 	doNetAjax: boolean = false;
@@ -1165,6 +1166,7 @@ export class ToolsComponent implements OnInit {
 
 	// 网路图
 	getnetParams() {
+		this.netGeneType=this.toolsService.get('tableEntity')['geneType'];
 		this.netData = this.copy(this.storeService.getStore('relations'));
 		this.netData.forEach((v, index) => {
 			v['checked'] = index ? false : true;
