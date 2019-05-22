@@ -692,7 +692,8 @@ export class OverviewComponent implements OnInit {
 					stroke: "red",
 					"stroke-width": 2
 				  },
-				  data: lineData,
+				  //data: lineData,
+				  data: [],
 				  tooltip: function(d) {
 					return "<span>Sample：d.x</span><br><span>log10(FPKM+1)：d.y</span>";
 				  }
