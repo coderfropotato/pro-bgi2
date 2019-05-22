@@ -13,7 +13,7 @@
             <div class="relative-params-top" *ngIf="selectedType===selectType[0]">
                 <p *ngIf="currentTableRelative.length">当前表格中的关系：<span class="mr12" *ngFor="let re of currentTableRelative;index as i;">{{re}}</span></p>
                 <!-- [class.active-disabled]="currentTableRelative.includes(relation['name'])" -->
-                <button style="margin-right: 8px;" [class.btnActive]="relation['checked'] && !relations['disabled']" *ngFor="let relation of relations;index as i;" [nzSize]="middle" nz-button nzType="Default" [disabled]="relation['disabled']" (click)="select(relation)">{{relation['name']}}</button>
+                <button style="margin-right: 8px;" [hidden]="geneType!=='gene' && relation['key']=='ggi'" [class.btnActive]="relation['checked'] && !relations['disabled']" *ngFor="let relation of relations;index as i;" [nzSize]="middle" nz-button nzType="Default" [disabled]="relation['disabled']" (click)="select(relation)">{{relation['name']}}</button>
             </div>
             <div class="relative-params-content">
                 <!-- 功能关系 -->
