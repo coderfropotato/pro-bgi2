@@ -2,7 +2,7 @@
     <nz-spin [nzSpinning]="loading" nzTip='Loading...'>
         <div class="search-box">
             <p class="re-list-title">我的分析</p>
-            <i class="iconfont icon-shuaxin" style="line-height: 38px;margin-left:10px;" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="getAnalysisList()"></i>
+            <i class="iconfont icon-shuaxin" style="line-height: 38px;margin-left:10px;cursor: pointer;" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="getAnalysisList()"></i>
             <div class="search">
                 <ng-template #addOnAfterTemplate>
                     <button nz-button nzType="default" nzSearch (click)="search()"><i class="anticon anticon-search"></i></button>
