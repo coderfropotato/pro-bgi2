@@ -420,7 +420,7 @@ export class ReKdaComponent implements OnInit {
 
         nodes.forEach(d => {
             if(!d.type){
-                d.type='mRNA';
+                d.type='kda';
             }
             d.selected=false;
             that.selectGeneList.forEach(m=>{

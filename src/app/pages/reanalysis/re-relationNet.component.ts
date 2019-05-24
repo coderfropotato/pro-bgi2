@@ -496,7 +496,7 @@ export class reRelationNetComponent implements OnInit {
         let colorsLen=colors.length;
 
         //node比例尺
-        let typeArr=["mrna", "miRNA", "lncRNA", "other"];
+        let typeArr=["mRNA", "miRNA", "lncRNA", "other"];
         let circleShape=d3.symbol().type(d3.symbolCircle)(), // 圆
             yShape=d3.symbol().type(d3.symbolWye)(),  // Y
             diamondShape=d3.symbol().type(d3.symbolDiamond)(),  // 菱形
@@ -673,7 +673,7 @@ export class reRelationNetComponent implements OnInit {
             .attr('class',"node")
             .attr('id',d=>"node"+d.geneID.replace(that.idReq,""))
             .attr("d",d3.symbol()
-                .type(d=>symbolScale(d.type))
+                .type(d=>(d.type!=='mRNA' && d.type!=='miRNA' &&  d.type!=='lncRNA') ? symbolScale('other') : symbolScale(d.type))
                 .size(d=>sizeScale(d.value))
             )
             .attr('fill', d=>d.selected ? "#000000" : that.nodeColorScale(d.value))
