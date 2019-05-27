@@ -23,6 +23,7 @@ export class AjaxService {
      */
     getDeferData(params: object): Observable<{}> {
         // 验证本地有没有token
+        if(!this.validTokenInLocal()) return;
         return new Observable(observer => {
             if (this.validTokenInLocal()) {
                 let token = localStorage.getItem("token_"+sessionStorage.getItem("LCID"));
