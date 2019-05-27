@@ -89,7 +89,7 @@
                         </div>
                     </div>
                     <div class="right">
-                        <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length">{{'tableButton.confirm' | translate}}</button>
+                        <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length || selectedList.length>10">{{'tableButton.confirm' | translate}}</button>
                     </div>
                 </div>
                 <!-- 筛选面板 -->
