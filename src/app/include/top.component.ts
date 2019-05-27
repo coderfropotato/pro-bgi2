@@ -106,7 +106,7 @@ export class TopComponent implements OnInit{
 		$('html').css('overflow', 'auto');
         $('.report').html(this.htmlString.join(''));
         $('.switch').remove();
-		document.body.style.width = window.screen.width + 'px';
+		document.body.style.width = '1200pt';
         this.loading.close();
 
 		document.title=`BGI_${this.LCID}_report.pdf`;
