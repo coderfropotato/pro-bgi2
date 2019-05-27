@@ -158,7 +158,8 @@ export class OverviewComponent implements OnInit {
 		}
 
 		//this.colorArr = this.store.colors;//
-		this.colorArr = ["#1f77b4", "#ff7f0e", "#aec7e8"];
+		//this.colorArr = ["#1f77b4", "#ff7f0e", "#aec7e8"];
+		this.colorArr = ["#07519c", "#deecf8"];
 
 		//相关性热图
 		this.selectPanelData = [
