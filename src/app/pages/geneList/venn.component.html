@@ -95,7 +95,7 @@
                                     </div>
                                 </div>
                                 <div class="right">
-                                    <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectPanelData.length">{{'tableButton.confirm' | translate}}</button>
+                                    <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectPanelEntity['setNameList'].length || selectPanelEntity['setNameList'].length>10">{{'tableButton.confirm' | translate}}</button>
                                 </div>
                             </div>
                             <!-- 图和表的容器 -->
