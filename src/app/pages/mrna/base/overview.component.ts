@@ -821,6 +821,7 @@ export class OverviewComponent implements OnInit {
 		var chartData = [];
 		var sample =  this.store.getStore('sample');
 
+		console.log(data)
 		for (var i = 0; i < sample.length; i++) {
 			var row = {'sample': sample[i], 'total': 0}
 			for (var j = 0; j < rows.length; j++) {
@@ -832,21 +833,17 @@ export class OverviewComponent implements OnInit {
 			chartData.push(row);
 		}
 
-		//console.log(row)
-		//console.log(chartData)
-		// for (var i = 0; i < rows.length; i++) {
-		// 	let temp = {};
-		// 	let total = 0;
-		// 	for (let j = 0; j < baseThead.length; j++) {
-		// 		let tempName = baseThead[j].true_key;
-		// 		let tempValue = rows[i][tempName];
-		// 		temp[tempName] = tempValue;
-		// 		if(tempName != "range"){
-		// 		  total += tempValue;
-		// 		}
+		// let chartData2 = [];
+
+		// for(var j = 0; j < chartData.length; j++) {
+		// 	let tempC = {
+		// 		"sample":chartData[j]["sample"],
+		// 		"total":chartData[j]["total"],
+		// 		"FPKM <=1":chartData[j]["FPKM <=1"],
+		// 		"FPKM 1-10":chartData[j]["FPKM 1-10"],
+		// 		"FPKM >=10":chartData[j]["FPKM >=10"]
 		// 	}
-		// 	temp["total"] = total;
-		// 	chartData.push(temp)
+		// 	chartData2.push(tempC);
 		// }
 
 		let that = this;
@@ -863,7 +860,8 @@ export class OverviewComponent implements OnInit {
 				el: '#stackMapData',
 				type: 'stackBar',
 				width: 800,
-				custom: [ 'sample', 'total','FPKM 1-10','FPKM <=1','FPKM >=10' ],
+				custom: [ 'sample', 'total','FPKM 1-10','FPKM <=1','FPKM >=10'],
+				colors:['#0768AC','#2B8CBE','#4EB3D3'],
 				data: chartData
 			},
 			axis: {
