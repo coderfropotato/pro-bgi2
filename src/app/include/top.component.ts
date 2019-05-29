@@ -92,7 +92,7 @@ export class TopComponent implements OnInit{
 				}else{
                     _self.downloadPdf();
                 }
-			}, 6000);
+			}, 8000);
 		}
 	}
 
@@ -106,7 +106,7 @@ export class TopComponent implements OnInit{
 		$('html').css('overflow', 'auto');
         $('.report').html(this.htmlString.join(''));
         $('.switch').remove();
-		document.body.style.width = '1200pt';
+		document.body.style.width = '1190pt';
         this.loading.close();
 
 		document.title=`BGI_${this.LCID}_report.pdf`;
