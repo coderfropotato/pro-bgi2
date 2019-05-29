@@ -46,8 +46,9 @@
             </nz-tabset>
             <div class="tab_bottom">
                 <nz-upload nzAction="${config['javaPath']}/upload/do" [(nzFileList)]="nfileList" [nzBeforeUpload]="beforeUpload">
-                    <button nz-button *ngIf="selectAble"><span>选择文件</span></button>
-                    <button nz-button *ngIf="!selectAble"><span>选择文件</span></button>
+                    <!-- <button nz-button *ngIf="selectAble"><span>选择文件</span></button>
+                    <button nz-button *ngIf="!selectAble"><span>选择文件</span></button> -->
+                    <button nz-button [disabled]="selectAble"><span>选择文件</span></button>
                 </nz-upload>
                 <button nz-button nzType="primary" (click)="updateLoad()" *ngIf="fileList.length !=0 || fileList2.length !=0 || fileList3.length !=0">上传</button>
             </div>
