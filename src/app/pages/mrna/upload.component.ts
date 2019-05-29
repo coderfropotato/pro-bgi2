@@ -31,7 +31,7 @@ export class UploadComponent implements OnInit {
 	total_page:number;
 	pageSize: number;
 	selectAble:boolean;
-	fristFlag:boolean;
+	//fristFlag:boolean;
 	colors: string [] = [];
 	file_obj:object={
 		name:'',
@@ -63,8 +63,8 @@ export class UploadComponent implements OnInit {
             type: this.m_index + 1,
             file: ""
 		};
-		this.selectAble = true;
-		this.fristFlag = true;
+		this.selectAble = false;
+		//this.fristFlag = true;
 		this.now_page = 1;
 		this.total_page = 0;
 		this.pageSize = 10;
@@ -224,7 +224,7 @@ export class UploadComponent implements OnInit {
 
 	//先判断上一次文件是否传递完成
     updateLoad() {
-		this.selectAble = false;
+		this.selectAble = true;
 		let tempflag = false;
 		let self = this;
 		this.ajaxService
@@ -243,15 +243,18 @@ export class UploadComponent implements OnInit {
 						nzTitle: "提示",
 						nzContent: self.getProgress(data.data.result)+"...(上个文件正在录入中，请等稍后再试！)"
 					});
+					self.selectAble = false;
 				}else{
 					//成功了进行上传
-					if(self.fristFlag){
-						self.fristFlag = false;
-						self.selectAble = true;
-					}else{
-						self.uploadTask()
-					}
+					// if(self.fristFlag){
+					// 	self.fristFlag = false;
+					// 	self.selectAble = true;
+					// }else{
+					// 	self.uploadTask()
+					// }
 
+					//self.selectAble = true;
+					self.uploadTask()
 				}
 			},
 			error => {
@@ -313,7 +316,7 @@ export class UploadComponent implements OnInit {
 				xhr.onreadystatechange = function(){
 					if(xhr.readyState==4 && xhr.status == 200){
 						self.go_ResponseText = JSON.parse(xhr.responseText);
-						self.selectAble = true;
+						self.selectAble = false;
 						self.getHistoryList();
 					}
 				}

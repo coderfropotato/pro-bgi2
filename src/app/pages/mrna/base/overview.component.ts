@@ -846,6 +846,7 @@ export class OverviewComponent implements OnInit {
 		// 	chartData2.push(tempC);
 		// }
 
+		console.log(chartData)
 		let that = this;
 
 		let config: object = {
@@ -888,6 +889,7 @@ export class OverviewComponent implements OnInit {
 			legend: {
 				show: true,
 				position: 'right',
+				isReverse:true,
 				click: function(d, index) {
 					that.colorT = d3.select(d).attr('fill');
 					that.legendIndexT = index;
