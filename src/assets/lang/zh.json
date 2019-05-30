@@ -213,6 +213,7 @@
         "relationNet": "关联网络图",
         "relationCluster": "关联聚类热图"
     },
+    "selectMaxNum":"最多选择10个",
     "gene": "基因",
     "rna": "转录本",
     "001": "基因属性",

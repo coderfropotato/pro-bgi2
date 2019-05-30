@@ -94,6 +94,7 @@
                                         </ng-container>
                                     </div>
                                 </div>
+                                <div *ngIf="!selectPanelEntity['setNameList'].length || selectPanelEntity['setNameList'].length>10" style="color:red;">{{'selectMaxNum' | translate}}</div>
                                 <div class="right">
                                     <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectPanelEntity['setNameList'].length || selectPanelEntity['setNameList'].length>10">{{'tableButton.confirm' | translate}}</button>
                                 </div>

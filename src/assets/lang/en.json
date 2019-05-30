@@ -213,6 +213,7 @@
         "relationNet": "Relation net",
         "relationCluster": "Relation cluster"
     },
+    "selectMaxNum":"Ten select Max",
     "gene": "gene",
     "rna": "rna",
     "001": "Gene Attr",
