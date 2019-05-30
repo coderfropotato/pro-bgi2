@@ -87,6 +87,7 @@
                             <span>{{selected.type}}</span>&nbsp;
                             <button nz-button nzType="default" [nzSize]="'small'" *ngFor="let item of selected.data" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.name}}</button>
                         </div>
+                        <div *ngIf="!selectedList.length || selectedList.length>10" style="color:red;">{{'selectMaxNum' | translate}}</div>
                     </div>
                     <div class="right">
                         <button nz-button nzType="primary" [nzSize]="'small'" (click)="selectConfirm()" [disabled]="!selectedList.length || selectedList.length>10">{{'tableButton.confirm' | translate}}</button>
