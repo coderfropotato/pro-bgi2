@@ -554,6 +554,10 @@ export class ToolsComponent implements OnInit {
 						this.notify.success('tips：', '任务提交成功。',{
 							nzStyle: { width: '300px' }
 							});
+					} else if(data['status'] == '600012'){
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
 							nzStyle: { width: '300px' }
@@ -654,6 +658,11 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						newWindow.close();
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
@@ -823,6 +832,11 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						newWindow.close();
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
@@ -909,6 +923,10 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
 							nzStyle: { width: '300px' }
@@ -1087,6 +1105,11 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						newWindow.close();
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
@@ -1145,6 +1168,11 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						newWindow.close();
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
@@ -1235,6 +1263,11 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						newWindow.close();
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
@@ -1390,6 +1423,11 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						newWindow.close();
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
@@ -1556,6 +1594,10 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
 							nzStyle: { width: '300px' }
@@ -1674,6 +1716,10 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
 							nzStyle: { width: '300px' }
@@ -1784,6 +1830,10 @@ export class ToolsComponent implements OnInit {
 								nzStyle: { width: '300px' }
 								});
 						}
+					} else if(data['status'] == '600012'){
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+							nzStyle: { width: '300px' }
+							});
 					} else {
 						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
 							nzStyle: { width: '300px' }
