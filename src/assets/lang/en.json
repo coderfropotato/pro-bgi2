@@ -140,7 +140,7 @@
     },
     "tableButton": {
         "refresh": "refresh",
-        "download": "download",
+        "download": "Download up to 10000 lines",
         "filter": "filter",
         "setting": "setting",
         "confirm": "confirm",
