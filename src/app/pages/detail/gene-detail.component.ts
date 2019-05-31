@@ -270,6 +270,7 @@ export class GeneDetailComponent implements OnInit {
 	geneType:string = '';
 	species:string = '';
 	loadTable: boolean = false;
+	loadTable3: boolean = false;
 
 	t_show: boolean = false;
 	c_show: boolean = false;
@@ -350,6 +351,8 @@ export class GeneDetailComponent implements OnInit {
 				this.gene_url = `${config['javaPath']}/geneDetail/info`;
 				this.gene_params = this.geneParamsUsed;
 
+				await this.getGeneInformation();//基因信息
+
 				//转录本信息
 				this.defaultUrl = `${config['javaPath']}/geneDetail/rnaID`;
 				this.rna_params = this.geneParamsUsed;
@@ -360,16 +363,19 @@ export class GeneDetailComponent implements OnInit {
 				this.expressive_params_g = this.geneParamsUsed;
 				this.expressive_params_t = this.transcriptParamsUsed;
 				//this.expressive_params = this.geneParamsUsed;//折线图
+				
+				this.loadTable3 = true;
 
 				//组间差异
 				this.groupDiff_defaultUrl = `${config['javaPath']}/geneDetail/groupDiff`;
 				this.groupDiff_params_g = this.geneParamsUsed;
-				this.groupDiff_params_t = this.transcriptParamsUsed
+				this.groupDiff_params_t = this.transcriptParamsUsed;
 
 				//样本间差异
 				this.sampleDiff_defaultUrl = `${config['javaPath']}/geneDetail/sampleDiff`;
 				this.sampleDiff_params_g = this.geneParamsUsed;
 				this.sampleDiff_params_t = this.transcriptParamsUsed;
+				
 
 				//miRna靶向信息
 				this.miRnaTarget_defaultUrl = `${config['javaPath']}/geneDetail/miRNATarget`;
@@ -460,7 +466,6 @@ export class GeneDetailComponent implements OnInit {
 
 				this.loadTable = true;
 
-				await this.getGeneInformation();//基因信息
 				await this.getPrecursor();//二次结构
 				await this.getDocumentInformation();//文献信息
 

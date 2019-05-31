@@ -147,10 +147,10 @@
             <div class="transcripts_table">
                 <h5>{{'gene_detail.sample_expression' | translate}}</h5>
                 <nz-tabset [nzSelectedIndex]="expressive_index" (nzSelectedIndexChange)="SelectedExpressiveChange($event)">
-                  <nz-tab nzTitle="基因" *ngIf="loadTable">
+                  <nz-tab nzTitle="基因" *ngIf="loadTable3">
                       <app-little-table  [hidden]="!expressive_g_flag" [type]="'FPKM_gene'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_g"></app-little-table>
                   </nz-tab>
-                  <nz-tab nzTitle="转录本" *ngIf="loadTable">
+                  <nz-tab nzTitle="转录本" *ngIf="loadTable3">
                       <app-little-table [hidden]="!expressive_t_flag" [type]="'FPKM_trans'" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="expressive_defaultUrl" [pageEntity]="expressive_params_t"></app-little-table>
                   </nz-tab>
                 </nz-tabset>
