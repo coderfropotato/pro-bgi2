@@ -155,7 +155,8 @@ export class ExpressVennComponent implements OnInit {
 	targetValue: number = 0;
 
 	expression_Min_value: number = 0;
-	expression_Max_value: number = 2147483647;
+	//expression_Max_value: number = 2147483647;
+	expression_Max_value: number = 99999999;
 
 	sampleGroupTop3: string [] = [];
 	sampleGroupTarget: string [] = [];
