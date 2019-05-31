@@ -620,8 +620,12 @@ export class OverviewComponent implements OnInit {
 			xData.push(tempBoxData[i].name);
 			var spotLength = tempBoxData[i].spotData.length;
 
-			for (var j = 0; j < spotLength; j++) {
-				yData.push(tempBoxData[i].spotData[j].y);
+			if (spotLength !== 0) {
+				for (var j = 0; j < spotLength; j++) {
+					yData.push(tempBoxData[i].spotData[j].y);
+				}
+			}else{
+				yData.push(data.yMax);
 			}
 
 			if (spotLength !== 0) {
@@ -631,6 +635,7 @@ export class OverviewComponent implements OnInit {
                 });
             }
 		}
+		console.log(yData)
 		let tempWidth = 0;
 		if(xData.length<=12){
 			tempWidth = 660;
