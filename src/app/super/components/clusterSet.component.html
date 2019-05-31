@@ -54,10 +54,10 @@
 
                 <nz-row [hidden]="type && type === 'relation'">
                     <nz-col nzSpan="7" style="margin-left: 22.833333%;">
-                        <nz-input-number [nzMin]="min" [nzMax]="max" [(ngModel)]="minValue" (ngModelChange)='minValueChange()'></nz-input-number>
+                        <nz-input-number [(ngModel)]="minValue" (ngModelChange)='minValueChange()'></nz-input-number>
                     </nz-col>
                     <nz-col nzSpan="7" style="margin-left: 18.666667%;">
-                        <nz-input-number [nzMin]="min" [nzMax]="max" [(ngModel)]="maxValue" (ngModelChange)='maxValueChange()'></nz-input-number>
+                        <nz-input-number [(ngModel)]="maxValue" (ngModelChange)='maxValueChange()'></nz-input-number>
                     </nz-col>
                 </nz-row>
                     
