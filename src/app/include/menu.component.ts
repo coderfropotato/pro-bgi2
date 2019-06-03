@@ -89,6 +89,7 @@ export class MenuComponent implements OnChanges {
         }
         this.index = index;
         this.expandItem = menu["children"];
+        this.expand=true;
     }
 
     subMenuMouseEnter() {
@@ -122,7 +123,7 @@ export class MenuComponent implements OnChanges {
 
     jumpToFirst(item,index){
         this.initMenuStatus();
-        this.menu[index]["active"] = true;
+        item["active"] = true;
         if(item['children'].length){
             item['children'][0]['active'] = true;
             this.router.navigateByUrl(`/report/mrna/${item['children'][0]["url"]}`);
