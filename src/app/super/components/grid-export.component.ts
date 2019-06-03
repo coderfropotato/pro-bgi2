@@ -73,7 +73,8 @@ export class GridExportComponent implements OnInit {
 						this.messageService.success('Table Export Successful')
 					}else{
 						this.loadingService.close();
-						this.messageService.warning('Table Export Failed')
+						this.messageService.warning(data['message']);
+						//this.messageService.warning('Table Export Failed');
 					}
 				},
 				(error) => {
