@@ -41,7 +41,7 @@ export class TransformationTableComponent implements OnInit {
 
     @Input() tableHeight;
     @Input() isFirst;
-    @Input() downFlagShow;
+    @Input() downFlagShow:boolean=false;
     @Input() applyOnceSearchParams:boolean = false;
     @Output() applyOnceSearchParamsChange:EventEmitter<any> = new EventEmitter();
 
