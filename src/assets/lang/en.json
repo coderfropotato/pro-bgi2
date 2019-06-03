@@ -140,7 +140,7 @@
     },
     "tableButton": {
         "refresh": "refresh",
-        "download": "Download up to 10000 lines",
+        "download": "Download up to 5000 lines",
         "filter": "filter",
         "setting": "setting",
         "confirm": "confirm",
@@ -154,6 +154,8 @@
         "export_svg": "export SVG image",
         "analysis": "tools"
     },
+    "status5":"Unfinished download task",
+    "status6":"prohibit download",
     "view": {
         "s_view": "statistical view",
         "t_view": "table view"
