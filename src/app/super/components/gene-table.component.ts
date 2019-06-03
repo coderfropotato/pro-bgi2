@@ -76,7 +76,9 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	@Input() compareGroup: any = undefined; // 比较组
 	@Input() reanalysisId: any = undefined; // 重分析id
     @Input() reanalysisDate: any = undefined; // 重分析时间
-    @Input() isKeggRich:boolean = false; // 是否是kegg富集表
+	@Input() isKeggRich:boolean = false; // 是否是kegg富集表
+	
+	@Input() downFlagShow:boolean = false;
 
 	@ViewChildren('child') children;
 	count: number = 0; // 选中的基因个数
