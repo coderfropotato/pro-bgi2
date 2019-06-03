@@ -230,7 +230,7 @@ export class ExpressVennComponent implements OnInit {
 			//查询参数
             LCID: this.storeService.getStore('LCID'),
             sample: this.sampleGroupTop3,
-            geneType: this.pageModuleService['defaultModule'],
+            geneType: this.defaultGeneType,
             species: this.storeService.getStore('genome'),
             low:this.targetValue,
             high:this.expression_Max_value
@@ -254,7 +254,7 @@ export class ExpressVennComponent implements OnInit {
 			reAnaly: false,
 			matrix: false, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
             low:this.targetValue,
             high:this.expression_Max_value,
@@ -285,7 +285,7 @@ export class ExpressVennComponent implements OnInit {
 			matchAll: false,
 			matrix: true, //是否转化。矩阵为matrix
 			relations: [], //关系组（简写，索引最后一个字段）
-			geneType: this.pageModuleService['defaultModule'], //基因类型gene和transcript
+			geneType: this.defaultGeneType, //基因类型gene和transcript
 			species: this.storeService.getStore('genome'), //物种
 			low:this.targetValue,
             high:this.expression_Max_value,
