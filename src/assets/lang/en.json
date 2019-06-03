@@ -154,8 +154,6 @@
         "export_svg": "export SVG image",
         "analysis": "tools"
     },
-    "status5":"Unfinished download task",
-    "status6":"prohibit download",
     "view": {
         "s_view": "statistical view",
         "t_view": "table view"
