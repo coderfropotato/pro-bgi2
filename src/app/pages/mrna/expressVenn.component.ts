@@ -163,6 +163,8 @@ export class ExpressVennComponent implements OnInit {
 
 	chartDescContent:any;
 
+	maxFlag:boolean = false;
+
 	constructor(
 		private message: MessageService,
 		private ajaxService: AjaxService,
@@ -513,36 +515,43 @@ export class ExpressVennComponent implements OnInit {
 	}
 	setConfirm() {
 
-        this.tableEntity['low'] = this.targetValue;
-		this.tableEntity['high'] = this.expression_Max_value;
+		if(this.targetValue>99999999 || this.targetValue<0){
+			this.maxFlag = true;
+			return;
+		}else{
+			this.maxFlag = false;
 
-		//this.expression_threshold_temp= this.expression_threshold;
-		// this.expression_temp_min = this.expression_threshold['min'];
-		// this.expression_temp_max = this.expression_threshold['max'];
+			this.tableEntity['low'] = this.targetValue;
+			this.tableEntity['high'] = this.expression_Max_value;
 
-		this.singleMultiSelect={
-			bar_name: '',
-			total_name: '',
-			venn_name: ''
-		};
+			//this.expression_threshold_temp= this.expression_threshold;
+			// this.expression_temp_min = this.expression_threshold['min'];
+			// this.expression_temp_max = this.expression_threshold['max'];
 
-		this.doubleMultiSelect = {
-			bar_name: [],
-			total_name: []
-		};
+			this.singleMultiSelect={
+				bar_name: '',
+				total_name: '',
+				venn_name: ''
+			};
 
-        this.panelShow = false;
-        this.upSelect.length = 0;
-		this.leftSelect.length = 0 ;
-		this.defaultShowFilterStatus = false;
-		this.tableSwitchChart.reGetData();
+			this.doubleMultiSelect = {
+				bar_name: [],
+				total_name: []
+			};
 
-		// if (this.first) {
-		// 	this.transformTable._getData();
-		// } else {
-        //     this.first = true;
-		// }
-		this.chartBackStatus();
+			this.panelShow = false;
+			this.upSelect.length = 0;
+			this.leftSelect.length = 0 ;
+			this.defaultShowFilterStatus = false;
+			this.tableSwitchChart.reGetData();
+
+			// if (this.first) {
+			// 	this.transformTable._getData();
+			// } else {
+			//     this.first = true;
+			// }
+			this.chartBackStatus();
+		}
 	}
 
 	//单、多选change
@@ -576,8 +585,28 @@ export class ExpressVennComponent implements OnInit {
 	}
 
 	inputChange(num){
-		//console.log(num);
-		this.targetValue = num;
+		if(num>99999999 || num<0){
+			this.maxFlag = true;
+			return;
+		}else{
+			this.maxFlag = false;
+			this.targetValue = num;
+		}
+		
+	}
+
+	inputBlur(e){
+		// console.log(e.fromElement.lastChild.lastChild.value);
+		// this.maxFlag = false;
+		let num = e.fromElement.lastChild.lastChild.value;
+
+		if(num>99999999 || num<0){
+			this.maxFlag = true;
+			return;
+		}else{
+			this.maxFlag = false;
+			this.targetValue = num;
+		}
 	}
 
 	//venn和upsetR只能单选时候

@@ -31,13 +31,15 @@
                                 <div class="con_PessionDis_left">
                                     EXP >
                                 </div>
+                                <!-- [nzMin]="expression_Min_value" [nzMax]="expression_Max_value" -->
                                 <div class="con_PessionDis_right">
-                                        <nz-input-number class="ex_input" (ngModelChange)="inputChange($event)" [(ngModel)]="targetValue" [nzMin]="expression_Min_value" [nzMax]="expression_Max_value" [nzStep]="0.1"></nz-input-number>
+                                    <nz-input-number class="ex_input" (ngModelChange)="inputChange($event)"  (mouseleave)="inputBlur($event)" [(ngModel)]="targetValue" [nzStep]="0.1"></nz-input-number>
                                 </div>
                             </div>
+                            <div *ngIf="maxFlag" style="color:red;margin-left:18px;">请输入数字范围在0 ~ 99999999之间</div>
                         <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
                             {{'tableButton.cancel' | translate}}  </button>
-                        <button class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">
+                        <button class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()" [disabled]="maxFlag">
                             {{'tableButton.confirm' | translate}}  </button>
                     </div>
                 </nz-dropdown>
