@@ -4,6 +4,7 @@ const config: object = {
     url: 'http://localhost:8086', // 本地服务测试
     // 线上 218.106.117.7
     // 测试 192.168.167.24:7777
+    // hd5 192.168.167.35
 	javaPath: 'http://biosys.bgi.com/api', // api基础路径
 	outerDataBaseIndex: '006', // 增删列外部数据库的索引
 	lang: 'zh', // 默认语言
