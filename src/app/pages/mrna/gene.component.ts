@@ -10,6 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { PromptService } from './../../super/service/promptService';
 import config from '../../../config';
 import { GeneService } from './../../super/service/geneService';
+import { NzNotificationService } from 'ng-zorro-antd';
+import { formatDate } from '@angular/common';
 
 declare const d3: any;
 declare const gooalD3: any;
@@ -155,7 +157,8 @@ export class GenePage {
 		private promptService: PromptService,
 		private addColumnService: AddColumnService,
 		private router: Router,
-		private geneService: GeneService
+		private geneService: GeneService,
+		private notification: NzNotificationService,
 	) {
 		let browserLang = this.storeService.getLang();
 		this.translate.use(browserLang);
@@ -192,6 +195,43 @@ export class GenePage {
 		];
 
 		this.geneService.set('andOr', this.radioValue);
+
+		if(config["sysDefend"]){
+			if(!config['sysDefendEndTime']){
+				this.sysDefendInfo();
+			}else{
+				let nowDate=new Date();
+				let formateDate=this.setNowFormatDate(nowDate);
+				if(formateDate < config['sysDefendEndTime']){
+					this.sysDefendInfo();
+				}
+				
+			}
+		}
+	}
+
+	sysDefendInfo(){
+		this.notification.info(
+			'系统通知',
+			'尊敬的用户，为获得更好的用户体验，本系统将于2019年6月7日0:00到6月9日24:00进行维护升级，期间可能会影响系统使用。给您带来不便敬请谅解。',
+			{ 
+				nzDuration: 0,
+				nzStyle: {
+					width: '300px',
+				}
+			}
+		  );
+	}
+
+	setNowFormatDate(date) {
+		let month = (date.getMonth() + 1).toString().padStart(2,'0');
+		let strDate = date.getDate().toString().padStart(2,'0');
+		//时间格式yyyy-MM-dd HH:MM:SS
+		return `${date.getFullYear()}-${month}-${strDate} ${this.getCurrentTime(date)}`;
+	  }
+
+	getCurrentTime(date) {
+		return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 	}
 
 	//是否折叠显示框 最外层

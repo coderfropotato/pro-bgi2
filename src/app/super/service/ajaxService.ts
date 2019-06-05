@@ -36,12 +36,12 @@ export class AjaxService {
                 };
 
                 // 如果系统维护了 那就跳系统维护
-                if (config["sysDefend"]) {
-                    observer.error('sysDefend');
-                    observer.complete();
-                    this.router.navigateByUrl("/report/sysDefend");
-                    return;
-                }
+                // if (config["sysDefend"]) {
+                //     observer.error('sysDefend');
+                //     observer.complete();
+                //     this.router.navigateByUrl("/report/sysDefend");
+                //     return;
+                // }
                 // 验证token的合法性
                 this.http
                     .post(`${config["javaPath"]}/swap_token`, { LCID }, head)
@@ -134,10 +134,10 @@ export class AjaxService {
                     })
                 };
                 // 如果系统维护了 那就跳系统维护
-                if (config["sysDefend"]) {
-                    this.router.navigateByUrl("/report/sysDefend");
-                    return;
-                }
+                // if (config["sysDefend"]) {
+                //     this.router.navigateByUrl("/report/sysDefend");
+                //     return;
+                // }
                 // 验证token的合法性
                 this.http
                     .post(`${config["javaPath"]}/swap_token`, { LCID }, head)
