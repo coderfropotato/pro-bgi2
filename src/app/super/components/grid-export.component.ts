@@ -73,7 +73,23 @@ export class GridExportComponent implements OnInit {
 						this.messageService.success('Table Export Successful')
 					}else{
 						this.loadingService.close();
-						this.messageService.warning(data['message']);
+						let lang = localStorage.getItem('lang');
+						if(data['status']==5){
+							if(lang=="zh"){
+								this.messageService.warning("有下载任务未完成");
+							}
+							if(lang=="en"){
+								this.messageService.warning("Unfinished download task");
+							}
+						}else if(data['status']==6){
+							if(lang=="zh"){
+								this.messageService.warning("禁止下载");
+							}
+							if(lang=="en"){
+								this.messageService.warning("prohibit download");
+							}
+						}
+						//this.messageService.warning(data['message']);
 						//this.messageService.warning('Table Export Failed');
 					}
 				},

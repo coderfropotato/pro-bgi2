@@ -82,6 +82,7 @@
             <span class="info_content">
                 {{geneInfoList['gene_chr']}}<span *ngIf="geneInfoList['gene_start']">:</span>{{geneInfoList['gene_start']}}<span *ngIf="geneInfoList['gene_end']">-</span>{{geneInfoList['gene_end']}}
             </span>
+            <span style="font-style: italic;color:#A3A3A3;">（注：若该基因有新转录本，其坐标可能与NCBI官方的不一致）</span>
           </p>
           <p *ngIf="geneInfoList['gene_map_loc']">
             <span class="info_name">{{'gene_detail.gene_map_loc' | translate}}</span>
