@@ -428,7 +428,7 @@ export class MapComponent implements OnInit {
 			this.extendEntity['transform'] = true;
 			this.extendEntity['matrix'] = true;
 			this.addColumn._clearThead();
-			this.extendEntity['addThead'] = [];
+			this.extendEntity['addThead'] = checkParams['tableEntity']['addThead'];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -449,7 +449,7 @@ export class MapComponent implements OnInit {
 			);
 			this.transformTable._setExtendParamsWithoutRequest('transform', true);
 			this.transformTable._setExtendParamsWithoutRequest('matrix', true);
-			this.transformTable._setExtendParamsWithoutRequest('addThead', []);
+			this.transformTable._setExtendParamsWithoutRequest('addThead', checkParams['tableEntity']['addThead']);
 			this.addColumn._clearThead();
 			setTimeout(() => {
 				this.transformTable._getData();

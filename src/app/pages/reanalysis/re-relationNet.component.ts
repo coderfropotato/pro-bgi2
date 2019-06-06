@@ -299,7 +299,7 @@ export class reRelationNetComponent implements OnInit {
             this.extendEntity['matrix'] = true;
             this.extendEntity['checkGraph'] = false;
             this.addColumn._clearThead();
-			this.extendEntity['addThead'] = [];
+			this.extendEntity['addThead'] = checkParams['tableEntity']['addThead'];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -313,7 +313,7 @@ export class reRelationNetComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'transform',true);
             this.transformTable._setExtendParamsWithoutRequest( 'matrix',true);
             this.transformTable._setExtendParamsWithoutRequest( 'checkGraph', false );
-            this.transformTable._setExtendParamsWithoutRequest( 'addThead', []);
+            this.transformTable._setExtendParamsWithoutRequest( 'addThead',checkParams['tableEntity']['addThead']);
             this.addColumn._clearThead();
 			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {

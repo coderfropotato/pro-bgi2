@@ -399,7 +399,7 @@ export class ExpressVennComponent implements OnInit {
             this.extendEntity['low'] = this.targetValue;
             this.extendEntity['high'] = this.expression_Max_value;
 			this.extendEntity['relations'] = relations;
-			this.extendEntity['addThead'] = [];
+			this.extendEntity['addThead'] = checkParams['tableEntity']['addThead'];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -411,7 +411,7 @@ export class ExpressVennComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest( 'rootSearchContentList', checkParams['tableEntity']['rootSearchContentList'] );
 			this.transformTable._setExtendParamsWithoutRequest( 'relations', relations);
 			// 每次checkStatusInParams状态变完  再去获取数据
-			this.transformTable._setExtendParamsWithoutRequest('addThead',[]);
+			this.transformTable._setExtendParamsWithoutRequest('addThead',checkParams['tableEntity']['addThead']);
 			setTimeout(() => {
 				this.transformTable._getData();
 			}, 30);

@@ -493,6 +493,7 @@ export class TargetComponent implements OnInit {
 				}
 			)
 			.on('click', function() {
+				
 				if (!_selfV.isMultiSelect) {
 					_selfV.singleMultiSelect['bar_name'] = '';
 					_selfV.singleMultiSelect['total_name'] = '';
@@ -512,6 +513,12 @@ export class TargetComponent implements OnInit {
 				ev.stopPropagation();
 			})
 			.svgClick(function() {
+				let e = window.event;
+
+				e.stopPropagation();
+				// e.target["className"]["animVal"]
+				// e.target["className"]["baseVal"]
+
 				if (_selfV.isMultiSelect) {
 					_selfV.venSelectAllData = [];
 				} else {

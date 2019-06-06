@@ -664,7 +664,7 @@ export class GeneComponent implements OnInit {
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
 			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
 			this.extendEntity['relations'] = relations;
-			this.extendEntity['addThead'] = [];
+			this.extendEntity['addThead'] = checkParams['tableEntity']['addThead'];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -685,7 +685,7 @@ export class GeneComponent implements OnInit {
 			);
 			this.transformTable._setExtendParamsWithoutRequest('relations', relations);
 			// 每次checkStatusInParams状态变完  再去获取数据
-			this.transformTable._setExtendParamsWithoutRequest('addThead', []);
+			this.transformTable._setExtendParamsWithoutRequest('addThead', checkParams['tableEntity']['addThead']);
 			setTimeout(() => {
 				this.transformTable._getData();
 			}, 30);

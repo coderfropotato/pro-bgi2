@@ -247,7 +247,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			this.extendEntity['checkGraph'] = false;
 			// 每次转换 清除增删列
 			this.addColumn._clearThead();
-			this.extendEntity['addThead'] = [];
+			this.extendEntity['addThead'] = checkParams['tableEntity']['addThead'];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -269,7 +269,7 @@ export class ReMultiOmicsComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest('checkGraph', false);
 			this.transformTable._setExtendParamsWithoutRequest('relations', relations);
 			// 每次转换清除增删列
-			this.transformTable._setExtendParamsWithoutRequest('addThead', []);
+			this.transformTable._setExtendParamsWithoutRequest('addThead', checkParams['tableEntity']['addThead']);
 			this.addColumn._clearThead();
 			// 每次checkStatusInParams状态变完  再去获取数据
 			setTimeout(() => {

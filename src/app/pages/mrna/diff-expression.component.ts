@@ -454,7 +454,7 @@ export class DiffExpressionComponent implements OnInit {
 			this.extendEntity['upChooseList'] = checkParams['tableEntity']['upChooseList'];
 			this.extendEntity['diffThreshold'] = checkParams['tableEntity']['diffThreshold'];
 			this.extendEntity['relations'] = relations;
-			this.extendEntity['addThead'] = [];
+			this.extendEntity['addThead'] = checkParams['tableEntity']['addThead'];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -476,7 +476,7 @@ export class DiffExpressionComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest('compareGroup', this.selectConfirmData);
 			this.transformTable._setExtendParamsWithoutRequest('relations', relations);
 			// 每次checkStatusInParams状态变完  再去获取数据
-			this.transformTable._setExtendParamsWithoutRequest('addThead', []);
+			this.transformTable._setExtendParamsWithoutRequest('addThead', checkParams['tableEntity']['addThead']);
 			setTimeout(() => {
 				this.transformTable._getData();
 			}, 30);

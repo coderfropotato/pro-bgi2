@@ -394,7 +394,7 @@ export class GoRichComponent implements OnInit {
             this.extendEntity['enrichmentType']=checkParams['tableEntity']['enrichmentType'];
 			this.extendEntity['checkedClassifyList'] = checkParams['tableEntity']['checkedClassifyList'];
 			this.addColumn._clearThead();
-			this.extendEntity['addThead'] = [];
+			this.extendEntity['addThead'] = checkParams['tableEntity']['addThead'];
 			this.first = false;
 		} else {
 			this.transformTable._initTableStatus();
@@ -411,7 +411,7 @@ export class GoRichComponent implements OnInit {
 			this.transformTable._setExtendParamsWithoutRequest('transform', true);
 			this.transformTable._setExtendParamsWithoutRequest('matrix', true);
 			this.transformTable._setExtendParamsWithoutRequest('checkGraph', false);
-			this.transformTable._setExtendParamsWithoutRequest('addThead', []);
+			this.transformTable._setExtendParamsWithoutRequest('addThead', checkParams['tableEntity']['addThead']);
 			this.addColumn._clearThead();
 			setTimeout(() => {
 				this.transformTable._getData();
