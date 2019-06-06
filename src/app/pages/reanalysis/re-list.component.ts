@@ -245,7 +245,7 @@ export class ReListComponent implements OnInit {
 		let that = this;
 		that.modalService.confirm({
 			nzTitle: '请确认是否删除记录：'+data.nickname+"?",
-			nzOkText: 'Yes',
+			nzOkText: '确定',
 			nzOkType: 'danger',
 			nzOnOk: () => {
 				that.ajaxService
@@ -278,7 +278,7 @@ export class ReListComponent implements OnInit {
 					}
 				);
 			},
-			nzCancelText: 'No',
+			nzCancelText: '取消',
 			nzOnCancel: () => {
 
 			}
