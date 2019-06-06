@@ -252,7 +252,7 @@ export class ReListComponent implements OnInit {
 				.getDeferData({
 					url: `${config['javaPath']}/reAnalysis/deleteByTid`,
 					data: {
-						LCID: 'demo',
+						// LCID: 'demo',
 						tid: data['_id']
 					}
 				})
