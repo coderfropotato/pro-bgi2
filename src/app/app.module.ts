@@ -40,7 +40,7 @@ import { NewTreeComponent } from './super/components/tree-new.component';
 import { TreeItemComponent } from './super/components/tree-item.component';
 import { ColorPickerComponent } from './super/components/color-picker.component';
 import { ToolsComponent } from './super/components/tools.component';
-import { SysDefendComponent } from './pages/sysDefend.component';
+// import { SysDefendComponent } from './pages/sysDefend.component';
 import { LayoutSwitchComponent } from './super/components/layout-switch.component';
 import { LoadingComponent } from './pages/reanalysis/loading.component';
 import { BigTableCheckComponent } from './super/components/big-table-check.component';
@@ -120,7 +120,7 @@ import { TooltipDirective } from './super/directive/tooltip.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { SysDefendService } from './super/service/sysDefendService';
+// import { SysDefendService } from './super/service/sysDefendService';
 import { GeneService } from './super/service/geneService';
 import { PageModuleService } from './super/service/pageModuleService';
 import { AddColumnService } from './super/service/addColumnService';
@@ -147,7 +147,7 @@ const ROUTES: Routes = [
 			keep: true,
 			module: 'mrnaIndex'
 		},
-		canActivateChild: [ SysDefendService ],
+		// canActivateChild: [ SysDefendService ],
 		children: [
 			// {
 			// 	path: '',
@@ -374,7 +374,7 @@ const ROUTES: Routes = [
 			keep: true,
 			module: 'geneList'
 		},
-		canActivateChild: [ SysDefendService ],
+		// canActivateChild: [ SysDefendService ],
 		children: [
 			{
 				path: 'venn',
@@ -401,7 +401,7 @@ const ROUTES: Routes = [
 	{
 		path: 'report/reanalysis',
 		component: ReanalysisIndexComponent,
-		canActivateChild: [ SysDefendService ],
+		// canActivateChild: [ SysDefendService ],
 		data: {
 			keep: false,
 			module: 'reanalysisIndex'
@@ -419,7 +419,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-multiOmics/:geneType/:tid/:version/:isEdit',
 				component: ReMultiOmicsComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reMutiOmics'
@@ -428,7 +428,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-heatmap/:geneType/:tid/:version/:isEdit',
 				component: ReHeatmapComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reHeatmap'
@@ -437,7 +437,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-heatmapRelation/:geneType/:tid/:version/:isEdit',
 				component: reRelationHeatmapComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reRelationHeatmap'
@@ -446,7 +446,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-net/:geneType/:tid/:version/:isEdit',
 				component: ReNetComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reNet'
@@ -455,7 +455,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-linkedNetwork/:geneType/:tid/:version/:isEdit',
 				component: reRelationNetComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reRelationNet'
@@ -464,7 +464,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-kda/:geneType/:tid/:version/:isEdit',
 				component: ReKdaComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reKda'
@@ -473,7 +473,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-line/:geneType/:tid/:version/:isEdit',
 				component: ReLineComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reLine'
@@ -482,7 +482,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-chiSquare/:geneType/:tid/:version/:isEdit',
 				component: KaFunComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reKaFun'
@@ -491,7 +491,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-as/:geneType/:tid/:version/:isEdit',
 				component: RelativeSpliceComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reRelativeSplice'
@@ -500,7 +500,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-classification/:geneType/:tid/:version/:annotation/:isEdit',
 				component: ReClassComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reClass'
@@ -509,7 +509,7 @@ const ROUTES: Routes = [
 			{
 				path: 're-enrichment/:geneType/:tid/:version/:annotation/:isEdit/:date',
 				component: ReRichComponent,
-				canActivate: [ SysDefendService ],
+				// canActivate: [ SysDefendService ],
 				data: {
 					keep: false,
 					module: 'reRich'
@@ -534,7 +534,7 @@ const ROUTES: Routes = [
 	{
 		path: 'report/map/test',
 		component: MapTestComponent,
-		canActivate: [ SysDefendService ],
+		// canActivate: [ SysDefendService ],
 		data: {
 			keep: false,
 			module: 'mapTest'
@@ -544,7 +544,7 @@ const ROUTES: Routes = [
 	{
 		path: 'report/login',
 		component: LoginComponent,
-		canActivate: [ SysDefendService ],
+		// canActivate: [ SysDefendService ],
 		data: {
 			keep: false,
 			module: 'login'
@@ -553,7 +553,7 @@ const ROUTES: Routes = [
     {
         path:'report/project',
         component:ProjectComponent,
-        canActivate:[SysDefendService],
+        // canActivate:[SysDefendService],
         data:{
             keep:false,
             module:'project'
@@ -562,7 +562,7 @@ const ROUTES: Routes = [
 	{
 		path: 'reprot/sysError',
 		component: SyserrorComponent,
-		canActivate: [ SysDefendService ],
+		// canActivate: [ SysDefendService ],
 		data: {
 			keep: false,
 			module: 'sysError'
@@ -571,20 +571,20 @@ const ROUTES: Routes = [
 	{
 		path: 'report/404',
 		component: NotFoundComponent,
-		canActivate: [ SysDefendService ],
+		// canActivate: [ SysDefendService ],
 		data: {
 			keep: false,
 			module: '404'
 		}
 	},
-	{
-		path: 'report/sysDefend',
-		component: SysDefendComponent,
-		data: {
-			keep: false,
-			module: 'sysDefend'
-		}
-	},
+	// {
+		// path: 'report/sysDefend',
+		// component: SysDefendComponent,
+		// data: {
+		// 	keep: false,
+		// 	module: 'sysDefend'
+		// }
+	// },
 	// dna
 	// {
 	// 	path: 'report/dna',
@@ -599,13 +599,13 @@ const ROUTES: Routes = [
 	{
 		path: '',
 		redirectTo: 'report/login',
-		canActivate: [ SysDefendService ],
+		// canActivate: [ SysDefendService ],
 		pathMatch: 'full'
 	},
 	{
 		path: '**',
 		redirectTo: 'report/404',
-		canActivate: [ SysDefendService ],
+		// canActivate: [ SysDefendService ],
 		pathMatch: 'full'
 	}
 ];
@@ -617,7 +617,7 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
 	// 组件，指令，过滤器（管道） 申明在declarations 里
 	declarations: [
-		SysDefendComponent,
+		// SysDefendComponent,
 		LoginComponent,
 		IndexComponent,
 		GeneTableComponent,
@@ -758,7 +758,7 @@ export function createTranslateLoader(http: HttpClient) {
 		MessageService,
 		AjaxService,
 		StoreService,
-		SysDefendService,
+		// SysDefendService,
 		PageModuleService,
 		AddColumnService,
 		PromptService,
