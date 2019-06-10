@@ -14,7 +14,7 @@ const config: object = {
 	getAnalysisListCountInterval: 20000, // 获取重分析任务列表的时间间隔
 	getAnalysisCountInterval: 20000, // 获取未查看重分析任务条数的时间间隔
 	sysDefend: true, // 是否系统维护
-	sysDefendEndTime:'2019-06-09 24:00:00',  //时间格式：yyyy-MM-dd HH:MM:SS
+	sysDefendEndTime:'2019-06-11 08:00:00',  //时间格式：yyyy-MM-dd HH:MM:SS
     layoutContentPadding: 8,
     rna:'RNA ID',   // 外部触发表格筛选的时候 筛选条件按照filterNamezh编译 需要和rna_id列的 name 保持一致
     gene:'Gene ID',  // 外部触发表格筛选的时候 筛选条件按照filterNamezh编译 需要和gene_id列的 name 保持一致
