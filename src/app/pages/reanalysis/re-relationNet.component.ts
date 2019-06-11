@@ -590,40 +590,26 @@ export class reRelationNetComponent implements OnInit {
             .attr("marker-end",d=> d.type==='target' ? `url(#arrow${d.id})` :'')
             .on("mouseover", m => {
                 let referencesStr= m.references;
-                let references=[];
-                if(referencesStr){
-                    if(referencesStr.indexOf(';')!==-1){
-                      let refs= referencesStr.split(';');
+                let references=strSplit(referencesStr);
 
-                      let rs1=[],rs2=[];
-
-                      if(refs[0]!=='NA'){
-                        rs1=refs[0].split(',');
-                      }
-
-                      if(refs[1]!=='NA'){
-                        rs2=refs[1].split(',');
-                      }
-
-                      references=[...rs1,...rs2];
-                    }else{
-                        if(referencesStr!=='NA'){
-                            references=referencesStr.split(',');
-                        }else{
-                            references.length=0;
-                        }
-                    }
-                }
+                let stsStr=m.sts;
+                let stsArr=strSplit(stsStr);
 
                 let text = `source：<a target='_blank' href='${this.geneDetailUrl}/${m.source.geneID}'>${m.source.geneID}</a><br>target：<a target='_blank' href='${this.geneDetailUrl}/${m.target.geneID}'>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}`;
                 if(references.length){
                     text=text+'<br>文献：';
                     references.forEach((r,j)=>{
-                       let refStr=`<a target='_blank' href='https://www.ncbi.nlm.nih.gov/pubmed/${r}'>${r}</a>`;
-                       text=text+refStr;
-                       if(j!==references.length-1){
-                           text=text+'，';
-                       }
+                        let refStr;
+                        if(stsArr.length){
+                            refStr=`<a target='_blank' href='https://www.ncbi.nlm.nih.gov/pubmed/${r}'>${r}</a>，${stsArr[j]}<br>`;
+                            text=text+refStr;
+                        }else{
+                            refStr=`<a target='_blank' href='https://www.ncbi.nlm.nih.gov/pubmed/${r}'>${r}</a>`;
+                            text=text+refStr;
+                            if(j!==references.length-1){
+                                text=text+'，';
+                            }
+                        }
                     })
                 }
                 this.globalService.showPopOver(d3.event, text);
@@ -660,6 +646,22 @@ export class reRelationNetComponent implements OnInit {
                 })
 
             });
+            
+            function strSplit(str){
+                let arr=[];
+                if(str){
+                    if(str.indexOf(';')!==-1){
+                        arr= str.split(';').filter(d=>d!=='NA');
+                    }else{
+                        if(str!=='NA'){
+                            arr=[str];
+                        }else{
+                            arr.length=0;
+                        }
+                    }
+                }
+                return arr;
+            }
 
 
         //node
