@@ -92,20 +92,20 @@ export class TopComponent implements OnInit{
 				}else{
                     _self.downloadPdf();
                 }
-			}, 8000);
+			}, 9000);
 		}
 	}
 
 	// download pdf orderby htmlstring
 	downloadPdf() {
         document.body.style.overflow="auto";
-        $('.menu').remove();
+        // $('.menu').remove();
         $('.top').css('opacity', 0);
         $('.report').css('height','auto');
         $('body').css('height','auto');
 		$('html').css('overflow', 'auto');
         $('.report').html(this.htmlString.join(''));
-        $('.switch').remove();
+        // $('.switch').remove();
 		document.body.style.width = '1190pt';
         this.loading.close();
 
