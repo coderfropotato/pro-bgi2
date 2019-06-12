@@ -1,3 +1,4 @@
+git pull
 npm run build
 cp -fr dist ../webFront/
 rm -fr dist
