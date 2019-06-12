@@ -525,10 +525,10 @@ export class ReKdaComponent implements OnInit {
             .style('cursor','pointer')
             .on("mouseover", m => {
                 let referencesStr= m.references;
-                let references=strSplit(referencesStr);
+                let references=strSplit(referencesStr,';');
 
                 let stsStr=m.sts;
-                let stsArr=strSplit(stsStr);
+                let stsArr=strSplit(stsStr,'+++');
 
                 let text = `source：<a target='_blank' href='${this.geneDetailUrl}/${m.source.geneID}'>${m.source.geneID}</a><br>target：<a target='_blank' href='${this.geneDetailUrl}/${m.target.geneID}'>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}`;
                 if(references.length){
@@ -582,11 +582,11 @@ export class ReKdaComponent implements OnInit {
 
             });
 
-            function strSplit(str){
+            function strSplit(str,mark){
                 let arr=[];
                 if(str){
-                    if(str.indexOf(';')!==-1){
-                        arr= str.split(';').filter(d=>d!=='NA');
+                    if(str.indexOf(mark)!==-1){
+                        arr= str.split(mark).filter(d=>d!=='NA');
                     }else{
                         if(str!=='NA'){
                             arr=[str];
