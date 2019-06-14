@@ -353,7 +353,7 @@ export class InformationComponent implements OnInit {
 		var chartData = [];
 		for (var i = 0; i < baseThead.length; i++) {
 			for (var j = 0; j < rows.length; j++) {
-				if (baseThead[i].name != 'mirna_length') {
+				if (baseThead[i].true_key != 'mirna_length') {
 					chartData.push({
 						key: rows[j].mirna_length,
 						value: rows[j][baseThead[i].true_key],
@@ -362,7 +362,7 @@ export class InformationComponent implements OnInit {
 				}
 			}
 		}
-		//console.log(chartData)
+		console.log(chartData)
 		let that = this;
 
 		let config: object = {
