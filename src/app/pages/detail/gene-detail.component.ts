@@ -27,6 +27,7 @@ export class GeneDetailComponent implements OnInit {
 	title: string;
 	geneID: string;
 	LCID: string;
+	isSts:boolean=false;
 
 	//基因信息
 	gene_url: string;
@@ -321,11 +322,13 @@ export class GeneDetailComponent implements OnInit {
 		}
 
 		this.routes.paramMap.subscribe((params) => {
+			let type = params['params']['type'];
 			this.lcid = params['params']['lcid'];
 			this.geneID = params['params']['id'];
 			this.geneType = params['params']['geneType'];
 			this.species = params['params']['species'];
- 		});
+			this.isSts = type==='sts' ? true : false;
+		 });	 
 	}
 
 	ngOnInit() {
@@ -338,13 +341,15 @@ export class GeneDetailComponent implements OnInit {
 				this.geneParamsUsed = {
 					LCID: this.lcid,
 					geneType: "gene",
-					geneID: this.geneID
+					geneID: this.geneID,
+					isSts:this.isSts
 				}
 
 				this.transcriptParamsUsed = {
 					LCID: this.lcid,
 					geneType: "rna",
-					geneID: this.geneID
+					geneID: this.geneID,
+					isSts:this.isSts
 				}
 
 				//基因信息
@@ -409,24 +414,28 @@ export class GeneDetailComponent implements OnInit {
 					LCID: this.lcid,
 					geneType: "gene",
 					geneID: this.geneID,
-					size:this.documentPage
+					size:this.documentPage,
+					isSts:this.isSts
 				};
 
 				this.tcd_defaultUrl = `${config['javaPath']}/geneDetail/getSequence`;
 				this.t_params={
 					LCID: this.lcid,
 					type: "rna.fa",
-					geneID: this.geneID
+					geneID: this.geneID,
+					isSts:this.isSts
 				};
 				this.c_params={
 					LCID: this.lcid,
 					type: "cds.fa",
-					geneID: this.geneID
+					geneID: this.geneID,
+					isSts:this.isSts
 				};
 				this.d_params={
 					LCID: this.lcid,
 					type: "protein.fa",
-					geneID: this.geneID
+					geneID: this.geneID,
+					isSts:this.isSts
 				};
 
 				// 功能注释信息
@@ -499,7 +508,8 @@ export class GeneDetailComponent implements OnInit {
 				data: {
 					"LCID": this.lcid,
 					"geneType": "rna",
-					"id": this.geneID
+					"id": this.geneID,
+					"isSts":this.isSts
 				}
 
 			})

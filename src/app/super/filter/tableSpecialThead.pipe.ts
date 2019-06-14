@@ -61,16 +61,16 @@ export class TableSpecialTheadFilter implements PipeTransform {
 			}else if (config['geneInfo'].includes(thead)){
 				// 基因详情页
 				if(geneType=="gene"){
-					let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${sessionStorage.getItem('species_kingdom')}/${geneType}/${value}`;
+					let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${sessionStorage.getItem('species_kingdom')}/${geneType}/nosts/${value}`;
 					let htmlStr = `<a href="${url}" target="_blank">${value}</a>`
 					return this.globalService.trustStringHtml(htmlStr);
 				}else{
 					if(thead == "rna_id"){
-						let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${sessionStorage.getItem('species_kingdom')}/${geneType}/${value}`;
+						let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${sessionStorage.getItem('species_kingdom')}/${geneType}/nosts/${value}`;
 						let htmlStr = `<a href="${url}" target="_blank">${value}</a>`
 						return this.globalService.trustStringHtml(htmlStr);
 					}else if(thead == "gene_id"){
-						let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${sessionStorage.getItem('species_kingdom')}/gene/${value}`;
+						let url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${sessionStorage.getItem('species_kingdom')}/gene/nosts/${value}`;
 						let htmlStr = `<a href="${url}" target="_blank">${value}</a>`
 						return this.globalService.trustStringHtml(htmlStr);
 					}

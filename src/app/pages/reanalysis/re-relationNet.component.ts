@@ -593,9 +593,14 @@ export class reRelationNetComponent implements OnInit {
                 let references=strSplit(referencesStr,';');
 
                 let stsStr=m.sts;
-                let stsArr=strSplit(stsStr,'+++');
+                let stsArrs=strSplit(stsStr,'+++');
+                let stsArr=[];
+                stsArrs.forEach(s=>{
+                   let d=s.replace("<a href='",`<a target='_blank' href='${this.geneDetailUrl}/sts/`);
+                    stsArr.push(d);
+                })
 
-                let text = `source：<a target='_blank' href='${this.geneDetailUrl}/${m.source.geneID}'>${m.source.geneID}</a><br>target：<a target='_blank' href='${this.geneDetailUrl}/${m.target.geneID}'>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}`;
+                let text = `source：<a target='_blank' href='${this.geneDetailUrl}/nosts/${m.source.geneID}'>${m.source.geneID}</a><br>target：<a target='_blank' href='${this.geneDetailUrl}/nosts/${m.target.geneID}'>${m.target.geneID}</a><br>type：${m.type}<br>score：${m.score}`;
                 if(references.length){
                     text=text+'<br>文献：';
                     references.forEach((r,j)=>{
@@ -682,7 +687,7 @@ export class reRelationNetComponent implements OnInit {
             .attr("cursor", "pointer")
             .on("mouseover", m => {
                 let value=isLinkNum ? 'node连接数' : that.chartEntity['quantity']['name'];
-                let text = `geneID：<a target='_blank' href='${this.geneDetailUrl}/${m.geneID}'>${m.geneID}</a><br>type：${m.type}<br>${value}：${m.value}<br>geneSymbol：${m.symbol}`;
+                let text = `geneID：<a target='_blank' href='${this.geneDetailUrl}/nosts/${m.geneID}'>${m.geneID}</a><br>type：${m.type}<br>${value}：${m.value}<br>geneSymbol：${m.symbol}`;
                 this.globalService.showPopOver(d3.event, text);
             })
             .on("mouseout", () => {
