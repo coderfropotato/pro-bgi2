@@ -334,9 +334,7 @@ export class GeneDetailComponent implements OnInit {
 	ngOnInit() {
 		(async () => {
 			try {
-				if(this.geneType == "rna"){
-					await this.getGeneID();
-				}
+				await this.getGeneID();
 
 				this.geneParamsUsed = {
 					LCID: this.lcid,
@@ -507,7 +505,7 @@ export class GeneDetailComponent implements OnInit {
 				url: `${config['javaPath']}/geneDetail/getGeneID`,
 				data: {
 					"LCID": this.lcid,
-					"geneType": "rna",
+					"geneType": this.geneType,
 					"id": this.geneID,
 					"isSts":this.isSts
 				}
