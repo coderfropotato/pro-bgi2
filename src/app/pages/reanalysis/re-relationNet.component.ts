@@ -596,7 +596,7 @@ export class reRelationNetComponent implements OnInit {
                 let stsArrs=strSplit(stsStr,'+++');
                 let stsArr=[];
                 stsArrs.forEach(s=>{
-                   let d=s.replace("<a href='",`<a target='_blank' href='${this.geneDetailUrl}/sts/`);
+                   let d=s.replace(/\<a href='/g,`<a target='_blank' href='${this.geneDetailUrl}/sts/`);
                     stsArr.push(d);
                 })
 
