@@ -196,33 +196,10 @@ export class GenePage {
 
 		this.geneService.set('andOr', this.radioValue);
 
-		if(config["sysDefend"]){
-			if(!config['sysDefendEndTime']){
-				this.sysDefendInfo();
-			}else{
-				let nowDate=new Date();
-				let formateDate=this.setNowFormatDate(nowDate);
-				if(formateDate < config['sysDefendEndTime']){
-					this.sysDefendInfo();
-				}
-				
-			}
-		}
+		
 	}
 
-	sysDefendInfo(){
-		this.notification.info(
-			'系统通知',
-			'尊敬的用户，为获得更好的用户体验，本系统将于2019年6月10日23:00到2019年6月11日8:00进行维护升级，期间系统将无法访问。给您带来不便敬请谅解。',
-			{ 
-				nzDuration: 0,
-				nzStyle: {
-					width: '300px',
-				}
-			}
-		  );
-	}
-
+	
 	setNowFormatDate(date) {
 		let month = (date.getMonth() + 1).toString().padStart(2,'0');
 		let strDate = date.getDate().toString().padStart(2,'0');
