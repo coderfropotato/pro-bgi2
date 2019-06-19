@@ -13,7 +13,7 @@
         </div>
         <div class="left-bottom-layout">
             <app-table-switch-chart #diffAlternativeSpliceChart [id]="'diffAlternativeSpliceChart'" [tableUrl]="chartUrl" [apiEntity]="chartEntity" (drawChartEmit)="drawChart($event)" [chartId]="'diffAlternativeSpliceDiv'" [chartName]="'差异可变剪接事件统计'" [flex]="true"
-                (refresh)="handlerRefresh()" [chartDescContent]="'X轴代表差异可变剪接类型，Y轴代表差异可变剪接数目。不同颜色的柱子分别代表了不同的差异方案。'">
+                (refresh)="handlerRefresh()" [chartDescContent]="'该部分对每个比较组发生差异可变剪接的事件进行统计，其中X轴为比较组，Y轴为不同可变剪接类型在相应比较组中的占比。每种颜色代表一种可变剪接类型。'">
             </app-table-switch-chart>
 
             <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="isShowColorPanel"></app-color-picker>

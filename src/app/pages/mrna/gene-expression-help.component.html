@@ -128,6 +128,16 @@
                 <p>参考文献：</p>
                 <p>[1] Tarazona, S. et al. Differential expression in RNA-seq: a matter of depth. Genome Res. 21, 2213-2223 (2011).</p>
             </div>
+
+            <h3 class="title2">EBseq: </h3>
+            <p class="help_text text_indent">EBseq<sup>[1]</sup>可鉴定两个生物条件下群体差异表达的基因，考虑到reads比对的不确定性（因为亚型转录本及其所属基因的转录本亚型数量），EBseq运用方差计算，使结果更为可靠。</p>
+            <p class="help_text text_indent">EBseq统计了一个基因为非差异表达和差异表达的后验概率，“PPEE和PPDE”。另外，EBseq还做了关于倍数变化（fold change）的统计，对于每个条件中的基因评估后验平均表达水平，计算两种条件下的比例。为了提高差异分析正确性，我们将差异倍数为两倍以上并且PPEE小于0.05的基因，筛选为显著差异表达基因。</p>
+            <div class="help_bg">
+                <p>EBseq:</p>
+                <p>参数: Fold Change >= 2.00 and Posterior Probability of being Equivalent Expression(PPEE) <= 0.05</p>
+                <p>参考文献：</p>
+                <p>[1] Leng, N. et al. EBSeq: an empirical Bayes hierarchical model for inference in RNA-seq experiments. Bioinformatics 29, 1035-1043 (2013).</p>
+            </div>
         </div>
 
         <div class="help_content" *ngIf="mflag7">

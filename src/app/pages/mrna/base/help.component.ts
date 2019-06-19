@@ -112,7 +112,7 @@ export class BasicHelpComponent implements OnInit {
 
         temp = this.project_type.split(",");
 
-        if(temp.indexOf('miRNA') > -1){
+        if(temp.indexOf('smallRNA') > -1){
             if(temp.length>1){
                 this.mflag = 3;
             }else{
