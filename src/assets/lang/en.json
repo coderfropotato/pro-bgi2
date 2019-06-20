@@ -92,7 +92,8 @@
         "upload": "Upload data",
         "analysis": "My analysis",
         "lang": "Toggle language",
-        "fullscreen": "Toggle fullscreen"
+        "fullscreen": "Toggle fullscreen",
+        "help":"help page"
     },
     "geneList": {
         "title": "genelist",

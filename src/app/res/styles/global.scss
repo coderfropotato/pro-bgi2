@@ -2625,42 +2625,6 @@ button {
                 height: auto;
                 margin-bottom: 10px;
             }
-            // .img_one{
-            // width: 70px;
-            // height: 24px;
-            // display: inline-block; // background-image: url("../img/small/ncbi.png"); // background-repeat: no-repeat;
-            // background-position: center;
-            // }
-            // .img_two{
-            // width: 70px;
-            // height: 24px;
-            // display: inline-block; // background-image: url("../img/small/hgnc.png"); // background-repeat: no-repeat;
-            // background-position: center;
-            // }
-            // .img_three{
-            // width: 70px;
-            // height: 24px;
-            // display: inline-block; // background-image: url("../img/small/ense.png"); // background-repeat: no-repeat;
-            // background-position: center;
-            // }
-            // .img_four{
-            // width: 70px;
-            // height: 24px;
-            // display: inline-block; // background-image: url("../img/small/cards.png"); // background-repeat: no-repeat;
-            // background-position: center;
-            // }
-            // .img_five{
-            // width: 70px;
-            // height: 24px;
-            // display: inline-block; // background-image: url("../img/small/kegg.png"); // background-repeat: no-repeat;
-            // background-position: center;
-            // }
-            // .img_six{
-            // width: 70px;
-            // height: 24px;
-            // display: inline-block; // background-image: url("../img/small/mir.png"); // background-repeat: no-repeat;
-            // background-position: center;
-            // }
             .info_name {
                 display: inline-block;
                 width: 150px;
@@ -2769,6 +2733,78 @@ button {
                 }
             }
         }
+    }
+    .help_cc_one{
+        width: 1366px;
+        height: 768px;
+        margin: 10px auto;
+        background-image: url("../img/cc_help/9.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+    }
+    .help_cc_two{
+        width: 1366px;
+        height: 768px;
+        margin: 10px auto;
+        background-image: url("../img/cc_help/99.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+    }
+    .help_cc_three{
+        width: 1366px;
+        height: 768px;
+        margin: 10px auto;
+        background-image: url("../img/cc_help/3.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+    }
+    .help_cc_four{
+        width: 1366px;
+        height: 768px;
+        margin: 10px auto;
+        background-image: url("../img/cc_help/4.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+    }
+    .help_cc_five{
+        width: 1366px;
+        height: 768px;
+        margin: 10px auto;
+        background-image: url("../img/cc_help/5.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+    }
+    .help_cc_six{
+        width: 1360px;
+        height: 768px;
+        margin: 10px auto;
+        background-image: url("../img/cc_help/6.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+    }
+    .help_cc_seven{
+        width: 1409px;
+        height: 885px;
+        margin: 10px auto;
+        background-image: url("../img/cc_help/7.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+    }
+    .help_cc_eight{
+        width: 1300px;
+        height: 800px;
+        margin: 10px auto;
+        background-image: url("../img/cc_help/8.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
     }
 }
 

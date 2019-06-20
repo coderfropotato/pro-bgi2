@@ -92,7 +92,8 @@
         "upload": "上传数据",
         "analysis": "我的分析",
         "lang": "切换语言",
-        "fullscreen": "切换全屏"
+        "fullscreen": "切换全屏",
+        "help":"帮助页面"
     },
     "geneList": {
         "title": "基因集",

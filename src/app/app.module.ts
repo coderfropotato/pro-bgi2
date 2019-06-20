@@ -82,6 +82,8 @@ import { BasicHelpComponent } from './pages/mrna/base/help.component';
 import { GeneDetailComponent } from './pages/detail/gene-detail.component';
 /* 上传模块 */
 import { UploadComponent } from './pages/mrna/upload.component';
+/* 帮助模块 */
+import { HelpComponent } from './pages/mrna/help.component';
 /* 小工具 */
 import { ReanalysisIndexComponent } from './pages/reanalysis/index.component';
 import { ReListComponent } from './pages/reanalysis/re-list.component';
@@ -347,6 +349,14 @@ const ROUTES: Routes = [
 				}
 			}
 		]
+	},
+	{
+		path: 'report/mrna/help', // 上传数据
+		component: HelpComponent,
+		data: {
+			keep: false,
+			module: 'help'
+		}
 	},
 	// 基因详情页
 	{
@@ -703,6 +713,7 @@ export function createTranslateLoader(http: HttpClient) {
 		SnpIndelHelpComponent,
 
 		UploadComponent,
+		HelpComponent,
 
 		ReanalysisIndexComponent,
 		ReMultiOmicsComponent,

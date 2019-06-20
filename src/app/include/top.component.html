@@ -15,7 +15,10 @@
             <!-- analysisFn -->
             <i *ngIf="analysis" nz-tooltip nzPlacement="bottom" nzTitle="{{'myGeneList' | translate}}" class="iconfont icon-jiyinji" (click)="handleSaveGeneListClick()"></i>
 
+            <i *ngIf="help" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.help' | translate}}" class="iconfont icon-bangzhuwendang" (click)="goHelp()"></i>
+
             <i *ngIf="lang" nz-tooltip nzPlacement="bottom" nzTitle="{{'top.lang' | translate}}" class="iconfont" [class.icon-En]="browserLang=='zh'" [class.icon-zhongwenqiehuan]="browserLang=='en'" (click)="changeLan()"></i>
+
             <!-- 修改主题色 -->
             <!-- <input type="color" (change)="handleColorChange($event)"> -->
 

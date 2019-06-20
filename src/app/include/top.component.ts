@@ -30,7 +30,8 @@ export class TopComponent implements OnInit{
 	@Input() pdf: boolean = true;
 	@Input() analysis: boolean = true;
 	@Input() upload: boolean = true;
-    @Input() lang: boolean = true;
+	@Input() lang: boolean = true;
+	@Input() help: boolean = true;
     @Input() disabledLogoClick:boolean = false;
 	@Output() logoClick: EventEmitter<any> = new EventEmitter();
 
@@ -133,6 +134,13 @@ export class TopComponent implements OnInit{
 
 	uploadFn() {
 		this.router.navigateByUrl(`/report/${sessionStorage.getItem('LCTYPE')}/upload`);
+	}
+
+	goHelp(){
+		// let url = `${location.href.substring(0, location.href.indexOf('/report'))}/report/mrna/help`;
+		// window.open(url);
+		let href = `${location.href.split('/report')[0]}/report/mrna/help`;
+		window.open(href)
 	}
 
 	handleLogoClick(){
