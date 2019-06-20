@@ -425,6 +425,7 @@ export class MapComponent implements OnInit {
 			this.extendEntity['mongoId'] = checkParams['mongoId'];
 			this.extendEntity['searchList'] = checkParams['tableEntity']['searchList'];
 			this.extendEntity['rootSearchContentList'] = checkParams['tableEntity']['rootSearchContentList'];
+			this.extendEntity['relations'] = relations;
 			this.extendEntity['transform'] = true;
 			this.extendEntity['matrix'] = true;
 			this.addColumn._clearThead();
@@ -447,6 +448,7 @@ export class MapComponent implements OnInit {
 				'rootSearchContentList',
 				checkParams['tableEntity']['rootSearchContentList']
 			);
+			this.extendEntity['relations'] = relations;
 			this.transformTable._setExtendParamsWithoutRequest('transform', true);
 			this.transformTable._setExtendParamsWithoutRequest('matrix', true);
 			this.transformTable._setExtendParamsWithoutRequest('addThead', checkParams['tableEntity']['addThead']);
