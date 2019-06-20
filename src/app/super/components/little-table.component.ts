@@ -67,7 +67,7 @@ export class LittleTableComponent implements OnInit {
         //     this.goTarget = this.targetURL;
         // }
         if(this.targetID2){
-            this.targetID2Url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${this.targetID2Species}/${this.targetID2Type}/nosts/${this.targetID2_ID}`;
+            this.targetID2Url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${this.targetID2Species}/${this.targetID2Type}/nosts/`;
         }
         this.getData();
     }
