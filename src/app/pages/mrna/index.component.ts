@@ -373,7 +373,7 @@ export class IndexComponent implements OnInit {
 			})
 			.subscribe((res) => {
 				if (res['status'] == 0 && res['data'][0].length) {
-					this.notify.warning('系统提示', res['data'][0], {
+					this.notify.blank('系统提示', res['data'][0], {
 						nzStyle: {
 							width: '320px'
 						}
