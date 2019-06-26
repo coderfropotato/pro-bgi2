@@ -32,6 +32,7 @@
             <span *ngIf="childVisible && selectType==='heatmapRelation'">关联聚类参数</span>
             <span *ngIf="childVisible && selectType==='classification'">分类参数</span>
             <span *ngIf="childVisible && selectType==='enrichment'">富集参数</span>
+            <span *ngIf="childVisible && selectType==='gsea'">GSEA富集</span>
         </ng-template>
         <!-- 聚类 -->
         <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='heatmap'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
@@ -511,5 +512,140 @@
             </nz-spin>
         </nz-drawer>
 
+        <!-- GSEA富集 -->
+        <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='gsea'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
+            [nzWidth]="396" nzPlacement="right" (nzOnClose)="handlerChildClose()">
+            <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
+                <nz-alert  nzType="info" [nzMessage]="'useage14' | translate" nzShowIcon></nz-alert>
+                <!-- 1.选择样本 -->
+                <p style="margin-top: 0.5em;">1.选择样本</p>
+                <nz-row class="mb12" nzAlign="middle">
+                    <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="geasTopRadioChange()">
+                        <label nz-radio nzValue="A">按组选择</label>
+                        <label nz-radio nzValue="B">自定义</label>
+                    </nz-radio-group>
+                </nz-row>
+                <nz-row class="mb12" nzAlign="middle" *ngIf="radioAFlag">
+                    <nz-row class="mb12" nzType="flex" nzAlign="middle">
+                        <div nz-col nzSpan="6">对照组：</div>
+                        <div nz-col nzSpan="18">
+                                <nz-select
+                                style="width: 100%;"
+                                nzShowSearch
+                                nzAllowClear
+                                nzPlaceHolder="请选择对照组"
+                                [(ngModel)]="radioASecond"
+                              >
+                              <nz-option [nzLabel]="item.value" [nzValue]="item.value" *ngFor="let item of controlGroup" [nzDisabled]="item.flag"></nz-option>
+                              </nz-select>
+                        </div>
+                    </nz-row>
+                    <nz-row class="mb12" nzType="flex" nzAlign="middle">
+                        <div nz-col nzSpan="6">处理组：</div>
+                        <div nz-col nzSpan="18">
+                            <nz-select
+                                style="width: 100%;"
+                                nzShowSearch
+                                nzAllowClear
+                                nzPlaceHolder="请选择处理组"
+                                [(ngModel)]="radioAFrist"
+                                (ngModelChange)="geasASelectChange()"
+                                >
+                                <nz-option [nzLabel]="item.value" [nzValue]="item.value" *ngFor="let item of handleGroup" [nzDisabled]="item.flag"></nz-option>
+                                </nz-select>
+                        </div>
+                    </nz-row>
+                </nz-row>
+
+
+                <nz-row class="mb12" nzAlign="middle" *ngIf="radioBFlag">
+                    <nz-row class="mb12" nzType="flex" nzAlign="middle">
+                        <div nz-col nzSpan="6">对照组：</div>
+                        <div nz-col nzSpan="18">
+                            <input nz-input placeholder="请输入组名" [(ngModel)]="inputBFrist" (ngModelChange)="inputBFristChange()" />
+                        </div>
+                    </nz-row>
+                    <nz-row class="mb12" nzType="flex" nzAlign="middle">
+                        <div nz-col nzSpan="18" nzOffset="6">
+                            <nz-select style="width: 100%" [(ngModel)]="selectBFristTag" nzSize="size" nzMode="tags" nzPlaceHolder="请选择样本" (ngModelChange)="geasBSelectChange()">
+                                <nz-option *ngFor="let option of controlGroup2" [nzLabel]="option.value" [nzValue]="option.value"></nz-option>
+                            </nz-select>
+                        </div>
+                    </nz-row>
+                    <nz-row class="mb12" nzType="flex" nzAlign="middle">
+                        <div nz-col nzSpan="6">处理组：</div>
+                        <div nz-col nzSpan="18">
+                            <input nz-input placeholder="请输入组名" [(ngModel)]="inputBSecond" (ngModelChange)="inputBSecondChange()" />
+                        </div>
+                    </nz-row>
+                    <nz-row class="mb12" nzType="flex" nzAlign="middle">
+                        <div nz-col nzSpan="18" nzOffset="6">
+                            <nz-select style="width: 100%" [(ngModel)]="selectBSecondTag" nzSize="default" nzMode="tags" nzPlaceHolder="请选择样本">
+                                <nz-option *ngFor="let option of handleGroup2" [nzLabel]="option.value" [nzValue]="option.value" [nzDisabled]="option.flag"></nz-option>
+                            </nz-select>
+                        </div>
+                    </nz-row>
+                    
+                </nz-row>
+
+                <!-- 2.过滤阈值 -->
+                <p>2.过滤阈值</p>
+                <nz-row class="mb12" nzType="flex" nzAlign="middle">
+                    <span nz-col nzSpan="17" style="font-size: 13px;">Max size (exclude larger sets)：</span>
+                    <div nz-col nzSpan="1">
+                        <nz-input-number style="width:70px;" nzSize="default"  [nzMin]="gaeaRange[0]" [nzMax]="gaeaRange[1]"  [(ngModel)]="gseaMax" (ngModelChange)="gseaMaxChange($event)"></nz-input-number>
+                    </div>
+                </nz-row>
+                <p *ngIf="maxFlag" style="color:red;">不能小于Min size (exclude smaller sets)的值</p>
+                <nz-row class="mb12" nzType="flex" nzAlign="middle">
+                    <span nz-col nzSpan="17" style="font-size: 13px;">Min size (exclude smaller sets)：</span>
+                    <div nz-col nzSpan="1">
+                        <nz-input-number style="width:70px;" nzSize="default" [nzMin]="gaeaRange[0]" [nzMax]="gaeaRange[1]" [(ngModel)]="gseaMin" (ngModelChange)="gseaMinChange($event)"></nz-input-number>
+                    </div>
+                </nz-row>
+                <p *ngIf="minFlag" style="color:red;">不能大于Max size (exclude larger sets)的值</p>
+
+                <!-- 3.数据库 -->
+                <p>3.数据库</p>
+                <nz-row class="mb12" nzAlign="middle">
+                    <nz-radio-group [(ngModel)]="radioDataBase" (ngModelChange)="geasBottomRadioChange()">
+                        <label nz-radio nzValue="A">按组选择</label>
+                        <label nz-radio nzValue="B">自定义</label>
+                    </nz-radio-group>
+                </nz-row>
+
+                <p *ngIf="baseFlag" style="color: gray;font-size: 12px;">注：人的MSigDB来自于GSEA官方数据库，其它物种根据序列相似性比对得到。</p>
+                <nz-row class="mb12" nzAlign="middle" *ngIf="baseFlag">
+                    <nz-row class="mb12" nzAlign="middle" *ngFor="let temp of gseaDataBaseLeft;index as i;">
+                        <button (click)="selectDataBaseLeft(temp)" [class.btnActive]="temp['checked']" nz-button nzType="default" nzSize="middle">{{temp['name']}}</button>
+                    </nz-row>
+                    <!-- nz-tooltip [nzTitle]="temp['name']" -->
+                </nz-row>
+                <nz-row class="mb12" nzAlign="middle" *ngIf="baseFlag2">
+                    <div class="tool-params-tab" *ngFor="let item of gseaDataBaseRight;index as i;">
+                        <p>{{item['key']}}</p>
+                        <button class="mb12 mr12" (click)="selectDataBaseRight(tt)" nz-tooltip [nzTitle]="tt['name']" [class.btnActive]="tt['checked']" *ngFor="let tt of item['value'];index as i;" nz-button nzType="default" nzSize="middle">{{tt['name']}}</button>
+                    </div>
+                </nz-row>
+
+                <div class="tool-params-button-group">
+                    <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                    <button nz-button nzType="primary" [disabled]="gseaClassError" (click)="gseaRichConfirm()" nzSize="middle">确定</button>
+                </div>
+                <!-- <div *ngIf="geneRichData.length">
+                    <div class="tool-params-tab" *ngFor="let item of geneRichData;index as i;">
+                        <p>{{item['key']}}</p>
+                        <button class="mb12 mr12" (click)="handlerGeneRichSelect(rich)" nz-tooltip [nzTitle]="rich['name']" [class.btnActive]="rich['checked']" *ngFor="let rich of item['value'];index as i;" nz-button nzType="default" nzSize="middle">{{rich['name']}}</button>
+                    </div>
+                    <nz-alert *ngIf="!geneRichSelect.length" nzShowIcon nzType="warning" nzMessage="请选择一个分类"></nz-alert>
+                </div>
+                <p *ngIf="!geneRichData.length && doGeneRichAjax" class="center">缺少必要数据</p>
+                <nz-divider></nz-divider>
+                <div *ngIf="geneRichData.length" class="tool-params-button-group">
+                    <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
+                    <button nz-button nzType="primary" [disabled]="!geneRichSelect.length || geneRichError" (click)="geneRichConfirm()" nzSize="middle">确定</button>
+                </div> -->
+            </nz-spin>
+        </nz-drawer>
     </nz-drawer>
 </div>
