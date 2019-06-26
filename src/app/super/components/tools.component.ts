@@ -2200,124 +2200,120 @@ export class ToolsComponent implements OnInit {
 
 	//确定按钮
 	gseaRichConfirm(){
-		
-		let tempcontrolGroup = {
-			group:"",
-			sample:[]
-		};
-		let temphandleGroup = {
-			group:"",
-			sample:[]
-		};
+		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
+		let href = `${window.location.href.split(
+			'report'
+		)[0]}report/reanalysis/re-gsea`;
+		newWindow.location.href = href;
+		// let tempcontrolGroup = {
+		// 	group:"",
+		// 	sample:[]
+		// };
+		// let temphandleGroup = {
+		// 	group:"",
+		// 	sample:[]
+		// };
 
-		if(this.radioValue=="A"){
-			for (const key in this.gseaGroup) {
-				if (this.gseaGroup.hasOwnProperty(key)) {
-					const element = this.gseaGroup[key];
-					if(key == this.radioAFrist){
-						temphandleGroup.group = this.radioAFrist;
-						temphandleGroup.sample = element;
-					}
-					if(key == this.radioASecond){
-						tempcontrolGroup.group = this.radioASecond;
-						tempcontrolGroup.sample = element;
-					}
-				}
-			}
-		}else if(this.radioValue=="B"){
-			if (!this.inputBFrist&&!this.inputBSecond) {
-				this.notify.warning('tips：', `组名不能为空`,{
-					nzStyle: { width: '300px' }
-				});
-				return;
-			} else {
-				tempcontrolGroup.group = this.inputBFrist;
+		// if(this.radioValue=="A"){
+		// 	for (const key in this.gseaGroup) {
+		// 		if (this.gseaGroup.hasOwnProperty(key)) {
+		// 			const element = this.gseaGroup[key];
+		// 			if(key == this.radioAFrist){
+		// 				temphandleGroup.group = this.radioAFrist;
+		// 				temphandleGroup.sample = element;
+		// 			}
+		// 			if(key == this.radioASecond){
+		// 				tempcontrolGroup.group = this.radioASecond;
+		// 				tempcontrolGroup.sample = element;
+		// 			}
+		// 		}
+		// 	}
+		// }else if(this.radioValue=="B"){
+		// 	if (!this.inputBFrist&&!this.inputBSecond) {
+		// 		this.notify.warning('tips：', `组名不能为空`,{
+		// 			nzStyle: { width: '300px' }
+		// 		});
+		// 		return;
+		// 	} else {
+		// 		tempcontrolGroup.group = this.inputBFrist;
 
-				this.selectBFristTag.forEach((d) => {
-					this.controlGroup2.forEach((m)=>{
-						if(d == m["value"]){
-							tempcontrolGroup["sample"].push(m);
-						}
-					})
-				});
+		// 		this.selectBFristTag.forEach((d) => {
+		// 			this.controlGroup2.forEach((m)=>{
+		// 				if(d == m["value"]){
+		// 					tempcontrolGroup["sample"].push(m);
+		// 				}
+		// 			})
+		// 		});
 
-				temphandleGroup.group = this.inputBSecond;
-				this.selectBSecondTag.forEach((d) => {
-					this.handleGroup2.forEach((m)=>{
-						if(d == m["value"]){
-							temphandleGroup["sample"].push(m);
-						}
-					})
-				});
-			}
-		}
+		// 		temphandleGroup.group = this.inputBSecond;
+		// 		this.selectBSecondTag.forEach((d) => {
+		// 			this.handleGroup2.forEach((m)=>{
+		// 				if(d == m["value"]){
+		// 					temphandleGroup["sample"].push(m);
+		// 				}
+		// 			})
+		// 		});
+		// 	}
+		// }
 
-		let tempObj = {
-			type:0,
-			db:""
-		};
+		// let tempObj = {
+		// 	type:0,
+		// 	db:""
+		// };
 
-		if(this.radioDataBase=="A"){
-			tempObj.type = 1;
-			tempObj.db = this.gseaDBLeftSelect;
-		}else if(this.radioDataBase=="B"){
-			tempObj.type = 1;
-			tempObj.db = this.gseaDBRightSelect;
-		}
+		// if(this.radioDataBase=="A"){
+		// 	tempObj.type = 1;
+		// 	tempObj.db = this.gseaDBLeftSelect;
+		// }else if(this.radioDataBase=="B"){
+		// 	tempObj.type = 1;
+		// 	tempObj.db = this.gseaDBRightSelect;
+		// }
 
+		// let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 
-		this.isSubmitReanalysis = true;
-		let entity = this.toolsService.get('tableEntity');
-		this.ajaxService
-			.getDeferData({
-				data: {
-					LCID: sessionStorage.getItem('LCID'),
-					needReanalysis: 1,
-					reanalysisType: "gsea",
-					...entity,
-					gseaParam: {
-						treatGroup: temphandleGroup,
-						controlGroup: tempcontrolGroup,
-						maxSize: this.gseaMax, //最大值
-						minSize: this.gseaMin,  //最小值
-						dataBase: tempObj
-					}
-				},
-				url: this.toolsService.get('tableUrl')
-			})
-			.subscribe(
-				(data) => {
-					if (data['status'] === '0') {
-						if (data['data'].length) {
-							this.selectType = '';
-							this.childVisible = false;
-							this.toolsService.hide();
-							this.notify.success('tips：', '任务提交成功。',{
-								nzStyle: { width: '300px' }
-								});
-						} else {
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
-								nzStyle: { width: '300px' }
-								});
-						}
-					} else if(data['status'] == '600012'){
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
-							nzStyle: { width: '300px' }
-							});
-					} else {
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
-							nzStyle: { width: '300px' }
-							});
-					}
-				},
-				(err) => {
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
-						nzStyle: { width: '300px' }
-						});
-				},
-				() => {
-					this.isSubmitReanalysis = false;
-				}
-			);
+		// this.isSubmitReanalysis = true;
+		// let entity = this.toolsService.get('tableEntity');
+		// this.ajaxService
+		// 	.getDeferData({
+		// 		data: {
+		// 			LCID: sessionStorage.getItem('LCID'),
+		// 			needReanalysis: 1,
+		// 			reanalysisType: "gsea",
+		// 			...entity,
+		// 			gseaParam: {
+		// 				treatGroup: temphandleGroup,
+		// 				controlGroup: tempcontrolGroup,
+		// 				maxSize: this.gseaMax, //最大值
+		// 				minSize: this.gseaMin,  //最小值
+		// 				dataBase: tempObj
+		// 			}
+		// 		},
+		// 		url: this.toolsService.get('tableUrl')
+		// 	})
+		// 	.subscribe(
+		// 		(data) => {
+		// 			if (data['status'] === '0') {
+		// 					this.selectType = '';
+		// 					this.childVisible = false;
+		// 					this.toolsService.hide();
+		// 					let href = `${window.location.href.split(
+		// 						'report'
+		// 					)[0]}report/reanalysis/re-gsea`;
+		// 					newWindow.location.href = href;
+		// 					this.notify.success('tips：', '任务提交成功。',{
+		// 						nzStyle: { width: '300px' }
+		// 					});
+					
+		// 			}
+		// 		},
+		// 		(err) => {
+		// 			this.notify.warning('tips：', `任务提交失败,请重试`,{
+		// 				nzStyle: { width: '300px' }
+		// 				});
+		// 		},
+		// 		() => {
+		// 			this.isSubmitReanalysis = false;
+		// 		}
+		// 	);
 	}
 }
