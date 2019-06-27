@@ -569,7 +569,7 @@
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
                         <div nz-col nzSpan="18" nzOffset="6">
                             <nz-select style="width: 100%" [(ngModel)]="selectBFristTag" nzSize="size" nzMode="tags" nzPlaceHolder="请选择样本" (ngModelChange)="geasBSelectChange()">
-                                <nz-option *ngFor="let option of controlGroup2" [nzLabel]="option.value" [nzValue]="option.value"></nz-option>
+                                <nz-option *ngFor="let option of controlGroup2" [nzLabel]="option.value" [nzValue]="option.value" [nzDisabled]="option.flag"></nz-option>
                             </nz-select>
                         </div>
                     </nz-row>
