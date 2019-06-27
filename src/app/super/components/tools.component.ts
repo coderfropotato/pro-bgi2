@@ -108,8 +108,8 @@ export class ToolsComponent implements OnInit {
 	doLineAjax: boolean = false;
 
 	// KDA
-	kdaKeyGeneCountRange: number[] = [ 1, 40, 10 ];
-	kdaRelationGeneCountRange: number[] = [ 1, 50, 20 ];
+	kdaKeyGeneCountRange: number[] = [1, 40, 10];
+	kdaRelationGeneCountRange: number[] = [1, 50, 20];
 	kdaPpiScore: any[] = [];
 	kdaKeyRelationComposeMax: number = 400;
 	ppiFlagKey: string = 'ppi';
@@ -127,7 +127,7 @@ export class ToolsComponent implements OnInit {
 
 	// 网络图参数
 	netData: object[] = [];
-	netGeneType:string;
+	netGeneType: string;
 	netError: boolean = false;
 	netSelect: object[] = [];
 	doNetAjax: boolean = false;
@@ -163,46 +163,46 @@ export class ToolsComponent implements OnInit {
 	doGeneRichAjax: boolean = false;
 
 	//GSEA
-	gaeaRange:number[] = [ 1, 500 ];
-	gseaMax:number = 500;
-	gseaMin:number = 1;
-	maxFlag:boolean = false;
-	minFlag:boolean = false;
+	gaeaRange: number[] = [1, 500];
+	gseaMax: number = 500;
+	gseaMin: number = 1;
+	maxFlag: boolean = false;
+	minFlag: boolean = false;
 
 	radioValue: string = "A";
-	radioAFlag:boolean = true;
+	radioAFlag: boolean = true;
 	radioAFrist: string = "";
 	radioASecond: string = "";
 
-	radioBFlag:boolean = false;
+	radioBFlag: boolean = false;
 	inputBFrist: string = "";//输入框
-	selectBFristTag: any [] = [];
+	selectBFristTag: any[] = [];
 	inputBSecond: string = "";//输入框
-	selectBSecondTag: any [] = [];
+	selectBSecondTag: any[] = [];
 
-	gseaSample:any[] = [];
-	gseaUser:any[] = [];
-	gseaGroup:object = {};
-	handleGroup:any[] = [];
-	controlGroup:any[] = [];
+	gseaSample: any[] = [];
+	gseaUser: any[] = [];
+	gseaGroup: object = {};
+	handleGroup: any[] = [];
+	controlGroup: any[] = [];
 
-	gseaGroup2:any[] = [];
-	handleGroup2:any[] = [];
-	controlGroup2:any[] = [];
+	gseaGroup2: any[] = [];
+	handleGroup2: any[] = [];
+	controlGroup2: any[] = [];
 
-	gseaDataBase:any[] = []; //数据库
+	gseaDataBase: any[] = []; //数据库
 	radioDataBase: string = "A";
-	baseFlag:boolean = true;
-	baseFlag2:boolean = false;
-	gseaDataBaseLeft:any[] = [];
-	gseaDBLeftSelect:string = "";
-	gseaDataBaseRight:any[] = [];
-	gseaDBRightSelect:string = "";
+	baseFlag: boolean = true;
+	baseFlag2: boolean = false;
+	gseaDataBaseLeft: any[] = [];
+	gseaDBLeftSelect: string = "";
+	gseaDataBaseRight: any[] = [];
+	gseaDBRightSelect: string = "";
 	//
 	//type
 	//db []
 
-	gseaClassError:boolean = false;
+	gseaClassError: boolean = false;
 
 	// 当前选择的重分析类型
 	selectType: string = '';
@@ -294,8 +294,8 @@ export class ToolsComponent implements OnInit {
 
 		// KDA参数
 		this.kdaError = false;
-		this.kdaKeyGeneCountRange = [ 1, 40, 10 ];
-		this.kdaRelationGeneCountRange = [ 1, 50, 20 ];
+		this.kdaKeyGeneCountRange = [1, 40, 10];
+		this.kdaRelationGeneCountRange = [1, 50, 20];
 		this.kdaPpiScore = [];
 
 		//卡方检验
@@ -530,7 +530,7 @@ export class ToolsComponent implements OnInit {
 							});
 							if (this.expressData.length) {
 								this.expressData[0]['checked'] = true;
-								this.expressSelect = [ this.expressData[0] ];
+								this.expressSelect = [this.expressData[0]];
 							}
 
 							this.expressUpload = res[this.heatmapSelect]['exp_user'];
@@ -542,7 +542,7 @@ export class ToolsComponent implements OnInit {
 						});
 						if (this.diffData.length) {
 							this.diffData[0]['checked'] = true;
-							this.diffSelect = [ this.diffData[0] ];
+							this.diffSelect = [this.diffData[0]];
 						}
 						this.diffUpload = res['dif_user'];
 
@@ -557,7 +557,7 @@ export class ToolsComponent implements OnInit {
 						});
 						if (this.customData.length) {
 							this.customData[0]['checked'] = true;
-							this.customSelect = [ this.customData[0] ];
+							this.customSelect = [this.customData[0]];
 						}
 
 						this.standList = res['standardization'] || [];
@@ -579,7 +579,7 @@ export class ToolsComponent implements OnInit {
 
 		if (this.expressData.length) {
 			this.expressData[0]['checked'] = true;
-			this.expressSelect = [ this.expressData[0] ];
+			this.expressSelect = [this.expressData[0]];
 		}
 
 		this.expressUpload = this.heatmapData[this.heatmapSelect]['exp_user'];
@@ -625,23 +625,23 @@ export class ToolsComponent implements OnInit {
 						this.selectType = '';
 						this.childVisible = false;
 						this.toolsService.hide();
-						this.notify.success('tips：', '任务提交成功。',{
+						this.notify.success('tips：', '任务提交成功。', {
 							nzStyle: { width: '300px' }
-							});
-					} else if(data['status'] == '600012'){
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+						});
+					} else if (data['status'] == '600012') {
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					} else {
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -720,7 +720,7 @@ export class ToolsComponent implements OnInit {
 							let href = `${window.location.href.split(
 								'report'
 							)[0]}report/reanalysis/re-multiOmics/${this.toolsService.get('geneType')}/${data[
-								'data'
+							'data'
 							][0]}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
@@ -728,27 +728,27 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
-						}
-					} else if(data['status'] == '600012'){
-						newWindow.close();
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
-							nzStyle: { width: '300px' }
 							});
+						}
+					} else if (data['status'] == '600012') {
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
+							nzStyle: { width: '300px' }
+						});
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -894,7 +894,7 @@ export class ToolsComponent implements OnInit {
 							let href = `${window.location.href.split(
 								'report'
 							)[0]}report/reanalysis/re-chiSquare/${this.toolsService.get('geneType')}/${data[
-								'data'
+							'data'
 							][0]}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
@@ -902,27 +902,27 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
-						}
-					} else if(data['status'] == '600012'){
-						newWindow.close();
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
-							nzStyle: { width: '300px' }
 							});
+						}
+					} else if (data['status'] == '600012') {
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
+							nzStyle: { width: '300px' }
+						});
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -989,28 +989,28 @@ export class ToolsComponent implements OnInit {
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-							this.notify.success('tips：', '任务提交成功。',{
-							nzStyle: { width: '300px' }
+							this.notify.success('tips：', '任务提交成功。', {
+								nzStyle: { width: '300px' }
 							});
 						} else {
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
+							});
 						}
-					} else if(data['status'] == '600012'){
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+					} else if (data['status'] == '600012') {
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					} else {
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1038,7 +1038,7 @@ export class ToolsComponent implements OnInit {
 						if (data['data']) {
 							this.lineGroupSelect.length = 0;
 							this.lineSampleSelect.length = 0;
-							let activeIndex = [ 0, 1 ];
+							let activeIndex = [0, 1];
 
 							let group = data['data']['group'].map((v, index) => {
 								let status = !activeIndex.includes(index) ? false : true;
@@ -1167,7 +1167,7 @@ export class ToolsComponent implements OnInit {
 							let href = `${window.location.href.split(
 								'report'
 							)[0]}report/reanalysis/re-line/${this.toolsService.get('geneType')}/${data[
-								'data'
+							'data'
 							][0]}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
@@ -1175,27 +1175,27 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
-						}
-					} else if(data['status'] == '600012'){
-						newWindow.close();
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
-							nzStyle: { width: '300px' }
 							});
+						}
+					} else if (data['status'] == '600012') {
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
+							nzStyle: { width: '300px' }
+						});
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1230,7 +1230,7 @@ export class ToolsComponent implements OnInit {
 							let href = `${window.location.href.split(
 								'report'
 							)[0]}report/reanalysis/re-as/${this.toolsService.get('geneType')}/${data[
-								'data'
+							'data'
 							][0]}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
@@ -1238,27 +1238,27 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
-						}
-					} else if(data['status'] == '600012'){
-						newWindow.close();
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
-							nzStyle: { width: '300px' }
 							});
+						}
+					} else if (data['status'] == '600012') {
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
+							nzStyle: { width: '300px' }
+						});
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1268,7 +1268,7 @@ export class ToolsComponent implements OnInit {
 
 	// 网路图
 	getnetParams() {
-		this.netGeneType=this.toolsService.get('tableEntity')['geneType'];
+		this.netGeneType = this.toolsService.get('tableEntity')['geneType'];
 		this.netData = this.copy(this.storeService.getStore('relations'));
 		this.netData.forEach((v, index) => {
 			v['checked'] = index ? false : true;
@@ -1325,7 +1325,7 @@ export class ToolsComponent implements OnInit {
 							let href = `${window.location.href.split(
 								'report'
 							)[0]}report/reanalysis/re-net/${this.toolsService.get('geneType')}/${data[
-								'data'
+							'data'
 							][0]}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
@@ -1333,27 +1333,27 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
-						}
-					} else if(data['status'] == '600012'){
-						newWindow.close();
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
-							nzStyle: { width: '300px' }
 							});
+						}
+					} else if (data['status'] == '600012') {
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
+							nzStyle: { width: '300px' }
+						});
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1373,15 +1373,15 @@ export class ToolsComponent implements OnInit {
 		this.relativeNetSelect.push(this.copy(this.relativeNetData[0]));
 
 		let entity = this.toolsService.get('tableEntity');
-		let tempGraphRelations = 'graphRelations' in entity && entity['graphRelations'].length?entity['graphRelations']:[];
-		let tableRelations = entity['relations'].length?entity['relations']:[];
-		let graphRelations = tempGraphRelations.map(v=>{
-			let obj= {
-				key:v['relation'],
-				name:v['relationName'],
-				limit:v['limit'],
-				max:v['max'],
-				score:v['score']
+		let tempGraphRelations = 'graphRelations' in entity && entity['graphRelations'].length ? entity['graphRelations'] : [];
+		let tableRelations = entity['relations'].length ? entity['relations'] : [];
+		let graphRelations = tempGraphRelations.map(v => {
+			let obj = {
+				key: v['relation'],
+				name: v['relationName'],
+				limit: v['limit'],
+				max: v['max'],
+				score: v['score']
 			}
 
 			return obj;
@@ -1390,16 +1390,16 @@ export class ToolsComponent implements OnInit {
 		let allRelations = graphRelations.concat(tableRelations);
 		let tempArr = [];
 
-		for(let i=0;i<allRelations.length;i++){
-			if(tempArr.includes(allRelations[i]['key'])){
-				allRelations.splice(i,1);
+		for (let i = 0; i < allRelations.length; i++) {
+			if (tempArr.includes(allRelations[i]['key'])) {
+				allRelations.splice(i, 1);
 				i--;
-			}else{
+			} else {
 				tempArr.push(allRelations[i]['key']);
 			}
 		}
 
-		
+
 		this.ajaxService
 			.getDeferData({
 				url: `${config['javaPath']}/linkedNetwork/config`,
@@ -1485,7 +1485,7 @@ export class ToolsComponent implements OnInit {
 							let href = `${window.location.href.split(
 								'report'
 							)[0]}report/reanalysis/re-linkedNetwork/${this.toolsService.get('geneType')}/${data[
-								'data'
+							'data'
 							][0]}/${this.storeService.getStore('version')}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
@@ -1493,27 +1493,27 @@ export class ToolsComponent implements OnInit {
 							this.toolsService.hide();
 						} else {
 							newWindow.close();
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
-						}
-					} else if(data['status'] == '600012'){
-						newWindow.close();
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
-							nzStyle: { width: '300px' }
 							});
+						}
+					} else if (data['status'] == '600012') {
+						newWindow.close();
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
+							nzStyle: { width: '300px' }
+						});
 					} else {
 						newWindow.close();
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
 					newWindow.close();
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1525,15 +1525,15 @@ export class ToolsComponent implements OnInit {
 	getheatmapRelationParams() {
 		// 图上的关系和表上的关系 组合起来 统一key 去重
 		let entity = this.toolsService.get('tableEntity');
-		let tempGraphRelations = 'graphRelations' in entity && entity['graphRelations'].length?entity['graphRelations']:[];
-		let tableRelations = entity['relations'].length?entity['relations']:[];
-		let graphRelations = tempGraphRelations.map(v=>{
-			let obj= {
-				key:v['relation'],
-				name:v['relationName'],
-				limit:v['limit'],
-				max:v['max'],
-				score:v['score']
+		let tempGraphRelations = 'graphRelations' in entity && entity['graphRelations'].length ? entity['graphRelations'] : [];
+		let tableRelations = entity['relations'].length ? entity['relations'] : [];
+		let graphRelations = tempGraphRelations.map(v => {
+			let obj = {
+				key: v['relation'],
+				name: v['relationName'],
+				limit: v['limit'],
+				max: v['max'],
+				score: v['score']
 			}
 
 			return obj;
@@ -1542,11 +1542,11 @@ export class ToolsComponent implements OnInit {
 		let allRelations = graphRelations.concat(tableRelations);
 		let tempArr = [];
 
-		for(let i=0;i<allRelations.length;i++){
-			if(tempArr.includes(allRelations[i]['key'])){
-				allRelations.splice(i,1);
+		for (let i = 0; i < allRelations.length; i++) {
+			if (tempArr.includes(allRelations[i]['key'])) {
+				allRelations.splice(i, 1);
 				i--;
-			}else{
+			} else {
 				tempArr.push(allRelations[i]['key']);
 			}
 		}
@@ -1660,28 +1660,28 @@ export class ToolsComponent implements OnInit {
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-							this.notify.success('tips：', '任务提交成功。',{
+							this.notify.success('tips：', '任务提交成功。', {
 								nzStyle: { width: '300px' }
-								});
+							});
 						} else {
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
+							});
 						}
-					} else if(data['status'] == '600012'){
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+					} else if (data['status'] == '600012') {
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					} else {
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1776,34 +1776,34 @@ export class ToolsComponent implements OnInit {
 							let href = `${window.location.href.split(
 								'report'
 							)[0]}report/reanalysis/re-classification/${this.toolsService.get('geneType')}/${data[
-								'data'
+							'data'
 							][0]}/${this.storeService.getStore('version')}/${this.geneClassSelect[0]['key']}/false`;
 							newWindow.location.href = href;
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-							this.notify.success('tips：', '任务提交成功。',{
+							this.notify.success('tips：', '任务提交成功。', {
 								nzStyle: { width: '300px' }
-								});
+							});
 						} else {
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
+							});
 						}
-					} else if(data['status'] == '600012'){
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+					} else if (data['status'] == '600012') {
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					} else {
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1896,28 +1896,28 @@ export class ToolsComponent implements OnInit {
 							this.selectType = '';
 							this.childVisible = false;
 							this.toolsService.hide();
-							this.notify.success('tips：', '任务提交成功。',{
+							this.notify.success('tips：', '任务提交成功。', {
 								nzStyle: { width: '300px' }
-								});
+							});
 						} else {
-							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+							this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 								nzStyle: { width: '300px' }
-								});
+							});
 						}
-					} else if(data['status'] == '600012'){
-						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`,{
+					} else if (data['status'] == '600012') {
+						this.notify.warning('tips：', `任务提交过于频繁，请等待 5s 后再提交请求`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					} else {
-						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`,{
+						this.notify.warning('tips：', `任务提交失败 : ${data['message']}`, {
 							nzStyle: { width: '300px' }
-							});
+						});
 					}
 				},
 				(err) => {
-					this.notify.warning('tips：', `任务提交失败,请重试`,{
+					this.notify.warning('tips：', `任务提交失败,请重试`, {
 						nzStyle: { width: '300px' }
-						});
+					});
 				},
 				() => {
 					this.isSubmitReanalysis = false;
@@ -1936,7 +1936,7 @@ export class ToolsComponent implements OnInit {
 		if (object instanceof Object) {
 			return JSON.parse(JSON.stringify(object));
 		} else if (object instanceof Array) {
-			return [ ...object ];
+			return [...object];
 		} else {
 			return object;
 		}
@@ -1961,87 +1961,84 @@ export class ToolsComponent implements OnInit {
 						this.gseaGroup = res['data']['group'];
 						for (const key in this.gseaGroup) {
 							this.handleGroup.push({
-								value:key,
-								flag:false
+								value: key,
+								flag: false
 							});
 							this.controlGroup.push({
-								value:key,
-								flag:false
+								value: key,
+								flag: false
 							});
 						}
 
-						this.gseaGroup2 = [...this.gseaSample,...this.gseaUser];
+						this.gseaGroup2 = [...this.gseaSample, ...this.gseaUser];
 						console.log(this.gseaGroup2);
 
 						this.gseaGroup2.forEach((d) => {
-							
+
 							this.controlGroup2.push({
-								value:d["key"],
-								flag:false
+								value: d["key"],
+								flag: false
 							});
 							this.handleGroup2.push({
-								value:d["key"],
-								flag:false
+								value: d["key"],
+								flag: false
 							});
 						});
+						console.log(this.controlGroup2);
+						console.log(this.handleGroup2);
 
-						let dataBase = [
-							{
-							  "type": 1, //type=1，表示GSEA MSigDB数据库
-							  "db": [
-								  "msigdb_c1",
-								  "msigdb_c2",
-								  "msigdb_c2_cp_biocarta"
-							  ]
-							},
-							{
-							  "type": 2, //type=2，表示其它数据库
-							  "db": [
-								  {
-									  "key":"KEGG",
-									  "value":[
-										  "kegg_pathway",
-										  "kegg_disease",
-										  "kegg_module",
-										  "kegg_reaction"
-									  ]
-								  },
-								  {
-									  "key": "GO",
-									  "value": [
-										  "go_f",
-										  "go_c",
-										  "go_p"
-									  ]
-								  }
-							  ]
-						}]
-
-						//this.gseaDataBase = res['data']['dataBase'];
-
-						this.gseaDataBase = dataBase;
-						this.gseaDataBase[0]["db"].forEach((d) => {
-							this.gseaDataBaseLeft.push({
-								checked:false,
-								name:d
-							})
-						});
-						//this.gseaDataBaseRight = this.gseaDataBase[1]["db"];
-						this.gseaDataBase[1]["db"].forEach((d) => {
-							let tempN = d["key"];
-							let tempobj = [];
-							d["value"].forEach((m) => {
-								tempobj.push({
-									name:m,
-									checked:false
+						this.gseaDataBase = res['data']['dataBase'];
+						this.gseaDataBase.forEach((data) => {
+							if (data['type'] == 1) {
+								data['db'].forEach((db) => {
+									this.gseaDataBaseLeft.push({
+										checked: false,
+										name: db['name'],
+										key: db['key']
+									})
 								})
-							});
-							this.gseaDataBaseRight.push({
-								key:tempN,
-								value:tempobj
-							})
-							
-						});
+							} else {
+								data['db'].forEach((db) => {
+									let tempN = db["key"];
+									let tempobj = [];
+									db['value'].forEach((value) => {
+										tempobj.push({
+											checked: false,
+											name: value['name'],
+											key: value['key']
+										})
+									});
+									this.gseaDataBaseRight.push({
+										key: tempN,
+										value: tempobj
+									})
+								})
+							}
+						})
+
+						// this.gseaDataBase = dataBase;
+						// this.gseaDataBase[0]["db"].forEach((d) => {
+						// 	this.gseaDataBaseLeft.push({
+						// 		checked: false,
+						// 		name: d
+						// 	})
+						// });
+						// //this.gseaDataBaseRight = this.gseaDataBase[1]["db"];
+						// this.gseaDataBase[1]["db"].forEach((d) => {
+						// 	let tempN = d["key"];
+						// 	let tempobj = [];
+						// 	d["value"].forEach((m) => {
+						// 		tempobj.push({
+						// 			name: m,
+						// 			checked: false
+						// 		})
+						// 	});
+						// 	this.gseaDataBaseRight.push({
+						// 		key: tempN,
+						// 		value: tempobj
+						// 	})
+
+						// });
 						// console.log(this.gseaSample);
 						// console.log(this.gseaGroup);
 						// console.log(this.handleGroup);
@@ -2053,7 +2050,7 @@ export class ToolsComponent implements OnInit {
 					}
 				},
 				(error) => {
-					
+
 				},
 				() => {
 					//this.doGeneRichAjax = true;
@@ -2061,7 +2058,7 @@ export class ToolsComponent implements OnInit {
 			);
 	}
 
-	gseaClear(){
+	gseaClear() {
 		this.gseaSample.length = 0;
 		this.gseaUser.length = 0;
 		this.gseaGroup = {};
@@ -2080,58 +2077,58 @@ export class ToolsComponent implements OnInit {
 		this.controlGroup2.length = 0;
 	}
 
-	gseaMaxChange(e){
-		if(e<=this.gseaMin){
+	gseaMaxChange(e) {
+		if (e <= this.gseaMin) {
 			this.maxFlag = true;
-		}else{
+		} else {
 			this.maxFlag = false;
 		}
 	}
-	gseaMinChange(e){
-		if(e>=this.gseaMax){
+	gseaMinChange(e) {
+		if (e >= this.gseaMax) {
 			this.minFlag = true;
-		}else{
+		} else {
 			this.minFlag = false;
 		}
 	}
 
 	//选择样本
-	geasTopRadioChange(){
-		if(this.radioValue=="A"){
+	geasTopRadioChange() {
+		if (this.radioValue == "A") {
 			this.radioAFlag = true;
 			this.radioBFlag = false;
-		}else if(this.radioValue=="B"){
+		} else if (this.radioValue == "B") {
 			this.radioBFlag = true;
 			this.radioAFlag = false;
 		}
 	}
 
 	//选择数据库
-	geasBottomRadioChange(){
-		if(this.radioDataBase=="A"){
+	geasBottomRadioChange() {
+		if (this.radioDataBase == "A") {
 			this.baseFlag = true;
 			this.baseFlag2 = false;
-		}else if(this.radioDataBase=="B"){
+		} else if (this.radioDataBase == "B") {
 			this.baseFlag2 = true;
 			this.baseFlag = false;
 		}
 	}
 
-	selectDataBaseLeft(item){
-		this.gseaDataBaseLeft.forEach((d)=>{
-			if(d.name == item.name){
-				if(item['checked']){
+	selectDataBaseLeft(item) {
+		this.gseaDataBaseLeft.forEach((d) => {
+			if (d.name == item.name) {
+				if (item['checked']) {
 					item['checked'] = false;
 					this.gseaDBLeftSelect = "";
-				}else{
+				} else {
 					item['checked'] = true;
-					this.gseaDBLeftSelect = item["name"]
+					this.gseaDBLeftSelect = item["key"]
 				}
-			}else{
+			} else {
 				d["checked"] = false;
 			}
 		})
-		
+
 
 		//item['checked'] = !item['checked'];
 		// let index = this.gseaDBLeftSelect.findIndex((val, index) => {
@@ -2146,18 +2143,18 @@ export class ToolsComponent implements OnInit {
 		console.log(this.gseaDBLeftSelect)
 	}
 
-	selectDataBaseRight(item){
+	selectDataBaseRight(item) {
 		this.gseaDataBaseRight.forEach((d) => {
-			d["value"].forEach((m)=>{
-				if(m.name == item.name){
-					if(item['checked']){
+			d["value"].forEach((m) => {
+				if (m.name == item.name) {
+					if (item['checked']) {
 						item['checked'] = false;
 						this.gseaDBRightSelect = "";
-					}else{
+					} else {
 						item['checked'] = true;
-						this.gseaDBRightSelect = item["name"]
+						this.gseaDBRightSelect = item["key"]
 					}
-				}else{
+				} else {
 					m["checked"] = false;
 				}
 			})
@@ -2166,23 +2163,32 @@ export class ToolsComponent implements OnInit {
 		console.log(this.gseaDBRightSelect)
 	}
 
-	geasASelectChange(){
-		this.controlGroup.forEach((d)=>{
-			if(d.value == this.radioAFrist){
+	geasASelectChange() {
+		this.handleGroup.forEach((d) => {
+			if (d.value == this.radioASecond) {
 				d.flag = true;
-			}else{
+			} else {
+				d.flag = false;
+			}
+		})
+	}
+	geasAFristSelectChange() {
+		this.controlGroup.forEach((d) => {
+			if (d.value == this.radioAFrist) {
+				d.flag = true;
+			} else {
 				d.flag = false;
 			}
 		})
 	}
 
-	geasBSelectChange(){
-		this.handleGroup2.forEach((m)=>{
+	geasBSelectChange() {
+		this.handleGroup2.forEach((m) => {
 			m["flag"] = false;
 		})
 		this.selectBFristTag.forEach((d) => {
-			this.handleGroup2.forEach((m)=>{
-				if(d == m["value"]){
+			this.handleGroup2.forEach((m) => {
+				if (d == m["value"]) {
 					m["flag"] = true;
 				}
 			})
@@ -2190,16 +2196,30 @@ export class ToolsComponent implements OnInit {
 		console.log(this.handleGroup2);
 	}
 
-	inputBFristChange(){
+	geasBSecondSelectChange() {
+		this.controlGroup2.forEach((m) => {
+			m["flag"] = false;
+		})
+		this.selectBSecondTag.forEach((d) => {
+			this.controlGroup2.forEach((m) => {
+				if (d == m["value"]) {
+					m["flag"] = true;
+				}
+			})
+		});
+		console.log(this.controlGroup2);
+	}
+
+	inputBFristChange() {
 		console.log(this.inputBFrist)
 	}
 
-	inputBSecondChange(){
+	inputBSecondChange() {
 		console.log(this.inputBSecond)
 	}
 
 	//确定按钮
-	gseaRichConfirm(){
+	gseaRichConfirm() {
 		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 		let href = `${window.location.href.split(
 			'report'
@@ -2303,7 +2323,7 @@ export class ToolsComponent implements OnInit {
 		// 					this.notify.success('tips：', '任务提交成功。',{
 		// 						nzStyle: { width: '300px' }
 		// 					});
-					
+
 		// 			}
 		// 		},
 		// 		(err) => {

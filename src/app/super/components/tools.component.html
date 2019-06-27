@@ -535,6 +535,7 @@
                                 nzAllowClear
                                 nzPlaceHolder="请选择对照组"
                                 [(ngModel)]="radioASecond"
+                                (ngModelChange)="geasASelectChange()"
                               >
                               <nz-option [nzLabel]="item.value" [nzValue]="item.value" *ngFor="let item of controlGroup" [nzDisabled]="item.flag"></nz-option>
                               </nz-select>
@@ -549,7 +550,7 @@
                                 nzAllowClear
                                 nzPlaceHolder="请选择处理组"
                                 [(ngModel)]="radioAFrist"
-                                (ngModelChange)="geasASelectChange()"
+                                (ngModelChange)="geasAFristSelectChange()"
                                 >
                                 <nz-option [nzLabel]="item.value" [nzValue]="item.value" *ngFor="let item of handleGroup" [nzDisabled]="item.flag"></nz-option>
                                 </nz-select>
@@ -580,7 +581,7 @@
                     </nz-row>
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
                         <div nz-col nzSpan="18" nzOffset="6">
-                            <nz-select style="width: 100%" [(ngModel)]="selectBSecondTag" nzSize="default" nzMode="tags" nzPlaceHolder="请选择样本">
+                            <nz-select style="width: 100%" [(ngModel)]="selectBSecondTag" nzSize="default" nzMode="tags" nzPlaceHolder="请选择样本" (ngModelChange)="geasBSecondSelectChange()">
                                 <nz-option *ngFor="let option of handleGroup2" [nzLabel]="option.value" [nzValue]="option.value" [nzDisabled]="option.flag"></nz-option>
                             </nz-select>
                         </div>
@@ -609,8 +610,8 @@
                 <p>3.数据库</p>
                 <nz-row class="mb12" nzAlign="middle">
                     <nz-radio-group [(ngModel)]="radioDataBase" (ngModelChange)="geasBottomRadioChange()">
-                        <label nz-radio nzValue="A">按组选择</label>
-                        <label nz-radio nzValue="B">自定义</label>
+                        <label nz-radio nzValue="A">GESA MSigDB</label>
+                        <label nz-radio nzValue="B">其他数据库</label>
                     </nz-radio-group>
                 </nz-row>
 
