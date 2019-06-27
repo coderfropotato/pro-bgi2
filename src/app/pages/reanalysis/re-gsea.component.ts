@@ -99,7 +99,7 @@ export class ReGseaComponent implements OnInit {
     // 图上选择的数据
     selectGeneList: string[] = [];
 
-    isKeggRich: boolean = false;
+    graphTitle: string = null;
 
     constructor(
         private message: MessageService,
@@ -1529,8 +1529,13 @@ export class ReGseaComponent implements OnInit {
             line_x_key = "RANK IN GENE LIST",
             line_y_key = "RUNNING ES";
 
-        let title = `Enrichment plot: ${data.title}`,
-            chartConfig = {
+        let title;
+        if (that.graphTitle === null) {
+            title = `Enrichment plot: ${data.title}`;
+        } else {
+            title = that.graphTitle;
+        }
+        let chartConfig = {
                 axis: {
                     x: {
                         title: "Rank in Ordered Dataset",
@@ -1548,7 +1553,7 @@ export class ReGseaComponent implements OnInit {
                         click: (d, index) => {
                             that.color = d3.select(d).attr('fill');
                             that.show = true;
-                            that.legendIndex = 0;
+                            that.legendIndex = index;
                             that.isGradient = false;
                         }
                     },
@@ -1557,7 +1562,7 @@ export class ReGseaComponent implements OnInit {
                         click: (d, index) => {
                             that.color = d3.select(d).attr('fill');
                             that.show = true;
-                            that.legendIndex = 1;
+                            that.legendIndex = index;
                             that.isGradient = false;
                         }
                     },
@@ -1566,7 +1571,7 @@ export class ReGseaComponent implements OnInit {
                         click: (d, index) => {
                             that.color = d3.select(d).attr('fill');
                             that.show = true;
-                            that.legendIndex = 2;
+                            that.legendIndex = index;
                             that.isGradient = false;
                         }
                     }
@@ -1659,7 +1664,7 @@ export class ReGseaComponent implements OnInit {
 
             let brush = svg2.append("g").attr("class", "brush")
                 .call(d3.brush()
-                    .extent([[-5, 10], [xScaleTickMax, secondHeight - 4]])
+                    .extent([[-5, 4], [xScaleTickMax, secondHeight - 4]])
                     .on("start", brushStart)
                     .on("brush", brushed)
                     .on("end", brushEnd)
@@ -1675,7 +1680,7 @@ export class ReGseaComponent implements OnInit {
                 ]))
                 .attr("transform", "translate(" + chartPadding.left + "," + secondPaddingTop + ")")
                 .attr("class", class_name)
-                .style("stroke", chartConfig.legend.length > 1 ? chartConfig.legend[1]['color'] : "#0F0F0F")
+                .style("stroke", chartConfig.legend[1]['color'])
                 .on('click', d => {
                     that.selectGeneList = [d["PROBE"]];
                     console.log("hit click second vertical line", that.selectGeneList);
@@ -2096,6 +2101,7 @@ export class ReGseaComponent implements OnInit {
                 case "title":
                     title = value;
                     drawTitle();
+                    that.graphTitle = value;
                     break;
             }
         }
@@ -2136,7 +2142,11 @@ export class ReGseaComponent implements OnInit {
             let that = this;
 
 
-            legend_g = svg.append('g').attr('class', 'legend')
+            let class_name = 'legend';
+            let before = svg.select(`.${class_name}`);
+            if (before.nodes().length) before.remove();
+
+            legend_g = svg.append('g').attr('class', class_name)
                 .attr('transform', "translate(" + x + "," + y + ")");
 
             chartConfig.legend.forEach((val, index) => {
@@ -2159,7 +2169,7 @@ export class ReGseaComponent implements OnInit {
                         timer && clearTimeout(timer);
                         let _self = this;
                         timer = setTimeout(function () {
-                            chartConfig.legend[index].click && chartConfig.legend[index].click.call(chartConfig, d3.select(_self).node(), i);
+                            chartConfig.legend[index].click && chartConfig.legend[index].click.call(chartConfig, d3.select(_self).node(), index);
                         }, 300);
                     });
 
@@ -2210,35 +2220,32 @@ export class ReGseaComponent implements OnInit {
             let legend_w = 20,
                 legend_h = 180;
 
-            drawLegend(that.gcolors);
             //画图例
-            function drawLegend(colors) {
-                d3.selectAll(".gsea_gradient_legend defs").remove();
-                d3.selectAll(".gsea_gradient_legend rect.legend_rect").remove();
-                //线性填充
-                var linearGradient = legend_g.append("defs")
-                    .append("linearGradient")
-                    .attr("id", "sampleCorrelate_Color")
-                    .attr("x1", "0%")
-                    .attr("y1", "0%")
-                    .attr("x2", "0%")
-                    .attr("y2", "100%");
+            d3.selectAll(".gsea_gradient_legend defs").remove();
+            d3.selectAll(".gsea_gradient_legend rect.legend_rect").remove();
+            //线性填充
+            let linearGradient = legend_g.append("defs")
+                .append("linearGradient")
+                .attr("id", "sampleCorrelate_Color")
+                .attr("x1", "0%")
+                .attr("y1", "0%")
+                .attr("x2", "0%")
+                .attr("y2", "100%");
 
-                for (var i = 0; i < colors.length; i++) {
-                    linearGradient.append("stop")
-                        .attr("offset", i * 50 + "%")
-                        .style("stop-color", colors[i]);
-                }
-
-                //画图例矩形
-                legend_g.append("rect").attr("width", legend_w).attr("height", legend_h).attr("class", "legend_rect")
-                    .attr("fill", "url(#" + linearGradient.attr("id") + ")");
-
+            for (let i = 0; i < that.gcolors.length; i++) {
+                linearGradient.append("stop")
+                    .attr("offset", i * 50 + "%")
+                    .style("stop-color", that.gcolors[i]);
             }
 
+            //画图例矩形
+            legend_g.append("rect").attr("width", legend_w).attr("height", legend_h).attr("class", "legend_rect")
+                .attr("fill", "url(#" + linearGradient.attr("id") + ")");
+
+
             //点击图例改图颜色
-            var legendClickRect_h = legend_h / that.gcolors.length;
-            var legendClick_g = svg.append("g").attr("transform", "translate(" + x + "," + (y + chartPadding.top * 2) + ")")
+            let legendClickRect_h = legend_h / that.gcolors.length,
+                legendClick_g = svg.append("g").attr("transform", "translate(" + x + "," + (y + chartPadding.top * 2) + ")")
                 .style("cursor", "pointer")
                 .on("mouseover", function() {
                     d3.select(this).append("title").text("单击修改颜色");
@@ -2288,8 +2295,7 @@ export class ReGseaComponent implements OnInit {
             if (d3.event.sourceEvent.type != "end") {
                 let selection = d3.event.selection;
                 node.classed("selected", d => {
-                    return (selection != null
-                        && selection[0][0] <= d.x && d.x <= selection[1][0]);
+                    return selection != null && selection[0][0] <= d.x && d.x <= selection[1][0];
                 })
             }
         }
@@ -2298,7 +2304,7 @@ export class ReGseaComponent implements OnInit {
             let selection = d3.event.selection;
             if (selection != null) {
                 d3.select(this).call(d3.event.target.move, null);
-                that.selectArray = d3.selectAll(".mynode.selected").nodes();
+                that.selectArray = d3.selectAll(".vertical-line.selected").nodes();
                 that.boxSelectConfirm();
                 console.log("hit brush", that.selectGeneList);
                 that.doTableStatementFilter();
@@ -2309,7 +2315,6 @@ export class ReGseaComponent implements OnInit {
 
     //color change 回调函数
     colorChange(curColor) {
-        console.log('hit color change', curColor);
         this.color = curColor;
         if (this.isGradient) {
             // 渐变图例
