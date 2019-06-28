@@ -1989,7 +1989,7 @@ export class ToolsComponent implements OnInit {
 
 						this.gseaDataBase = res['data']['dataBase'];
 						this.gseaDataBase.forEach((data) => {
-							if (data['type'] == 1) {
+							if (data['type'] == 1 && data['db']) {
 								data['db'].forEach((db) => {
 									this.gseaDataBaseLeft.push({
 										checked: false,
@@ -1997,21 +1997,37 @@ export class ToolsComponent implements OnInit {
 										key: db['key']
 									})
 								})
-							} else {
+							} else if (data['type'] == 2) {
 								data['db'].forEach((db) => {
 									let tempN = db["key"];
 									let tempobj = [];
-									db['value'].forEach((value) => {
-										tempobj.push({
-											checked: false,
-											name: value['name'],
-											key: value['key']
+									if (db['value']) {
+										db['value'].forEach((value) => {
+											tempobj.push({
+												checked: false,
+												name: value['name'],
+												key: value['key']
+											})
+										});
+										this.gseaDataBaseRight.push({
+											key: tempN,
+											value: tempobj
 										})
-									});
-									this.gseaDataBaseRight.push({
-										key: tempN,
-										value: tempobj
+									}
+								})
+							} else if (data['type'] == 3 && data['db']) {
+								let tempN = '用户上传';
+								let tempobj = [];
+								data['db'].forEach((db) => {
+									tempobj.push({
+										checked: false,
+										name: db['name'],
+										key: db['key']
 									})
+								})
+								this.gseaDataBaseRight.push({
+									key: tempN,
+									value: tempobj
 								})
 							}
 						})
