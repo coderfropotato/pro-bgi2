@@ -617,9 +617,9 @@
 
                 <p *ngIf="baseFlag" style="color: gray;font-size: 12px;">注：人的MSigDB来自于GSEA官方数据库，其它物种根据序列相似性比对得到。</p>
                 <nz-row class="mb12" nzAlign="middle" *ngIf="baseFlag">
-                    <nz-row class="mb12" nzAlign="middle" *ngFor="let temp of gseaDataBaseLeft;index as i;">
-                        <button (click)="selectDataBaseLeft(temp)" [class.btnActive]="temp['checked']" nz-button nzType="default" nzSize="middle">{{temp['name']}}</button>
-                    </nz-row>
+                    <div class="tool-params-tab">
+                        <button class="mb12 mr12" (click)="selectDataBaseLeft(temp)" nz-tooltip [nzTitle]="temp['name']" [class.btnActive]="temp['checked']" nz-button nzType="default" nzSize="middle" *ngFor="let temp of gseaDataBaseLeft;index as i;">{{temp['name']}}</button>
+                    </div>
                     <!-- nz-tooltip [nzTitle]="temp['name']" -->
                 </nz-row>
                 <nz-row class="mb12" nzAlign="middle" *ngIf="baseFlag2">
