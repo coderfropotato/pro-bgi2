@@ -26,8 +26,8 @@
             <h3 class="title2" *ngIf="mflag == 2">{{tempIndex}}.1 实验流程（小RNA）</h3>
             <h3 class="title3" *ngIf="mflag == 3">{{tempIndex}}.1.2 实验流程（小RNA）</h3>
             <p class="help_text text_indent">实验操作中的每一步（如样品检测、文库构建到测序）都会影响数据数量和质量，从而影响后续信息分析结果。为了得到高质量测序数据，我们对每一步都进行严格的质控。实验流程见下图：</p>
-            <div class="img_seven" *ngIf="this.tflag == 61"></div>
-            <div class="help_bg" *ngIf="this.tflag == 61">
+            <div class="img_seven" *ngIf="this.sflag == 61"></div>
+            <div class="help_bg" *ngIf="this.sflag == 61">
                 <p>图说明:</p> 
                 <p>1) RNA片段选择: 将Total RNA使用PAGE电泳切胶分离18-30nt的RNA。</p>
                 <p>2）3’接头连接: 使用5-adenylated，3-blocked的单链DNA接头连接到（1）中RNA的3’端。</p>
@@ -39,8 +39,8 @@
                 <p>8）文库定量及pooling环化。</p>
             </div>
 
-            <div class="img_sevenTwo" *ngIf="this.tflag == 62"></div>
-            <div class="help_bg" *ngIf="this.tflag == 62">
+            <div class="img_sevenTwo" *ngIf="this.sflag == 62"></div>
+            <div class="help_bg" *ngIf="this.sflag == 62">
                 <p>图说明:</p> 
                 <p>1) 将Total RNA使用磁珠纯化分离出目的片段范围的RNA；</p>
                 <p>2）使用5-adenylated，3-blocked的单链接头连接到RNA的3’端；</p>

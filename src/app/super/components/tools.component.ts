@@ -2301,7 +2301,7 @@ export class ToolsComponent implements OnInit {
 		// 	tempObj.type = 1;
 		// 	tempObj.db = this.gseaDBLeftSelect;
 		// }else if(this.radioDataBase=="B"){
-		// 	tempObj.type = 1;
+		// 	tempObj.type = 2;
 		// 	tempObj.db = this.gseaDBRightSelect;
 		// }
 
