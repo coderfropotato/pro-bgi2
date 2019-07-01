@@ -138,6 +138,7 @@ import { AccuracyPipe } from './super/filter/accuracy.pipe';
 import { TableSpecialTheadFilter } from './super/filter/tableSpecialThead.pipe';
 import config from '../config';
 import { from } from 'rxjs';
+import { ReGseaComponent } from './pages/reanalysis/re-gsea.component';
 //import { ReTopComponent } from './pages/reanalysis/re-top.component';
 
 const ROUTES: Routes = [
@@ -724,7 +725,8 @@ export function createTranslateLoader(http: HttpClient) {
 		ReKdaComponent,
 		ReLineComponent,
 		KaFunComponent,
-        TargetComponent,
+		TargetComponent,
+		ReGseaComponent,
 
         TargetHelpComponent,
         TargetPage,
