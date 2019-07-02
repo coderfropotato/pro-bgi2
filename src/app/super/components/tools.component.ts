@@ -2274,8 +2274,8 @@ export class ToolsComponent implements OnInit {
 				tempcontrolGroup.group = this.inputBFrist;
 
 				this.selectBFristTag.forEach((d) => {
-					this.controlGroup2.forEach((m)=>{
-						if(d == m["value"]){
+					this.gseaGroup2.forEach((m)=>{
+						if(d == m["key"]){
 							tempcontrolGroup["sample"].push(m);
 						}
 					})
@@ -2283,8 +2283,8 @@ export class ToolsComponent implements OnInit {
 
 				temphandleGroup.group = this.inputBSecond;
 				this.selectBSecondTag.forEach((d) => {
-					this.handleGroup2.forEach((m)=>{
-						if(d == m["value"]){
+					this.gseaGroup2.forEach((m)=>{
+						if(d == m["key"]){
 							temphandleGroup["sample"].push(m);
 						}
 					})
