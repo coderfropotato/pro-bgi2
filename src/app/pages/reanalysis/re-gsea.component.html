@@ -10,9 +10,9 @@
                 <span class="zhankai-shouqi pointer" (click)="moduleTableChange()" [nzTitle]="(expandModuleTable ? '收起表格' : '展开表格') | translate" nz-tooltip>
                     <i class="iconfont expand-icon" [class.icon-shouqi1]="!expandModuleTable"></i>
                     <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleTable"></i>
-                    {{annotation}}富集结果表
+                    富集结果表
                 </span>
-                <p [hidden]="!expandModuleTable">根据 {{annotation}} 注释分类，使用 R 软件中的 phyper 函数进行富集分析，计算 Pvalue，然后对 Pvalue 进行 FDR 校正，通常 FDR &lt;= 0.01的功能视为显著富集。</p>
+                <p [hidden]="!expandModuleTable">根据注释分类，使用 R 软件中的 phyper 函数进行富集分析，计算 Pvalue，然后对 Pvalue 进行 FDR 校正，通常 FDR &lt;= 0.01的功能视为显著富集。</p>
                 <!-- {{'go_rich.content' | translate}}</p> -->
                 <ng-content select=".gene-switch-module"></ng-content>
             </div>
