@@ -163,9 +163,9 @@ export class ToolsComponent implements OnInit {
 	doGeneRichAjax: boolean = false;
 
 	//GSEA
-	gaeaRange: number[] = [1, 500];
+	gaeaRange: number[] = [5, 10000];
 	gseaMax: number = 500;
-	gseaMin: number = 1;
+	gseaMin: number = 15;
 	maxFlag: boolean = false;
 	minFlag: boolean = false;
 
@@ -198,6 +198,7 @@ export class ToolsComponent implements OnInit {
 	gseaDBLeftSelect: string = "";
 	gseaDataBaseRight: any[] = [];
 	gseaDBRightSelect: string = "";
+	gseaDBRightSelectType: number = 0;
 	//
 	//type
 	//db []
@@ -366,8 +367,11 @@ export class ToolsComponent implements OnInit {
 		this.gseaDataBaseLeft = [];
 		this.gseaDataBaseRight = [];
 
+		this.radioDataBase ="A";
+
 		this.gseaDBLeftSelect = "";
 		this.gseaDBRightSelect = "";
+		this.gseaDBRightSelectType = 0;
 
 		this.handleGroup2 = [];
 		this.controlGroup2 = [];
@@ -2006,7 +2010,8 @@ export class ToolsComponent implements OnInit {
 											tempobj.push({
 												checked: false,
 												name: value['name'],
-												key: value['key']
+												key: value['key'],
+												type: 2
 											})
 										});
 										this.gseaDataBaseRight.push({
@@ -2022,7 +2027,8 @@ export class ToolsComponent implements OnInit {
 									tempobj.push({
 										checked: false,
 										name: db['name'],
-										key: db['key']
+										key: db['key'],
+										type: 3
 									})
 								})
 								this.gseaDataBaseRight.push({
@@ -2066,7 +2072,7 @@ export class ToolsComponent implements OnInit {
 					}
 				},
 				(error) => {
-
+					this.gseaClear();
 				},
 				() => {
 					//this.doGeneRichAjax = true;
@@ -2084,6 +2090,7 @@ export class ToolsComponent implements OnInit {
 		this.gseaDataBaseRight.length = 0;
 		this.gseaDBLeftSelect = "";
 		this.gseaDBRightSelect = "";
+		this.gseaDBRightSelectType = 0;
 		this.gseaClassError = true;
 		this.selectBFristTag.length = 0;
 		this.selectBSecondTag.length = 0;
@@ -2166,9 +2173,11 @@ export class ToolsComponent implements OnInit {
 					if (item['checked']) {
 						item['checked'] = false;
 						this.gseaDBRightSelect = "";
+						this.gseaDBRightSelectType = 0;
 					} else {
 						item['checked'] = true;
-						this.gseaDBRightSelect = item["key"]
+						this.gseaDBRightSelect = item["key"];
+						this.gseaDBRightSelectType = item["type"];
 					}
 				} else {
 					m["checked"] = false;
@@ -2251,28 +2260,30 @@ export class ToolsComponent implements OnInit {
 		};
 
 		if(this.radioValue=="A"){
-			for (const key in this.gseaGroup) {
-				if (this.gseaGroup.hasOwnProperty(key)) {
-					const element = this.gseaGroup[key];
-					if(key == this.radioAFrist){
-						temphandleGroup.group = this.radioAFrist;
-						temphandleGroup.sample = element;
-					}
-					if(key == this.radioASecond){
-						tempcontrolGroup.group = this.radioASecond;
-						tempcontrolGroup.sample = element;
+			if (this.radioASecond && this.radioAFrist) {
+				for (const key in this.gseaGroup) {
+					if (this.gseaGroup.hasOwnProperty(key)) {
+						const element = this.gseaGroup[key];
+						if(key == this.radioAFrist){
+							temphandleGroup.group = this.radioAFrist;
+							temphandleGroup.sample = element;
+						}
+						if(key == this.radioASecond){
+							tempcontrolGroup.group = this.radioASecond;
+							tempcontrolGroup.sample = element;
+						}
 					}
 				}
-			}
-		}else if(this.radioValue=="B"){
-			if (!this.inputBFrist&&!this.inputBSecond) {
-				this.notify.warning('tips：', `组名不能为空`,{
+			} else {
+				this.notify.warning('tips：', `对照组和处理组不能为空`,{
 					nzStyle: { width: '300px' }
 				});
 				return;
-			} else {
+			}
+			
+		}else if(this.radioValue=="B"){
+			if (this.inputBFrist && this.inputBSecond && this.selectBFristTag.length>0 && this.selectBSecondTag.length>0) {
 				tempcontrolGroup.group = this.inputBFrist;
-
 				this.selectBFristTag.forEach((d) => {
 					this.gseaGroup2.forEach((m)=>{
 						if(d == m["key"]){
@@ -2289,6 +2300,11 @@ export class ToolsComponent implements OnInit {
 						}
 					})
 				});
+			} else {
+				this.notify.warning('tips：', `对照组和处理组组名和选取内容不能为空`,{
+					nzStyle: { width: '300px' }
+				});
+				return;
 			}
 		}
 
@@ -2298,11 +2314,26 @@ export class ToolsComponent implements OnInit {
 		};
 
 		if(this.radioDataBase=="A"){
-			tempObj.type = 1;
-			tempObj.db = this.gseaDBLeftSelect;
+			if(this.gseaDBLeftSelect){
+				tempObj.type = 1;
+				tempObj.db = this.gseaDBLeftSelect;
+			}else{
+				this.notify.warning('tips：', `请选择一个GESA MSigDB数据库`,{
+					nzStyle: { width: '300px' }
+				});
+				return;
+			}
 		}else if(this.radioDataBase=="B"){
-			tempObj.type = 2;
-			tempObj.db = this.gseaDBRightSelect;
+			if(this.gseaDBRightSelect){
+				tempObj.type = this.gseaDBRightSelectType;
+				tempObj.db = this.gseaDBRightSelect;
+			}else{
+				this.notify.warning('tips：', `请选择一个其他数据库`,{
+					nzStyle: { width: '300px' }
+				});
+				return;
+			}
+			
 		}
 
 		this.isSubmitReanalysis = true;
