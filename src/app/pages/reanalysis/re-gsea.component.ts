@@ -82,13 +82,13 @@ export class ReGseaComponent implements OnInit {
     tid: string = null;
     geneType: string = 'gene';
     version: string = null;
-    date: string = null;
+    //date: string = null;
 
     computedScrollHeight: boolean = false;
     leftComputedScrollHeight: boolean = false;
 
     selectedVal: string = 'go_cfp_term_level_2';
-    annotation: string = '';
+    //annotation: string = '';
     selectData: any = [];
 
     resetCheckGraph: boolean;
@@ -128,8 +128,8 @@ export class ReGseaComponent implements OnInit {
             this.tid = params['params']['tid'];
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
-            this.annotation = params['params']['annotation'];
-            this.date = params['params']['date'];
+            // this.annotation = params['params']['annotation'];
+            // this.date = params['params']['date'];
 
             this.storeService.setTid(this.tid);
         })
@@ -139,22 +139,26 @@ export class ReGseaComponent implements OnInit {
         this.gcolors = ["#0070c0", "#ff0000"];
         this.colors = ["#0F0", "#0F0F0F", "gray"];
         (async () => {
-            this.bigtableUrl = `${config['javaPath']}/enrichment/generalTable`;
+            this.bigtableUrl = `${config['javaPath']}/gsea/graphTable`;
             this.chartUrl = `${config['javaPath']}/enrichment/graph`;
             this.chartEntity = {
-                LCID: this.storeService.getStore('LCID'),
-                enrichmentType: this.annotation,
-                geneType: this.geneType,
-                species: this.storeService.getStore('genome'),
-                checkedClassifyType: 'go_f_term_level_2',
-                checkedClassifyList: [],
+                group:"CK",
+                tableName:"GO_ENDOPLASMIC_RETICULUM_LUMEN",
                 searchList: [],
                 pageIndex: 1,
                 pageSize: 20,
                 sortKey: null,
                 sortValue: null,
-                tid: this.tid,
-                version: this.storeService.getStore('version')
+                // LCID: this.storeService.getStore('LCID'),
+                // tid: this.tid,
+                // geneType: this.geneType,
+                // species: this.storeService.getStore('genome'),
+                // version: this.storeService.getStore('version')
+                LCID: "DEMO_HUMlfbE",
+                tid: "dc2a23a235fd4202ae9cd0ad5881d91e",
+                geneType: "gene",
+                species: "homo_sapiens",
+                version: "homo_sapiens_9606.ncbi.gcf_000001405.38_grch38.p12.v1904"
             };
 
             this.first = true;
@@ -164,7 +168,6 @@ export class ReGseaComponent implements OnInit {
             this.defaultEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid: this.tid,
-                enrichmentType: this.annotation,
                 pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,
@@ -194,7 +197,6 @@ export class ReGseaComponent implements OnInit {
             this.extendEntity = {
                 LCID: sessionStorage.getItem('LCID'),
                 tid: this.tid,
-                enrichmentType: this.annotation,
                 pageIndex: 1,
                 pageSize: 20,
                 mongoId: null,
@@ -216,7 +218,7 @@ export class ReGseaComponent implements OnInit {
                 sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };
-            this.extendTableId = 'extend_rich';
+            this.extendTableId = 'gsea_table';
             this.extendDefaultChecked = true;
             this.extendEmitBaseThead = true;
             this.extendCheckStatusInParams = false;
@@ -237,13 +239,13 @@ export class ReGseaComponent implements OnInit {
     }
 
     checkedChange(data) {
-        this.checkedData = [...data[1]];
-        this._sortArr(this.annotation + '_qvalue', this.checkedData);
-        this.checkedDrawGeneList.length = 0;
-        this.checkedData.forEach(d => {
-            let geneid = d[this.annotation + "_term"] ? d[this.annotation + "_term"] : d[this.annotation + "_term_id"];
-            this.checkedDrawGeneList.push(geneid);
-        })
+        // this.checkedData = [...data[1]];
+        // this._sortArr(this.annotation + '_qvalue', this.checkedData);
+        // this.checkedDrawGeneList.length = 0;
+        // this.checkedData.forEach(d => {
+        //     let geneid = d[this.annotation + "_term"] ? d[this.annotation + "_term"] : d[this.annotation + "_term_id"];
+        //     this.checkedDrawGeneList.push(geneid);
+        // })
 
     }
 

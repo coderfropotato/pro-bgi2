@@ -52,7 +52,8 @@ export class ReListComponent implements OnInit {
 			{ key: 'chiSquare', name: '卡方检验', id:"05", checked: false, value: ['chiSquare'] },
 			{ key: 'as', name: '可变剪切', id:"09", checked: false, value: ['as'] },
 			{ key: 'linkedNetwork', name: '关联网络互做', id:"08", checked: false, value: ['linkedNetwork'] },
-			{ key: 'heatmapRelation', name: '关联聚类热图', id:"01", checked: false, value: ['heatmapRelation'] }
+			{ key: 'heatmapRelation', name: '关联聚类热图', id:"01", checked: false, value: ['heatmapRelation'] },
+			{ key: 'gsea', name: 'GSEA富集', id:"14", checked: false, value: ['gsea'] }
 		],
 		status: [
 			{ key: '1', name: '成功', checked: false },
@@ -223,7 +224,13 @@ export class ReListComponent implements OnInit {
 			window.open(
 				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}`
 			);
-		} else {
+		}
+		else if (type === 'gsea'){
+			window.open(
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}`
+			);
+		}
+		else {
 			window.open(
 				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['isEdited']}`
 			);

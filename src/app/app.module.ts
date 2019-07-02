@@ -99,6 +99,7 @@ import { RelativeSpliceComponent } from './pages/reanalysis/re-relativeSplice.co
 import { GeneListIndexComponent } from './pages/geneList/index.component';
 import { ReClassComponent } from './pages/reanalysis/re-class.component';
 import { ReRichComponent } from './pages/reanalysis/re-rich.component';
+import { ReGseaComponent } from './pages/reanalysis/re-gsea.component';
 /* map测试 */
 import { MapTestComponent } from './pages/test/mapTest.component';
 /* 基因集 */
@@ -138,7 +139,7 @@ import { AccuracyPipe } from './super/filter/accuracy.pipe';
 import { TableSpecialTheadFilter } from './super/filter/tableSpecialThead.pipe';
 import config from '../config';
 import { from } from 'rxjs';
-import { ReGseaComponent } from './pages/reanalysis/re-gsea.component';
+
 //import { ReTopComponent } from './pages/reanalysis/re-top.component';
 
 const ROUTES: Routes = [
@@ -527,6 +528,16 @@ const ROUTES: Routes = [
 				}
 			},
 			{
+				path: 're-gsea/:geneType/:tid/:version/',
+				//path: 're-gsea',
+				component: ReGseaComponent,
+				// canActivate: [ SysDefendService ],
+				data: {
+					keep: false,
+					module: 'reGsea'
+				}
+			},
+			{
 				path: '',
 				redirectTo: 'index',
 				pathMatch: 'full'
@@ -737,6 +748,7 @@ export function createTranslateLoader(http: HttpClient) {
 		GeneListIndexComponent,
 		ReClassComponent,
 		ReRichComponent,
+		ReGseaComponent,
 
 		GeneListVennComponent,
 		GeneListVennPageComponent,
