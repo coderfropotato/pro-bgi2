@@ -71,8 +71,23 @@ export class GeneExpressionHelpComponent implements OnInit {
           this.seq_platform_series = "BGISEQ";
       }
 
+      let circRNA_flag = false;
+      let smallRNA_common_flag = false;
+      let smallRNA_UMI_flag = false;
 
-      temp = this.project_type.split(",");
+      this.library_method.split("+").forEach((d) => {
+        if(d.indexOf('circRNA') != -1){
+          circRNA_flag = true;
+        }
+        if(d.indexOf('smallRNA_common') != -1 ){
+          smallRNA_common_flag = true;
+        }
+        if(d.indexOf('smallRNA_UMI') != -1 ){
+          smallRNA_UMI_flag = true;
+        }
+      })
+
+      temp = this.project_type.split("+");
 
       temp.forEach((d) => {
           if(d == "RNAseq" || d == "RNAref"){
@@ -84,7 +99,7 @@ export class GeneExpressionHelpComponent implements OnInit {
           }
 
           //RNAseq、RNAref、lncRNA、lncRNA、lncRNA
-          if(d == "RNAseq" || d == "RNAref" || d=="lncRNA" || d=="miRNA" || this.library_method=="circRNA"){
+          if(d == "RNAseq" || d == "RNAref" || d=="lncRNA" || d=="miRNA" || circRNA_flag){
             this.mflag6 = true;
             this.mflag7 = true;
             this.mflag8 = true;
@@ -92,28 +107,20 @@ export class GeneExpressionHelpComponent implements OnInit {
       });
 
       if(temp.indexOf('miRNA') > -1){
-          if(this.library_method == "smallRNA_common"){
+          if(smallRNA_common_flag){
             this.mflag3 = true;
           }
-          if(this.library_method == "smallRNA_UMI"){
+          if(smallRNA_UMI_flag){
             this.mflag4 = true;
           }
       }else{
           
       }
 
-      if(this.library_method == "circRNA"){
+      if(circRNA_flag){
         this.mflag5 = true;
       }
 
-    //  console.log(this.mflag1)
-    //  console.log(this.mflag2)
-    //  console.log(this.mflag3)
-    //  console.log(this.mflag4)
-    //  console.log(this.mflag5)
-    //  console.log(this.mflag6)
-    //  console.log(this.mflag7)
-    //  console.log(this.mflag8)
   }
 
 }
