@@ -248,7 +248,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 		this.compareTableGroupList.push(this.compareNewGroupList[1]);
 
 		this.selectData = ["Up+Down","Total"];
-		this.selectedVal = this.selectData[1];
+		this.selectedVal = this.selectData[0];
 		this.m_name2 = this.selectedVal;
 
 		//this.tempThreshold = this.storeService.getStore('diff_threshold');
@@ -630,6 +630,7 @@ export class DiffExpressionNumberComponent implements OnInit {
 				custom: [ 'key', 'value', 'category' ],
 				data: chartData,
 				enableChartSelect: true,
+				colors:["#ff5b5b","#40a5eb"],
 				onselect: function(data) {
 					that.defaultTheSelectList(data,2);
 				}
