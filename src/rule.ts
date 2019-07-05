@@ -116,7 +116,8 @@ export const matchList: string[] = [
 	'msigdb_c7_desc',
 	'msigdb_h_term_id',
 	'msigdb_h_term',
-	'msigdb_h_desc'
+	'msigdb_h_desc',
+	'url_circbase_gene_id'
 ];
 
 // 跳map的头
@@ -297,6 +298,7 @@ export const matchRule: object = {
 	msigdb_c7_desc: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' },
 	msigdb_h_term_id: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' },
 	msigdb_h_term: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' },
-	msigdb_h_desc: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' }
+	msigdb_h_desc: { url: 'http://software.broadinstitute.org/gsea/msigdb/cards/@' },
+	url_circbase_gene_id: {url: 'http://www.circbase.org/cgi-bin/singlerecord.cgi?id=@'}
 };
 

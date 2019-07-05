@@ -52,10 +52,13 @@ export class GeneDetailComponent implements OnInit {
 		genome_version:"",//
 		genome_url:"",//
 		genome_version_official:"",
-		genebank_desc:""
+		genebank_desc:"",
+		url_circbase_gene_id:""
 	};
 
 	btn_show: boolean = true;
+
+	url_circbase_gene_id_flag: boolean = false;
 
 	//转录本信息
 	defaultUrl: string;
@@ -593,6 +596,9 @@ export class GeneDetailComponent implements OnInit {
 					return;
 				} else {
 					this.geneInfoList = data['data'];
+					if(this.geneInfoList["url_circbase_gene_id"]){
+						this.url_circbase_gene_id_flag = true;
+					}
 				}
 				resolve("success");
 			},
