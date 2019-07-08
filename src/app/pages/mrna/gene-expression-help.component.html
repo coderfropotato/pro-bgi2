@@ -75,69 +75,81 @@
         <div class="help_content" *ngIf="mflag6">
             <h3 class="title3">2.差异基因检测</h3>
             <!-- <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p> -->
-            <h3 class="title3">DEGseq: </h3>
-            <p class="help_text text_indent">DEGseq方法基于泊松分布，本项目根据Wang L, Feng Z, Wang X, et al.中描述的方法进行差异基因检测。</p>
-            <p class="help_text text_indent">RNA测序可以被当成随机取样的过程，每一个read从样品中独立且均匀地取样。在这个假设下，来自基因（转录本）的read数目遵循二项分布（并且近似由泊松分布代替）。</p>
-            <p class="help_text text_indent">使用上述的统计模型，DEGseq 提出一个基于MA-plot的新方法，MA-plot是广泛应用于芯片数据的统计分析工具，让C1和C2表示从两个样品获得的特定基因的read数目，他们符合Ci~binomial(ni,pi)，i=1,2分布，其中ni表示所有比对上的read总数，pi表示来着该基因的概率。 DEGseq定义 M=log2C1-log2C2和A=(log2C1+log2C2）/2并证明在随机抽样假设下 ，给定A=a （a是A的观察值）的条件分布 M 遵循近似正态分布。 对于MA图上的每个基因，进行假设检验H0：p1=p2与H1：p1≠p2。然后根据正态分布计算P值。</p>
-            <p class="help_text text_indent">通过Benjamini,Y. and Hochberg,Y. 和Storey,J. and Tibshirani,R. 两种策略将P-values矫正为Q-values。为了提高DEGs的准确性，我们定义差异倍数为两倍以上并且Q-value≤0.001的基因，筛选为显著差异表达基因。</p>
-            <div class="help_bg">
-                <p>软件信息：</p>
-                <p>DEGseq:</p>
-                <p> 参数: Fold Change >= 2.00 and Adjusted Pvalue <= 0.001</p>
-                <p>参考文献：</p>
-                <p>[1]Wang L, Feng Z, Wang X, et al. DEGseq: an R package for identifying differentially expressed genes from RNA-seq data[J]. Bioinformatics, 2010, 26(1): 136-138.</p>
+            <div *ngIf="DEGseq_flag">
+                <h3 class="title3">DEGseq: </h3>
+                <p class="help_text text_indent">DEGseq方法基于泊松分布，本项目根据Wang L, Feng Z, Wang X, et al.中描述的方法进行差异基因检测。</p>
+                <p class="help_text text_indent">RNA测序可以被当成随机取样的过程，每一个read从样品中独立且均匀地取样。在这个假设下，来自基因（转录本）的read数目遵循二项分布（并且近似由泊松分布代替）。</p>
+                <p class="help_text text_indent">使用上述的统计模型，DEGseq 提出一个基于MA-plot的新方法，MA-plot是广泛应用于芯片数据的统计分析工具，让C1和C2表示从两个样品获得的特定基因的read数目，他们符合Ci~binomial(ni,pi)，i=1,2分布，其中ni表示所有比对上的read总数，pi表示来着该基因的概率。 DEGseq定义 M=log2C1-log2C2和A=(log2C1+log2C2）/2并证明在随机抽样假设下 ，给定A=a （a是A的观察值）的条件分布 M 遵循近似正态分布。 对于MA图上的每个基因，进行假设检验H0：p1=p2与H1：p1≠p2。然后根据正态分布计算P值。</p>
+                <p class="help_text text_indent">通过Benjamini,Y. and Hochberg,Y. 和Storey,J. and Tibshirani,R. 两种策略将P-values矫正为Q-values。为了提高DEGs的准确性，我们定义差异倍数为两倍以上并且Q-value≤0.001的基因，筛选为显著差异表达基因。</p>
+                <div class="help_bg">
+                    <p>软件信息：</p>
+                    <p>DEGseq:</p>
+                    <p> 参数: Fold Change >= 2.00 and Adjusted Pvalue <= 0.001</p>
+                    <p>参考文献：</p>
+                    <p>[1]Wang L, Feng Z, Wang X, et al. DEGseq: an R package for identifying differentially expressed genes from RNA-seq data[J]. Bioinformatics, 2010, 26(1): 136-138.</p>
+                </div>
             </div>
 
-            <h3 class="title3">泊松分布方法（PossionDis）</h3>
-            <p class="help_text text_indent">PossionDis方法基于泊松分布原理，本项目参照Audic S.等人发表在Genome Research上的基于测序的差异基因检测方法，我们开发了严格的算法筛选两样本间的差异表达基因。假设观测到基因A对应的reads数为x，已知在一个大文库中，每个基因的表达量只占所有基因表达量的一小部分，在这种情况下,x的分布服从泊松分布：</p>
-            <!-- 图片 -->
-            <div class="img img-three-expression"></div>
-            <p class="help_text text_indent"> 已知，样本一中唯一比对到基因组的总reads数为N1，样本二中唯一比对到基因组的总reads数为N2；样本一中唯一比对到基因A的总reads数为x，样本二中唯一比对到基因A的总reads数为y，则基因A在两样本中表达量相等的概率可由以下公式计算： </p> 
-            <!-- 图片 -->
-            <div class="img img-four-expression"></div>
-            <p class="help_text text_indent">然后，我们对差异检验的P-value作多重假设检验校正 ，通过控制 FDR （False Discovery Rate）来决定P-value的域值。假设挑选了R个差异表达基因，其中S个是真正有差异表达的基因，另外V个是其实没有差异表达的基因，为假阳性结果。希望错误比例Q＝V/R平均而言不能超过某个可以容忍的值（比如5％），则在统计时预先设定 FDR 不能超过0.05。在得到差异检验的 FDR 值同时，我们根据基因的表达量（FPKM值）计算该基因在不同样本间的差异表达倍数。 FDR 值越小，差异倍数越大，则表明表达差异越显著。在我们的分析中，差异表达基因默认定义为 FDR ≤0.001且倍数差异在2倍以上的基因。</p>
-            <div class="help_bg">
-                <p>PossionDis:</p>
-                <p>参数: Fold Change >= 2 and FDR <= 0.001</p>
-                <p>参考文献：</p>
-                <p>[1] Audic, S. & Claverie, J. M. The significance of digital gene expression profiles. Genome Res. 7, 986-995 (1997).</p>
-                <p>[2] Salkind, N. J. Encyclopedia of Measurement and Statistics. SAGE Publications, Thousand Oaks, California, 2007.</p>
-                <p>[3] Benjamini, Y. & Yekutieli, D. The control of the false discovery rate in multiple testing under dependency. Ann. Stat. 29, 1165-1188 (2001).</p>
+            <!-- <h3 class="title3">泊松分布方法（PossionDis）</h3> -->
+            <div *ngIf="PossionDis_flag">
+                <h3 class="title3">PossionDis:</h3>
+                <p class="help_text text_indent">PossionDis方法基于泊松分布原理，本项目参照Audic S.等人发表在Genome Research上的基于测序的差异基因检测方法，我们开发了严格的算法筛选两样本间的差异表达基因。假设观测到基因A对应的reads数为x，已知在一个大文库中，每个基因的表达量只占所有基因表达量的一小部分，在这种情况下,x的分布服从泊松分布：</p>
+                <!-- 图片 -->
+                <div class="img img-three-expression"></div>
+                <p class="help_text text_indent"> 已知，样本一中唯一比对到基因组的总reads数为N1，样本二中唯一比对到基因组的总reads数为N2；样本一中唯一比对到基因A的总reads数为x，样本二中唯一比对到基因A的总reads数为y，则基因A在两样本中表达量相等的概率可由以下公式计算： </p> 
+                <!-- 图片 -->
+                <div class="img img-four-expression"></div>
+                <p class="help_text text_indent">然后，我们对差异检验的P-value作多重假设检验校正 ，通过控制 FDR （False Discovery Rate）来决定P-value的域值。假设挑选了R个差异表达基因，其中S个是真正有差异表达的基因，另外V个是其实没有差异表达的基因，为假阳性结果。希望错误比例Q＝V/R平均而言不能超过某个可以容忍的值（比如5％），则在统计时预先设定 FDR 不能超过0.05。在得到差异检验的 FDR 值同时，我们根据基因的表达量（FPKM值）计算该基因在不同样本间的差异表达倍数。 FDR 值越小，差异倍数越大，则表明表达差异越显著。在我们的分析中，差异表达基因默认定义为 FDR ≤0.001且倍数差异在2倍以上的基因。</p>
+                <div class="help_bg">
+                    <p>PossionDis:</p>
+                    <p>参数: Fold Change >= 2 and FDR <= 0.001</p>
+                    <p>参考文献：</p>
+                    <p>[1] Audic, S. & Claverie, J. M. The significance of digital gene expression profiles. Genome Res. 7, 986-995 (1997).</p>
+                    <p>[2] Salkind, N. J. Encyclopedia of Measurement and Statistics. SAGE Publications, Thousand Oaks, California, 2007.</p>
+                    <p>[3] Benjamini, Y. & Yekutieli, D. The control of the false discovery rate in multiple testing under dependency. Ann. Stat. 29, 1165-1188 (2001).</p>
+                </div>
             </div>
             
-            <h3 class="title2">DESeq2: </h3>
-            <p class="help_text text_indent">DEseq2方法基于负二项分布原理，本项目根据Michael I, et al.[1]中描述的方法进行差异基因DEG。DEG是差异表达基因的简称，指不同样品之间表达水平有差异的基因检测。</p>
-            <div class="help_bg">
-                <p>DESeq2:</p>
-                <p>参数: Fold Change >= 2.00 and Adjusted Pvalue <= 0.05</p>
-                <p>参考文献：</p>
-                <p>[1] Love, M. I., Huber, W. & Anders, S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. 15, 550 (2014).</p>
+            <div *ngIf="DESeq2_flag">
+                <h3 class="title2">DESeq2: </h3>
+                <p class="help_text text_indent">DEseq2方法基于负二项分布原理，本项目根据Michael I, et al.[1]中描述的方法进行差异基因DEG。DEG是差异表达基因的简称，指不同样品之间表达水平有差异的基因检测。</p>
+                <div class="help_bg">
+                    <p>DESeq2:</p>
+                    <p>参数: Fold Change >= 2.00 and Adjusted Pvalue <= 0.05</p>
+                    <p>参考文献：</p>
+                    <p>[1] Love, M. I., Huber, W. & Anders, S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. 15, 550 (2014).</p>
+                </div>
             </div>
             
-            <h3 class="title2">NoiSeq: </h3>
-            <p class="help_text text_indent">两两之间的差异倍数（M）以及绝对差值（D）两个背景数据集，称之为噪音背景：</p>
-            <!-- 图片 -->
-            <div class="img img-five-expression"></div>
-            <p class="help_text text_indent">对于基因A分别计算在对照样品中的平均表达量Control-avg，处理样品中的平均表达量Treat-avg，得到该基因的差异倍数（MA=log2((Treat-avg)/(Control-avg))）和绝对差值（DA=|Congrol-avg-Treat-avg|），如果MA、DA均明显偏离噪音背景数据集，则该基因属于差异表达基因。具体地，以MA、DA同时大于相应数据集的概率来衡量该基因偏离噪音背景数据集的程度：</p>
-            <!-- 图片 -->
-            <div class="img img-six-expression"></div>
-            <p class="help_text text_indent">我们计算出每个基因的差异倍数，以及偏离度概率值，然后按照差异倍数≥2、偏离概率值≥0.8的默认标准，筛选出差异表达基因。</p>
-            <div class="help_bg">
-                <p>NOIseq:</p>
-                <p>参数: Fold Change >= 2.00 and Probability >= 0.8</p>
-                <p>参考文献：</p>
-                <p>[1] Tarazona, S. et al. Differential expression in RNA-seq: a matter of depth. Genome Res. 21, 2213-2223 (2011).</p>
+            <div *ngIf="Noiseq_flag">
+                <h3 class="title2">NoiSeq: </h3>
+                <p class="help_text text_indent">两两之间的差异倍数（M）以及绝对差值（D）两个背景数据集，称之为噪音背景：</p>
+                <!-- 图片 -->
+                <div class="img img-five-expression"></div>
+                <p class="help_text text_indent">对于基因A分别计算在对照样品中的平均表达量Control-avg，处理样品中的平均表达量Treat-avg，得到该基因的差异倍数（MA=log2((Treat-avg)/(Control-avg))）和绝对差值（DA=|Congrol-avg-Treat-avg|），如果MA、DA均明显偏离噪音背景数据集，则该基因属于差异表达基因。具体地，以MA、DA同时大于相应数据集的概率来衡量该基因偏离噪音背景数据集的程度：</p>
+                <!-- 图片 -->
+                <div class="img img-six-expression"></div>
+                <p class="help_text text_indent">我们计算出每个基因的差异倍数，以及偏离度概率值，然后按照差异倍数≥2、偏离概率值≥0.8的默认标准，筛选出差异表达基因。</p>
+                <div class="help_bg">
+                    <p>NOIseq:</p>
+                    <p>参数: Fold Change >= 2.00 and Probability >= 0.8</p>
+                    <p>参考文献：</p>
+                    <p>[1] Tarazona, S. et al. Differential expression in RNA-seq: a matter of depth. Genome Res. 21, 2213-2223 (2011).</p>
+                </div>
             </div>
 
-            <h3 class="title2">EBseq: </h3>
-            <p class="help_text text_indent">EBseq<sup>[1]</sup>可鉴定两个生物条件下群体差异表达的基因，考虑到reads比对的不确定性（因为亚型转录本及其所属基因的转录本亚型数量），EBseq运用方差计算，使结果更为可靠。</p>
-            <p class="help_text text_indent">EBseq统计了一个基因为非差异表达和差异表达的后验概率，“PPEE和PPDE”。另外，EBseq还做了关于倍数变化（fold change）的统计，对于每个条件中的基因评估后验平均表达水平，计算两种条件下的比例。为了提高差异分析正确性，我们将差异倍数为两倍以上并且PPEE小于0.05的基因，筛选为显著差异表达基因。</p>
-            <div class="help_bg">
-                <p>EBseq:</p>
-                <p>参数: Fold Change >= 2.00 and Posterior Probability of being Equivalent Expression(PPEE) <= 0.05</p>
-                <p>参考文献：</p>
-                <p>[1] Leng, N. et al. EBSeq: an empirical Bayes hierarchical model for inference in RNA-seq experiments. Bioinformatics 29, 1035-1043 (2013).</p>
+            <div *ngIf="EBSeq_flag">
+                <h3 class="title2">EBseq: </h3>
+                <p class="help_text text_indent">EBseq<sup>[1]</sup>可鉴定两个生物条件下群体差异表达的基因，考虑到reads比对的不确定性（因为亚型转录本及其所属基因的转录本亚型数量），EBseq运用方差计算，使结果更为可靠。</p>
+                <p class="help_text text_indent">EBseq统计了一个基因为非差异表达和差异表达的后验概率，“PPEE和PPDE”。另外，EBseq还做了关于倍数变化（fold change）的统计，对于每个条件中的基因评估后验平均表达水平，计算两种条件下的比例。为了提高差异分析正确性，我们将差异倍数为两倍以上并且PPEE小于0.05的基因，筛选为显著差异表达基因。</p>
+                <div class="help_bg">
+                    <p>EBseq:</p>
+                    <p>参数: Fold Change >= 2.00 and Posterior Probability of being Equivalent Expression(PPEE) <= 0.05</p>
+                    <p>参考文献：</p>
+                    <p>[1] Leng, N. et al. EBSeq: an empirical Bayes hierarchical model for inference in RNA-seq experiments. Bioinformatics 29, 1035-1043 (2013).</p>
+                </div>
             </div>
+            
         </div>
 
         <div class="help_content" *ngIf="mflag7">
