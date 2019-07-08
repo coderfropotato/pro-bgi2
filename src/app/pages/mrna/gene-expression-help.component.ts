@@ -39,6 +39,13 @@ export class GeneExpressionHelpComponent implements OnInit {
   mflag7: boolean = false;//适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA
   mflag8: boolean = false;//适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA
   
+
+  DEGseq_flag: boolean = false;
+  DESeq2_flag: boolean = false;
+  EBSeq_flag: boolean = false;
+  Noiseq_flag: boolean = false;
+  PossionDis_flag: boolean = false;
+
   constructor(
     private modalService: NzModalService,
     private ajaxService: AjaxService,
@@ -48,6 +55,30 @@ export class GeneExpressionHelpComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+      this.DEGseq_flag = false;
+      this.DESeq2_flag = false;
+      this.EBSeq_flag = false;
+      this.Noiseq_flag = false;
+      this.PossionDis_flag = false;
+      let tempobj = JSON.parse(JSON.stringify(this.store.getStore('diff_threshold')));
+      for (const key in tempobj) {
+        if(key=="PossionDis"){
+          this.PossionDis_flag = true;
+        }
+        if(key=="Noiseq"){
+          this.Noiseq_flag = true;
+        }
+        if(key=="EBSeq"){
+          this.EBSeq_flag = true;
+        }
+        if(key=="DESeq2"){
+          this.DESeq2_flag = true;
+        }
+        if(key=="DEGseq"){
+          this.DEGseq_flag = true;
+        }
+      }
+      
       let temp = [];
       if(this.store.store.hasOwnProperty("project_type"))
       {
