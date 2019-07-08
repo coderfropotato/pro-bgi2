@@ -892,18 +892,22 @@ export class DiffExpressionNumberComponent implements OnInit {
 
 	defaultTheSelectList(data,num) {
 		if(num == 1){
-			let tempJ = [];
-			tempJ.push(data[0]["compareGroup"]);
-			this.selectConfirmData = tempJ;
+			// let tempJ = [];
+			// tempJ.push(data[0]["compareGroup"]);
+			this.compareTableGroupList.length = 0;
+			this.compareTableGroupList.push(data[0]["compareGroup"]);
+			this.selectConfirmData = this.compareTableGroupList;
 
 			this.m_name1 = data[0]["compareGroup"];
 
 			this.m_name2 = "Total";
 			this.m_type = null;
 		}else{
-			let tempP = [];
-			tempP.push(data[0]["key"]);
-			this.selectConfirmData = tempP;
+			// let tempP = [];
+			// tempP.push(data[0]["key"]);
+			this.compareTableGroupList.length = 0;
+			this.compareTableGroupList.push(data[0]["key"]);
+			this.selectConfirmData = this.compareTableGroupList;
 			this.m_type = data[0]["category"];
 			this.m_name1 = data[0]["key"];
 			this.m_name2 = data[0]["category"];
