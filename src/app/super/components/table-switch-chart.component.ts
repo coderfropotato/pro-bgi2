@@ -107,6 +107,8 @@ export class TableSwitchChartComponent implements OnInit {
 
     // 图说明
     @Input() isShowChartDesc:boolean=false; // 可选，默认隐藏
+    @Input() isGsea:boolean=false; // 可选，默认隐藏
+    @Input() isShowChartDetail:boolean=true; // 可选，默认展开
     @Input() chartDescTitle:string;  //可选， 说明字段标题； 默认是'图说明'
     @Input() chartDescContent:any;  //  说明的内容；传入此字段说明有图的说明
     // 表说明
@@ -148,6 +150,8 @@ export class TableSwitchChartComponent implements OnInit {
     tbodyOutFirstCol:any[]=[]; // 除第一列以外的其他列数据
     sortMap: object = {}; //排序
     isErrorDelete:boolean = false;
+
+    chartDescDetail: string;
 
     constructor(
         private ajaxService: AjaxService,
@@ -940,7 +944,16 @@ export class TableSwitchChartComponent implements OnInit {
             } else {
                 this.drawChartEmit.emit(data);
             }
-        }
+            if (this.isGsea) {
+                this.chartDescDetail = `Upregulated in class: ${data.group}<br>
+ORIGINAL SIZE: ${data['detailInfo']['ORIGINAL SIZ']}<br>
+Enrichment Score (ES): ${data['detailInfo']['ES']}<br>
+Normalized Enrichment Score (NES): ${data['detailInfo']['NES']}<br>
+Nominal p-value: ${data['detailInfo']['NOM p-val']}<br>
+FDR q-value: ${data['detailInfo']['FDR q-va']}<br>
+FWER p-Value: ${data['detailInfo']['FWER p-val']}`;
+            }
+        };
         if(document.querySelector(`#${this.chartId}`)){
             then();
         }else{
