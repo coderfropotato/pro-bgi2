@@ -89,7 +89,8 @@ export class ReGseaComponent implements OnInit {
     leftComputedScrollHeight: boolean = false;
 
     // 所有的组对应的 tableNames
-    selectData: any = [];
+    selectData: string[] = [];
+    groupData: object;
 
     resetCheckGraph: boolean;
 
@@ -135,25 +136,44 @@ export class ReGseaComponent implements OnInit {
             this.treatGroup = params['params']['treatGroup'];
             this.controlGroup = params['params']['controlGroup'];
             this.storeService.setTid(this.tid);
-        })
+        });
+
+        this.ajaxService
+            .getDeferData({
+                url: `${config['javaPath']}/gsea/groupData`,
+                data: {
+                    LCID: sessionStorage.getItem('LCID'),
+                    tid: this.tid,
+                    species: this.storeService.getStore('genome')
+                }
+            })
+            .subscribe(
+                (res) => {
+                    if (res['data'] && !$.isEmptyObject(res['data'])) {
+
+                        this.groupData = res['data'];
+
+                        for (const key in res['data']) {
+                            if(key == this.group){
+                                this.selectData = this.groupData[key];
+                            }
+                        }
+                        this.selectData = this.groupData[this.group];
+                        this.termId = this.selectData.length ? this.selectData[0] : null;
+                        console.log('test02 after response', this.termId);
+
+                    }
+                },
+            );
     }
 
     ngOnInit() {
         (async () => {
             this.group = this.treatGroup;
-            console.log(this.group);
-            let a = await this.getSelect();
-            for (const key in this.tempAB) {
-                if(key == this.group){
-                    this.selectData = this.tempAB[key];
-                }
-            }
-            console.log('test2', this.selectData);
-            this.termId = this.selectData.length?this.selectData[0]:null;
-            console.log(this.termId);
             this.restoreChartAttr();
             this.bigtableUrl = `${config['javaPath']}/gsea/table`;
             this.chartUrl = `${config['javaPath']}/gsea/graph`;
+            console.log('test01 async', this.termId);
             this.chartEntity = {
                 group: this.group,
                 termId: this.termId,
@@ -191,7 +211,7 @@ export class ReGseaComponent implements OnInit {
                 sortThead: this.addColumn['sortThead'],
                 removeColumns: []
             };
-            this.defaultTableId = 'default_rich';
+            this.defaultTableId = 'default_gsea';
             this.defaultDefaultChecked = true;
             this.defaultEmitBaseThead = true;
             this.defaultCheckStatusInParams = true;
@@ -284,13 +304,11 @@ export class ReGseaComponent implements OnInit {
         })
     }
 
-    handleSelectChange(){
-        this.bigTable._setParamsOfEntity('termId',this.termId);
+    handleSelectChange() {
         this.selectGeneList.length = 0;
-
-        this.bigTable._initCheckStatus();
         this.restoreChartAttr();
         this.chartBackStatus();
+        this.switchChart.redraw();
     }
 
     ngAfterViewInit() {
