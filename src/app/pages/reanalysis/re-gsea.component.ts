@@ -306,8 +306,9 @@ export class ReGseaComponent implements OnInit {
     }
 
     moduleSwitchChange(val){
-        console.log(val);
-        if(val){
+        //console.log(val);
+        this.switchValue = val;
+        if(this.switchValue){
             this.group = this.treatGroup;
         }else{
             this.group = this.controlGroup;
@@ -317,7 +318,6 @@ export class ReGseaComponent implements OnInit {
         //this.chartEntity["group"] = this.group;
 
         this.bigTable._setParamsOfEntity('group',this.group);
-        this.bigTable._initCheckStatus();
     }
 
     gseaCheckedChange(e){
