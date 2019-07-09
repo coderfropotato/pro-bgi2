@@ -227,7 +227,7 @@ export class ReListComponent implements OnInit {
 		}
 		else if (type === 'gsea'){
 			window.open(
-				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}`
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['gseaParam']['treatGroup']['group']}/${data['gseaParam']['controlGroup']['group']}`
 			);
 		}
 		else {

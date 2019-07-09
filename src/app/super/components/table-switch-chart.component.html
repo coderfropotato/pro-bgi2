@@ -227,6 +227,15 @@
                     <!-- chart -->
                     <div class="center chart" [hidden]="isShowTable || chartError">
                         <div [attr.id]="chartId" style='margin: auto;'></div>
+                        <!-- 图详细信息 -->
+                        <div class="desc" *ngIf="isGsea && !isShowTable && !chartError" style="padding: 0 20px 0;">
+                            <div class="descTitle" [class.active]='isShowChartDetail' (click)='isShowChartDetail=!isShowChartDetail'>
+                                <i nz-icon class="anticon anticon-info-circle" theme="outline"></i>&nbsp;
+                                <span>详细信息</span>
+                            </div>
+                            <div class="descContent" style="text-indent:0 !important;" *ngIf="isShowChartDetail" [innerHTML]="chartDescDetail"> </div>
+                        </div>
+
                         <!-- 图说明 -->
                         <div class="desc" *ngIf="chartDescContent && !isShowTable && !chartError">
                             <div class="descTitle" [class.active]='isShowChartDesc' (click)='isShowChartDesc=!isShowChartDesc'>

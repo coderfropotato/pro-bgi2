@@ -9,41 +9,57 @@
       <div class="mgene_content">
           <h4>{{'gene_detail.gene_information' | translate}}</h4>
           <p *ngIf="geneInfoList['gene_id']">
+            <!-- <span class="info_name">{{'gene_detail.gene_id' | translate}}</span> -->
             <span class="info_name">{{'gene_detail.gene_id' | translate}}</span>
-            <span class="info_content">
-                <span *ngIf="!geneInfoList['url_ncbi_gene_id']">{{geneInfoList.gene_id}}</span>
-                <a *ngIf="geneInfoList['url_ncbi_gene_id']" href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">{{geneInfoList.gene_id}}</a>
+            <span *ngIf="!this.url_circbase_gene_id_flag">
+                <span class="info_content">
+                    <span *ngIf="!geneInfoList['url_ncbi_gene_id']">{{geneInfoList.gene_id}}</span>
+                    <a *ngIf="geneInfoList['url_ncbi_gene_id']" href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">{{geneInfoList.gene_id}}</a>
+                </span>
+                <span *ngIf="geneInfoList['url_ncbi_gene_id']" class="mlink">link to
+                    <a href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">
+                        <div class="img_one"></div>
+                    </a>
+                </span>
+                <span *ngIf="geneInfoList['url_hgnc_gene_id']" class="mlink">link to
+                    <a href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{geneInfoList['url_hgnc_gene_id']}}" target="_blank">
+                        <div class="img_two"></div>
+                    </a>
+                </span>
+                <span *ngIf="geneInfoList['url_ensembl_gene_id']&&geneInfoList['species_name']" class="mlink">link to
+                    <a href="https://ensembl.org/{{geneInfoList['species_name']}}/Gene/Summary?g={{geneInfoList['url_ensembl_gene_id']}}" target="_blank">
+                        <div class="img_three"></div>
+                    </a>
+                </span>
+                <span *ngIf="geneInfoList['url_genecard_gene_id']" class="mlink">link to
+                    <a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={{geneInfoList['url_genecard_gene_id']}}" target="_blank">
+                        <div class="img_four"></div>
+                    </a>
+                </span>
+                <span *ngIf="geneInfoList['url_kegg_gene_id']" class="mlink">link to
+                    <a href="https://www.kegg.jp/dbget-bin/www_bget?ko:{{geneInfoList['url_kegg_gene_id']}}" target="_blank">
+                        <div class="img_five"></div>
+                    </a>
+                </span>
+                <span *ngIf="geneInfoList['url_mirbase_gene_id']" class="mlink">link to
+                    <a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{geneInfoList['url_mirbase_gene_id']}}" target="_blank">
+                        <div class="img_six"></div>
+                    </a>
+                </span>
             </span>
-            <span *ngIf="geneInfoList['url_ncbi_gene_id']" class="mlink">link to
-                <a href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">
-                    <div class="img_one"></div>
-                </a>
+            <span *ngIf="this.url_circbase_gene_id_flag">
+                <span class="info_content">
+                    <span *ngIf="!geneInfoList['url_ncbi_gene_id']">{{geneInfoList.gene_id}}</span>
+                    <a *ngIf="geneInfoList['url_ncbi_gene_id']" href="https://www.ncbi.nlm.nih.gov/gene/{{geneInfoList['url_ncbi_gene_id']}}" target="_blank">{{geneInfoList.gene_id}}</a>
+                </span>
+                <span class="mlink">link to
+                    <a href="http://www.circbase.org/cgi-bin/singlerecord.cgi?id={{geneInfoList['url_circbase_gene_id']}}" target="_blank">
+                        <div class="img_seven"></div>
+                    </a>
+                </span>
             </span>
-            <span *ngIf="geneInfoList['url_hgnc_gene_id']" class="mlink">link to
-                <a href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/{{geneInfoList['url_hgnc_gene_id']}}" target="_blank">
-                    <div class="img_two"></div>
-                </a>
-            </span>
-            <span *ngIf="geneInfoList['url_ensembl_gene_id']&&geneInfoList['species_name']" class="mlink">link to
-                <a href="https://ensembl.org/{{geneInfoList['species_name']}}/Gene/Summary?g={{geneInfoList['url_ensembl_gene_id']}}" target="_blank">
-                    <div class="img_three"></div>
-                </a>
-            </span>
-            <span *ngIf="geneInfoList['url_genecard_gene_id']" class="mlink">link to
-                <a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={{geneInfoList['url_genecard_gene_id']}}" target="_blank">
-                    <div class="img_four"></div>
-                </a>
-            </span>
-            <span *ngIf="geneInfoList['url_kegg_gene_id']" class="mlink">link to
-                <a href="https://www.kegg.jp/dbget-bin/www_bget?ko:{{geneInfoList['url_kegg_gene_id']}}" target="_blank">
-                    <div class="img_five"></div>
-                </a>
-            </span>
-            <span *ngIf="geneInfoList['url_mirbase_gene_id']" class="mlink">link to
-                <a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{geneInfoList['url_mirbase_gene_id']}}" target="_blank">
-                    <div class="img_six"></div>
-                </a>
-            </span>
+            
+            
           </p>
           <p *ngIf="geneInfoList['gene_symbol']">
             <span class="info_name">{{'gene_detail.gene_symbol' | translate}}</span>

@@ -527,9 +527,18 @@ const ROUTES: Routes = [
 					module: 'reRich'
 				}
 			},
+            {
+                path: 're-gsea',
+                // path: 're-gsea/:geneType/:tid/:version/:controlGroup/:treatGroup',
+                component: ReGseaComponent,
+                // canActivate: [ SysDefendService ],
+                data: {
+                    keep: false,
+                    module: 'reGsea'
+                }
+            },
 			{
-				path: 're-gsea/:geneType/:tid/:version/',
-				//path: 're-gsea',
+				path: 're-gsea/:geneType/:tid/:version/:treatGroup/:controlGroup',
 				component: ReGseaComponent,
 				// canActivate: [ SysDefendService ],
 				data: {
@@ -754,7 +763,9 @@ export function createTranslateLoader(http: HttpClient) {
 		GeneListVennPageComponent,
 
         MapComponent,
-        MapTestComponent
+        MapTestComponent,
+
+        ReGseaComponent,
 	],
 	// 路由模块在imports 导入
 	imports: [
