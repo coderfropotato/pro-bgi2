@@ -103,6 +103,8 @@ export class ReGseaComponent implements OnInit {
     termId: string = null; // 初始 null，点击 图上表 的 GS DETAIL 会记录该值.
     graphTitle: string = null; // 记录 图的标题更改前的 old val
 
+    tempAB: object;
+
     constructor(
         private message: MessageService,
         private ajaxService: AjaxService,
@@ -139,10 +141,16 @@ export class ReGseaComponent implements OnInit {
     ngOnInit() {
         (async () => {
             this.group = this.treatGroup;
-            console.log('test1', this.group);
-            this.getSelect();
+            console.log(this.group);
+            let a = await this.getSelect();
+            for (const key in this.tempAB) {
+                if(key == this.group){
+                    this.selectData = this.tempAB[key];
+                }
+            }
             console.log('test2', this.selectData);
             this.termId = this.selectData.length?this.selectData[0]:null;
+            console.log(this.termId);
             this.restoreChartAttr();
             this.bigtableUrl = `${config['javaPath']}/gsea/table`;
             this.chartUrl = `${config['javaPath']}/gsea/graph`;
@@ -234,7 +242,7 @@ export class ReGseaComponent implements OnInit {
                 "species": "homo_sapiens",
                 "version": "homo_sapiens_9606.ncbi.gcf_000001405.38_grch38.p12.v1904"
             }
-        })()
+        })();
     }
 
     moduleTableChange() {
@@ -257,15 +265,20 @@ export class ReGseaComponent implements OnInit {
                     }
                 })
                 .subscribe(
-                    (res) => {
-                        if (res['data'] && !$.isEmptyObject(res['data'])) {
-                            this.selectData = res['data'][this.group];
-                        } else {
-                            resolve({});
-                        }
+                    (res:any) => {
+                        // if (res['data'] && $.isEmptyObject(res['data'])) {
+                        //     //resolve(res['data']);
+
+                        //     resolve("success");
+                        // } else {
+                        //     resolve({});
+                        // }
+                        this.tempAB = res['data'];
+                        console.log(this.tempAB)
+                        resolve("success");
                     },
                     (error) => {
-                        resolve([]);
+                        reject("error");
                     }
                 );
         })
