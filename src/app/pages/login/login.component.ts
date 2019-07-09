@@ -1,6 +1,7 @@
 import { StoreService } from './../../super/service/storeService';
 import { AjaxService } from './../../super/service/ajaxService';
 import { GlobalService } from '../../super/service/globalService';
+import { ToolsService } from '../../super/service/toolsService';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
 		private nzMessageService: NzMessageService,
 		private storeService: StoreService,
 		private translate: TranslateService,
-		private routes: ActivatedRoute
+		private routes: ActivatedRoute,
+		public toolsService: ToolsService
 	) {
 		let langs = [ 'zh', 'en' ];
 		this.translate.addLangs(langs);
@@ -59,7 +61,20 @@ export class LoginComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-        // this.router.navigateByUrl('/report/project');
+		// this.router.navigateByUrl('/report/project');
+		this.toolsService['visible']=false;
+		this.toolsService.baseThead.length=0;
+		this.toolsService.geneCount=0;
+		this.toolsService.geneType='';
+		this.toolsService.isRelation=false;
+		this.toolsService.mongoId='';
+		this.toolsService.relativeGeneCount=0;
+		this.toolsService.srcTotal=0;
+		this.toolsService.tableEntity={};
+		this.toolsService.tableUrl='';
+		$('.cdk-overlay-pane').remove();
+		$('.ant-drawer').removeClass('ant-drawer-open');
+
 		this.uuid = this.generateUuid();
 		this.config = config;
 		this.imgUrl = `${this.config['javaPath']}/checkImg/${this.uuid}`;
