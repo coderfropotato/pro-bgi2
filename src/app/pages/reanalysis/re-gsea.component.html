@@ -27,18 +27,25 @@
                     </nz-select>
                 </ng-template>
 
-                <!-- 可选择数据的大表 -->
-                <!--<div [hidden]='!expandModuleTable'>-->
-                    <!--<ng-container>-->
-                        <!--<app-big-table-check *ngIf="selectedVal" class="no-outside-border" #bigTable [tableHeight]="leftTableHeight / 2" [defaultChecked]="false" [pageEntity]="chartEntity" [url]="bigtableUrl" tableId="geneRichCheckBigTable" (checkedChange)="checkedChange($event)"-->
-                                             <!--[(computedScrollHeight)]="leftComputedScrollHeight" [reanalysisId]="tid" [reanalysisDate]='date' [isKeggRich]="isKeggRich">-->
-                        <!--</app-big-table-check>-->
-                    <!--</ng-container>-->
+                <ng-template #selectItems>
+                    <nz-switch [(ngModel)]="switchValue" nzSize="small" (ngModelChange)="moduleSwitchChange($event)" nz-tooltip  [nzTitle]="switchValue?'处理组表':'对照组表'" nzPlacement="top"></nz-switch>
+                </ng-template>
 
-                    <!--<div class="text-info">-->
-                        <!--<span *ngIf="checkedData.length > 60">最多只对qvalue较小的top60进行重新画图</span>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <!-- 可选择数据的大表 -->
+                <div>
+                    <ng-container>
+                        <app-big-table
+                            *ngIf="generalEntity"
+                            class="no-outside-border"
+                            #bigTable
+                            [pageEntity]="generalEntity"
+                            [url]="generalUrl"
+                            [tableId]="generalTableId"
+                            [selectItems]="selectItems"
+                            (nzCheckedChange)="gseaCheckedChange($event)"
+                        ></app-big-table>
+                    </ng-container>
+                </div>
 
                 <!-- 图表切换 -->
                 <div style="text-align: center">

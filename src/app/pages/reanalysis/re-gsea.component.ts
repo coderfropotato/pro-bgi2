@@ -106,6 +106,8 @@ export class ReGseaComponent implements OnInit {
 
     tempAB: object;
 
+    switchValue: boolean = true;
+
     constructor(
         private message: MessageService,
         private ajaxService: AjaxService,
@@ -133,8 +135,8 @@ export class ReGseaComponent implements OnInit {
             this.tid = params['params']['tid'];
             this.version = params['params']['version'];
             this.geneType = params['params']['geneType'];
-            this.treatGroup = params['params']['treatGroup'];
-            this.controlGroup = params['params']['controlGroup'];
+            this.treatGroup = params['params']['treatGroup'];   //处理组表
+            this.controlGroup = params['params']['controlGroup']; //对照组表
             this.storeService.setTid(this.tid);
         });
 
@@ -173,7 +175,6 @@ export class ReGseaComponent implements OnInit {
             this.restoreChartAttr();
             this.bigtableUrl = `${config['javaPath']}/gsea/table`;
             this.chartUrl = `${config['javaPath']}/gsea/graph`;
-            console.log('test01 async', this.termId);
             this.chartEntity = {
                 group: this.group,
                 termId: this.termId,
@@ -249,18 +250,18 @@ export class ReGseaComponent implements OnInit {
 
             this.generalUrl = `${config['javaPath']}/gsea/graphTable`;
             this.generalEntity = {
-                "tableName":"GO_ENDOPLASMIC_RETICULUM_LUMEN",
-                "group":"CK",
-                "searchList": [],
-                "sortValue": null,
-                "sortKey": null,
-                "pageIndex": 1,
-                "pageSize": 20,
-                "tid": "dc2a23a235fd4202ae9cd0ad5881d91e",
-                "LCID": "DEMO_HUMlfbE",
-                "geneType": "gene",
-                "species": "homo_sapiens",
-                "version": "homo_sapiens_9606.ncbi.gcf_000001405.38_grch38.p12.v1904"
+                termId: this.termId,
+                group:this.group,
+                searchList: [],
+                sortValue: null,
+                sortKey: null,
+                pageIndex: 1,
+                pageSize: 20,
+                LCID: sessionStorage.getItem('LCID'),
+                tid: this.tid,
+                geneType: this.geneType,
+                species: this.storeService.getStore('genome'),
+                version: this.version,
             }
         })();
     }
@@ -302,6 +303,25 @@ export class ReGseaComponent implements OnInit {
                     }
                 );
         })
+    }
+
+    moduleSwitchChange(val){
+        console.log(val);
+        if(val){
+            this.group = this.treatGroup;
+        }else{
+            this.group = this.controlGroup;
+        }
+        
+        this.generalEntity["group"] = this.group;
+        //this.chartEntity["group"] = this.group;
+
+        this.bigTable._setParamsOfEntity('group',this.group);
+        this.bigTable._initCheckStatus();
+    }
+
+    gseaCheckedChange(e){
+        console.log(e)
     }
 
     handleSelectChange() {
