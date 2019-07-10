@@ -608,7 +608,7 @@
 
                 <!-- 3.数据库 -->
                 <p>3.数据库</p>
-                <nz-row class="mb12" nzAlign="middle" *ngIf="this.gseaDataBaseLeft.length>0">
+                <nz-row class="mb12" nzAlign="middle" *ngIf="this.gseaDataBaseLeft.length>0 && this.gseaDataBaseRight.length>0">
                     <nz-radio-group [(ngModel)]="radioDataBase" (ngModelChange)="geasBottomRadioChange()">
                         <label nz-radio nzValue="A">GESA MSigDB</label>
                         <label nz-radio nzValue="B">其他数据库</label>
