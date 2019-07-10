@@ -2038,6 +2038,10 @@ export class ToolsComponent implements OnInit {
 							}
 						})
 
+						if(this.gseaDataBaseLeft.length<1){
+							this.baseFlag = false;
+							this.baseFlag2 = true;
+						}
 						// this.gseaDataBase = dataBase;
 						// this.gseaDataBase[0]["db"].forEach((d) => {
 						// 	this.gseaDataBaseLeft.push({
@@ -2081,6 +2085,8 @@ export class ToolsComponent implements OnInit {
 	}
 
 	gseaClear() {
+		this.baseFlag = true;
+		this.baseFlag2 = false;
 		this.gseaSample.length = 0;
 		this.gseaUser.length = 0;
 		this.gseaGroup = {};
