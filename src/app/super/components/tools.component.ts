@@ -2020,7 +2020,7 @@ export class ToolsComponent implements OnInit {
 										})
 									}
 								})
-							} else if (data['type'] == 3 && data['db']) {
+							} else if (data['type'] == 3 && data['db'] && data['db'].length>0) {
 								let tempN = '用户上传';
 								let tempobj = [];
 								data['db'].forEach((db) => {
