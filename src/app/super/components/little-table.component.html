@@ -38,10 +38,12 @@
                             <!-- <span *ngIf="thead.true_key=='s_id_number'">{{row[thead.true_key]}}</span>
                             <span *ngIf="thead.true_key!='s_id_number'">NA</span> -->
                             <!-- <span>{{row[thead.true_key]?row[thead.true_key]:0}}</span> -->
-                            <span *ngIf="!row[thead.true_key]">NA</span>
+                            <span *ngIf="!row[thead.true_key]">
+                                <span *ngIf="row[thead.true_key] == 0">0</span>
+                                <span *ngIf="row[thead.true_key] != 0">NA</span>
+                            </span>
                             <span *ngIf="row[thead.true_key]">
-                                <span *ngIf="row[thead.true_key] = 0">0</span>
-                                <span *ngIf="row[thead.true_key] != 0">{{row[thead.true_key]}}</span>
+                                <span>{{row[thead.true_key]}}</span>
                             </span>
                         </td>
                     </ng-container>
