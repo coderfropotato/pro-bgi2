@@ -8,6 +8,7 @@ import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {GlobalService} from 'src/app/super/service/globalService';
 import config from '../../../config';
 import {PromptService} from './../../super/service/promptService';
+import { IfStmt } from '@angular/compiler';
 
 declare const d3: any;
 declare const gooalD3: any;
@@ -106,7 +107,7 @@ export class ReGseaComponent implements OnInit {
 
     tempAB: object;
 
-    switchValue: boolean = true;
+    switchValue: string = "A";
 
     constructor(
         private message: MessageService,
@@ -1301,5 +1302,22 @@ export class ReGseaComponent implements OnInit {
         this.graphTitle=null;
         this.gcolors = ["#0070c0", "#ff0000"];
         this.colors = ["#0F0", "#0F0F0F", "gray"];
+    }
+
+    moduleSwitchChange(e){
+        console.log(e);
+        if(e=="A"){
+            this.group = this.treatGroup;
+        }else if(e="B"){
+            this.group = this.controlGroup;
+        }
+        this.switchValue = e;
+        this.generalEntity['group'] = this.group;
+        this.bigTable._setParamsOfEntity('group',this.group);
+    }
+    gseaCheckedChange(e){
+        console.log(e);
+        this.termId = e["NAME"];
+        this.handleSelectChange();
     }
 }

@@ -28,7 +28,11 @@
                 </ng-template>
 
                 <ng-template #selectItems>
-                    <nz-switch [(ngModel)]="switchValue" nzSize="small" (ngModelChange)="moduleSwitchChange($event)" nz-tooltip  [nzTitle]="switchValue?'处理组表':'对照组表'" nzPlacement="top"></nz-switch>
+                    <!-- <nz-switch [(ngModel)]="switchValue" nzSize="small" (ngModelChange)="moduleSwitchChange($event)" nz-tooltip  [nzTitle]="switchValue?'处理组表':'对照组表'" nzPlacement="top"></nz-switch> -->
+                    <nz-radio-group [(ngModel)]="switchValue" [nzSize]="'small'" (ngModelChange)="moduleSwitchChange($event)">
+                        <label nz-radio-button nzValue="A" nz-tooltip  [nzTitle]="'处理组表'" nzPlacement="top">处理组</label>
+                        <label nz-radio-button nzValue="B" nz-tooltip  [nzTitle]="'对照组表'" nzPlacement="top">对照组</label>
+                    </nz-radio-group>
                 </ng-template>
 
                 <!-- 可选择数据的大表 -->
@@ -42,7 +46,7 @@
                             [url]="generalUrl"
                             [tableId]="generalTableId"
                             [selectItems]="selectItems"
-                            (nzCheckedChange)="gseaCheckedChange($event)"
+                            (goFigureChange)="gseaCheckedChange($event)"
                         ></app-big-table>
                     </ng-container>
                 </div>

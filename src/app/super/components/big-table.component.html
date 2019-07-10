@@ -134,9 +134,11 @@
                                 <!-- 有值 -->
                                 <td *ngIf="d[h['true_key']] || d[h['true_key']]==0" [ngStyle]="{'min-width':widthConfig[i+1],'max-width':widthConfig[i+1]}"  [nzContent]="tpl2" nzPlacement="right" nz-popover>
                                     <ng-template #tpl2>
-                                        <span [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate:isKeggRich"></span>
+                                        <span *ngIf="h['true_key']=='GS DETAILS'" [innerHTML]="d[h['true_key']]"></span>
+                                        <span *ngIf="h['true_key']!='GS DETAILS'" [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate:isKeggRich"></span>
                                     </ng-template>
-                                    <span [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter:h['true_key']:h['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate:isKeggRich"></span>
+                                    <span *ngIf="h['true_key']=='GS DETAILS'" style="color: #5278f8;cursor:pointer;" [innerHTML]="d[h['true_key']]" (click)="goDtetails(d)"></span>
+                                    <span *ngIf="h['true_key']!='GS DETAILS'" [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter:h['true_key']:h['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate:isKeggRich"></span>
                                 </td>
                                 <!-- NA -->
                                 <td *ngIf="!d[h['true_key']] && d[h['true_key']]!=0" [ngStyle]="{'min-width':widthConfig[i+1],'max-width':widthConfig[i+1]}">

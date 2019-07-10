@@ -43,6 +43,8 @@ export class BigTableComponent implements OnInit {
     @Input() computedScrollHeight:boolean = false; // 当表格容器高度不变 内部高度变化时  需要重新计算滚动高度
     @Output() computedScrollHeightChange:EventEmitter<any> = new EventEmitter();
 
+    @Output() goFigureChange:EventEmitter<any> = new EventEmitter();
+
     // 在kegg富集需要跳转map的时候用到  其他都为默认值空
 	@Input() compareGroup:any =undefined; // 比较组
 	@Input() reanalysisId:any =undefined; // 重分析id
@@ -913,5 +915,11 @@ export class BigTableComponent implements OnInit {
             }
         }
         return false;
+    }
+
+    goDtetails(val){
+        // console.log(val);
+        // console.log(e);
+        this.goFigureChange.emit(val);
     }
 }
