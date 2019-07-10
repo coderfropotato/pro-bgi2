@@ -1314,7 +1314,12 @@ export class ReGseaComponent implements OnInit {
         this.switchValue = e;
         this.generalEntity['group'] = this.group;
         this.bigTable._setParamsOfEntity('group',this.group);
+
+        this.selectData = this.groupData[this.group];
+        this.termId = this.selectData.length ? this.selectData[0] : null;
+        this.handleSelectChange();
     }
+
     gseaCheckedChange(e){
         console.log(e);
         this.termId = e["NAME"];
