@@ -10,6 +10,7 @@ import config from '../../../config';
 import { TranslateService } from '@ngx-translate/core';
 
 declare const window: any;
+declare const $:any;
 @Component({
 	selector: 'login',
 	templateUrl: './login.component.html'
