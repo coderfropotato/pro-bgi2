@@ -162,8 +162,6 @@ export class ReGseaComponent implements OnInit {
                         }
                         this.selectData = this.groupData[this.group];
                         this.termId = this.selectData.length ? this.selectData[0] : null;
-                        console.log('test02 after response', this.termId);
-
                     }
                 },
             );
@@ -274,61 +272,14 @@ export class ReGseaComponent implements OnInit {
         }, 30);
     }
 
-    async getSelect(){
-        return new Promise((resolve,reject)=>{
-            this.ajaxService
-                .getDeferData({
-                    url: `${config['javaPath']}/gsea/groupData`,
-                    data: {
-                        LCID: sessionStorage.getItem('LCID'),
-                        tid: this.tid,
-                        species: this.storeService.getStore('genome')
-                    }
-                })
-                .subscribe(
-                    (res:any) => {
-                        // if (res['data'] && $.isEmptyObject(res['data'])) {
-                        //     //resolve(res['data']);
-
-                        //     resolve("success");
-                        // } else {
-                        //     resolve({});
-                        // }
-                        this.tempAB = res['data'];
-                        console.log(this.tempAB)
-                        resolve("success");
-                    },
-                    (error) => {
-                        reject("error");
-                    }
-                );
-        })
-    }
-
-    moduleSwitchChange(val){
-        //console.log(val);
-        this.switchValue = val;
-        if(this.switchValue){
-            this.group = this.treatGroup;
-        }else{
-            this.group = this.controlGroup;
-        }
-        
-        this.generalEntity["group"] = this.group;
-        //this.chartEntity["group"] = this.group;
-
-        this.bigTable._setParamsOfEntity('group',this.group);
-    }
-
-    gseaCheckedChange(e){
-        console.log(e)
-    }
-
     handleSelectChange() {
+        this.chartEntity['termId'] = this.termId;
+        this.chartEntity['group'] = this.group;
+        this.chartBackStatus();
+
         this.selectGeneList.length = 0;
         this.restoreChartAttr();
-        this.chartBackStatus();
-        this.switchChart.redraw();
+        this.switchChart.reGetData();
     }
 
     ngAfterViewInit() {
@@ -412,6 +363,7 @@ export class ReGseaComponent implements OnInit {
     handlerRefresh() {
         this.selectGeneList.length = 0;
         this.restoreChartAttr();
+        this.switchChart.redraw();
     }
 
     chartBackStatus() {
