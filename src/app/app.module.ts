@@ -527,18 +527,8 @@ const ROUTES: Routes = [
 					module: 'reRich'
 				}
 			},
-            {
-                path: 're-gsea',
-                // path: 're-gsea/:geneType/:tid/:version/:controlGroup/:treatGroup',
-                component: ReGseaComponent,
-                // canActivate: [ SysDefendService ],
-                data: {
-                    keep: false,
-                    module: 'reGsea'
-                }
-            },
 			{
-				path: 're-gsea/:geneType/:tid/:version/:treatGroup/:controlGroup',
+				path: 're-gsea/:geneType/:tid/:version/:treatGroup/:controlGroup/:date',
 				component: ReGseaComponent,
 				// canActivate: [ SysDefendService ],
 				data: {

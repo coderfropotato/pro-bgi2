@@ -105,9 +105,8 @@ export class ReGseaComponent implements OnInit {
     termId: string = null; // 初始 null，点击 图上表 的 GS DETAIL 会记录该值.
     graphTitle: string = null; // 记录 图的标题更改前的 old val
 
-    tempAB: object;
-
     switchValue: string = "A";
+    gseaFileUrl: string;
 
     constructor(
         private message: MessageService,
@@ -138,7 +137,9 @@ export class ReGseaComponent implements OnInit {
             this.geneType = params['params']['geneType'];
             this.treatGroup = params['params']['treatGroup'];   //处理组表
             this.controlGroup = params['params']['controlGroup']; //对照组表
-            this.storeService.setTid(this.tid);
+            this.date = params['params']['date'];
+            this.gseaFileUrl = `/re_analyze_result/${config['pathwayURL']}/${this.date}/${
+                sessionStorage.getItem('LCID')}_${this.tid}/gsea_xls/GSEA_parameters.xls`;
         });
 
         this.ajaxService
@@ -1075,7 +1076,7 @@ export class ReGseaComponent implements OnInit {
         function buildLineChartHover(ele) {
             return `
                 Gene ID: ${ele["gene_id"]}<br>
-                Gene Symbol: ${ele["GENE SYMBOL"] || 'NA'}<br>
+                Gene Symbol: ${ele["gene_symbol"] || 'NA'}<br>
                 RANK IN GENE LIST: ${ele[line_x_key]}<br>
                 RANK METRIC SCORE: ${ele["RANK METRIC SCORE"]}<br>
                 RUNNING ES: ${ele[line_y_key]}<br>

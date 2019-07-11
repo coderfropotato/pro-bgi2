@@ -615,7 +615,7 @@
                     </nz-radio-group>
                 </nz-row>
 
-                <p *ngIf="baseFlag&&this.gseaDataBaseLeft.length>0" style="color: gray;font-size: 12px;">注：人的MSigDB来自于GSEA官方数据库，其它物种根据序列相似性比对得到。</p>
+                <!-- <p *ngIf="baseFlag&&this.gseaDataBaseLeft.length>0" style="color: gray;font-size: 12px;">注：人的MSigDB来自于GSEA官方数据库，其它物种根据序列相似性比对得到。</p> -->
                 <nz-row class="mb12" nzAlign="middle" *ngIf="baseFlag">
                     <div class="tool-params-tab">
                         <button class="mb12 mr12" (click)="selectDataBaseLeft(temp)" nz-tooltip [nzTitle]="temp['name']" [class.btnActive]="temp['checked']" nz-button nzType="default" nzSize="middle" *ngFor="let temp of gseaDataBaseLeft;index as i;">{{temp['name']}}</button>
