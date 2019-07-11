@@ -1076,7 +1076,7 @@ export class ReGseaComponent implements OnInit {
         function buildLineChartHover(ele) {
             return `
                 Gene ID: ${ele["gene_id"]}<br>
-                Gene Symbol: ${ele["GENE SYMBOL"] || 'NA'}<br>
+                Gene Symbol: ${ele["gene_symbol"] || 'NA'}<br>
                 RANK IN GENE LIST: ${ele[line_x_key]}<br>
                 RANK METRIC SCORE: ${ele["RANK METRIC SCORE"]}<br>
                 RUNNING ES: ${ele[line_y_key]}<br>
