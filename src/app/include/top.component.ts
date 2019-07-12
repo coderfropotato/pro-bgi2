@@ -93,7 +93,7 @@ export class TopComponent implements OnInit{
 				}else{
                     _self.downloadPdf();
                 }
-			}, 9000);
+			}, 10000);
 		}
 	}
 
