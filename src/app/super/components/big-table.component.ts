@@ -51,6 +51,10 @@ export class BigTableComponent implements OnInit {
     @Input() reanalysisDate:any =undefined; // 重分析时间
     @Input() isKeggRich:boolean = false;
 
+    @Input() gseaFlag:boolean = false;
+    @Input() dbtypeNumber:number = 0;
+    @Input() dbtypeUrl:string = "";
+
     @ViewChildren("child") children;
     tableEntity: object = {};
 
@@ -142,6 +146,7 @@ export class BigTableComponent implements OnInit {
     }
 
     init() {
+        console.log(this.dbtypeUrl)
         this.tableEntity["pageIndex"] = 1;
         this.tableEntity["pageSize"] = this.pageEntity["pageSize"] || 20;
         this.tableEntity["sortValue"] = null;

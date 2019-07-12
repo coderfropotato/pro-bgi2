@@ -528,7 +528,7 @@ const ROUTES: Routes = [
 				}
 			},
 			{
-				path: 're-gsea/:geneType/:tid/:version/:treatGroup/:controlGroup/:date',
+				path: 're-gsea/:geneType/:tid/:version/:treatGroup/:controlGroup/:date/:dbtype',
 				component: ReGseaComponent,
 				// canActivate: [ SysDefendService ],
 				data: {
