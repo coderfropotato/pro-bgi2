@@ -736,7 +736,6 @@ export function createTranslateLoader(http: HttpClient) {
 		ReLineComponent,
 		KaFunComponent,
 		TargetComponent,
-		ReGseaComponent,
 
         TargetHelpComponent,
         TargetPage,
@@ -747,7 +746,6 @@ export function createTranslateLoader(http: HttpClient) {
 		GeneListIndexComponent,
 		ReClassComponent,
 		ReRichComponent,
-		ReGseaComponent,
 
 		GeneListVennComponent,
 		GeneListVennPageComponent,

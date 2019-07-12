@@ -89,7 +89,6 @@ declare const $: any;
                             <!-- <div>搜索范围:</div> -->
                             <div class="mselect2_place">
                                 <div>搜索范围:</div>
-                                <!--<button nz-button nzType="default" *ngFor="let item of selectPanelList" [nzSize]="'small'" [class.btnActive]="item.isChecked" (click)="selectClick(item)">{{item.key}}</button>-->
 
 								<div class="tool-params-tab" *ngFor="let item of selectPanelList;index as i;">
 									<p>{{item['key']}}</p>
@@ -101,7 +100,7 @@ declare const $: any;
                         </div>
                         <div class="gene_pop_bottom">
                             <button nz-button [nzSize]="'small'" nzType="primary" (click)="btnCancle()">重置</button>
-                            <button nz-button [nzSize]="'small'" nzType="primary" (click)="btnConfirm()">确定</button>
+                            <button nz-button [nzSize]="'small'" nzType="primary" (click)="btnConfirm()" [disabled]="selectedList.length==0">确定</button>
                         </div>
                         </div>
                     </div>
@@ -231,18 +230,18 @@ export class GenePage {
 	}
 
 	//选择面板 选择
-	selectClick(item) {
-		item['isChecked'] = !item['isChecked'];
-		this.selectedList = [];
-		this.selectPanelList.forEach((d) => {
-			if (d['isChecked']) {
-				this.selectedList.push(d);
-			}
-		});
+	// selectClick(item) {
+	// 	item['isChecked'] = !item['isChecked'];
+	// 	this.selectedList.length = 0;
+	// 	this.selectPanelList.forEach((d) => {
+	// 		if (d['isChecked']) {
+	// 			this.selectedList.push(d);
+	// 		}
+	// 	});
 
-		this.icon_color = 'blue';
-		//this.geneService.set('checkedAddThead', this.selectedList);
-	}
+	// 	this.icon_color = 'blue';
+	// 	//this.geneService.set('checkedAddThead', this.selectedList);
+	// }
 
 	clearInputValue(){
 		this.inputValue = '';
@@ -298,6 +297,9 @@ export class GenePage {
 		});
 
 		this.geneService.set('checkedAddThead', tempList);
+		this.geneService.set('num', tempList.length);
+
+		this.selectedList.length = 0;
 		this.expandSetPanel = !this.expandSetPanel;
 	}
 
@@ -393,6 +395,8 @@ export class GenePage {
 			this.selectedList.push(item);
 		}
 
+		this.selectedList.sort(this.compareAB('index'));
+
 		if(this.selectedList.length != 0){
 			this.icon_color = "blue";
 		}else{
@@ -400,6 +404,14 @@ export class GenePage {
 		}
 
 		//this.geneService.set('checkedAddThead', this.selectedList);
+	}
+
+	compareAB(prop){
+		return function(a,b){
+			let value1 = a[prop];
+			let value2 = b[prop];
+			return value1 - value2;
+		}
 	}
 
 	getDefaultData() {
@@ -422,13 +434,17 @@ export class GenePage {
 						return;
 					} else {
 						this.selectPanelList = data;
-
+						let i = 0;
 						let tempList = [];
 
 						this.selectPanelList.forEach((d) => {
 							// d["value"].forEach((m) => {
 							// 	this.selectedList.push(m)
 							// });
+							d["value"].forEach((m) => {
+								m["index"] = i;
+								i++;
+							});
 							tempList.push(...d["value"]);
 						});
 
@@ -437,17 +453,6 @@ export class GenePage {
 
 						this.geneService.set('checkedAddThead', this.selectedListT);
 						this.geneService.set('num', tempList.length);
-
-						// console.log(this.geneService);
-						// this.selectedList = data;
-
-						// for (var i = 0; i < data['data'].length; i++) {
-						// 	data['data'][i]['isChecked'] = false;
-						// }
-						// this.selectPanelList = data['data'];
-						// this.selectedList = data['data'];
-						// this.geneService.set('checkedAddThead', this.selectPanelList);
-						// this.geneService.set('num', this.selectPanelList.length);
 					}
 				},
 				(error) => console.log(error),
