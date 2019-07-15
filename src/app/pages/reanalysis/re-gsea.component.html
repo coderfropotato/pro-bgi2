@@ -13,7 +13,7 @@
                     富集结果表
                 </span>
                 <p [hidden]="!expandModuleTable">
-                    基因集富集分析（GSEA）是一种计算方法，用于确定事先定义好的一组基因（如某一代谢通路上的基因）是否在统计学上显示两组处理（或表型等）之间存在显著、一致的差异。分析采用GSEA官方软件包，详细信息请参考 GSEA官网。本次分析的详细参数，请查看 <a target="_blank" href="{{gseaFileUrl}}">GSEA_parameters.txt</a>
+                    基因集富集分析（GSEA）是一种计算方法，用于确定事先定义好的一组基因（如某一代谢通路上的基因）是否在统计学上显示两组处理（或表型等）之间存在显著、一致的差异。分析采用GSEA官方软件包，详细信息请参考 GSEA官网。本次分析的详细参数，请查看 <a target="_blank" href="{{gseaFileUrl}}">GSEA_parameters.xls</a>
                 </p>
                 <!-- {{'go_rich.content' | translate}}</p> -->
                 <ng-content select=".gene-switch-module"></ng-content>
@@ -46,6 +46,9 @@
                             [url]="generalUrl"
                             [tableId]="generalTableId"
                             [selectItems]="selectItems"
+                            [gseaFlag]="true"
+                            [dbtypeUrl]="dbtypeUrl"
+                            [dbtypeNumber]="dbtypeNumber"
                             (goFigureChange)="gseaCheckedChange($event)"
                         ></app-big-table>
                     </ng-container>
@@ -87,28 +90,29 @@
                 <!-- 返回 -->
                 <button class="ml12" [hidden]="addColumnShow || !showBackButton" nz-button nzType="Default" (click)="back()">返回</button> </div>
             <!-- 表格转换 -->
-            <app-table-transformation class="no-outside-border"
-                                      #transformTable
-                                      [isFirst]="first"
-                                      [tableHeight]="tableHeight"
-                                      [defaultTableEntity]="defaultEntity"
-                                      [defaultTableUrl]="defaultUrl"
-                                      [defaultTableId]="defaultTableId"
-                                      [defaultTableDefaultChecked]="defaultDefaultChecked"
-                                      [(defaultEmitBaseThead)]="defaultEmitBaseThead"
-                                      (defaultBaseTheadChange)="baseTheadChange($event)"
-                                      [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
-                                      [extendTableEntity]="extendEntity"
-                                      [extendTableUrl]="extendUrl"
-                                      [extendTableId]="extendTableId"
-                                      [extendTableDefaultChecked]="extendDefaultChecked"
-                                      [(extendEmitBaseThead)]="extendEmitBaseThead"
-                                      (extendBaseTheadChange)="baseTheadChange($event)"
-                                      [extendTableCheckStatusInParams]="extendCheckStatusInParams"
-                                      [(applyOnceSearchParams)]="applyOnceSearchParams"
-                                      (selectGeneCountChange)="handleSelectGeneCountChange($event)"
-                                      [(computedScrollHeight)]="computedScrollHeight"
-                                      [(resetCheckGraph)]="resetCheckGraph">
+            <app-table-transformation 
+                class="no-outside-border"
+                #transformTable
+                [isFirst]="first"
+                [tableHeight]="tableHeight"
+                [defaultTableEntity]="defaultEntity"
+                [defaultTableUrl]="defaultUrl"
+                [defaultTableId]="defaultTableId"
+                [defaultTableDefaultChecked]="defaultDefaultChecked"
+                [(defaultEmitBaseThead)]="defaultEmitBaseThead"
+                (defaultBaseTheadChange)="baseTheadChange($event)"
+                [defaultTableCheckStatusInParams]="defaultCheckStatusInParams"
+                [extendTableEntity]="extendEntity"
+                [extendTableUrl]="extendUrl"
+                [extendTableId]="extendTableId"
+                [extendTableDefaultChecked]="extendDefaultChecked"
+                [(extendEmitBaseThead)]="extendEmitBaseThead"
+                (extendBaseTheadChange)="baseTheadChange($event)"
+                [extendTableCheckStatusInParams]="extendCheckStatusInParams"
+                [(applyOnceSearchParams)]="applyOnceSearchParams"
+                (selectGeneCountChange)="handleSelectGeneCountChange($event)"
+                [(computedScrollHeight)]="computedScrollHeight"
+                [(resetCheckGraph)]="resetCheckGraph">
             </app-table-transformation>
         </div>
     </div>

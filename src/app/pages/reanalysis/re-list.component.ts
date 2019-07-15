@@ -226,9 +226,10 @@ export class ReListComponent implements OnInit {
 			);
 		}
 		else if (type === 'gsea'){
+			//console.log(data["gseaParam"]["dataBase"]["db"]);
 			window.open(
 				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['gseaParam']['treatGroup']['group']}/
-				${data['gseaParam']['controlGroup']['group']}/${data['date'].substring(0,10)}`
+				${data['gseaParam']['controlGroup']['group']}/${data['date'].substring(0,10)}/${data["gseaParam"]["dataBase"]["db"]}`
 			);
 		}
 		else {

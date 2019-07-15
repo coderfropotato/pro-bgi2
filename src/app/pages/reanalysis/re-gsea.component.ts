@@ -84,6 +84,9 @@ export class ReGseaComponent implements OnInit {
     controlGroup: string = null;
     treatGroup: string = null;
     date: string = null;
+    dbtype: string = null;
+    dbtypeNumber: number = 0;
+    dbtypeUrl: string = null;
 
     selectGeneCount: number = 0;
     computedScrollHeight: boolean = false;
@@ -138,6 +141,7 @@ export class ReGseaComponent implements OnInit {
             this.treatGroup = params['params']['treatGroup'];   //处理组表
             this.controlGroup = params['params']['controlGroup']; //对照组表
             this.date = params['params']['date'];
+            this.dbtype = params['params']['dbtype'];
             this.gseaFileUrl = `/re_analyze_result/${config['pathwayURL']}/${this.date}/${
                 sessionStorage.getItem('LCID')}_${this.tid}/gsea_xls/GSEA_parameters.xls`;
         });
@@ -171,6 +175,7 @@ export class ReGseaComponent implements OnInit {
 
     ngOnInit() {
         (async () => {
+            this.getDBtypeUrl();
             this.group = this.treatGroup;
             this.restoreChartAttr();
             this.bigtableUrl = `${config['javaPath']}/gsea/table`;
@@ -264,6 +269,94 @@ export class ReGseaComponent implements OnInit {
                 version: this.version,
             }
         })();
+    }
+
+    getDBtypeUrl(){
+        this.dbtype=this.dbtype.toUpperCase();
+        
+        if(this.dbtype =="PFAM"){
+            this.dbtypeUrl = `http://pfam.xfam.org/family/`;
+            this.dbtypeNumber = 1;
+        }
+        if(this.dbtype =="REACTOME"){
+            this.dbtypeUrl = `https://reactome.org/`;
+            this.dbtypeNumber = 2;
+        }
+        if(this.dbtype =="COG"){
+            this.dbtypeUrl = `ftp://ftp.ncbi.nih.gov/pub/COG/COG2014/static/byCOG`;
+            this.dbtypeNumber = 1;
+        }
+        if(this.dbtype =="EGGNOG"){
+            this.dbtypeUrl = `http://eggnogdb.embl.de/#/app/home`;
+            this.dbtypeNumber = 2;
+        }
+        if(this.dbtype =="TF"){
+            if(sessionStorage.getItem('species_kingdom') == 'animal'){
+                this.dbtypeUrl = `http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family=`;
+            }else{
+                this.dbtypeUrl = `http://planttfdb.cbi.pku.edu.cn/family.php?fam=`;
+            }
+            this.dbtypeNumber = 1;
+            // 动物：http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family=[替换内容]
+            // 植物：
+            // http://planttfdb.cbi.pku.edu.cn/family.php?fam=[替换内容]
+            // 根据info中的species_kingdom 的值判断  animal/plant/fungi/other
+            
+        }
+        if(this.dbtype =="TF_COFACTORS"){
+            this.dbtypeUrl = `http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/`;
+            this.dbtypeNumber = 2;
+        }
+        if(this.dbtype =="GO_F" || this.dbtype =="GO_P" || this.dbtype =="GO_C"){
+            this.dbtypeUrl = `http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/`;
+            this.dbtypeNumber = 1;
+        }
+        if(this.dbtype =="INTERPRO"){
+            this.dbtypeUrl = `https://www.ebi.ac.uk/interpro/entry/`;
+            this.dbtypeNumber = 1;
+        }
+        if(this.dbtype =="KEGG_DISEASE"){
+            this.dbtypeUrl = `https://www.kegg.jp/dbget-bin/www_bget?ds:`;
+            this.dbtypeNumber = 1;
+        }
+        if(this.dbtype =="KEGG_MODULE"){
+            this.dbtypeUrl = `https://www.kegg.jp/kegg-bin/show_module?`;
+            this.dbtypeNumber = 1;
+        }
+        if(this.dbtype =="KEGG_PATHWAY"){
+            this.dbtypeUrl = `https://www.kegg.jp/dbget-bin/www_bget?map`;
+            this.dbtypeNumber = 1;
+        }
+        if(this.dbtype =="KEGG_REACTION"){
+            this.dbtypeUrl = `https://www.kegg.jp/dbget-bin/www_bget?rn:`;
+            this.dbtypeNumber = 1;
+        }
+        
+        if(
+            this.dbtype =="MSIGDB_ARCHIVED_C5_BP"||
+            this.dbtype =="MSIGDB_ARCHIVED_C5_CC"||
+            this.dbtype =="MSIGDB_ARCHIVED_C5_MF"||
+            this.dbtype =="MSIGDB_C1"||
+            this.dbtype =="MSIGDB_C2_CGP"||
+            this.dbtype =="MSIGDB_C2_CP_BIOCARTA"||
+            this.dbtype =="MSIGDB_C2_CP_KEGG"||
+            this.dbtype =="MSIGDB_C2_CP_REACTOME"||
+            this.dbtype =="MSIGDB_C2_CP"||
+            this.dbtype =="MSIGDB_C3_MIR"||
+            this.dbtype =="MSIGDB_C3_TFT"||
+            this.dbtype =="MSIGDB_C4_CGN"||
+            this.dbtype =="MSIGDB_C4_CM"||
+            this.dbtype =="MSIGDB_C5_BP"||
+            this.dbtype =="MSIGDB_C5_CC"||
+            this.dbtype =="MSIGDB_C5_MF"||
+            this.dbtype =="MSIGDB_C6"||
+            this.dbtype =="MSIGDB_C7"||
+            this.dbtype =="MSIGDB_H"
+        ){
+            this.dbtypeUrl = `http://software.broadinstitute.org/gsea/msigdb/cards/`;
+            this.dbtypeNumber = 1;
+        }
+        //this.dbtypeUrl
     }
 
     moduleTableChange() {
@@ -480,6 +573,7 @@ export class ReGseaComponent implements OnInit {
         let line_data = data["line"]["data"],
             line_x_key = "RANK IN GENE LIST",
             line_y_key = "RUNNING ES";
+        const yes_array = line_data.filter(m => m["CORE ENRICHMENT"] === "Yes").map(m=>m["gene_id"]);
 
         let title;
         if (that.graphTitle === null) {
@@ -502,29 +596,29 @@ export class ReGseaComponent implements OnInit {
             legend: [
                 {
                     title: "Enrichment Profile",
-                    click: (d, index) => {
-                        that.color = d3.select(d).attr('fill');
-                        that.show = true;
+                    click: (d, color, index) => {
+                        that.color = color;
                         that.legendIndex = index;
                         that.isGradient = false;
+                        that.show = true;
                     }
                 },
                 {
                     title: "Hits",
-                    click: (d, index) => {
-                        that.color = d3.select(d).attr('fill');
-                        that.show = true;
+                    click: (d, color, index) => {
+                        that.color = color;
                         that.legendIndex = index;
                         that.isGradient = false;
+                        that.show = true;
                     }
                 },
                 {
                     title: "Ranking metric scores",
-                    click: (d, index) => {
-                        that.color = d3.select(d).attr('fill');
-                        that.show = true;
+                    click: (d, color, index) => {
+                        that.color = color;
                         that.legendIndex = index;
                         that.isGradient = false;
+                        that.show = true;
                     }
                 }
             ]
@@ -822,7 +916,11 @@ export class ReGseaComponent implements OnInit {
                 .attr("y", yesAreaYStart)
                 .attr("width", yesAreaWidth)
                 .attr("height", topHeight)
-                .attr("id", "yes-area");
+                .attr("id", "yes-area")
+                .on('click', function(d, i) {
+                    that.selectGeneList = yes_array;
+                    that.doTableStatementFilter();
+                });
 
 
             let class_name = 'line-chart';
@@ -1080,7 +1178,7 @@ export class ReGseaComponent implements OnInit {
                 RANK IN GENE LIST: ${ele[line_x_key]}<br>
                 RANK METRIC SCORE: ${ele["RANK METRIC SCORE"]}<br>
                 RUNNING ES: ${ele[line_y_key]}<br>
-                CORE ENRICHMENT:y: ${ele["CORE ENRICHMENT"]}`;
+                CORE ENRICHMENT: ${ele["CORE ENRICHMENT"]}`;
         }
 
         function buildHistogramHover(ele) {
@@ -1094,7 +1192,6 @@ export class ReGseaComponent implements OnInit {
 
         function drawLegend(x, y) {
             let legend_g = null;
-            let timer = null;
             let that = this;
 
 
@@ -1120,13 +1217,9 @@ export class ReGseaComponent implements OnInit {
                     .attr('width', 14)
                     .attr('height', 14)
                     .attr('fill', d => d.color)
-                    .on("click", function (d, i) {
+                    .on("click", function () {
                         clearEventBubble(d3.event);
-                        timer && clearTimeout(timer);
-                        let _self = this;
-                        timer = setTimeout(function () {
-                            chartConfig.legend[index].click && chartConfig.legend[index].click.call(chartConfig, d3.select(_self).node(), index);
-                        }, 300);
+                        chartConfig.legend[index].click && chartConfig.legend[index].click.call(chartConfig, d3.select(this).node(), chartConfig.legend[index]['color'], index);
                     });
 
                 if ('click' in chartConfig.legend[index]) {
