@@ -573,6 +573,7 @@ export class ReGseaComponent implements OnInit {
         let line_data = data["line"]["data"],
             line_x_key = "RANK IN GENE LIST",
             line_y_key = "RUNNING ES";
+        const yes_array = line_data.filter(m => m["CORE ENRICHMENT"] === "Yes").map(m=>m["gene_id"]);
 
         let title;
         if (that.graphTitle === null) {
@@ -595,29 +596,29 @@ export class ReGseaComponent implements OnInit {
             legend: [
                 {
                     title: "Enrichment Profile",
-                    click: (d, index) => {
-                        that.color = d3.select(d).attr('fill');
-                        that.show = true;
+                    click: (d, color, index) => {
+                        that.color = color;
                         that.legendIndex = index;
                         that.isGradient = false;
+                        that.show = true;
                     }
                 },
                 {
                     title: "Hits",
-                    click: (d, index) => {
-                        that.color = d3.select(d).attr('fill');
-                        that.show = true;
+                    click: (d, color, index) => {
+                        that.color = color;
                         that.legendIndex = index;
                         that.isGradient = false;
+                        that.show = true;
                     }
                 },
                 {
                     title: "Ranking metric scores",
-                    click: (d, index) => {
-                        that.color = d3.select(d).attr('fill');
-                        that.show = true;
+                    click: (d, color, index) => {
+                        that.color = color;
                         that.legendIndex = index;
                         that.isGradient = false;
+                        that.show = true;
                     }
                 }
             ]
@@ -915,7 +916,11 @@ export class ReGseaComponent implements OnInit {
                 .attr("y", yesAreaYStart)
                 .attr("width", yesAreaWidth)
                 .attr("height", topHeight)
-                .attr("id", "yes-area");
+                .attr("id", "yes-area")
+                .on('click', function(d, i) {
+                    that.selectGeneList = yes_array;
+                    that.doTableStatementFilter();
+                });
 
 
             let class_name = 'line-chart';
@@ -1173,7 +1178,7 @@ export class ReGseaComponent implements OnInit {
                 RANK IN GENE LIST: ${ele[line_x_key]}<br>
                 RANK METRIC SCORE: ${ele["RANK METRIC SCORE"]}<br>
                 RUNNING ES: ${ele[line_y_key]}<br>
-                CORE ENRICHMENT:y: ${ele["CORE ENRICHMENT"]}`;
+                CORE ENRICHMENT: ${ele["CORE ENRICHMENT"]}`;
         }
 
         function buildHistogramHover(ele) {
@@ -1187,7 +1192,6 @@ export class ReGseaComponent implements OnInit {
 
         function drawLegend(x, y) {
             let legend_g = null;
-            let timer = null;
             let that = this;
 
 
@@ -1213,13 +1217,9 @@ export class ReGseaComponent implements OnInit {
                     .attr('width', 14)
                     .attr('height', 14)
                     .attr('fill', d => d.color)
-                    .on("click", function (d, i) {
+                    .on("click", function () {
                         clearEventBubble(d3.event);
-                        timer && clearTimeout(timer);
-                        let _self = this;
-                        timer = setTimeout(function () {
-                            chartConfig.legend[index].click && chartConfig.legend[index].click.call(chartConfig, d3.select(_self).node(), index);
-                        }, 300);
+                        chartConfig.legend[index].click && chartConfig.legend[index].click.call(chartConfig, d3.select(this).node(), chartConfig.legend[index]['color'], index);
                     });
 
                 if ('click' in chartConfig.legend[index]) {
