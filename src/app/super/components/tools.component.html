@@ -563,7 +563,7 @@
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
                         <div nz-col nzSpan="6">对照组：</div>
                         <div nz-col nzSpan="18">
-                            <input nz-input placeholder="请输入组名" [(ngModel)]="inputBFrist" (ngModelChange)="inputBFristChange()" />
+                            <input nz-input placeholder="请输入组名" [(ngModel)]="inputBFrist" (ngModelChange)="inputBFristChange($event)" />
                         </div>
                     </nz-row>
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
@@ -576,7 +576,7 @@
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
                         <div nz-col nzSpan="6">处理组：</div>
                         <div nz-col nzSpan="18">
-                            <input nz-input placeholder="请输入组名" [(ngModel)]="inputBSecond" (ngModelChange)="inputBSecondChange()" />
+                            <input nz-input placeholder="请输入组名" [(ngModel)]="inputBSecond" (ngModelChange)="inputBSecondChange($event)" />
                         </div>
                     </nz-row>
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">

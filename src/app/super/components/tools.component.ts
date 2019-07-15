@@ -5,6 +5,7 @@ import { Component, OnInit, Input, Output, OnChanges, AfterViewInit, SimpleChang
 import { NzNotificationService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import config from '../../../config';
+import { IfStmt } from '@angular/compiler';
 declare const $: any;
 @Component({
 	selector: 'app-tools',
@@ -2241,12 +2242,46 @@ export class ToolsComponent implements OnInit {
 		console.log(this.controlGroup2);
 	}
 
-	inputBFristChange() {
-		console.log(this.inputBFrist)
+	inputBFristChange(e) {
+		console.log(e);
+
+		let tempA = e.charCodeAt(0);
+		if((tempA >= 65 && tempA <= 90) || (tempA >= 97 && tempA <= 122)){
+			if(e.length>16){
+				this.notify.warning('tips：', `组名最大长度为16个字符`,{
+					nzStyle: { width: '300px' }
+				});
+				this.inputBFrist=e.substring(0,16);
+			}else{
+				this.inputBFrist=e;
+			}
+		}else{
+			this.notify.warning('tips：', `组名必须是字母、数字、下划线中的一种或多种，第一个字符必须是字母`,{
+				nzStyle: { width: '300px' }
+			});
+			this.inputBFrist = "";
+		}
+
 	}
 
-	inputBSecondChange() {
-		console.log(this.inputBSecond)
+	inputBSecondChange(e) {
+		console.log(e);
+		let tempA = e.charCodeAt(0);
+		if((tempA >= 65 && tempA <= 90) || (tempA >= 97 && tempA <= 122)){
+			if(e.length>16){
+				this.notify.warning('tips：', `组名最大长度为16个字符`,{
+					nzStyle: { width: '300px' }
+				});
+				this.inputBSecond=e.substring(0,16);
+			}else{
+				this.inputBSecond=e;
+			}
+		}else{
+			this.notify.warning('tips：', `组名必须是字母、数字、下划线中的一种或多种，第一个字符必须是字母`,{
+				nzStyle: { width: '300px' }
+			});
+			this.inputBSecond = "";
+		}
 	}
 
 	//确定按钮
@@ -2288,7 +2323,7 @@ export class ToolsComponent implements OnInit {
 			}
 			
 		}else if(this.radioValue=="B"){
-			if (this.inputBFrist && this.inputBSecond && this.selectBFristTag.length>0 && this.selectBSecondTag.length>0) {
+			if (this.inputBFrist && this.inputBSecond && this.selectBFristTag.length>0 && this.selectBSecondTag.length>0 && this.inputBFrist!=this.inputBSecond) {
 				tempcontrolGroup.group = this.inputBFrist;
 				this.selectBFristTag.forEach((d) => {
 					this.gseaGroup2.forEach((m)=>{
@@ -2307,11 +2342,18 @@ export class ToolsComponent implements OnInit {
 					})
 				});
 			} else {
-				this.notify.warning('tips：', `对照组和处理组组名和选取内容不能为空`,{
+				this.notify.warning('tips：', `对照组和处理组组名和选取内容不能为空,并且组名不能相等`,{
 					nzStyle: { width: '300px' }
 				});
 				return;
 			}
+		}
+
+		if(this.gseaMin>this.gseaMax){
+			this.notify.warning('tips：', `最小值不能大于最大值`,{
+				nzStyle: { width: '300px' }
+			});
+			return;
 		}
 
 		let tempObj = {
@@ -2370,7 +2412,6 @@ export class ToolsComponent implements OnInit {
 							this.notify.success('tips：', '任务提交成功。',{
 								nzStyle: { width: '300px' }
 							});
-
 					}
 				},
 				(err) => {
