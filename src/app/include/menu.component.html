@@ -1,4 +1,4 @@
-<div class="menu clearfix">
+<div class="menu noprint clearfix">
     <div style="display:inline-block" class="fLeft">
         <ul *ngIf="menu.length" (mouseenter)="rootMenuMouseEnter()" (mouseleave)="rootMenuMouseLeave()">
             <li [class.active]="item['active']" *ngFor="let item of menu;let i = index" (mouseover)="menuMouseOver(item,i)" (click)="jumpToFirst(item,i)">
