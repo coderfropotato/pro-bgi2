@@ -1406,20 +1406,21 @@ export class ReGseaComponent implements OnInit {
             this.group = this.controlGroup;
         }
 
+
+        this.selectData = this.groupData[this.group];
+        this.termId = this.selectData.length ? this.selectData[0] : null;
+        this.handleSelectChange();
+
         this.generalEntity['pageIndex'] = 1;
         this.generalEntity['pageSize'] = 20;
         this.generalEntity['group'] = this.group;
         this.generalEntity['searchList'] = [];
         this.generalEntity['sortValue'] = null;
         this.generalEntity['sortKey'] = null;
-
+        this.generalEntity['sortKey'] = null;
 
         this.switchValue = e;
         this.bigTable._setParamsOfObject(this.generalEntity);
-
-        this.selectData = this.groupData[this.group];
-        this.termId = this.selectData.length ? this.selectData[0] : null;
-        this.handleSelectChange();
     }
 
     gseaCheckedChange(e){
