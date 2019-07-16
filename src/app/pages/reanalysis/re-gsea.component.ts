@@ -1405,6 +1405,9 @@ export class ReGseaComponent implements OnInit {
         }else if(e="B"){
             this.group = this.controlGroup;
         }
+
+        this.generalEntity['pageIndex'] = 1;
+        this.bigTable._setParamsOfEntity('pageIndex',1);
         this.switchValue = e;
         this.generalEntity['group'] = this.group;
         this.bigTable._setParamsOfEntity('group',this.group);
