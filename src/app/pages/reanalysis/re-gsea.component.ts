@@ -1395,7 +1395,7 @@ export class ReGseaComponent implements OnInit {
     restoreChartAttr() {
         this.graphTitle=null;
         this.gcolors = ["#0070c0", "#ff0000"];
-        this.colors = ["#0F0", "#0F0F0F", "gray"];
+        this.colors = ["#0F0", "#0F0F0F", "#808080"];
     }
 
     moduleSwitchChange(e){
