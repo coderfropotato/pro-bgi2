@@ -132,7 +132,7 @@
                     [chartId]="'MapDataID'"
                     [chartName]="'表达量密度图'"
                     (refresh)="handlerRefresh()"
-                    [chartDescContent]="'X 轴为 log2(FPKM+1)，Y轴为基因的密度，即该表达量下的基因数与表达基因总数的比例。'"
+                    [chartDescContent]="'X 轴为 log10(FPKM+1)，Y轴为基因的密度，即该表达量下的基因数与表达基因总数的比例。'"
                 >
                 </app-table-switch-chart>
                 <app-color-picker [(color)]="colorMap" (colorChange)="colorMapChange($event)" [(show)]="isMapShowColorPanel"
