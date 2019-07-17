@@ -244,7 +244,7 @@ export class GeneFusionComponent implements OnInit {
 		//定义容器宽高、边距
 		var width = 600,
 			height = 600,
-			tick_margin = 50,
+			tick_margin = 40,
 			outer_margin = max_chrNameLength * 8 + tick_margin,
 			outer_padding = this.isShowColumn ? 10 : 20,
 			outerRadius = Math.min(width, height) * 0.5 - outer_margin,
@@ -474,8 +474,6 @@ export class GeneFusionComponent implements OnInit {
 		var max_chrLength = d3.max(outerRing, function(d) {
 			return d.length;
 		})
-		var powLen = max_chrLength.toString().length - 1;
-		var tick_step = Math.pow(10, powLen);
 
 		//scale of first column
 		var max_column1_val = allColumn1.length ? d3.max(allColumn1) : 0;
@@ -560,10 +558,16 @@ export class GeneFusionComponent implements OnInit {
 				});
 
 			//tick
-			var formatValue = d3.formatPrefix(",.0", tick_step); // 外环刻度值显示形式
+			chartData.forEach(d=>{
+				var powLen = d.value.length - 1;
+				var tick_step = Math.pow(10, powLen);
+				var formatValue = d3.formatPrefix(",.0", tick_step); // 外环刻度值显示形式
+				d.step=tick_step;
+				d.formatValue=formatValue;
+			})
 			var groupTick = group.selectAll(".group-tick")
 				.data(function(d) {
-					return groupTicks(d, tick_step);
+					return groupTicks(d);
 				})
 				.enter().append("g")
 				.attr("class", "group-tick")
@@ -576,7 +580,7 @@ export class GeneFusionComponent implements OnInit {
 				.attr("stroke", "#000000");
 			//tick text
 			groupTick.filter(function(d) {
-					return d.value % tick_step === 0;
+					return d.value % d.step === 0;
 				})
 				.append("text")
 				.style("font-size", "10px")
@@ -589,7 +593,7 @@ export class GeneFusionComponent implements OnInit {
 					return d.angle > Math.PI ? "end" : null;
 				})
 				.text(function(d) {
-					return formatValue(d.value);
+					return d.formatValue(d.value);
 				});
 		}
 
@@ -810,12 +814,14 @@ export class GeneFusionComponent implements OnInit {
 		}
 
 		//返回一个数组：[{value: 0, angle: 5.633991554422396},{value: 1000, angle: 5.694823407494192}]
-		function groupTicks(d, step) {
+		function groupTicks(d) {
 			var k = (d.endAngle - d.startAngle) / d.value;
-			return d3.range(0, d.value, step).map(function(val) { //d3.range(0, d.value, step)：[0,1000,2000,3000,……]
+			return d3.range(0, d.value, d.step).map(function(val) { //d3.range(0, d.value, step)：[0,1000,2000,3000,……]
 				return {
 					value: val,
-					angle: val * k + d.startAngle
+					angle: val * k + d.startAngle,
+					step:d.step,
+					formatValue:d.formatValue
 				};
 			});
 		}
