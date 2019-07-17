@@ -141,7 +141,10 @@
                                         <span *ngIf="h['true_key']=='GS DETAILS'" [innerHTML]="d[h['true_key']]"></span>
                                         <span *ngIf="h['true_key']!='GS DETAILS'" [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter : h['true_key']:h['searchType']:true:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate:isKeggRich"></span>
                                     </ng-template>
-                                    <span *ngIf="h['true_key']=='GS DETAILS'" style="color: #5278f8;cursor:pointer;" [innerHTML]="d[h['true_key']]" (click)="goDtetails(d)"></span>
+                                    <span *ngIf="h['true_key']=='GS DETAILS'">
+                                        <span *ngIf="d[h['true_key']] == 'Figure'" style="color: #5278f8;cursor:pointer;" (click)="goDtetails(d)">{{d[h['true_key']]}}</span>
+                                        <span *ngIf="d[h['true_key']] != 'Figure'">{{d[h['true_key']]}}</span>
+                                    </span>
                                     <span *ngIf="h['true_key']!='GS DETAILS'" [innerHTML]="d[h['true_key']] | tableSpecialTheadFilter:h['true_key']:h['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate:isKeggRich"></span>
                                 </td>
                                 <!-- NA -->

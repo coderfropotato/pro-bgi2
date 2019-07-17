@@ -202,6 +202,7 @@
     "analysisPanel": {
         "title": "Please choose an analysis tool",
         "desc": "Analysis based on selected genes/transcripts in the current table",
+        "desc2": "",
         "cluster": "Cluster",
         "geneRich": "Gene Rich",
         "geneClass": "Gene Class",

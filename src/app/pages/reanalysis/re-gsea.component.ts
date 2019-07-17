@@ -1395,7 +1395,7 @@ export class ReGseaComponent implements OnInit {
     restoreChartAttr() {
         this.graphTitle=null;
         this.gcolors = ["#0070c0", "#ff0000"];
-        this.colors = ["#0F0", "#0F0F0F", "gray"];
+        this.colors = ["#0F0", "#0F0F0F", "#808080"];
     }
 
     moduleSwitchChange(e){
@@ -1405,13 +1405,22 @@ export class ReGseaComponent implements OnInit {
         }else if(e="B"){
             this.group = this.controlGroup;
         }
-        this.switchValue = e;
-        this.generalEntity['group'] = this.group;
-        this.bigTable._setParamsOfEntity('group',this.group);
+
 
         this.selectData = this.groupData[this.group];
         this.termId = this.selectData.length ? this.selectData[0] : null;
         this.handleSelectChange();
+
+        this.generalEntity['pageIndex'] = 1;
+        this.generalEntity['pageSize'] = 20;
+        this.generalEntity['group'] = this.group;
+        this.generalEntity['searchList'] = [];
+        this.generalEntity['sortValue'] = null;
+        this.generalEntity['sortKey'] = null;
+        this.generalEntity['sortKey'] = null;
+
+        this.switchValue = e;
+        this.bigTable._setParamsOfObject(this.generalEntity);
     }
 
     gseaCheckedChange(e){

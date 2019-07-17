@@ -433,6 +433,7 @@ export class ToolsComponent implements OnInit {
 		this.title = tool['name'];
 		this.desc = tool['desc'];
 		this.disabled = tool['disabled'];
+		this.selectType = tool['type'];
 	}
 
 	selectParams(tool) {
