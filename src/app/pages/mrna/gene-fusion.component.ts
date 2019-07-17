@@ -244,7 +244,7 @@ export class GeneFusionComponent implements OnInit {
 		//定义容器宽高、边距
 		var width = 600,
 			height = 600,
-			tick_margin = 38,
+			tick_margin = 50,
 			outer_margin = max_chrNameLength * 8 + tick_margin,
 			outer_padding = this.isShowColumn ? 10 : 20,
 			outerRadius = Math.min(width, height) * 0.5 - outer_margin,
