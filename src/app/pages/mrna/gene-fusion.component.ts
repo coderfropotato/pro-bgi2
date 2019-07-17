@@ -490,6 +490,8 @@ export class GeneFusionComponent implements OnInit {
 		var colors_column3 = ["#CA7499", "#b21052"];
 		var colorScale_column3 = d3.scaleLinear().range(colors_column3).domain([min_column3_val, max_column3_val]);
 
+		let tickNumScale=d3.scaleLinear().range([0,10]).domain([0,100]).clamp(true).nice();
+
 		drawOuterRing();
 
 		//画外环
@@ -816,12 +818,28 @@ export class GeneFusionComponent implements OnInit {
 		//返回一个数组：[{value: 0, angle: 5.633991554422396},{value: 1000, angle: 5.694823407494192}]
 		function groupTicks(d) {
 			var k = (d.endAngle - d.startAngle) / d.value;
-			return d3.range(0, d.value, d.step).map(function(val) { //d3.range(0, d.value, step)：[0,1000,2000,3000,……]
+			let ticks=d3.range(0, d.value, d.step);
+			let tickNum=tickNumScale(outerGirthScale(Number(d.value)));
+			let ticksNum = Math.round(tickNum<1 ? 1 : tickNum);
+			let realTicks=[];
+			let step= ticksNum===1 ? 1: Number(d.value)/(ticksNum-1);
+			if(ticksNum<ticks.length){
+				if(ticksNum===1){
+					realTicks.push(Number(d.value));
+				}else{
+					for(let i=0;i<ticksNum;i++){
+						realTicks.push(i*step);
+					}
+				}
+			}else{
+				realTicks=[...ticks];	
+			}
+			return realTicks.map(function(val) { //d3.range(0, d.value, step)：[0,1000,2000,3000,……]
 				return {
 					value: val,
 					angle: val * k + d.startAngle,
-					step:d.step,
-					formatValue:d.formatValue
+					step: ticksNum<ticks.length ? step : d.step,
+					formatValue: d.formatValue
 				};
 			});
 		}
