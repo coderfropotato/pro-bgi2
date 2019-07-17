@@ -331,7 +331,8 @@ export class GeneDetailComponent implements OnInit {
 			this.geneType = params['params']['geneType'];
 			this.species = params['params']['species'];
 			this.isSts = type==='sts' ? true : false;
-		 });	 
+		 });
+		sessionStorage.setItem("LCID",this.lcid);
 	}
 
 	ngOnInit() {
