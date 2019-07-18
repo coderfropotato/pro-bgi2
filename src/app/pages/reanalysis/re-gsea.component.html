@@ -36,7 +36,7 @@
                 </ng-template>
 
                 <!-- 可选择数据的大表 -->
-                <div>
+                <div [hidden]='!expandModuleTable'>
                     <ng-container>
                         <app-big-table
                             *ngIf="generalEntity"
