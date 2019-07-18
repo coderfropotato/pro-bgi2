@@ -8,7 +8,7 @@ import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {GlobalService} from 'src/app/super/service/globalService';
 import config from '../../../config';
 import {PromptService} from './../../super/service/promptService';
-import { IfStmt } from '@angular/compiler';
+import {IfStmt} from '@angular/compiler';
 
 declare const d3: any;
 declare const gooalD3: any;
@@ -162,7 +162,7 @@ export class ReGseaComponent implements OnInit {
                         this.groupData = res['data'];
 
                         for (const key in res['data']) {
-                            if(key == this.group){
+                            if (key == this.group) {
                                 this.selectData = this.groupData[key];
                             }
                         }
@@ -256,7 +256,7 @@ export class ReGseaComponent implements OnInit {
             this.generalUrl = `${config['javaPath']}/gsea/graphTable`;
             this.generalEntity = {
                 termId: this.termId,
-                group:this.group,
+                group: this.group,
                 searchList: [],
                 sortValue: null,
                 sortKey: null,
@@ -271,29 +271,29 @@ export class ReGseaComponent implements OnInit {
         })();
     }
 
-    getDBtypeUrl(){
-        this.dbtype=this.dbtype.toUpperCase();
-        
-        if(this.dbtype =="PFAM"){
+    getDBtypeUrl() {
+        this.dbtype = this.dbtype.toUpperCase();
+
+        if (this.dbtype == "PFAM") {
             this.dbtypeUrl = `http://pfam.xfam.org/family/`;
             this.dbtypeNumber = 1;
         }
-        if(this.dbtype =="REACTOME"){
+        if (this.dbtype == "REACTOME") {
             this.dbtypeUrl = `https://reactome.org/`;
             this.dbtypeNumber = 2;
         }
-        if(this.dbtype =="COG"){
+        if (this.dbtype == "COG") {
             this.dbtypeUrl = `ftp://ftp.ncbi.nih.gov/pub/COG/COG2014/static/byCOG`;
             this.dbtypeNumber = 1;
         }
-        if(this.dbtype =="EGGNOG"){
+        if (this.dbtype == "EGGNOG") {
             this.dbtypeUrl = `http://eggnogdb.embl.de/#/app/home`;
             this.dbtypeNumber = 2;
         }
-        if(this.dbtype =="TF"){
-            if(sessionStorage.getItem('species_kingdom') == 'animal'){
+        if (this.dbtype == "TF") {
+            if (sessionStorage.getItem('species_kingdom') == 'animal') {
                 this.dbtypeUrl = `http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family=`;
-            }else{
+            } else {
                 this.dbtypeUrl = `http://planttfdb.cbi.pku.edu.cn/family.php?fam=`;
             }
             this.dbtypeNumber = 1;
@@ -301,58 +301,58 @@ export class ReGseaComponent implements OnInit {
             // 植物：
             // http://planttfdb.cbi.pku.edu.cn/family.php?fam=[替换内容]
             // 根据info中的species_kingdom 的值判断  animal/plant/fungi/other
-            
+
         }
-        if(this.dbtype =="TF_COFACTORS"){
+        if (this.dbtype == "TF_COFACTORS") {
             this.dbtypeUrl = `http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/`;
             this.dbtypeNumber = 2;
         }
-        if(this.dbtype =="GO_F" || this.dbtype =="GO_P" || this.dbtype =="GO_C"){
+        if (this.dbtype == "GO_F" || this.dbtype == "GO_P" || this.dbtype == "GO_C") {
             this.dbtypeUrl = `http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/`;
             this.dbtypeNumber = 1;
         }
-        if(this.dbtype =="INTERPRO"){
+        if (this.dbtype == "INTERPRO") {
             this.dbtypeUrl = `https://www.ebi.ac.uk/interpro/entry/`;
             this.dbtypeNumber = 1;
         }
-        if(this.dbtype =="KEGG_DISEASE"){
+        if (this.dbtype == "KEGG_DISEASE") {
             this.dbtypeUrl = `https://www.kegg.jp/dbget-bin/www_bget?ds:`;
             this.dbtypeNumber = 1;
         }
-        if(this.dbtype =="KEGG_MODULE"){
+        if (this.dbtype == "KEGG_MODULE") {
             this.dbtypeUrl = `https://www.kegg.jp/kegg-bin/show_module?`;
             this.dbtypeNumber = 1;
         }
-        if(this.dbtype =="KEGG_PATHWAY"){
+        if (this.dbtype == "KEGG_PATHWAY") {
             this.dbtypeUrl = `https://www.kegg.jp/dbget-bin/www_bget?map`;
             this.dbtypeNumber = 1;
         }
-        if(this.dbtype =="KEGG_REACTION"){
+        if (this.dbtype == "KEGG_REACTION") {
             this.dbtypeUrl = `https://www.kegg.jp/dbget-bin/www_bget?rn:`;
             this.dbtypeNumber = 1;
         }
-        
-        if(
-            this.dbtype =="MSIGDB_ARCHIVED_C5_BP"||
-            this.dbtype =="MSIGDB_ARCHIVED_C5_CC"||
-            this.dbtype =="MSIGDB_ARCHIVED_C5_MF"||
-            this.dbtype =="MSIGDB_C1"||
-            this.dbtype =="MSIGDB_C2_CGP"||
-            this.dbtype =="MSIGDB_C2_CP_BIOCARTA"||
-            this.dbtype =="MSIGDB_C2_CP_KEGG"||
-            this.dbtype =="MSIGDB_C2_CP_REACTOME"||
-            this.dbtype =="MSIGDB_C2_CP"||
-            this.dbtype =="MSIGDB_C3_MIR"||
-            this.dbtype =="MSIGDB_C3_TFT"||
-            this.dbtype =="MSIGDB_C4_CGN"||
-            this.dbtype =="MSIGDB_C4_CM"||
-            this.dbtype =="MSIGDB_C5_BP"||
-            this.dbtype =="MSIGDB_C5_CC"||
-            this.dbtype =="MSIGDB_C5_MF"||
-            this.dbtype =="MSIGDB_C6"||
-            this.dbtype =="MSIGDB_C7"||
-            this.dbtype =="MSIGDB_H"
-        ){
+
+        if (
+            this.dbtype == "MSIGDB_ARCHIVED_C5_BP" ||
+            this.dbtype == "MSIGDB_ARCHIVED_C5_CC" ||
+            this.dbtype == "MSIGDB_ARCHIVED_C5_MF" ||
+            this.dbtype == "MSIGDB_C1" ||
+            this.dbtype == "MSIGDB_C2_CGP" ||
+            this.dbtype == "MSIGDB_C2_CP_BIOCARTA" ||
+            this.dbtype == "MSIGDB_C2_CP_KEGG" ||
+            this.dbtype == "MSIGDB_C2_CP_REACTOME" ||
+            this.dbtype == "MSIGDB_C2_CP" ||
+            this.dbtype == "MSIGDB_C3_MIR" ||
+            this.dbtype == "MSIGDB_C3_TFT" ||
+            this.dbtype == "MSIGDB_C4_CGN" ||
+            this.dbtype == "MSIGDB_C4_CM" ||
+            this.dbtype == "MSIGDB_C5_BP" ||
+            this.dbtype == "MSIGDB_C5_CC" ||
+            this.dbtype == "MSIGDB_C5_MF" ||
+            this.dbtype == "MSIGDB_C6" ||
+            this.dbtype == "MSIGDB_C7" ||
+            this.dbtype == "MSIGDB_H"
+        ) {
             this.dbtypeUrl = `http://software.broadinstitute.org/gsea/msigdb/cards/`;
             this.dbtypeNumber = 1;
         }
@@ -566,6 +566,9 @@ export class ReGseaComponent implements OnInit {
         .axis-title {
             user-select: none;
         }
+        .overlay {
+            cursor: pointer;
+        }
         </style>
         </svg>`;
         let that = this;
@@ -573,7 +576,7 @@ export class ReGseaComponent implements OnInit {
         let line_data = data["line"]["data"],
             line_x_key = "RANK IN GENE LIST",
             line_y_key = "RUNNING ES";
-        const yes_array = line_data.filter(m => m["CORE ENRICHMENT"] === "Yes").map(m=>m["gene_id"]);
+        const yes_array = line_data.filter(m => m["CORE ENRICHMENT"] === "Yes").map(m => m["gene_id"]);
 
         let title;
         if (that.graphTitle === null) {
@@ -590,7 +593,7 @@ export class ReGseaComponent implements OnInit {
                     title: "Enrichment score (ES)",
                 },
                 y1: {
-                    title: 'Ranked list metric (log2_Ratio_of_Classes)',
+                    title: 'Ranked list metric',
                 }
             },
             legend: [
@@ -634,19 +637,28 @@ export class ReGseaComponent implements OnInit {
             height = 550,
             chartPadding = {top: 40, left: 60, right: 10, bottom: 80},
 
-            topHeight = height * 0.3,
+            // 折线图
+            topHeight = height * 0.4,
+            // 竖线图
             secondHeight = height * 0.14,
-            colorHeight = secondHeight * .75;
+            // 热图
+            colorHeight = secondHeight * .75,
+
+            // 柱状图
+            histogramYStart = topHeight + secondHeight + chartPadding.top + 5,
+            histogramYEnd = height - chartPadding.bottom - 5;
 
 
-        let xMax = data["line"]["xMax"] || d3.max(line_data, m => m[line_x_key]),
+        // let xMax = data["line"]["xMax"] || d3.max(line_data, m => m[line_x_key]),
+        let xMax = d3.max(line_data, m => m[line_x_key]),
             scoreMin = d3.min(line_data, d => d[line_y_key]),
             scoreMax = d3.max(line_data, d => d[line_y_key]);
 
         // x轴  y轴
+        let xWidth = width - chartPadding.left - chartPadding.right;
         let xScale = d3.scaleLinear()
-                .domain([0, xMax])
-                .range([0, width - chartPadding.left - chartPadding.right]).nice(),
+                .domain([0, xMax + 500])
+                .range([0, xWidth]),
             yScale = d3.scaleLinear()
                 .domain([scoreMax, scoreMin])
                 .range([0, topHeight]).nice();
@@ -656,7 +668,7 @@ export class ReGseaComponent implements OnInit {
         });
 
         // 刻度最大值
-        let xScaleTickMax = xScale(xScale.invert(width - chartPadding.left - chartPadding.right)),
+        let xScaleTickMax = xScale(xMax),
             yScaleTickMin = yScale(yScale.invert(topHeight)),
             secondPaddingTop = chartPadding.top + yScaleTickMin;
         let horizonLinePath = d3.line(),
@@ -674,7 +686,7 @@ export class ReGseaComponent implements OnInit {
             .attr("fill", "white")
             .attr("x", chartPadding.left)
             .attr("y", chartPadding.top)
-            .attr("width", width - chartPadding.left - chartPadding.right)
+            .attr("width", xWidth)
             .attr("height", height - chartPadding.top - chartPadding.bottom);
 
 
@@ -695,10 +707,12 @@ export class ReGseaComponent implements OnInit {
         drawYAxisTitle();
         drawY1AxisTitle();
         // 渐变图例
-        drawGradientLegend(data["heatmap"], width + 10, 10);
+        drawGradientLegend(data["heatmap"], width + 10, 0);
         // legend
         drawLegend(width + 10, 100);
 
+
+        let isBrushing = false;
 
         function drawSecondLineChart() {
             let class_name = 'vertical-line';
@@ -727,12 +741,13 @@ export class ReGseaComponent implements OnInit {
                 .attr("transform", "translate(" + chartPadding.left + "," + secondPaddingTop + ")")
                 .attr("class", class_name)
                 .style("stroke", chartConfig.legend[1]['color'])
+                .style("cursor", "pointer")
                 .on('click', d => {
                     that.selectGeneList = [d["gene_id"]];
                     that.doTableStatementFilter();
                 })
-                .on('mouseover', d => that.globalService.showPopOver(d3.event, buildLineChartHover(d)))
-                .on('mouseout', () => that.globalService.hidePopOver());
+                .on('mouseover', d => !isBrushing && that.globalService.showPopOver(d3.event, buildLineChartHover(d)))
+                .on('mouseout', () => !isBrushing && that.globalService.hidePopOver());
             node.transition()
                 .duration(1200);
         }
@@ -743,15 +758,18 @@ export class ReGseaComponent implements OnInit {
             if (before.nodes().length) before.remove();
 
             const histogram_data = data["histogram"]["data"],
-                postive_num = data["histogram"]["positive_num"],
+                positive_num = data["histogram"]["positive_num"],
                 offset = xScaleTickMax / histogram_data.length;
 
             let histogramScale = d3.scaleLinear()
                 .domain([d3.max(histogram_data), d3.min(histogram_data)])
-                .range([height - topHeight - secondHeight - chartPadding.top + 40, height - chartPadding.bottom - 40]).nice();
+                .range([histogramYStart, histogramYEnd]);
 
             let histogramAxis = d3.axisLeft()
-                .scale(histogramScale);
+                .scale(histogramScale)
+                .tickSize(0)
+                .tickPadding(12)
+                .ticks(Math.ceil((d3.max(histogram_data) - d3.min(histogram_data)) / 2.5));
 
             svg.append("g")
                 .attr("class", "axis")
@@ -760,6 +778,7 @@ export class ReGseaComponent implements OnInit {
 
             const h_y = histogramScale(0);
 
+            let rectColor = chartConfig.legend.length > 1 ? chartConfig.legend[2]['color'] : "#C1C1C1";
             svg.selectAll(`.${class_name}`).data(histogram_data)
                 .enter()
                 .append("rect")
@@ -773,7 +792,8 @@ export class ReGseaComponent implements OnInit {
                     let _ = histogramScale(d);
                     return _ > h_y ? _ - h_y : h_y - _;
                 })
-                .attr("fill", chartConfig.legend.length > 1 ? chartConfig.legend[2]['color'] : "#C0C0C0")
+                .style("stroke", rectColor)
+                .attr("fill", rectColor)
                 .attr("class", class_name)
                 .on('mouseover', d => that.globalService.showPopOver(d3.event, buildHistogramHover(d)))
                 .on('mouseout', d => that.globalService.hidePopOver());
@@ -796,7 +816,7 @@ export class ReGseaComponent implements OnInit {
 
             svg.append('text').attr('font-size', 12).attr('text-anchor', 'middle')
                 .attr("transform", "translate(" + (chartPadding.left + firstLowerZeroOffset) + "," + 0 + ")")
-                .attr('x', -5).attr('y', histogramScale(0) + 5).attr('dx', 0).attr('dy', '1em').text(`Zero cross at ${postive_num}`)
+                .attr('x', -5).attr('y', histogramScale(0) + 5).attr('dx', 0).attr('dy', '1em').text(`Zero cross at ${positive_num}`)
                 .style('user-select', 'none');
 
             function drawLines() {
@@ -881,7 +901,9 @@ export class ReGseaComponent implements OnInit {
                 .attr("height", secondHeight * .25)
                 .attr("transform", "translate(" + chartPadding.left + "," + (secondPaddingTop + colorHeight) + ")")
                 .attr("fill", d => colorScale(d))
-                .attr("class", "mt-rect");
+                .attr("class", "mt-rect")
+                .on('mouseover', d => that.globalService.showPopOver(d3.event, buildHeatMapHover(d)))
+                .on('mouseout', () => that.globalService.hidePopOver());
         }
 
         function drawLineChart() {
@@ -901,7 +923,7 @@ export class ReGseaComponent implements OnInit {
             if (firstYesElementIndex === 0) {
                 for (let i = firstYesElementIndex; i < line_data.length; i++) {
                     if (line_data[i]["CORE ENRICHMENT"] !== "Yes") {
-                        yesAreaWidth = xScale(line_data[i][line_x_key]) - hoverX;
+                        yesAreaWidth = xScale(line_data[i - 1][line_x_key]) - hoverX;
                         break
                     }
                 }
@@ -917,7 +939,7 @@ export class ReGseaComponent implements OnInit {
                 .attr("width", yesAreaWidth)
                 .attr("height", topHeight)
                 .attr("id", "yes-area")
-                .on('click', function(d, i) {
+                .on('click', function (d, i) {
                     that.selectGeneList = yes_array;
                     that.doTableStatementFilter();
                 });
@@ -1045,7 +1067,7 @@ export class ReGseaComponent implements OnInit {
                     .ticks(Math.ceil(xMax / 2500)),
                 yAxis = d3.axisLeft()
                     .scale(yScale)
-                    .ticks(Math.ceil(scoreMax - scoreMin / 0.05));
+                    .ticks(Math.ceil((scoreMax - scoreMin) / 0.1));
 
             svg.append("g")
                 .attr("class", "axis")
@@ -1126,14 +1148,14 @@ export class ReGseaComponent implements OnInit {
 
             // apply position
             let xTitle = svg.append("g").attr("class", `${axis}-title axis-title`).attr("transform", "rotate(-90)");
-            // xTitle.attr("transform", "translate(" + (chartPadding.left - 22) + "," + (440) + ")");
             let xTitleText = xTitle.append("text").text(chartConfig.axis.y1.title);
+
+            let titleStartX = height - histogramYEnd + ((histogramYEnd - histogramYStart) - getNameLength(chartConfig.axis.y1.title)) / 2;
 
             xTitleText.attr("dy", 4)
                 .style("font-size", 12)
                 .style("font-family", 'Arial')
-
-                .attr("transform", "translate(" + (-(height - chartPadding.bottom - chartPadding.top - 5)) + "," + 10 + ")")
+                .attr("transform", "translate(" + (-(height - titleStartX)) + "," + 10 + ")")
                 .attr("dominant-baseline", 'hanging')
                 .attr("text-anchor", "middle")
                 .on("mouseover", function () {
@@ -1148,6 +1170,34 @@ export class ReGseaComponent implements OnInit {
                 .on("dblclick", function () {
                     chartConfig.axis[axis].dblclick && chartConfig.axis[axis].dblclick.call(this, d3.event);
                 });
+
+            function getNameLength(total_name) {
+                let oSvg = d3.select('#re-gsea').append('svg');
+                let mText = oSvg
+                    .selectAll('.y1-title')
+                    .data(total_name)
+                    .enter()
+                    .append('text')
+                    .text(function (d, i) {
+                        return d;
+                    })
+                    .attr('class', 'aText');
+
+                let max_length = [];
+
+                mText.nodes().forEach((d) => {
+                    max_length.push(d.getBBox().width);
+                });
+
+                max_length.sort(function (a, b) {
+                    return b - a;
+                });
+
+                oSvg.remove();
+
+                return max_length[0];
+            }
+
         }
 
         function updateTitle(type, value) {
@@ -1172,8 +1222,11 @@ export class ReGseaComponent implements OnInit {
         }
 
         function buildLineChartHover(ele) {
+            const url = `${location.href.split('/report')[0]}/report/gene-detail/${sessionStorage.getItem('LCID')}/${sessionStorage.getItem('species_kingdom')}/${that.geneType}/nosts/${ele["gene_id"]}`,
+                htmlStr = `<a href="${url}" target="_blank">${ele["gene_id"]}</a>`;
+
             return `
-                Gene ID: ${ele["gene_id"]}<br>
+                Gene ID: ${htmlStr}<br>
                 Gene Symbol: ${ele["gene_symbol"] || 'NA'}<br>
                 RANK IN GENE LIST: ${ele[line_x_key]}<br>
                 RANK METRIC SCORE: ${ele["RANK METRIC SCORE"]}<br>
@@ -1187,7 +1240,16 @@ export class ReGseaComponent implements OnInit {
             } else if (ele < 0) {
                 return `'${that.treatGroup}'(negatively correlated): ${ele}`
             }
-            return `no correlated；${ele}`
+            return `no correlated；${ele}`;
+        }
+
+        function buildHeatMapHover(ele) {
+            if (ele > 0) {
+                return `'${that.controlGroup}'(positively correlated)<br>Score: ${ele}`
+            } else if (ele < 0) {
+                return `'${that.treatGroup}'(negatively correlated)<br>Score: ${ele}`
+            }
+            return `no correlated；<br>Score: ${ele}`;
         }
 
         function drawLegend(x, y) {
@@ -1264,10 +1326,9 @@ export class ReGseaComponent implements OnInit {
             //画图例
             let legend_g = svg.append("g")
                 .attr("class", "gsea_gradient_legend")
-                .attr('transform', "translate(" + x + "," + (y + chartPadding.top * 2) + ")");
+                .attr('transform', "translate(" + x + "," + (y + chartPadding.top) + ")");
 
-            let legend_w = 20,
-                legend_h = 180;
+            let legend_w = 14;
 
             //画图例
             d3.selectAll(".gsea_gradient_legend defs").remove();
@@ -1288,13 +1349,13 @@ export class ReGseaComponent implements OnInit {
             }
 
             //画图例矩形
-            legend_g.append("rect").attr("width", legend_w).attr("height", legend_h).attr("class", "legend_rect")
+            legend_g.append("rect").attr("width", legend_w).attr("height", topHeight).attr("class", "legend_rect")
                 .attr("fill", "url(#" + linearGradient.attr("id") + ")");
 
 
             //点击图例改图颜色
-            let legendClickRect_h = legend_h / that.gcolors.length,
-                legendClick_g = svg.append("g").attr("transform", "translate(" + x + "," + (y + chartPadding.top * 2) + ")")
+            let legendClickRect_h = topHeight / that.gcolors.length,
+                legendClick_g = svg.append("g").attr("transform", "translate(" + x + "," + (y + chartPadding.top) + ")")
                     .style("cursor", "pointer")
                     .on("mouseover", function () {
                         d3.select(this).append("title").text("单击修改颜色");
@@ -1322,7 +1383,7 @@ export class ReGseaComponent implements OnInit {
 
             let valuemin = d3.min(legendData),
                 valuemax = d3.max(legendData),
-                legendScale = d3.scaleLinear().range([0, legend_h]).domain([valuemin, valuemax]).nice().clamp(true);
+                legendScale = d3.scaleLinear().range([0, topHeight]).domain([valuemin, valuemax]).nice().clamp(true);
             let legendAxis = d3.axisRight(legendScale).tickSizeOuter(0).ticks(5);
             //画图例轴
             legend_g.append("g")
@@ -1335,6 +1396,7 @@ export class ReGseaComponent implements OnInit {
 
         // node 拖选
         function brushStart() {
+            isBrushing = true;
             if (d3.event.sourceEvent.type != "end") {
                 node.classed("selected", d => d.selected);
             }
@@ -1357,6 +1419,7 @@ export class ReGseaComponent implements OnInit {
                 that.boxSelectConfirm();
                 that.doTableStatementFilter();
             }
+            isBrushing = false;
         }
 
     }
@@ -1385,24 +1448,24 @@ export class ReGseaComponent implements OnInit {
     doTableStatementFilter() {
         // 筛选表格
         if (this.selectGeneList.length) {
-            this.transformTable._filter(`${this.geneType}_id`,config[this.geneType], "string", "$in", this.selectGeneList.join(','), null)
+            this.transformTable._filter(`${this.geneType}_id`, config[this.geneType], "string", "$in", this.selectGeneList.join(','), null)
 
         } else {
-            this.transformTable._deleteFilter(`${this.geneType}_id`,config[this.geneType], "$in");
+            this.transformTable._deleteFilter(`${this.geneType}_id`, config[this.geneType], "$in");
         }
     }
 
     restoreChartAttr() {
-        this.graphTitle=null;
-        this.gcolors = ["#0070c0", "#ff0000"];
-        this.colors = ["#0F0", "#0F0F0F", "#808080"];
+        this.graphTitle = null;
+        this.gcolors = ["#ff0000", "#0070c0", "#ffffff"];
+        this.colors = ["#0F0", "#0F0F0F", "#C1C1C1"];
     }
 
-    moduleSwitchChange(e){
+    moduleSwitchChange(e) {
         console.log(e);
-        if(e=="A"){
+        if (e == "A") {
             this.group = this.treatGroup;
-        }else if(e="B"){
+        } else if (e = "B") {
             this.group = this.controlGroup;
         }
 
@@ -1423,7 +1486,7 @@ export class ReGseaComponent implements OnInit {
         this.bigTable._setParamsOfObject(this.generalEntity);
     }
 
-    gseaCheckedChange(e){
+    gseaCheckedChange(e) {
         console.log(e);
         this.termId = e["NAME"];
         this.handleSelectChange();
