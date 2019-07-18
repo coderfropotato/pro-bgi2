@@ -21,7 +21,8 @@
                 <nz-option *ngFor="let item of chartTypeData" [nzLabel]="item.value" [nzValue]="item.key"></nz-option>
             </nz-select>
             <!--左-其他模块 -->
-            <ng-container *ngTemplateOutlet="(otherLeftTemplate && (!chartError || !tableError)) ? otherLeftTemplate :''"></ng-container>
+            <!-- <ng-container *ngTemplateOutlet="(otherLeftTemplate && (!chartError || !tableError)) ? otherLeftTemplate :''"></ng-container> -->
+            <ng-container *ngTemplateOutlet="otherLeftTemplate? otherLeftTemplate :''"></ng-container>
         </div>
         <div class="fRight">
             <!-- 右-其他模块 -->
