@@ -567,6 +567,8 @@
                             <input nz-input placeholder="请输入组名" [(ngModel)]="inputBFrist" (ngModelChange)="inputBFristChange($event)" />
                         </div>
                     </nz-row>
+                    <p *ngIf="inputBFristFlag" style="color:red;">组名最大长度为16个字符</p>
+                    <p *ngIf="inputBFristFlag2" style="color:red;">第一个字符必须是字母,组名必须是字母、数字、下划线中的一种或多种</p>
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
                         <div nz-col nzSpan="18" nzOffset="6">
                             <nz-select style="width: 100%" [(ngModel)]="selectBFristTag" nzSize="size" nzMode="tags" nzPlaceHolder="请选择样本" (ngModelChange)="geasBSelectChange()">
@@ -580,6 +582,8 @@
                             <input nz-input placeholder="请输入组名" [(ngModel)]="inputBSecond" (ngModelChange)="inputBSecondChange($event)" />
                         </div>
                     </nz-row>
+                    <p *ngIf="inputBSecondFlag" style="color:red;">组名最大长度为16个字符</p>
+                    <p *ngIf="inputBSecondFlag2" style="color:red;">第一个字符必须是字母,组名必须是字母、数字、下划线中的一种或多种</p>
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
                         <div nz-col nzSpan="18" nzOffset="6">
                             <nz-select style="width: 100%" [(ngModel)]="selectBSecondTag" nzSize="default" nzMode="tags" nzPlaceHolder="请选择样本" (ngModelChange)="geasBSecondSelectChange()">
@@ -595,14 +599,14 @@
                 <nz-row class="mb12" nzType="flex" nzAlign="middle">
                     <span nz-col nzSpan="17" style="font-size: 13px;">Max size (exclude larger sets)：</span>
                     <div nz-col nzSpan="1">
-                        <nz-input-number style="width:70px;" nzSize="default"  [nzMin]="gaeaRange[0]" [nzMax]="gaeaRange[1]"  [(ngModel)]="gseaMax" (ngModelChange)="gseaMaxChange($event)"></nz-input-number>
+                        <nz-input-number style="width:70px;" nzSize="default"  [nzMin]="gaeaRange[0]" [nzMax]="gaeaRange[1]"  [(ngModel)]="gseaMax" (mouseleave)="gseaMaxChange($event)"></nz-input-number>
                     </div>
                 </nz-row>
                 <p *ngIf="maxFlag" style="color:red;">不能小于Min size (exclude smaller sets)的值</p>
                 <nz-row class="mb12" nzType="flex" nzAlign="middle">
                     <span nz-col nzSpan="17" style="font-size: 13px;">Min size (exclude smaller sets)：</span>
                     <div nz-col nzSpan="1">
-                        <nz-input-number style="width:70px;" nzSize="default" [nzMin]="gaeaRange[0]" [nzMax]="gaeaRange[1]" [(ngModel)]="gseaMin" (ngModelChange)="gseaMinChange($event)"></nz-input-number>
+                        <nz-input-number style="width:70px;" nzSize="default" [nzMin]="gaeaRange[0]" [nzMax]="gaeaRange[1]" [(ngModel)]="gseaMin" (mouseleave)="gseaMinChange($event)"></nz-input-number>
                     </div>
                 </nz-row>
                 <p *ngIf="minFlag" style="color:red;">不能大于Max size (exclude larger sets)的值</p>

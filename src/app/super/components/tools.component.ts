@@ -175,10 +175,16 @@ export class ToolsComponent implements OnInit {
 	radioAFrist: string = "";
 	radioASecond: string = "";
 
+
 	radioBFlag: boolean = false;
 	inputBFrist: string = "";//输入框
+	inputBFristFlag: boolean = false;
+	inputBFristFlag2: boolean = false;
 	selectBFristTag: any[] = [];
+
 	inputBSecond: string = "";//输入框
+	inputBSecondFlag: boolean = false;
+	inputBSecondFlag2: boolean = false;
 	selectBSecondTag: any[] = [];
 
 	gseaSample: any[] = [];
@@ -2109,16 +2115,18 @@ export class ToolsComponent implements OnInit {
 	}
 
 	gseaMaxChange(e) {
-		if (e <= this.gseaMin) {
+		if (e.fromElement.lastChild.lastChild.value <= this.gseaMin) {
 			this.maxFlag = true;
 		} else {
 			this.maxFlag = false;
+			this.minFlag = false;
 		}
 	}
 	gseaMinChange(e) {
-		if (e >= this.gseaMax) {
+		if (e.fromElement.lastChild.lastChild.value >= this.gseaMax) {
 			this.minFlag = true;
 		} else {
+			this.maxFlag = false;
 			this.minFlag = false;
 		}
 	}
@@ -2244,44 +2252,45 @@ export class ToolsComponent implements OnInit {
 	}
 
 	inputBFristChange(e) {
-		console.log(e);
-
-		let tempA = e.charCodeAt(0);
-		if((tempA >= 65 && tempA <= 90) || (tempA >= 97 && tempA <= 122)){
-			if(e.length>16){
-				this.notify.warning('tips：', `组名最大长度为16个字符`,{
-					nzStyle: { width: '300px' }
-				});
-				this.inputBFrist=e.substring(0,16);
+		//let e = event.target.value;
+		if(e){
+			let tempA = e.charCodeAt(0);
+			if((tempA >= 65 && tempA <= 90) || (tempA >= 97 && tempA <= 122)){
+				if(e.length>16){
+					this.inputBFristFlag=true;
+					this.inputBFristFlag2 = false;
+				}else{
+					this.inputBFristFlag=false;
+					this.inputBFristFlag2 = false;
+				}
 			}else{
-				this.inputBFrist=e;
+				this.inputBFristFlag2 = true;
+				this.inputBFristFlag = false;
 			}
 		}else{
-			this.notify.warning('tips：', `组名必须是字母、数字、下划线中的一种或多种，第一个字符必须是字母`,{
-				nzStyle: { width: '300px' }
-			});
-			this.inputBFrist = "";
+			this.inputBFristFlag = false;
+			this.inputBFristFlag2 = false;
 		}
-
 	}
 
 	inputBSecondChange(e) {
-		console.log(e);
-		let tempA = e.charCodeAt(0);
-		if((tempA >= 65 && tempA <= 90) || (tempA >= 97 && tempA <= 122)){
-			if(e.length>16){
-				this.notify.warning('tips：', `组名最大长度为16个字符`,{
-					nzStyle: { width: '300px' }
-				});
-				this.inputBSecond=e.substring(0,16);
+		if(e){
+			let tempA = e.charCodeAt(0);
+			if((tempA >= 65 && tempA <= 90) || (tempA >= 97 && tempA <= 122)){
+				if(e.length>16){
+					this.inputBSecondFlag=true;
+					this.inputBSecondFlag2 = false;
+				}else{
+					this.inputBSecondFlag=false;
+					this.inputBSecondFlag2 = false;
+				}
 			}else{
-				this.inputBSecond=e;
+				this.inputBSecondFlag = false;
+				this.inputBSecondFlag2 = true;
 			}
 		}else{
-			this.notify.warning('tips：', `组名必须是字母、数字、下划线中的一种或多种，第一个字符必须是字母`,{
-				nzStyle: { width: '300px' }
-			});
-			this.inputBSecond = "";
+			this.inputBSecondFlag = false;
+			this.inputBSecondFlag2 = false;
 		}
 	}
 
