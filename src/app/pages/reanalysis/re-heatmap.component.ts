@@ -535,6 +535,7 @@ export class ReHeatmapComponent implements OnInit {
                 min: that.domainRange[0],
                 max: that.domainRange[1],
                 ticks:5,
+                reverse:true,
                 data: legendData,
                 position: "right",
                 click: (d, i) => {

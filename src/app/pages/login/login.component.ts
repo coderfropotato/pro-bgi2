@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 		private router: Router,
 		private globalService: GlobalService,
 		private ajaxService: AjaxService,
-		private nzMessageService: NzMessageService,
+		private message: NzMessageService,
 		private storeService: StoreService,
 		private translate: TranslateService,
 		private routes: ActivatedRoute,
@@ -73,8 +73,8 @@ export class LoginComponent implements OnInit {
 		this.toolsService.srcTotal=0;
 		this.toolsService.tableEntity={};
 		this.toolsService.tableUrl='';
-		$('.cdk-overlay-pane').remove();
-		$('.ant-drawer').removeClass('ant-drawer-open');
+		// $('.ant-drawer').removeClass('ant-drawer-open');
+		$('.ant-drawer').remove();
 
 		this.uuid = this.generateUuid();
 		this.config = config;
@@ -144,7 +144,11 @@ export class LoginComponent implements OnInit {
 							this.LCType = data['data'].LCType;
 							this.router.navigateByUrl(`/report/${data['data'].LCType}`);
 						} else {
-							this.nzMessageService.warning(data['message']);
+							if(data['status'] == '-1'){
+								this.message.warning('录入发生错误，请联系系统管理员');
+							}else{
+								this.message.warning(data['message']);
+							}
 							// 重新生成验证码
 							this.handlerVerificationClick();
 						}
@@ -193,7 +197,11 @@ export class LoginComponent implements OnInit {
 							this.LCType = data['data'].LCType;
 							this.router.navigateByUrl(`/report/${data['data'].LCType}`);
 						} else {
-							this.nzMessageService.warning(data['message']);
+							if(data['status'] == '-1'){
+								this.message.warning('录入发生错误，请联系系统管理员');
+							}else{
+								this.message.warning(data['message']);
+							}
 							// 重新生成验证码
 							this.handlerVerificationClick();
 						}

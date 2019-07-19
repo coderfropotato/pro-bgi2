@@ -510,6 +510,7 @@ export class reRelationHeatmapComponent implements OnInit {
             },
             legend: {
                 show: true,
+                reverse:true,
                 data: legendData,
                 position: "right",
                 click: (d, i) => {
