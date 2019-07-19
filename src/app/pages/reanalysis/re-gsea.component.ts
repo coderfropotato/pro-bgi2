@@ -1483,6 +1483,7 @@ export class ReGseaComponent implements OnInit {
         this.generalEntity['sortKey'] = null;
 
         this.switchValue = e;
+        this.bigTable._clearFilterWithoutRequest();
         this.bigTable._setParamsOfObject(this.generalEntity);
     }
 
