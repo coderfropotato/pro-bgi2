@@ -1475,8 +1475,9 @@ export class ToolsComponent implements OnInit {
 		this.isSubmitReanalysis = true;
 		let newWindow = window.open(`${window.location.href.split('report')[0]}report/reanalysis/loading`);
 		let entity = this.toolsService.get('tableEntity');
-		entity['relations'] = this.relativeNetSelect;
+		// entity['relations'] = this.relativeNetSelect;
 		entity['mongoId'] = this.toolsService.get('mongoId');
+		
 		this.ajaxService
 			.getDeferData({
 				data: {
@@ -1486,6 +1487,10 @@ export class ToolsComponent implements OnInit {
 					version: this.storeService.getStore('version'),
 					geType: this.toolsService.get('tableEntity')['geneType'],
 					species: this.storeService.getStore('genome'),
+					relativeNetParams:this.relativeNetSelect.map(v=>{
+						v['limit']=false;
+						return v;
+					}),
 					...entity
 				},
 				url: this.toolsService.get('tableUrl')
