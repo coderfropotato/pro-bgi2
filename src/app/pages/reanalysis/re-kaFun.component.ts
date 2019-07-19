@@ -1043,7 +1043,8 @@ export class KaFunComponent implements OnInit {
 							that.doSingleData();
 						}
 					}
-				});
+				})
+				.style('cursor', 'pointer');
 		}
 
 		function selectName(sList, d) {

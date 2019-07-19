@@ -2343,7 +2343,7 @@ export class ToolsComponent implements OnInit {
 					})
 				});
 			} else {
-				this.notify.warning('tips：', `对照组和处理组组名和选取内容不能为空,并且组名不能相等`,{
+				this.notify.warning('tips：', `对照组与处理组的组名和样本选择不能为空，且两者组名不能完全相同。`,{
 					nzStyle: { width: '300px' }
 				});
 				return;

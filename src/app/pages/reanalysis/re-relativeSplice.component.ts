@@ -777,6 +777,7 @@ export class RelativeSpliceComponent implements OnInit {
                 that.singleMultiSelect = d;
                 that.doSingleData();
             })
+            .style('cursor', 'pointer')
 
         }
 
