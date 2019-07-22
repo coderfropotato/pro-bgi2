@@ -3211,3 +3211,10 @@ button {
         padding: 4px 8px;
     }
 }
+
+.gsea_desc {
+    ol {list-style: decimal !important;}
+    li {
+        width:80%;
+    }
+}
