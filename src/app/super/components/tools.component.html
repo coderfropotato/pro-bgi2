@@ -360,42 +360,42 @@
                         <nz-alert class="mb6" *ngIf="!relativeNetError && !relativeNetSelect.length" nzShowIcon nzType="warning" nzMessage="请至少选择一个数据"></nz-alert>
                     </div>
                     <!-- 参数选择 -->
-                    <!-- <div class="tools-prams-content">
-                            <ng-container *ngFor="let par of relativeNetSelect;index as i;">
-                                <nz-row>
-                                    <nz-divider nzText="{{par['name']}} 参数" nzOrientation="left"></nz-divider>
-                                    <nz-col nzSpan="6"><span>min Score</span></nz-col>
-                                    <nz-col nzSpan="10">
-                                        <nz-slider [nzStep]="0.1" [nzMin]="par['score'][0]" [nzMax]="par['score'][1]"  [(ngModel)]="par['score'][2]"></nz-slider>
-                                    </nz-col>
-                                    <nz-col nzSpan="6" [nzPush]="1">
-                                        <nz-input-number [nzMin]="par['score'][0]" [nzMax]="par['score'][1]"   [(ngModel)]="par['score'][2]"></nz-input-number>
-                                    </nz-col>
-                                </nz-row>
-                                <nz-row class="mb12">
-                                    <nz-col nzSpan="6">max num</nz-col>
-                                    <nz-col nzSpan="13">
-                                        <nz-row>
-                                            <nz-col>
-                                                <nz-radio-group [(ngModel)]="par['limit']">
-                                                    <label nz-radio [nzValue]="true">limit</label>
-                                                    <label nz-radio [nzValue]="false">no limit</label>
-                                                </nz-radio-group>
-                                            </nz-col>
-                                        </nz-row>
-                                        <nz-row>
-                                            <nz-col nzSpan="20">
-                                                <nz-slider [nzMin]="par['max'][0]" [nzMax]="par['max'][1]"  [(ngModel)]="par['max'][2]" [nzDisabled]="!par['limit']"></nz-slider>
-                                            </nz-col>
-                                            <nz-col nzSpan="1"></nz-col>
-                                            <nz-col nzSpan="1">
-                                                <nz-input-number [nzMin]="par['max'][0]" [nzDisabled]="!par['limit']" [nzMax]="par['max'][1]"   [(ngModel)]="par['max'][2]"></nz-input-number>
-                                            </nz-col>
-                                        </nz-row>
-                                    </nz-col>
-                                </nz-row>
-                            </ng-container>
-                        </div> -->
+                    <div class="tools-prams-content">
+                        <!-- <ng-container *ngFor="let par of relativeNetSelect;index as i;"> -->
+                            <nz-row class="mb12" *ngFor="let par of relativeNetSelect;index as i;">
+                                <nz-divider nzText="{{par['name']}} 参数" nzOrientation="left"></nz-divider>
+                                <nz-col nzSpan="6"><span>min Score</span></nz-col>
+                                <nz-col nzSpan="10">
+                                    <nz-slider [nzStep]="0.1" [nzMin]="par['score'][0]" [nzMax]="par['score'][1]"  [(ngModel)]="par['score'][2]"></nz-slider>
+                                </nz-col>
+                                <nz-col nzSpan="6" [nzPush]="1">
+                                    <nz-input-number [nzMin]="par['score'][0]" [nzMax]="par['score'][1]"   [(ngModel)]="par['score'][2]"></nz-input-number>
+                                </nz-col>
+                            </nz-row>
+                            <!-- <nz-row class="mb12">
+                                <nz-col nzSpan="6">max num</nz-col>
+                                <nz-col nzSpan="13">
+                                    <nz-row>
+                                        <nz-col>
+                                            <nz-radio-group [(ngModel)]="par['limit']">
+                                                <label nz-radio [nzValue]="true">limit</label>
+                                                <label nz-radio [nzValue]="false">no limit</label>
+                                            </nz-radio-group>
+                                        </nz-col>
+                                    </nz-row>
+                                    <nz-row>
+                                        <nz-col nzSpan="20">
+                                            <nz-slider [nzMin]="par['max'][0]" [nzMax]="par['max'][1]"  [(ngModel)]="par['max'][2]" [nzDisabled]="!par['limit']"></nz-slider>
+                                        </nz-col>
+                                        <nz-col nzSpan="1"></nz-col>
+                                        <nz-col nzSpan="1">
+                                            <nz-input-number [nzMin]="par['max'][0]" [nzDisabled]="!par['limit']" [nzMax]="par['max'][1]"   [(ngModel)]="par['max'][2]"></nz-input-number>
+                                        </nz-col>
+                                    </nz-row>
+                                </nz-col>
+                            </nz-row> -->
+                        <!-- </ng-container> -->
+                    </div>
                 </div>
                 <nz-divider></nz-divider>
                 <div class="tool-params-button-group" *ngIf="relativeNetData.length">
