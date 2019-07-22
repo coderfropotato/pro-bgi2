@@ -655,6 +655,7 @@ export class ReGseaComponent implements OnInit {
             // 柱状图
             histogramYStart = topHeight + secondHeight + chartPadding.top + 5,
             histogramYEnd = height - chartPadding.bottom - 5;
+        width = width>680?680:width;
 
 
         // let xMax = data["line"]["xMax"] || d3.max(line_data, m => m[line_x_key]),
@@ -744,7 +745,7 @@ export class ReGseaComponent implements OnInit {
 
             // set node 用于 brush
             node = svg.selectAll(`.${class_name}`)
-                .data(line_data)
+                .data(line_data.slice(1, line_data.length - 1))
                 .enter()
                 .append("path")
                 .attr("d", d => horizonLinePath([
@@ -1239,9 +1240,9 @@ export class ReGseaComponent implements OnInit {
 
         function buildScoreMapHover(ele) {
             if (ele > 0) {
-                return `'${that.controlGroup}'(positively correlated)<br>Score: ${ele}`
+                return `'${that.group}'(positively correlated)<br>Score: ${ele}`
             } else if (ele < 0) {
-                return `'${that.treatGroup}'(negatively correlated)<br>Score: ${ele}`
+                return `'${that.group===that.treatGroup?that.controlGroup:that.treatGroup}'(negatively correlated)<br>Score: ${ele}`
             }
             return `no correlated；<br>Score: ${ele}`;
         }
@@ -1250,8 +1251,8 @@ export class ReGseaComponent implements OnInit {
             return `<h4 style="margin-bottom: 2px">Leading edge subsets (click for select)</h4>
 Subsets Gene number: ${yes_num}<br>
 Upregulated in class: ${data.group}<br>
-ORIGINAL SIZE: ${data['detailInfo']['ORIGINAL SIZ']}<br>
-SIZE(AFTER RESTRICTING TO DATASET): ${data['detailInfo']['SIZE']}<br>
+Original size: ${data['detailInfo']['ORIGINAL SIZ']}<br>
+Size (after restricting to dataset): ${data['detailInfo']['SIZE']}<br>
 Enrichment Score (ES): ${data['detailInfo']['ES']}<br>
 Normalized Enrichment Score (NES): ${data['detailInfo']['NES']}<br>
 Nominal p-value: ${data['detailInfo']['NOM p-val']}<br>
@@ -1269,7 +1270,7 @@ FWER p-Value: ${data['detailInfo']['FWER p-val']}`
             if (before.nodes().length) before.remove();
 
             legend_g = svg.append('g').attr('class', class_name)
-                .attr('transform', "translate(" + x + "," + y + ")");
+                .attr('transform', "translate(" + x + "," + (-32) + ")");
 
             chartConfig.legend.forEach((val, index) => {
                 y += 20;

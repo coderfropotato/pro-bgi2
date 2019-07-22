@@ -946,8 +946,8 @@ export class TableSwitchChartComponent implements OnInit {
             }
             if (this.isGsea) {
                 this.chartDescDetail = `Upregulated in class: ${data.group}<br>
-ORIGINAL SIZE: ${data['detailInfo']['ORIGINAL SIZ']}<br>
-SIZE(AFTER RESTRICTING TO DATASET): ${data['detailInfo']['SIZE']}<br>
+Original size: ${data['detailInfo']['ORIGINAL SIZ']}<br>
+Size (after restricting to dataset): ${data['detailInfo']['SIZE']}<br>
 Enrichment Score (ES): ${data['detailInfo']['ES']}<br>
 Normalized Enrichment Score (NES): ${data['detailInfo']['NES']}<br>
 Nominal p-value: ${data['detailInfo']['NOM p-val']}<br>
