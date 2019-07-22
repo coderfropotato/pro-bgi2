@@ -900,7 +900,7 @@ export class ReGseaComponent implements OnInit {
 
             const valueAbsMax = d3.max(heatmap_data, m => Math.abs(m));
             let colorScale = d3.scaleLinear()
-                .domain([-valueAbsMax, 0, valueAbsMax])
+                .domain([valueAbsMax, 0, -valueAbsMax])
                 .range(that.gcolors)
                 .interpolate(d3.interpolateRgb)
                 .clamp(true);
@@ -1391,7 +1391,7 @@ FWER p-Value: ${data['detailInfo']['FWER p-val']}`
                 });
 
             let valueAbsMax = d3.max(heatmap_data, m => Math.abs(m)),
-                legendScale = d3.scaleLinear().range([0, legendHeight]).domain([-valueAbsMax, valueAbsMax]).nice().clamp(true);
+                legendScale = d3.scaleLinear().range([0, legendHeight]).domain([valueAbsMax, -valueAbsMax]).nice().clamp(true);
             let legendAxis = d3.axisRight(legendScale).tickSizeOuter(0).ticks(5);
             //画图例轴
             legend_g.append("g")
