@@ -1407,6 +1407,7 @@ FWER p-Value: ${data['detailInfo']['FWER p-val']}`
             isBrushing = true;
             if (d3.event.sourceEvent.type != "end") {
                 node.classed("selected", d => d.selected);
+                clearPreCurSelected();
             }
         }
 
