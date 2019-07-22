@@ -641,7 +641,7 @@ export class ReGseaComponent implements OnInit {
         let chartRect = document.getElementById('re-gsea').getBoundingClientRect(),
             legendWidth = 200, // 图例宽度
             // width = 1050 * 0.6,
-            width = chartRect.width * 0.5,
+            width = chartRect.width * 0.75,
             height = 550,
             chartPadding = {top: 40, left: 60, right: 10, bottom: 80},
 
