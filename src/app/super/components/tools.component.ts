@@ -2261,12 +2261,18 @@ export class ToolsComponent implements OnInit {
 		if(e){
 			let tempA = e.charCodeAt(0);
 			if((tempA >= 65 && tempA <= 90) || (tempA >= 97 && tempA <= 122)){
-				if(e.length>16){
-					this.inputBFristFlag=true;
-					this.inputBFristFlag2 = false;
+				let tempT = /^[0-9a-zA-Z_]{1,}$/;
+				if(tempT.test(e)){
+					if(e.length>16){
+						this.inputBFristFlag=true;
+						this.inputBFristFlag2 = false;
+					}else{
+						this.inputBFristFlag=false;
+						this.inputBFristFlag2 = false;
+					}
 				}else{
-					this.inputBFristFlag=false;
-					this.inputBFristFlag2 = false;
+					this.inputBFristFlag2 = true;
+					this.inputBFristFlag = false;
 				}
 			}else{
 				this.inputBFristFlag2 = true;
@@ -2282,12 +2288,18 @@ export class ToolsComponent implements OnInit {
 		if(e){
 			let tempA = e.charCodeAt(0);
 			if((tempA >= 65 && tempA <= 90) || (tempA >= 97 && tempA <= 122)){
-				if(e.length>16){
-					this.inputBSecondFlag=true;
-					this.inputBSecondFlag2 = false;
+				let tempT = /^[0-9a-zA-Z_]{1,}$/;
+				if(tempT.test(e)){
+					if(e.length>16){
+						this.inputBSecondFlag=true;
+						this.inputBSecondFlag2 = false;
+					}else{
+						this.inputBSecondFlag=false;
+						this.inputBSecondFlag2 = false;
+					}
 				}else{
-					this.inputBSecondFlag=false;
-					this.inputBSecondFlag2 = false;
+					this.inputBSecondFlag2 = true;
+					this.inputBSecondFlag = false;
 				}
 			}else{
 				this.inputBSecondFlag = false;
