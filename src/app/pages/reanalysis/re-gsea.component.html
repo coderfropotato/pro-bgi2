@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- 图表切换 -->
-                <div style="text-align: center">
+                <div style="text-align: center;">
                     <app-table-switch-chart
                         #switchChart
                         [id]="'re-gsea'"
@@ -70,10 +70,10 @@
                         (refresh)="handlerRefresh()"
                         [isGsea]="true"
                         [chartDescContent]="'该图分成四部分，X轴始终表示所有基因（表达量大于0）处理前后变化值的排序（变化值一般指 signal2noise 或 log2ratio，以下称得分），从左到右由大到小排序，即最大的变化值排序为1。
-1.第一部分， 绿色折线表示该组基因富集得分（Enrichment score，简称ES）的变化曲线，Y轴是 ES 值。需要关注该折线的波峰值或波谷值，当波峰的绝对值大于波谷绝对值时，表示波峰左侧基因（即 leading edge subset ）与处理组表型相关；当波谷绝对值更大时，表示波谷右侧基因与对照组表型相关。
-2. 第二部分，每根黑色竖线表示1个基因，这部分显示某个类别（例如某个通路或某个GO条目）下的所有基因。Y轴高度固定，无特殊含义。
-3. 第三部分，热图表示所有表达基因的 signal2noise/log2ratio 值，此处用一定区间多个基因的得分均值作代表展示，红色表示值 >0，蓝色表示值 <0，颜色越深绝对值越大。
-4. 第四部分，灰色柱状图Y轴表示所有表达基因的 signal2noise/log2ratio 值，此处按一定区间间隔从全部基因中选取1000个基因的得分值作代表展示。'"
+<ol class=\'gsea_desc\'><li>1.&nbsp;&nbsp;第一部分， 绿色折线表示该组基因富集得分（Enrichment score，简称ES）的变化曲线，Y轴是 ES 值。需要关注该折线的波峰值或波谷值，当波峰的绝对值大于波谷绝对值时，表示波峰左侧基因（即 leading edge subset ）与处理组表型相关；当波谷绝对值更大时，表示波谷右侧基因与对照组表型相关。</li>
+<li>2.&nbsp;&nbsp;第二部分，每根黑色竖线表示1个基因，这部分显示某个类别（例如某个通路或某个GO条目）下的所有基因。Y轴高度固定，无特殊含义。</li>
+<li>3.&nbsp;&nbsp;第三部分，热图表示所有表达基因的 signal2noise/log2ratio 值，此处用一定区间多个基因的得分均值作代表展示，红色表示值 >0，蓝色表示值 <0，颜色越深绝对值越大。</li>
+<li>4.&nbsp;&nbsp;第四部分，灰色柱状图Y轴表示所有表达基因的 signal2noise/log2ratio 值，此处按一定区间间隔从全部基因中选取1000个基因的得分值作代表展示。</li></ol>'"
                         [selectTemplate]="selectTemplate">
                     </app-table-switch-chart>
                     <app-color-picker [(color)]="color" (colorChange)="colorChange($event)" [(show)]="show"></app-color-picker>

@@ -267,7 +267,7 @@ export class ReGseaComponent implements OnInit {
                 geneType: this.geneType,
                 species: this.storeService.getStore('genome'),
                 version: this.version,
-            }
+            };
         })();
     }
 
@@ -566,8 +566,14 @@ export class ReGseaComponent implements OnInit {
         .axis-title {
             user-select: none;
         }
+        
         .overlay {
             cursor: pointer;
+        }
+        
+        .current-selected {
+            stroke: #f9caca !important;
+            fill: #f9caca !important;
         }
         </style>
         </svg>`;
@@ -632,8 +638,10 @@ export class ReGseaComponent implements OnInit {
         });
 
 
-        let legendWidth = 200, // 图例宽度
-            width = 1050,
+        let chartRect = document.getElementById('re-gsea').getBoundingClientRect(),
+            legendWidth = 200, // 图例宽度
+            // width = 1050 * 0.6,
+            width = chartRect.width * 0.75,
             height = 550,
             chartPadding = {top: 40, left: 60, right: 10, bottom: 80},
 
@@ -647,13 +655,16 @@ export class ReGseaComponent implements OnInit {
             // 柱状图
             histogramYStart = topHeight + secondHeight + chartPadding.top + 5,
             histogramYEnd = height - chartPadding.bottom - 5;
+        width = width>680?680:width;
 
 
         // let xMax = data["line"]["xMax"] || d3.max(line_data, m => m[line_x_key]),
-        let xMax = d3.max(line_data, m => m[line_x_key]),
+        let xMax = data["line"]["xMax"],
+            realMax = d3.max(line_data, m => m[line_x_key]),
             scoreMin = d3.min(line_data, d => d[line_y_key]),
             scoreMax = d3.max(line_data, d => d[line_y_key]);
 
+        scoreMin = scoreMin > 0 ? 0 : scoreMin;
         // x轴  y轴
         let xWidth = width - chartPadding.left - chartPadding.right;
         let xScale = d3.scaleLinear()
@@ -666,11 +677,12 @@ export class ReGseaComponent implements OnInit {
             m.x = xScale(m[line_x_key]);
             m.y = yScale(m[line_y_key]);
         });
+        line_data.push({x: xScale(xMax), y: yScale(0)});
+        line_data.unshift({x: 0, y: yScale(0)});
 
         // 刻度最大值
         let xScaleTickMax = xScale(xMax),
-            yScaleTickMin = yScale(yScale.invert(topHeight)),
-            secondPaddingTop = chartPadding.top + yScaleTickMin;
+            secondPaddingTop = chartPadding.top + topHeight;
         let horizonLinePath = d3.line(),
             // 竖线图 node
             node = null;
@@ -699,6 +711,7 @@ export class ReGseaComponent implements OnInit {
         // 图区域2 -> 画竖线
         drawSecondLineChart();
         // 热图
+        let heatmap_data = data["heatmap"];
         drawHeatMap();
         // 柱状图
         drawHistogram();
@@ -707,7 +720,7 @@ export class ReGseaComponent implements OnInit {
         drawYAxisTitle();
         drawY1AxisTitle();
         // 渐变图例
-        drawGradientLegend(data["heatmap"], width + 10, 0);
+        drawGradientLegend(width + 10, 0);
         // legend
         drawLegend(width + 10, 100);
 
@@ -720,7 +733,7 @@ export class ReGseaComponent implements OnInit {
             if (before.nodes().length) before.remove();
 
             let svg2 = svg.append("g")
-                .attr("id", "secondArea").attr("transform", "translate(" + chartPadding.left + "," + secondPaddingTop + ")");
+                .attr("transform", "translate(" + chartPadding.left + "," + secondPaddingTop + ")");
 
             let brush = svg2.append("g").attr("class", "brush")
                 .call(d3.brush()
@@ -730,8 +743,9 @@ export class ReGseaComponent implements OnInit {
                     .on("end", brushEnd)
                 );
 
+            // set node 用于 brush
             node = svg.selectAll(`.${class_name}`)
-                .data(line_data)
+                .data(line_data.slice(1, line_data.length - 1))
                 .enter()
                 .append("path")
                 .attr("d", d => horizonLinePath([
@@ -742,12 +756,15 @@ export class ReGseaComponent implements OnInit {
                 .attr("class", class_name)
                 .style("stroke", chartConfig.legend[1]['color'])
                 .style("cursor", "pointer")
-                .on('click', d => {
+                .on('click', function(d) {
+                    clearPreCurSelected();
+                    d3.select(this).attr("class", `${class_name} current-selected`);
                     that.selectGeneList = [d["gene_id"]];
                     that.doTableStatementFilter();
                 })
                 .on('mouseover', d => !isBrushing && that.globalService.showPopOver(d3.event, buildLineChartHover(d)))
                 .on('mouseout', () => !isBrushing && that.globalService.hidePopOver());
+            // 此处勿更改
             node.transition()
                 .duration(1200);
         }
@@ -769,7 +786,7 @@ export class ReGseaComponent implements OnInit {
                 .scale(histogramScale)
                 .tickSize(0)
                 .tickPadding(12)
-                .ticks(Math.ceil((d3.max(histogram_data) - d3.min(histogram_data)) / 2.5));
+                .ticks(Math.ceil((d3.max(histogram_data) - d3.min(histogram_data)) * 0.4));// 2.5 一个刻度值
 
             svg.append("g")
                 .attr("class", "axis")
@@ -795,7 +812,7 @@ export class ReGseaComponent implements OnInit {
                 .style("stroke", rectColor)
                 .attr("fill", rectColor)
                 .attr("class", class_name)
-                .on('mouseover', d => that.globalService.showPopOver(d3.event, buildHistogramHover(d)))
+                .on('mouseover', d => that.globalService.showPopOver(d3.event, buildScoreMapHover(d)))
                 .on('mouseout', d => that.globalService.hidePopOver());
 
 
@@ -824,7 +841,6 @@ export class ReGseaComponent implements OnInit {
                 let before = svg.select(`.${class_name}`);
                 if (before.nodes().length) before.remove();
 
-
                 let lines = [
                     [
                         // 图1 -> 折线图 纵坐标为0 轴线
@@ -833,18 +849,18 @@ export class ReGseaComponent implements OnInit {
                     ],
                     [
                         // 图1 -> 折线图 图区域的底部 分割线
-                        [0, yScaleTickMin],
-                        [xScaleTickMax, yScaleTickMin]
+                        [0, topHeight],
+                        [xScaleTickMax, topHeight]
                     ],
                     [
                         // 图3 -> 热图 start 轴线
-                        [0, yScaleTickMin + colorHeight],
-                        [xScaleTickMax, yScaleTickMin + colorHeight]
+                        [0, topHeight + colorHeight],
+                        [xScaleTickMax, topHeight + colorHeight]
                     ],
                     [
                         // 图3 -> 热图 end 轴线
-                        [0, yScaleTickMin + secondHeight],
-                        [xScaleTickMax, yScaleTickMin + secondHeight]
+                        [0, topHeight + secondHeight],
+                        [xScaleTickMax, topHeight + secondHeight]
                     ],
                     [
                         // 图4 -> 柱状图 纵坐标为0 轴线
@@ -853,7 +869,7 @@ export class ReGseaComponent implements OnInit {
                     ],
                     [
                         // y轴 底侧线 补充 y轴线
-                        [0.5, yScaleTickMin],
+                        [0.5, topHeight],
                         [0.5, height - chartPadding.bottom - chartPadding.top]
                     ],
                 ];
@@ -882,10 +898,10 @@ export class ReGseaComponent implements OnInit {
             let before = svg.select(`.${class_name}`);
             if (before.nodes().length) before.remove();
 
-            const heatmap_data = data["heatmap"];
 
+            const valueAbsMax = d3.max(heatmap_data, m => Math.abs(m));
             let colorScale = d3.scaleLinear()
-                .domain([d3.min(heatmap_data), d3.max(heatmap_data)])
+                .domain([valueAbsMax, 0, -valueAbsMax])
                 .range(that.gcolors)
                 .interpolate(d3.interpolateRgb)
                 .clamp(true);
@@ -902,25 +918,23 @@ export class ReGseaComponent implements OnInit {
                 .attr("transform", "translate(" + chartPadding.left + "," + (secondPaddingTop + colorHeight) + ")")
                 .attr("fill", d => colorScale(d))
                 .attr("class", "mt-rect")
-                .on('mouseover', d => that.globalService.showPopOver(d3.event, buildHeatMapHover(d)))
+                .on('mouseover', d => that.globalService.showPopOver(d3.event, buildScoreMapHover(d)))
                 .on('mouseout', () => that.globalService.hidePopOver());
         }
 
         function drawLineChart() {
             // hover Yes 部分
-
             let firstYesElementIndex, yesAreaWidth;
-            for (let i = 0; i < line_data.length; i++) {
+            for (let i = 1; i < line_data.length - 1; i++) {
                 if (line_data[i]["CORE ENRICHMENT"] === "Yes") {
                     firstYesElementIndex = i;
                     break
                 }
             }
 
-
             const hoverX = xScale(line_data[firstYesElementIndex][line_x_key]);
 
-            if (firstYesElementIndex === 0) {
+            if (firstYesElementIndex === 1) {
                 for (let i = firstYesElementIndex; i < line_data.length; i++) {
                     if (line_data[i]["CORE ENRICHMENT"] !== "Yes") {
                         yesAreaWidth = xScale(line_data[i - 1][line_x_key]) - hoverX;
@@ -928,10 +942,11 @@ export class ReGseaComponent implements OnInit {
                     }
                 }
             } else {
-                yesAreaWidth = xScaleTickMax - hoverX;
+                yesAreaWidth = xScale(realMax) - hoverX;
             }
             let yesAreaXStart = chartPadding.left + hoverX,
                 yesAreaYStart = chartPadding.top;
+
             svg.append("rect")
                 .attr("fill", "white")
                 .attr("x", yesAreaXStart)
@@ -942,8 +957,9 @@ export class ReGseaComponent implements OnInit {
                 .on('click', function (d, i) {
                     that.selectGeneList = yes_array;
                     that.doTableStatementFilter();
-                });
-
+                })
+                .on('mouseover', d => that.globalService.showPopOver(d3.event, buildYesAreaHover(data, yes_array.length)))
+                .on('mouseout', d => that.globalService.hidePopOver());
 
             let class_name = 'line-chart';
             let beforeTitle = svg.select(`.${class_name}`);
@@ -961,6 +977,8 @@ export class ReGseaComponent implements OnInit {
                 .attr("class", class_name)
                 .style("stroke", chartConfig.legend[0]['color']);
 
+            // 起始点 最终点 无交互
+            const fake_last_index = line_data.length - 1;
             svg.append('g').attr('class', 'point')
                 .attr("transform", "translate(" + chartPadding.left + "," + chartPadding.top + ")")
                 .selectAll('circle')
@@ -969,21 +987,30 @@ export class ReGseaComponent implements OnInit {
                 .append('circle')
                 .attr('cx', d => d.x)
                 .attr('cy', d => d.y)
-                .attr('data-x', d => d[line_x_key])
-                .attr('data-y', d => d[line_y_key])
                 .attr('r', 0)
                 .style("fill", chartConfig.legend[0]['color'])
-                .on('mouseover', function (d) {
-                    d3.select(this).transition().attr('r', 4);
-                    that.globalService.showPopOver(d3.event, buildLineChartHover(d));
+                .on('mouseover', function (d, index) {
+                    // 起始点 最终点 无交互
+                    if (index !== 0 && index !== fake_last_index) {
+                        d3.select(this).transition().attr('r', 4);
+                        that.globalService.showPopOver(d3.event, buildLineChartHover(d));
+                    }
                 })
-                .on('mouseout', function (d) {
-                    d3.select(this).transition().attr('r', 2);
-                    that.globalService.hidePopOver();
+                .on('mouseout', function (d, index) {
+                    // 起始点 最终点 无交互
+                    if (index !== 0 && index !== fake_last_index) {
+                        d3.select(this).transition().attr('r', 2);
+                        that.globalService.hidePopOver();
+                    }
                 })
-                .on('click', d => {
-                    that.selectGeneList = [d["gene_id"]];
-                    that.doTableStatementFilter();
+                .on('click', function (d, index) {
+                    // 起始点 最终点 无交互
+                    if (index !== 0 && index !== fake_last_index) {
+                        that.selectGeneList = [d["gene_id"]];
+                        that.doTableStatementFilter();
+                        clearPreCurSelected();
+                        d3.select(this).attr("class", "point current-selected");
+                    }
                 })
                 .transition()
                 .duration(1200)
@@ -1042,13 +1069,14 @@ export class ReGseaComponent implements OnInit {
 
             // apply position
             let xTitle = svg.append("g").attr("class", `${axis}-title axis-title`);
-            xTitle.attr("transform", "translate(" + (chartPadding.left + width / 2 - 20) + "," + (10) + ")");
+            let titleOffset = (xWidth - getNameLength(title, `${axis}-title`)) * 0.5;
+            xTitle.attr("transform", "translate(" + (chartPadding.left + titleOffset) + "," + 10 + ")");
             let xTitleText = xTitle
                 .append("text")
                 .text(title).attr("class", "top-text");
 
             xTitleText.attr("dy", 4)
-                .style("font-size", 16)
+                .style("font-size", 14)
                 .style("font-family", 'Arial')
                 .attr("dominant-baseline", axis === 'x' ? "initial" : "central")
                 .attr("text-anchor", "middle")
@@ -1064,7 +1092,7 @@ export class ReGseaComponent implements OnInit {
         function drawAxis() {
             let xAxis = d3.axisBottom()
                     .scale(xScale)
-                    .ticks(Math.ceil(xMax / 2500)),
+                    .ticks(Math.ceil(xMax / 5000)),
                 yAxis = d3.axisLeft()
                     .scale(yScale)
                     .ticks(Math.ceil((scoreMax - scoreMin) / 0.1));
@@ -1088,7 +1116,8 @@ export class ReGseaComponent implements OnInit {
 
             // apply position
             let xTitle = svg.append("g").attr("class", `${axis}-title axis-title`);
-            xTitle.attr("transform", "translate(" + (chartPadding.left + width / 2 - 20) + "," + (height - chartPadding.bottom + 40) + ")");
+            let xTitleOffset = (xWidth - getNameLength(chartConfig.axis.y1.title, `${axis}-title`)) * 0.5;
+            xTitle.attr("transform", "translate(" + (chartPadding.left + xTitleOffset) + "," + (height - chartPadding.bottom + 40) + ")");
             let xTitleText = xTitle.append("text").text(chartConfig.axis.x.title);
 
             xTitleText.attr("dy", 4)
@@ -1117,9 +1146,10 @@ export class ReGseaComponent implements OnInit {
             if (beforeTitle.nodes().length) beforeTitle.remove();
 
             // apply position
-            let xTitle = svg.append("g").attr("class", `${axis}-title axis-title`);
-            xTitle.attr("transform", "translate(" + (chartPadding.left / 6) + "," + (chartPadding.top * 3 + 5) + ")");
-            let xTitleText = xTitle.append("text").text(chartConfig.axis.y.title);
+            let yTitle = svg.append("g").attr("class", `${axis}-title axis-title`);
+            let yTitleOffset = (topHeight - getNameLength(chartConfig.axis.y1.title, `${axis}-title`)) * 0.5;
+            yTitle.attr("transform", "translate(" + (chartPadding.left / 6) + "," + (chartPadding.top + yTitleOffset) + ")");
+            let xTitleText = yTitle.append("text").text(chartConfig.axis.y.title);
 
             xTitleText.attr("dy", 4)
                 .style("font-size", 12)
@@ -1128,10 +1158,10 @@ export class ReGseaComponent implements OnInit {
                 .attr("dominant-baseline", 'hanging')
                 .attr("text-anchor", "middle")
                 .on("mouseover", function () {
-                    chartConfig.axis[axis].mouseover && chartConfig.axis[axis].mouseover.call(this, d3.event, xTitle);
+                    chartConfig.axis[axis].mouseover && chartConfig.axis[axis].mouseover.call(this, d3.event, yTitle);
                 })
                 .on("mouseout", function () {
-                    chartConfig.axis[axis].mouseout && chartConfig.axis[axis].mouseout.call(this, d3.event, xTitle);
+                    chartConfig.axis[axis].mouseout && chartConfig.axis[axis].mouseout.call(this, d3.event, yTitle);
                 })
                 .on("click", function () {
                     chartConfig.axis[axis].click && chartConfig.axis[axis].click.call(this, d3.event);
@@ -1150,7 +1180,7 @@ export class ReGseaComponent implements OnInit {
             let xTitle = svg.append("g").attr("class", `${axis}-title axis-title`).attr("transform", "rotate(-90)");
             let xTitleText = xTitle.append("text").text(chartConfig.axis.y1.title);
 
-            let titleStartX = height - histogramYEnd + ((histogramYEnd - histogramYStart) - getNameLength(chartConfig.axis.y1.title)) / 2;
+            let titleStartX = height - histogramYEnd + ((histogramYEnd - histogramYStart) - getNameLength(chartConfig.axis.y1.title, `${axis}-title`)) / 2;
 
             xTitleText.attr("dy", 4)
                 .style("font-size", 12)
@@ -1170,34 +1200,6 @@ export class ReGseaComponent implements OnInit {
                 .on("dblclick", function () {
                     chartConfig.axis[axis].dblclick && chartConfig.axis[axis].dblclick.call(this, d3.event);
                 });
-
-            function getNameLength(total_name) {
-                let oSvg = d3.select('#re-gsea').append('svg');
-                let mText = oSvg
-                    .selectAll('.y1-title')
-                    .data(total_name)
-                    .enter()
-                    .append('text')
-                    .text(function (d, i) {
-                        return d;
-                    })
-                    .attr('class', 'aText');
-
-                let max_length = [];
-
-                mText.nodes().forEach((d) => {
-                    max_length.push(d.getBBox().width);
-                });
-
-                max_length.sort(function (a, b) {
-                    return b - a;
-                });
-
-                oSvg.remove();
-
-                return max_length[0];
-            }
-
         }
 
         function updateTitle(type, value) {
@@ -1213,9 +1215,11 @@ export class ReGseaComponent implements OnInit {
         function findMaxElementInAbs(arr) {
             let abs = null, raw = null, index = null;
             for (let a = 0; a < arr.length; a++) {
-                let number = Math.abs(arr[a]);
-                if (abs === null || number > abs || (number === abs && arr[a] > raw)) {
-                    [abs, raw, index] = [number, arr[a], a];
+                if (!!arr[a]) {
+                    let number = Math.abs(arr[a]);
+                    if (abs === null || number > abs || (number === abs && arr[a] > raw)) {
+                        [abs, raw, index] = [number, arr[a], a];
+                    }
                 }
             }
             return [raw, index];
@@ -1227,29 +1231,33 @@ export class ReGseaComponent implements OnInit {
 
             return `
                 Gene ID: ${htmlStr}<br>
-                Gene Symbol: ${ele["gene_symbol"] || 'NA'}<br>
-                RANK IN GENE LIST: ${ele[line_x_key]}<br>
-                RANK METRIC SCORE: ${ele["RANK METRIC SCORE"]}<br>
-                RUNNING ES: ${ele[line_y_key]}<br>
-                CORE ENRICHMENT: ${ele["CORE ENRICHMENT"]}`;
+                Gene symbol: ${ele["gene_symbol"] || 'NA'}<br>
+                Rank in gene list: ${ele[line_x_key]}<br>
+                Rank metric score: ${ele["RANK METRIC SCORE"]}<br>
+                Running ES: ${ele[line_y_key]}<br>
+                Core enrichment: ${ele["CORE ENRICHMENT"]}`;
         }
 
-        function buildHistogramHover(ele) {
+        function buildScoreMapHover(ele) {
             if (ele > 0) {
-                return `'${that.controlGroup}'(positively correlated): ${ele}`
+                return `'${that.group}'(positively correlated)<br>Score: ${ele}`
             } else if (ele < 0) {
-                return `'${that.treatGroup}'(negatively correlated): ${ele}`
-            }
-            return `no correlated；${ele}`;
-        }
-
-        function buildHeatMapHover(ele) {
-            if (ele > 0) {
-                return `'${that.controlGroup}'(positively correlated)<br>Score: ${ele}`
-            } else if (ele < 0) {
-                return `'${that.treatGroup}'(negatively correlated)<br>Score: ${ele}`
+                return `'${that.group===that.treatGroup?that.controlGroup:that.treatGroup}'(negatively correlated)<br>Score: ${ele}`
             }
             return `no correlated；<br>Score: ${ele}`;
+        }
+
+        function buildYesAreaHover(data, yes_num) {
+            return `<h4 style="margin-bottom: 2px">Leading edge subsets (click for select)</h4>
+Subsets Gene number: ${yes_num}<br>
+Upregulated in class: ${data.group}<br>
+Original size: ${data['detailInfo']['ORIGINAL SIZ']}<br>
+Size (after restricting to dataset): ${data['detailInfo']['SIZE']}<br>
+Enrichment Score (ES): ${data['detailInfo']['ES']}<br>
+Normalized Enrichment Score (NES): ${data['detailInfo']['NES']}<br>
+Nominal p-value: ${data['detailInfo']['NOM p-val']}<br>
+FDR q-value: ${data['detailInfo']['FDR q-va']}<br>
+FWER p-Value: ${data['detailInfo']['FWER p-val']}`
         }
 
         function drawLegend(x, y) {
@@ -1262,7 +1270,7 @@ export class ReGseaComponent implements OnInit {
             if (before.nodes().length) before.remove();
 
             legend_g = svg.append('g').attr('class', class_name)
-                .attr('transform', "translate(" + x + "," + y + ")");
+                .attr('transform', "translate(" + x + "," + (-32) + ")");
 
             chartConfig.legend.forEach((val, index) => {
                 y += 20;
@@ -1321,8 +1329,7 @@ export class ReGseaComponent implements OnInit {
             }
         }
 
-        function drawGradientLegend(legendData, x, y) {
-
+        function drawGradientLegend(x, y) {
             //画图例
             let legend_g = svg.append("g")
                 .attr("class", "gsea_gradient_legend")
@@ -1349,12 +1356,15 @@ export class ReGseaComponent implements OnInit {
             }
 
             //画图例矩形
-            legend_g.append("rect").attr("width", legend_w).attr("height", topHeight).attr("class", "legend_rect")
+            let legendHeight = topHeight*0.5;
+            legend_g.append("rect")
+                .attr("width", legend_w).attr("height", legendHeight)
+                .attr("class", "legend_rect")
                 .attr("fill", "url(#" + linearGradient.attr("id") + ")");
 
 
             //点击图例改图颜色
-            let legendClickRect_h = topHeight / that.gcolors.length,
+            let legendClickRect_h = legendHeight / that.gcolors.length,
                 legendClick_g = svg.append("g").attr("transform", "translate(" + x + "," + (y + chartPadding.top) + ")")
                     .style("cursor", "pointer")
                     .on("mouseover", function () {
@@ -1381,9 +1391,8 @@ export class ReGseaComponent implements OnInit {
                     that.show = true;
                 });
 
-            let valuemin = d3.min(legendData),
-                valuemax = d3.max(legendData),
-                legendScale = d3.scaleLinear().range([0, topHeight]).domain([valuemin, valuemax]).nice().clamp(true);
+            let valueAbsMax = d3.max(heatmap_data, m => Math.abs(m)),
+                legendScale = d3.scaleLinear().range([0, legendHeight]).domain([valueAbsMax, -valueAbsMax]).nice().clamp(true);
             let legendAxis = d3.axisRight(legendScale).tickSizeOuter(0).ticks(5);
             //画图例轴
             legend_g.append("g")
@@ -1399,15 +1408,16 @@ export class ReGseaComponent implements OnInit {
             isBrushing = true;
             if (d3.event.sourceEvent.type != "end") {
                 node.classed("selected", d => d.selected);
+                clearPreCurSelected();
             }
         }
 
         function brushed() {
             if (d3.event.sourceEvent.type != "end") {
                 let selection = d3.event.selection;
-                node.classed("selected", d => {
+                node.classed("selected current-selected", d => {
                     return selection != null && selection[0][0] <= d.x && d.x <= selection[1][0];
-                })
+                });
             }
         }
 
@@ -1422,6 +1432,35 @@ export class ReGseaComponent implements OnInit {
             isBrushing = false;
         }
 
+        function clearPreCurSelected() {
+            d3.selectAll(".current-selected").classed("current-selected", false);
+        }
+
+        function getNameLength(total_name, class_name) {
+            let oSvg = d3.select('#re-gsea').append('svg');
+            let mText = oSvg
+                .selectAll(`.${class_name}`)
+                .data(total_name)
+                .enter()
+                .append('text')
+                .text(function (d, i) {
+                    return d;
+                });
+
+            let max_length = [];
+
+            mText.nodes().forEach((d) => {
+                max_length.push(d.getBBox().width);
+            });
+
+            max_length.sort(function (a, b) {
+                return b - a;
+            });
+
+            oSvg.remove();
+
+            return max_length[0];
+        }
     }
 
     //color change 回调函数
@@ -1457,7 +1496,7 @@ export class ReGseaComponent implements OnInit {
 
     restoreChartAttr() {
         this.graphTitle = null;
-        this.gcolors = ["#ff0000", "#0070c0", "#ffffff"];
+        this.gcolors = ["#ff0000", "#ffffff", "#0070c0"];
         this.colors = ["#0F0", "#0F0F0F", "#C1C1C1"];
     }
 
