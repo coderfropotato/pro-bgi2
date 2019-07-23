@@ -579,7 +579,7 @@ export class ReGseaComponent implements OnInit {
         </svg>`;
         let that = this;
 
-        let line_data = data["line"]["data"],
+        let line_data = JSON.parse(JSON.stringify(data["line"]["data"])),
             line_x_key = "RANK IN GENE LIST",
             line_y_key = "RUNNING ES";
         const yes_array = line_data.filter(m => m["CORE ENRICHMENT"] === "Yes").map(m => m["gene_id"]);
