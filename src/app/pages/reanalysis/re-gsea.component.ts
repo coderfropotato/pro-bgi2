@@ -655,7 +655,7 @@ export class ReGseaComponent implements OnInit {
             // 柱状图
             histogramYStart = topHeight + secondHeight + chartPadding.top + 5,
             histogramYEnd = height - chartPadding.bottom - 5;
-        width = width>680?680:width;
+        width = width > 680 ? 680 : width;
 
 
         // let xMax = data["line"]["xMax"] || d3.max(line_data, m => m[line_x_key]),
@@ -705,6 +705,7 @@ export class ReGseaComponent implements OnInit {
         // 标题
         drawTitle();
         // 图区域1 -> 折线图
+        let firstYesElementIndex, lastYesElementIndex;
         drawLineChart();
         // 坐标轴
         drawAxis();
@@ -752,11 +753,12 @@ export class ReGseaComponent implements OnInit {
                     [d.x, secondHeight],
                     [d.x, 4]
                 ]))
+                .attr("data-index", (d, index) => index)
                 .attr("transform", "translate(" + chartPadding.left + "," + secondPaddingTop + ")")
                 .attr("class", class_name)
                 .style("stroke", chartConfig.legend[1]['color'])
                 .style("cursor", "pointer")
-                .on('click', function(d) {
+                .on('click', function (d) {
                     clearPreCurSelected();
                     d3.select(this).attr("class", `${class_name} current-selected`);
                     that.selectGeneList = [d["gene_id"]];
@@ -924,7 +926,7 @@ export class ReGseaComponent implements OnInit {
 
         function drawLineChart() {
             // hover Yes 部分
-            let firstYesElementIndex, yesAreaWidth;
+            let yesAreaWidth;
             for (let i = 1; i < line_data.length - 1; i++) {
                 if (line_data[i]["CORE ENRICHMENT"] === "Yes") {
                     firstYesElementIndex = i;
@@ -937,12 +939,14 @@ export class ReGseaComponent implements OnInit {
             if (firstYesElementIndex === 1) {
                 for (let i = firstYesElementIndex; i < line_data.length; i++) {
                     if (line_data[i]["CORE ENRICHMENT"] !== "Yes") {
+                        lastYesElementIndex = i - 1;
                         yesAreaWidth = xScale(line_data[i - 1][line_x_key]) - hoverX;
                         break
                     }
                 }
             } else {
                 yesAreaWidth = xScale(realMax) - hoverX;
+                lastYesElementIndex = line_data.length - 2;
             }
             let yesAreaXStart = chartPadding.left + hoverX,
                 yesAreaYStart = chartPadding.top;
@@ -954,9 +958,12 @@ export class ReGseaComponent implements OnInit {
                 .attr("width", yesAreaWidth)
                 .attr("height", topHeight)
                 .attr("id", "yes-area")
-                .on('click', function (d, i) {
+                .on('click', function () {
                     that.selectGeneList = yes_array;
                     that.doTableStatementFilter();
+                    clearPreCurSelected();
+                    d3.selectAll(".vertical-line")
+                        .classed("current-selected", (m, index) => index + 1 >= firstYesElementIndex && index + 1 <= lastYesElementIndex);
                 })
                 .on('mouseover', d => that.globalService.showPopOver(d3.event, buildYesAreaHover(data, yes_array.length)))
                 .on('mouseout', d => that.globalService.hidePopOver());
@@ -1242,7 +1249,7 @@ export class ReGseaComponent implements OnInit {
             if (ele > 0) {
                 return `'${that.group}'(positively correlated)<br>Score: ${ele}`
             } else if (ele < 0) {
-                return `'${that.group===that.treatGroup?that.controlGroup:that.treatGroup}'(negatively correlated)<br>Score: ${ele}`
+                return `'${that.group === that.treatGroup ? that.controlGroup : that.treatGroup}'(negatively correlated)<br>Score: ${ele}`
             }
             return `no correlated；<br>Score: ${ele}`;
         }
@@ -1356,7 +1363,7 @@ FWER p-Value: ${data['detailInfo']['FWER p-val']}`
             }
 
             //画图例矩形
-            let legendHeight = topHeight*0.5;
+            let legendHeight = topHeight * 0.5;
             legend_g.append("rect")
                 .attr("width", legend_w).attr("height", legendHeight)
                 .attr("class", "legend_rect")

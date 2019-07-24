@@ -93,7 +93,11 @@
                             <!-- 其他列 -->
                             <th [ngStyle]="{'min-width':widthConfig[i+1]}" style="text-align: center;" [nzSortKey]="head[i+1]['true_key']" [(nzSort)]="sortMap[head[i+1]['true_key']]" (nzSortChange)="sort(head[i+1]['true_key'],$event)" [nzShowSort]="!head[i+1]['children'].length && head[i+1]['searchType']!='string'"
                                 [attr.colspan]="h['colspan']" [attr.rowspan]="h['rowspan']" *ngFor="let h of head.slice(1);index as i;trackBy:identify">
-                                <span nzTitle="{{ 'tableHeader.'+((head[i+1]['hover'] || head[i+1]['hover']==0)?head[i+1]['hover']:'NA') | translate }}" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
+                                <span *ngIf="head[i+1]['hover']!='header-806'" nzTitle="{{ 'tableHeader.'+((head[i+1]['hover'] || head[i+1]['hover']==0)?head[i+1]['hover']:'NA') | translate }}" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
+                                <span *ngIf="head[i+1]['hover']=='header-806'" [nzTitle]="hoverTemplate" nzPlacement="topCenter" nz-tooltip>{{h['name']}}</span>
+                                <ng-template #hoverTemplate>
+                                    <a style="color:#fff" href="https://software.broadinstitute.org/gsea/doc/GSEAUserGuideFrame.html" target="_blank">{{ 'tableHeader.'+((head[i+1]['hover'] || head[i+1]['hover']==0)?head[i+1]['hover']:'NA') | translate }}</a>
+                                </ng-template>
                                 <app-filter #child *ngIf="beginFilterStatus && !h.children.length" [pid]="tableId" [searchType]="head[i+1]['searchType']" (getData)="recive($event)" (deleteData)="delete($event)" (deleteDataWithoutRequest)="deleteWithoutRequest($event)" [filterNamezh]="head[i+1]['name']"
                                     [filterName]="head[i+1]['true_key']"></app-filter>
                             </th>
