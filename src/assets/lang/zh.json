@@ -1142,6 +1142,10 @@
         "header-804": "多重假设检验矫正后的统计显著性值，FDR越小，得到的富集结果越可靠。",
         "header-805": "ES峰值对应基因的排序值",
         "header-806": "领头亚基信息",
+        "header-807": "该基因的排序值，GSEA会计算出所有基因的Signal2Noise或log2_Ratio_of_Classes值，然后按该值对所有基因排序",
+        "header-808": "Signal2Noise或log2_Ratio_of_Classes值，用于对基因进行排序",
+        "header-809": "当前基因的ES值，即折线图上某个点的ES值",
+        "header-810": "标记是否为领头亚基的一部分，YES表示该基因属于领头亚基，即发生富集的基因之一",
         "NA": "NA"
     },
     "relation":{
