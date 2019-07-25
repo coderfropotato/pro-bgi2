@@ -1088,6 +1088,12 @@ export class ReGseaComponent implements OnInit {
                 .attr("dominant-baseline", axis === 'x' ? "initial" : "central")
                 .attr("text-anchor", "middle")
                 .style("cursor", "pointer")
+                .on("mouseover", function () {
+                    d3.select(this).append("title").text("双击修改标题");
+                })
+                .on("mouseout", function () {
+                    d3.select(this).select("title").remove();
+                })
                 .on("dblclick", function () {
                     let name = prompt("请输入需要修改的标题", title);
                     if (name) {
@@ -1294,6 +1300,12 @@ FWER p-Value: ${data['detailInfo']['FWER p-val']}`
                     .attr('width', 14)
                     .attr('height', 14)
                     .attr('fill', d => d.color)
+                    .on("mouseover", function () {
+                        d3.select(this).append("title").text("单击修改颜色");
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this).select("title").remove();
+                    })
                     .on("click", function () {
                         clearEventBubble(d3.event);
                         chartConfig.legend[index].click && chartConfig.legend[index].click.call(chartConfig, d3.select(this).node(), chartConfig.legend[index]['color'], index);
@@ -1414,7 +1426,7 @@ FWER p-Value: ${data['detailInfo']['FWER p-val']}`
         function brushStart() {
             isBrushing = true;
             if (d3.event.sourceEvent.type != "end") {
-                node.classed("selected", d => d.selected);
+                node.classed("on-selected", d => d.selected);
                 clearPreCurSelected();
             }
         }
@@ -1422,7 +1434,7 @@ FWER p-Value: ${data['detailInfo']['FWER p-val']}`
         function brushed() {
             if (d3.event.sourceEvent.type != "end") {
                 let selection = d3.event.selection;
-                node.classed("selected current-selected", d => {
+                node.classed("on-selected current-selected", d => {
                     return selection != null && selection[0][0] <= d.x && d.x <= selection[1][0];
                 });
             }
@@ -1432,7 +1444,7 @@ FWER p-Value: ${data['detailInfo']['FWER p-val']}`
             let selection = d3.event.selection;
             if (selection != null) {
                 d3.select(this).call(d3.event.target.move, null);
-                that.selectArray = d3.selectAll(".vertical-line.selected").nodes();
+                that.selectArray = d3.selectAll(".on-selected").nodes();
                 that.boxSelectConfirm();
                 that.doTableStatementFilter();
             }
