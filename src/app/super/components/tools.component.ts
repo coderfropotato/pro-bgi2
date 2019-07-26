@@ -2054,6 +2054,7 @@ export class ToolsComponent implements OnInit {
 						if(this.gseaDataBaseLeft.length<1){
 							this.baseFlag = false;
 							this.baseFlag2 = true;
+							this.radioDataBase = "B";
 						}
 						// this.gseaDataBase = dataBase;
 						// this.gseaDataBase[0]["db"].forEach((d) => {
