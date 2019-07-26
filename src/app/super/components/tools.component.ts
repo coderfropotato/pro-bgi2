@@ -2394,7 +2394,7 @@ export class ToolsComponent implements OnInit {
 				tempObj.type = 1;
 				tempObj.db = this.gseaDBLeftSelect;
 			}else{
-				this.notify.warning('tips：', `请选择一个GESA MSigDB数据库`,{
+				this.notify.warning('tips：', `请选择数据库`,{
 					nzStyle: { width: '300px' }
 				});
 				return;
@@ -2404,7 +2404,7 @@ export class ToolsComponent implements OnInit {
 				tempObj.type = this.gseaDBRightSelectType;
 				tempObj.db = this.gseaDBRightSelect;
 			}else{
-				this.notify.warning('tips：', `请选择一个其他数据库`,{
+				this.notify.warning('tips：', `请选择数据库`,{
 					nzStyle: { width: '300px' }
 				});
 				return;
