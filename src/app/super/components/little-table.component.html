@@ -29,10 +29,25 @@
                             <ng-template #tp66>
                                 <span [innerHTML]="row[thead.true_key]"></span>
                             </ng-template>
-                            <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID&&targetFlag">{{row[thead.true_key]}}</a>
+
+                            <span *ngIf="thead.true_key==targetID && (thead.true_key=='gene_id'||thead.true_key=='transcript_id')">
+                                <a href="{{targetID2Url}}{{row[thead.true_key]}}" target="_blank">{{row[thead.true_key]}}</a>
+                            </span>
+                            <span *ngIf="thead.true_key==targetID && thead.true_key!='gene_id'&&thead.true_key!='transcript_id'">
+                                <a href="{{goTarget}}" target="_blank" *ngIf="targetFlag">{{row[thead.true_key]}}</a>
+                                <a href="{{goTarget}}{{row[thead.true_key]}}" target="_blank" *ngIf="!targetFlag">{{row[thead.true_key]}}</a>
+                            </span>
+                            <span *ngIf="thead.true_key==targetID2">
+                                <a href="{{targetID2Url}}{{row[thead.true_key]}}" target="_blank">{{row[thead.true_key]}}</a>
+                            </span>
+                            <span *ngIf="thead.true_key!=targetID && thead.true_key!=targetID2">
+                                <span [innerHTML]="row[thead.true_key]"></span>
+                            </span>
+                            
+                            <!-- <a href="{{goTarget}}" target="_blank" *ngIf="thead.true_key==targetID&&targetFlag">{{row[thead.true_key]}}</a>
                             <a href="{{goTarget}}{{row[thead.true_key]}}" target="_blank" *ngIf="thead.true_key==targetID&&!targetFlag">{{row[thead.true_key]}}</a>
                             <a href="{{targetID2Url}}{{row[thead.true_key]}}" target="_blank" *ngIf="thead.true_key==targetID2">{{row[thead.true_key]}}</a>
-                            <span [innerHTML]="row[thead.true_key]" *ngIf="thead.true_key!=targetID && thead.true_key!=targetID2"></span>
+                            <span [innerHTML]="row[thead.true_key]" *ngIf="thead.true_key!=targetID && thead.true_key!=targetID2"></span> -->
                         </td>
                         <td *ngIf="!row[thead.true_key]" style="min-width:160px;max-width: 160px;text-align: center;">
                             <!-- <span *ngIf="thead.true_key=='s_id_number'">{{row[thead.true_key]}}</span>
