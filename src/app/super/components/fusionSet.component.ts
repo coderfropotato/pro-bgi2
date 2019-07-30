@@ -62,7 +62,7 @@ export class FusionSetComponent implements OnInit {
                 name:"Eric Score"
             }
        ];
-       this.linkSerach=this.linkSerachList[0].key;
+       this.linkSerach=this.linkSerachList[1].key;
        this.score=this.storeService.getStore('circos_score');
 
        this.confirmData={
