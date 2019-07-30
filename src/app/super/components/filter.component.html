@@ -12,7 +12,7 @@
                 <!-- string int double -->
                 <nz-option *ngIf="searchType!=='total' && searchType!=='number'" nzValue='equal' nzLabel="{{'filterPanel.equal' | translate}}"></nz-option>
                 <!-- string int double -->
-                <nz-option *ngIf="searchType!=='total' && searchType!=='number'" nzValue='$ne' nzLabel="{{'filterPanel.ne' | translate}}"></nz-option>
+                <!-- <nz-option *ngIf="searchType!=='total' && searchType!=='number'" nzValue='$ne' nzLabel="{{'filterPanel.ne' | translate}}"></nz-option> -->
                 <!-- string int double -->
                 <nz-option *ngIf="searchType!=='total' && searchType!=='number'" nzValue='$in' nzLabel="{{'filterPanel.in'| translate}}"></nz-option>
                 <!-- int double -->
@@ -46,7 +46,7 @@
             <!-- string int double // equal -->
             <input *ngIf="(searchType==='string' || searchType==='int' || searchType==='double') && selectType==='equal'" type="text" nz-input placeholder="equal" nzSize="default" (input)="oninput()" [(ngModel)]="filter.equal">
             <!-- string int double // $ne -->
-            <input *ngIf="(searchType==='string' || searchType==='int' || searchType==='double') && selectType==='$ne'" type="text" nz-input placeholder="unequal" nzSize="default" (input)="oninput()" [(ngModel)]="filter.unequal">
+            <!-- <input *ngIf="(searchType==='string' || searchType==='int' || searchType==='double') && selectType==='$ne'" type="text" nz-input placeholder="unequal" nzSize="default" (input)="oninput()" [(ngModel)]="filter.unequal"> -->
             <!-- string int double // $in -->
             <textarea *ngIf="(searchType==='string' || searchType==='int' || searchType==='double') && selectType==='$in'" type="text" nz-input placeholder="in" nzSize="default" (input)="oninput()" [(ngModel)]="filter.in"></textarea>
             <!-- int double // $gt -->
