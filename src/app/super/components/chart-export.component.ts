@@ -12,7 +12,8 @@ declare const $: any;
             <ul nz-menu>
                 <li nz-menu-item (click)="downLoadImage('image/png')">{{'tableButton.export_png' | translate}}</li>
                 <li nz-menu-item (click)="downLoadImage('image/jpeg')">{{'tableButton.export_jpg' | translate}}</li>
-                <li nz-menu-item (click)="downLoadImage('svg')">{{'tableButton.export_svg' | translate}}</li>
+				<li nz-menu-item (click)="downLoadImage('svg')">{{'tableButton.export_svg' | translate}}</li>
+				<li nz-menu-item (click)="downLoadImage('pdf')">{{'tableButton.export_pdf' | translate}}</li>
             </ul>
         </nz-dropdown>`,
 	styles: []
@@ -59,41 +60,72 @@ export class ChartExportComponent implements OnInit {
 			this.addZero(oDate.getMinutes());
 
 		if (type != 'svg') {
-			var image = new Image();
-            var canvas = document.createElement('canvas');
+			if(type=='pdf'){
+				// let prnhtml=chartDiv.html();
+				// window.document.body.innerHTML=prnhtml;
+				// document.title=this.chartName + '_' + date + '.pdf';
+				// window.print();
+				// window.location.reload();
+				// return false;
 
-            let scaleVal = 1;
-            if(this.scale){
-                if (chartDiv.width() + chartDiv.height() < 3000) scaleVal = 1.5;
-            }
-
-			canvas.width = chartDiv.width()*scaleVal;
-            canvas.height = chartDiv.height()*scaleVal;
-
-			var context = canvas.getContext('2d');
-			context.fillStyle = '#ffffff';
-			context.fillRect(0, 0, canvas.width, canvas.height);
-
-			var svgBlob = new Blob([ svgXml ], { type: 'image/svg+xml;charset=utf-8' });
-			image.src = URL.createObjectURL(svgBlob);
-
-			image.onload = () => {
-                context.drawImage(image, 0, 0, image.width, image.height,0, 0,image.width * scaleVal, image.height * scaleVal)
-				var a = document.createElement('a');
-				document.body.appendChild(a);
-				canvas.toBlob(
-					(blob) => {
-						a.href = URL.createObjectURL(blob);
-						type == 'image/png'
-							? (a.download = this.chartName + '_' + date + '.png')
-							: (a.download = this.chartName + '_' + date + '.jpg');
-						a.click();
-						a.remove();
-					},
-					type,
-					1
-				);
-            };
+				 var el = document.getElementById(this.chartId);
+				 var doc = null;
+				 var iframe = null;
+				 if(!iframe){
+					iframe = document.createElement('iframe');
+					iframe.setAttribute("id", "print-iframe");
+					iframe.setAttribute('style', 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;');
+					document.body.appendChild(iframe);
+				}
+				doc = iframe.contentWindow.document;
+				//自定义样式
+				//doc.write("<link rel="stylesheet" type="text/css" href="css/print.css">");
+				doc.open();
+				doc.write('<div>' + el.innerHTML + '</div>');
+				doc.close();
+				iframe.contentWindow.focus();            
+				document.title=this.chartName + '_' + date + '.pdf';
+				iframe.contentWindow.print();
+				document.body.removeChild(iframe);
+				document.title="华大基因多组学系统";
+				 
+			}else{
+				var image = new Image();
+				var canvas = document.createElement('canvas');
+	
+				let scaleVal = 1;
+				if(this.scale){
+					if (chartDiv.width() + chartDiv.height() < 3000) scaleVal = 1.5;
+				}
+	
+				canvas.width = chartDiv.width()*scaleVal;
+				canvas.height = chartDiv.height()*scaleVal;
+	
+				var context = canvas.getContext('2d');
+				context.fillStyle = '#ffffff';
+				context.fillRect(0, 0, canvas.width, canvas.height);
+	
+				var svgBlob = new Blob([ svgXml ], { type: 'image/svg+xml;charset=utf-8' });
+				image.src = URL.createObjectURL(svgBlob);
+	
+				image.onload = () => {
+					context.drawImage(image, 0, 0, image.width, image.height,0, 0,image.width * scaleVal, image.height * scaleVal)
+					var a = document.createElement('a');
+					document.body.appendChild(a);
+					canvas.toBlob(
+						(blob) => {
+							a.href = URL.createObjectURL(blob);
+							type == 'image/png'
+								? (a.download = this.chartName + '_' + date + '.png')
+								: (a.download = this.chartName + '_' + date + '.jpg');
+							a.click();
+							a.remove();
+						},
+						type,
+						1
+					);
+				};
+			}
 		} else {
 			var svgBlob = new Blob([ svgXml ], { type: 'image/svg+xml;charset=utf-8' });
 			var href = URL.createObjectURL(svgBlob);
