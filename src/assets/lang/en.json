@@ -153,6 +153,7 @@
         "export_png": "export PNG image",
         "export_jpg": "export JPG image",
         "export_svg": "export SVG image",
+        "export_pdf": "export PDF image",
         "analysis": "tools"
     },
     "view": {
