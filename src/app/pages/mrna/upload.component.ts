@@ -65,7 +65,8 @@ export class UploadComponent implements OnInit {
 		wColoumnName:"",
 		yRowNumber:0,
 		wRowNumber:0,
-		error_elements:[]
+		error_elements:[],
+        error:''
 	};
 
 	goDetailFObj:object={};
@@ -374,33 +375,6 @@ export class UploadComponent implements OnInit {
 			// 	nzTitle: "结果",
 			// 	nzContent: temp
 			// });
-
-			let skipColumnsName = [];
-			let tempArray = e.detail.success.skipColumns;
-			tempArray.forEach((d) => {
-				skipColumnsName.push(d.name);
-			});
-
-			this.goDetailSObj={
-				id:"",
-				yCRNumber:"",
-				yColoumnName:"",
-				wColoumnName:"",
-				yRowNumber:0,
-				wRowNumber:0,
-				error_elements:[]
-			};
-
-			this.goDetailSObj={
-				id:e.id,//上传编号
-				yCRNumber:e.detail.flag==1?e.detail.success.rawRows+'行x'+e.detail.success.rawColumns+'列（不包括第1列和表头）':"",//原始文件行列数
-				yColoumnName:e.detail.success.columns.toString(),//有效列名称
-				wColoumnName:skipColumnsName.toString(),//无效列名称
-				yRowNumber:e.detail.success.totalRows,//有效行数
-				wRowNumber:e.detail.success.totalSkipRows,//无效行数
-				error_elements:e.detail.error_elements
-			};
-			console.log(this.goDetailSObj)
 		}else if(e.status=="失败"){
 			this.goDetailFlag = false;
 			// this.modalService.error({
@@ -409,6 +383,35 @@ export class UploadComponent implements OnInit {
 			// });
 			this.goDetailId = e.id;
 		}
+
+		let skipColumnsName = [];
+		let tempArray = e.detail.success.skipColumns;
+		tempArray.forEach((d) => {
+			skipColumnsName.push(d.name);
+		});
+
+		this.goDetailSObj={
+			id:"",
+			yCRNumber:"",
+			yColoumnName:"",
+			wColoumnName:"",
+			yRowNumber:0,
+			wRowNumber:0,
+			error_elements:[],
+            error:''
+		};
+
+		this.goDetailSObj={
+			id:e.id,//上传编号
+			yCRNumber:e.detail.flag==1?e.detail.success.rawRows+'行x'+e.detail.success.rawColumns+'列（不包括第1列和表头）':"",//原始文件行列数
+			yColoumnName:e.detail.success.columns.toString(),//有效列名称
+			wColoumnName:skipColumnsName.toString(),//无效列名称
+			yRowNumber:e.detail.success.totalRows,//有效行数
+			wRowNumber:e.detail.success.totalSkipRows,//无效行数
+			error_elements:e.detail.error_elements,
+            error: e.detail.flag !== 1 ? e.detail.error:''
+        };
+		console.log(this.goDetailSObj)
 		this.isVisible = true;
 	}
 
