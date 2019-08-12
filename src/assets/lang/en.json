@@ -870,6 +870,13 @@
         "header-531": "GO_CFP Term Level2",
         "header-532": "GO_CFP Term",
         "header-533": "GO_CFP Desc",
+
+        "header-821":"Upload Number",
+        "header-822":"Original Number",
+        "header-823":"Valid column name",
+        "header-824":"Invalid column name",
+        "header-825":"Number of valid rows",
+        "header-826":"Number of invalid rows",
         "NA": "NA"
     }
 }

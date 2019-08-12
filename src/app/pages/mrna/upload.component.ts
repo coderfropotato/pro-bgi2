@@ -14,6 +14,19 @@ declare const SparkMD5:any;
     styles: []
 })
 export class UploadComponent implements OnInit {
+
+	f_index: number = 0;
+	tableFlag: boolean = false;
+
+	geneExplainFlag: boolean = true;
+	geneDemoFlag: boolean = false;
+
+	rnaExplainFlag: boolean = true;
+	rnaDemoFlag: boolean = false;
+
+	sampleExplainFlag: boolean = true;
+	sampleDemoFlag: boolean = false;
+
     resultList: any[] = [];
     isShowTab: boolean = true;
     isVisible: boolean = false;
@@ -43,6 +56,20 @@ export class UploadComponent implements OnInit {
 	downUrlTwo: string;
 	downUrlThree: string;
 
+	goDetailFlag: boolean = true;
+	goDetailId: string;
+	goDetailSObj:object={
+		id:"",
+		yCRNumber:"",
+		yColoumnName:"",
+		wColoumnName:"",
+		yRowNumber:0,
+		wRowNumber:0,
+		error_elements:[]
+	};
+
+	goDetailFObj:object={};
+
     constructor(
         private modalService: NzModalService,
         private ajaxService: AjaxService,
@@ -64,30 +91,35 @@ export class UploadComponent implements OnInit {
             file: ""
 		};
 		this.selectAble = false;
+
+		this.getHeight();
 		//this.fristFlag = true;
 		this.now_page = 1;
 		this.total_page = 0;
-		this.pageSize = 10;
+		//this.pageSize = 10;
 		this.file_obj={
 			name:'',
 			time:''
 		};
 		this.getHistoryList();
 		//this.updateLoad();
+		
     }
 
     beforeUpload = (file: UploadFile): boolean => {
 		this.nfileList = [];
-        if (this.m_index == 0) {
-            this.fileList.push(file);
-            this.nfileList = this.fileList;
-        } else if (this.m_index == 1) {
-            this.fileList2.push(file);
-            this.nfileList = this.fileList2;
-        } else if (this.m_index == 2) {
-            this.fileList3.push(file);
-            this.nfileList = this.fileList3;
-		}
+        // if (this.m_index == 0) {
+        //     this.fileList.push(file);
+        //     this.nfileList = this.fileList;
+        // } else if (this.m_index == 1) {
+        //     this.fileList2.push(file);
+        //     this.nfileList = this.fileList2;
+        // } else if (this.m_index == 2) {
+        //     this.fileList3.push(file);
+        //     this.nfileList = this.fileList3;
+		// }
+
+		this.nfileList.push(file);
         return false;
     };
 
@@ -149,7 +181,8 @@ export class UploadComponent implements OnInit {
 							id:element.id,
 							md5:element.md5,
 							detail:element.detail,
-							hidden:element.hidden
+							hidden:element.hidden,
+							index:element.index
 						};
 						self.resultList.push(tempobj)
 					}
@@ -205,7 +238,6 @@ export class UploadComponent implements OnInit {
 					nzContent: ""
 				});
 
-				//console.log(data)
 				self.isShowTab = true;
 				self.PercentNum = 0;
 				self.go_ResponseText = {};
@@ -326,35 +358,74 @@ export class UploadComponent implements OnInit {
         });
 	}
 
-	goDetail(detail,flag){
-		console.log(detail)
-		if(flag=="成功"){
-			let temp = `columns:${detail.success.columns.toLocaleString()}<br>totalRows:${detail.success.totalRows}<br>totalSkipRows:${detail.success.totalSkipRows}`
-			this.modalService.success({
-				nzTitle: "结果",
-				nzContent: temp
+	goDetail(e){
+		console.log(e);
+		if(e.status=="成功"){
+			this.goDetailFlag = true;
+			// let temp = `columns:${detail.success.columns.toLocaleString()}<br>totalRows:${detail.success.totalRows}<br>totalSkipRows:${detail.success.totalSkipRows}`
+			// this.modalService.success({
+			// 	nzTitle: "结果",
+			// 	nzContent: temp
+			// });
+
+			let skipColumnsName = [];
+			let tempArray = e.detail.success.skipColumns;
+			tempArray.forEach((d) => {
+				skipColumnsName.push(d.name);
 			});
-		}else if(flag=="失败"){
-			this.modalService.error({
-				nzTitle: "结果",
-				nzContent: detail.error
-			});
+
+			this.goDetailSObj={
+				id:"",
+				yCRNumber:"",
+				yColoumnName:"",
+				wColoumnName:"",
+				yRowNumber:0,
+				wRowNumber:0,
+				error_elements:[]
+			};
+
+			this.goDetailSObj={
+				id:e.id,//上传编号
+				yCRNumber:e.detail.flag==1?e.detail.success.rawRows+'行x'+e.detail.success.rawColumns+'列（不包括第1列和表头）':"",//原始文件行列数
+				yColoumnName:e.detail.success.columns.toString(),//有效列名称
+				wColoumnName:skipColumnsName.toString(),//无效列名称
+				yRowNumber:e.detail.success.totalRows,//有效行数
+				wRowNumber:e.detail.success.totalSkipRows,//无效行数
+				error_elements:e.detail.error_elements
+			};
+			console.log(this.goDetailSObj)
+		}else if(e.status=="失败"){
+			this.goDetailFlag = false;
+			// this.modalService.error({
+			// 	nzTitle: "结果",
+			// 	nzContent: detail.error
+			// });
+			this.goDetailId = e.id;
 		}
+		this.isVisible = true;
+	}
+
+	handleCancel(){
+		this.isVisible = false;
+	}
+	handleOk(){
+		this.isVisible = false;
 	}
 
 	getType(num){ //基因信息or转录本信息or样本信息
 		let result = "";
 		switch (num) {
 			case 1:
-				result = "基因信息";
+				result = "基因";
 				break;
 			case 2:
-				result = "转录本信息";
+				result = "转录本";
 				break;
 			case 3:
-				result = "样本信息";
+				result = "样本";
 				break;
 			default:
+				result = "未知"
 				break;
 		}
 		return result;
@@ -407,5 +478,82 @@ export class UploadComponent implements OnInit {
 		var dateee = new Date(fmt).toJSON();
 		var date = new Date(+new Date(dateee)+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'')
 		return date;
+	}
+
+	SelectedFIndexChange(num) {
+        this.f_index = num;
+	}
+	
+	addmore(){
+		this.tableFlag = !this.tableFlag;
+	}
+
+	geneExplainClick(){
+		this.geneExplainFlag = true;
+		this.geneDemoFlag = false;
+	}
+
+	geneDemoClick(){
+		this.geneExplainFlag = false;
+		this.geneDemoFlag = true;
+	}
+	rnaExplainClick(){
+		this.rnaExplainFlag = true;
+		this.rnaDemoFlag = false;
+	}
+
+	rnaDemoClick(){
+		this.rnaExplainFlag = false;
+		this.rnaDemoFlag = true;
+	}
+	sampleExplainClick(){
+		this.sampleExplainFlag = true;
+		this.sampleDemoFlag = false;
+	}
+
+	sampleDemoClick(){
+		this.sampleExplainFlag = false;
+		this.sampleDemoFlag = true;
+	}
+
+	switchChange(e,id){
+		this.goSwitch(id);
+	}
+
+	deleteData(id){
+		this.isVisible = false;
+		let self = this;
+		self.ajaxService
+		.getDeferData(
+			{
+				url: `${config["javaPath"]}/upload/delete`,
+				data: {
+					"id": id,
+				}
+			}
+		)
+		.subscribe(
+			(data: any) => {
+				if(data.status==0){
+					self.modalService.success({
+						nzTitle: "结果",
+						nzContent: "删除成功!"
+					});
+					this.getHistoryList();
+				}
+			},
+			error => {
+				console.log(error)
+			}
+		)
+	}
+
+	getHeight(){
+		console.log(document.getElementsByClassName("t_tabset")[0].clientHeight-45);
+		//计算整个表内容的高度 45位tabset 40表头 40底部 10距离头部
+		let tableHeight = document.getElementsByClassName("t_tabset")[0].clientHeight-45-40-40-10;
+		let numTable = Math.floor(tableHeight/40);
+		this.pageSize = numTable;
+		console.log(numTable);
 	}
 }
