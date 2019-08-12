@@ -25,11 +25,11 @@
                             <nz-row>
                                 <nz-col nzSpan="4">min score</nz-col>
                                 <nz-col nzSpan="10">
-                                    <nz-slider [nzDisabled]="relation['disabled']" [nzStep]="(relation['score'][1] - relation['score'][0]) > 10?1:0.1" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]" [(ngModel)]="relation['score'][2]"></nz-slider>
+                                    <nz-slider [nzDisabled]="relation['disabled']" [nzStep]="(relation['score'][1] - relation['score'][0]) > 10 || relation['key']=='target' ? 1 : 0.1" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]" [(ngModel)]="relation['score'][2]"></nz-slider>
                                 </nz-col>
                                 <nz-col nzSpan="1"></nz-col>
                                 <nz-col nzSpan="1">
-                                    <nz-input-number [nzDisabled]="relation['disabled']" [nzStep]="(relation['score'][1] - relation['score'][0]) > 10?1:0.1" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]" [(ngModel)]="relation['score'][2]"></nz-input-number>
+                                    <nz-input-number [nzDisabled]="relation['disabled']" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]" [(ngModel)]="relation['score'][2]"></nz-input-number>
                                 </nz-col>
                             </nz-row>
                             <!-- max num -->
