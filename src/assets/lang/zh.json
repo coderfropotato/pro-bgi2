@@ -141,7 +141,7 @@
     },
     "tableButton": {
         "refresh": "刷新",
-        "download": "最多下载5000行",
+        "download": "最多下载行列乘积100万",
         "filter": "筛选",
         "setting": "设置",
         "confirm": "确定",

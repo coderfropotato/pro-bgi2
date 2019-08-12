@@ -141,7 +141,7 @@
     },
     "tableButton": {
         "refresh": "refresh",
-        "download": "Download up to 5000 lines",
+        "download": "Download up to row-column product 1 million",
         "filter": "filter",
         "setting": "setting",
         "confirm": "confirm",
