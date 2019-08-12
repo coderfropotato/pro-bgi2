@@ -195,7 +195,9 @@ export class UploadComponent implements OnInit {
 	}
 
 	//upload - 上传数据-5.切换隐藏状态
-	goSwitch(id){
+	goSwitch(e,id){
+		let tempIndex = e.index;
+
 		let self = this;
 		self.ajaxService
 		.getDeferData(
@@ -209,7 +211,12 @@ export class UploadComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				if(data.status==0){
-					this.getHistoryList()
+					self.resultList.forEach((d) => {
+						if(d.index == tempIndex){
+							d["hidden"] = !d["hidden"];
+						}
+					});
+					//this.getHistoryList()
 				}
 			},
 			error => {
@@ -517,7 +524,7 @@ export class UploadComponent implements OnInit {
 	}
 
 	switchChange(e,id){
-		this.goSwitch(id);
+		this.goSwitch(e,id);
 	}
 
 	deleteData(id){

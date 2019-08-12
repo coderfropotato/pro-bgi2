@@ -623,6 +623,7 @@ export class GeneComponent implements OnInit {
 	}
 
 	addThead(thead) {
+		console.log(thead);
 		this.transformTable._initCheckStatus();
 		this.transformTable._setParamsNoRequest('removeColumns', thead['remove']);
 		this.transformTable._setParamsNoRequest('pageIndex', 1);
