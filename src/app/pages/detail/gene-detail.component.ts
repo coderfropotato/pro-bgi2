@@ -676,7 +676,7 @@ export class GeneDetailComponent implements OnInit {
             if (!tempdata.hasOwnProperty(header["true_key"])) {
                 tempObj["y"] = 0;
             } else {
-                tempObj["y"] = Math.log10(tempdata[header["true_key"]] + 1);
+                tempObj["y"] = Math.log2(tempdata[header["true_key"]] + 1);
             }
             tempArray.push(tempObj);
         }
@@ -724,7 +724,7 @@ export class GeneDetailComponent implements OnInit {
 				}
 			},
 			"tooltip": function(d) {
-				return "<span>Sample name："+d.x+"</span><br><span>log10(FPKM+1)："+d.y+"</span>"
+				return "<span>Sample name："+d.x+"</span><br><span>log2(FPKM+1)："+d.y+"</span>"
 			}
 		}
 		this.chartLine=new gooalD3().init(config);
