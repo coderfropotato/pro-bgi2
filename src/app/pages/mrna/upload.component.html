@@ -706,6 +706,7 @@
                 <br>
                 <span *ngIf="item.columns.length>0">异常表头：</span><span>{{item.columns.toString()}}</span>
             </p>
+            <p *ngIf="goDetailSObj.error"><span>{{goDetailSObj.error}}</span></p>
         </ng-template>
         <ng-template #modalFooter>
             <button nz-button nzType="default" (click)="handleCancel()">取消</button> 
