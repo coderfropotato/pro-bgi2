@@ -1,5 +1,5 @@
 <div class="m_div">
-    <div class="m_content">
+    <!-- <div class="m_content">
         <div class="h4">上传数据</div>
         <div class="m_content_1" *ngIf="isShowTab">
             <nz-tabset [nzSelectedIndex]="m_index" (nzSelectedIndexChange)="SelectedIndexChange($event)">
@@ -39,15 +39,13 @@
                     </div>
                     <div class="tab_div" [hidden]="fileList3.length ==0">
                         <div *ngFor="let item of fileList3; let i = index" class="tab_div_item">
-                            <!-- {{i+1}} - {{item.name}} -->{{item.name}}
+                            {{item.name}}
                         </div>
                     </div>
                 </nz-tab>
             </nz-tabset>
             <div class="tab_bottom">
                 <nz-upload nzAction="${config['javaPath']}/upload/do" [(nzFileList)]="nfileList" [nzBeforeUpload]="beforeUpload">
-                    <!-- <button nz-button *ngIf="selectAble"><span>选择文件</span></button>
-                    <button nz-button *ngIf="!selectAble"><span>选择文件</span></button> -->
                     <button nz-button [disabled]="selectAble"><span>选择文件</span></button>
                 </nz-upload>
                 <button nz-button nzType="primary" (click)="updateLoad()" *ngIf="fileList.length !=0 || fileList2.length !=0 || fileList3.length !=0">上传</button>
@@ -91,7 +89,6 @@
                 <div class="m_result_list" *ngFor="let item of resultList;index as i">
                     <div style="width: 140px">{{item.time}}</div>
                     <div style="width: 80px">{{item.info}}</div>
-                    <!-- display:inline-block;width:16px;height:12px; -->
                     <div style="width: 80px;"><div style="display:inline-block;width:16px;height:12px;" [style.background]="item.color"></div><div style="display:inline-block;margin-left:5px;">{{item.status}}</div></div>
 
                     <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'" (click)="goDetail(item.detail,item.status)">
@@ -103,8 +100,6 @@
 
                     <div *ngIf="item.status=='成功'">
                         <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'">
-                            <!-- <div style="width: 60px;cursor: pointer;" *ngIf="item.hidden" (click)="goSwitch(item.id)">隐藏</div>
-                            <div style="width: 60px;cursor: pointer;" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</div> -->
                             <button nz-button nzType="default" [nzSize]="small" *ngIf="item.hidden" (click)="goSwitch(item.id)" style="background: #5E5B78;color: #FFFFFF;">隐藏</button>
                             <button nz-button nzType="default" [nzSize]="small" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</button>
                         </div>
@@ -133,16 +128,650 @@
             </div>
         </div>
         
+    </div> -->
+
+    <div class="t_tabset">
+        <nz-tabset [nzSelectedIndex]="f_index" (nzSelectedIndexChange)="SelectedFIndexChange($event)">
+            <nz-tab [nzTitle]="'上传数据'">
+                <div class="t_data">
+                    <div class="t_file">
+                        <span>已选择文件:</span><span *ngFor="let item of nfileList; let i = index">{{item.name}}</span>
+                    </div>
+                    <div class="tab_bottom">
+                        <nz-upload nzAction="${config['javaPath']}/upload/do" [(nzFileList)]="nfileList" [nzBeforeUpload]="beforeUpload">
+                            <button nz-button [disabled]="selectAble"><span>选择文件</span></button>
+                        </nz-upload>
+                        <button nz-button nzType="primary" (click)="updateLoad()" *ngIf="nfileList.length !=0">上传</button>
+                    </div>
+                    <div class="t_file_details">
+                        <p>本系统允许用户上传数据进行分析，上传内容包括基因、转录本或样本信息。上传的文件需符合一定要求，具体如下：</p>
+                        <p><span class="t_span">格式要求</span>：制表符分隔的文本文件，可以在Excel中完成编辑后，依次选择“文件 -> 另存为 -> 文件类型选择“文本文件(制表符分隔)(*.txt)”，完成保存。</p>
+                        <p><span class="t_span">表头要求</span>：文件的第一行必须带有表头，表头格式需符合特定格式要求，以便识别不同类型的数据。表头分成两部分：</p>
+                        <p style="text-indent: 3rem">1. 第1列，表头必须是gene_id、rna_id或sample_name中的一种，分别对应基因、转录本和样本信息，系统将根据该表头判断上传的是哪种信息；</p>
+                        <p style="text-indent: 3rem">2. 第2~N列，表头由前缀和名称两部分组成，允许在同一个文件中带有多种表头。其中前缀必须是user_exp_、user_log2fc_、user_str_、user_num_或user_sample_tag_中的一种，详细说明请参考下表（其中"???"表示名称，请替换成您指定的名称）。名称由您自行指定，但必须是字母、数字或下划线"_"，长度不超过24个字符；</p>
+                        <p style="text-indent: 3rem">3. 表头必须唯一，不允许在本次上传中有多个同名的表头，或与已上传的表头同名；</p>
+                        <p><span class="t_span">内容要求</span>：基因ID、转录本ID或样本名称必须是本报告中已有的，表头下方的内容是数字或字符串需符合下表“值类型”的要求。</p>
+                        <p><span class="t_span">文件大小要求</span>：单次上传文件需小于20M。</p>
+                    </div>
+
+                    <div class="tab_bottom">
+                        <span style="color:#597DF9;cursor:pointer;" (click)="addmore()">{{tableFlag?'更多 ∧':'更多 ∨'}}</span>
+                    </div>
+
+                    <div class="three_tables" [hidden]="!tableFlag">
+                        <div class="table_one">
+                            <div><span style="color: rgb(121, 121, 121); font-weight: bold;">基因信息</span></div>
+                            <div>
+                                <span [ngStyle]="{'color':geneExplainFlag?'#597DF9':''}" style="font-weight: bold;cursor: pointer;" (click)="geneExplainClick()">说明</span>
+                                <span [ngStyle]="{'color':geneDemoFlag?'#597DF9':''}" style="font-weight: bold;margin-left:20px;cursor: pointer;" (click)="geneDemoClick()">示例</span>
+                            </div>
+                            <div class="table_two" *ngIf="geneExplainFlag">
+                                <table style="border-collapse: collapse; min-width: 100%;">
+                                    <tbody>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">表头前缀</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">值类型</span></div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">表头位置</span></div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">相关模块</span></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">gene_id</span><span
+                                            style="color: rgb(121, 121, 121); font-weight: bold;"> </span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>字符串（可以是纯数字）</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第1列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>无</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_exp_</span><span
+                                            style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">???</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>数字</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第2~N列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>扩展列、聚类热图、网络图、GSEA富集</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_log2fc_</span><span
+                                            style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">???</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>数字</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第2~N列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>扩展列、聚类热图、网络图</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_str_</span><span
+                                            style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">???</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>字符串</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第2~N列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>扩展列、聚类热图、多组学关联、GSEA富集</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_num_</span><span
+                                            style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">???</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>数字</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第2~N列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>扩展列、网络图</div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div style="width:100%;height: 30px;">
+                                    <span style="float: left">注：gene_id 列的第2~N行，必须是系统中出现的Gene ID，未识别的Gene ID将被忽略。</span>
+                                </div>
+                            </div>
+                            <div class="table_two" *ngIf="geneDemoFlag">
+                                <table style="border-collapse: collapse; min-width: 100%;">
+                                    <tbody>
+                                      <tr>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">gene_id</span></div>
+                                        </td>
+                                        <td style="width: 150px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_exp_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">sample01</span></div>
+                                        </td>
+                                        <td style="width: 163px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_exp_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">sample_02</span></div>
+                                        </td>
+                                        <td style="width: 162px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_num_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">snp_count</span></div>
+                                        </td>
+                                        <td style="width: 223px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_log2fc_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">TreatA_vs_Control</span>
+                                          </div>
+                                        </td>
+                                        <td style="width: 190px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_str_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">description01</span></div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>2817</div>
+                                        </td>
+                                        <td style="width: 150px; padding: 8px; border: 1px solid;">
+                                          <div>13.4</div>
+                                        </td>
+                                        <td style="width: 163px; padding: 8px; border: 1px solid;">
+                                          <div>6.8</div>
+                                        </td>
+                                        <td style="width: 162px; padding: 8px; border: 1px solid;">
+                                          <div>6</div>
+                                        </td>
+                                        <td style="width: 223px; padding: 8px; border: 1px solid;">
+                                          <div>-2.8</div>
+                                        </td>
+                                        <td style="width: 190px; padding: 8px; border: 1px solid;">
+                                          <div>HS-GAG biosynthesis</div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>2938</div>
+                                        </td>
+                                        <td style="width: 150px; padding: 8px; border: 1px solid;">
+                                          <div>11</div>
+                                        </td>
+                                        <td style="width: 163px; padding: 8px; border: 1px solid;">
+                                          <div>12.1</div>
+                                        </td>
+                                        <td style="width: 162px; padding: 8px; border: 1px solid;">
+                                          <div>9</div>
+                                        </td>
+                                        <td style="width: 223px; padding: 8px; border: 1px solid;">
+                                          <div>1.9</div>
+                                        </td>
+                                        <td style="width: 190px; padding: 8px; border: 1px solid;">
+                                          <div>Glutathione S-transferase </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  <div style="width:100%;height: 30px;">
+                                    <a href="{{downUrlOne}}" download="upload_gene.txt" style="float: right;margin-right: 4px;border: 1px solid #597DF9;border-radius: 4px;padding: 0px 6px;margin-top: 5px;">下载</a>
+                                  </div>
+                            </div>
+                        </div>
+                        
+                        <div class="table_one">
+                            <div style="text-align: left;color: rgb(121, 121, 121); font-weight: bold;">转录本信息</div>
+                            <div>
+                                <span [ngStyle]="{'color':rnaExplainFlag?'#597DF9':''}" style="font-weight: bold;cursor: pointer;" (click)="rnaExplainClick()">说明</span>
+                                <span [ngStyle]="{'color':rnaDemoFlag?'#597DF9':''}" style="font-weight: bold;margin-left: 20px;cursor: pointer;" (click)="rnaDemoClick()">示例</span>
+                            </div>
+                            <div class="table_two" *ngIf="rnaExplainFlag">
+                                <table style="border-collapse: collapse; min-width: 100%;">
+                                    <tbody>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">表头前缀</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">值类型</span></div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">表头位置</span></div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">相关模块</span></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">rna_id</span><span
+                                            style="color: rgb(121, 121, 121); font-weight: bold;"> </span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>字符串（可以是纯数字）</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第1列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>无</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_exp_</span><span
+                                            style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">???</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>数字</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第2~N列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>扩展列、聚类热图、网络图、GSEA富集</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_log2fc_</span><span
+                                            style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">???</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>数字</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第2~N列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>扩展列、聚类热图、网络图</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_str_</span><span
+                                            style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">???</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>字符串</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第2~N列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>扩展列、聚类热图、多组学关联、GSEA富集</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_num_</span><span
+                                            style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">???</span></div>
+                                        </td>
+                                        <td style="width: 179px; padding: 8px; border: 1px solid;">
+                                        <div>数字</div>
+                                        </td>
+                                        <td style="width: 89px; padding: 8px; border: 1px solid;">
+                                        <div>第2~N列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>扩展列、网络图</div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div style="width:100%;height: 30px;">
+                                    <span style="float: left">注：rna_id 列的第2~N行，必须是系统中出现的RNA ID，未识别的RNA ID将被忽略。</span>
+                                </div>
+                            </div>
+                            <div class="table_two" *ngIf="rnaDemoFlag">
+                                <table style="border-collapse: collapse; min-width: 100%;">
+                                    <tbody>
+                                      <tr>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">rna_id</span></div>
+                                        </td>
+                                        <td style="width: 148px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_exp_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">sample01</span></div>
+                                        </td>
+                                        <td style="width: 142px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_num_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">pcr_exp</span></div>
+                                        </td>
+                                        <td style="width: 182px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_str_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">pathway</span></div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>NM_005190.3</div>
+                                        </td>
+                                        <td style="width: 148px; padding: 8px; border: 1px solid;">
+                                          <div>4.9</div>
+                                        </td>
+                                        <td style="width: 142px; padding: 8px; border: 1px solid;">
+                                          <div>9.8</div>
+                                        </td>
+                                        <td style="width: 182px; padding: 8px; border: 1px solid;">
+                                          <div>MAPK signaling pathway</div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>NM_001324020.1</div>
+                                        </td>
+                                        <td style="width: 148px; padding: 8px; border: 1px solid;">
+                                          <div>10</div>
+                                        </td>
+                                        <td style="width: 142px; padding: 8px; border: 1px solid;">
+                                          <div>24</div>
+                                        </td>
+                                        <td style="width: 182px; padding: 8px; border: 1px solid;">
+                                          <div>pathway_xxx</div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  <div style="width:100%;height: 30px;">
+                                    <a href="{{downUrlTwo}}" download="upload_rna.txt" style="float: right;margin-right: 4px;border: 1px solid #597DF9;border-radius: 4px;padding: 0px 6px;margin-top: 5px;">下载</a>
+                                  </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="table_one">
+                            <div style="text-align: left;color: rgb(121, 121, 121); font-weight: bold;">样本信息</div>
+                            <div>
+                                <span [ngStyle]="{'color':sampleExplainFlag?'#597DF9':''}" style="font-weight: bold;cursor: pointer;" (click)="sampleExplainClick()">说明</span>
+                                <span [ngStyle]="{'color':sampleDemoFlag?'#597DF9':''}" style="font-weight: bold;margin-left: 20px;cursor: pointer;" (click)="sampleDemoClick()">示例</span>
+                            </div>
+                            <div class="table_two" *ngIf="sampleExplainFlag">
+                                <table style="border-collapse: collapse; min-width: 100%;-en-clipboard:true;">
+                                    <tbody>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">表头前缀</span></div>
+                                        </td>
+                                        <td style="width: 81px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">值类型</span></div>
+                                        </td>
+                                        <td style="width: 82px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">表头位置</span></div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div><span style="font-weight: bold;">相关模块</span></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">sample_name</span></div>
+                                        </td>
+                                        <td style="width: 81px; padding: 8px; border: 1px solid;">
+                                        <div>字符串</div>
+                                        </td>
+                                        <td style="width: 82px; padding: 8px; border: 1px solid;">
+                                        <div>第1列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>无</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="18" style="height: 13.8pt; width: 142px; padding: 8px; border: 1px solid;">
+                                        <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_sample_tag_</span><span
+                                            style="color: rgb(65, 173, 28); font-weight: bold;">???</span></div>
+                                        </td>
+                                        <td style="width: 81px; padding: 8px; border: 1px solid;">
+                                        <div>字符串</div>
+                                        </td>
+                                        <td style="width: 82px; padding: 8px; border: 1px solid;">
+                                        <div>第2~N列</div>
+                                        </td>
+                                        <td style="width: 310px; padding: 8px; border: 1px solid;">
+                                        <div>扩展列、聚类热图</div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div style="width:100%;height: 30px;">
+                                    <span style="margin: left;">注：sample_name 列的第2~N行，必须是本项目中“基因信息 -&gt; 项目概况 -&gt; 1.2.1样品分组设置”中的 Sample Name。</span>
+                                </div>
+                            </div>
+                            <div class="table_two" *ngIf="sampleDemoFlag">
+                                <table style="border-collapse: collapse; min-width: 100%;">
+                                    <tbody>
+                                      <tr>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">sample_name</span></div>
+                                        </td>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_sample_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">tag_sex</span></div>
+                                        </td>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div><span style="color: rgb(121, 121, 121); font-weight: bold;">user_sample_tag_</span><span
+                                              style="color: rgb(65, 173, 28); font-weight: bold; font-style: italic;">health</span></div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>sample_A1</div>
+                                        </td>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>male</div>
+                                        </td>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>health</div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>sample_B2</div>
+                                        </td>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>female</div>
+                                        </td>
+                                        <td style="width: 130px; padding: 8px; border: 1px solid;">
+                                          <div>health</div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  <div style="width:100%;height: 30px;">
+                                    <a href="{{downUrlThree}}" download="upload_sample.txt" style="float: right;margin-right: 4px;border: 1px solid #597DF9;border-radius: 4px;padding: 0px 6px;margin-top: 5px;">下载</a>
+                                  </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </nz-tab>
+            <nz-tab [nzTitle]="'上传记录'">
+                <div class="t_record">
+                    <div class="m_result_content">
+                        <div class="m_result_title">
+                            <div style="width: 60px;">序号</div>
+                            <div style="width: 160px">上传编号</div>
+                            <div style="width: 80px">类型</div>
+                            <div style="width: 160px">有效记录数</div>
+                            
+                            <div style="width: 160px">上传时间</div>
+                            <div style="width: 80px;">上传状态</div>
+                            <div style="width: 60px;">显示状态</div>
+                            <div style="width: 60px;">查看详情</div>
+                        </div>
+                        <div class="m_result_scroll">
+                            <div class="m_result_list" *ngFor="let item of resultList">
+                                <div style="width: 60px;">{{item.index}}</div>
+                                <div style="width: 160px">{{item.id}}</div>
+                                <!-- 类型 -->
+                                <div style="width: 80px">{{item.info}}</div>
+                                
+                                <!-- 有效记录数 -->
+                                <div style="width: 160px">{{item.detail.success.totalRows}}行*{{item.detail.success.columns.length}}列</div>
+                                <!-- 时间 -->
+                                <div style="width: 160px">{{item.time}}</div>
+
+                                <!-- 录入结果 -->
+                                <div style="width: 80px;">
+                                    <div *ngIf="item.status=='成功'||item.status=='失败'" style="display:inline-block;width:16px;height:12px;" [style.background]="item.color"></div>
+                                    <div style="display:inline-block;margin-left:5px;">{{item.status}}</div>
+                                </div>
+                                <!-- 状态 -->
+                                <div *ngIf="item.status=='成功'">
+                                    <!-- <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'">
+                                        <button nz-button nzType="default" [nzSize]="small" *ngIf="item.hidden" (click)="goSwitch(item.id)" style="background: #5E5B78;color: #FFFFFF;">隐藏</button>
+                                        <button nz-button nzType="default" [nzSize]="small" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</button>
+                                    </div>
+                                    <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'">
+                                        <button nz-button nzType="default" disabled [nzSize]="small">隐藏</button>
+                                    </div> -->
+                                    <!-- <button nz-button nzType="default" [nzSize]="small" *ngIf="item.hidden" (click)="goSwitch(item.id)" style="background: #5E5B78;color: #FFFFFF;">隐藏</button>
+                                    <button nz-button nzType="default" [nzSize]="small" *ngIf="!item.hidden" (click)="goSwitch(item.id)">展示</button> -->
+                                    <div style="width: 60px;cursor: pointer;">
+                                        <nz-switch [(ngModel)]="item.hidden" nzCheckedChildren="展示" nzUnCheckedChildren="隐藏" (ngModelChange)="switchChange($event,item.id)"></nz-switch>
+                                    </div>
+                                </div>
+                                <div *ngIf="item.status=='失败'">
+                                    <div style="width: 60px;cursor: pointer;">
+                                        <!-- <span style="color:#5278f8;cursor: pointer;" (click)="deleteData(item.id)">删除</span> -->
+                                    </div>
+                                </div>
+                                <div *ngIf="item.status=='校验中'||item.status=='录入中'">
+                                    <div style="width: 60px;cursor: pointer;"></div>
+                                </div>
+
+                                <!-- 查看详情 -->
+                                <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='成功'||item.status=='失败'" (click)="goDetail(item)">
+                                    <!-- <button nz-button nzType="primary" [nzSize]="small">查看</button> -->
+                                    <span style="background:#5278f8;color: #fff;border-radius: 12px;">查看</span>
+                                </div>
+                                <div style="width: 60px;cursor: pointer;" *ngIf="item.status=='校验中'||item.status=='录入中'">
+                                    <!-- <button nz-button nzType="primary" disabled [nzSize]="small">查看</button> -->
+                                    <span style="background:#5278f8;color: #fff;border-radius: 12px;">查看</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="m_result_bottom" *ngIf="total_page>1">
+                            <button nz-button nzType="primary" *ngIf="now_page!=1" (click)="leftPage()"><span>上一页</span></button>
+                            <button nz-button nzType="primary" disabled *ngIf="now_page==1"><span>上一页</span></button>
+                            <button nz-button nzType="primary" *ngIf="now_page!=total_page" (click)="rightPage()"><span>下一页</span></button>
+                            <button nz-button nzType="primary" disabled *ngIf="now_page==total_page"><span>下一页</span></button>
+                        </div>
+                    </div>
+
+                </div>
+            </nz-tab>
+        </nz-tabset>
     </div>
     
+    <!-- (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" -->
+    <nz-modal [(nzVisible)]="isVisible" 
+        nzTitle="详细信息" 
+        (nzOnCancel)="handleCancel()"
+        [nzFooter]="!goDetailFlag?modalFooter:null"
+        [nzContent]="modalContent">
+        <ng-template #modalContent>
+            <p *ngIf="goDetailSObj.id">{{'tableHeader.header-821' | translate}}：<span>{{goDetailSObj.id}}</span></p>
+            <p *ngIf="goDetailSObj.yCRNumber">{{'tableHeader.header-822' | translate}}：<span>{{goDetailSObj.yCRNumber}}</span></p>
+            <p *ngIf="goDetailSObj.yColoumnName">{{'tableHeader.header-823' | translate}}：<span>{{goDetailSObj.yColoumnName}}</span></p>
+            <p *ngIf="goDetailSObj.wColoumnName">{{'tableHeader.header-824' | translate}}：<span>{{goDetailSObj.wColoumnName}}</span></p>
+            <p *ngIf="goDetailSObj.yRowNumber">{{'tableHeader.header-825' | translate}}：<span>{{goDetailSObj.yRowNumber}}</span></p>
+            <p *ngIf="goDetailSObj.wRowNumber">{{'tableHeader.header-826' | translate}}：<span>{{goDetailSObj.wRowNumber}}</span></p>
+            <p *ngFor="let item of goDetailSObj.error_elements">
+                {{'tableHeader.'+item.config_key | translate}}
+                <br>
+                <span *ngIf="item.columns.length>0">异常表头：</span><span>{{item.columns.toString()}}</span>
+            </p>
+        </ng-template>
+        <ng-template #modalFooter>
+            <button nz-button nzType="default" (click)="handleCancel()">取消</button> 
+            <button nz-button nzType="primary" (click)="deleteData(goDetailId)">删除该项记录</button>
+        </ng-template>
+    </nz-modal>
 </div>
 <style>
     .m_div{
         display: flex;
-        flex-direction: column;
         width: 100%;
         height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        background: #FFFFFF;
     }
+
+    .t_tabset{
+        width: 100%;
+        height: auto;
+    }
+
+    .t_data{
+        width: 100%;
+        height: auto;
+        padding-bottom: 10px;
+    }
+
+    .t_record{
+        width: 100%;
+        height: auto;
+    }
+
+    .t_file{
+        line-height: 30px;
+        width: 98%;
+        margin: 10px auto 0 auto;
+    }
+
+    .t_file_details{
+        width: 98%;
+        height: auto;
+        margin: 20px auto 0 auto;
+    }
+
+    .t_file_details p{
+        margin-bottom: 0;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .t_span{
+        font-weight: bold;
+        font-family: 微软雅黑;
+        font-size: 10pt;
+    }
+
+    .three_tables{
+        width: 98%;
+        height: 100%;
+        margin: 0 auto;
+    }
+    .table_one{
+        width: 100%;
+    }
+
 
     .m_content {
         width: 96%;
@@ -173,8 +802,6 @@
         height: 120px;
         margin: 0px auto 0 auto;
         border-bottom: 1px solid rgba(0,0,0,0.07);
-        /* overflow-y: scroll;
-        overflow-x: hidden; */
     }
 
     .tab_div_item{
@@ -186,7 +813,6 @@
     }
 
     .tab_content a {
-        /* display: block; */
         text-decoration: underline;
         margin-top: 5px;
         margin-left: 10px;
@@ -198,8 +824,9 @@
     }
 
     .tab_bottom {
-        width: 96%;
-        height: 40px;
+        width: 98%;
+        height: 30px;
+        line-height: 30px;
         margin: 10px auto 0 auto;
     }
 
@@ -269,8 +896,11 @@
         display: none;
     }
 
-
-
+    :host ::ng-deep .m_div .ant-modal-footer.ng-star-inserted{
+        padding: 0px!important;
+        text-align: left!important;
+        background: #FF6666;
+    }
 
     .m_result{
         width: 96%;
@@ -283,37 +913,42 @@
     }
 
     .m_result_content{
-        width: 98%;
-        margin: 15px auto 15px auto;
-        height: calc(100% - 70px);
+        /* width: 98%;
+        margin: 15px auto 15px auto; */
+        /* height: calc(100% - 70px); */
+        /* height: 100%; */
+        margin-top: 20px;
         border: 1px solid #DBDBDB;
         border-radius: 2px;
     }
 
     .m_result_title{
-        width: calc(100% - 17px);
+        /* width: calc(100% - 17px); */
+        width: 100%;
         min-height: 40px;
-        /* margin: 0 auto; */
         display: flex;
         justify-content: space-around;
         align-items: center;
         background: #F7F8FA;
         border-bottom: 1px solid #DBDBDB;
-        /* border: 1px solid #ccc; */
+    }
+
+    .m_result_title>div,.m_result_scroll>div{
+        text-align: center;
     }
 
     .m_result_scroll{
         width: 100%;
-        margin: 0 auto;
+        /* margin: 0 auto;
         overflow-y: scroll;
-        overflow-x: hidden;
+        overflow-x: hidden; */
         height: calc(100% - 80px);
     }
 
     .m_result_list{
         width: 100%;
         height: 40px;
-        margin: 0 auto;
+        /* margin: 0 auto; */
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -329,8 +964,6 @@
         width: 100%;
         height: 40px;
         margin: 0 auto;
-        /* padding-top: 10px;
-        padding-bottom: 10px; */
         display: flex;
         justify-content:center;
         align-items: center;
