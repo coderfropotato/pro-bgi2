@@ -6,7 +6,7 @@
                     <i class="iconfont icon-shuaxin" (click)="refresh()" *ngIf="inRefreshShow"></i>
                     <!-- <i class="anticon anticon-download"></i> -->
                     <!-- <i class="iconfont icon-xiazai" (click)="down()"></i> -->
-                    <app-grid-export *ngIf="!error" [url]="url" [tableEntity]="pageEntity" [fileName]="fileName"></app-grid-export>
+                    <app-grid-export [disabled]="isDisabled" *ngIf="!error" [url]="url" [tableEntity]="pageEntity" [fileName]="fileName"></app-grid-export>
                 </div>
             </div>
         </ng-template>

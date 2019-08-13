@@ -24,6 +24,8 @@ declare const $:any;
 export class GeneDetailComponent implements OnInit {
 	@ViewChild('lineChart') lineChart;
 
+	isDisabled:boolean=false;
+
 	title: string;
 	geneID: string;
 	LCID: string;
@@ -628,6 +630,9 @@ export class GeneDetailComponent implements OnInit {
 				} else {
 					this.rows = data['data']['rows'];
 					this.baseThead = data['data']['baseThead'];
+					if(this.rows.length * this.baseThead.length>1000000){
+						this.isDisabled=true;
+					}
 				}
 				resolve("success");
 			},
@@ -1276,7 +1281,6 @@ export class GeneDetailComponent implements OnInit {
 				} else if (data.status == '-2') {
 					return;
 				} else {
-					console.log(data['data']['seq']);
 					this.rna_rows = data['data']['rows'];
 					this.rna_baseThead = data['data']['baseThead'];
 					this.rna_flag = this.rna_rows.length>0?true:false;
@@ -1287,6 +1291,10 @@ export class GeneDetailComponent implements OnInit {
                         this.scroll2["y"] = `200px`;
 					}else{
 						this.scroll2 = { x: "100%"}
+					}
+
+					if(this.rna_rows.length * this.rna_baseThead.length>1000000){
+						this.isDisabled=true;
 					}
 				}
 				this.isLoading2 = false;

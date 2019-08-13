@@ -7,8 +7,19 @@ import { Component, OnInit, Input } from '@angular/core';
 declare const $: any;
 @Component({
 	selector: 'app-grid-export',
-	template: `<i class="iconfont icon-xiazai" [nzTitle]="'tableButton.download' | translate" nz-tooltip (click)="download()"></i>`,
-	styles: []
+	template: `<button nz-button [disabled]="disabled" [nzTitle]="'tableButton.download' | translate" nz-tooltip (click)="download()"><i class="iconfont icon-xiazai"></i></button>`,
+	styles: [
+		`
+		button{
+			height: 20px;
+			line-height: 17px;
+			background: #f7f7f8;
+			border: none;
+			padding-left: 0px !important;
+			padding-right: 0px !important;
+		}
+		`
+	]
 })
 export class GridExportComponent implements OnInit {
 	// 查询表格的api
@@ -17,6 +28,7 @@ export class GridExportComponent implements OnInit {
 	@Input() tableEntity: object;
 	// 表格的下载名称
 	@Input() fileName: any;
+	@Input() disabled:boolean;
 
 	constructor(
 		private ajaxService: AjaxService,

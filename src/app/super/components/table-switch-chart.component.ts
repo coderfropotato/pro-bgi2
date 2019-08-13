@@ -124,7 +124,7 @@ export class TableSwitchChartComponent implements OnInit {
 
     scroll: object = { x: "120%", y: "400px" };
     isShowTable: boolean = false;
-    total: number = 1;
+    total: number = 0;
     tableData: any;
     chartData: any;
     tableError: string;
@@ -152,6 +152,8 @@ export class TableSwitchChartComponent implements OnInit {
     isErrorDelete:boolean = false;
 
     chartDescDetail: string;
+
+    isDisabled:boolean=false;
 
     constructor(
         private ajaxService: AjaxService,
@@ -811,6 +813,16 @@ export class TableSwitchChartComponent implements OnInit {
                                 this.apiEntity["pageIndex"] = 1;
                             }
                             this.total = this.tableData.total;
+                        }
+
+                        if(this.total){
+                            if(this.total * this.tableData.baseThead.length>1000000){
+                                this.isDisabled=true;
+                            }
+                        }else{
+                            if(this.tableData['rows'].length * this.tableData.baseThead.length > 1000000){
+                                this.isDisabled=true;
+                            }
                         }
 
                         if(this.isFilter){

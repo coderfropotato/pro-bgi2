@@ -88,6 +88,8 @@ export class GeneTableComponent implements OnInit, OnChanges {
 	checkStatus: boolean;
 	beginFilterStatus: boolean = false;
 
+	isDisabled:boolean=false;
+
 	head: string[] = [];
 
 	isAdd:boolean=false;
@@ -332,6 +334,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					//     this.totalChange.emit(this.total);
 					// 	return;
 					// }
+
+					if(responseData.data['total'] * responseData.data.baseThead.length>1000000){
+						this.isDisabled=true;
+					}
 
 					// 是否需要发射表头
 					if (this.emitBaseThead) {

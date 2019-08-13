@@ -121,7 +121,7 @@
                     <ng-template #titleTemplate>
                             <div class="table-thead">
                                 <div class="fRight">
-                                    <app-grid-export *ngIf="!error" [url]="defaultUrl" [tableEntity]="rna_params" [fileName]="fileName"></app-grid-export>
+                                    <app-grid-export *ngIf="!error" [url]="defaultUrl" [tableEntity]="rna_params" [fileName]="fileName" [disabled]="isDisabled"></app-grid-export>
                                 </div>
                             </div>
                         </ng-template>
@@ -261,7 +261,7 @@
                 <ng-template #titleTemplate>
                         <div class="table-thead">
                             <div class="fRight">
-                                <app-grid-export *ngIf="!error" [url]="alternative_defaultUrl" [tableEntity]="alternative_params" [fileName]="fileName"></app-grid-export>
+                                <app-grid-export *ngIf="!error" [url]="alternative_defaultUrl" [tableEntity]="alternative_params" [fileName]="fileName" [disabled]="isDisabled"></app-grid-export>
                             </div>
                         </div>
                     </ng-template>
