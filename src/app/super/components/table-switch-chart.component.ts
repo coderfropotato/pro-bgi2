@@ -636,7 +636,6 @@ export class TableSwitchChartComponent implements OnInit {
     scrollHeight(height = 0) {
         try {
             let tableChartContentH = height || this.tableChartContent.nativeElement.offsetHeight;
-            this.tableChartContent.nativeElement.style.height=this.tableChartContent.nativeElement.offsetHeight+'px';
             let bottomPageH = this.tableBottom ? this.tableBottom.nativeElement.offsetHeight : 0;
             let scrollH: any = tableChartContentH - 38 - bottomPageH + "px";
             if (this.isPaging) {
