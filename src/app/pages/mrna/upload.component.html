@@ -135,13 +135,15 @@
             <nz-tab [nzTitle]="'上传数据'">
                 <div class="t_data">
                     <div class="t_file">
-                        <span>已选择文件:</span><span *ngFor="let item of nfileList; let i = index">{{item.name}}</span>
+                        <span>已选择文件: </span><span *ngFor="let item of nfileList; let i = index">{{item.name}}</span>
                     </div>
                     <div class="tab_bottom">
                         <nz-upload nzAction="${config['javaPath']}/upload/do" [(nzFileList)]="nfileList" [nzBeforeUpload]="beforeUpload">
                             <button nz-button [disabled]="selectAble"><span>选择文件</span></button>
                         </nz-upload>
-                        <button nz-button nzType="primary" (click)="updateLoad()" *ngIf="nfileList.length !=0">上传</button>
+                        <button nz-button nzType="primary" (click)="updateLoad()" *ngIf="nfileList.length !=0" [disabled]="selectAble">
+                            {{selectAble?'上传中...':'上传'}}
+                        </button>
                     </div>
                     <div class="t_file_details">
                         <p>本系统允许用户上传数据进行分析，上传内容包括基因、转录本或样本信息。上传的文件需符合一定要求，具体如下：</p>
@@ -894,7 +896,7 @@
 
 
     :host ::ng-deep .m_div .ant-upload-list-item-info>span {
-        display: none;
+        display: none!important;
     }
 
     :host ::ng-deep .m_div .ant-modal-footer.ng-star-inserted{
@@ -903,6 +905,9 @@
         background: #FF6666;
     }
 
+    :host ::ng-deep .m_div .ant-upload-list-item{
+        display: none!important;
+    }
     .m_result{
         width: 96%;
         margin: 20px auto 0 auto;
