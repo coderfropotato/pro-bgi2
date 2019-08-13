@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 declare const $: any;
 @Component({
 	selector: 'app-grid-export',
-	template: `<button nz-button [disabled]="disabled" [nzTitle]="'tableButton.download' | translate" nz-tooltip (click)="download()"><i class="iconfont icon-xiazai"></i></button>`,
+	template: `<button nz-button [class.disabled]="disabled" [nzTitle]="'tableButton.download' | translate" nz-tooltip (click)="download()"><i class="iconfont icon-xiazai"></i></button>`,
 	styles: [
 		`
 		button{
@@ -39,6 +39,9 @@ export class GridExportComponent implements OnInit {
 	ngOnInit() {}
 
 	download() {
+		if(this.disabled){
+			return;
+		}
 		let entity = $.extend(true, {}, this.tableEntity);
 		entity['isExport'] = true;
 		entity['fileName'] = ''+(this.fileName || new Date().getTime());
