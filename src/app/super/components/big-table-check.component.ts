@@ -57,6 +57,8 @@ export class BigTableCheckComponent implements OnInit {
 	@ViewChildren('child') children;
 	tableEntity: object = {};
 
+	isDisabled:boolean=false;
+
 	isLoading: boolean = false;
 	scroll: any = { x: '0', y: '0' };
 	// 开始排序
@@ -245,6 +247,10 @@ export class BigTableCheckComponent implements OnInit {
 						this.total = 0;
 						this.error = 'nodata';
 						return;
+					}
+
+					if(responseData.data['total'] * responseData.data.baseThead.length>1000000){
+						this.isDisabled=true;
 					}
 
 					// 是否需要发射表头

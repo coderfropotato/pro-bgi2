@@ -93,7 +93,7 @@
                     </i>
                     <!-- 刷新、下载 -->
                     <i class="iconfont icon-shuaxin" [nzTitle]="'tableButton.refresh' | translate" nz-tooltip (click)="refresh()"></i>
-                    <app-grid-export *ngIf="!error&&!downFlagShow" [url]="url" [tableEntity]="tableEntity" [fileName]="fileName"></app-grid-export>
+                    <app-grid-export [disabled]="isDisabled" *ngIf="!error&&!downFlagShow" [url]="url" [tableEntity]="tableEntity" [fileName]="fileName"></app-grid-export>
                 </div>
             </div>
 

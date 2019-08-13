@@ -65,7 +65,8 @@ export class UploadComponent implements OnInit {
 		wColoumnName:"",
 		yRowNumber:0,
 		wRowNumber:0,
-		error_elements:[]
+		error_elements:[],
+        error:''
 	};
 
 	goDetailFObj:object={};
@@ -386,7 +387,8 @@ export class UploadComponent implements OnInit {
 			wColoumnName:"",
 			yRowNumber:0,
 			wRowNumber:0,
-			error_elements:[]
+			error_elements:[],
+            error:''
 		};
 
 		this.goDetailSObj={
@@ -396,8 +398,9 @@ export class UploadComponent implements OnInit {
 			wColoumnName:skipColumnsName.toString(),//无效列名称
 			yRowNumber:e.detail.success.totalRows,//有效行数
 			wRowNumber:e.detail.success.totalSkipRows,//无效行数
-			error_elements:e.detail.error_elements
-		};
+			error_elements:e.detail.error_elements,
+            error: e.detail.flag !== 1 ? e.detail.error:''
+        };
 		console.log(this.goDetailSObj)
 		this.isVisible = true;
 	}

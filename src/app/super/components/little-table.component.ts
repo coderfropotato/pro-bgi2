@@ -41,6 +41,8 @@ export class LittleTableComponent implements OnInit {
 
     //this.drawChartEmit.emit(data);
 
+    isDisabled:boolean=false;
+
     tableError: string;
 
     isLoading: boolean = false;
@@ -92,6 +94,10 @@ export class LittleTableComponent implements OnInit {
                        this.tableData = data.data;
                        this.rows = data["rows"];
                        this.thead = data["baseThead"];
+
+                       if(this.rows.length * this.thead.length>1000000){
+						    this.isDisabled=true;
+					    }
 
                        this.drawTableEmit.emit({
                             type:this.type,

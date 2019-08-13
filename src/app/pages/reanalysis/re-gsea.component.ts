@@ -1059,11 +1059,11 @@ export class ReGseaComponent implements OnInit {
                     (d3.event.pageY >= yesAreaRect['y'] && d3.event.pageY <= yesAreaYEnd);
 
                 if (!status && flag) {
-                    d3.select('#yes-area').attr('fill', '#FFCCCC');
+                    d3.select('#yes-area').attr('fill', '#FFCCCC').style("cursor", "pointer");
                     status = true;
                 }
                 if (status && !flag) {
-                    d3.select('#yes-area').attr('fill', 'white');
+                    d3.select('#yes-area').attr('fill', 'white').style("cursor", "default");
                     status = false;
                 }
             })
