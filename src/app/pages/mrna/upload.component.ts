@@ -264,7 +264,6 @@ export class UploadComponent implements OnInit {
 	//先判断上一次文件是否传递完成
     updateLoad() {
 		this.selectAble = true;
-		let tempflag = false;
 		let self = this;
 		this.ajaxService
 		.getDeferData(
@@ -284,15 +283,6 @@ export class UploadComponent implements OnInit {
 					});
 					self.selectAble = false;
 				}else{
-					//成功了进行上传
-					// if(self.fristFlag){
-					// 	self.fristFlag = false;
-					// 	self.selectAble = true;
-					// }else{
-					// 	self.uploadTask()
-					// }
-
-					//self.selectAble = true;
 					self.uploadTask()
 				}
 			},
