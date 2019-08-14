@@ -16,13 +16,19 @@ import { NzModalService } from 'ng-zorro-antd';
             width:235px;
             height:314px;
             overflow:auto;
+        }
+
+        .nogeneList{
+            width:235px;
+            height:314px;
             border:none;
         }
 
-        .geneListUl img{
+        .nogeneList img{
             width: 230px;
             margin: 25px 0;
         }
+
         .geneListUl li{
             margin-bottom:8px !important;
         }
