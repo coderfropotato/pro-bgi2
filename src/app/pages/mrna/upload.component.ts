@@ -108,7 +108,18 @@ export class UploadComponent implements OnInit {
     }
 
     beforeUpload = (file: UploadFile): boolean => {
-		this.nfileList = [];
+
+		if(file.size / 1024 / 1024>20)
+		{
+			this.modalService.success({
+				nzTitle: "提示",
+				nzContent: "单次上传文件需小于20M。"
+			});
+		}else{
+			this.nfileList = [];
+			this.nfileList.push(file);
+		}
+		
         // if (this.m_index == 0) {
         //     this.fileList.push(file);
         //     this.nfileList = this.fileList;
@@ -119,8 +130,6 @@ export class UploadComponent implements OnInit {
         //     this.fileList3.push(file);
         //     this.nfileList = this.fileList3;
 		// }
-
-		this.nfileList.push(file);
         return false;
     };
 

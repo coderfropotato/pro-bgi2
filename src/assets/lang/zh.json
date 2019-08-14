@@ -154,7 +154,7 @@
         "export_jpg": "导出 JPG 格式图片",
         "export_svg": "导出 SVG 格式图片",
         "export_pdf": "导出 PDF 格式图片",
-        "analysis": "工具"
+        "analysis": "分析"
     },
     "view": {
         "s_view": "统计视图",
