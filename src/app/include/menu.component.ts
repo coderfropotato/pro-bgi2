@@ -4,11 +4,35 @@ import { GlobalService } from "../super/service/globalService";
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { StoreService } from '../super/service/storeService';
 import { TranslateService } from "@ngx-translate/core";
+import { AjaxService } from '../super/service/ajaxService';
+import config from '../../config'
+import { NzModalService } from 'ng-zorro-antd';
 @Component({
     selector: "app-menu",
-    templateUrl: "./menu.component.html"
+    templateUrl: "./menu.component.html",
+    styles:[
+        `
+        .geneListUl{
+            width:235px;
+            height:314px;
+            overflow:auto;
+        }
+        .geneListUl li{
+            margin-bottom:8px !important;
+        }
+
+        .geneListUl li p{
+            margin-bottom:0 !important;
+        }
+
+        .geneListUl li span{
+            float: right;
+            margin-top: -28px;
+        }
+        `
+    ]
 })
-export class MenuComponent implements OnChanges {
+export class MenuComponent implements OnChanges,OnInit {
     list: any[];
     expandItem: any = [];
     expand: boolean = false;
@@ -16,19 +40,22 @@ export class MenuComponent implements OnChanges {
     delayTimer:any = null;
     index: number = 0;
     moduleSwitch:true;
+    error:string='';
+    analysisList:object[]=[];
+    intervalTimer:any=null;
 
     @Input() menu: object[];
     @Input() geneSwitch:boolean = true;
     @Input() showGeneList:boolean = true;
-
-
 
     constructor(
         private router: Router,
         private globalService: GlobalService,
         public pageModuleService:PageModuleService,
         public storeService: StoreService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private ajaxService:AjaxService,
+        private modalService:NzModalService
         ) {
             let browserLang = this.storeService.getLang();
             this.translate.use(browserLang);
@@ -42,6 +69,12 @@ export class MenuComponent implements OnChanges {
             changes["menu"].currentValue[0]["active"] = true;
             changes["menu"].currentValue[0]["children"][0]["active"] = true;
         }
+    }
+
+    ngOnInit(){
+        this.intervalTimer=setInterval(()=>{
+            this.getAnalysisList();
+        },config['getAnalysisListCountInterval'])
     }
 
     // 初始化菜单状态
@@ -129,6 +162,104 @@ export class MenuComponent implements OnChanges {
             this.router.navigateByUrl(`/report/mrna/${item['children'][0]["url"]}`);
             this.expand = false;
         }
+    }
+
+    goDetail(data){
+		//错误状态，不执行以下程序
+		if (data.process == 0){
+			this.modalService.error({
+				'nzTitle':'id：'+ data['_id'],
+				'nzContent': data['explains'],
+				'nzClosable':false
+				});
+			if (!data['isCheck']) {
+				data['isCheck'] = true;
+				this.checkAnalysis(data['_id']);
+			}
+			return;
+		}
+		let type = '';
+		if (data['reanalysisType'].indexOf('heatmap') != -1) {
+			if (data['reanalysisType'] != 'heatmapRelation') {
+				type = 'heatmap';
+			} else {
+				type = 'heatmapRelation';
+			}
+		} else {
+			type = data['reanalysisType'];
+		}
+
+		let href = location.href.split('/report');
+
+		if (!data['isCheck']) {
+			data['isCheck'] = true;
+			this.checkAnalysis(data['_id']);
+		}
+
+		if (type === 'enrichment') {
+			window.open(
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}/${data['date'].substring(0,10)}`
+			);
+			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']}`);
+		}
+		else if (type === 'classification'){
+			window.open(
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['annotation']['key']}/${data['isEdited']}`
+			);
+		}
+		else if (type === 'gsea'){
+			//console.log(data["gseaParam"]["dataBase"]["db"]);
+			window.open(
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['gseaParam']['treatGroup']['group']}/
+				${data['gseaParam']['controlGroup']['group']}/${data['date'].substring(0,10)}/${data["gseaParam"]["dataBase"]["db"]}`
+			);
+		}
+		else {
+			window.open(
+				`${href[0]}/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}/${data['isEdited']}`
+			);
+			// this.router.navigateByUrl(`/report/reanalysis/re-${type}/${data['geneType']}/${data['_id']}/${data['version']}`);
+		}
+    }
+
+    checkAnalysis(tid) {
+		this.ajaxService.getDeferData({
+			url: `${config['javaPath']}/reAnalysis/check`,
+			data: {
+				tid,
+			}
+		}).subscribe();
+	}
+
+    getAnalysisList(){
+        this.ajaxService.getDeferData(
+            {
+                url:`${config['javaPath']}/reAnalysis/getReanalysisList`,
+                data:{
+                    LCID: sessionStorage.getItem('LCID'),
+                    pageIndex: 1,
+                    pageSize: 10,
+                    searchContent: {
+                        label: null,
+                        timeStart: '',
+                        timeEnd: '',
+                        geneType: [],
+                        reanalysisType: [],
+                        status: []
+                    }
+                }
+            }
+        ).subscribe((data:any)=>{
+            if(data.status=='0'){
+                this.error='';
+                this.analysisList = data['data']['list'];
+            }else{
+                this.error='nodata';
+            }
+        },err=>{
+            this.error='error';
+            clearInterval(this.intervalTimer);
+        })
     }
 
     /**
