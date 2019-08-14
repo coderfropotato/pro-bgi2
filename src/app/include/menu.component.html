@@ -34,9 +34,9 @@
 
     <!-- 我的基因集 handleSaveGeneListClick-->
     <div *ngIf="showGeneList" class="savegenelist fRight menufunc" (click)="analysisFn()">
-        <span><i class="iconfont icon-fenxi" style="margin-right:2px;color:rgba(108, 210, 150, 0.9);"></i></span>
+        <!-- <span><i class="iconfont icon-fenxi" style="margin-right:2px;color:rgba(108, 210, 150, 0.9);"></i></span> -->
         <b>{{'myAnalysis' | translate}}</b>
-        <nz-badge *ngIf="+storeService['store']['analysisCount']" [nzCount]="+storeService['store']['analysisCount']" [nzOverflowCount]="10"></nz-badge>
+        <nz-badge *ngIf="+storeService['store']['analysisCount']" [nzCount]="+storeService['store']['analysisCount']" [nzOverflowCount]="9"></nz-badge>
     </div>
 
     <!-- gene transform -->

@@ -983,12 +983,25 @@ button {
         }
     }
     .savegenelist {
-        margin-top: 7px;
+        padding: 4px 10px;
+        border-radius: 16px;
+        color: #fff;
+        background-color: #7291F9;
+        margin-top: 6px;
+        cursor: pointer;
         // margin-right: 16px;
         cursor: pointer;
         i {
             color: rgb(90, 202, 255);
             font-size: 16px;
+        }
+        .ant-badge-count{
+            background-color: #607AD5;
+            box-shadow:none;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            border-radius: 12px;
         }
     }
 }
@@ -1252,7 +1265,8 @@ button {
         background-color: $them_color;
     }
     &.green {
-        background: rgba(108, 210, 150, 0.9);
+        // background: rgba(108, 210, 150, 0.9);
+        background:#5278f8;
     }
     &.invaild {
         opacity: 0.5;
@@ -1266,10 +1280,10 @@ button {
         opacity: 1;
     }
     &.green:hover {
-        @include hover-animate(rgb(92,
-        206,
-        139));
-        background-color: rgb(92, 206, 139);
+        // @include hover-animate(rgb(92,206,139));
+        // background-color: rgb(92, 206, 139);
+        @include hover-animate(#5278f8);
+        background-color: #5278f8;
         opacity: 1;
     }
     b {
