@@ -72,6 +72,8 @@ export class MenuComponent implements OnChanges,OnInit {
     }
 
     ngOnInit(){
+        this.getAnalysisList();
+        this.intervalTimer=null;
         this.intervalTimer=setInterval(()=>{
             this.getAnalysisList();
         },config['getAnalysisListCountInterval'])
