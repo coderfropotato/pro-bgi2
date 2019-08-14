@@ -39,7 +39,7 @@
             <b>{{'myAnalysis' | translate}}</b>
             <nz-badge *ngIf="+storeService['store']['analysisCount']" [nzCount]="+storeService['store']['analysisCount']" [nzOverflowCount]="9"></nz-badge>
         </div>
-        <ul nz-menu class="geneListUl">
+        <ul *ngIf="!error" nz-menu class="geneListUl">
             <li nz-menu-item *ngFor="let item of analysisList" (click)="goDetail(item)">
                 <p>{{item.nickname}}</p>
                 <p>{{item.date}}</p>
@@ -48,6 +48,12 @@
                 <span *ngIf="item['process'] == -1"><i class="anticon anticon-hourglass pending"></i></span>
             </li>
         </ul>
+        <div *ngIf="error" nz-menu class="geneListUl center">
+            <div>
+                <img src="assets/img/boy_swim.svg" />
+                <p>请先创建一个分析任务</p>
+            </div>
+        </div>
     </nz-dropdown>
 
     <!-- gene transform -->
