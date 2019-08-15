@@ -111,7 +111,7 @@ export class UploadComponent implements OnInit {
 
 		if(file.size / 1024 / 1024>20)
 		{
-			this.modalService.success({
+			this.modalService.warning({
 				nzTitle: "提示",
 				nzContent: "单次上传文件需小于20M。"
 			});
@@ -250,7 +250,7 @@ export class UploadComponent implements OnInit {
 		)
 		.subscribe(
 			(data: any) => {
-				this.modalService.success({
+				this.modalService.warning({
 					nzTitle: "上传成功",
 					nzContent: ""
 				});
@@ -287,7 +287,7 @@ export class UploadComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				if(data.data.result>0){
-					self.modalService.success({
+					self.modalService.warning({
 						nzTitle: "提示",
 						nzContent: self.getProgress(data.data.result)+"...(上个文件正在录入中，请等稍后再试！)"
 					});
@@ -544,7 +544,7 @@ export class UploadComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				if(data.status==0){
-					self.modalService.success({
+					self.modalService.warning({
 						nzTitle: "结果",
 						nzContent: "删除成功!"
 					});
