@@ -178,6 +178,9 @@ export class MenuComponent implements OnChanges,OnInit {
     }
 
     goDetail(data){
+        if(data.process==-1){
+            return;
+        }
 		//错误状态，不执行以下程序
 		if (data.process == 0){
 			this.modalService.error({
