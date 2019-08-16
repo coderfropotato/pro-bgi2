@@ -52,7 +52,6 @@ export class MenuComponent implements OnChanges,OnInit {
     delayTimer:any = null;
     index: number = 0;
     moduleSwitch:true;
-    error:string='';
     analysisList:object[]=[];
     intervalTimer:any=null;
 
@@ -264,14 +263,13 @@ export class MenuComponent implements OnChanges,OnInit {
                 }
             }
         ).subscribe((data:any)=>{
-            if(data.status=='0'){
-                this.error='';
+            if(data.status=='0' && data['data']['sumCount']!==0){
                 this.analysisList = data['data']['list'];
             }else{
-                this.error='nodata';
+                this.analysisList.length=0;
             }
         },err=>{
-            this.error='error';
+            this.analysisList.length=0;
             clearInterval(this.intervalTimer);
         })
     }
