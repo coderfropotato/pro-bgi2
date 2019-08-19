@@ -141,7 +141,8 @@
     },
     "tableButton": {
         "refresh": "refresh",
-        "download": "Download up to row-column product 1 million",
+        "download": "download",
+        "overDownload":"Download up to row-column product 1 million",
         "filter": "filter",
         "setting": "setting",
         "confirm": "confirm",

@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 declare const $: any;
 @Component({
 	selector: 'app-grid-export',
-	template: `<button nz-button [class.disabled]="disabled" [nzTitle]="'tableButton.download' | translate" nz-tooltip (click)="download()"><i class="iconfont icon-xiazai"></i></button>`,
+	template: `<button nz-button [class.disabled]="disabled" [nzTitle]="(disabled ? 'tableButton.overDownload' : 'tableButton.download') | translate" nz-tooltip (click)="download()"><i class="iconfont icon-xiazai"></i></button>`,
 	styles: [
 		`
 		button{
