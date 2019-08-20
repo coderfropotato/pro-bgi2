@@ -817,10 +817,14 @@ export class TableSwitchChartComponent implements OnInit {
                         if(this.total){
                             if(this.total * this.tableData.baseThead.length>1000000){
                                 this.isDisabled=true;
+                            }else{
+                                this.isDisabled=false;
                             }
                         }else{
                             if(this.tableData['rows'].length * this.tableData.baseThead.length > 1000000){
                                 this.isDisabled=true;
+                            }else{
+                                this.isDisabled=false;
                             }
                         }
 

@@ -335,8 +335,10 @@ export class GeneTableComponent implements OnInit, OnChanges {
 					// 	return;
 					// }
 
-					if(responseData.data['total'] * responseData.data.baseThead.length>1000000){
+					if(responseData.data['total'] * responseData['data']['baseThead'].length>1000000){
 						this.isDisabled=true;
+					}else{
+						this.isDisabled=false;
 					}
 
 					// 是否需要发射表头

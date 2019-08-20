@@ -211,6 +211,8 @@ export class BigTableComponent implements OnInit {
 
                     if(responseData.data['total'] * responseData.data.baseThead.length>1000000){
 						this.isDisabled=true;
+					}else{
+						this.isDisabled=false;
 					}
 
                     // 是否需要发射表头

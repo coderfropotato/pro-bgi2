@@ -97,7 +97,9 @@ export class LittleTableComponent implements OnInit {
 
                        if(this.rows.length * this.thead.length>1000000){
 						    this.isDisabled=true;
-					    }
+					    }else{
+                            this.isDisabled=false;
+                        }
 
                        this.drawTableEmit.emit({
                             type:this.type,

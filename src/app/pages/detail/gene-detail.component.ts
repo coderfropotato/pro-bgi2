@@ -632,6 +632,8 @@ export class GeneDetailComponent implements OnInit {
 					this.baseThead = data['data']['baseThead'];
 					if(this.rows.length * this.baseThead.length>1000000){
 						this.isDisabled=true;
+					}else{
+						this.isDisabled=false;
 					}
 				}
 				resolve("success");
@@ -1295,6 +1297,8 @@ export class GeneDetailComponent implements OnInit {
 
 					if(this.rna_rows.length * this.rna_baseThead.length>1000000){
 						this.isDisabled=true;
+					}else{
+						this.isDisabled=false;
 					}
 				}
 				this.isLoading2 = false;
