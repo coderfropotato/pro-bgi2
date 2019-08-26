@@ -41,7 +41,7 @@
         </div>
         <ul [hidden]="!analysisList.length" nz-menu class="geneListUl">
             <li nz-menu-item *ngFor="let item of analysisList" (click)="goDetail(item)">
-                <p>{{item.nickname}}</p>
+                <nz-badge style="line-height: 0.74" [nzDot]="!item['isCheck']"><p>{{item.nickname}}</p></nz-badge>
                 <p>{{item.date}}</p>
                 <span *ngIf="item['process'] == 1"><i class="anticon anticon-check-circle success"></i></span>
                 <span *ngIf="item['process'] == 0"><i class="anticon anticon-close-circle error"></i></span>
