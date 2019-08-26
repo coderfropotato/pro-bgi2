@@ -807,27 +807,29 @@ export class TableSwitchChartComponent implements OnInit {
                         this.tableError = "";
                         this.tableData = data.data;
 
-                        if (this.tableData.total) {
-                            if (this.tableData.total != this.total){
-                                this.apiEntity["pageIndex"] = 1;
+                        if(!this.isVennTable){
+                            if (this.tableData.total) {
+                                if (this.tableData.total != this.total){
+                                    this.apiEntity["pageIndex"] = 1;
+                                }
+                                this.total = this.tableData.total;
                             }
-                            this.total = this.tableData.total;
-                        }
-
-                        if(this.total){
-                            if(this.total * this.tableData.baseThead.length>1000000){
-                                this.isDisabled=true;
+    
+                            if(this.total){
+                                if(this.total * this.tableData.baseThead.length>1000000){
+                                    this.isDisabled=true;
+                                }else{
+                                    this.isDisabled=false;
+                                }
                             }else{
-                                this.isDisabled=false;
-                            }
-                        }else{
-                            if(this.tableData['rows'].length * this.tableData.baseThead.length > 1000000){
-                                this.isDisabled=true;
-                            }else{
-                                this.isDisabled=false;
+                                if(this.tableData['rows'].length * this.tableData.baseThead.length > 1000000){
+                                    this.isDisabled=true;
+                                }else{
+                                    this.isDisabled=false;
+                                }
                             }
                         }
-
+                       
                         if(this.isFilter){
                             let arr=[];
                             this.tableData.baseThead.slice(1).forEach(val => {
