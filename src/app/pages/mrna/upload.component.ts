@@ -357,6 +357,16 @@ export class UploadComponent implements OnInit {
 						self.go_ResponseText = JSON.parse(xhr.responseText);
 						self.selectAble = false;
 						self.getHistoryList();
+
+						self.modalService.confirm({
+							nzTitle: '文件上传成功，请确认是否查看上传记录？',
+							nzContent: '',
+							nzOkText: '确定',
+							nzOkType: 'primary',
+							nzOnOk: () => self.f_index = 1,
+							nzCancelText: '取消',
+							nzOnCancel: () => console.log('Cancel')
+						});
 					}
 				}
 
