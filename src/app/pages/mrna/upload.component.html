@@ -31,13 +31,14 @@
                     <div class="tab_bottom">
                         <span style="color:#597DF9;cursor:pointer;" (click)="addmore()">{{tableFlag?'更多 ∧':'更多 ∨'}}</span>
                     </div>
+                    <div style="text-indent: 2rem;margin-bottom: 4px;">系统支持上传基因信息、转录本信息或样本信息，每次可上传其中的一种，对应的表头前缀需符合以下要求。其中表头的固定字符用灰色字体表示，可修改部分用绿色表示。</div>
 
                     <div class="three_tables" [hidden]="!tableFlag">
                         <div class="table_one">
                             <div><span style="color: rgb(121, 121, 121); font-weight: bold;">基因信息</span></div>
-                            <div style="margin-top: 4px;margin-bottom: 6px;">
-                                <span [ngStyle]="{'color':geneExplainFlag?'#597DF9':''}" style="font-weight: bold;cursor: pointer;" (click)="geneExplainClick()">说明</span>
-                                <span [ngStyle]="{'color':geneDemoFlag?'#597DF9':''}" style="font-weight: bold;margin-left:20px;cursor: pointer;" (click)="geneDemoClick()">示例</span>
+                            <div style="margin-top: 4px;margin-bottom: 16px;">
+                                <span [ngStyle]="{'color':geneExplainFlag?'#597DF9':'','padding-bottom':geneExplainFlag?'2px':'','border-bottom':geneExplainFlag?'3px solid rgb(89, 125, 249)':''}" style="cursor: pointer;" (click)="geneExplainClick()">说明</span>
+                                <span [ngStyle]="{'color':geneDemoFlag?'#597DF9':'','padding-bottom':geneDemoFlag?'2px':'','border-bottom':geneDemoFlag?'3px solid rgb(89, 125, 249)':''}" style="margin-left:20px;cursor: pointer;" (click)="geneDemoClick()">示例</span>
                             </div>
                             <div class="table_two" *ngIf="geneExplainFlag">
                                 <table style="border-collapse: collapse; min-width: 100%;">
@@ -216,9 +217,9 @@
                         
                         <div class="table_one">
                             <div style="text-align: left;color: rgb(121, 121, 121); font-weight: bold;">转录本信息</div>
-                            <div style="margin-top: 4px;margin-bottom: 6px;">
-                                <span [ngStyle]="{'color':rnaExplainFlag?'#597DF9':''}" style="font-weight: bold;cursor: pointer;" (click)="rnaExplainClick()">说明</span>
-                                <span [ngStyle]="{'color':rnaDemoFlag?'#597DF9':''}" style="font-weight: bold;margin-left: 20px;cursor: pointer;" (click)="rnaDemoClick()">示例</span>
+                            <div style="margin-top: 4px;margin-bottom: 16px;">
+                                <span [ngStyle]="{'color':rnaExplainFlag?'#597DF9':'','padding-bottom':rnaExplainFlag?'2px':'','border-bottom':rnaExplainFlag?'3px solid rgb(89, 125, 249)':''}" style="cursor: pointer;" (click)="rnaExplainClick()">说明</span>
+                                <span [ngStyle]="{'color':rnaDemoFlag?'#597DF9':'','padding-bottom':rnaDemoFlag?'2px':'','border-bottom':rnaDemoFlag?'3px solid rgb(89, 125, 249)':''}" style="margin-left: 20px;cursor: pointer;" (click)="rnaDemoClick()">示例</span>
                             </div>
                             <div class="table_two" *ngIf="rnaExplainFlag">
                                 <table style="border-collapse: collapse; min-width: 100%;">
@@ -377,9 +378,9 @@
 
                         <div class="table_one">
                             <div style="text-align: left;color: rgb(121, 121, 121); font-weight: bold;">样本信息</div>
-                            <div style="margin-top: 4px;margin-bottom: 6px;">
-                                <span [ngStyle]="{'color':sampleExplainFlag?'#597DF9':''}" style="font-weight: bold;cursor: pointer;" (click)="sampleExplainClick()">说明</span>
-                                <span [ngStyle]="{'color':sampleDemoFlag?'#597DF9':''}" style="font-weight: bold;margin-left: 20px;cursor: pointer;" (click)="sampleDemoClick()">示例</span>
+                            <div style="margin-top: 4px;margin-bottom: 16px;">
+                                <span [ngStyle]="{'color':sampleExplainFlag?'#597DF9':'','padding-bottom':sampleExplainFlag?'2px':'','border-bottom':sampleExplainFlag?'3px solid rgb(89, 125, 249)':''}" style="cursor: pointer;" (click)="sampleExplainClick()">说明</span>
+                                <span [ngStyle]="{'color':sampleDemoFlag?'#597DF9':'','padding-bottom':sampleDemoFlag?'2px':'','border-bottom':sampleDemoFlag?'3px solid rgb(89, 125, 249)':''}" style="margin-left: 20px;cursor: pointer;" (click)="sampleDemoClick()">示例</span>
                             </div>
                             <div class="table_two" *ngIf="sampleExplainFlag">
                                 <table style="border-collapse: collapse; min-width: 100%;-en-clipboard:true;">
@@ -510,13 +511,16 @@
 
                                 <!-- 上传状态 -->
                                 <div style="width: 80px;display: flex;align-items: center;justify-content: center;">
-                                    <div *ngIf="item.status=='成功'||item.status=='失败'" style="line-height: 16px;display:inline-block;width:16px;height:16px;border-radius: 8px;color: #fff;" [style.background]="item.color">{{item.status=='成功'?"√":"×"}}</div>
-                                    <div style="display:inline-block;margin-left:5px;">{{item.status}}</div>
+                                    <!-- <div *ngIf="item.status=='成功'||item.status=='失败'" style="line-height: 16px;display:inline-block;width:16px;height:16px;border-radius: 8px;color: #fff;" [style.background]="item.color">{{item.status=='成功'?"√":"×"}}</div>
+                                    <div style="display:inline-block;margin-left:5px;">{{item.status}}</div> -->
+
+                                    <span *ngIf="item.status=='成功'"><i class="anticon anticon-check-circle success"></i>&nbsp;成功</span>
+                                    <span *ngIf="item.status=='失败'"><i class="anticon anticon-close-circle error"></i>&nbsp;失败</span>
                                 </div>
                                 <!-- 显示状态 -->
                                 <div *ngIf="item.status=='成功'">
                                     <div style="width: 60px;cursor: pointer;">
-                                        <nz-switch [(ngModel)]="item.hidden" nzCheckedChildren="展示" nzUnCheckedChildren="隐藏" (ngModelChange)="switchChange($event,item.id)"></nz-switch>
+                                        <nz-switch title="{{item.hidden?'已添加到“扩展列 -> 用户上传”，单击隐藏。':'已隐藏，单击可添加到“扩展列 -> 用户上传”。'}}" [(ngModel)]="item.hidden" nzCheckedChildren="展示" nzUnCheckedChildren="隐藏" (ngModelChange)="switchChange($event,item.id)"></nz-switch>
                                     </div>
                                 </div>
                                 <div *ngIf="item.status=='失败'">
