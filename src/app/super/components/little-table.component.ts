@@ -92,8 +92,8 @@ export class LittleTableComponent implements OnInit {
                     } else {
                        this.tableError = "";
                        this.tableData = data.data;
-                       this.rows = data["rows"];
-                       this.thead = data["baseThead"];
+                       this.rows = this.tableData["rows"];
+                       this.thead = this.tableData["baseThead"];
 
                        if(this.rows.length * this.thead.length>1000000){
 						    this.isDisabled=true;

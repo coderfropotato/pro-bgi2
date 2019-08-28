@@ -731,7 +731,7 @@ export class GeneDetailComponent implements OnInit {
 				}
 			},
 			"tooltip": function(d) {
-				return "<span>Sample name："+d.x+"</span><br><span>log2(FPKM+1)："+d.y+"</span>"
+				return "<span>Sample name："+d.x+"</span><br><span>log2(value+1)："+d.y+"</span>"
 			}
 		}
 		this.chartLine=new gooalD3().init(config);

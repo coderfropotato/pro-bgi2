@@ -983,10 +983,11 @@ button {
         }
     }
     .savegenelist {
-        padding: 4px 10px;
+        padding: 2px 10px;
         border-radius: 16px;
         color: #fff;
-        background-color: #7291F9;
+        background-color: #5278f8;
+        border-color: #5278f8;
         margin-top: 6px;
         cursor: pointer;
         // margin-right: 16px;
@@ -996,6 +997,32 @@ button {
             font-size: 16px;
         }
         .ant-badge-count{
+            font-weight: bold;
+            background-color: #5774D6;
+            box-shadow:none;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            border-radius: 12px;
+        }
+    }
+    .savegenelist:hover, .savegenelist:focus{
+        padding: 2px 10px;
+        border-radius: 16px;
+        color: #fff;
+        background-color: #5278f8;
+        border-color: #5278f8;
+        opacity: .6;
+        margin-top: 6px;
+        cursor: pointer;
+        // margin-right: 16px;
+        cursor: pointer;
+        i {
+            color: rgb(90, 202, 255);
+            font-size: 16px;
+        }
+        .ant-badge-count{
+            font-weight: bold;
             background-color: #607AD5;
             box-shadow:none;
             width: 24px;
@@ -1003,6 +1030,7 @@ button {
             line-height: 24px;
             border-radius: 12px;
         }
+        
     }
 }
 
