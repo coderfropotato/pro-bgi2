@@ -600,6 +600,7 @@ export class GoRichComponent implements OnInit {
                 axis: {
                     x: {
                         title: "-log10（Q value）",
+                        min:0,
                         dblclick: function(event) {
                             _self.promptService.open(event.target.innerHTML,newval=>{
                                 this.setXTitle(newval);
