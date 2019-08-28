@@ -359,14 +359,15 @@ export class UploadComponent implements OnInit {
 						self.getHistoryList();
 
 						self.modalService.confirm({
-							nzTitle: '文件上传成功，请确认是否查看上传记录？',
-							nzContent: '',
+							nzTitle: '提示',
+							nzContent: '文件上传成功，请确认是否查看上传记录？',
 							nzOkText: '确定',
 							nzOkType: 'primary',
 							nzOnOk: () => self.f_index = 1,
 							nzCancelText: '取消',
 							nzOnCancel: () => console.log('Cancel')
 						});
+						self.nfileList.length = 0;
 					}
 				}
 
