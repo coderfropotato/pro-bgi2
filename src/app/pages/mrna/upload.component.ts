@@ -4,6 +4,7 @@ import { NzModalService, UploadFile } from "ng-zorro-antd";
 import { NzMessageService } from 'ng-zorro-antd';
 import { StoreService } from "./../../super/service/storeService";
 import { AjaxService } from "src/app/super/service/ajaxService";
+import { NzNotificationService } from 'ng-zorro-antd';
 import config from "../../../config";
 declare const $: any;
 declare const SparkMD5:any;
@@ -76,7 +77,8 @@ export class UploadComponent implements OnInit {
         private ajaxService: AjaxService,
         private storeService: StoreService,
 		private http: HttpClient,
-		private message: NzMessageService
+		private message: NzMessageService,
+		private notification: NzNotificationService
     ) {}
 
     ngOnInit() {
@@ -358,15 +360,24 @@ export class UploadComponent implements OnInit {
 						self.selectAble = false;
 						self.getHistoryList();
 
-						self.modalService.confirm({
-							nzTitle: '提示',
-							nzContent: '文件上传成功，请确认是否查看上传记录？',
-							nzOkText: '确定',
-							nzOkType: 'primary',
-							nzOnOk: () => self.f_index = 1,
-							nzCancelText: '取消',
-							nzOnCancel: () => console.log('Cancel')
-						});
+						// self.modalService.confirm({
+						// 	nzTitle: '提示',
+						// 	nzContent: '文件上传成功，请确认是否查看上传记录？',
+						// 	nzOkText: '确定',
+						// 	nzOkType: 'primary',
+						// 	nzOnOk: () => self.f_index = 1,
+						// 	nzCancelText: '取消',
+						// 	nzOnCancel: () => console.log('Cancel')
+						// });
+
+						self.notification.success(
+							'提示',
+							'上传成功，请在上传记录查看。',
+							{
+								nzDuration:3000
+							}
+						);
+
 						self.nfileList.length = 0;
 					}
 				}
