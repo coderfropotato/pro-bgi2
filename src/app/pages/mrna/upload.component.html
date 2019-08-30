@@ -516,6 +516,7 @@
 
                                     <span *ngIf="item.status=='成功'"><i class="anticon anticon-check-circle success"></i>&nbsp;成功</span>
                                     <span *ngIf="item.status=='失败'"><i class="anticon anticon-close-circle error"></i>&nbsp;失败</span>
+                                    <span *ngIf="item.status!='失败' && item.status!='成功'">{{item.status}}</span>
                                 </div>
                                 <!-- 显示状态 -->
                                 <div *ngIf="item.status=='成功'">
