@@ -376,7 +376,8 @@ export class IndexComponent implements OnInit {
 					this.notify.blank('系统提示', res['data'][0], {
 						nzStyle: {
 							width: '320px'
-						}
+						},
+						nzDuration: 0
 					});
 				}
 			});
