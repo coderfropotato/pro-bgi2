@@ -372,7 +372,7 @@ export class UploadComponent implements OnInit {
 
 						self.notification.success(
 							'提示',
-							'上传成功，请在上传记录查看。',
+							'上传成功，正在效验，请在上传记录查看。',
 							{
 								nzDuration:3000
 							}
@@ -388,20 +388,10 @@ export class UploadComponent implements OnInit {
 	}
 
 	goDetail(e){
-		console.log(e);
 		if(e.status=="成功"){
 			this.goDetailFlag = true;
-			// let temp = `columns:${detail.success.columns.toLocaleString()}<br>totalRows:${detail.success.totalRows}<br>totalSkipRows:${detail.success.totalSkipRows}`
-			// this.modalService.success({
-			// 	nzTitle: "结果",
-			// 	nzContent: temp
-			// });
 		}else if(e.status=="失败"){
 			this.goDetailFlag = false;
-			// this.modalService.error({
-			// 	nzTitle: "结果",
-			// 	nzContent: detail.error
-			// });
 			this.goDetailId = e.id;
 		}
 
@@ -566,10 +556,18 @@ export class UploadComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				if(data.status==0){
-					self.modalService.warning({
-						nzTitle: "结果",
-						nzContent: "删除成功!"
-					});
+					// self.modalService.warning({
+					// 	nzTitle: "结果",
+					// 	nzContent: "删除成功!"
+					// });
+					let temps = "*" + id.substr(id.length-10) + " 删除成功。 ";
+					self.notification.success(
+						'提示',
+						temps,
+						{
+							nzDuration:3000
+						}
+					);
 					this.getHistoryList();
 				}
 			},
