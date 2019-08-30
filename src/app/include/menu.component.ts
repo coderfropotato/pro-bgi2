@@ -30,12 +30,13 @@ import { NzModalService } from 'ng-zorro-antd';
         }
 
         .geneListUl li{
-            font-size:12px !important;
-            padding-left:25px;
+            padding-left:20px;
         }
-
+        
         .geneListUl li p{
             margin-bottom:0 !important;
+            font-size:13px !important;
+            line-height: 2;
         }
 
         .geneListUl li span{
