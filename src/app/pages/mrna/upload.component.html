@@ -31,9 +31,9 @@
                     <div class="tab_bottom">
                         <span style="color:#597DF9;cursor:pointer;" (click)="addmore()">{{tableFlag?'更多 ∧':'更多 ∨'}}</span>
                     </div>
-                    <div style="text-indent: 2rem;margin-bottom: 4px;">系统支持上传基因信息、转录本信息或样本信息，每次可上传其中的一种，对应的表头前缀需符合以下要求。其中表头的固定字符用灰色字体表示，可修改部分用绿色表示。</div>
 
                     <div class="three_tables" [hidden]="!tableFlag">
+                            <div style="text-indent: 2rem;margin-bottom: 4px;">系统支持上传基因信息、转录本信息或样本信息，每次可上传其中的一种，对应的表头前缀需符合以下要求。其中表头的固定字符用灰色字体表示，可修改部分用绿色表示。</div>
                         <div class="table_one">
                             <div><span style="color: rgb(121, 121, 121); font-weight: bold;">基因信息</span></div>
                             <div style="margin-top: 4px;margin-bottom: 16px;">
@@ -493,7 +493,7 @@
                             <div style="width: 160px">有效记录数</div>
                             
                             <div style="width: 160px">上传时间</div>
-                            <div style="width: 80px;">上传状态</div>
+                            <div style="width: 80px;">录入状态</div>
                             <div style="width: 60px;">显示状态</div>
                             <div style="width: 60px;">查看详情</div>
                         </div>
@@ -516,11 +516,12 @@
 
                                     <span *ngIf="item.status=='成功'"><i class="anticon anticon-check-circle success"></i>&nbsp;成功</span>
                                     <span *ngIf="item.status=='失败'"><i class="anticon anticon-close-circle error"></i>&nbsp;失败</span>
+                                    <span *ngIf="item.status!='失败' && item.status!='成功'">{{item.status}}</span>
                                 </div>
                                 <!-- 显示状态 -->
                                 <div *ngIf="item.status=='成功'">
                                     <div style="width: 60px;cursor: pointer;">
-                                        <nz-switch title="{{item.hidden?'已添加到“扩展列 -> 用户上传”，单击隐藏。':'已隐藏，单击可添加到“扩展列 -> 用户上传”。'}}" [(ngModel)]="item.hidden" nzCheckedChildren="展示" nzUnCheckedChildren="隐藏" (ngModelChange)="switchChange($event,item.id)"></nz-switch>
+                                        <nz-switch title="{{!item.hidden?'已添加到“扩展列 -> 用户上传”，单击隐藏。':'已隐藏，单击可添加到“扩展列 -> 用户上传”。'}}" [(ngModel)]="!item.hidden" nzCheckedChildren="展示" nzUnCheckedChildren="隐藏" (ngModelChange)="switchChange($event,item.id)"></nz-switch>
                                     </div>
                                 </div>
                                 <div *ngIf="item.status=='失败'">

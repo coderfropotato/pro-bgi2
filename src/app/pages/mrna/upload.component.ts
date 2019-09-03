@@ -5,6 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { StoreService } from "./../../super/service/storeService";
 import { AjaxService } from "src/app/super/service/ajaxService";
 import { NzNotificationService } from 'ng-zorro-antd';
+import { ChangeDetectorRef } from '@angular/core';
 import config from "../../../config";
 declare const $: any;
 declare const SparkMD5:any;
@@ -78,7 +79,8 @@ export class UploadComponent implements OnInit {
         private storeService: StoreService,
 		private http: HttpClient,
 		private message: NzMessageService,
-		private notification: NzNotificationService
+		private notification: NzNotificationService,
+		public changeDetectorRef:ChangeDetectorRef
     ) {}
 
     ngOnInit() {
@@ -223,12 +225,15 @@ export class UploadComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				if(data.status==0){
-					self.resultList.forEach((d) => {
-						if(d.index == tempIndex){
-							d["hidden"] = !d["hidden"];
-						}
-					});
-					//this.getHistoryList()
+					// self.resultList.forEach((d) => {
+					// 	if(d.index == tempIndex){
+					// 		d["hidden"] = !d["hidden"];
+					// 	}
+					// });
+					//console.log(self.resultList);
+					// self.changeDetectorRef.markForCheck();
+					// self.changeDetectorRef.detectChanges();
+					self.getHistoryList()
 				}
 			},
 			error => {
@@ -372,7 +377,7 @@ export class UploadComponent implements OnInit {
 
 						self.notification.success(
 							'提示',
-							'上传成功，请在上传记录查看。',
+							'上传成功，正在效验，请在上传记录查看。',
 							{
 								nzDuration:3000
 							}
@@ -388,20 +393,10 @@ export class UploadComponent implements OnInit {
 	}
 
 	goDetail(e){
-		console.log(e);
 		if(e.status=="成功"){
 			this.goDetailFlag = true;
-			// let temp = `columns:${detail.success.columns.toLocaleString()}<br>totalRows:${detail.success.totalRows}<br>totalSkipRows:${detail.success.totalSkipRows}`
-			// this.modalService.success({
-			// 	nzTitle: "结果",
-			// 	nzContent: temp
-			// });
 		}else if(e.status=="失败"){
 			this.goDetailFlag = false;
-			// this.modalService.error({
-			// 	nzTitle: "结果",
-			// 	nzContent: detail.error
-			// });
 			this.goDetailId = e.id;
 		}
 
@@ -566,10 +561,18 @@ export class UploadComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				if(data.status==0){
-					self.modalService.warning({
-						nzTitle: "结果",
-						nzContent: "删除成功!"
-					});
+					// self.modalService.warning({
+					// 	nzTitle: "结果",
+					// 	nzContent: "删除成功!"
+					// });
+					let temps = "*" + id.substr(id.length-10) + " 删除成功。 ";
+					self.notification.success(
+						'提示',
+						temps,
+						{
+							nzDuration:3000
+						}
+					);
 					this.getHistoryList();
 				}
 			},
