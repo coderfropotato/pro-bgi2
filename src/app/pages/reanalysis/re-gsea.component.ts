@@ -1103,9 +1103,27 @@ export class ReGseaComponent implements OnInit {
         }
 
         function drawAxis() {
+            function getTickValues(v) {
+                let source = [50, 100, 200, 250, 500, 1000,2000, 2500, 5000, 10000, 20000, 25000, 50000, 10000],
+                    offset = 0,
+                    tick = Math.ceil(v / source[offset]);
+                if (tick > 8) {
+                    while (tick > 8 && offset < source.length) {
+                        offset++;
+                        tick = Math.ceil(v / source[offset]);
+                    }
+                    if (tick < 5 && offset > 0) {
+                        offset--;
+                        tick = Math.ceil(v / source[offset])
+                    }
+                }
+
+                return Array.apply(null, Array(tick)).map((_,m) => m*source[offset]);
+            }
+
             let xAxis = d3.axisBottom()
                     .scale(xScale)
-                    .ticks(Math.ceil(xMax / 5000)),
+                    .tickValues(getTickValues(xMax)),
                 yAxis = d3.axisLeft()
                     .scale(yScale)
                     .ticks(Math.ceil((scoreMax - scoreMin) / 0.1));
