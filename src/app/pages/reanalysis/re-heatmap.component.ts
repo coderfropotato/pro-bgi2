@@ -130,7 +130,7 @@ export class ReHeatmapComponent implements OnInit {
 
     ngOnInit() {
         // chart
-        this.colors = ["#0070c0", "#ffffff", "#ff0000"];
+        this.colors = ["#ff0000", "#ffffff", "#0070c0"];
         this.gaugeColors=this.storeService.getColors();
 
         this.defaultSetUrl=`${config['javaPath']}/cluster/defaultSet`;
@@ -535,7 +535,6 @@ export class ReHeatmapComponent implements OnInit {
                 min: that.domainRange[0],
                 max: that.domainRange[1],
                 ticks:5,
-                reverse:true,
                 data: legendData,
                 position: "right",
                 click: (d, i) => {

@@ -123,7 +123,7 @@ export class ClusterComponent implements OnInit {
      }
 
     ngOnInit() {
-        this.colors = ["#0070c0", "#ffffff", "#ff0000"];
+        this.colors = [ "#ff0000", "#ffffff","#0070c0"];
         this.gaugeColors=this.storeService.getColors();
         this.defaultDefaultChecked = true;
         this.geneType = this.pageModuleService['defaultModule'];
@@ -562,7 +562,6 @@ export class ClusterComponent implements OnInit {
                 min: that.domainRange[0],
                 max: that.domainRange[1],
                 ticks:5,
-                reverse:true,
                 data: legendData,
                 position: "right",
                 click: (d, i) => {
