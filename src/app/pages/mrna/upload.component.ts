@@ -5,6 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { StoreService } from "./../../super/service/storeService";
 import { AjaxService } from "src/app/super/service/ajaxService";
 import { NzNotificationService } from 'ng-zorro-antd';
+import { ChangeDetectorRef } from '@angular/core';
 import config from "../../../config";
 declare const $: any;
 declare const SparkMD5:any;
@@ -78,7 +79,8 @@ export class UploadComponent implements OnInit {
         private storeService: StoreService,
 		private http: HttpClient,
 		private message: NzMessageService,
-		private notification: NzNotificationService
+		private notification: NzNotificationService,
+		public changeDetectorRef:ChangeDetectorRef
     ) {}
 
     ngOnInit() {
@@ -223,12 +225,15 @@ export class UploadComponent implements OnInit {
 		.subscribe(
 			(data: any) => {
 				if(data.status==0){
-					self.resultList.forEach((d) => {
-						if(d.index == tempIndex){
-							d["hidden"] = !d["hidden"];
-						}
-					});
-					//this.getHistoryList()
+					// self.resultList.forEach((d) => {
+					// 	if(d.index == tempIndex){
+					// 		d["hidden"] = !d["hidden"];
+					// 	}
+					// });
+					//console.log(self.resultList);
+					// self.changeDetectorRef.markForCheck();
+					// self.changeDetectorRef.detectChanges();
+					self.getHistoryList()
 				}
 			},
 			error => {
