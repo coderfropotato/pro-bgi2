@@ -1104,21 +1104,21 @@ export class ReGseaComponent implements OnInit {
 
         function drawAxis() {
             function getTickValues(v) {
-                let source = [50, 100, 200, 250, 500, 1000,2000, 2500, 5000, 10000, 20000, 25000, 50000, 10000],
+                let source = [50, 100, 200, 250, 500, 1000, 2000, 2500, 5000, 10000, 20000, 25000, 50000, 10000],
                     offset = 0,
                     tick = Math.ceil(v / source[offset]);
-                if (tick > 8) {
-                    while (tick > 8 && offset < source.length) {
+                if (tick > 9) {
+                    while (tick > 9 && offset < source.length) {
                         offset++;
                         tick = Math.ceil(v / source[offset]);
                     }
-                    if (tick < 5 && offset > 0) {
+                    if (tick < 6 && offset > 0) {
                         offset--;
                         tick = Math.ceil(v / source[offset])
                     }
                 }
 
-                return Array.apply(null, Array(tick)).map((_,m) => m*source[offset]);
+                return Array.apply(null, Array(tick)).map((_, m) => m * source[offset]);
             }
 
             let xAxis = d3.axisBottom()
