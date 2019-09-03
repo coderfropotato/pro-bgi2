@@ -798,7 +798,7 @@ export function createTranslateLoader(http: HttpClient) {
 				nzTop: '40px',
 				nzBottom: '24px',
 				nzPlacement: 'topRight',
-				nzDuration: 3000,
+				nzDuration: 3000,//持续时间ms
 				nzMaxStack: 3,
 				nzPauseOnHover: true,
 				nzAnimate: true
