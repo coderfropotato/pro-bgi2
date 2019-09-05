@@ -1164,6 +1164,10 @@
         "header-824":"无效列名称",
         "header-825":"有效行数",
         "header-826":"无效行数",
+        "header-827":"关系评分",
+        "header-828":"Uniprot的编号",
+        "header-829":"在NONCODE数据库中的编号",
+        "header-830":"UCSC数据库中对应的染色体名称",
         "NA": "NA"
     },
     "relation":{
