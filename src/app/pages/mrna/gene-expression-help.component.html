@@ -5,7 +5,7 @@
     <div class="help_option">
         <div class="help_content">
           <h3 class="title2">2.1 分析方法</h3>
-          <h3 class="title3">1.表达量计算</h3>
+          <h3 class="title3" *ngIf="mflag1">表达量计算</h3>
           <!-- <p class="help_text">适用产品：RNAseq、RNAref</p> -->
           <p class="help_text text_indent" *ngIf="mflag1">
               我们使用 Bowtie2[1]将Clean reads比对到参考基因序列上，然后使用RSEM[2]计算各个样品的基因表达水平。
@@ -35,7 +35,7 @@
           </p>
           <!-- 图片 -->
           <div class="img img-one-expression" *ngIf="mflag2"></div>
-          <p class="help_text text_indent">设FPKM(A)为基因A的表达量，则C为唯一比对到基因A的fragments数，N为唯一比对到参考基因的总fragments数，L为基因A编码区的碱基数。FPKM法能消除基因长度和测序量差异对计算基因表达的影响，计算得到的基因表达量可直接用于比较不同样品间的基因差异表达。</p>
+          <p class="help_text text_indent" *ngIf="mflag2">设FPKM(A)为基因A的表达量，则C为唯一比对到基因A的fragments数，N为唯一比对到参考基因的总fragments数，L为基因A编码区的碱基数。FPKM法能消除基因长度和测序量差异对计算基因表达的影响，计算得到的基因表达量可直接用于比较不同样品间的基因差异表达。</p>
           <div class="help_bg" *ngIf="mflag2">
               <p>软件信息：</p>
               <p>Bowtie2:</p>
@@ -51,21 +51,195 @@
               <p>[2] Li B, Dewey CN. (2011) RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome.BMC Bioinformatics. </p>
           </div>
 
-          <!-- <p class="help_text">适用产品：smallRNA + library_method: smallRNA_common</p> -->
-          <p class="help_text text_indent" *ngIf="mflag3">我们使用TPM[1]标准化小RNA的表达水平，这样处理可以避免不同测序量对定量准确性的影响。因此，标准化后的数据可以直接用于后续差异比较分析。TPM的计算公式如下：</p>
-           <!-- 图片 -->
+          <!-- <p class="help_text">适用产品：smallRNA + library_method: smallRNA_common</p> mflag3 -->
+          <div *ngIf="mflag3">
+                <h3 class="title3">数据过滤（小RNA）</h3>
+                <p class="help_text text_indent">小RNA测得rawdata数据中首先会对其进行数据评估，主要有两个方面：1）对于杂质的过滤; 2）对数据的初步判断。</p>
+                <p class="help_text text_indent">
+                    Rawdata中杂质一般是指无插入片段序列、插入片段过长的序列、低质量序列、palyA序列和小片段序列，其中无插入片段和测得5’接头的序列定义为接头污染，插入片段过长的序列表现为没有测得3’接头的序列。一般接头污染情况的发生与样品本身以及其建库过程中接头浓度和样品浓度比例控制相关，接头比例过高时一般接头污染情况比较严重。低质量序列主要是对测序可靠性的筛选，其条件是序列中碱基质量小于10的碱基数不超过4个同时碱基质量小于13的碱基数不超过6个。
+                </p>
+                <p class="help_text text_indent">
+                    对于这些定义为过滤掉的序列会通过一系列的处理得到干净的序列(clean tags)。然后统计小RNA(sRNA)的序列种类(用unique表示)及序列数量(用total表示)，并对小RNA序列做长度分布统计，一般来说，小RNA的长度区间为18～30nt，长度分布的峰能帮助我们判断小RNA的种类，如miRNA集中在21或22nt，siRNA集中在24nt，piRNA集中在28~30nt。 另外多数情况下植物样品和动物样品序列长度分布上有着明显的差异，其表现是植物样品长度分布的峰值一般出现在21nt或者24nt，而动物样品峰值则出现在22nt。根据这些条件对于样品情况和测序情况可以做出一些初步的判断。
+                </p>
+                <div class="help_bg">
+                    <p>数据处理步骤：</p>
+                    <p>1) 去除测序质量较低的 tag</p> 
+                    <p>2) 去除有5’接头污染的 tag </p>
+                    <p>3) 去除没有3’接头序列的 tag </p>
+                    <p>4) 去除没有插入片段的 tag </p>
+                    <p>5) 去除包含polyA的 tag </p>
+                    <p>6) 去除小于18nt的 tag </p>
+                    <p>7) 统计小RNA片段的长度分布</p>
+                </div>
+                <p class="help_text text_indent">
+                    过滤后的数据称为clean tags,仍然以FASTQ<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[7]</span>格式存储（参见帮助页面<a href="http://xbio1.genomics.cn/NGS/report/BGI-RD-DEMO-PROJECT/BGI-RD-DEMO-PROJECT-41-online/report/src/page/Help_cn.html#2" target="_blank">FASTQ格式说明</a>），该序列文件可直接用于发表，公共数据库提交等，后续分析都基于此文件。
+                </p>
+
+
+
+                <h3 class="title3">数据比对（小RNA）</h3>
+                <p class="help_text text_indent">
+                    一般来说,比对率越高,说明样本和参考序列之间的关系越近；较低的比对率可能是由于低相似性或还有其他污染导致。
+                </p>
+                <p class="help_text text_indent">
+                    我们使用比对软件Bowtie2<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[8]</span>将clean reads比对到参考基组和其他小RNA数据库，除了Rfam是用cmsearch<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[9]</span>进行比对。默认的比对参数如下：
+                </p>
+                <div class="help_bg">
+                    <p>Bowtie2: -q -L 16 --phred64 -p 6</p>
+                    <p>cmsearch: --cpu 6 --noali</p>
+                </div>
+                <p class="help_text text_indent">关于 Bowtie2 的参数说明，请阅读官方网址 <a href="http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#" target="_blank">http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#</a> 中的"Options"章节。</p>
+
+
+
+                <h3 class="title3">Small RNA表达定量</h3>
+                <p class="help_text text_indent">常规建库</p>
+                <p class="help_text text_indent">我们使用TPM<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[1]</span>标准化小RNA的表达水平，这样处理可以避免不同测序量对定量准确性的影响。因此，标准化后的数据可以直接用于后续差异比较分析。TPM的计算公式如下：</p>
+                <div class="img img-two-expression"></div>
+                <div class="help_bg">
+                    <p>参考文献：</p>
+                    <p>[1] 't Hoen, Ariyurek, et al. Deep sequencing-based expression analysis shows major advances in robustness, resolution and inter-lab portability over five microarray platforms. Nucleic Acids Res. 2008 Dec;36(21)</p>
+                </div>
+
+
+
+                <h3 class="title3">差异表达（小RNA）</h3>
+                <h3 class="title4">差异小RNA筛选（小RNA，DEGseq，有生物学重复）</h3>
+                <p class="help_text text_indent">RNA测序是一个随机的过程，每一条序列都是均匀随机的来自各自的样品<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[1]</span>。基于这样的假设，我们可以认为每一个基因（转录本）的表达量服从二项分布（或者泊松分布）。</p>
+                <p class="help_text text_indent">采用上述模型，DEGseq <span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[2]</span>基于MA-plot<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[3]</span>计算差异表达。假设C_1，C_2分别是两个样品的比对上的reads总数，服从二项分布。我们定义textit{{'{'}}M{{"}"}}=log2C1-log2C2，A=(log2C1+log2C2)/2。可以证明在随机抽样的条件下M的分布服从A=a，符合近似正态分布。每个基因的p值再用Qvalue进行多重假设检验校正，对于符合差异在两倍及以上且Q-value值小于等于0.001，认为是显著的差异表达基因。</p>
+                <p class="help_text text_indent">在一些实际研究中，对于同一个实验条件可能都会设置多个重复。从目前的研究情况来看，传统的RNA-seq实验技术背景噪音很低，泊松模型与数据吻合度较高。在这种情况下，可以直接把技术重复的数据合并在一起，否则，该方法会把他们当做实验重复数据处理。</p>
+                
+
+
+                <h3 class="title4">差异小RNA筛选（小RNA，PossionDis，无生物学重复）</h3>
+                <p class="help_text text_indent">参照Audic S.等人发表在Genome Research上的基于测序的差异基因检测方法<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[4]</span>，我们开发了严格的算法筛选两样本间的差异表达基因。假设观测到小RNAA对应的reads数为x，已知在一个大文库中，每个小RNA的表达量只占所有基因表达量的一小部分，在这种情况下,x的分布服从泊松分布：</p>
+                <div class="img img-three-expression"></div>
+                <p class="help_text text_indent">已知，样本一中比对到基因组的总reads数为N1，样本二中比对到基因组的总reads数为N2；样本一中比对到小RNAA的总reads数为x，样本二中比对到小RNAA的总reads数为y，则小RNAA在两样本中表达量相等的概率可由以下公式计算：</p>
+                <div class="img img-four-expression-copy"></div>
+                <p class="help_text text_indent">然后，我们对差异检验的p-value作多重假设检验校正<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[5]</span>，通过控制 <span style="color:black;font-weight: bold;">FDR</span> （False Discovery Rate）<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[6]</span>来决定p-value的域值。假设挑选了R个差异表达基因，其中S个是真正有差异表达的基因，另外V个是其实没有差异表达的基因，为假阳性结果。希望错误比例Q＝V/R平均而言不能超过某个可以容忍的值（比如5％），则在统计时预先设定 <span style="color:black;font-weight: bold;">FDR</span> 不能超过0.05。在得到差异检验的 <span style="color:black;font-weight: bold;">FDR</span> 值同时，我们根据基因的表达量（FPKM值）计算该基因在不同样本间的差异表达倍数。 <span style="color:black;font-weight: bold;">FDR</span> 值越小，差异倍数越大，则表明表达差异越显著。</p>
+                <p class="help_text text_indent">在我们的分析中，差异表达基因默认定义为 <span style="color:black;font-weight: bold;">FDR</span> ≤0.001且倍数差异在2倍以上的基因。</p>
+                
+
+
+                <div class="help_bg">
+                    <p>参考文献：</p>
+                    <p>[1] Jiang,H. and Wong,W.H. (2009). Statistical inferences for isoform expression in RNASeq. Bioinformatics, 25, 1026▒C1032.</p>
+                    <p>[2] Wang L. et al.(2010). DEGseq: an R package for identifying differentially expressed genes from RNA-seq data. Bioinformatics, Jan 1;26(1):136-8.</p>
+                    <p>[3] Yang,Y.H. et al. (2002). Normalization for cDNA microarray data: a robust composite method addressing single and multiple slide systematic variation. Nucleic Acids Res., 30, e15.</p>
+                    <p>[4] Audic, S. and J. M. Claverie. (1997). The significance of digital gene expression profiles. Genome Res, 10: 986-95.</p>
+                    <p>[5] Abdi, H.The bonferroni and Sidak corrections for multiple comparisons. In N.J. Salkind ( ed.). Encyclopedia of Measurement and Statistics.</p>
+                    <p>[6] Benjamini, Y. and D. Yekutieli. (2001). The control of the false discovery rate in multiple testing under dependency. The Annals of Statistics, 29: 1165-1188.</p>
+                </div>
+
+
+
+                <h3 class="title3">聚类分析（小RNA）</h3>
+                <p class="help_text text_indent">small RNA层次聚类分析</p>
+                <p class="help_text text_indent">根据差异miRNA检测结果，我们使用R软件中的pheatmap函数进行层次聚类分析。多组差异miRNA同时聚类时，我们将分别对组间交集与并集差异miRNA单独进行聚类分析。</p>
+                
+          </div>
+          <!-- <p class="help_text text_indent" *ngIf="mflag3">我们使用TPM[1]标准化小RNA的表达水平，这样处理可以避免不同测序量对定量准确性的影响。因此，标准化后的数据可以直接用于后续差异比较分析。TPM的计算公式如下：</p>
            <div class="img img-two-expression" *ngIf="mflag3"></div>
            <div class="help_bg" *ngIf="mflag3">
               <p>参考文献：</p>
               <p>[1] 't Hoen, Ariyurek, et al. Deep sequencing-based expression analysis shows major advances in robustness, resolution and inter-lab portability over five microarray platforms. Nucleic Acids Res. 2008 Dec;36(21)</p>
-           </div>
+           </div> -->
           
-          <!-- <p class="help_text">适用产品：smallRNA + library_method: smallRNA_UMI</p> -->
-          <p class="help_text text_indent" *ngIf="mflag4">特异性分子标签（UMI）为8-10nt的短序列，可看做“条形码”，在文库构建的早期阶段连接到cDNA分子中，标记原始样品中的每个分子。用于减少PCR扩增复制引入的定量偏差，有利于获得足够的读数以进行检测[1]。定量统计UMI种类数而非数量，“冻结”文库分子扩增前的状态，还原原始样品真实信息，保证small RNA定量的准确性。</p>
+          <!-- <p class="help_text">适用产品：smallRNA + library_method: smallRNA_UMI</p> mflag4 -->
+          <div *ngIf="mflag4">
+                <h3 class="title3">数据过滤（小RNA）</h3>
+                <p class="help_text text_indent">小RNA测得rawdata数据中首先会对其进行数据评估，主要有两个方面：1）对于杂质的过滤; 2）对数据的初步判断。</p>
+                <p class="help_text text_indent">
+                    Rawdata中杂质一般是指无插入片段序列、插入片段过长的序列、低质量序列、palyA序列和小片段序列，其中无插入片段和测得5’接头的序列定义为接头污染，插入片段过长的序列表现为没有测得3’接头的序列。一般接头污染情况的发生与样品本身以及其建库过程中接头浓度和样品浓度比例控制相关，接头比例过高时一般接头污染情况比较严重。低质量序列主要是对测序可靠性的筛选，其条件是序列中碱基质量小于10的碱基数不超过4个同时碱基质量小于13的碱基数不超过6个。
+                </p>
+                <p class="help_text text_indent">
+                    对于这些定义为过滤掉的序列会通过一系列的处理得到干净的序列(clean tags)。然后统计小RNA(sRNA)的序列种类(用unique表示)及序列数量(用total表示)，并对小RNA序列做长度分布统计，一般来说，小RNA的长度区间为18～30nt，长度分布的峰能帮助我们判断小RNA的种类，如miRNA集中在21或22nt，siRNA集中在24nt，piRNA集中在28~30nt。 另外多数情况下植物样品和动物样品序列长度分布上有着明显的差异，其表现是植物样品长度分布的峰值一般出现在21nt或者24nt，而动物样品峰值则出现在22nt。根据这些条件对于样品情况和测序情况可以做出一些初步的判断。
+                </p>
+                <div class="help_bg">
+                    <p>数据处理步骤：</p>
+                    <p>1) 去除测序质量较低的 tag</p> 
+                    <p>2) 去除有5’接头污染的 tag </p>
+                    <p>3) 去除没有3’接头序列的 tag </p>
+                    <p>4) 去除没有插入片段的 tag </p>
+                    <p>5) 去除包含polyA的 tag </p>
+                    <p>6) 去除小于18nt的 tag </p>
+                    <p>7) 统计小RNA片段的长度分布</p>
+                </div>
+                <p class="help_text text_indent">
+                    过滤后的数据称为clean tags,仍然以FASTQ<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[7]</span>格式存储（参见帮助页面<a href="http://xbio1.genomics.cn/NGS/report/BGI-RD-DEMO-PROJECT/BGI-RD-DEMO-PROJECT-41-online/report/src/page/Help_cn.html#2" target="_blank">FASTQ格式说明</a>），该序列文件可直接用于发表，公共数据库提交等，后续分析都基于此文件。
+                </p>
+
+
+
+                <h3 class="title3">数据比对（小RNA）</h3>
+                <p class="help_text text_indent">
+                    一般来说,比对率越高,说明样本和参考序列之间的关系越近；较低的比对率可能是由于低相似性或还有其他污染导致。
+                </p>
+                <p class="help_text text_indent">
+                    我们使用比对软件Bowtie2<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[8]</span>将clean reads比对到参考基组和其他小RNA数据库，除了Rfam是用cmsearch<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[9]</span>进行比对。默认的比对参数如下：
+                </p>
+                <div class="help_bg">
+                    <p>Bowtie2: -q -L 16 --phred64 -p 6</p>
+                    <p>cmsearch: --cpu 6 --noali</p>
+                </div>
+                <p class="help_text text_indent">关于 Bowtie2 的参数说明，请阅读官方网址 <a href="http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#" target="_blank">http://computing.bio.cam.ac.uk/local/doc/bowtie2.html#</a> 中的"Options"章节。</p>
+
+
+
+                <h3 class="title3">Small RNA表达定量</h3>
+                <!-- <p class="help_text text_indent">常规建库</p>
+                <p class="help_text text_indent">我们使用TPM<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[1]</span>标准化小RNA的表达水平，这样处理可以避免不同测序量对定量准确性的影响。因此，标准化后的数据可以直接用于后续差异比较分析。TPM的计算公式如下：</p>
+                <div class="img img-two-expression"></div>
+                <div class="help_bg">
+                    <p>参考文献：</p>
+                    <p>[1] 't Hoen, Ariyurek, et al. Deep sequencing-based expression analysis shows major advances in robustness, resolution and inter-lab portability over five microarray platforms. Nucleic Acids Res. 2008 Dec;36(21)</p>
+                </div> -->
+                <p class="help_text text_indent">UMI建库</p>
+                <p class="help_text text_indent">特异性分子标签（UMI）为8-10nt的短序列，可看做“条形码”，在文库构建的早期阶段连接到cDNA分子中，标记原始样品中的每个分子。用于减少PCR扩增复制引入的定量偏差，有利于获得足够的读数以进行检测[1]。定量统计UMI种类数而非数量，“冻结”文库分子扩增前的状态，还原原始样品真实信息，保证small RNA定量的准确性。</p>
+                <div class="help_bg">
+                    <p>参考文献：</p>
+                    <p>[1] Kivioja T, Vähärautio A, Karlsson K, et al. Counting absolute numbers of molecules using unique molecular identifiers[J]. Nature Methods, 2012, 9(1):72-74.</p>
+                </div>
+
+                <h3 class="title3">差异表达（小RNA）</h3>
+                <h3 class="title4">差异小RNA筛选（小RNA，DEGseq，有生物学重复）</h3>
+                <p class="help_text text_indent">RNA测序是一个随机的过程，每一条序列都是均匀随机的来自各自的样品<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[1]</span>。基于这样的假设，我们可以认为每一个基因（转录本）的表达量服从二项分布（或者泊松分布）。</p>
+                <p class="help_text text_indent">采用上述模型，DEGseq <span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[2]</span>基于MA-plot<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[3]</span>计算差异表达。假设C_1，C_2分别是两个样品的比对上的reads总数，服从二项分布。我们定义textit{{'{'}}M{{"}"}}=log2C1-log2C2，A=(log2C1+log2C2)/2。可以证明在随机抽样的条件下M的分布服从A=a，符合近似正态分布。每个基因的p值再用Qvalue进行多重假设检验校正，对于符合差异在两倍及以上且Q-value值小于等于0.001，认为是显著的差异表达基因。</p>
+                <p class="help_text text_indent">在一些实际研究中，对于同一个实验条件可能都会设置多个重复。从目前的研究情况来看，传统的RNA-seq实验技术背景噪音很低，泊松模型与数据吻合度较高。在这种情况下，可以直接把技术重复的数据合并在一起，否则，该方法会把他们当做实验重复数据处理。</p>
+                
+
+
+                <h3 class="title4">差异小RNA筛选（小RNA，PossionDis，无生物学重复）</h3>
+                <p class="help_text text_indent">参照Audic S.等人发表在Genome Research上的基于测序的差异基因检测方法<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[4]</span>，我们开发了严格的算法筛选两样本间的差异表达基因。假设观测到小RNAA对应的reads数为x，已知在一个大文库中，每个小RNA的表达量只占所有基因表达量的一小部分，在这种情况下,x的分布服从泊松分布：</p>
+                <div class="img img-three-expression"></div>
+                <p class="help_text text_indent">已知，样本一中比对到基因组的总reads数为N1，样本二中比对到基因组的总reads数为N2；样本一中比对到小RNAA的总reads数为x，样本二中比对到小RNAA的总reads数为y，则小RNAA在两样本中表达量相等的概率可由以下公式计算：</p>
+                <div class="img img-four-expression-copy"></div>
+                <p class="help_text text_indent">然后，我们对差异检验的p-value作多重假设检验校正<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[5]</span>，通过控制 <span style="color:black;font-weight: bold;">FDR</span> （False Discovery Rate）<span style="vertical-align:super;text-transform: lowercase;font-size: 12px;">[6]</span>来决定p-value的域值。假设挑选了R个差异表达基因，其中S个是真正有差异表达的基因，另外V个是其实没有差异表达的基因，为假阳性结果。希望错误比例Q＝V/R平均而言不能超过某个可以容忍的值（比如5％），则在统计时预先设定 <span style="color:black;font-weight: bold;">FDR</span> 不能超过0.05。在得到差异检验的 <span style="color:black;font-weight: bold;">FDR</span> 值同时，我们根据基因的表达量（FPKM值）计算该基因在不同样本间的差异表达倍数。 <span style="color:black;font-weight: bold;">FDR</span> 值越小，差异倍数越大，则表明表达差异越显著。</p>
+                <p class="help_text text_indent">在我们的分析中，差异表达基因默认定义为 <span style="color:black;font-weight: bold;">FDR</span> ≤0.001且倍数差异在2倍以上的基因。</p>
+                
+
+
+                <div class="help_bg">
+                    <p>参考文献：</p>
+                    <p>[1] Jiang,H. and Wong,W.H. (2009). Statistical inferences for isoform expression in RNASeq. Bioinformatics, 25, 1026▒C1032.</p>
+                    <p>[2] Wang L. et al.(2010). DEGseq: an R package for identifying differentially expressed genes from RNA-seq data. Bioinformatics, Jan 1;26(1):136-8.</p>
+                    <p>[3] Yang,Y.H. et al. (2002). Normalization for cDNA microarray data: a robust composite method addressing single and multiple slide systematic variation. Nucleic Acids Res., 30, e15.</p>
+                    <p>[4] Audic, S. and J. M. Claverie. (1997). The significance of digital gene expression profiles. Genome Res, 10: 986-95.</p>
+                    <p>[5] Abdi, H.The bonferroni and Sidak corrections for multiple comparisons. In N.J. Salkind ( ed.). Encyclopedia of Measurement and Statistics.</p>
+                    <p>[6] Benjamini, Y. and D. Yekutieli. (2001). The control of the false discovery rate in multiple testing under dependency. The Annals of Statistics, 29: 1165-1188.</p>
+                </div>
+
+
+
+                <h3 class="title3">聚类分析（小RNA）</h3>
+                <p class="help_text text_indent">small RNA层次聚类分析</p>
+                <p class="help_text text_indent">根据差异miRNA检测结果，我们使用R软件中的pheatmap函数进行层次聚类分析。多组差异miRNA同时聚类时，我们将分别对组间交集与并集差异miRNA单独进行聚类分析。</p>
+          </div>
+          <!-- <p class="help_text text_indent" *ngIf="mflag4">特异性分子标签（UMI）为8-10nt的短序列，可看做“条形码”，在文库构建的早期阶段连接到cDNA分子中，标记原始样品中的每个分子。用于减少PCR扩增复制引入的定量偏差，有利于获得足够的读数以进行检测[1]。定量统计UMI种类数而非数量，“冻结”文库分子扩增前的状态，还原原始样品真实信息，保证small RNA定量的准确性。</p>
            <div class="help_bg" *ngIf="mflag4">
               <p>参考文献：</p>
               <p>[1] Kivioja T, Vähärautio A, Karlsson K, et al. Counting absolute numbers of molecules using unique molecular identifiers[J]. Nature Methods, 2012, 9(1):72-74.</p>
-           </div>
+           </div> -->
 
            <!-- <p class="help_text">适用产品：circRNA</p> -->
           <p class="help_text text_indent" *ngIf="mflag5">本研究根据比对至circRNA两端的 junction reads 数来计算circRNA的表达量，由于使用了两个软件CIRI、find_circ来预测，所以最终的 junction reads 数取两者结果的平均值。 本研究采用 RPB （junction reads per billion mapped reads，比对上基因组的所有reads标准化到十亿后跨过back-spliced位点的junction reads数目）对各样品作了均一化处理。</p>
@@ -73,10 +247,10 @@
     
   
         <div class="help_content" *ngIf="mflag6">
-            <h3 class="title3">2.差异基因检测</h3>
+            <h3 class="title3">差异基因检测</h3>
             <!-- <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p> -->
             <div *ngIf="DEGseq_flag">
-                <h3 class="title3">DEGseq: </h3>
+                <h3 class="title4">DEGseq: </h3>
                 <p class="help_text text_indent">DEGseq方法基于泊松分布，本项目根据Wang L, Feng Z, Wang X, et al.中描述的方法进行差异基因检测。</p>
                 <p class="help_text text_indent">RNA测序可以被当成随机取样的过程，每一个read从样品中独立且均匀地取样。在这个假设下，来自基因（转录本）的read数目遵循二项分布（并且近似由泊松分布代替）。</p>
                 <p class="help_text text_indent">使用上述的统计模型，DEGseq 提出一个基于MA-plot的新方法，MA-plot是广泛应用于芯片数据的统计分析工具，让C1和C2表示从两个样品获得的特定基因的read数目，他们符合Ci~binomial(ni,pi)，i=1,2分布，其中ni表示所有比对上的read总数，pi表示来着该基因的概率。 DEGseq定义 M=log2C1-log2C2和A=(log2C1+log2C2）/2并证明在随机抽样假设下 ，给定A=a （a是A的观察值）的条件分布 M 遵循近似正态分布。 对于MA图上的每个基因，进行假设检验H0：p1=p2与H1：p1≠p2。然后根据正态分布计算P值。</p>
@@ -92,7 +266,7 @@
 
             <!-- <h3 class="title3">泊松分布方法（PossionDis）</h3> -->
             <div *ngIf="PossionDis_flag">
-                <h3 class="title3">PossionDis:</h3>
+                <h3 class="title4">PossionDis:</h3>
                 <p class="help_text text_indent">PossionDis方法基于泊松分布原理，本项目参照Audic S.等人发表在Genome Research上的基于测序的差异基因检测方法，我们开发了严格的算法筛选两样本间的差异表达基因。假设观测到基因A对应的reads数为x，已知在一个大文库中，每个基因的表达量只占所有基因表达量的一小部分，在这种情况下,x的分布服从泊松分布：</p>
                 <!-- 图片 -->
                 <div class="img img-three-expression"></div>
@@ -111,7 +285,7 @@
             </div>
             
             <div *ngIf="DESeq2_flag">
-                <h3 class="title2">DESeq2: </h3>
+                <h3 class="title4">DESeq2: </h3>
                 <p class="help_text text_indent">DEseq2方法基于负二项分布原理，本项目根据Michael I, et al.[1]中描述的方法进行差异基因DEG。DEG是差异表达基因的简称，指不同样品之间表达水平有差异的基因检测。</p>
                 <div class="help_bg">
                     <p>DESeq2:</p>
@@ -122,7 +296,7 @@
             </div>
             
             <div *ngIf="Noiseq_flag">
-                <h3 class="title2">NoiSeq: </h3>
+                <h3 class="title4">NoiSeq: </h3>
                 <p class="help_text text_indent">两两之间的差异倍数（M）以及绝对差值（D）两个背景数据集，称之为噪音背景：</p>
                 <!-- 图片 -->
                 <div class="img img-five-expression"></div>
@@ -139,7 +313,7 @@
             </div>
 
             <div *ngIf="EBSeq_flag">
-                <h3 class="title2">EBseq: </h3>
+                <h3 class="title4">EBseq: </h3>
                 <p class="help_text text_indent">EBseq<sup>[1]</sup>可鉴定两个生物条件下群体差异表达的基因，考虑到reads比对的不确定性（因为亚型转录本及其所属基因的转录本亚型数量），EBseq运用方差计算，使结果更为可靠。</p>
                 <p class="help_text text_indent">EBseq统计了一个基因为非差异表达和差异表达的后验概率，“PPEE和PPDE”。另外，EBseq还做了关于倍数变化（fold change）的统计，对于每个条件中的基因评估后验平均表达水平，计算两种条件下的比例。为了提高差异分析正确性，我们将差异倍数为两倍以上并且PPEE小于0.05的基因，筛选为显著差异表达基因。</p>
                 <div class="help_bg">
@@ -154,7 +328,7 @@
 
         <div class="help_content" *ngIf="mflag7">
             <!-- <p class="help_text">适用产品：RNAseq、RNAref、lncRNA、smallRNA、circRNA</p> -->
-            <h3 class="title3">3.聚类热图</h3>
+            <h3 class="title3">聚类热图</h3>
             <p class="help_text text_indent">根据差异基因检测结果，对并集差异基因，使用R包pheatmap进行层次聚类分析。</p>
             <div class="help_bg">
                 <p>参数：Default</p>
