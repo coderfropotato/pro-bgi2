@@ -163,4 +163,79 @@
         </div>
     </div>
 
+    <ng-template #selectTemplate>
+        <nz-select [nzDropdownMatchSelectWidth]='false' nz-tooltip [nzTitle]='compareGroup.name' style="min-width:160px" class="ml12" nzSize="small" nzShowSearch
+            [(ngModel)]="compareGroup.name" (ngModelChange)="compareGroupChange()">
+            <nz-option *ngFor="let compare of diffInfo;index as i;" [nzValue]="compare?.name" [nzLabel]="compare?.name"></nz-option>
+        </nz-select>
+    </ng-template>
+
+    <ng-template #setTemplate>
+        <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow" (nzVisibleChange)="setClick()">
+            <i class="iconfont icon-shezhi" nz-tooltip [nzTitle]="'tableButton.setting' | translate" nz-dropdown></i>
+            <div class="ex_container">
+                <div class="ex_top">
+                    <div class="ex_container_top">
+                        <div class="con_PessionDis_title">
+                            设置
+                        </div>
+                        <div class="con_PessionDis_content">
+                            请输入非空的大于0的数字 {{compareGroup['pair'][0].key}} ,{{compareGroup['pair'][1].key}} ,的值以重新计算差异基因结果！
+                        </div>
+                    </div>
+                </div>
+                <div class="ex_content">
+                    <div class="con_PessionDis">
+                        <div class="con_PessionDis_title" title="{{'thresholdName.'+compareGroup['method'] | translate}}">
+                            {{compareGroup['method']}}
+                        </div>
+                        <div class="con_PessionDis_in">
+                            <div class="con_PessionDis_row" *ngFor="let item of compareGroup['pair'];index as i;">
+                                <div class="con_PessionDis_left" title="{{'thresholdName.'+item['key'] | translate}}">
+                                    {{item['key']}}
+                                </div>
+                                <div class="con_PessionDis_right">
+                                    <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="item['value']" [nzMin]="0"></nz-input-number>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="con_bottom"></div>
+                <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
+                    {{'tableButton.cancel' | translate}} </button>
+                <button class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">
+                    {{'tableButton.confirm' | translate}} </button>
+            </div>
+        </nz-dropdown>
+    </ng-template>
+
+    <div calss="base_module" *ngIf="itemFlag5">
+        <h3 class="title2">{{tempIndex}}.{{itemNum5}} 差异基因散点图</h3>
+        <div class="f-content" *ngIf="itemFlag5_1">
+            <h4 class="title3">{{tempIndex}}.{{itemNum5}}.{{itemNum5_1}} 差异基因散点图</h4>
+            <div class="t-content">
+                <app-table-switch-chart
+                    #DiffGene
+                    [id]="'diffGene'"
+                    [chartUrl]="diffGeneUrl"
+                    [apiEntity]="diffGeneEntity"
+                    [selectTemplate]="selectTemplate"
+                    [setTemplate]="setTemplate"
+                    [chartTypeData]="chartTypeData"
+                    (drawChartEmit)="drawDiffGeneScatter($event)"
+                    [flex]="true"
+                    [chartId]="'diffGeneScatter'"
+                    [chartName]=""
+                    (refresh)="handlerRefresh()"
+                    [chartDescContent]="chartDesc"
+                >
+                </app-table-switch-chart>
+                <app-color-picker [(color)]="colorDG" (colorChange)="dGColorChange($event)" [(show)]="isDGShowColorPanel"
+                        ></app-color-picker>
+            </div>
+        </div>
+    </div>
+
 </div>
