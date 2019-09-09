@@ -21,6 +21,7 @@ export class OverviewComponent implements OnInit {
 	@ViewChild('Boxplot') Boxplot;
 	@ViewChild('DensityMap') DensityMap;
 	@ViewChild('stackMap') stackMap;
+	@ViewChild('DiffGene') DiffGene;
 
 	abstract_general_cn: string;
 	abstract_general_en: string;
@@ -66,6 +67,19 @@ export class OverviewComponent implements OnInit {
 	stackMapEntity: object;
 	chartStack: any;
 
+	//差异基因散点图
+	diffGeneScatter:any;
+	chartTypeData:object[];
+	diffGeneUrl:string;
+	diffGeneEntity:object;
+	diffInfo:object[];
+	compareGroup:object;
+	chartDesc:string;
+	chartName:string;
+	//设置
+	isSetPanelShow:boolean=false;
+	setConfirmData:object;
+
 	//图例颜色
 	isShowColorPanel: boolean = false;
 	legendIndex: number = 0; //当前点击图例的索引
@@ -89,6 +103,10 @@ export class OverviewComponent implements OnInit {
 	legendIndexT: number = 0; //当前点击图例的索引
 	colorT: string; //当前选中的color
 
+	colorDG:string;
+	legendIndexDG:number=0;
+	isDGShowColorPanel:boolean=false;
+
 	tempIndex: number = 0;
 	tempMenu: any[] = [];
 	tempMenu2: any[] = [];
@@ -102,6 +120,8 @@ export class OverviewComponent implements OnInit {
 	itemNum3: number = 0;
 	itemFlag4: boolean = false;
 	itemNum4: number = 0;
+	itemFlag5: boolean=false;
+	itemNum5:number=0;
 
 	itemFlag2_1: boolean = false;
 	itemNum2_1: number = 0;
@@ -121,6 +141,9 @@ export class OverviewComponent implements OnInit {
 	itemNum4_2: number = 0;
 	itemFlag4_3: boolean = false;
 	itemNum4_3: number = 0;
+
+	itemFlag5_1:boolean=false;
+	itemNum5_1:number=0;
 
 	constructor(
 		private message: MessageService,
@@ -217,6 +240,37 @@ export class OverviewComponent implements OnInit {
 		this.stackMapEntity = {
 			LCID: this.store.getStore('LCID')
 		};
+
+		//差异基因散点图
+		this.chartTypeData = [{
+			key:'Volcano Plot',
+			value:'Volcano Plot'
+		},  {
+			key:'Scatter Plot',
+			value:'Scatter Plot'
+		}];
+
+		this.chartDesc='X轴代表log2转换后的差异倍数值，Y轴代表-log10转换后的显著性值。红色代表上调的DEG，蓝色代表下调的DEG，灰色代表非DEG。';
+		this.chartName='差异基因火山图';
+
+		this.diffInfo=this.storeService.getStore("diff_info");
+		this.compareGroup={...this.diffInfo[0]};
+
+		this.setConfirmData={
+			value1:this.compareGroup['pair'][0].value,
+			value2:this.compareGroup['pair'][1].value
+		};
+		
+		this.diffGeneUrl=`${config['javaPath']}/basicModule/scatterPlot`;
+		this.diffGeneEntity={
+			"LCID":this.store.getStore('LCID'),
+			"compareGroup":this.compareGroup['name'],
+			"method":this.compareGroup['method'],
+			"value":[
+				this.compareGroup['pair'][0].value,
+				this.compareGroup['pair'][1].value
+			]
+		}
 	}
 
 	//相关性热图
@@ -635,7 +689,6 @@ export class OverviewComponent implements OnInit {
                 });
             }
 		}
-		console.log(yData)
 		let tempWidth = 0;
 		if(xData.length<=12){
 			tempWidth = 660;
@@ -675,7 +728,6 @@ export class OverviewComponent implements OnInit {
 				type: "boxplot",
 				width: tempWidth,
 				onselect: data => {
-					// console.log(data);
 				},
 				// style: {
 				//   fill: "#ffffff",
@@ -802,7 +854,6 @@ export class OverviewComponent implements OnInit {
 				show: true,
 				position: "right",
 				click: function(d,index) {
-					//console.log(el);
 					that.colorMap = d3.select(d).attr('fill');
 					that.legendIndexMap = index;
 					that.isMapShowColorPanel = true;
@@ -826,7 +877,6 @@ export class OverviewComponent implements OnInit {
 		var chartData = [];
 		var sample =  this.store.getStore('sample');
 
-		console.log(data)
 		for (var i = 0; i < sample.length; i++) {
 			var row = {'sample': sample[i], 'total': 0}
 			for (var j = 0; j < rows.length; j++) {
@@ -851,7 +901,6 @@ export class OverviewComponent implements OnInit {
 		// 	chartData2.push(tempC);
 		// }
 
-		console.log(chartData)
 		let that = this;
 
 		let config: object = {
@@ -902,16 +951,187 @@ export class OverviewComponent implements OnInit {
 				}
 			},
 			tooltip: function(d) {
-				//console.log(d)
 				return '<span>Range：' + d.key + '</span><br><span>Gene Number：' + d.data[d.key] + '</span><br><span>Sample：'+ d.data["sample"]+'</span>';
 			}
 		};
 
 		this.chartStack = new gooalD3().init(config);
 	}
+
+	//差异基因散点图
+	drawDiffGeneScatter(obj){
+		let that=this;
+		let data=obj.data,type=obj.type;
+		console.log(data)
+		let xTitle="",yTitle="";
+		let cGroups=that.compareGroup['name'].split('-');
+
+		let volcano=data['baseThead']['chart1'];
+		let scatter=data['baseThead']['chart3'];
+		let rows=data.rows;
+
+		let legendData=["Up", "no-DEGS","Down"];
+
+		let volcanoData=[],scatterData=[],chartData=[];
+		
+		rows.forEach(d => {
+			if(d.flag){
+				d['type']= d.flag==1 ? legendData[0] : legendData[2];
+			}else{
+				d['type']=legendData[1];
+			}
+
+			volcanoData.push({
+				x:d[volcano['x_key']],
+				y:d[volcano['y_key']],
+				gene_id:d['gene_id'],
+				flag:d.flag,
+				type:d.type
+			});
+			scatterData.push({
+				x:d[scatter['x_key']],
+				y:d[scatter['y_key']],
+				gene_id:d['gene_id'],
+				flag:d.flag,
+				type:d.type
+			})
+		});
+
+		switch (type) {
+			case "Volcano Plot":
+				this.chartDesc='X轴代表log2转换后的差异倍数值，Y轴代表-log10转换后的显著性值。红色代表上调的DEG，蓝色代表下调的DEG，灰色代表非DEG。';
+				this.chartName='差异基因火山图';
+				xTitle=`log2(${that.compareGroup['name']})`;
+				yTitle=that.compareGroup['pair'][1]['key']=="probability" ? `-log10(1-${that.compareGroup['pair'][1]['key']})` : `-log10(${that.compareGroup['pair'][1]['key']})`;
+				chartData=volcanoData;
+				break;
+			case "Scatter Plot":
+				this.chartDesc='X、Y轴均代表基因表达量的对数值。红色代表上调的DEG，蓝色代表下调的DEG，灰色代表非DEG。';
+				this.chartName='差异基因散点图';
+				xTitle=`log10(${cGroups[0]})`;
+				yTitle=`log10(${cGroups[2]})`;
+				chartData=scatterData;
+				break;
+			default:
+				this.chartDesc="";
+				this.chartName="";
+				xTitle="";
+				yTitle="";
+				chartData=[];
+				break;
+		}
+
+		let config:object={
+			chart: {
+				title: that.chartName,
+				dblclick: function(event) {
+					that.promptService.open(event.target.textContent,val=>{
+						this.setChartTitle(val);
+						this.updateTitle();
+					})
+				},
+				el: "#diffGeneScatter",
+				type: "scatter",
+				radius: 3,
+				hoverRadius: 6,
+				custom: [ 'x', 'y' ,'type'], // x y legend
+				colors:["#E31D1F","#cccccc","#377EB8"],
+				data:chartData
+			  },
+			  axis: {
+				x: {
+				  title: xTitle,
+				  dblclick: function(event) {
+					that.promptService.open(event.target.textContent,val=>{
+						this.setXTitle(val);
+						this.updateTitle();
+					})
+				  },
+				  rotate:45
+				},
+				y: {
+				  title: yTitle,
+				  dblclick: function(event) {
+					that.promptService.open(event.target.textContent,val=>{
+						this.setYTitle(val);
+						this.updateTitle();
+					})
+				  },
+					rotate:60
+				}
+			  },
+			  legend: {
+				show: true,
+				position: "right",
+				click: (d, i) => {
+					that.colorDG = d3.select(d).attr('fill');
+					that.legendIndexDG = i;
+					that.isDGShowColorPanel = true;
+				},
+				data: legendData
+			  },
+			  tooltip: function(d) {
+				return (
+					`<span>Gene ID：${d.gene_id}</span><br><span>${xTitle}：${d.x}</span><br><span>${yTitle}：${d.y}</span>
+					<br><span>category：${d.type}</span>`
+				);
+			  }
+		}
+
+		this.diffGeneScatter=new gooalD3().init(config)
+	}
+
+	compareGroupChange(){
+		this.diffInfo.forEach(d=>{
+			if(d['name']===this.compareGroup['name']){
+				this.compareGroup['method']=d['method'];
+				this.compareGroup['pair']=[...d['pair']];
+			}
+		})
+
+		this.diffGeneEntity['compareGroup']=this.compareGroup['name'];
+		this.diffGeneEntity['method']=this.compareGroup['method'];
+		this.diffGeneEntity['value']=[
+			this.compareGroup['pair'][0].value,
+			this.compareGroup['pair'][1].value
+		];
+
+		this.DiffGene.reGetData();
+	}
+
+	dGColorChange(curColor){
+		this.diffGeneScatter.setColor(curColor, this.legendIndexDG);
+		this.diffGeneScatter.redraw();
+	}
+
+	//设置
+	setClick(){
+		this.compareGroup['pair'][0].value=this.setConfirmData['value1'];
+		this.compareGroup['pair'][1].value=this.setConfirmData['value2'];
+	}
+
+	setConfirm(){
+		this.isSetPanelShow=false;
+	
+		this.setConfirmData['value1']=this.compareGroup['pair'][0].value;
+		this.setConfirmData['value2']=this.compareGroup['pair'][1].value;
+
+		this.diffGeneEntity['value']=[
+			this.setConfirmData['value1'],
+			this.setConfirmData['value2']
+		]
+
+		this.DiffGene.reGetData();
+	}
+
+	setCancle(){
+		this.isSetPanelShow=false;
+		this.compareGroup['pair'][0].value=this.setConfirmData['value1'];
+		this.compareGroup['pair'][1].value=this.setConfirmData['value2'];
+	}
+	
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
-		//console.log(data)
 		this.selectConfirmData = data;
 		this.tableEntity['correlationSampleList'] = this.selectConfirmData;
 		this.relevanceChart.reGetData();
@@ -921,7 +1141,6 @@ export class OverviewComponent implements OnInit {
 
 	//选择面板，默认选中数据
 	defaultSelectList(data) {
-		//console.log(data)
 		this.selectConfirmData = data;
 	}
 
@@ -940,11 +1159,8 @@ export class OverviewComponent implements OnInit {
 
 	//legend color change
 	colorQualityChange(curColor){
-		// console.log(this.legendIndexThree);
 		this.colorQuality = curColor;
 		this.colorArr.splice(this.legendIndexThree, 1, curColor);
-		// console.log(curColor);
-		// console.log(this.colorArr);
 		this.relevanceChart.redraw();
 	}
 
@@ -1008,10 +1224,6 @@ export class OverviewComponent implements OnInit {
 			}
 		});
 
-		// console.log(this.tempMenu);
-		// console.log(this.tempMenu2);
-		// console.log(this.tempMenu3);
-
 		this.tempMenu.forEach((d)=>{
 			if(d["name"]=="001"){
 				this.tempIndex =  d["index"];
@@ -1035,6 +1247,10 @@ export class OverviewComponent implements OnInit {
 				case "001004":
 					this.itemFlag4 = true;
 					this.itemNum4 = d["index"];
+					break;
+				case "001005":
+					this.itemFlag5 = true;
+					this.itemNum5 = d["index"];
 					break;
 				default:
 					break;
@@ -1076,7 +1292,6 @@ export class OverviewComponent implements OnInit {
 
 		this.tempMenu3.length = 0;
 		this.tempMenu3 = tempArray;
-		// console.log(this.tempMenu3);
 
 		this.tempMenu3.forEach((d)=>{
 			switch (d["name"]) {
@@ -1111,6 +1326,10 @@ export class OverviewComponent implements OnInit {
 				case "001004003":
 					this.itemFlag4_3 = true;
 					this.itemNum4_3 = d["index"];
+					break;
+				case "001005001":
+					this.itemFlag5_1 = true;
+					this.itemNum5_1 = d["index"];
 					break;
 				default:
 					break;
