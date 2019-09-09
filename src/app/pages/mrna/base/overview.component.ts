@@ -77,7 +77,8 @@ export class OverviewComponent implements OnInit {
 	chartDesc:string;
 	chartName:string;
 	//设置
-	// setData:object;
+	isSetPanelShow:boolean=false;
+	setConfirmData:object;
 
 	//图例颜色
 	isShowColorPanel: boolean = false;
@@ -254,11 +255,11 @@ export class OverviewComponent implements OnInit {
 
 		this.diffInfo=this.storeService.getStore("diff_info");
 		this.compareGroup={...this.diffInfo[0]};
-		// this.setData={
-		// 	name:this.compareGroup['name'],
-		// 	method:this.compareGroup['method'],
-		// 	pair:[...this.compareGroup['pair']]
-		// };
+
+		this.setConfirmData={
+			value1:this.compareGroup['pair'][0].value,
+			value2:this.compareGroup['pair'][1].value
+		};
 		
 		this.diffGeneUrl=`${config['javaPath']}/basicModule/scatterPlot`;
 		this.diffGeneEntity={
@@ -1095,10 +1096,6 @@ export class OverviewComponent implements OnInit {
 			this.compareGroup['pair'][1].value
 		];
 
-		// this.setData['name'] =this.compareGroup['name'];
-		// this.setData['method']=this.compareGroup['method'];
-		// this.setData['pair']=[...this.compareGroup['pair']];
-
 		this.DiffGene.reGetData();
 	}
 
@@ -1109,21 +1106,28 @@ export class OverviewComponent implements OnInit {
 
 	//设置
 	setClick(){
-		// this.setData['name'] =this.compareGroup['name'];
-		// this.setData['method']=this.compareGroup['method'];
-		// this.setData['pair']=[...this.compareGroup['pair']];
+		this.compareGroup['pair'][0].value=this.setConfirmData['value1'];
+		this.compareGroup['pair'][1].value=this.setConfirmData['value2'];
 	}
 
 	setConfirm(){
+		this.isSetPanelShow=false;
+	
+		this.setConfirmData['value1']=this.compareGroup['pair'][0].value;
+		this.setConfirmData['value2']=this.compareGroup['pair'][1].value;
 
+		this.diffGeneEntity['value']=[
+			this.setConfirmData['value1'],
+			this.setConfirmData['value2']
+		]
+
+		this.DiffGene.reGetData();
 	}
 
 	setCancle(){
-
-	}
-
-	OnChange(){
-
+		this.isSetPanelShow=false;
+		this.compareGroup['pair'][0].value=this.setConfirmData['value1'];
+		this.compareGroup['pair'][1].value=this.setConfirmData['value2'];
 	}
 	
 	//选择面板 确定筛选的数据

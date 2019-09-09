@@ -171,7 +171,7 @@
     </ng-template>
 
     <ng-template #setTemplate>
-        <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzVisible]="panelShow" (nzVisibleChange)="setClick()">
+        <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="isSetPanelShow" (nzVisibleChange)="setClick()">
             <i class="iconfont icon-shezhi" nz-tooltip [nzTitle]="'tableButton.setting' | translate" nz-dropdown></i>
             <div class="ex_container">
                 <div class="ex_top">
@@ -195,7 +195,7 @@
                                     {{item['key']}}
                                 </div>
                                 <div class="con_PessionDis_right">
-                                    <nz-input-number style="margin-top: 8px;" (ngModelChange)="OnChange($event,item)" nz-input placeholder="" nzSize="small" [ngModel]="item['value']" [nzMin]="0"></nz-input-number>
+                                    <nz-input-number style="margin-top: 8px;" nz-input placeholder="" nzSize="small" [(ngModel)]="item['value']" [nzMin]="0"></nz-input-number>
                                 </div>
                             </div>
                         </div>
