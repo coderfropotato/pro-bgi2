@@ -387,7 +387,7 @@ export class OverviewComponent implements OnInit {
 			})
 			.on("mouseover", function() {
 				d3.select(this).attr("fill", "blue");
-				d3.select(this).append("title").text("双击修改");
+				d3.select(this).append("title").text("双击修改标题");
 			})
 			.on("mouseout", function() {
 				d3.select(this).attr("fill", "#333");
@@ -748,7 +748,7 @@ export class OverviewComponent implements OnInit {
 				  titleObj
 					.attr("fill", "blue")
 					.append("title")
-					.text("custom");
+					.text("双击修改标题");
 				},
 				mouseout: function(event, titleObj) {
 				  titleObj.attr("fill", "#333");
@@ -1130,6 +1130,16 @@ export class OverviewComponent implements OnInit {
 						this.updateTitle();
 					})
 				},
+				mouseover: function(event, titleObj) {
+					titleObj
+						.attr("fill", "blue")
+						.append("title")
+						.text("双击修改标题");
+				},
+				mouseout: function(event, titleObj) {
+					titleObj.attr("fill", "#333");
+					titleObj.select("title").remove();
+				},
 				el: "#diffGeneScatter",
 				type: "scatter",
 				radius: 3,
@@ -1147,7 +1157,17 @@ export class OverviewComponent implements OnInit {
 						this.updateTitle();
 					})
 				  },
-				  rotate:45
+				  mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
+					},
+				    rotate:45
 				},
 				y: {
 				  title: yTitle,
@@ -1155,8 +1175,18 @@ export class OverviewComponent implements OnInit {
 					that.promptService.open(event.target.textContent,val=>{
 						this.setYTitle(val);
 						this.updateTitle();
-					})
-				  },
+					 })
+				   },
+				   mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
+					},
 					rotate:60
 				}
 			  },

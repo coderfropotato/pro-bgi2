@@ -485,7 +485,8 @@ export class RelativeSpliceComponent implements OnInit {
 			svgTitle
 				.append('text')
 				.attr("transform", "rotate(-90)")
-				.attr('class', 'titleText')
+                .attr('class', 'titleText')
+                .style("cursor", "pointer")
 				.attr('width', leftNameWidth)
 				.attr('height', nameW)
 				.attr('dx', '0')
@@ -877,6 +878,7 @@ export class RelativeSpliceComponent implements OnInit {
 
             g_UTR.append('text')
             .attr('class', 'MyText')
+            .style("cursor", "pointer")
             .attr('dx', function(d, i) {
                 return 100;
             })
