@@ -185,6 +185,16 @@ export class AlternativeSplicingComponent implements OnInit {
 						this.setChartTitle(val);
 						this.updateTitle();
 					})
+        },
+        mouseover: function(ev,obj){
+					obj
+						.attr("fill", "blue")
+						.append("title")
+						.text("双击修改标题");
+				},
+				mouseout: function(ev,obj) {
+					obj.attr("fill", "#333");
+					obj.select("title").remove();
 				},
 				el: '#alternativeSpliceDiv',
 				type: 'stackBarPercent',
@@ -214,7 +224,17 @@ export class AlternativeSplicingComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
-					}
+          },
+          mouseover: function(event, titleObj) {
+              titleObj
+                  .attr("fill", "blue")
+                  .append("title")
+                  .text("双击修改");
+          },
+          mouseout: function(event, titleObj) {
+              titleObj.attr("fill", "#333");
+              titleObj.select("title").remove();
+          }
 				}
 			},
 			legend: {
