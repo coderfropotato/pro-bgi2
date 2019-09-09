@@ -180,7 +180,7 @@
                             设置
                         </div>
                         <div class="con_PessionDis_content">
-                            请输入非空的大于0的数字 {{compareGroup['pair'][0].key}} ,{{compareGroup['pair'][1].key}} ,的值以重新计算差异基因结果！
+                            请输入<span style="color: red">非空的大于0的数字</span> {{compareGroup['pair'][0].key}} ,{{compareGroup['pair'][1].key}} 的值以重新计算差异基因结果！
                         </div>
                     </div>
                 </div>
@@ -227,7 +227,7 @@
                     (drawChartEmit)="drawDiffGeneScatter($event)"
                     [flex]="true"
                     [chartId]="'diffGeneScatter'"
-                    [chartName]=""
+                    [chartName]="chartName"
                     (refresh)="handlerRefresh()"
                     [chartDescContent]="chartDesc"
                 >
