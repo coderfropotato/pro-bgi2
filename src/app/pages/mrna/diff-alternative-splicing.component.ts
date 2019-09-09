@@ -197,6 +197,16 @@ export class DiffAlternativeSplicingComponent implements OnInit {
                         this.updateTitle();
 					})
 				},
+				mouseover: function(ev,obj){
+					obj
+						.attr("fill", "blue")
+						.append("title")
+						.text("双击修改标题");
+				},
+				mouseout: function(ev,obj) {
+					obj.attr("fill", "#333");
+					obj.select("title").remove();
+				},
 				el: '#diffAlternativeSpliceDiv',
 				type: 'stackBarPercent',
 				width: 660,
@@ -227,6 +237,16 @@ export class DiffAlternativeSplicingComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
+					},
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
 					}
 				}
 			},

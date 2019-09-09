@@ -386,12 +386,12 @@ export class OverviewComponent implements OnInit {
 				});
 			})
 			.on("mouseover", function() {
-				d3.select(this).attr("fill", "#5378f8");
-				//d3.select(this).append("title").text("双击修改");
+				d3.select(this).attr("fill", "blue");
+				d3.select(this).append("title").text("双击修改");
 			})
 			.on("mouseout", function() {
-				d3.select(this).attr("fill", "#000");
-				//d3.select(this).select("title").remove();
+				d3.select(this).attr("fill", "#333");
+				d3.select(this).select("title").remove();
 			});
 
 		//画轴
@@ -604,6 +604,16 @@ export class OverviewComponent implements OnInit {
 						this.updateTitle();
 					})
 				},
+				mouseover: function(ev,obj){
+					obj
+						.attr("fill", "blue")
+						.append("title")
+						.text("双击修改标题");
+				},
+				mouseout: function(ev,obj) {
+					obj.attr("fill", "#333");
+					obj.select("title").remove();
+				},
                 width: 660,
 				el: '#PCADataID',
 				type: 'scatter',
@@ -620,6 +630,16 @@ export class OverviewComponent implements OnInit {
 							this.setXTitle(val);
 							this.updateTitle();
 						})
+					},
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
 					}
 				},
 				y: {
@@ -629,6 +649,16 @@ export class OverviewComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
+					},
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
 					}
 				}
 			},
@@ -779,7 +809,17 @@ export class OverviewComponent implements OnInit {
 						this.setYTitle(val);
 						this.updateTitle();
 					})
-				  }
+				  },
+				  mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
+					}
 				}
 			  },
 			  legend: {
@@ -823,6 +863,16 @@ export class OverviewComponent implements OnInit {
 						this.updateTitle();
 					})
 				},
+				mouseover: function(ev,obj){
+					obj
+						.attr("fill", "blue")
+						.append("title")
+						.text("双击修改标题");
+				},
+				mouseout: function(ev,obj) {
+					obj.attr("fill", "#333");
+					obj.select("title").remove();
+				},
 				custom: ["x", "y","name"],
 				el: "#MapDataID", // area chart type
 				type: "area",
@@ -838,6 +888,16 @@ export class OverviewComponent implements OnInit {
 							this.setXTitle(val);
 							this.updateTitle();
 						})
+					},
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
 					}
 				},
 				y: {
@@ -847,6 +907,16 @@ export class OverviewComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
+					},
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
 					}
 				}
 			},
@@ -912,6 +982,16 @@ export class OverviewComponent implements OnInit {
 						this.updateTitle();
 					})
 				},
+				mouseover: function(ev,obj){
+					obj
+						.attr("fill", "blue")
+						.append("title")
+						.text("双击修改标题");
+				},
+				mouseout: function(ev,obj) {
+					obj.attr("fill", "#333");
+					obj.select("title").remove();
+				},
 				el: '#stackMapData',
 				type: 'stackBar',
 				width: 800,
@@ -928,6 +1008,16 @@ export class OverviewComponent implements OnInit {
 							this.updateTitle();
 						})
 					},
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
+					},
 					rotate: 60
 				},
 				y: {
@@ -937,6 +1027,16 @@ export class OverviewComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
+					},
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
 					}
 				}
 			},

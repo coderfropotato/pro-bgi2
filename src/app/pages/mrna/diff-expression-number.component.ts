@@ -521,6 +521,16 @@ export class DiffExpressionNumberComponent implements OnInit {
 						this.updateTitle();
 					})
 			  },
+			  mouseover: function(ev,obj){
+				obj
+					.attr("fill", "blue")
+					.append("title")
+					.text("双击修改标题");
+			  },
+			  mouseout: function(ev,obj) {
+				obj.attr("fill", "#333");
+				obj.select("title").remove();
+			  },
 			  width:600,
 			  custom: ["compareGroup", "diffexp_updown_total"],
 			  el: "#diffVennNumberId",
@@ -623,6 +633,16 @@ export class DiffExpressionNumberComponent implements OnInit {
 						this.updateTitle();
 					})
 				},
+				mouseover: function(ev,obj){
+					obj
+						.attr("fill", "blue")
+						.append("title")
+						.text("双击修改标题");
+				},
+				mouseout: function(ev,obj) {
+					obj.attr("fill", "#333");
+					obj.select("title").remove();
+				},
 				el: '#diffVennNumberId',
 				type: 'groupBar',
 				innerPadding: 0.01,
@@ -653,6 +673,16 @@ export class DiffExpressionNumberComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
+					},
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
 					}
 					//formatter: (val) => val + '%'
 				}

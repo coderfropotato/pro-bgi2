@@ -503,7 +503,15 @@ export class RelativeSpliceComponent implements OnInit {
 							drawLeftTitle();
 						}
 					});
-				});
+                })
+                .on("mouseover", function() {
+                    d3.select(this).attr("fill", "blue");
+                    d3.select(this).append("title").text("双击修改");
+                })
+                .on("mouseout", function() {
+                    d3.select(this).attr("fill", "#333");
+                    d3.select(this).select("title").remove();
+                });
 		}
 
         function draw_x_y_axis(){
@@ -885,6 +893,14 @@ export class RelativeSpliceComponent implements OnInit {
                         drawBottomLegend();
                     }
                 });
+            })
+            .on("mouseover", function() {
+                d3.select(this).attr("fill", "blue");
+                d3.select(this).append("title").text("双击修改");
+            })
+            .on("mouseout", function() {
+                d3.select(this).attr("fill", "#333");
+                d3.select(this).select("title").remove();
             });
 
         }
