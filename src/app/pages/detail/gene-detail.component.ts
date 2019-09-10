@@ -696,6 +696,7 @@ export class GeneDetailComponent implements OnInit {
 		let config: object = {
 			chart: {
 				// title: "折线图",
+				radius:4,
 				smooth:true,
 				dblclick: function(event) {
 					that.promptService.open(event.target.textContent,val=>{
@@ -776,6 +777,7 @@ export class GeneDetailComponent implements OnInit {
 		let config: object = {
 			chart: {
 				title: "折线图",
+				radius:10,
 				smooth:true,
 				dblclick: function(event) {
 					that.promptService.open(event.target.textContent,val=>{
