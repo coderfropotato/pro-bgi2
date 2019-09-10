@@ -1101,15 +1101,15 @@ export class OverviewComponent implements OnInit {
 			case "Volcano Plot":
 				this.chartDesc='X轴代表log2转换后的差异倍数值，Y轴代表-log10转换后的显著性值。红色代表上调的DEG，蓝色代表下调的DEG，灰色代表非DEG。';
 				this.chartName='差异基因火山图';
-				xTitle=`log2(${that.compareGroup['name']})`;
+				xTitle=`log2(${cGroups[2]}/${cGroups[0]})`;
 				yTitle=that.compareGroup['pair'][1]['key']=="probability" ? `-log10(1-${that.compareGroup['pair'][1]['key']})` : `-log10(${that.compareGroup['pair'][1]['key']})`;
 				chartData=volcanoData;
 				break;
 			case "Scatter Plot":
 				this.chartDesc='X、Y轴均代表基因表达量的对数值。红色代表上调的DEG，蓝色代表下调的DEG，灰色代表非DEG。';
 				this.chartName='差异基因散点图';
-				xTitle=`log10(${cGroups[0]})`;
-				yTitle=`log10(${cGroups[2]})`;
+				xTitle=`log10(Expression of ${cGroups[0]})`;
+				yTitle=`log10(Expression of ${cGroups[2]})`;
 				chartData=scatterData;
 				break;
 			default:
