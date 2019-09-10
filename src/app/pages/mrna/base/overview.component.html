@@ -180,7 +180,7 @@
                             设置
                         </div>
                         <div class="con_PessionDis_content">
-                            请输入<span style="color: red">非空的大于0的数字</span> {{compareGroup['pair'][0].key}} ,{{compareGroup['pair'][1].key}} 的值以重新计算差异基因结果！
+                            调整差异基因阈值，修改后将重新绘制差异基因散点图。
                         </div>
                     </div>
                 </div>
@@ -192,10 +192,11 @@
                         <div class="con_PessionDis_in">
                             <div class="con_PessionDis_row" *ngFor="let item of compareGroup['pair'];index as i;">
                                 <div class="con_PessionDis_left" title="{{'thresholdName.'+item['key'] | translate}}">
-                                    {{item['key']}}
+                                    <span *ngIf="item['key']==='log2FC'">|{{item['key']}}|</span>
+                                    <span *ngIf="item['key']!=='log2FC'">{{item['key']}}</span>
                                 </div>
                                 <div class="con_PessionDis_right">
-                                    <nz-input-number style="margin-top: 8px;" nz-input placeholder="" nzSize="small" [(ngModel)]="item['value']" [nzMin]="0"></nz-input-number>
+                                    <nz-input-number [class.inputError]="!item['value']" style="margin-top: 8px;" nz-input placeholder="" nzSize="small" [(ngModel)]="item['value']" [nzMin]="0"></nz-input-number>
                                 </div>
                             </div>
                         </div>
@@ -205,7 +206,7 @@
                 <div class="con_bottom"></div>
                 <button class="ex_button1" [nzSize]="small" nz-button nzType="Default" (click)="setCancle()">
                     {{'tableButton.cancel' | translate}} </button>
-                <button class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">
+                <button [class.disabled]="!compareGroup['pair'][0].value || !compareGroup['pair'][1].value" class="ex_button2" [nzSize]="small" nz-button nzType="primary" (click)="setConfirm()">
                     {{'tableButton.confirm' | translate}} </button>
             </div>
         </nz-dropdown>
