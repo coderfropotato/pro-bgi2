@@ -333,7 +333,7 @@
                             <nz-divider nzText="{{par['name']}} 参数" nzOrientation="left"></nz-divider>
                             <nz-col nzSpan="6"><span>min Score</span></nz-col>
                             <nz-col nzSpan="10">
-                                <nz-slider [nzStep]="0.1" [nzMin]="par['score'][0]" [nzMax]="par['score'][1]" [(ngModel)]="par['score'][2]"></nz-slider>
+                                <nz-slider [nzStep]="(par.score[1]<10) && par.key!=='target' ? 0.1 : 1" [nzMin]="par['score'][0]" [nzMax]="par['score'][1]" [(ngModel)]="par['score'][2]"></nz-slider>
                             </nz-col>
                             <nz-col nzSpan="6" [nzPush]="1">
                                 <nz-input-number [nzMin]="par['score'][0]" [nzMax]="par['score'][1]" [(ngModel)]="par['score'][2]"></nz-input-number>
@@ -366,7 +366,7 @@
                                 <nz-divider nzText="{{par['name']}} 参数" nzOrientation="left"></nz-divider>
                                 <nz-col nzSpan="6"><span>min Score</span></nz-col>
                                 <nz-col nzSpan="10">
-                                    <nz-slider [nzStep]="0.1" [nzMin]="par['score'][0]" [nzMax]="par['score'][1]"  [(ngModel)]="par['score'][2]"></nz-slider>
+                                    <nz-slider [nzStep]="(par.score[1]<10) && par.key!=='target' ? 0.1 : 1" [nzMin]="par['score'][0]" [nzMax]="par['score'][1]"  [(ngModel)]="par['score'][2]"></nz-slider>
                                 </nz-col>
                                 <nz-col nzSpan="6" [nzPush]="1">
                                     <nz-input-number [nzMin]="par['score'][0]" [nzMax]="par['score'][1]"   [(ngModel)]="par['score'][2]"></nz-input-number>
