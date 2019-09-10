@@ -611,6 +611,16 @@ export class GoClassComponent implements OnInit {
 					if (!_self.isMultipleSelect) {
 						_self.chartBackStatus();
 					}
+				},
+				mouseover: function(event, titleObj) {
+					titleObj
+						.attr("fill", "blue")
+						.append("title")
+						.text("双击修改标题");
+				},
+				mouseout: function(event, titleObj) {
+					titleObj.attr("fill", "#333");
+					titleObj.select("title").remove();
 				}
 			},
 			axis: {
@@ -622,7 +632,17 @@ export class GoClassComponent implements OnInit {
 							this.updateTitle();
 						});
 					},
-					rotate: 60
+					rotate: 60,
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
+					}
 				},
 				y: {
 					title: yTitle,
@@ -631,6 +651,16 @@ export class GoClassComponent implements OnInit {
 							this.setYTitle(newval);
 							this.updateTitle();
 						});
+					},
+					mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
 					}
 				}
 			},

@@ -637,7 +637,16 @@ export class KaFunComponent implements OnInit {
 							drawTopTitle();
 						}
 					});
-				});
+				})
+				.on("mouseover", function() {
+					d3.select(this).attr("fill", "blue");
+					d3.select(this).append("title").text("双击修改标题");
+				})
+				.on("mouseout", function() {
+					d3.select(this).attr("fill", "#333");
+					d3.select(this).select("title").remove();
+				})
+				;
 		}
 
 		function drawLeftTitle(){
@@ -673,6 +682,14 @@ export class KaFunComponent implements OnInit {
 							drawLeftTitle();
 						}
 					});
+				})
+				.on("mouseover", function() {
+					d3.select(this).attr("fill", "blue");
+					d3.select(this).append("title").text("双击修改");
+				})
+				.on("mouseout", function() {
+					d3.select(this).attr("fill", "#333");
+					d3.select(this).select("title").remove();
 				});
 		}
 
