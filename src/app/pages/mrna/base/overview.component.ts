@@ -1259,7 +1259,7 @@ export class OverviewComponent implements OnInit {
 		this.compareGroup['pair'][0].value=this.setConfirmData['value1'];
 		this.compareGroup['pair'][1].value=this.setConfirmData['value2'];
 	}
-	
+
 	//选择面板 确定筛选的数据
 	selectConfirm(data) {
 		this.selectConfirmData = data;
