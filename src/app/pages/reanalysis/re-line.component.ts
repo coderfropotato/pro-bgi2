@@ -366,6 +366,16 @@ export class ReLineComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
                         })
+                    },
+                    mouseover: function(event, titleObj) {
+						titleObj
+							.attr("fill", "blue")
+							.append("title")
+							.text("双击修改");
+					},
+					mouseout: function(event, titleObj) {
+						titleObj.attr("fill", "#333");
+						titleObj.select("title").remove();
 					}
 				}
 			},
