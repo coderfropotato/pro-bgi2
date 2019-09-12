@@ -75,7 +75,7 @@ export class TableSpecialTheadFilter implements PipeTransform {
 						return this.globalService.trustStringHtml(htmlStr);
 					}
 				}
-				
+				console.log(thead)
 				
 			} else {
 				// 其他跳转规则
@@ -189,6 +189,33 @@ export class TableSpecialTheadFilter implements PipeTransform {
 						}
 					})
 
+				}else if(thead=="url_ncbi_gene_id"||thead=="url_hgnc_gene_id"||thead=="url_ensembl_gene_id"){
+					let href:string;
+					if(thead=="url_ncbi_gene_id"){
+						let url=`https://www.ncbi.nlm.nih.gov/gene/`;
+						href=url+value;
+					}else if(thead=="url_hgnc_gene_id"){
+						let url=`https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/`;
+						href=url+value;
+					}else if(thead=="url_ensembl_gene_id"){
+						let url=`https://ensembl.org/${sessionStorage.getItem('species_name')}/Gene/Summary?g=`;
+						href=url+value;
+					}
+
+					htmlStr+=`<a href="${href}" target="_blank">${value}</a>`;
+					
+
+
+					// 有+++ 按+++ 换行  没有默认
+					// if ((''+value).indexOf(valSplitFlag)!=-1) {
+					// 	let textArr = value.split(valSplitFlag);
+					// 	textArr.forEach((v, i) => {
+					// 		htmlStr += `<span>${v}</span>`;
+					// 		htmlStr += i !== textArr.length - 1 && whitespace ? '<br>' : '&emsp;';
+					// 	});
+					// } else {
+					// 	htmlStr += value;
+					// }
 				} else {
 					// 有+++ 按+++ 换行  没有默认
 					if ((''+value).indexOf(valSplitFlag)!=-1) {
