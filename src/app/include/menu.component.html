@@ -13,7 +13,8 @@
             <div class="tool-imgs {{sub['url']}}-img"></div>
             <!-- <img src="../res/img/韦恩图.png" /> diff-venn-->
             <!-- <p ></p> -->
-            <div style="height:40px;">{{sub['content']}}</div>
+            <div *ngIf="isSmallRNA; else notSmallRNA" style="height:40px;">{{sub['content'].replace("差异基因", "差异表达小RNA的靶基因")}}</div>
+            <ng-template #notSmallRNA><div style="height:40px;">{{sub['content']}}</div></ng-template>
             <a class="menu-button">{{"menu."+sub['name'] | translate}}</a>
         </li>
     </ol>
@@ -33,7 +34,7 @@
     </div> -->
 
     <!-- 我的基因集 handleSaveGeneListClick-->
-    <nz-dropdown [nzPlacement]="'bottomRight'" class="fRight"> 
+    <nz-dropdown [nzPlacement]="'bottomRight'" class="fRight">
         <div nz-dropdown *ngIf="showGeneList" class="savegenelist menufunc" (click)="analysisFn()">
             <!-- <span><i class="iconfont icon-fenxi" style="margin-right:2px;color:rgba(108, 210, 150, 0.9);"></i></span> -->
             <!-- <b>{{'myAnalysis' | translate}}</b> -->
