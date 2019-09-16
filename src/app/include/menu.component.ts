@@ -56,7 +56,6 @@ export class MenuComponent implements OnChanges,OnInit {
     moduleSwitch:true;
     analysisList:object[]=[];
     intervalTimer:any=null;
-    isSmallRNA:boolean = false;
 
     @Input() menu: object[];
     @Input() geneSwitch:boolean = true;
@@ -139,7 +138,6 @@ export class MenuComponent implements OnChanges,OnInit {
         this.index = index;
         this.expandItem = menu["children"];
         this.expand=true;
-        this.isSmallRNA = sessionStorage.getItem("project_type") === "smallRNA" && menu["category"] === "category_annotation";
     }
 
     subMenuMouseEnter() {
