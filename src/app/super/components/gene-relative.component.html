@@ -23,8 +23,8 @@
                             <nz-divider [nzText]="relation['name']" nzOrientation="left"></nz-divider>
                             <!-- min score -->
                             <nz-row>
+                                <nz-col nzSpan="6" *ngIf="relation['key']==='rnaplex'">max free energy</nz-col>
                                 <nz-col nzSpan="4" *ngIf="relation['key']!=='rnaplex'">min score</nz-col>
-                                <nz-col nzSpan="4" *ngIf="relation['key']==='rnaplex'">max score</nz-col>
                                 <nz-col nzSpan="10">
                                     <nz-slider [nzDisabled]="relation['disabled']" [nzStep]="(relation['score'][1] - relation['score'][0]) > 10 || relation['key']=='target' ? 1 : 0.1" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]" [(ngModel)]="relation['score'][2]"></nz-slider>
                                 </nz-col>
