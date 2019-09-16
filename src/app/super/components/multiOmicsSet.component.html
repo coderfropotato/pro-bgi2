@@ -75,7 +75,8 @@
         <div class="relationRow" *ngIf="curRelation['score'] && curRelation['score'].length">
             <nz-row>
                 <nz-col nzSpan="5" style="margin-top:8px">
-                    <span>Score</span>
+                    <span *ngIf="curRelation.key!=='rnaplex'">min score</span>
+                    <span *ngIf="curRelation.key==='rnaplex'">max score</span>
                 </nz-col>
                 <nz-col nzSpan="13">
                     <nz-slider [nzStep]="(curRelation.score[1]<10) && curRelation.key!=='target' ? 0.1 : 1 " [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [(ngModel)]="curRelation.score[2]"></nz-slider>
