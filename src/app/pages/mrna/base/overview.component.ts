@@ -266,10 +266,12 @@ export class OverviewComponent implements OnInit {
 			"LCID":this.store.getStore('LCID'),
 			"compareGroup":this.compareGroup['name'],
 			"method":this.compareGroup['method'],
-			"value":[
-				this.compareGroup['pair'][0].value,
-				this.compareGroup['pair'][1].value
-			]
+			"diffThreshold":{
+				[this.compareGroup['method']]:{
+					[this.compareGroup['pair'][0].key]:this.compareGroup['pair'][0].value,
+					[this.compareGroup['pair'][1].key]:this.compareGroup['pair'][1].value
+				}
+			}
 		}
 	}
 
@@ -1062,7 +1064,6 @@ export class OverviewComponent implements OnInit {
 	drawDiffGeneScatter(obj){
 		let that=this;
 		let data=obj.data,type=obj.type;
-		console.log(data)
 		let xTitle="",yTitle="";
 		let cGroups=that.compareGroup['name'].split('-');
 
@@ -1213,7 +1214,7 @@ export class OverviewComponent implements OnInit {
 
 	compareGroupChange(){
 		this.diffInfo.forEach(d=>{
-			if(d['name']===this.compareGroup['name']){
+			if(this.compareGroup['name']===d['name']){
 				this.compareGroup['method']=d['method'];
 				this.compareGroup['pair']=[...d['pair']];
 			}
@@ -1221,10 +1222,12 @@ export class OverviewComponent implements OnInit {
 
 		this.diffGeneEntity['compareGroup']=this.compareGroup['name'];
 		this.diffGeneEntity['method']=this.compareGroup['method'];
-		this.diffGeneEntity['value']=[
-			this.compareGroup['pair'][0].value,
-			this.compareGroup['pair'][1].value
-		];
+		this.diffGeneEntity['diffThreshold']={
+			[this.compareGroup['method']]:{
+				[this.compareGroup['pair'][0].key]:this.compareGroup['pair'][0].value,
+				[this.compareGroup['pair'][1].key]:this.compareGroup['pair'][1].value
+			}
+		};
 
 		this.DiffGene.reGetData();
 	}
@@ -1246,10 +1249,12 @@ export class OverviewComponent implements OnInit {
 		this.setConfirmData['value1']=this.compareGroup['pair'][0].value;
 		this.setConfirmData['value2']=this.compareGroup['pair'][1].value;
 
-		this.diffGeneEntity['value']=[
-			this.setConfirmData['value1'],
-			this.setConfirmData['value2']
-		]
+		this.diffGeneEntity['diffThreshold']={
+			[this.compareGroup['method']]:{
+				[this.compareGroup['pair'][0].key]:this.setConfirmData['value1'],
+				[this.compareGroup['pair'][1].key]:this.setConfirmData['value2']
+			}
+		};
 
 		this.DiffGene.reGetData();
 	}
