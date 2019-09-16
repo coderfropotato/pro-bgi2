@@ -81,7 +81,7 @@
                     <nz-slider [nzStep]="(curRelation.score[1]<10) && curRelation.key!=='target' ? 0.1 : 1 " [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [(ngModel)]="curRelation.score[2]"></nz-slider>
                 </nz-col>
                 <nz-col nzSpan="4" nzOffset="1">
-                    <nz-input-number [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [(ngModel)]="curRelation.score[2]"></nz-input-number>
+                    <nz-input-number [nzMin]="curRelation.score[0]" [nzMax]="curRelation.score[1]" [nzPrecision]="curRelation.key==='target' ? 0 : ''" [(ngModel)]="curRelation.score[2]"></nz-input-number>
                 </nz-col>
             </nz-row>
         </div>

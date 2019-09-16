@@ -29,7 +29,7 @@
                                 </nz-col>
                                 <nz-col nzSpan="1"></nz-col>
                                 <nz-col nzSpan="1">
-                                    <nz-input-number [nzDisabled]="relation['disabled']" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]" [(ngModel)]="relation['score'][2]"></nz-input-number>
+                                    <nz-input-number [nzDisabled]="relation['disabled']" [nzMin]="relation['score'][0]" [nzMax]="relation['score'][1]" [nzPrecision]="relation['key']==='target' ? 0 : ''" [(ngModel)]="relation['score'][2]"></nz-input-number>
                                 </nz-col>
                             </nz-row>
                             <!-- max num -->
