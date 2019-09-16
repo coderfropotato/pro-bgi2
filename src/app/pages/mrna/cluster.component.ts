@@ -558,6 +558,7 @@ export class ClusterComponent implements OnInit {
             },
             legend: {
                 show: true,
+                reverse:true,
                 type: "gradient",
                 min: that.domainRange[0],
                 max: that.domainRange[1],
