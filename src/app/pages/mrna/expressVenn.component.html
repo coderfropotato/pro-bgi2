@@ -28,12 +28,12 @@
                                 </div>
                             </div>
                             <div class="ex_sp_content">
-                                <div class="con_PessionDis_left">
+                                <div class="con_PessionDis_left" style="text-align: center;">
                                     EXP >
                                 </div>
                                 <!-- [nzMin]="expression_Min_value" [nzMax]="expression_Max_value" -->
                                 <div class="con_PessionDis_right">
-                                    <nz-input-number class="ex_input" (ngModelChange)="inputChange($event)"  (mouseleave)="inputBlur($event)" [(ngModel)]="targetValue" [nzStep]="0.1"></nz-input-number>
+                                    <nz-input-number style="margin-top: 4px;" class="ex_input" (ngModelChange)="inputChange($event)"  (mouseleave)="inputBlur($event)" [(ngModel)]="targetValue" [nzStep]="0.1"></nz-input-number>
                                 </div>
                             </div>
                             <div *ngIf="maxFlag" style="color:red;margin-left:18px;">请输入数字范围在0 ~ 99999999之间</div>
