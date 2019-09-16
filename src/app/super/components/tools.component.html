@@ -332,8 +332,8 @@
                         <nz-row class="mb12" *ngFor="let par of netSelect;index as i;">
                             <nz-divider nzText="{{par['name']}} 参数" nzOrientation="left"></nz-divider>
                             <nz-col nzSpan="6">
-                                <span *ngIf="par.key!=='rnaplex'">min Score</span>
-                                <span *ngIf="par.key==='rnaplex'">max score</span>
+                                <span *ngIf="par.key!=='rnaplex'">min score</span>
+                                <span *ngIf="par.key==='rnaplex'">max free energy</span>
                             </nz-col>
                             <nz-col nzSpan="10">
                                 <nz-slider [nzStep]="(par.score[1]<10) && par.key!=='target' ? 0.1 : 1" [nzMin]="par['score'][0]" [nzMax]="par['score'][1]" [(ngModel)]="par['score'][2]"></nz-slider>
@@ -368,8 +368,8 @@
                             <nz-row class="mb12" *ngFor="let par of relativeNetSelect;index as i;">
                                 <nz-divider nzText="{{par['name']}} 参数" nzOrientation="left"></nz-divider>
                                 <nz-col nzSpan="6">
-                                    <span *ngIf="par.key!=='rnaplex'">min Score</span>
-                                    <span *ngIf="par.key==='rnaplex'">max score</span>
+                                    <span *ngIf="par.key!=='rnaplex'">min score</span>
+                                    <span *ngIf="par.key==='rnaplex'">max free energy</span>
                                 </nz-col>
                                 <nz-col nzSpan="10">
                                     <nz-slider [nzStep]="(par.score[1]<10) && par.key!=='target' ? 0.1 : 1" [nzMin]="par['score'][0]" [nzMax]="par['score'][1]"  [(ngModel)]="par['score'][2]"></nz-slider>
