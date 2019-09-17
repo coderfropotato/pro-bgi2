@@ -16,7 +16,8 @@
                 <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'go_rich.title' | translate}}
             </span>
-            <p [hidden]="!expandModuleDesc">{{typeFlag?'go_rich.content2':'go_rich.content' | translate}}</p>
+            <p [hidden]="!expandModuleDesc" *ngIf="typeFlag">{{'go_rich.content2' | translate}}</p>
+            <p [hidden]="!expandModuleDesc" *ngIf="!typeFlag">{{'go_rich.content' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
 
