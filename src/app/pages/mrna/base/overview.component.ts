@@ -79,6 +79,7 @@ export class OverviewComponent implements OnInit {
 	//设置
 	isSetPanelShow:boolean=false;
 	setConfirmData:object;
+	isCompareChange:boolean=false;
 
 	//图例颜色
 	isShowColorPanel: boolean = false;
@@ -1213,10 +1214,10 @@ export class OverviewComponent implements OnInit {
 	}
 
 	compareGroupChange(){
+		this.isCompareChange=true;
 		this.diffInfo.forEach(d=>{
 			if(this.compareGroup['name']===d['name']){
-				this.compareGroup['method']=d['method'];
-				this.compareGroup['pair']=[...d['pair']];
+				this.compareGroup={...d};
 			}
 		})
 
@@ -1239,8 +1240,13 @@ export class OverviewComponent implements OnInit {
 
 	//设置
 	setClick(){
+		if(this.isCompareChange){
+			this.setConfirmData['value1']=this.compareGroup['pair'][0].value;
+			this.setConfirmData['value2']=this.compareGroup['pair'][1].value;
+		}
 		this.compareGroup['pair'][0].value=this.setConfirmData['value1'];
 		this.compareGroup['pair'][1].value=this.setConfirmData['value2'];
+		this.isCompareChange=false;
 	}
 
 	setConfirm(){
