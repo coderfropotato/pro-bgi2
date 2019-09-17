@@ -56,10 +56,12 @@ export class MenuComponent implements OnChanges,OnInit {
     moduleSwitch:true;
     analysisList:object[]=[];
     intervalTimer:any=null;
+    typeFlag: boolean=false;
 
     @Input() menu: object[];
     @Input() geneSwitch:boolean = true;
     @Input() showGeneList:boolean = true;
+    @Input() type: string;
 
     constructor(
         private router: Router,
@@ -86,6 +88,10 @@ export class MenuComponent implements OnChanges,OnInit {
 
     ngOnInit(){
         this.getAnalysisList();
+        console.log(this.type);
+        if(this.type=="smallRNA"){
+            this.typeFlag = true;
+        }
         this.intervalTimer=null;
         this.intervalTimer=setInterval(()=>{
             this.getAnalysisList();
@@ -136,6 +142,13 @@ export class MenuComponent implements OnChanges,OnInit {
             this.timer = null;
         }
         this.index = index;
+        if(this.typeFlag){
+            menu["children"].forEach((d) => {
+                if(d.content.indexOf("差异基因") != -1){
+                    d.content.replace('差异基因','差异表达小RNA的靶基因');
+                }
+            });
+        }
         this.expandItem = menu["children"];
         this.expand=true;
     }
@@ -150,6 +163,7 @@ export class MenuComponent implements OnChanges,OnInit {
 
     jump(submenu) {
         this.initMenuStatus();
+        console.log(this.storeService)
         submenu["active"] = true;
         this.menu[this.index]["active"] = true;
         this.router.navigateByUrl(`/report/mrna/${submenu["url"]}`);

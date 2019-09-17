@@ -23,6 +23,7 @@ declare const $: any;
 export class IndexComponent implements OnInit {
     @ViewChild('menu') menu;
 	menuList: any = [];
+	type: string ='';
 	allThead: any = [];
 	ready: boolean = false;
 	taskCount: number = 0;
@@ -97,6 +98,8 @@ export class IndexComponent implements OnInit {
 								}
 							}
 
+							this.type = data['data'].project_type;
+							console.log(this.type);
 							this.menuList = data['data'].menu_list;
 
 							// this.menuList = [
@@ -327,7 +330,8 @@ export class IndexComponent implements OnInit {
 
 							sessionStorage.setItem('menu_list', JSON.stringify(this.menuList));
 							this.storeService.setStore('menu', this.menuList);
-                            this.storeService.setStore('menuRouteMap', menuRouteMap);
+							this.storeService.setStore('menuRouteMap', menuRouteMap);
+							this.storeService.setStore('store', this.menuList);
                             // console.log(this.storeService);
 							resolve('success');
 						} else {

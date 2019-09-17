@@ -57,19 +57,23 @@
     },
     "go_class": {
         "title": "go class",
-        "content": ""
+        "content": "",
+        "content2": ""
     },
     "go_rich": {
         "title": "go rich",
-        "content": ""
+        "content": "",
+        "content2": ""
     },
     "kegg_class": {
         "title": "kegg class",
-        "content": ""
+        "content": "",
+        "content2": ""
     },
     "kegg_rich": {
         "title": "kegg rich",
-        "content": ""
+        "content": "",
+        "content2": ""
     },
     "alternative": {
         "title": "alternative",

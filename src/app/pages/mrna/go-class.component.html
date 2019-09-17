@@ -6,7 +6,7 @@
                 <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'go_class.title' | translate}}
             </span>
-            <p [hidden]="!expandModuleDesc">{{'go_class.content' | translate}}</p>
+            <p [hidden]="!expandModuleDesc">{{typeFlag?'go_class.content2':'go_class.content' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
 

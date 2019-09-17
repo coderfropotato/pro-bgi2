@@ -150,6 +150,8 @@ export class GoRichComponent implements OnInit {
 
     expandModuleDesc: boolean = false;
 
+    typeFlag: boolean = false;
+    
     constructor(
         private message: MessageService,
 		private ajaxService: AjaxService,
@@ -176,6 +178,11 @@ export class GoRichComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        if(this.storeService.getStore('project_type')=="smallRNA"){
+            this.typeFlag = true;
+        }
+
         this.version = this.storeService.getStore('version');
         this.annotationList=[{
             key:'go_c',
