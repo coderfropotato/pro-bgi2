@@ -147,6 +147,8 @@ export class KeggRichComponent implements OnInit {
 
     expandModuleDesc: boolean = false;
 
+    typeFlag: boolean = false;
+
     constructor(
         private message: MessageService,
 		private ajaxService: AjaxService,
@@ -173,6 +175,10 @@ export class KeggRichComponent implements OnInit {
     }
 
     ngOnInit() {
+        if(this.storeService.getStore('project_type')=="smallRNA"){
+            this.typeFlag = true;
+        }
+        
         this.version = this.storeService.getStore('version');
         (async ()=>{
             this.chartTypeData=[

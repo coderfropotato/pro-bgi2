@@ -6,7 +6,7 @@
                 <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleDesc"></i>
                 {{'kegg_class.title' | translate}}
             </span>
-            <p [hidden]="!expandModuleDesc">{{'kegg_class.content' | translate}}</p>
+            <p [hidden]="!expandModuleDesc">{{typeFlag?'kegg_class.content2':'kegg_class.content' | translate}}</p>
             <ng-content select=".gene-switch-module"></ng-content>
         </div>
 

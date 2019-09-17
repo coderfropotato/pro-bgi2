@@ -152,7 +152,9 @@ export class GoClassComponent implements OnInit {
 	compareGroupList: any[] = [];
     compareGroup: any = '';
 
-    tableParamsDone:boolean = false;
+	tableParamsDone:boolean = false;
+	
+	typeFlag: boolean = false;
 
 	constructor(
 		private message: MessageService,
@@ -183,6 +185,9 @@ export class GoClassComponent implements OnInit {
             this.selectData = await this.getSelect();
 			this.selectedVal = this.selectData.length ? this.selectData[0] : null;
 
+			if(this.storeService.getStore('project_type')=="smallRNA"){
+				this.typeFlag = true;
+			}
 			this.compareGroupList = this.storeService.getStore('diff_plan');
 			this.compareGroup = this.compareGroupList[0];
 
