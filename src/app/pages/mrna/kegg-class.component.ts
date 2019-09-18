@@ -457,6 +457,7 @@ export class KeggClassComponent implements OnInit {
 				this.chartEntity['compareGroup'] = this.compareGroup;
 			} else {
 				if (curExceed) {
+					this.bigTable._clearFilterWithoutRequest();
 					this.bigTable._initCheckStatus();
 					this.bigTable._setParamsOfEntityWithoutRequest('compareGroup', this.compareGroup);
 					this.bigTable._getData(true);
@@ -481,6 +482,7 @@ export class KeggClassComponent implements OnInit {
 				this.chartEntity['checkedClassifyType'] = this.selectedVal;
 			} else {
 				if (curExceed) {
+					this.bigTable._clearFilterWithoutRequest();
 					this.bigTable._initCheckStatus();
 					this.bigTable._setParamsOfEntityWithoutRequest('checkedClassifyType', this.selectedVal);
 					this.bigTable._getData(true);
