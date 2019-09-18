@@ -1237,9 +1237,21 @@ export class GeneDetailComponent implements OnInit {
 	}
 
 	download(filename, text) {
-		var date = new Date();
-		var d = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " +date.getHours()+ ":" + date.getMinutes()+":"+date.getSeconds();
-		let tempName = filename +d+".txt";
+
+		//console.log(this.geneID)
+
+		// var date = new Date();
+		// var d = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " +date.getHours()+ ":" + date.getMinutes()+":"+date.getSeconds();
+		var d = "";
+		if(filename == "转录本序列"){
+			d="_transcripts.fa";
+		}else if(filename == "CDS序列"){
+			d="_cds.fa";
+		}else if(filename == "蛋白序列"){
+			d="_protein.fa";
+		}
+		
+		let tempName = this.geneID +d;
 		var pom = document.createElement('a');
 		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
 		pom.setAttribute('download', tempName);
