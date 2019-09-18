@@ -12,7 +12,7 @@
                     <i class="iconfont expand-icon" [class.icon-zhankai1]="expandModuleTable"></i>
                     {{annotation}}富集结果表
                 </span>
-                <p [hidden]="!expandModuleTable">根据 {{annotation}} 注释分类，使用 R 软件中的 phyper 函数进行富集分析，计算 Pvalue，然后对 Pvalue 进行 FDR 校正，通常 FDR &lt;= 0.01的功能视为显著富集。</p>
+                <p [hidden]="!expandModuleTable">根据 {{annotation}} 注释分类，使用 R 软件中的 phyper 函数进行富集分析，计算 Pvalue，然后对 Pvalue 进行 FDR 校正，通常 Qvalue &lt;= 0.05的功能视为显著富集。</p>
                     <!-- {{'go_rich.content' | translate}}</p> -->
                 <ng-content select=".gene-switch-module"></ng-content>
             </div>
