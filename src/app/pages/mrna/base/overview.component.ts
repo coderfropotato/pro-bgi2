@@ -1250,6 +1250,7 @@ export class OverviewComponent implements OnInit {
 	}
 
 	setConfirm(){
+		if(!this.compareGroup['pair'][0].value || !this.compareGroup['pair'][1].value) return;
 		this.isSetPanelShow=false;
 	
 		this.setConfirmData['value1']=this.compareGroup['pair'][0].value;
