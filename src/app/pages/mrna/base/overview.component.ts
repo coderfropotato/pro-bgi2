@@ -1123,6 +1123,9 @@ export class OverviewComponent implements OnInit {
 				break;
 		}
 
+		let xmin=d3.min(chartData,d=>d.x);
+		let ymin=d3.min(chartData,d=>d.y);
+
 		let config:object={
 			chart: {
 				title: that.chartName,
@@ -1144,6 +1147,7 @@ export class OverviewComponent implements OnInit {
 				},
 				el: "#diffGeneScatter",
 				type: "scatter",
+				width: 600,
 				radius: 3,
 				hoverRadius: 6,
 				custom: [ 'x', 'y' ,'type'], // x y legend
@@ -1153,6 +1157,7 @@ export class OverviewComponent implements OnInit {
 			  axis: {
 				x: {
 				  title: xTitle,
+				  minScale: xmin <= 0 ? Math.floor(xmin - 1) : Math.ceil(xmin + 1),
 				  dblclick: function(event) {
 					that.promptService.open(event.target.textContent,val=>{
 						this.setXTitle(val);
@@ -1168,11 +1173,11 @@ export class OverviewComponent implements OnInit {
 					mouseout: function(event, titleObj) {
 						titleObj.attr("fill", "#333");
 						titleObj.select("title").remove();
-					},
-				    rotate:45
+					}
 				},
 				y: {
 				  title: yTitle,
+				  minScale: ymin <= 0 ? Math.floor(ymin - 1) : Math.ceil(ymin + 1),
 				  dblclick: function(event) {
 					that.promptService.open(event.target.textContent,val=>{
 						this.setYTitle(val);
@@ -1188,8 +1193,7 @@ export class OverviewComponent implements OnInit {
 					mouseout: function(event, titleObj) {
 						titleObj.attr("fill", "#333");
 						titleObj.select("title").remove();
-					},
-					rotate:60
+					}
 				}
 			  },
 			  legend: {
