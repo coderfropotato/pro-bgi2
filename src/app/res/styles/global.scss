@@ -1699,6 +1699,7 @@ button {
         cursor: pointer;
         &:not(.nocursor):hover {
             @include hover-animate($them_color);
+            opacity: .8;
         }
         &.nocursor {
             cursor: unset;
