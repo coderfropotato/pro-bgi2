@@ -473,7 +473,7 @@ export class RelativeSpliceComponent implements OnInit {
         //drawBottomLegend();
 
         function drawLeftTitle(){
-			let tempName = [];
+            let tempName = [];
 			tempName.push(that.ytextContent);
 			let nameW=getNameLength(tempName);
 			let padding_w = (svg_height-nameW)/2;
@@ -491,14 +491,16 @@ export class RelativeSpliceComponent implements OnInit {
 				.attr('height', nameW)
 				.attr('dx', '0')
 				.attr('dy', '0')
-				.text(function(d, i) {
-					return that.ytextContent;
-				})
-				.on('click', function(d, i) {
-					let self = that;
-					that.promptService.open(d, (data) => {
+				// .text(function(d, i) {
+				// 	return that.ytextContent;
+                // })
+                .text(that.ytextContent)
+				.on('dblclick',function() {
+                    console.log(6666)
+					//let self = that;
+					that.promptService.open(that.ytextContent, (data) => {
 						if (data != '') {
-							self.ytextContent = data;
+							that.ytextContent = data;
 							svgTitle.remove();
 							//self.updateKaFun();
 							drawLeftTitle();
@@ -886,9 +888,9 @@ export class RelativeSpliceComponent implements OnInit {
                 return 30;
             })
             .text(that.textContent)
-            .on('click', function(d, i) {
+            .on('dblclick', function() {
                 let self = that;
-                that.promptService.open(d, (data) => {
+                that.promptService.open(that.textContent, (data) => {
                     if (data != '') {
                         self.textContent = data;
                         g_UTR.remove();
