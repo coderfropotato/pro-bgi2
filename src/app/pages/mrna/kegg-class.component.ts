@@ -455,9 +455,12 @@ export class KeggClassComponent implements OnInit {
 
 			if (this.isExceed != curExceed) {
 				this.chartEntity['compareGroup'] = this.compareGroup;
+				this.chartEntity['searchList'] = [];
 			} else {
 				if (curExceed) {
+					this.bigTable._clearFilterWithoutRequest();
 					this.bigTable._initCheckStatus();
+					this.chartEntity['searchList'] = [];
 					this.bigTable._setParamsOfEntityWithoutRequest('compareGroup', this.compareGroup);
 					this.bigTable._getData(true);
 				} else {
@@ -479,9 +482,12 @@ export class KeggClassComponent implements OnInit {
 			let curExceed = await this.getGeneCount();
 			if (this.isExceed != curExceed) {
 				this.chartEntity['checkedClassifyType'] = this.selectedVal;
+				this.chartEntity['searchList'] = [];
 			} else {
 				if (curExceed) {
+					this.bigTable._clearFilterWithoutRequest();
 					this.bigTable._initCheckStatus();
+					this.chartEntity['searchList'] = [];
 					this.bigTable._setParamsOfEntityWithoutRequest('checkedClassifyType', this.selectedVal);
 					this.bigTable._getData(true);
 				} else {

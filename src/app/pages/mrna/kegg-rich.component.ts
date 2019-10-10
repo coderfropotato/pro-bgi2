@@ -420,6 +420,7 @@ export class KeggRichComponent implements OnInit {
 
     handleSelectChange(){
         this.chartEntity['compareGroup'] = this.selectedVal;
+        this.bigTable._clearFilterWithoutRequest();
         this.bigTable._setParamsOfEntity('compareGroup',this.selectedVal);
         this.checkedData.length=0;
         this.checkedDrawGeneList.length=0;

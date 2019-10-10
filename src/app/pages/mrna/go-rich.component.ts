@@ -446,6 +446,7 @@ export class GoRichComponent implements OnInit {
             }
         })
         this.chartEntity['enrichmentType'] = this.annotation;
+        this.bigTable._clearFilterWithoutRequest();
         this.bigTable._setParamsOfEntity('enrichmentType',this.annotation);
         this.checkedData.length=0;
         this.checkedDrawGeneList.length=0;
@@ -458,6 +459,7 @@ export class GoRichComponent implements OnInit {
 
     handleSelectChange(){
         this.chartEntity['compareGroup'] = this.selectedVal;
+        this.bigTable._clearFilterWithoutRequest();
         this.bigTable._setParamsOfEntity('compareGroup',this.selectedVal);
         this.checkedData.length=0;
         this.checkedDrawGeneList.length=0;

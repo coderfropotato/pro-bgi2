@@ -192,8 +192,11 @@
                         <div class="con_PessionDis_in">
                             <div class="con_PessionDis_row" *ngFor="let item of compareGroup['pair'];index as i;">
                                 <div class="con_PessionDis_left" title="{{'thresholdName.'+item['key'] | translate}}">
-                                    <span *ngIf="item['key']==='log2FC'">|{{item['key']}}|</span>
-                                    <span *ngIf="item['key']!=='log2FC'">{{item['key']}}</span>
+                                    <span *ngIf="item['key']==='log2FC'">|{{item['key']}}| >=</span>
+                                    <span *ngIf="item['key']!=='log2FC'">{{item['key']}} 
+                                        <span *ngIf="item['key']!=='probability'"><=</span>
+                                        <span *ngIf="item['key']==='probability'">>=</span>
+                                    </span>
                                 </div>
                                 <div class="con_PessionDis_right">
                                     <nz-input-number [class.inputError]="!item['value']" style="margin-top: 8px;" nz-input placeholder="" nzSize="small" [(ngModel)]="item['value']" [nzMin]="0"></nz-input-number>
