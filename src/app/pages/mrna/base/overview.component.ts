@@ -383,6 +383,9 @@ export class OverviewComponent implements OnInit {
 			.on("dblclick", function() {
 				// var textNode = d3.select(this).node();
 				// toolService.popPrompt(textNode);
+				if(d3.select(this).select("title")._parents.length==1){
+					d3.select(this).select("title").remove();
+				}
 				var textNode = d3.select(this).node();
 				that.promptService.open(textNode.innerHTML,(data)=>{
 					textNode.textContent = data;
