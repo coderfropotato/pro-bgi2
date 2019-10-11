@@ -561,7 +561,15 @@ export class DiffExpressionNumberComponent implements OnInit {
 						this.setYTitle(val);
 						this.updateTitle();
 					})
-				}
+				},
+                mouseover: function (event,node) {
+                  node.attr("fill", "#5378f8");
+                  node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                  node.attr("fill", "#000");
+                  node.select("title").remove();
+                },
 			  },
 			},
 			legend: {

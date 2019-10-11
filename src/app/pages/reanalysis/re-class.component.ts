@@ -544,7 +544,15 @@ export class ReClassComponent implements OnInit {
 					if (!_self.isMultipleSelect) {
 						_self.chartBackStatus();
 					}
-				}
+				},
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			axis: {
 				x: {
@@ -555,7 +563,15 @@ export class ReClassComponent implements OnInit {
 							this.updateTitle();
 						});
 					},
-					rotate: 60
+					rotate: 60,
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				},
 				y: {
 					title: yTitle,
@@ -564,7 +580,15 @@ export class ReClassComponent implements OnInit {
 							this.setYTitle(newval);
 							this.updateTitle();
 						});
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				}
 			},
 			legend: {

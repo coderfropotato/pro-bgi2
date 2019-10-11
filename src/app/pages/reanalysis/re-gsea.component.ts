@@ -1089,9 +1089,11 @@ export class ReGseaComponent implements OnInit {
                 .attr("text-anchor", "middle")
                 .style("cursor", "pointer")
                 .on("mouseover", function () {
-                    d3.select(this).append("title").text("双击修改标题");
+                    d3.select(this).attr("fill", "#5378f8");
+                    d3.select(this).append("title").text("双击修改");
                 })
                 .on("mouseout", function () {
+                    d3.select(this).attr("fill", "#000");
                     d3.select(this).select("title").remove();
                 })
                 .on("dblclick", function () {

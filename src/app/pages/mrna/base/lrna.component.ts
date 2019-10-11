@@ -158,7 +158,15 @@ export class LrnaComponent implements OnInit {
 				custom: [ 'name', 'value' ],
 				el: '#RNADataID',
 				type: 'pie',
-				data: chartData
+				data: chartData,
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			legend: {
 				show: true,
@@ -216,7 +224,15 @@ export class LrnaComponent implements OnInit {
 				type: 'groupBar',
 				width: tempWidth,
 				custom: [ 'key', 'value', 'category' ],
-				data: chartData
+				data: chartData,
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			axis: {
 				x: {
@@ -227,7 +243,15 @@ export class LrnaComponent implements OnInit {
 							this.updateTitle();
 						})
 					},
-					rotate: 60
+					rotate: 60,
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				},
 				y: {
 					title: 'Length distribution of small RNA in 8 libraries',
@@ -236,7 +260,15 @@ export class LrnaComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 					// formatter:val=>val+"%"
 				}
 			},
