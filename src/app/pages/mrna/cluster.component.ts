@@ -570,11 +570,13 @@ export class ClusterComponent implements OnInit {
                     this.legendIndex = i;
                     this.isShowColorPanel = true;
                 },
-                mouseover: function(event, legendObj) {
-                    legendObj.append("title").text("单击修改颜色");
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
                 },
-                mouseout: function(event, legendObj) {
-                    legendObj.select("title").remove();
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
                 },
                 oLegend:{
                     show:true,

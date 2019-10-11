@@ -219,7 +219,15 @@ export class ReadsFilterComponent implements OnInit {
             custom: ["name", "value"],
             el: "#rawDataID",
             type: "pie",
-            data: tempArray
+            data: tempArray,
+            mouseover: function (event,node) {
+                node.attr("fill", "#5378f8");
+                node.append("title").text("双击修改");
+            },
+            mouseout: function (event,node) {
+                node.attr("fill", "#000");
+                node.select("title").remove();
+            },
         },
         legend: {
             show: true,
@@ -276,6 +284,14 @@ export class ReadsFilterComponent implements OnInit {
             type: "categoryLine",
             data: chartData,
             interpolate: "cardinal", // cardinal basic step  linear
+            mouseover: function (event,node) {
+                node.attr("fill", "#5378f8");
+                node.append("title").text("双击修改");
+            },
+            mouseout: function (event,node) {
+                node.attr("fill", "#000");
+                node.select("title").remove();
+            },
         },
         axis: {
             x: {
@@ -286,7 +302,15 @@ export class ReadsFilterComponent implements OnInit {
                         this.setXTitle(val);
                         this.updateTitle();
                     })
-                }
+                },
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
             },
             y: {
                 title: "Percentage (%)",
@@ -295,7 +319,15 @@ export class ReadsFilterComponent implements OnInit {
                         this.setYTitle(val);
                         this.updateTitle();
                     })
-                }
+                },
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
             }
         },
         legend: {
@@ -402,7 +434,7 @@ export class ReadsFilterComponent implements OnInit {
         })
         .on("mouseover", function() {
             d3.select(this).attr("fill", "#5378f8");
-            //d3.select(this).append("title").text("双击修改");
+            d3.select(this).append("title").text("双击修改");
         })
         .on("mouseout", function() {
             d3.select(this).attr("fill", "#000");
@@ -426,7 +458,7 @@ export class ReadsFilterComponent implements OnInit {
         })
         .on("mouseover", function() {
             d3.select(this).attr("fill", "#5378f8");
-            //d3.select(this).append("title").text("双击修改");
+            d3.select(this).append("title").text("双击修改");
         })
         .on("mouseout", function() {
             d3.select(this).attr("fill", "#000");
@@ -449,7 +481,7 @@ export class ReadsFilterComponent implements OnInit {
         })
         .on("mouseover", function() {
             d3.select(this).attr("fill", "#5378f8");
-            //d3.select(this).append("title").text("双击修改");
+            d3.select(this).append("title").text("双击修改");
         })
         .on("mouseout", function() {
             d3.select(this).attr("fill", "#000");

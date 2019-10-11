@@ -870,7 +870,15 @@ export class DiffExpressionComponent implements OnInit {
 				custom: [ 'name', 'value' ],
 				el: '#diffVennId',
 				type: 'pie',
-				data: data['rows']
+				data: data['rows'],
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			legend: {
 				show: true,

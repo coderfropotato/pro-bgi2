@@ -238,7 +238,15 @@ export class InformationComponent implements OnInit {
 				custom: [ 'name', 'value' ],
 				el: '#RNAClassID',
 				type: 'pie',
-				data: tempArray
+				data: tempArray,
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			legend: {
 				show: true,
@@ -304,7 +312,15 @@ export class InformationComponent implements OnInit {
 				type: 'stackBar',
 				width: 800,
 				custom: [ 'rna_len_item', 'rna_len_all_rna',"rna_len_lncrna_known","rna_len_lncrna_novel",'rna_len_mrna_known',"rna_len_mrna_novel" ],
-				data: chartData
+				data: chartData,
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			axis: {
 				x: {
@@ -315,7 +331,15 @@ export class InformationComponent implements OnInit {
 							this.updateTitle();
 						})
 					},
-					rotate: 60
+					rotate: 60,
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				},
 				y: {
 					title: 'Number of Transcripts',
@@ -324,7 +348,15 @@ export class InformationComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				}
 			},
 			legend: {
@@ -379,7 +411,15 @@ export class InformationComponent implements OnInit {
 				innerPadding: 0.01,
 				width: 800,
 				custom: [ 'key', 'value', 'category' ],
-				data: chartData
+				data: chartData,
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			axis: {
 				x: {
@@ -389,7 +429,15 @@ export class InformationComponent implements OnInit {
 							this.setXTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 					//rotate: 60
 				},
 				y: {
@@ -399,7 +447,15 @@ export class InformationComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 					//formatter: (val) => val + '%'
 				}
 			},
@@ -466,7 +522,15 @@ export class InformationComponent implements OnInit {
 				type: 'stackBar',
 				width: 800,
 				custom: [ 'exon_num_item', 'exon_num_all_rna','exon_num_lncrna_known','exon_num_lncrna_novel','exon_num_mrna_known','exon_num_mrna_novel' ],
-				data: chartData
+				data: chartData,
+                mouseover: function (event,node) {
+                  node.attr("fill", "#5378f8");
+                  node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                  node.attr("fill", "#000");
+                  node.select("title").remove();
+                },
 			},
 			axis: {
 				x: {
@@ -476,7 +540,15 @@ export class InformationComponent implements OnInit {
 							this.setXTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 					// rotate:60
 				},
 				y: {
@@ -486,7 +558,15 @@ export class InformationComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				}
 			},
 			legend: {
@@ -545,7 +625,15 @@ export class InformationComponent implements OnInit {
 				type: 'stackBarPercent',
 				width: 660,
 				custom: [ 'sample_name','total', 'mirna_first_a','mirna_first_u','mirna_first_c','mirna_first_g'],
-				data: chartData
+				data: chartData,
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			axis: {
 				x: {
@@ -556,7 +644,15 @@ export class InformationComponent implements OnInit {
 							this.updateTitle();
 						})
 					},
-					rotate: 60
+					rotate: 60,
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				},
 				y: {
 					title: 'Percent(%)',
@@ -565,7 +661,15 @@ export class InformationComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				}
 			},
 			legend: {
