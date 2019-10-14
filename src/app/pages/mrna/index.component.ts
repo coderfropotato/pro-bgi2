@@ -23,7 +23,7 @@ declare const $: any;
 export class IndexComponent implements OnInit {
     @ViewChild('menu') menu;
 	menuList: any = [];
-	type: string ='';
+	ptype: string ='';
 	allThead: any = [];
 	ready: boolean = false;
 	taskCount: number = 0;
@@ -98,8 +98,8 @@ export class IndexComponent implements OnInit {
 								}
 							}
 
-							this.type = data['data'].project_type;
-							console.log(this.type);
+							this.ptype = data['data'].project_type;
+							console.log(this.ptype);
 							this.menuList = data['data'].menu_list;
 
 							// this.menuList = [

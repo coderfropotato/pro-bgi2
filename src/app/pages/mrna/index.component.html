@@ -1,6 +1,6 @@
 <div class="report-mrna report-wrap">
     <app-top *ngIf="ready" (logoClick)="handleLogoClick($event)"></app-top>
-    <app-menu [menu]="menuList" [type]="type" #menu></app-menu>
+    <app-menu [menu]="menuList" [ptype]="ptype" #menu></app-menu>
     <!-- [@routeAnimation]="routerStateCode" -->
     <div *ngIf="ready" class="report-content">
         <router-outlet></router-outlet>
