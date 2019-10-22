@@ -186,7 +186,15 @@ export class SnpOverviewComponent implements OnInit {
 				type: 'stackBarPercent',
 				width: 660,
 				custom: [ 'sample_name','total', 'A_G','C_T','A_C','A_T','C_G','G_T'],
-        		data: chartData
+        		data: chartData,
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			axis: {
 				x: {
@@ -206,7 +214,15 @@ export class SnpOverviewComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				}
 			},
 			legend: {

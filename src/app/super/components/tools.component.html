@@ -523,9 +523,9 @@
         <nz-drawer [nzTitle]="titleTpl" [nzVisible]="toolsService['visible'] && childVisible && selectType=='gsea'" [nzClosable]="false" [nzMaskStyle]="{ 'background-color': 'transparent' }" [nzMaskClosable]="true" [nzBodyStyle]="{ padding: '12px' }" [nzWrapClassName]="'params-wrap'"
             [nzWidth]="396" nzPlacement="right" (nzOnClose)="handlerChildClose()">
             <nz-spin nzTip='正在提交重分析，请稍后...' [nzSpinning]="isSubmitReanalysis">
-                <nz-alert  nzType="info" [nzMessage]="'useage14' | translate" nzShowIcon></nz-alert>
+                <nz-alert  nzType="info" [nzMessage]="'useage14' | translate" nzShowIcon style="font-size: 16px;"></nz-alert>
                 <!-- 1.选择样本 -->
-                <p style="margin-top: 0.5em;">1.选择样本</p>
+                <p style="margin-top: 0.6em;margin-bottom: 0.6em !important;font-size: 16px;">1.选择样本</p>
                 <nz-row class="mb12" nzAlign="middle">
                     <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="geasTopRadioChange()">
                         <label nz-radio nzValue="A">按组选择</label>
@@ -534,7 +534,7 @@
                 </nz-row>
                 <nz-row class="mb12" nzAlign="middle" *ngIf="radioAFlag">
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
-                        <div nz-col nzSpan="6">对照组：</div>
+                        <div nz-col nzSpan="6" style="font-size: 14px;">对照组：</div>
                         <div nz-col nzSpan="18">
                                 <nz-select
                                 style="width: 100%;"
@@ -549,7 +549,7 @@
                         </div>
                     </nz-row>
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
-                        <div nz-col nzSpan="6">处理组：</div>
+                        <div nz-col nzSpan="6" style="font-size: 14px;">处理组：</div>
                         <div nz-col nzSpan="18">
                             <nz-select
                                 style="width: 100%;"
@@ -568,7 +568,7 @@
 
                 <nz-row class="mb12" nzAlign="middle" *ngIf="radioBFlag">
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
-                        <div nz-col nzSpan="6">对照组：</div>
+                        <div nz-col nzSpan="6" style="font-size: 14px;">对照组：</div>
                         <div nz-col nzSpan="18">
                             <input nz-input placeholder="请输入组名" [(ngModel)]="inputBFrist" (ngModelChange)="inputBFristChange($event)" />
                         </div>
@@ -583,7 +583,7 @@
                         </div>
                     </nz-row>
                     <nz-row class="mb12" nzType="flex" nzAlign="middle">
-                        <div nz-col nzSpan="6">处理组：</div>
+                        <div nz-col nzSpan="6" style="font-size: 14px;">处理组：</div>
                         <div nz-col nzSpan="18">
                             <input nz-input placeholder="请输入组名" [(ngModel)]="inputBSecond" (ngModelChange)="inputBSecondChange($event)" />
                         </div>
@@ -600,8 +600,9 @@
                     
                 </nz-row>
 
+                <nz-row class="mb12" style="height:0.5px;border:0.1px solid #ccc;margin-bottom:6px !important"></nz-row>
                 <!-- 2.过滤阈值 -->
-                <p>2.过滤阈值</p>
+                <p style="margin-bottom: 0.6em !important;font-size: 16px;">2.过滤阈值</p>
                 <nz-row class="mb12" nzType="flex" nzAlign="middle">
                     <span nz-col nzSpan="17" style="font-size: 13px;">Max size (exclude larger sets)：</span>
                     <div nz-col nzSpan="1">
@@ -617,8 +618,9 @@
                 </nz-row>
                 <p *ngIf="minFlag" style="color:red;">不能大于Max size (exclude larger sets)的值</p>
 
+                <nz-row class="mb12" style="height:0.5px;border:0.1px solid #ccc;margin-bottom:6px !important"></nz-row>
                 <!-- 3.数据库 -->
-                <p>3.数据库</p>
+                <p style="margin-bottom: 0.6em !important;font-size: 16px;">3.数据库</p>
                 <nz-row class="mb12" nzAlign="middle" *ngIf="this.gseaDataBaseLeft.length>0 && this.gseaDataBaseRight.length>0">
                     <nz-radio-group [(ngModel)]="radioDataBase" (ngModelChange)="geasBottomRadioChange()">
                         <label nz-radio nzValue="A">GESA MSigDB</label>
@@ -634,7 +636,7 @@
                 </nz-row>
                 <nz-row class="mb12" nzAlign="middle" *ngIf="baseFlag2">
                     <div class="tool-params-tab" *ngFor="let item of gseaDataBaseRight;index as i;">
-                        <p>{{item['key']}}</p>
+                        <p style="margin-bottom: 0.3em !important;">{{item['key']}}</p>
                         <button class="mb12 mr12" (click)="selectDataBaseRight(tt)" nz-tooltip [nzTitle]="tt['name']" [class.btnActive]="tt['checked']" *ngFor="let tt of item['value'];index as i;" nz-button nzType="default" nzSize="middle">{{tt['name']}}</button>
                     </div>
                 </nz-row>

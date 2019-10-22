@@ -157,6 +157,14 @@ export class SnpDistributionComponent implements OnInit {
               title.textContent = data;
           })
         },
+        mouseover: function (event,node) {
+            node.attr("fill", "#5378f8");
+            node.append("title").text("双击修改");
+        },
+        mouseout: function (event,node) {
+            node.attr("fill", "#000");
+            node.select("title").remove();
+        },
         width:600,
         height:400,
         padding:0,

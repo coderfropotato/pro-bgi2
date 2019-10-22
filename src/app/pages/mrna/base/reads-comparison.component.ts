@@ -178,12 +178,20 @@ export class ReadsComparisonComponent implements OnInit {
 					this.updateTitle();
 				})
 			},
-				width:660,
-				el: "#rondData",
-				custom: ["window_pos", "window_read_num"],
-				type: "line",
-				interpolate:'cardinal',
-				data: temps
+            width:660,
+            el: "#rondData",
+            custom: ["window_pos", "window_read_num"],
+            type: "line",
+            interpolate:'cardinal',
+            data: temps,
+            mouseover: function (event,node) {
+                node.attr("fill", "#5378f8");
+                node.append("title").text("双击修改");
+            },
+            mouseout: function (event,node) {
+                node.attr("fill", "#000");
+                node.select("title").remove();
+            },
       	},
 		axis: {
 			x: {
@@ -195,7 +203,15 @@ export class ReadsComparisonComponent implements OnInit {
 						this.setXTitle(val);
 						this.updateTitle();
 					})
-				}
+				},
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			y: {
 				title: "Reads Number of Each Window",
@@ -204,7 +220,15 @@ export class ReadsComparisonComponent implements OnInit {
 						this.setYTitle(val);
 						this.updateTitle();
 					})
-				}
+				},
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			}
 		},
 		tooltip: function(d,index) {
@@ -261,7 +285,15 @@ export class ReadsComparisonComponent implements OnInit {
 			custom: ["percent_covered", "percent_transcript"],
 			el: "#coverageData",
 			type: "bar",
-			data: data.rows
+			data: data.rows,
+            mouseover: function (event,node) {
+                node.attr("fill", "#5378f8");
+                node.append("title").text("双击修改");
+            },
+            mouseout: function (event,node) {
+                node.attr("fill", "#000");
+                node.select("title").remove();
+            },
 		},
 		axis: {
 			x: {
@@ -271,7 +303,15 @@ export class ReadsComparisonComponent implements OnInit {
 						this.setXTitle(val);
 						this.updateTitle();
 					})
-				}
+				},
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			y: {
 				title: "Percentage of Transcripts(%)",
@@ -280,7 +320,15 @@ export class ReadsComparisonComponent implements OnInit {
 						this.setYTitle(val);
 						this.updateTitle();
 					})
-				}
+				},
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 		},
 		legend: {
@@ -341,7 +389,15 @@ export class ReadsComparisonComponent implements OnInit {
 			el: "#saturationData",
 			custom: ["readnum_100k", "gene_idt_ratio"],
 			type: "line",
-			data: temps
+			data: temps,
+            mouseover: function (event,node) {
+                node.attr("fill", "#5378f8");
+                node.append("title").text("双击修改");
+            },
+            mouseout: function (event,node) {
+                node.attr("fill", "#000");
+                node.select("title").remove();
+            },
       	},
 		axis: {
 			x: {
@@ -352,7 +408,15 @@ export class ReadsComparisonComponent implements OnInit {
 						this.setXTitle(val);
 						this.updateTitle();
 					})
-				}
+				},
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			y: {
 				title: "Gene Identification ratio(%)",
@@ -361,7 +425,15 @@ export class ReadsComparisonComponent implements OnInit {
 						this.setYTitle(val);
 						this.updateTitle();
 					})
-				}
+				},
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			}
       	},
 		tooltip: function(d,index) {

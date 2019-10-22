@@ -629,7 +629,7 @@ export class KaFunComponent implements OnInit {
 				})
 				.on('click', function(d, i) {
 					let self = that;
-					that.promptService.open(d, (data) => {
+					that.promptService.open(that.textContent, (data) => {
 						if (data != '') {
 							self.textContent = data;
 							svgTitle.remove();
@@ -672,9 +672,9 @@ export class KaFunComponent implements OnInit {
 				.text(function(d, i) {
 					return that.ytextContent;
 				})
-				.on('click', function(d, i) {
+				.on('click', function() {
 					let self = that;
-					that.promptService.open(d, (data) => {
+					that.promptService.open(that.ytextContent, (data) => {
 						if (data != '') {
 							self.ytextContent = data;
 							svgTitle.remove();

@@ -719,7 +719,15 @@ export class GeneDetailComponent implements OnInit {
 							this.setXTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				},
 				y: {
 					title: "log2(Value+1)",
@@ -728,7 +736,15 @@ export class GeneDetailComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				}
 			},
 			"tooltip": function(d) {
@@ -789,7 +805,15 @@ export class GeneDetailComponent implements OnInit {
 				height:450,
 				el: "#lineChartDiv2",
 				type: "line",
-				data: tempArray
+				data: tempArray,
+                mouseover: function (event,node) {
+                    node.attr("fill", "#5378f8");
+                    node.append("title").text("双击修改");
+                },
+                mouseout: function (event,node) {
+                    node.attr("fill", "#000");
+                    node.select("title").remove();
+                },
 			},
 			axis: {
 				x: {
@@ -800,7 +824,15 @@ export class GeneDetailComponent implements OnInit {
 							this.setXTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				},
 				y: {
 					title: "log2(Value+1)",
@@ -809,7 +841,15 @@ export class GeneDetailComponent implements OnInit {
 							this.setYTitle(val);
 							this.updateTitle();
 						})
-					}
+					},
+                    mouseover: function (event,node) {
+                        node.attr("fill", "#5378f8");
+                        node.append("title").text("双击修改");
+                    },
+                    mouseout: function (event,node) {
+                        node.attr("fill", "#000");
+                        node.select("title").remove();
+                    },
 				}
 			},
 			"tooltip": function(d) {
