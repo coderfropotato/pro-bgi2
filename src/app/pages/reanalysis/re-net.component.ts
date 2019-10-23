@@ -436,6 +436,11 @@ export class ReNetComponent implements OnInit {
         });
 
         links.forEach(d=>{
+            if(d.interaction_type=="target_miRNA"){
+                let source=d.source;
+                d.source=d.target;
+                d.target=source;
+            }
             netRelations.push(d.type);
         })
         netRelations=Array.from(new Set(netRelations));
