@@ -1160,7 +1160,7 @@ export class OverviewComponent implements OnInit {
 			  axis: {
 				x: {
 				  title: xTitle,
-				  minScale: xmin <= 0 ? Math.floor(xmin - 1) : Math.ceil(xmin + 1),
+				  minScale: Math.floor(xmin - 1),
 				  dblclick: function(event) {
 					that.promptService.open(event.target.textContent,val=>{
 						this.setXTitle(val);
@@ -1180,7 +1180,7 @@ export class OverviewComponent implements OnInit {
 				},
 				y: {
 				  title: yTitle,
-				  minScale: ymin <= 0 ? Math.floor(ymin - 1) : Math.ceil(ymin + 1),
+				  minScale: Math.floor(ymin - 1),
 				  dblclick: function(event) {
 					that.promptService.open(event.target.textContent,val=>{
 						this.setYTitle(val);

@@ -446,7 +446,12 @@ export class reRelationNetComponent implements OnInit {
             })
         });
 
-        links.forEach(d=>{
+        links.forEach(d=>{ 
+            if(d.interaction_type=="target_miRNA"){
+                let source=d.source;
+                d.source=d.target;
+                d.target=source;
+            }
             netRelations.push(d.type);
         })
         netRelations=Array.from(new Set(netRelations));
@@ -474,7 +479,7 @@ export class reRelationNetComponent implements OnInit {
                     d.scale=m.scale;
                 }
             })
-            
+           
             if(d.type==='target'){
                 targetLinks.push(d);
             }
@@ -570,7 +575,7 @@ export class reRelationNetComponent implements OnInit {
             .attr("markerHeight", 4)
             .attr("orient", "auto")
             .append("path")
-            .attr("d", 'M0,0 L0,10 L10,5 z')
+            .attr("d", "M0,0 L0,10 L10,5 z")
 
         let g = svg.append("g");
 
@@ -587,7 +592,7 @@ export class reRelationNetComponent implements OnInit {
             .attr('stroke-width', 2)
             .attr("fill", "none")
             .style('cursor','pointer')
-            .attr("marker-end",d=> d.type==='target' ? `url(#arrow${d.id})` :'')
+            .attr("marker-end",d=> d.type==='target' ? `url(#arrow${d.id})` : "")
             .on("mouseover", m => {
                 let referencesStr= m.references;
                 let references=strSplit(referencesStr,';');
