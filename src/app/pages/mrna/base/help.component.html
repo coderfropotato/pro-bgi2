@@ -179,13 +179,13 @@
 
         <!-- 小RNA预测 -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
-            <h3 class="title2" *ngIf="mflag == 2">{{tempIndex}}.5 小RNA预测</h3>
+            <!-- <h3 class="title2" *ngIf="mflag == 2">{{tempIndex}}.5 小RNA预测</h3> -->
             <h3 class="title2" *ngIf="mflag == 3">{{tempIndex}}.8 小RNA预测</h3>
             <p class="help_text text_indent">基于miRNA的前体能够形成发夹二级结构，我们使用miRDeep2（适用于动物）和miRA（适用于植物）进行新的miRNA预测。我们使用Piano进行piRNA预测，该方法主要基于SVM算法和转座子信息，进行预测，适合于人、小鼠、大鼠等。siRNA是一种22-24nt的双链RNA分子，每条链的末端会多出2个碱基；结合已报道的siRNA碱基特性，进行预测潜在的siRNA。</p>
         </div>
         <!-- 小RNA分类 -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
-            <h3 class="title2" *ngIf="mflag == 2">{{tempIndex}}.6 小RNA分类</h3>
+            <h3 class="title2" *ngIf="mflag == 2">{{tempIndex}}.5 小RNA分类</h3>
             <h3 class="title2" *ngIf="mflag == 3">{{tempIndex}}.9 小RNA分类</h3>
             <p class="help_text text_indent">所有sRNA与各类RNA的比对、注释情况进行总结。在以上各注释信息中，有可能存在一个sRNA同时比对上两种不同的注释信息的情况。为了使每个unique sRNA有唯一的注释，按照: MiRbase > pirnabank > snoRNA(human/plant) > Rfam > other sRNA 的优先级顺序将sRNA遍历注释。</p>
         </div>
