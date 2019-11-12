@@ -62,6 +62,14 @@ export class LoginComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		var _hmt = _hmt || [];
+		(function() {
+		var hm = document.createElement("script");
+		hm.src = "https://hm.baidu.com/hm.js?1cefecdd9adda402b82f9f972be3ca30";
+		var s = document.getElementsByTagName("script")[0]; 
+		s.parentNode.insertBefore(hm, s);
+		})();
+		
 		// this.router.navigateByUrl('/report/project');
 		this.toolsService['visible']=false;
 		this.toolsService.baseThead.length=0;

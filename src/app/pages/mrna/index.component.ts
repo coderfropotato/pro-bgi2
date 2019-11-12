@@ -53,6 +53,14 @@ export class IndexComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		var _hmt = _hmt || [];
+		(function() {
+		var hm = document.createElement("script");
+		hm.src = "https://hm.baidu.com/hm.js?1cefecdd9adda402b82f9f972be3ca30";
+		var s = document.getElementsByTagName("script")[0]; 
+		s.parentNode.insertBefore(hm, s);
+		})();
+		
 		this.ngxSpinnerService.show();
 		(async () => {
 			try {
