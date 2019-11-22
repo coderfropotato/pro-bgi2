@@ -15,19 +15,36 @@ declare const SparkMD5:any;
 })
 export class BasicHelpComponent implements OnInit {
 
-    project_type: string;
+    project_type: string="";
 
-    library_method: string;
+    library_method: string="";
 
-    seq_platform: string;
-	seq_platform_series: string;
+    seq_platform: string="";
+	seq_platform_series: string="";
 
     mflag: number = 0;
     // 第一种情况：只有lncRNA、RNAref、RNAseq，无miRNA，显示以下8项；（序号用6.1-6.8） number = 0;
     // 第二种情况：只有miRNA、无其他RNA，显示以下6项；（序号用6.1-6.6） number = 2;
     // 第三种情况：同时有miRNA和其他RNA，所有内容都要显示，显示10项。（序号用6.1-6.10）number = 3;
 
-    tflag: number = 0;
+	// seq_platform_series
+	Illumina_flag:boolean=false
+	BGISEQ_flag:boolean=false
+	//library_method
+	//无“+”连接
+	polyA_selected_flag:boolean=false
+	rRNA_removal_flag:boolean=false
+	smallRNA_common_flag:boolean=false
+	smallRNA_UMI_flag:boolean=false
+	//有“+”连接：两两或三三对应
+	testPlan1:boolean=false
+	testPlan2:boolean=false
+	testPlan3:boolean=false
+	testPlan4:boolean=false
+
+	hasTestProcess:boolean=false
+	hasSmallRNATest:boolean=false
+
     /////实验流程（还分三种情况）
     // 组合一：  4
     // 条件：
@@ -43,7 +60,6 @@ export class BasicHelpComponent implements OnInit {
     // 条件：
     // seq_platform_series: BGISEQ / Illumina
 	// library_method: rRNA_removal
-	sflag: number = 0;
 
     nflag:number = 0;
     /////分析流程（再分三种）
@@ -92,6 +108,7 @@ export class BasicHelpComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+		let that=this;
 
         this.GeneListIndex();
 
@@ -137,103 +154,98 @@ export class BasicHelpComponent implements OnInit {
 				lncRNA2_flag = true;
 			}
 		});
-        //this.mflag = 3;
-        ///////////////////////////////////////////////////////////////////////
+		//this.mflag = 3;
+		
+		//====================实验流程 start===============================
+		if(this.project_type.indexOf('smallRNA')!=-1){
+			this.hasSmallRNATest=true
+		}else{
+			this.hasSmallRNATest=false
+		}
 
+		if(this.project_type==='smallRNA'){
+			this.hasTestProcess=false
+		}else{
+			this.hasTestProcess=true;
+		}
+
+		
 		this.seq_platform = this.store.getStore("seq_platform");
-
-		let Illumina_flag = false;
-		let BGISEQ_flag = false;
-
-		this.seq_platform.split("+").forEach((d) => {
-			if(d.indexOf('hiseq') != -1){
-				Illumina_flag = true;
+		this.seq_platform_series=this.store.getStore('seq_platform_series');
+		
+		function getSeq_platform_series(d){
+			switch (d) {
+				case "Illumina":
+					that.Illumina_flag = true;
+					break;
+				case "BGISEQ":
+					that.BGISEQ_flag = true;
+					break;
+				default:
+					break;
 			}
-			if(d.indexOf('BGISEQ') != -1 || d.indexOf('MGISEQ') != -1){
-				BGISEQ_flag = true;
+		}
+
+		if(this.seq_platform_series.indexOf('+')==-1){
+			getSeq_platform_series(this.seq_platform_series);
+		}
+
+		function getLibrary_method(d){
+			switch (d) {
+				case "polyA_selected":
+					that.polyA_selected_flag = true;
+					break;
+				case "rRNA_removal":
+					that.rRNA_removal_flag = true;
+					break;
+				case "smallRNA_common":
+					that.smallRNA_common_flag = true;
+					break;
+				case "smallRNA_UMI":
+					that.smallRNA_UMI_flag = true;
+					break;
+				default:
+					break;
 			}
-		});
+		}
 
-		let polyA_selected_flag = false;
-		let other_flag = false;
-		let rRNA_removal_flag = false;
-		let lncRNA_flag = false;
-		let circRNA_flag = false;
-		let smallRNA_common_flag =false;
-		let smallRNA_UMI_flag = false;
+		if(this.library_method.indexOf('+')==-1){
+			getLibrary_method(this.library_method)
+		}
 
-		this.library_method.split("+").forEach((d) => {
-			if(d.indexOf('polyA_selected') != -1){
-				polyA_selected_flag = true;
+		if(this.library_method.indexOf('+')!=-1 && this.seq_platform_series.indexOf('+')!=-1){
+			let library_methods=this.library_method.split("+");
+			let seq_platform_series=this.seq_platform_series.split("+");
+
+			for(let i=0;i<library_methods.length;i++){
+				switch (library_methods[i]) {
+					case "polyA_selected":
+						if(seq_platform_series[i]=='BGISEQ'){
+							this.testPlan1=true;
+						}else if(seq_platform_series[i]=='Illumina'){
+							this.testPlan2=true;
+						}
+						break;
+					case "rRNA_removal":
+						if(seq_platform_series[i]=='BGISEQ'){
+							this.testPlan3=true;
+						}else if(seq_platform_series[i]=='Illumina'){
+							this.testPlan4=true;
+						}
+						break;
+					case "smallRNA_common":
+						that.smallRNA_common_flag = true;
+						break;
+					case "smallRNA_UMI":
+						that.smallRNA_UMI_flag = true;
+						break;
+					default:
+						break;
+				}
 			}
-			if(d.indexOf('other') != -1 ){
-				other_flag = true;
-			}
-			if(d.indexOf('rRNA_removal') != -1 ){
-				rRNA_removal_flag = true;
-			}
-			if(d.indexOf('lncRNA') != -1 ){
-				lncRNA_flag = true;
-			}
-			if(d.indexOf('circRNA') != -1 ){
-				circRNA_flag = true;
-			}
-			if(d.indexOf('smallRNA_common') != -1 ){
-				smallRNA_common_flag = true;
-			}
-			if(d.indexOf('smallRNA_UMI') != -1 ){
-				smallRNA_UMI_flag = true;
-			}
-		})
-
-        // if(this.seq_platform.indexOf('Hiseq') != -1){
-        //     this.seq_platform_series = "Illumina";
-        // }else{
-        //     this.seq_platform_series = "BGISEQ";
-		// }
-
-       if((Illumina_flag && polyA_selected_flag)||(Illumina_flag && other_flag)||(Illumina_flag && rRNA_removal_flag)){
-            this.tflag = 4;
-       }
-
-       if((BGISEQ_flag && polyA_selected_flag)||(BGISEQ_flag && other_flag)||(BGISEQ_flag && rRNA_removal_flag)){
-            this.tflag = 5;
-        }
-
-        if(Illumina_flag && lncRNA_flag){
-            this.tflag = 6;
-        }
-
-        if(BGISEQ_flag && lncRNA_flag){
-            this.tflag = 7;
-        }
-
-        if(Illumina_flag && circRNA_flag){
-            this.tflag = 8;
-        }
-
-        if(BGISEQ_flag && circRNA_flag){
-            this.tflag = 9;
-        }
-
-		console.log(this.tflag)
-        //    if(BGISEQ_flag && this.library_method == "polyA_selected"){
-        //         this.tflag = 5;
-        //    }
-
-        //    if(this.library_method == "rRNA_removal"){
-        //         this.tflag = 6;
-        //    }
-
-        if(smallRNA_common_flag){
-            this.sflag = 61;
-        }
-
-        if(smallRNA_UMI_flag){
-            this.sflag = 62;
-        }
-
-
+			
+		}
+//===================实验流程 end=======================================
 
        if(RNAseq_flag){
             this.nflag = 7;
