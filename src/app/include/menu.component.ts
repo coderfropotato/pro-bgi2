@@ -142,13 +142,13 @@ export class MenuComponent implements OnChanges,OnInit {
         }
         this.index = index;
         console.log(this.ptype);
-        if(this.ptype == "smallRNA"){
-            menu["children"].forEach((d) => {
-                if(d.content.indexOf("差异基因") != -1){
-                    d.content=d.content.replace('差异基因','差异表达小RNA的靶基因');
-                }
-            });
-        }
+        // if(this.ptype == "smallRNA"){
+        //     menu["children"].forEach((d) => {
+        //         if(d.content.indexOf("差异基因") != -1){
+        //             d.content=d.content.replace('差异基因','差异表达小RNA的靶基因');
+        //         }
+        //     });
+        // }
         this.expandItem = menu["children"];
         this.expand=true;
     }
