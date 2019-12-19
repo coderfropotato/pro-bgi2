@@ -5,8 +5,7 @@ const config: object = {
     // 线上 218.106.117.7
     // 测试 192.168.167.24:7777
     // hd5 192.168.167.35
-	// javaPath: 'http://192.168.167.24:7777/api', // api基础路径
-    javaPath: 'http://localhost:7171', // api基础路径
+	javaPath: 'http://biosys.bgi.com/api', // api基础路径
 	outerDataBaseIndex: '006', // 增删列外部数据库的索引
 	lang: 'zh', // 默认语言
 	geneTypeAll: 'all', // 基因和转录本切换 基因类型为all表示有基因切换 默认为gene
@@ -33,7 +32,7 @@ const config: object = {
 	urlSplitFlag: '@', // 切割url的标志字符
 	valSplitFlag: '+++', // 内容换行的标志字符
 	idComposeDesc: '///', // id和描述的组合标志字符
-	pathwayURL:'test'//'test' production
+	pathwayURL:'production'//'test' production
 };
 
 export default config;
