@@ -279,7 +279,7 @@ export class ReGseaComponent implements OnInit {
             this.dbtypeNumber = 1;
         }
         if (this.dbtype == "REACTOME") {
-            this.dbtypeUrl = `https://reactome.org/`;
+            this.dbtypeUrl = `https://reactome.org/content/detail/`;
             this.dbtypeNumber = 2;
         }
         if (this.dbtype == "COG") {

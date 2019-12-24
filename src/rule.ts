@@ -164,9 +164,9 @@ export const matchRule: object = {
 	pfam_term: { url: 'http://pfam.xfam.org/family/@' },
 	pfam_desc: { url: 'http://pfam.xfam.org/family/@' },
 
-	reactome_term_id: { url: 'https://reactome.org/' },
-	reactome_term: { url: 'https://reactome.org/' },
-	reactome_desc: { url: 'https://reactome.org/' },
+	reactome_term_id: { url: 'https://reactome.org/content/detail/' },
+	reactome_term: { url: 'https://reactome.org/content/detail/' },
+	reactome_desc: { url: 'https://reactome.org/content/detail/' },
 
 	cog_term_id: { url: 'ftp://ftp.ncbi.nih.gov/pub/COG/COG2014/static/byCOG/@' },
 	cog_term: { url: 'ftp://ftp.ncbi.nih.gov/pub/COG/COG2014/static/byCOG/@' },

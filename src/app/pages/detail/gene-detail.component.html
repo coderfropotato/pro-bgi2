@@ -470,7 +470,7 @@
 
           <div class="transcripts_table" [hidden]="!reactome_flag">
               <h5>Reactome</h5>
-              <app-little-table *ngIf="loadTable" [targetID]="'reactome_term_id'" [targetURL]="'https://reactome.org/'" [type]="reactome_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
+              <app-little-table *ngIf="loadTable" [targetID]="'reactome_term_id'" [targetURL]="'https://reactome.org/content/detail/'" [type]="reactome_parameter" (drawTableEmit)="drawKEGGPathway($event)" [inRefreshShow]="false" [url]="reactome_url" [pageEntity]="go_molecular_params"></app-little-table>
           </div>
 
           <div class="transcripts_table" [hidden]="!interpro_flag">
