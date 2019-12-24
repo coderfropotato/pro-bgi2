@@ -1273,9 +1273,11 @@ export class ReGseaComponent implements OnInit {
 
         function buildScoreMapHover(ele) {
             if (ele > 0) {
-                return `'${that.group}'(positively correlated)<br>Score: ${ele}`
+                // 处理组(红色)
+                return `'${that.treatGroup}'(positively correlated)<br>Score: ${ele}`
             } else if (ele < 0) {
-                return `'${that.group === that.treatGroup ? that.controlGroup : that.treatGroup}'(negatively correlated)<br>Score: ${ele}`
+                // 对照组(蓝色)
+                return `'${that.controlGroup}'(negatively correlated)<br>Score: ${ele}`
             }
             return `no correlated；<br>Score: ${ele}`;
         }
