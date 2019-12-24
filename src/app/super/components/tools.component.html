@@ -643,7 +643,7 @@
 
                 <div class="tool-params-button-group">
                     <button nz-button nzType="default" (click)="cancel()" nzSize="middle">取消</button>
-                    <button nz-button nzType="primary" [disabled]="gseaClassError" (click)="gseaRichConfirm()" nzSize="middle">确定</button>
+                    <button nz-button nzType="primary" [disabled]="gseaClassError || inputBFristFlag || inputBFristFlag2 || inputBSecondFlag || inputBSecondFlag2 || maxFlag || minFlag" (click)="gseaRichConfirm()" nzSize="middle">确定</button>
                 </div>
                 <!-- <div *ngIf="geneRichData.length">
                     <div class="tool-params-tab" *ngFor="let item of geneRichData;index as i;">

@@ -349,27 +349,20 @@ export class ReadsComparisonComponent implements OnInit {
 
   //4.5 测序饱和度 测序饱和度曲线
   drawSaturationReads(data){
-    // console.log(data);
-
-    // let rows = data.rows;
-    // rows.sort((a,b)=>{
-    //   return a["readnum_100k"]-b["readnum_100k"]
-    // })
-
     var rows = data.rows;
     rows.sort((a,b)=>{
       return a["readnum_100k"] - b["readnum_100k"]
     })
 
-    var min = rows[0]['readnum_100k'];
-    var max = rows[rows.length-1]['readnum_100k'];
+    // var min = rows[0]['readnum_100k'];
+    // var max = rows[rows.length-1]['readnum_100k'];
 
-    let scale = d3.scaleLinear().domain([min,max]).range([0,1])
+    // let scale = d3.scaleLinear().domain([min,max]).range([0,1])
 
     let temps = [];
     rows.forEach((d) => {
       temps.push({
-        readnum_100k:scale(d.readnum_100k),
+        readnum_100k:d.readnum_100k,
         gene_idt_ratio:d.gene_idt_ratio
       })
     });
