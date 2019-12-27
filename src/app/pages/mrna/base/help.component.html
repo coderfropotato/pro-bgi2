@@ -59,7 +59,7 @@
             </div>
             <div class="help_bg" *ngIf="smallRNA_UMI_flag">
                 <p>图说明:</p> 
-                <p>1) 将Total RNA使用磁珠纯化分离出目的片段范围的RNA；</p>
+                <p>1) 将Total RNA使用切胶纯化分离出目的片段范围的RNA；</p>
                 <p>2）使用5-adenylated，3-blocked的单链接头连接到RNA的3’端；</p>
                 <p>3）将RT引物加入体系中，与连接在RNA上的3’接头杂交，并与多余的游离3’接头杂交；</p>
                 <p>4）加入消化酶mix，去除多余的接头；</p>
@@ -83,8 +83,8 @@
             <p class="help_text text_indent" *ngIf="nflag == 8">测序所得的数据称为raw reads或raw data，随后要对raw reads进行质控(QC)，以确定测序数据是否适用于后续分析。质控后，经过滤得到的clean reads比对到参考序列。比对完，通过统计比对率、reads在参考序列上的分布情况等，判断比对结果是否通过第二次质控(QC of alignment)。若通过，则进行基因定量分析、基于基因表达水平的各项分析（主成分、相关性、差异基因筛选等等），并对筛选出的样品间差异表达基因，进行GO功能显著性富集分析、pathway显著性富集分析、聚类、蛋白互作网络和转录因子等更深入的挖掘分析。SNP & InDel 和差异剪接基因检测。完整的分析流程图如下：</p>
             <div class="img_two_f" *ngIf="nflag == 8"></div> 
 
-            <p class="help_text text_indent" *ngIf="nflag == 9">测序所得数据称为raw reads。首先，我们过滤掉rRNA，低质量、接头污染以及未知碱基N含量过高的reads，过滤后的数据称为clean reads。然后将clean reads比对到参考基因组上，之后进行转录本组装。对于组装得到的新转录本，我们将进行编码能力预测，以区分新的lncRNA和新的mRNA。这些新的lncRNA和mRNA将与已知的lncRNA和mRNA一起进行后续的分析。</p>
-            <p class="help_text text_indent" *ngIf="nflag == 9">我们会对所有的RNA进行定量，进行差异分析，聚类分析，时间序列分析，富集分析等。我们预测lncRNA的靶基因，预测lncRNA家族分类以及潜在的miRNA前体。对于mRNA，我们会进行数据库注释。我们的分析还包括 SNP ， InDel 以及可变剪接。完整的分析流程图如下图：</p>
+            <p class="help_text text_indent" *ngIf="nflag == 9">测序所得数据称为raw reads。首先，我们过滤掉rRNA，低质量、接头污染以及未知碱基N含量过高的reads，过滤后的数据称为clean reads。然后将clean reads分别比对到参考基因组和转录组上。然后对RNA进行定量、差异分析、聚类分析、时间序列分析（如有）和富集分析等。完整的分析流程图如下图：</p>
+            <!-- <p class="help_text text_indent" *ngIf="nflag == 9">我们会对所有的RNA进行定量，进行差异分析，聚类分析，时间序列分析，富集分析等。我们预测lncRNA的靶基因，预测lncRNA家族分类以及潜在的miRNA前体。对于mRNA，我们会进行数据库注释。我们的分析还包括 SNP ， InDel 以及可变剪接。完整的分析流程图如下图：</p> -->
             <div class="img_two_s" *ngIf="nflag == 9"></div> 
         </div>
 
@@ -96,7 +96,7 @@
             <div class="img_eight"></div>
             <div class="help_bg">
                 <p>图说明:</p> 
-                <p>测序所得49nt序列，通过去接头、去低质量、去污染等过程完成数据处理得到可信的备用分析的目标序列，对其进行序列长度分布的统计及样品间公共序列统计。将清理后的目标序列分类注释，可以获得样品中包含的各组分及表达量信息。将所有小RNA片段注释后，用剩下的未注释片段来进行：1）novel miRNA的预测。对于鉴定得到的miRNA进行靶基因预测和对靶基因的GO功能注释以及KEGGpathway注释。</p>
+                <p>测序所得49nt序列，通过去接头、去低质量、去污染等过程完成数据处理得到可信的备用分析的目标序列，对其进行序列长度分布的统计及样品间公共序列统计。将清理后的目标序列分类注释，可以获得样品中包含的各组分及表达量信息。对于鉴定得到的miRNA进行靶基因预测和对靶基因的GO功能注释以及KEGGpathway注释。</p>
             </div>
         </div>
 
@@ -195,22 +195,21 @@
         </div>
 
         <!-- 小RNA预测 -->
-        <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
-            <!-- <h3 class="title2" *ngIf="mflag == 2">{{tempIndex}}.5 小RNA预测</h3> -->
+        <!-- <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
             <h3 class="title2" *ngIf="mflag == 3">{{tempIndex}}.8 小RNA预测</h3>
             <p class="help_text text_indent">基于miRNA的前体能够形成发夹二级结构，我们使用miRDeep2（适用于动物）和miRA（适用于植物）进行新的miRNA预测。我们使用Piano进行piRNA预测，该方法主要基于SVM算法和转座子信息，进行预测，适合于人、小鼠、大鼠等。siRNA是一种22-24nt的双链RNA分子，每条链的末端会多出2个碱基；结合已报道的siRNA碱基特性，进行预测潜在的siRNA。</p>
-        </div>
+        </div> -->
         <!-- 小RNA分类 -->
         <div class="help_content" *ngIf="mflag == 2 || mflag == 3">
             <h3 class="title2" *ngIf="mflag == 2">{{tempIndex}}.5 小RNA分类</h3>
-            <h3 class="title2" *ngIf="mflag == 3">{{tempIndex}}.9 小RNA分类</h3>
+            <h3 class="title2" *ngIf="mflag == 3">{{tempIndex}}.8 小RNA分类</h3>
             <p class="help_text text_indent">所有sRNA与各类RNA的比对、注释情况进行总结。在以上各注释信息中，有可能存在一个sRNA同时比对上两种不同的注释信息的情况。为了使每个unique sRNA有唯一的注释，按照: MiRbase > pirnabank > snoRNA(human/plant) > Rfam > other sRNA 的优先级顺序将sRNA遍历注释。</p>
         </div>
 
         <!-- 常见问题 -->     
         <div class="help_content" *ngIf="mflag == 0 || mflag == 3">
             <h3 class="title2" *ngIf="mflag == 0">{{tempIndex}}.8 常见问题</h3>
-            <h3 class="title2" *ngIf="mflag == 3">{{tempIndex}}.10 常见问题</h3>
+            <h3 class="title2" *ngIf="mflag == 3">{{tempIndex}}.9 常见问题</h3>
 
             <h4 class="title2 sjx2">什么是FASTQ格式？</h4>
             <p class="help_text text_indent">测序得到的原始图像数据经 base calling转化为原始序列数据（raw data或raw reads），以fastq（简称fq）文件格式存储，包含了reads的序列以及测序质量信息。在fastq格式文件中，每个read有四行描述：</p> 
