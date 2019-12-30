@@ -9,22 +9,22 @@
             <h3 class="title3">{{tempIndex}}.1.1 实验流程</h3>
             <div class="testProcess_one center" *ngIf="(polyA_selected_flag && BGISEQ_flag) || testPlan1">
                 <h4>RNAref+RNAseq BGISEQ平台</h4>
-                <img src="./BGISEQ_Experiment_FlowChart.png" alt="">
+                <img src="assets/img/mrna/baseHelp/BGISEQ_Experiment_FlowChart.png" alt="">
                 <p class="help_text text_indent left">用mRNA富集法对total RNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA。用打断buffer把获得的RNA片段化，随机的N6引物进行反转录，再合成cDNA⼆链形成双链DNA。把合成的双链DNA末端补平并5'端磷酸化，3'端形成突出⼀个“A”的粘末端，再连接⼀个3'端有凸出“T”的鼓泡状的接头。连接产物通过特异的引物进行PCR扩增。PCR产物热变性成单链，再用⼀段桥式引物将单链DNA环化得到单链环状DNA文库。构建好的文库质检，合格后进行测序。</p>
             </div>
             <div class="testProcess_two center" *ngIf="(polyA_selected_flag && Illumina_flag) || testPlan2">
                 <h4>RNAref+RNAseq Illumina平台</h4>
-                <img src="./Illumina_Experiment_FlowChart.png" alt="">
+                <img src="assets/img/mrna/baseHelp/Illumina_Experiment_FlowChart.png" alt="">
                 <p class="help_text text_indent left">用mRNA富集法或rRNA去除法对total RNA进行处理，mRNA富集：用带有OligodT的磁珠富集有polyA尾巴的mRNA。得到的mRNA中加入适量打断试剂高温条件下使其片断化，以打断后的mRNA为模板合成一链 cDNA，然后配置二链合成反应体系合成二链cDNA，并使用试剂盒纯化回收、粘性末端修复、 cDNA 的3’末端加上碱基“A”并连接接头，然后进行片段大小选择，最后进行 PCR 扩增；构建好的文库质检，合格后进行测序。</p>
             </div>
             <div class="testProcess_three center" *ngIf="(rRNA_removal_flag && Illumina_flag) || testPlan4">
                 <h4>LncRNA Illumina平台</h4>
-                <img src="./Illumina_lncRNA_Experiment_FlowChart.png" alt="">
+                <img src="assets/img/mrna/baseHelp/Illumina_lncRNA_Experiment_FlowChart.png" alt="">
                 <p class="help_text text_indent left">首先将提取好的total RNA去除核糖体rRNA。在纯化之后，将RNA在一定的温度和离子环境下片段化。随后使用TruSeq® Stranded kit中随机引物和反转录酶合成cDNA一链，然后使用DNA聚合酶I和RNaseH来合成双链的cDNA。在cDNA二链合成过程中，RNA模板被去除，dTTP被dUTP所替换。dUTP的参与使cDNA的二链无法在后续流程中被扩增，因为聚合酶在延伸时无法跨过模板上的dUTP位点。双链的cDNA产物随后进行了加“A”碱基和接头连接。连接产物将被扩增，纯化后即得到了最终的cDNA文库。最后将构建好的测序文库进行测序。</p>
             </div>
             <div class="testProcess_four center" *ngIf="(rRNA_removal_flag && BGISEQ_flag) || testPlan3">
                 <h4>LncRNA BGISEQ平台</h4>
-                <img src="./BGISEQ_lncRNA_Experiment_FlowChart.png" alt="">
+                <img src="assets/img/mrna/baseHelp/BGISEQ_lncRNA_Experiment_FlowChart.png" alt="">
                 <p class="help_text text_indent left">首先将提取好的total RNA 使用MGIEasy rRNA去除试剂盒去除核糖体rRNA。在纯化之后，将RNA在一定的温度和离子环境下片段化。随后使用MGIEasy RNA方向性文库制备试剂盒中的随机引物和反转录酶合成cDNA一链，然后使用DNA聚合酶I和RNaseH来合成双链的cDNA。在cDNA二链合成过程中，RNA模板被去除，dTTP被dUTP所替换。dUTP的参与使cDNA的二链无法在后续流程中被扩增，因为聚合酶在延伸时无法跨过模板上的dUTP位点。双链的cDNA产物随后进行了加“A”碱基和接头连接。连接产物将被扩增，PCR产物热变性成单链，再用一段桥式引物将单链DNA环化得到单链环状DNA文库后进行上机测序。</p>
             </div>
         </div>
@@ -40,7 +40,7 @@
             </div>
             <p class="help_text text_indent">实验操作中的每一步（如样品检测、文库构建到测序）都会影响数据数量和质量，从而影响后续信息分析结果。为了得到高质量测序数据，我们对每一步都进行严格的质控。实验流程见下图：</p>
             <div class="center" *ngIf="smallRNA_common_flag">
-                <img src="./BGISEQ_smallRNA_Experiment_FlowChart.png" alt="">
+                <img src="assets/img/mrna/baseHelp/BGISEQ_smallRNA_Experiment_FlowChart.png" alt="">
             </div>
             <div class="help_bg" *ngIf="smallRNA_common_flag">
                 <p>图说明:</p> 
@@ -55,7 +55,7 @@
             </div>
 
             <div class="center" *ngIf="smallRNA_UMI_flag">
-                <img src="./smallRNA_UMI_Experiment_FlowChart.png" alt="">
+                <img src="assets/img/mrna/baseHelp/smallRNA_UMI_Experiment_FlowChart.png" alt="">
             </div>
             <div class="help_bg" *ngIf="smallRNA_UMI_flag">
                 <p>图说明:</p> 
@@ -169,7 +169,7 @@
             <div class="help_bg">
                 <p>软件信息：</p>
                 <p>基因组比对: Bowtie2 ，允许一个错配</p>
-                <p>非编码RNA比对: AASRA，不允许醋配，但是允许长短匹配</p>
+                <p>非编码RNA比对: AASRA，不允许错配，但是允许长短匹配</p>
                 <p>Rfam数据库比对: cmsearch</p>
             </div>
         </div>
