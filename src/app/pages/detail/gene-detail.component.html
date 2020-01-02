@@ -89,8 +89,8 @@
             <span class="info_name">{{'gene_detail.tf_family' | translate}}</span>
             <span class="info_content">
                 <a *ngIf="species=='animal'" href="http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family={{geneInfoList['tf_family']}}" target="_blank">{{geneInfoList['tf_family']}}</a>
-                <a *ngIf="species!='animal'" href="http://planttfdb.cbi.pku.edu.cn/family.php?fam={{geneInfoList['tf_family']}}" target="_blank">{{geneInfoList['tf_family']}}</a>
-                <!-- {{geneInfoList['tf_family']}} -->
+                <a *ngIf="species=='plant'" href="http://planttfdb.cbi.pku.edu.cn/family.php?fam={{geneInfoList['tf_family']}}" target="_blank">{{geneInfoList['tf_family']}}</a>
+                <span *ngIf="species=='fungi' || species=='other'">{{geneInfoList['tf_family']}}</span>
             </span>
           </p>
           <p *ngIf="geneInfoList['gene_chr']">

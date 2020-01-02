@@ -291,10 +291,13 @@ export class ReGseaComponent implements OnInit {
             this.dbtypeNumber = 2;
         }
         if (this.dbtype == "TF") {
-            if (sessionStorage.getItem('species_kingdom') == 'animal') {
+            let species=sessionStorage.getItem('species_kingdom')
+            if ( species== 'animal') {
                 this.dbtypeUrl = `http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family=`;
-            } else {
+            } else if(species=='plant'){
                 this.dbtypeUrl = `http://planttfdb.cbi.pku.edu.cn/family.php?fam=`;
+            }else{
+                this.dbtypeUrl='';
             }
             this.dbtypeNumber = 1;
             // 动物：http://bioinfo.life.hust.edu.cn/AnimalTFDB/#!/tf_summary?family=[替换内容]

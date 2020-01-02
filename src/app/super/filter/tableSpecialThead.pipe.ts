@@ -75,16 +75,15 @@ export class TableSpecialTheadFilter implements PipeTransform {
 						return this.globalService.trustStringHtml(htmlStr);
 					}
 				}
-				console.log(thead)
 				
 			} else {
 				// 其他跳转规则
 				let matchList = config['matchList'];
 				let matchRule = config['matchRule'];
-				let flag = config['urlSplitFlag'];
+				let flag = config['urlSplitFlag'];//链接url的@
 				let mapMatchItems = config['mapMatchItems'];
-				let valSplitFlag = config['valSplitFlag'];
-				let idFlag = config['idComposeDesc'];
+				let valSplitFlag = config['valSplitFlag']; //value的'+++'
+				let idFlag = config['idComposeDesc']; //id+描述的'///'
 				let unableClickSplitFlag = config['unableClickSplitFlag'];
 				let htmlStr = '',
 					urlArr = [];
@@ -95,10 +94,38 @@ export class TableSpecialTheadFilter implements PipeTransform {
 				if (matchList.includes(thead)) {
 					let curRule = matchRule[thead];
 					let curUrl = curRule['url'];
+					let session=curRule['session'] || "";
+					let sessionVal= sessionStorage.getItem(session) || '';
 
-					if (matchRule[thead]['url']) {
-						urlArr = typeof curUrl === 'string' ? curUrl.split(flag) : curUrl[0].split(flag);
-
+					if (curUrl) {
+						if(typeof curUrl === 'string'){
+							urlArr=curUrl.split(flag);
+						}else if(curUrl instanceof Array && curUrl.length){
+							if(session && sessionVal){
+								if(session=='species_kingdom'){
+									switch (sessionVal) {
+										case "animal":
+											urlArr =curUrl[0].split(flag);
+											break;
+										case "plant":
+											urlArr =curUrl[1].split(flag);
+											break;
+										default:
+											if (whiteWrapReg.test(thead) || value.indexOf(valSplitFlag)!=-1) {
+												let textArr = value.split(valSplitFlag);
+												textArr.forEach((v, i) => {
+													htmlStr += `<span>${v}</span>`;
+													htmlStr += i !== textArr.length - 1 && whitespace ? '<br>' : '&emsp;';
+												});
+											} else {
+												htmlStr += value;
+											}
+											break;
+									}
+								}
+							}
+						}
+						
 						if (whiteWrapReg.test(thead) || value.indexOf(valSplitFlag)!=-1) {
 							let textArr = value.split(valSplitFlag);
 							textArr.forEach((v, i) => {

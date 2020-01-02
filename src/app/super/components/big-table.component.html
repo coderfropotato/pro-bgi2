@@ -123,8 +123,10 @@
                                     </ng-template>
                                     <span *ngIf="two['true_key']!='NAME'&&!gseaFlag" [innerHTML]="d[two['true_key']] | tableSpecialTheadFilter : two['true_key']:two['searchType']:false:compareGroup:reanalysisId:tableEntity['geneType']:reanalysisDate:isKeggRich"></span>
                                     <span *ngIf="two['true_key']=='NAME'&&gseaFlag">
-                                        <a href="{{dbtypeUrl}}{{d[two['true_key']]}}" target="_blank" *ngIf="dbtypeNumber==1"><span>{{d[two['true_key']]}}</span></a>
-                                        <a href="{{dbtypeUrl}}" target="_blank" *ngIf="dbtypeNumber==2"><span>{{d[two['true_key']]}}</span></a>
+                                        <a href="{{dbtypeUrl}}{{d[two['true_key']]}}" target="_blank" *ngIf="dbtypeNumber==1 && dbtypeUrl"><span>{{d[two['true_key']]}}</span></a>
+                                        <span *ngIf="dbtypeNumber==1 && !dbtypeUrl">{{d[two['true_key']]}}</span>
+                                        <a href="{{dbtypeUrl}}" target="_blank" *ngIf="dbtypeNumber==2 && dbtypeUrl"><span>{{d[two['true_key']]}}</span></a>
+                                        <span *ngIf="dbtypeNumber==2 && !dbtypeUrl">{{d[two['true_key']]}}</span>
                                     </span>
                                 </td>
                                 <!-- NA -->
